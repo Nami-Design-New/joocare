@@ -4,6 +4,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
+import TanstackQueryProvider from "@/lib/tanstack-query/TanstackQueryProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -11,25 +12,27 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  children: Readonly<React.ReactNode>;
-  params: Promise<{ locale: string }>;
+  children: React.ReactNode;
+  params: { locale: string };
 };
 
 export default async function RootLayout({ children, params }: Props) {
-  // Ensure that the incoming `locale` is valid
-
   const { locale } = await params;
+
+  // Validate locale
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
 
-  // Enable static rendering
+  // Enable static rendering for next-intl
   setRequestLocale(locale);
 
   return (
     <html lang={locale}>
-      <body className={`antialiased`}>
-        <NextIntlClientProvider> {children}</NextIntlClientProvider>
+      <body className="antialiased">
+        <NextIntlClientProvider locale={locale}>
+          <TanstackQueryProvider>{children}</TanstackQueryProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
