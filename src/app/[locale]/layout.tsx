@@ -1,10 +1,10 @@
 import { routing } from "@/i18n/routing";
+import MainProviders from "@/shared/providers/MainProviders";
 import type { Metadata } from "next";
-import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
-import TanstackQueryProvider from "@/lib/tanstack-query/TanstackQueryProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 type Props = {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 export default async function RootLayout({ children, params }: Props) {
@@ -30,9 +30,7 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <body className="antialiased">
-        <NextIntlClientProvider locale={locale}>
-          <TanstackQueryProvider>{children}</TanstackQueryProvider>
-        </NextIntlClientProvider>
+        <MainProviders locale={locale}>{children}</MainProviders>
       </body>
     </html>
   );
