@@ -1,7 +1,7 @@
 const SideContent = () => {
   return (
-    <div className="h-[calc(100vh-75px)] bg-[linear-gradient(45deg,#0A3463,#6CABEC)] flex items-center  gap-4">
-      <div className="max-w-3xl mx-auto p-4 text-white">
+    <div className="h-[50dvh] md:h-[calc(100vh-75px)] bg-[linear-gradient(45deg,#0A3463,#6CABEC)] flex items-center  gap-4">
+      <div className="w-5/6 mx-auto p-4 text-white">
         <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold">
           Match Faster
         </h2>

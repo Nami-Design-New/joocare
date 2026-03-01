@@ -25,7 +25,7 @@ const buttonVariants = cva(
         scale: "hover:scale-105",
         glow: "hover:shadow-lg hover:shadow-primary/40",
         slide:
-          "relative overflow-hidden text-primary-foreground bg-primary before:absolute before:inset-0 before:bg-secondary before:translate-y-full before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0",
+          "relative overflow-hidden before:absolute before:inset-0 before:bg-primary before:translate-y-full before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

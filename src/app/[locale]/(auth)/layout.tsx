@@ -13,7 +13,7 @@ const AuthLayout = ({ children }: Props) => {
   return (
     <div>
       <AuthHeader />
-      <div className="grid grid-cols-2 bg-background">
+      <div className="md:grid grid-cols-2 bg-background">
         <SideContent />
         <div>{children}</div>
       </div>
