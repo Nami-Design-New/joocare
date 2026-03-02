@@ -1,23 +1,20 @@
 // import libraries
+import AuthHeader from "@/features/auth/components/header/AuthHeader";
+import SideContent from "@/features/auth/components/side-content/SideContent";
 import { ReactNode } from "react";
 
 // import components
-import AuthHeader from "./components/header/AuthHeader";
-import SideContent from "./components/side-content/SideContent";
 
-type Props = {
-  children: ReactNode;
-};
 
-const AuthLayout = ({ children }: Props) => {
+const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div>
+    <>
       <AuthHeader />
-      <div className="md:grid grid-cols-2 bg-background">
+      <main className="grid grid-cols-2 bg-background">
         <SideContent />
-        <div>{children}</div>
-      </div>
-    </div>
+        {children}
+      </main>
+    </>
   );
 };
 
