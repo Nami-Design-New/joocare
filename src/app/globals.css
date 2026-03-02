@@ -170,6 +170,7 @@
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --shadow-header: 0 12px 24px 0 oklch(0 0 0 / 5%);
 }
 
 /* ════════════════════════════════════════
@@ -189,12 +190,12 @@
   --popover-foreground: oklch(0.089 0 0);
 
   /* Primary — main blue #0a3463 */
-  --primary: oklch(0.285 0.082 252);
-  --primary-foreground: oklch(1 0 0); /* white text on blue */
+  --secondary: oklch(0.285 0.082 252);
+  --secondary-foreground: oklch(1 0 0); /* white text on blue */
 
   /* Secondary — green #09760a */
-  --secondary: oklch(0.468 0.148 145);
-  --secondary-foreground: oklch(1 0 0); /* white text on green */
+  --primary: oklch(0.468 0.148 145);
+  --primary-foreground: oklch(1 0 0); /* white text on green */
 
   /* Muted — for subtle backgrounds, disabled states */
   --muted: oklch(0.089 0 0 / 5%); /* #0d0d0d0d — input-bg */
@@ -241,11 +242,11 @@
   --popover-foreground: oklch(0.95 0 0);
 
   /* Primary stays recognizable in dark mode */
-  --primary: oklch(0.55 0.1 252); /* lighter blue */
-  --primary-foreground: oklch(1 0 0);
-
-  --secondary: oklch(0.55 0.13 145); /* lighter green */
+  --secondary: oklch(0.55 0.1 252); /* lighter blue */
   --secondary-foreground: oklch(1 0 0);
+
+  --primary: oklch(0.55 0.13 145); /* lighter green */
+  --primary-foreground: oklch(1 0 0);
 
   --muted: oklch(1 0 0 / 8%);
   --muted-foreground: oklch(1 0 0 / 55%);
@@ -282,5 +283,15 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply border-b-2 py-1  px-2  text-lg border-transparent transition-colors text-secondary;
+  }
+
+  .nav-link:hover {
+    @apply text-primary border-primary;
   }
 }
