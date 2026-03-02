@@ -5,6 +5,7 @@ import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
+import Header from "@/shared/components/header/Header";
 
 export const metadata: Metadata = {
   title: "Create Next App",
