@@ -1,22 +1,23 @@
 // libraries
 import Link from "next/link";
 
-import { Section } from "lucide-react";
-import HeaderLoginContent from "@/features/auth/components/login-content/HeaderLoginContent";
 import FormEmployerLogin from "@/features/auth/components/login-content/FormEmployerLogin";
 import SocialLoginButtons from "@/features/auth/components/login-content/SocialLoginButtons";
 
 //components
 
-
 const LoginEmployerPage = () => {
   return (
     <main className="h-[calc(100vh-75px)] flex items-center justify-center gap-4 ">
       <section
-       aria-labelledby="employer-login-page"
-       className="w-3/4 mx-auto p-4">
+        aria-labelledby="employer-login-page"
+        className="w-3/4 mx-auto p-4"
+      >
         {/* header text */}
-        <HeaderLoginContent />
+        <h1>Welcome Back</h1>
+        <p className="text-[clamp(.8rem,4vw,1rem)]">
+          Find your next opportunity faster
+        </p>
 
         {/* Login form */}
         <FormEmployerLogin />
@@ -32,17 +33,17 @@ const LoginEmployerPage = () => {
 
         <SocialLoginButtons />
         {/* Bottom CTA */}
-        <Section  className="text-center border-t border-gray-100 pt-6">
+        <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">
             New to JooCore?{" "}
             <Link
               href="#"
-              className="text-secondary hover:text-secondary/60 underline font-medium transition-colors"
+              className="text-primary hover:text-primary/60 underline font-medium transition-colors"
             >
               Join Now
             </Link>
           </p>
-        </Section>
+        </section>
       </section>
     </main>
   );

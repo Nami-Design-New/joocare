@@ -4,7 +4,7 @@ import Link from "next/link";
 
 // components
 import { LanguageToggle } from "@/shared/components/LanguageToggle";
-import { Button } from "@/shared/components/ui/button";
+import DynamicLink from "./DynamicLink";
 
 const AuthHeader = () => {
   return (
@@ -17,10 +17,9 @@ const AuthHeader = () => {
           height={40}
           priority
         />
-      </Link>   
-         <nav className="flex items-center gap-2 md:gap-4">
-                <Button size="pill" variant="secondary" aria-label="Switch to candidate mode">
- For Candidate</Button>
+      </Link>
+      <nav className="flex items-center gap-2 md:gap-4">
+        <DynamicLink />
 
         <LanguageToggle />
       </nav>

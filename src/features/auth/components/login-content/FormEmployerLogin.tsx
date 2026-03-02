@@ -50,8 +50,7 @@ const FormEmployerLogin = () => {
       </Link>
       <div className="flex justify-center">
         <Button
-          variant={"secondary"}
-          hoverStyle={"slidePrimary"}
+          hoverStyle={"slideSecondary"}
           className="w-1/3"
           size={"pill"}
           type="submit"
