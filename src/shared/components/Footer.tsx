@@ -126,7 +126,7 @@ const Footer = () => {
         {/* Bottom Section: Socials & Copyright */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-12  pb-12 relative">
           {/* Social Icons */}
-          <div className="flex justify-center items-center col-span-1 order-last gap-2 md:gap-4">
+          <div className="flex justify-center items-center col-span-1 order-last md:order-first gap-2 md:gap-4">
             {[Linkedin, Facebook, Instagram, Twitter, Ghost].map(
               (Icon, idx) => (
                 <Link
