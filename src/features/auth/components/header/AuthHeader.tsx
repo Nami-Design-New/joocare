@@ -8,7 +8,7 @@ import DynamicLink from "./DynamicLink";
 
 const AuthHeader = () => {
   return (
-    <header className="px-[clamp(.2rem,5vw,3rem)] mx-auto  py-4 flex justify-between items-center shadow-lg bg-white">
+    <header className="sticky top-0 bg-white px-[clamp(.2rem,5vw,3rem)] mx-auto flex justify-between items-center py-4 w-full shadow-header">
       <Link href="/" aria-label="Homepage">
         <Image
           src="/assets/logo_1.svg"

@@ -30,6 +30,7 @@ type SelectInputFieldProps = {
   value?: Option;
   onChange?: (value: Option) => void;
   className?: string;
+  showPlaceholderImage?: boolean;
 };
 
 export const SelectInputField = React.forwardRef<
@@ -37,7 +38,17 @@ export const SelectInputField = React.forwardRef<
   SelectInputFieldProps
 >(
   (
-    { label, id, error, options, placeholder, value, onChange, className },
+    {
+      label,
+      id,
+      error,
+      options,
+      placeholder,
+      value,
+      onChange,
+      className,
+      showPlaceholderImage,
+    },
     ref,
   ) => {
     return (
@@ -67,7 +78,7 @@ export const SelectInputField = React.forwardRef<
           >
             {value ? (
               <>
-                {value.image && (
+                {showPlaceholderImage && value.image && (
                   <Image
                     src={value.image}
                     alt={value.label}
@@ -78,7 +89,15 @@ export const SelectInputField = React.forwardRef<
                 <span>{value.label}</span>
               </>
             ) : (
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground flex gap-1">
+                {showPlaceholderImage && (
+                  <Image
+                    src="/assets/flag.svg"
+                    alt="flag assets"
+                    width={30}
+                    height={15}
+                  />
+                )}
                 {placeholder || "Select an option"}
               </span>
             )}{" "}
