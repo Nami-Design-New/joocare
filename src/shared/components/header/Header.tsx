@@ -14,7 +14,7 @@ const Header = () => {
   };
   return (
     <>
-      <header className="flex justify-between items-center py-4  px-3 md:px-0 w-full shadow-header">
+      <header className="flex sticky top-0 justify-between items-center py-4  px-3 md:px-0 w-full shadow-header">
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
           <Link
