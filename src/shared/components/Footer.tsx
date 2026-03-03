@@ -21,8 +21,8 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-secondary text-white py-12 px-6 md:px-12 lg:px-24">
-      <div className="max-w-7xl mx-auto">
+    <footer className="bg-secondary text-white py-12 ">
+      <div className="container mx-auto">
         {/* Top Section: Links & Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12  pb-12 relative">
           {/* Column 1: Brand Info */}
@@ -39,8 +39,8 @@ const Footer = () => {
 
           {/* Column 2: Candidates */}
           <div className="bg-before">
-            <h4 className="font-bold text-lg mb-6">For Candidates</h4>
-            <ul className="space-y-4 text-gray-300 text-sm">
+            <h4 className="font-bold text-xl mb-6">For Candidates</h4>
+            <ul className="space-y-4 text-gray-300 text-md">
               <li>
                 <Link href="/jobs" className="hover:text-white transition">
                   Explore Jobs
@@ -65,9 +65,9 @@ const Footer = () => {
           </div>
 
           {/* Column 3: Employers */}
-          <div>
+          <div className="bg-before">
             <h4 className="font-bold text-lg mb-6">For Employers</h4>
-            <ul className="space-y-4 text-gray-300 text-sm">
+            <ul className="space-y-4 text-gray-300 text-md">
               <li>
                 <Link href="/employers" className="hover:text-white transition">
                   For Employers
@@ -93,9 +93,9 @@ const Footer = () => {
           </div>
 
           {/* Column 4: Company*/}
-          <div>
+          <div className="bg-before">
             <h4 className="font-bold text-lg mb-6">Company & Trust</h4>
-            <ul className="space-y-4 text-gray-300 text-sm mb-8">
+            <ul className="space-y-4 text-gray-300 text-md mb-8">
               <li>
                 <Link href="/about" className="hover:text-white transition">
                   About Joocare
@@ -114,9 +114,9 @@ const Footer = () => {
             </ul>
           </div>
           {/* Column5:  Contact */}
-          <div>
+          <div className="bg-before">
             <h4 className="font-bold text-lg mb-4">Get in Touch</h4>
-            <ul className="space-y-4 text-gray-300 text-sm mb-8">
+            <ul className="space-y-4 text-gray-300 text-md mb-8">
               <li>
                 {" "}
                 <Link href="/terms" className="hover:text-white transition">
@@ -128,22 +128,22 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section: Socials & Copyright */}
-        <div className="flex flex-row justify-between items-center gap-8 relative">
+        <div className="grid grid-cols-5 gap-12  pb-12 relative">
           {/* Social Icons */}
-          <div className="flex  gap-4">
+          <div className="flex col-span-1  gap-4">
             {[Linkedin, Facebook, Instagram, Twitter, Ghost].map(
               (Icon, idx) => (
                 <Link
                   key={idx}
                   href="#"
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition"
+                  className="w-7 h-7 rounded-full border border-white/20 flex items-center  bg-white justify-center hover:bg-white/20 transition"
                 >
-                  <Icon size={18} />
+                  <Icon size={14} color="var(--secondary)" />
                 </Link>
               ),
             )}
           </div>
-          <div className="relative h-7 w-full">
+          <div className="relative col-span-4 h-7  w-full">
             <Image
               src={footer1}
               alt="Joo Care Logo"
@@ -152,10 +152,6 @@ const Footer = () => {
             />
           </div>
         </div>
-        {/* Copyright */}
-        <p className="text-gray-400 text-sm align-center mt-12">
-          All rights reserved - JooCare © {currentYear}
-        </p>
 
         {/* Back to Top Button */}
         {/* <button
@@ -165,7 +161,11 @@ const Footer = () => {
         >
           <ArrowUp size={24} />
         </button> */}
-      </div>
+      </div>{" "}
+      {/* Copyright */}
+      <p className="text-white  text-lg  text-center pt-4  border-[#0D0D0D73] border-t">
+        All rights reserved - JooCare © {currentYear}
+      </p>
     </footer>
   );
 };
