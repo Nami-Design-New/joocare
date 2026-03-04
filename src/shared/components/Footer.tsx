@@ -2,18 +2,18 @@
 
 import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import BackToTopButton from "./BackToTopButton";
+import { Link } from "@/i18n/navigation";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-secondary text-white py-12 px-3 md:px-0 ">
+    <footer className="bg-secondary text-white py-12 px-3 lg:px-2 ">
       <div className="container mx-auto relative">
         {/* Top Section: Links & Info */}
         <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-12 
           pb-12 relative"
         >
           {/* Column 1: Brand Info */}
@@ -111,7 +111,7 @@ const Footer = () => {
           </div>
           {/* Column5:  Contact */}
           <div className="bg-before">
-            <h4 className="font-bold text-lg mb-4">Get in Touch</h4>
+            <h4>Get in Touch</h4>
             <ul className="space-y-4 text-gray-300 text-md mb-8">
               <li>
                 {" "}
@@ -124,9 +124,9 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section: Socials & Copyright */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-12  pb-12 relative">
+        <div className="grid grid-cols-1  lg:grid-cols-5 gap-4 lg:gap-12  pb-12 relative">
           {/* Social Icons */}
-          <div className="flex justify-center items-center col-span-1 order-last md:order-first gap-2 md:gap-4">
+          <div className="flex justify-center items-center col-span-1 order-last lg:order-first gap-2 lg:gap-4">
             {[Linkedin, Facebook, Instagram, Twitter, Ghost].map(
               (Icon, idx) => (
                 <Link
@@ -139,12 +139,12 @@ const Footer = () => {
               ),
             )}
           </div>
-          <div className="relative col-span-1  md:col-span-4 h-7  w-full">
+          <div className="relative col-span-1  lg:col-span-4 h-7  w-full">
             <Image
               src="/assets/footer1.svg"
               alt="Joo Care Logo"
               fill
-              className="ml-0 md:ml-4"
+              className="ml-0 lg:ml-4"
             />
           </div>{" "}
         </div>

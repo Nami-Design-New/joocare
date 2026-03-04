@@ -1,12 +1,11 @@
 "useClient";
 
+import { Link } from "@/i18n/navigation";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
-import { Link } from "@/i18n/navigation";
-import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { Button } from "../ui/button";
 import UserProfileCard from "./UserProfileCard";
 
 export default function ResponsiveNavigationBar({
@@ -19,13 +18,7 @@ export default function ResponsiveNavigationBar({
   isAuthed: boolean;
 }) {
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
   return createPortal(
     <section className="fixed h-dvh inset-0 bg-white z-50 flex flex-col  gap-6 py-6 px-4">
       <header className="flex justify-between items-center w-full ">

@@ -1,18 +1,18 @@
 "use client";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LanguageToggle } from "../LanguageToggle";
 import { Button, buttonVariants } from "../ui/button";
 import UserDropDown from "./UserDropDown";
+import { Link } from "@/i18n/navigation";
 
 function HeaderActionsButtons({ isAuthed }: { isAuthed: boolean }) {
   const router = useRouter();
 
   return (
     <div
-      className="flex justify-center items-center space-x-0 md:space-x-4"
+      className="flex justify-center items-center space-x-0 lg:space-x-4"
       role="region"
       aria-label="User Actions"
     >
@@ -28,7 +28,7 @@ function HeaderActionsButtons({ isAuthed }: { isAuthed: boolean }) {
             variant="default"
             hoverStyle="slideSecondary"
             size="pill"
-            className="hidden md:flex"
+            className="hidden lg:flex"
           >
             Login
           </Button>
@@ -37,7 +37,7 @@ function HeaderActionsButtons({ isAuthed }: { isAuthed: boolean }) {
             variant="outline"
             hoverStyle="slidePrimary"
             size="pill"
-            className="hidden md:flex"
+            className="hidden lg:flex"
           >
             Join Now
           </Button>{" "}
@@ -67,25 +67,27 @@ function HeaderActionsButtons({ isAuthed }: { isAuthed: boolean }) {
         </div>
       )}
       <LanguageToggle aria-label="Toggle Language" />
-      <Button
-        variant="outline"
-        className="border-border   md:hidden relative w-8 h-8"
-        size="icon-circle"
-        aria-label="Notifications"
-      >
-        <Image
-          src="/assets/icons/notification.svg"
-          width={14}
-          height={14}
-          alt="Notification Icon"
-        />
-        {/* <Bell className="w-3 h-3" size={12} /> */}
+      {isAuthed && (
+        <Button
+          variant="outline"
+          className="border-border   lg:hidden relative w-8 h-8"
+          size="icon-circle"
+          aria-label="Notifications"
+        >
+          <Image
+            src="/assets/icons/notification.svg"
+            width={14}
+            height={14}
+            alt="Notification Icon"
+          />
+          {/* <Bell className="w-3 h-3" size={12} /> */}
 
-        {/* Badge with number */}
-        <span className="absolute top-0 right-0 w-3 h-3 bg-primary text-white text-[8px] font-bold rounded-full flex items-center justify-center px-1">
-          3
-        </span>
-      </Button>
+          {/* Badge with number */}
+          <span className="absolute top-0 right-0 w-3 h-3 bg-primary text-white text-[8px] font-bold rounded-full flex items-center justify-center px-1">
+            3
+          </span>
+        </Button>
+      )}
       {!isAuthed && (
         <Link
           href="/employer"

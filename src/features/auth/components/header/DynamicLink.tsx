@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { buttonVariants } from "@/shared/components/ui/button";
+import { Link } from "@/i18n/navigation";
 
 const DynamicLink = () => {
   const pathname = usePathname();
@@ -23,7 +23,7 @@ const DynamicLink = () => {
       aria-label="Switch mode"
     >
       {pathname.includes("employer") ? "For Candidate" : "For Employer"}
-    </Link>
+    </LinK>
   );
 };
 

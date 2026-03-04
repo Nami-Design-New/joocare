@@ -10,7 +10,9 @@ export default function RootLayout({
   return (
     <div>
       <Header />
-      <main className="min-h-screen container mx-auto">{children}</main>
+      <main className="min-h-screen container mx-auto px-3 lg:px-0">
+        {children}
+      </main>
       <Footer />
     </div>
   );

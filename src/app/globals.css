@@ -53,7 +53,7 @@
   --radius: 0.625rem;
 
   /* Surfaces */
-  --background: oklch(0.977 0.008 145); /* #f7faf7 — body bg */
+  --background: oklch(0.46 0.18 142 / 0.02); /* #f7faf7 — body bg */
   --foreground: oklch(0.089 0 0); /* #0d0d0d — main text */
 
   --card: oklch(1 0 0); /* #ffffff */
@@ -174,7 +174,7 @@
 
   footer {
     h4 {
-      @apply text-lg md:text-xl font-bold mb-6;
+      @apply text-lg lg:text-xl font-bold mb-6;
     }
   }
 }

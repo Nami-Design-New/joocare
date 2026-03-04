@@ -15,7 +15,7 @@ const Header = () => {
   };
   return (
     <>
-      <header className="flex sticky top-0 justify-between bg-white z-30 items-center py-4  px-3 md:px-0 w-full shadow-header">
+      <header className="flex sticky top-0 justify-between bg-white z-30 items-center py-4  px-3 lg:px-2 w-full shadow-header">
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
           <Link
@@ -25,7 +25,7 @@ const Header = () => {
           >
             <button
               onClick={handleToggleMenu}
-              className="block cursor-pointer md:hidden"
+              className="block cursor-pointer lg:hidden"
             >
               {<Menu />}
             </button>
@@ -35,7 +35,7 @@ const Header = () => {
               width={70}
               height={30}
               priority
-              className="block md:hidden"
+              className="block lg:hidden"
             />
             <Image
               src="/assets/logo_1.svg"
@@ -43,14 +43,14 @@ const Header = () => {
               width={100}
               height={100}
               priority
-              className="hidden md:block"
+              className="hidden lg:block"
             />
           </Link>
 
           {/* Main Navigation */}
           <nav
             aria-label="Main Navigation"
-            className=" hidden md:flex justify-center"
+            className=" hidden lg:flex justify-center"
           >
             <ul className="flex justify-center space-x-4">
               <li>

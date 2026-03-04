@@ -1,10 +1,10 @@
 // libraries
 import Image from "next/image";
-import Link from "next/link";
 
 // components
 import { LanguageToggle } from "@/shared/components/LanguageToggle";
 import DynamicLink from "./DynamicLink";
+import { Link } from "@/i18n/navigation";
 
 const AuthHeader = () => {
   return (

@@ -6,23 +6,25 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { cn } from "../lib/utils";
 
 type InputFieldProps = {
-  label: string;
+  label?: string;
   id: string;
   error?: string | boolean;
 } & React.ComponentProps<"input">;
 
 export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
-  ({ label, id, type = "password", className, error, ...props }, ref) => {
+  ({ label, id, type = "text", className, error, containerStyles, ...props }, ref) => {
     const [showPassword, setShowPassword] = React.useState(false);
 
     const isPassword = type === "password";
     const inputType = isPassword && showPassword ? "text" : type;
 
     return (
-      <div className={cn("flex flex-col w-full", className)}>
-        <label htmlFor={id} className="mb-1 font-semibold">
-          {label}
-        </label>
+      <div className={cn("flex flex-col w-full" , containerStyles)}>
+        {label && (
+          <label htmlFor={id} className="mb-1 font-semibold">
+            {label}
+          </label>
+        )}
 
         <div className="relative">
           <Input
@@ -30,7 +32,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             ref={ref}
             type={inputType}
             aria-invalid={!!error}
-            className={cn(isPassword && "pr-10")}
+            className={cn(isPassword && "pr-10", className)}
             {...props}
           />
 
