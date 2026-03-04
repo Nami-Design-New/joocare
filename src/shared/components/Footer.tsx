@@ -1,28 +1,21 @@
 "use client";
 
-import {
-  ArrowUp,
-  Facebook,
-  Ghost,
-  Instagram,
-  Linkedin,
-  Twitter,
-} from "lucide-react";
+import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import BackToTopButton from "./BackToTopButton";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <footer className="bg-secondary text-white py-12 ">
-      <div className="container mx-auto">
+    <footer className="bg-secondary text-white py-12 px-3 md:px-0 ">
+      <div className="container mx-auto relative">
         {/* Top Section: Links & Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12  pb-12 relative">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 
+          pb-12 relative"
+        >
           {/* Column 1: Brand Info */}
           <div className="space-y-6">
             <div className="flex items-center gap-2">
@@ -42,7 +35,7 @@ const Footer = () => {
 
           {/* Column 2: Candidates */}
           <div className="bg-before">
-            <h4 className="font-bold text-xl mb-6">For Candidates</h4>
+            <h4>For Candidates</h4>
             <ul className="space-y-4 text-gray-300 text-md">
               <li>
                 <Link href="/jobs" className="hover:text-white transition">
@@ -69,7 +62,7 @@ const Footer = () => {
 
           {/* Column 3: Employers */}
           <div className="bg-before">
-            <h4 className="font-bold text-lg mb-6">For Employers</h4>
+            <h4>For Employers</h4>
             <ul className="space-y-4 text-gray-300 text-md">
               <li>
                 <Link href="/employers" className="hover:text-white transition">
@@ -97,7 +90,7 @@ const Footer = () => {
 
           {/* Column 4: Company*/}
           <div className="bg-before">
-            <h4 className="font-bold text-lg mb-6">Company & Trust</h4>
+            <h4>Company & Trust</h4>
             <ul className="space-y-4 text-gray-300 text-md mb-8">
               <li>
                 <Link href="/about" className="hover:text-white transition">
@@ -131,9 +124,9 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section: Socials & Copyright */}
-        <div className="grid grid-cols-5 gap-12  pb-12 relative">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-12  pb-12 relative">
           {/* Social Icons */}
-          <div className="flex col-span-1  gap-4">
+          <div className="flex justify-center items-center col-span-1 order-last md:order-first gap-2 md:gap-4">
             {[Linkedin, Facebook, Instagram, Twitter, Ghost].map(
               (Icon, idx) => (
                 <Link
@@ -146,28 +139,19 @@ const Footer = () => {
               ),
             )}
           </div>
-          <div className="relative col-span-4 h-7  w-full">
+          <div className="relative col-span-1  md:col-span-4 h-7  w-full">
             <Image
               src="/assets/footer1.svg"
               alt="Joo Care Logo"
               fill
-              className="ml-4 md:ml-0"
+              className="ml-0 md:ml-4"
             />
-          </div>
+          </div>{" "}
         </div>
-
-        {/* Back to Top Button */}
-        {/* <button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 md:static bg-[#28A745] hover:bg-green-600 p-3 rounded-lg transition-all shadow-lg"
-          aria-label="Scroll to top"
-        >
-          <ArrowUp size={24} />
-        </button> */}
       </div>{" "}
       {/* Copyright */}
-      <p className="text-white  text-lg  text-center pt-4  border-[#0D0D0D73] border-t">
-        All rights reserved - JooCare © {currentYear}
+      <p className="text-white  text-lg  text-center pt-4  border-[#0D0D0D73] border-t relative">
+        All rights reserved - JooCare © {currentYear} <BackToTopButton />
       </p>
     </footer>
   );

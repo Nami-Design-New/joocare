@@ -171,6 +171,12 @@
   .nav-link:hover {
     @apply text-primary border-primary;
   }
+
+  footer {
+    h4 {
+      @apply text-lg md:text-xl font-bold mb-6;
+    }
+  }
 }
 
 /* globals.css or your component CSS file */

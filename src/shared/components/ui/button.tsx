@@ -10,7 +10,7 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
         outline:
-          "border-secondary bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
+          "border-secondary  hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:
@@ -22,9 +22,9 @@ const buttonVariants = cva(
       hoverStyle: {
         hoverBorder: "hover:border-primary  hover:bg-transparent",
         slideSecondary:
-          "relative overflow-hidden before:absolute before:inset-0 before:bg-secondary before:translate-y-full before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0 z-2 before:z-[-1]",
+          "relative overflow-hidden before:absolute before:inset-0 before:bg-secondary before:translate-y-[103%] before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0 z-2 before:z-[-1]",
         slidePrimary:
-          "relative overflow-hidden before:absolute before:inset-0 before:bg-primary before:translate-y-full before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0 z-2 before:z-[-1] hover:text-primary-foreground",
+          "relative overflow-hidden before:absolute before:inset-0 before:bg-primary before:translate-y-[103%] before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0 z-2 before:z-[-1] hover:text-primary-foreground",
       },
       size: {
         default:
