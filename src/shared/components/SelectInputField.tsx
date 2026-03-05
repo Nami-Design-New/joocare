@@ -27,7 +27,7 @@ type SelectInputFieldProps = {
   error?: string | boolean;
   options: Option[];
   placeholder?: string;
-  value?: Option;
+ value?: Option | null;
   onChange?: (value: Option) => void;
   className?: string;
   showPlaceholderImage?: string;
@@ -53,9 +53,11 @@ export const SelectInputField = React.forwardRef<
   ) => {
     return (
       <div className={cn("flex flex-col w-full", className)}>
-        <label htmlFor={id} className="mb-1 mx-1 font-semibold">
+       {label && (
+         <label htmlFor={id} className="mb-1 mx-1 font-semibold">
           {label}
         </label>
+       )}
 
         <Combobox
           id={id}

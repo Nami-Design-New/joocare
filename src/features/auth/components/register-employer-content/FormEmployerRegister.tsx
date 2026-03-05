@@ -83,7 +83,7 @@ const FormEmployerRegister = () => {
 
       <>
         {" "}
-        <label htmlFor={"phoneCode"} className="-mb-5 mx-1 font-semibold">
+        <label htmlFor={"phoneCode"} className="-mb-4 mx-1 font-semibold">
           Contact person _ Phone number
         </label>
         <div className="flex items-center gap-2">

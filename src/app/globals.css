@@ -198,3 +198,12 @@
   opacity: 1;
   z-index: 1;
 }
+
+.filepond--credits {
+  display: none;
+}
+/* .filepond--drop-label{
+  background: #f7faf7;
+  border: 1px solid var(--input);
+  border-radius: 120px;
+} */
