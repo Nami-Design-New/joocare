@@ -1,12 +1,11 @@
-// libraries
+
 import Link from "next/link";
 
-import FormEmployerLogin from "@/features/auth/components/login-content/FormEmployerLogin";
 import SocialLoginButtons from "@/features/auth/components/login-content/SocialLoginButtons";
+import FormCandidateLogin from "@/features/auth/components/login-content/FormCandidateLogin";
 
-//components
 
-const LoginEmployerPage = () => {
+const LoginCandidatePage = () => {
   return (
     <main className="h-[calc(100vh-75px)] flex items-center justify-center gap-4 ">
       <section
@@ -20,7 +19,7 @@ const LoginEmployerPage = () => {
         </p>
 
         {/* Login form */}
-        <FormEmployerLogin />
+        <FormCandidateLogin />
 
         {/* social buttons */}
         <div
@@ -37,7 +36,7 @@ const LoginEmployerPage = () => {
           <p className="text-sm text-gray-600">
             New to JooCore?{" "}
             <Link
-              href="#"
+              href="/auth/candidate/register"
               className="text-primary hover:text-primary/60 underline font-medium transition-colors"
             >
               Join Now
@@ -49,4 +48,4 @@ const LoginEmployerPage = () => {
   );
 };
 
-export default LoginEmployerPage;
+export default LoginCandidatePage;

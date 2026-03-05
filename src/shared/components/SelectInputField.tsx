@@ -22,7 +22,7 @@ type Option = {
 };
 
 type SelectInputFieldProps = {
-  label: string;
+  label?: string;
   id: string;
   error?: string | boolean;
   options: Option[];
@@ -30,7 +30,7 @@ type SelectInputFieldProps = {
   value?: Option;
   onChange?: (value: Option) => void;
   className?: string;
-  showPlaceholderImage?: boolean;
+  showPlaceholderImage?: string;
 };
 
 export const SelectInputField = React.forwardRef<
@@ -53,7 +53,7 @@ export const SelectInputField = React.forwardRef<
   ) => {
     return (
       <div className={cn("flex flex-col w-full", className)}>
-        <label htmlFor={id} className="mb-1 font-semibold">
+        <label htmlFor={id} className="mb-1 mx-1 font-semibold">
           {label}
         </label>
 
@@ -93,7 +93,7 @@ export const SelectInputField = React.forwardRef<
               <span className="text-muted-foreground flex gap-1">
                 {showPlaceholderImage && (
                   <Image
-                    src="/assets/flag.svg"
+                    src={showPlaceholderImage}
                     alt="flag assets"
                     width={30}
                     height={15}

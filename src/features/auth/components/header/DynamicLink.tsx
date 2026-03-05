@@ -1,20 +1,25 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-
 import { buttonVariants } from "@/shared/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
 const DynamicLink = () => {
   const pathname = usePathname();
 
-  const href = pathname.includes("employer")
-    ? "/auth/candidate/login"
-    : "/auth/employer/login";
+  const isEmployer = pathname.includes("employer");
+  const isLogin = pathname.includes("login");
+
+  const href = isLogin
+    ? isEmployer
+      ? "/auth/candidate/login"
+      : "/auth/employer/login"
+    : isEmployer
+    ? "/auth/candidate/register"
+    : "/auth/employer/register";
 
   return (
     <Link
-      prefetch
       href={href}
       className={buttonVariants({
         size: "pill",
@@ -22,8 +27,8 @@ const DynamicLink = () => {
       })}
       aria-label="Switch mode"
     >
-      {pathname.includes("employer") ? "For Candidate" : "For Employer"}
-    </LinK>
+      {isEmployer ? "For Candidate" : "For Employer"}
+    </Link>
   );
 };
 

@@ -13,7 +13,7 @@ const SideContent = () => {
   return (
     <aside
       aria-labelledby="auth-heading"
-      className="hidden md:flex sticky top-[75px] h-[calc(100vh-75px)] 
+      className="hidden md:flex sticky top-[86px] h-[calc(100vh-86px)] 
       bg-[linear-gradient(45deg,#0A3463,#6CABEC)] items-center gap-4"
     >
       <div className="w-5/6 mx-auto p-4 text-white">
@@ -35,9 +35,8 @@ const SideContent = () => {
         )}
 
         <p className="text-[clamp(.8rem,4vw,1.2rem)] [word-spacing:0.1rem] text-justify">
-          {(isEmployerLogin ||
-            isCandidateLogin) &&
-              `
+          {(isEmployerLogin || isCandidateLogin) &&
+            `
           With smart tools and AI-powered insights, joocare helps you find the
           right opportunity and land the job you deserve with confidence.
             `}
