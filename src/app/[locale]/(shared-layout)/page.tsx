@@ -1,6 +1,8 @@
 import Hero from "@/features/home/components/Hero";
 import HowItWorks from "@/features/home/components/HowItWorks";
 import { ImpactSection } from "@/features/home/components/ImpactSection";
+import { LiveJobs } from "@/features/home/components/LiveJobs";
+import { Testimonials } from "@/features/home/components/Testimonials";
 import TopEmployers from "@/features/home/components/TopEmployers";
 
 export default function Home() {
@@ -10,6 +12,8 @@ export default function Home() {
       <HowItWorks />
       <TopEmployers />
       <ImpactSection />
+      <LiveJobs />
+      <Testimonials />
     </section>
   );
 }

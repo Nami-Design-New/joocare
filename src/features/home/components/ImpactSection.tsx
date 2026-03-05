@@ -17,7 +17,12 @@ export const ImpactSection = () => {
               Joocare delivers measurable hiring outcomes by combining AI-driven
               intelligence with a verified network of healthcare professionals.
             </p>
-            <Button variant="default" size="pill" className="w-fit gap-2">
+            <Button
+              variant="default"
+              size="pill"
+              hoverStyle="slideSecondary"
+              className="w-fit gap-2"
+            >
               <Image
                 src="/assets/icons/get-started-button.svg"
                 width={20}
