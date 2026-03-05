@@ -10,7 +10,7 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
         outline:
-          "border-secondary bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
+          "border-secondary  hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:
@@ -22,9 +22,11 @@ const buttonVariants = cva(
       hoverStyle: {
         hoverBorder: "hover:border-primary  hover:bg-transparent",
         slideSecondary:
-          "relative overflow-hidden before:absolute before:inset-0 before:bg-secondary before:translate-y-full before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0 z-2 before:z-[-1]",
+          "relative overflow-hidden before:absolute before:inset-0 before:bg-secondary before:translate-y-[103%] before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0 z-2 before:z-[-1]",
         slidePrimary:
-          "relative overflow-hidden before:absolute before:inset-0 before:bg-primary before:translate-y-full before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0 z-2 before:z-[-1] hover:text-primary-foreground",
+          "relative overflow-hidden before:absolute before:inset-0 before:bg-primary before:translate-y-[103%] before:transition-transform before:duration-300 before:ease-out hover:before:translate-y-0 z-2 before:z-[-1] hover:text-primary-foreground",
+        slidehorizontalPrimary:
+          "relative overflow-hidden before:absolute before:inset-0 before:bg-primary before:translate-x-[-103%] before:transition-transform before:duration-300 before:ease-out hover:before:translate-x-0 z-2 before:z-[-1] hover:text-primary-foreground",
       },
       size: {
         default:
@@ -33,7 +35,7 @@ const buttonVariants = cva(
         sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
         lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3  rounded-lg",
         xl: "h-13 gap-1.5 px-3 has-data-[icon=inline-end]:pr-3.5 has-data-[icon=inline-start]:pl-3.5  rounded-lg",
-        pill: "rounded-full py-4 px-8 flex",
+        pill: "rounded-full h-13 py-4 px-8 flex",
         icon: "size-8",
         "icon-xs":
           "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
