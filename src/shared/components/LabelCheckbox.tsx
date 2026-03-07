@@ -17,7 +17,7 @@ const LabelCheckbox = ({
   children,
   error,
   className,
-  checked,
+  checked = false,
   onCheckedChange,
 }: LabelCheckboxProps) => {
   return (
@@ -33,7 +33,7 @@ const LabelCheckbox = ({
           {children}
         </Label>
       </div>
-      {error && <span className="text-red-500 text-[12px] mt-1">{error}</span>}
+      {error && <span className="mt-1 text-[12px] text-red-500">{error}</span>}
     </section>
   );
 };

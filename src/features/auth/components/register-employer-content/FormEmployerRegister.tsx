@@ -28,9 +28,8 @@ const FormEmployerRegister = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-5 mt-6"
+      className="mt-6 flex flex-col gap-5"
     >
-
       <InputField
         id="companyName"
         label="Company Name"
@@ -58,9 +57,7 @@ const FormEmployerRegister = () => {
             label="Domain"
             placeholder="ex: Hospital"
             value={
-              field.value
-                ? { label: field.value, value: field.value }
-                : undefined
+              field.value ? { label: field.value, value: field.value } : null
             }
             onChange={(option) => field.onChange(option?.value)}
             error={errors.domain?.message}
@@ -83,7 +80,7 @@ const FormEmployerRegister = () => {
 
       <>
         {" "}
-        <label htmlFor={"phoneCode"} className="-mb-4 mx-1 font-semibold">
+        <label htmlFor={"phoneCode"} className="mx-1 -mb-4 font-semibold">
           Contact person _ Phone number
         </label>
         <div className="flex items-center gap-2">
@@ -97,12 +94,12 @@ const FormEmployerRegister = () => {
                 value={
                   field.value
                     ? { label: field.value, value: field.value }
-                    : undefined
+                    : null
                 }
                 onChange={(option) => field.onChange(option?.value)}
                 error={!!errors.phoneCode}
                 showPlaceholderImage={"/assets/flag.svg"}
-                className="min-w-29 w-29"
+                className="w-29 min-w-29"
                 options={[
                   { label: "+999", value: "+999", image: "/assets/flag.svg" },
                   { label: "+24", value: "+24", image: "/assets/logo_1.svg" },
@@ -120,7 +117,7 @@ const FormEmployerRegister = () => {
           />
         </div>
         {(errors.phoneCode || errors.phoneNumber) && (
-          <span className="text-red-500 text-[12px] -mt-4">
+          <span className="-mt-4 text-[12px] text-red-500">
             {errors.phoneCode && errors.phoneNumber
               ? "Phone code and phone number are required"
               : errors.phoneCode?.message || errors.phoneNumber?.message}
@@ -166,14 +163,14 @@ const FormEmployerRegister = () => {
             I agree to the{" "}
             <Link
               href="#"
-              className="underline underline-primary text-secondary"
+              className="underline-primary text-secondary underline"
             >
               Terms & Conditions
             </Link>
             and
             <Link
               href="#"
-              className="underline underline-primary text-secondary"
+              className="underline-primary text-secondary underline"
             >
               Privacy Policy.
             </Link>
@@ -181,8 +178,8 @@ const FormEmployerRegister = () => {
         )}
       />
 
-      <div className="flex justify-center mt-2.5">
-        <Button   
+      <div className="mt-2.5 flex justify-center">
+        <Button
           hoverStyle={"slideSecondary"}
           className="w-1/3"
           size={"pill"}
@@ -190,8 +187,7 @@ const FormEmployerRegister = () => {
         >
           Register
         </Button>
-      </div> 
-
+      </div>
     </form>
   );
 };

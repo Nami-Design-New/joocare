@@ -34,73 +34,13 @@ const FormCandidateRegister = () => {
   const confirmRegisterValue = watch("confirmRegister");
 
   const onSubmit: SubmitHandler<TRegisterCandidateSchema> = (data) => {
-    try {
-      const formData = new FormData();
-
-      // Add basic information (always required)
-      formData.append("fullName", data.fullName);
-      formData.append("email", data.email);
-      formData.append("phoneCode", data.phoneCode);
-      formData.append("phoneNumber", data.phoneNumber);
-      formData.append("jobTitle", data.jobTitle);
-      formData.append("country", data.country);
-      formData.append("city", data.city);
-      formData.append("createPassword", data.createPassword);
-
-      // Add CV files (optional)
-      if (data.uploadCV && data.uploadCV.length > 0) {
-        data.uploadCV.forEach((file) => {
-          formData.append("cv", file);
-        });
-      }
-
-      // Add license information (only if confirmed)
-      if (data.confirmRegister) {
-        formData.append("licenseTitle", data.licenseTitle || "");
-        formData.append("licenseNumber", data.licenseNumber || "");
-        formData.append("specificCountry", data.specificCountry || "");
-
-        // Add license files
-        if (data.uploadLicense && data.uploadLicense.length > 0) {
-          data.uploadLicense.forEach((file) => {
-            formData.append("uploadLicense", file);
-          });
-        }
-      }
-
-      // Log FormData for debugging
-      console.log("✅ Form submitted successfully");
-      console.log("Form Data entries:");
-      for (const [key, value] of formData.entries()) {
-        if (value instanceof File) {
-          console.log(`  ${key}: File(${value.name}, ${value.size} bytes)`);
-        } else {
-          console.log(`  ${key}: ${value}`);
-        }
-      }
-
-      // Here you would typically send the formData to your API
-      // Example:
-      // const response = await fetch('/api/register', {
-      //   method: 'POST',
-      //   body: formData,
-      // });
-      // const result = await response.json();
-
-      console.log("Form is ready to be sent to the server");
-    } catch (error) {
-      console.error("❌ Error processing form data:", error);
-    }
-  };
-
-  const onError = (errors: any) => {
-    console.error("❌ Form validation errors:", errors);
+    console.log(data);
   };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit, onError)}
-      className="flex flex-col gap-5 mt-6"
+      onSubmit={handleSubmit(onSubmit)}
+      className="mt-6 flex flex-col gap-5"
     >
       {/* Full Name */}
       <InputField
@@ -124,7 +64,7 @@ const FormCandidateRegister = () => {
 
       {/* Phone Number */}
       <div>
-        <label htmlFor="phoneCode" className="mb-2 mx-1 font-semibold block">
+        <label htmlFor="phoneCode" className="mx-1 mb-2 block font-semibold">
           Phone number
         </label>
         <div className="flex items-center gap-2">
@@ -138,12 +78,12 @@ const FormCandidateRegister = () => {
                 value={
                   field.value
                     ? { label: field.value, value: field.value }
-                    : undefined
+                    : null
                 }
                 onChange={(option) => field.onChange(option?.value)}
                 error={!!errors.phoneCode}
                 showPlaceholderImage="/assets/flag.svg"
-                className="min-w-29 w-29"
+                className="w-29 min-w-29"
                 options={[
                   {
                     label: "+999",
@@ -173,7 +113,7 @@ const FormCandidateRegister = () => {
           />
         </div>
         {(errors.phoneCode || errors.phoneNumber) && (
-          <span className="text-red-500 text-[12px] mt-1 block">
+          <span className="mt-1 block text-[12px] text-red-500">
             {errors.phoneCode?.message ||
               errors.phoneNumber?.message ||
               "Phone code and phone number are required"}
@@ -191,9 +131,7 @@ const FormCandidateRegister = () => {
             label="Job Title"
             placeholder="ex: Hospital"
             value={
-              field.value
-                ? { label: field.value, value: field.value }
-                : undefined
+              field.value ? { label: field.value, value: field.value } : null
             }
             onChange={(option) => field.onChange(option?.value)}
             error={errors.jobTitle?.message}
@@ -208,7 +146,7 @@ const FormCandidateRegister = () => {
 
       {/* Current Location */}
       <div>
-        <label htmlFor="country" className="mb-2 mx-1 font-semibold block">
+        <label htmlFor="country" className="mx-1 mb-2 block font-semibold">
           Current Location
         </label>
         <div className="flex items-center gap-2">
@@ -222,7 +160,7 @@ const FormCandidateRegister = () => {
                 value={
                   field.value
                     ? { label: field.value, value: field.value }
-                    : undefined
+                    : null
                 }
                 onChange={(option) => field.onChange(option?.value)}
                 error={errors.country?.message}
@@ -244,7 +182,7 @@ const FormCandidateRegister = () => {
                 value={
                   field.value
                     ? { label: field.value, value: field.value }
-                    : undefined
+                    : null
                 }
                 onChange={(option) => field.onChange(option?.value)}
                 error={errors.city?.message}
@@ -280,6 +218,7 @@ const FormCandidateRegister = () => {
             onChange={field.onChange}
             allowMultiple={false}
             maxFiles={2}
+            error={errors.uploadCV?.message}
           />
         )}
       />
@@ -330,7 +269,7 @@ const FormCandidateRegister = () => {
                 value={
                   field.value
                     ? { label: field.value, value: field.value }
-                    : undefined
+                    : null
                 }
                 onChange={(option) => field.onChange(option?.value)}
                 error={errors.specificCountry?.message}
@@ -356,6 +295,7 @@ const FormCandidateRegister = () => {
                 onChange={field.onChange}
                 allowMultiple={false}
                 maxFiles={2}
+                error={errors.uploadLicense?.message}
               />
             )}
           />
@@ -363,7 +303,7 @@ const FormCandidateRegister = () => {
       )}
 
       {/* Submit Button */}
-      <div className="flex justify-center mt-2.5">
+      <div className="mt-2.5 flex justify-center">
         <Button
           hoverStyle="slideSecondary"
           className="w-1/3"

@@ -8,7 +8,6 @@ import { cn } from "../lib/utils";
 type InputFieldProps = {
   label?: string;
   id: string;
-  containerStyles: string;
   error?: string | boolean;
   containerStyles?: string;
 } & React.ComponentProps<"input">;

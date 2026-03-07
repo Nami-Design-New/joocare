@@ -204,6 +204,14 @@
 .filepond--credits {
   display: none;
 }
+.filepond--root .filepond--drop-label {
+  background: #e8ece8;
+  border: #d5dad5 1px solid;
+  border-radius: 16px;
+}
+.filepond--root{
+   background: transparent;
+}
 /* .filepond--drop-label{
   background: #f7faf7;
   border: 1px solid var(--input);

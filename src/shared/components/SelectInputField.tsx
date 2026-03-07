@@ -17,7 +17,7 @@ import { Button } from "./ui/button";
 
 type Option = {
   label: string;
-  value: string;
+  value: string | null;
   image?: string;
 };
 
@@ -28,7 +28,7 @@ type SelectInputFieldProps = {
   containerStyles?: string;
   options: Option[];
   placeholder?: string;
- value?: Option | null;
+  value?: Option | null;
   onChange?: (value: Option) => void;
   className?: string;
   showPlaceholderImage?: string;
@@ -54,12 +54,12 @@ export const SelectInputField = React.forwardRef<
     ref,
   ) => {
     return (
-      <div className={cn("flex flex-col w-full", className)}>
-       {label && (
-         <label htmlFor={id} className="mb-1 mx-1 font-semibold">
-          {label}
-        </label>
-       )}
+      <div className={cn("flex w-full flex-col", className)}>
+        {label && (
+          <label htmlFor={id} className="mx-1 mb-1 font-semibold">
+            {label}
+          </label>
+        )}
 
         <Combobox
           id={id}
