@@ -4,7 +4,7 @@ export const loginEmployerSchema = z.object({
   email: z
     .string()
     .min(1, { message: "This field is required" })
-    .email({ message: "Not vaild email" }),
+    .email({ message: "Not valid email" }),
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters" })

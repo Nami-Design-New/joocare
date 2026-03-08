@@ -43,6 +43,7 @@
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --shadow-header: 0 12px 24px 0 oklch(0 0 0 / 5%);
+  --shadow-soft: 0 0 20px var(--shadow-soft);
   --color-soft-overlay: var(--soft-overlay);
 }
 
@@ -101,6 +102,8 @@
   --sidebar-accent-foreground: oklch(0.468 0.148 145);
   --sidebar-border: oklch(0.089 0 0 / 8%);
   --sidebar-ring: oklch(0.285 0.082 252);
+
+  --shadow-soft: #0000000d;
 }
 
 /* ════════════════════════════════════════
@@ -209,8 +212,8 @@
   border: #d5dad5 1px solid;
   border-radius: 16px;
 }
-.filepond--root{
-   background: transparent;
+.filepond--root {
+  background: transparent;
 }
 /* .filepond--drop-label{
   background: #f7faf7;

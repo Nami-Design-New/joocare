@@ -54,7 +54,7 @@ export const SelectInputField = React.forwardRef<
     ref,
   ) => {
     return (
-      <div className={cn("flex w-full flex-col", className)}>
+      <div className={cn("flex w-full flex-col", containerStyles)}>
         {label && (
           <label htmlFor={id} className="mx-1 mb-1 font-semibold">
             {label}

@@ -1,12 +1,16 @@
-// libraries
+"use client"
+
 import Image from "next/image";
 
-// components
 import { LanguageToggle } from "@/shared/components/LanguageToggle";
 import DynamicLink from "./DynamicLink";
 import { Link } from "@/i18n/navigation";
+import { usePathname } from "next/navigation";
 
 const AuthHeader = () => {
+  const pathname = usePathname();
+  const hiddenDynamicLink = pathname.includes("reset-password");
+
   return (
     <header className="sticky top-0 bg-white px-[clamp(.1rem,2vw,3rem)] py-4 w-full shadow-header z-3">
       <div className="container mx-auto flex justify-between items-center">
@@ -20,7 +24,7 @@ const AuthHeader = () => {
           />
         </Link>
         <nav className="flex items-center gap-2 md:gap-4">
-          <DynamicLink />
+          {!hiddenDynamicLink && <DynamicLink />}
 
           <LanguageToggle />
         </nav>

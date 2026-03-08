@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
+import { useState } from 'react'
 
 // Import React FilePond
 import { FilePond, registerPlugin } from 'react-filepond'
@@ -30,7 +29,7 @@ export function FilepondComponent() {
         name="files" /* sets the file input name, it's filepond by default */
         labelIdle={`
           <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
-            ${<i class="fa fa-upload" style="font-size:24px;" />}
+            ${<i className="fa fa-upload" style="font-size:24px;" />}
             <span>Drag & Drop your files or Browse</span>
           </div>
         `} 
