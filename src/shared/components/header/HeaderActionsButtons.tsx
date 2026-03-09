@@ -7,7 +7,7 @@ import { Button, buttonVariants } from "../ui/button";
 import UserDropDown from "./UserDropDown";
 import { Link } from "@/i18n/navigation";
 
-function HeaderActionsButtons({ isAuthed }: { isAuthed: boolean }) {
+function HeaderActionsButtons({ isAuthed, companyHeader }: { isAuthed: boolean, companyHeader: boolean }) {
   const router = useRouter();
 
   return (
@@ -63,7 +63,7 @@ function HeaderActionsButtons({ isAuthed }: { isAuthed: boolean }) {
               3
             </span>
           </Button>
-          <UserDropDown />{" "}
+          <UserDropDown  companyHeader={companyHeader} />{" "}
         </div>
       )}
       <LanguageToggle aria-label="Toggle Language" />

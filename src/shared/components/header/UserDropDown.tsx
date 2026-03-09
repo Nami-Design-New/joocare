@@ -4,8 +4,12 @@ import {
   Bookmark,
   ChevronDown,
   ChevronUp,
+  Gauge,
+  LayoutDashboard,
   LogOut,
   Settings,
+  User,
+  UserRoundCogIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
@@ -18,7 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-export default function UserDropDown() {
+export default function UserDropDown({ companyHeader }: { companyHeader: boolean }) {
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
     "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +
@@ -88,14 +92,28 @@ export default function UserDropDown() {
         {/* Menu Items */}
         <DropdownMenuGroup>
           <DropdownMenuItem className={itemClass}>
-            <Settings className="w-5 h-5 text-muted-foreground group-hover:text-muted-foreground" />
+            <Settings className="w-5 h-5 text-muted-foreground group-hover:text-primary"  strokeWidth={2.5}/>
             <p>Account settings</p>
           </DropdownMenuItem>
 
-          <DropdownMenuItem className={itemClass}>
-            <Bookmark className="w-5 h-5 text-muted-foreground group-hover:text-muted-foreground" />
-            <p>Saved</p>
-          </DropdownMenuItem>
+          {companyHeader ? (<>
+
+            <DropdownMenuItem className={itemClass}>
+              <Gauge className="w-5 h-5 text-muted-foreground group-hover:text-primary"  strokeWidth={2.5}/>
+              <p>Dashboard</p>
+            </DropdownMenuItem>
+            <DropdownMenuItem className={itemClass}>
+              <UserRoundCogIcon className="w-5 h-5 text-muted-foreground group-hover:text-primary"  strokeWidth={2.5}/>
+              <p>Job Management</p>
+            </DropdownMenuItem>
+
+          </>) : (
+
+            <DropdownMenuItem className={itemClass}>
+              <Bookmark className=" text-muted-foreground group-hover:text-primary" strokeWidth={2.5} />
+              <p>Saved</p>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />

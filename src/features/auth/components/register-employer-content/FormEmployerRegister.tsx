@@ -100,6 +100,8 @@ const FormEmployerRegister = () => {
                 error={!!errors.phoneCode}
                 showPlaceholderImage={"/assets/flag.svg"}
                 className="w-29 min-w-29"
+                containerStyles="w-fit"
+
                 options={[
                   { label: "+999", value: "+999", image: "/assets/flag.svg" },
                   { label: "+24", value: "+24", image: "/assets/logo_1.svg" },

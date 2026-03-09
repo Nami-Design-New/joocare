@@ -88,7 +88,7 @@ export function OTPModal({ open, onOpenChange, email }: OTPModalProps) {
         console.log({ otp: data.otp, email: email }); // { otp: "12345" }
         reset()
         // onOpenChange(false)
-        router.push('/reset-password/new-password')
+        router.push('/auth/new-password')
     }
 
     useEffect(() => {
@@ -110,7 +110,7 @@ export function OTPModal({ open, onOpenChange, email }: OTPModalProps) {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md w-full p-6 pt-12">
+            <DialogContent className="sm:max-w-md w-full p-6 pt-14">
                 <DialogHeader className="flex items-center">
                     <DialogTitle className="text-secondary font-semibold text-[28px]">Email Verification</DialogTitle>
                     <DialogDescription className="text-center md:px-4">
@@ -118,7 +118,7 @@ export function OTPModal({ open, onOpenChange, email }: OTPModalProps) {
                     </DialogDescription>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 mt-4 items-center">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3  items-center">
                     <Controller
                         name="otp"
                         control={control}
@@ -154,7 +154,7 @@ export function OTPModal({ open, onOpenChange, email }: OTPModalProps) {
                         <span>{`00:${countdown.toString().padStart(2, "0")}`}</span>
                     </div>
 
-                    <Button type="submit" variant={"secondary"} size={"pill"} className="w-full">Confirm</Button>
+                    <Button type="submit" variant={"secondary"} size={"pill"} className="w-full mt-4">Confirm</Button>
                 </form>
             </DialogContent>
         </Dialog>

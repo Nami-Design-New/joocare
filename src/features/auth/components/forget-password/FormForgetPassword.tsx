@@ -8,10 +8,14 @@ import { InputField } from '@/shared/components/InputField'
 import { Button } from '@/shared/components/ui/button'
 import { ForgetPasswordSchema, TForgetPasswordSchema } from '../../validation/forget-password-schema';
 import { OTPModal } from './OtpModal';
+import { usePathname } from 'next/navigation';
 
 const FormForgetPassword = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // <-- modal state
     const [userEmail, setUserEmail] = useState('');
+    const pathname = usePathname();
+    console.log(pathname);
+    const employerForgetPassword = pathname.includes("employer")
 
     const {
         register,
@@ -31,7 +35,7 @@ const FormForgetPassword = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
-            <InputField label='Email' id="email" type={"email"} error={errors.email?.message} {...register('email')} placeholder="ex:mail@mail.com" />
+            <InputField label={employerForgetPassword ? 'Official Email' : 'Email'} id="email" type={"email"} error={errors.email?.message} {...register('email')} placeholder="ex:mail@mail.com" />
             <Button variant={"secondary"} size={'pill'} className='w-full' type="submit">
                 Send
             </Button>
