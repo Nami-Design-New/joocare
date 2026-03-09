@@ -6,16 +6,20 @@ import Link from "next/link";
 import { useState } from "react";
 import ResponsiveNavigationBar from "./ResponsiveNavigationBar";
 import HeaderActionsButtons from "./HeaderActionsButtons";
+import { usePathname } from "@/i18n/navigation";
 
-const Header = () => {
+const Header = ({ openSidebar }: { openSidebar: () => void }) => {
   const [toggleSideMenu, setToggleSideMenu] = useState(false);
-  const [isAuthed, setIsAuthed] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(true);
+  const path = usePathname();
+  const companyHeader = path.includes('/company')
+
   const handleToggleMenu = () => {
     setToggleSideMenu((prev) => !prev);
   };
   return (
     <>
-      <header className="flex sticky top-0 justify-between bg-white z-30 items-center py-4  px-3 lg:px-2 w-full shadow-header">
+      <header className="flex sticky top-0 justify-between bg-white z-30 items-center py-4  px-3 lg:px-2 w-full shadow-header min-h-[87px]">
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
           <Link
@@ -63,11 +67,11 @@ const Header = () => {
                   About
                 </Link>
               </li>
-              <li>
+              {!companyHeader && <li>
                 <Link href="/jobs" className="nav-link">
                   Jobs
                 </Link>
-              </li>
+              </li>}
               <li>
                 <Link href="/contact" className="nav-link">
                   Contact
@@ -75,8 +79,9 @@ const Header = () => {
               </li>
             </ul>
           </nav>
-          <HeaderActionsButtons isAuthed={isAuthed} />
+          <HeaderActionsButtons isAuthed={isAuthed} companyHeader={companyHeader} />
         </div>
+  
       </header>
       {toggleSideMenu && (
         <ResponsiveNavigationBar
