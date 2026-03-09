@@ -84,6 +84,7 @@ const FormCandidateRegister = () => {
                 error={!!errors.phoneCode}
                 showPlaceholderImage="/assets/flag.svg"
                 className="w-29 min-w-29"
+                containerStyles="w-fit"
                 options={[
                   {
                     label: "+999",
@@ -258,32 +259,37 @@ const FormCandidateRegister = () => {
             error={errors.licenseNumber?.message}
           />
 
-          <Controller
-            name="specificCountry"
-            control={control}
-            render={({ field }) => (
-              <SelectInputField
-                label="Country"
-                id="specificCountry"
-                placeholder="ex: United Arab Emirates (UAE)"
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
-                error={errors.specificCountry?.message}
-                options={[
-                  {
-                    label: "United Arab Emirates (UAE)",
-                    value: "United Arab Emirates (UAE)",
-                  },
-                  { label: "Egypt", value: "Egypt" },
-                  { label: "Saudi Arabia", value: "Saudi Arabia" },
-                ]}
-              />
-            )}
-          />
+          <>
+            <Controller
+              name="specificCountry"
+              control={control}
+              render={({ field }) => (
+                <SelectInputField
+                  label="Country"
+                  id="specificCountry"
+                  placeholder="ex: United Arab Emirates (UAE)"
+                  value={
+                    field.value
+                      ? { label: field.value, value: field.value }
+                      : null
+                  }
+                  onChange={(option) => field.onChange(option?.value)}
+                  error={errors.specificCountry?.message ? true : false}
+                  options={[
+                    {
+                      label: "United Arab Emirates (UAE)",
+                      value: "United Arab Emirates (UAE)",
+                    },
+                    { label: "Egypt", value: "Egypt" },
+                    { label: "Saudi Arabia", value: "Saudi Arabia" },
+                  ]}
+                />
+              )}
+            />
+            <span className={`-mt-3 block text-[12px] ${errors.specificCountry?.message ? "text-red-500" : "text-primary"}`}>
+              Please specify the country issuing your license.
+            </span>
+          </>
 
           <Controller
             name="uploadLicense"
