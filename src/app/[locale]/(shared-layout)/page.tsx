@@ -1,3 +1,4 @@
+import FAQSection from "@/features/home/components/FAQSection";
 import Hero from "@/features/home/components/Hero";
 import HowItWorks from "@/features/home/components/HowItWorks";
 import { ImpactSection } from "@/features/home/components/ImpactSection";
@@ -14,6 +15,7 @@ export default function Home() {
       <ImpactSection />
       <LiveJobs />
       <Testimonials />
+      <FAQSection />
     </section>
   );
 }
