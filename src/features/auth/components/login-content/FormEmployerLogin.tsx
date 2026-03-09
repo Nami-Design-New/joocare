@@ -44,7 +44,7 @@ const FormEmployerLogin = () => {
         {...register("password")}
         error={errors.password?.message}
       />
-      <Link href="/reset-password/forget-password" className="text-xs hover:text-primary">
+      <Link href="/auth/employer/forget-password" className="text-xs hover:text-primary">
         Forgot password?
       </Link>
       <div className="flex justify-center">

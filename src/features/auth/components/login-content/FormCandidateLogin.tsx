@@ -44,7 +44,7 @@ const FormCandidateLogin = () => {
         {...register("password")}
         error={errors.password?.message}
       />
-      <Link href="/reset-password/forget-password" className="text-xs hover:text-primary">
+      <Link href="/auth/candidate/forget-password" className="text-xs hover:text-primary">
         Forgot password?
       </Link>
       <div className="flex justify-center">

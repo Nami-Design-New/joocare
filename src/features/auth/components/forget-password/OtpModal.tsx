@@ -88,7 +88,7 @@ export function OTPModal({ open, onOpenChange, email }: OTPModalProps) {
         console.log({ otp: data.otp, email: email }); // { otp: "12345" }
         reset()
         // onOpenChange(false)
-        router.push('/reset-password/new-password')
+        router.push('/auth/new-password')
     }
 
     useEffect(() => {

@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 
 const AuthHeader = () => {
   const pathname = usePathname();
-  const hiddenDynamicLink = pathname.includes("reset-password");
+  const hiddenDynamicLink = pathname.includes("password");
 
   return (
     <header className="sticky top-0 bg-white px-[clamp(.1rem,2vw,3rem)] py-4 w-full shadow-header z-3">
