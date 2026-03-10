@@ -1,14 +1,14 @@
 "use client";
 
+import { usePathname } from "@/i18n/navigation";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import ResponsiveNavigationBar from "./ResponsiveNavigationBar";
 import HeaderActionsButtons from "./HeaderActionsButtons";
-import { usePathname } from "@/i18n/navigation";
+import ResponsiveNavigationBar from "./ResponsiveNavigationBar";
 
-const Header = ({ openSidebar }: { openSidebar: () => void }) => {
+const Header = () => {
   const [toggleSideMenu, setToggleSideMenu] = useState(false);
   const [isAuthed, setIsAuthed] = useState(true);
   const path = usePathname();
@@ -22,34 +22,37 @@ const Header = ({ openSidebar }: { openSidebar: () => void }) => {
       <header className="flex sticky top-0 justify-between bg-white z-30 items-center py-4  px-3 lg:px-2 w-full shadow-header min-h-[87px]">
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex gap-2 items-center justify-center"
-            aria-label="Go to homepage"
-          >
+          <div className="flex gap-1">
             <button
               onClick={handleToggleMenu}
               className="block cursor-pointer lg:hidden"
             >
               {<Menu />}
             </button>
-            <Image
-              src="/assets/logo_1.svg"
-              alt="Joo Care Logo"
-              width={70}
-              height={30}
-              priority
-              className="block lg:hidden"
-            />
-            <Image
-              src="/assets/logo_1.svg"
-              alt="Joo Care Logo"
-              width={100}
-              height={100}
-              priority
-              className="hidden lg:block"
-            />
-          </Link>
+            <Link
+              href="/"
+              className="flex gap-2 items-center justify-center"
+              aria-label="Go to homepage"
+            >
+
+              <Image
+                src="/assets/logo_1.svg"
+                alt="Joo Care Logo"
+                width={70}
+                height={30}
+                priority
+                className="block lg:hidden"
+              />
+              <Image
+                src="/assets/logo_1.svg"
+                alt="Joo Care Logo"
+                width={100}
+                height={100}
+                priority
+                className="hidden lg:block"
+              />
+            </Link>
+          </div>
 
           {/* Main Navigation */}
           <nav
@@ -81,13 +84,14 @@ const Header = ({ openSidebar }: { openSidebar: () => void }) => {
           </nav>
           <HeaderActionsButtons isAuthed={isAuthed} companyHeader={companyHeader} />
         </div>
-  
+
       </header>
       {toggleSideMenu && (
         <ResponsiveNavigationBar
           toggleSideMenu={toggleSideMenu}
           setToggleSideMenu={setToggleSideMenu}
           isAuthed={isAuthed}
+          companyHeader={companyHeader}
         />
       )}
     </>

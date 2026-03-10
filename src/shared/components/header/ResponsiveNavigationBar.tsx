@@ -12,10 +12,12 @@ export default function ResponsiveNavigationBar({
   toggleSideMenu,
   setToggleSideMenu,
   isAuthed,
+  companyHeader,
 }: {
   toggleSideMenu: boolean;
   setToggleSideMenu: React.Dispatch<React.SetStateAction<boolean>>;
   isAuthed: boolean;
+  companyHeader: boolean;
 }) {
   const router = useRouter();
 
@@ -62,7 +64,7 @@ export default function ResponsiveNavigationBar({
         {/* <Button variant="outline" size="icon-circle" aria-label="Search">
         <Search />
       </Button> */}
-        {isAuthed && <UserProfileCard />}
+        {isAuthed && <UserProfileCard companyHeader={companyHeader} />}
         {!isAuthed && (
           <>
             {" "}
