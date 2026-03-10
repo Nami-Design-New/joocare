@@ -32,13 +32,11 @@ const employers = [
 export default function TopEmployers() {
   return (
     <section className="bg-white">
-      <div className="container mx-auto flex flex-col items-center gap-8 px-3 py-20 text-center lg:px-0">
+      <div className="container mx-auto flex flex-col items-center gap-8 px-3 py-10 text-center md:py-20 lg:px-2">
         <div className="flex max-w-103 flex-col items-center gap-4">
-          <SectionTitle sectionTitle="How it works" />
+          <SectionTitle sectionTitle="Top Employers" />
 
-          <h3 className="text-secondary text-[28px] font-semibold">
-            Jobs from top employers
-          </h3>
+          <h2>Jobs from top employers</h2>
         </div>
 
         <div className="grid w-full grid-cols-2 items-center gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">

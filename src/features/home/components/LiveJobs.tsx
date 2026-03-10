@@ -14,17 +14,14 @@ export const LiveJobs = () => {
 
   return (
     <section
-      className="bg-white px-6 py-20"
+      className="bg-white py-10 md:py-20"
       aria-labelledby="recent-jobs-title"
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="container mx-auto px-3 lg:px-2">
         <header className="mb-10 flex items-end justify-between">
           <div className="space-y-4">
             <SectionTitle sectionTitle="Recent Jobs" />
-            <h2
-              id="recent-jobs-title"
-              className="text-secondary text-3xl font-bold lg:text-4xl"
-            >
+            <h2 id="recent-jobs-title">
               A snapshot of healthcare hiring <br /> in motion
             </h2>
           </div>

@@ -5,12 +5,12 @@ import StatCard from "./StatCard";
 
 export const ImpactSection = () => {
   return (
-    <section className="bg-background px-6 py-20">
-      <div className="mx-auto max-w-7xl">
+    <section className="bg-background py-10 md:py-20">
+      <div className="container mx-auto px-3 lg:px-2">
         <div className="grid gap-12 lg:grid-cols-2">
           <div className="flex flex-col justify-center">
             <SectionTitle sectionTitle="Proven Hiring Impact" />
-            <h2 className="text-foreground mt-4 mb-8 text-3xl leading-tight font-bold lg:text-3xl">
+            <h2 className="text-foreground mt-4 mb-8">
               Measurable Impact Across <br /> Healthcare Hiring
             </h2>
             <p className="text-muted-foreground mb-8 max-w-132 text-xl">

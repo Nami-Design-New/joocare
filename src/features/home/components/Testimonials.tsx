@@ -63,8 +63,8 @@ export const Testimonials = () => {
   ];
 
   return (
-    <section className="bg-background px-6 py-20">
-      <div className="mx-auto max-w-7xl">
+    <section className="bg-background py-10 md:py-20">
+      <div className="container mx-auto px-3 lg:px-2">
         <Carousel
           opts={{
             align: "start",
@@ -75,7 +75,7 @@ export const Testimonials = () => {
           <div className="mb-12 flex items-center justify-between">
             <div className="space-y-4">
               <SectionTitle sectionTitle="What Professionals Say" />
-              <h2 className="text-secondary text-3xl font-bold lg:text-4xl">
+              <h2>
                 Insights from healthcare professionals in <br /> real-world
                 hiring contexts
               </h2>
