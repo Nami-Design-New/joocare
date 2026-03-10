@@ -5,21 +5,19 @@ import Header from "@/shared/components/header/Header";
 import React from "react";
 
 const CompanyLayout = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <>
-            <Header />
+  return (
+    <>
+      <Header />
 
-            <main className="flex min-h-dvh">
+      <main className="flex min-h-dvh">
+        <CompanySidebar />
 
-                <CompanySidebar />
-
-                <section className="flex-1 bg-background">
-                    {children}
-                </section>
-
-            </main>
-        </>
-    );
+        <section className="bg-background flex-1 px-4 pt-6 pb-8 md:px-7 md:pt-12">
+          {children}
+        </section>
+      </main>
+    </>
+  );
 };
 
 export default CompanyLayout;

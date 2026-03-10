@@ -26,6 +26,7 @@
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
+  --color-secondary-08: var(--secondary-08);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
   --color-primary-bg: var(--primary-bg);
@@ -68,12 +69,13 @@
 
   /* Primary — main blue #0a3463 */
   --secondary: oklch(0.285 0.082 252);
+  --secondary-08: rgb(2, 43, 81 / 8);
   --secondary-foreground: oklch(1 0 0); /* white text on blue */
 
   /* Secondary — green #09760a */
   --primary: oklch(0.468 0.148 145);
   --primary-bg: #09760a14;
-  --primary-soft: oklch(0.61 0.09 219 / 0.1);
+  --primary-soft: #3790a81a;
   --primary-foreground: oklch(1 0 0); /* white text on green */
 
   /* Muted — for subtle backgrounds, disabled states */
@@ -127,6 +129,7 @@
 
   /* Primary stays recognizable in dark mode */
   --secondary: oklch(0.55 0.1 252); /* lighter blue */
+  --secondary-08: rgb(2, 43, 81 / 8);
   --secondary-foreground: oklch(1 0 0);
 
   --primary: oklch(0.55 0.13 145); /* lighter green */
