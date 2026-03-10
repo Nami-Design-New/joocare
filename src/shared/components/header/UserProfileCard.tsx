@@ -1,11 +1,11 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { ArrowUpRight, Bookmark, Settings } from "lucide-react";
+import { ArrowUpRight, Bookmark, Gauge, Settings, UserRoundCogIcon } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 
-export default function UserProfileCard() {
+export default function UserProfileCard({ companyHeader }: { companyHeader: boolean }) {
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
     "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +
@@ -38,11 +38,23 @@ export default function UserProfileCard() {
           <Settings className="w-5 h-5 text-muted-foreground group-hover:text-muted-foreground" />
           <p>Account settings</p>
         </li>
+        {companyHeader ? (<>
 
-        <li className={itemClass}>
-          <Bookmark className="w-5 h-5 text-muted-foreground group-hover:text-muted-foreground" />
-          <p>Saved</p>
-        </li>
+          <li className={itemClass}>
+            <Gauge className="w-5 h-5 text-muted-foreground group-hover:text-primary" strokeWidth={2.5} />
+            <p>Dashboard</p>
+          </li>
+          <li className={itemClass}>
+            <UserRoundCogIcon className="w-5 h-5 text-muted-foreground group-hover:text-primary" strokeWidth={2.5} />
+            <p>Job Management</p>
+          </li>
+
+        </>) : (
+          <li className={itemClass}>
+            <Bookmark className="w-5 h-5 text-muted-foreground group-hover:text-muted-foreground" />
+            <p>Saved</p>
+          </li>
+        )}
       </ul>
       <Button
         size="pill"
