@@ -9,8 +9,6 @@ const CompanySidebarContent = () => {
       w-[300px] h-[calc(100vh-87px)] bg-white overflow-y-auto no-scrollbar"
     >
       <AccountUnderReview />
-      <AccountUnderReview />
-      <AccountUnderReview />
       <CompleteDetails />
       <SidebarLinks />
       <Button className="mt-auto hover:bg-primary/70 rounded-full py-6 text-base">

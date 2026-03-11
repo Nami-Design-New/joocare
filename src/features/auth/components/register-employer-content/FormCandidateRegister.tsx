@@ -12,7 +12,7 @@ import { FilepondUpload } from "@/shared/components/FilepondUpload";
 import {
   RegisterCandidateSchema,
   TRegisterCandidateSchema,
-} from "../../validation/employer-candidate-schema";
+} from "../../validation/candidate-register-schema";
 
 const FormCandidateRegister = () => {
   const {
