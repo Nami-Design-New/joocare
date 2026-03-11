@@ -25,16 +25,12 @@ const CompanySidebarClient = () => {
       {/* overlay mobile */}
       <div
         onClick={() => setOpen(false)}
-        className={`fixed inset-0 bg-black/40 md:hidden transition-opacity duration-300
-          ${open ? "opacity-100 visible" : "opacity-0 invisible"}`}
+        className={`fixed inset-0 bg-black/40 transition-opacity duration-300 md:hidden ${open ? "visible opacity-100" : "invisible opacity-0"} `}
       />
 
       {/* sidebar */}
       <div
-        className={`fixed md:sticky top-[87px] left-0 z-40
-          w-[300px] h-[calc(100vh-87px)]
-          transition-transform duration-300
-          ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+        className={`fixed top-21.75 left-0 z-40 h-[calc(100vh-87px)] w-[300px] transition-transform duration-300 md:sticky ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         <CompanySidebarContent />
       </div>
@@ -42,8 +38,7 @@ const CompanySidebarClient = () => {
       {/* toggle button */}
       <button
         onClick={() => setOpen(!open)}
-        className={`fixed top-24 z-50 bg-white shadow-md rounded-full p-2 transition-all duration-300
-          ${open ? "left-[310px]" : "left-4"} md:hidden`}
+        className={`fixed top-24 z-50 rounded-full bg-white p-2 shadow-md transition-all duration-300 ${open ? "left-[310px]" : "left-4"} md:hidden`}
       >
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
