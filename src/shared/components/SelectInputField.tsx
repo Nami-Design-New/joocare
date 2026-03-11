@@ -32,6 +32,7 @@ type SelectInputFieldProps = {
   onChange?: (value: Option) => void;
   className?: string;
   showPlaceholderImage?: string;
+  disabled?: boolean;
 };
 
 export const SelectInputField = React.forwardRef<
@@ -50,6 +51,7 @@ export const SelectInputField = React.forwardRef<
       className,
       showPlaceholderImage,
       containerStyles,
+      disabled = false,
     },
     ref,
   ) => {
@@ -66,6 +68,7 @@ export const SelectInputField = React.forwardRef<
           items={options}
           value={value}
           onValueChange={(value) => onChange?.(value as Option)}
+          disabled={disabled}
         >
           <ComboboxTrigger
             ref={ref}
@@ -75,6 +78,7 @@ export const SelectInputField = React.forwardRef<
                 className={cn(
                   "bg-muted border-input h-13 w-full justify-between rounded-full px-4 text-sm font-normal",
                   "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+                  "disabled:bg-disabled",
                   error && "border-destructive",
                   className,
                 )}

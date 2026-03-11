@@ -18,6 +18,7 @@
   --color-sidebar: var(--sidebar);
   --color-ring: var(--ring);
   --color-input: var(--input);
+  --color-disabled:var(--bg-disabled);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
@@ -92,6 +93,7 @@
   --ring: oklch(0.285 0.082 252); /* focus ring = primary */
   --soft-overlay: oklch(0.18 0 0 / 0.02); /* #12121205 */
   --body-bg: #f7faf7;
+  --bg-disabled: #a6a6a6;
 
   /* Semantic */
   --destructive: oklch(0.577 0.245 27); /* #dc2626 */
@@ -146,6 +148,7 @@
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.55 0.1 252);
   --body-bg: "#F7FAF7";
+  --bg-disabled: #a6a6a6;
 
   --destructive: oklch(0.65 0.22 27);
   --success: oklch(0.6 0.14 162);

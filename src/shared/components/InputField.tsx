@@ -10,11 +10,12 @@ type InputFieldProps = {
   id: string;
   error?: string | boolean;
   containerStyles?: string;
+  disable?: boolean;
 } & React.ComponentProps<"input">;
 
 export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
   (
-    { label, id, type = "text", className, error, containerStyles, ...props },
+    { label, id, type = "text", className, error, containerStyles, disabled = false, ...props },
     ref,
   ) => {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -36,6 +37,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             ref={ref}
             type={inputType}
             aria-invalid={!!error}
+            disabled={disabled}
             className={cn(isPassword && "pr-10", className)}
             {...props}
           />
