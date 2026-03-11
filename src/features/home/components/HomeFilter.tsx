@@ -1,22 +1,3 @@
-// "use client ";
-
-// import { InputField } from "@/shared/components/InputField";
-// import { SelectInputField } from "@/shared/components/SelectInputField";
-// import { Button } from "@/shared/components/ui/button";
-
-// export default function HomeFilter() {
-//   return (
-//     <form className="bg-border flex w-full items-center justify-center gap-1 rounded-full p-2">
-//       <InputField className="grow-2 bg-white" containerStyles="w-auto grow-2" />
-//       <SelectInputField className="w-auto grow bg-white" />
-//       <SelectInputField className="w-auto grow bg-white" />
-//       <SelectInputField className="w-auto grow bg-white" />
-//       <Button variant="default" size="pill" className="shrink-0">
-//         Find Jobs
-//       </Button>
-//     </form>
-//   );
-// }
 "use client";
 
 import { useState } from "react";
