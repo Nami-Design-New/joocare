@@ -17,6 +17,8 @@ interface FilepondUploadProps {
   allowMultiple?: boolean;
   maxFiles?: number;
   required?: boolean;
+  allowImagePreview?: boolean;
+  className?: string;
   error?: string | boolean;
 }
 
@@ -28,10 +30,12 @@ export function FilepondUpload({
   allowMultiple = true,
   maxFiles = 3,
   required = false,
+  allowImagePreview = false,
+  className,
   error,
 }: FilepondUploadProps) {
   return (
-    <div className="w-full space-y-2">
+    <div className={`w-full space-y-2 ${className}`} >
       {label && (
         <label className="block text-sm font-medium">
           {label}
@@ -45,7 +49,7 @@ export function FilepondUpload({
           const files = fileItems.map((item) => item.file as File);
           onChange(files);
         }}
-        allowImagePreview={false}
+        allowImagePreview={allowImagePreview}
         allowMultiple={allowMultiple}
         maxFiles={maxFiles}
         name={name}
