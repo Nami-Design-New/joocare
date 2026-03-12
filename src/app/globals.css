@@ -18,7 +18,7 @@
   --color-sidebar: var(--sidebar);
   --color-ring: var(--ring);
   --color-input: var(--input);
-  --color-disabled:var(--bg-disabled);
+  --color-disabled: var(--bg-disabled);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
@@ -244,16 +244,14 @@
 .filepond--credits {
   display: none;
 }
+.filepond--root {
+  background: transparent;
+}
 .filepond--root .filepond--drop-label {
   background: #e8ece8;
   border: #d5dad5 1px solid;
   border-radius: 16px;
 }
-.filepond--root {
-  background: transparent;
+.file-pond-style-custom  .filepond--drop-label {
+  background: white;
 }
-/* .filepond--drop-label{
-  background: #f7faf7;
-  border: 1px solid var(--input);
-  border-radius: 120px;
-} */

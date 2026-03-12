@@ -25,7 +25,7 @@ export default function WizardNavigation({
           className="w-56"
 
         >
-          Back
+          Prev
         </Button>
       )}
 

@@ -72,9 +72,9 @@ export const RegisterCandidateSchema = z
       .array(z.instanceof(File))
       .optional()
       .default([])
-      .refine((files) => files.length <= 2, {
-        message: "You can upload a maximum of 2 license files",
-      }),
+      // .refine((files) => files.length <= 2, {
+      //   message: "You can upload a maximum of 2 license files",
+      // }),
   })
   .superRefine((data, ctx) => {
     // Conditional validation when medical license is confirmed
