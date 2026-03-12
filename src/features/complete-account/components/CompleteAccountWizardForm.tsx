@@ -17,7 +17,7 @@ export default function CompleteAccountWizardForm() {
 
     const methods = useForm<WizardFormData>({
         resolver: zodResolver(WizardSchema),
-        mode: "onTouched",
+        mode: "onChange",
         defaultValues: defaultValuesWizard
     });
 

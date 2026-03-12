@@ -22,7 +22,7 @@ export default function WizardNavigation({
           variant="outline"
           size="pill"
           onClick={prev}
-          className="w-56"
+          className="w-1/3 lg:w-56"
 
         >
           Prev
@@ -35,7 +35,7 @@ export default function WizardNavigation({
           variant="secondary"
           size="pill"
           onClick={next}
-          className="w-56"
+          className="w-1/3 lg:w-56"
         >
           Next
         </Button>
@@ -46,7 +46,7 @@ export default function WizardNavigation({
           variant="secondary"
           size="pill"
           type="submit"
-          className="w-56"
+          className="w-1/3 lg:w-56"
         >
           Submit
         </Button>

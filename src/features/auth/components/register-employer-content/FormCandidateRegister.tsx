@@ -28,7 +28,7 @@ const FormCandidateRegister = () => {
       confirmRegister: false,
       uploadLicense: [],
     },
-    mode: "onBlur", // Validate on blur for better UX
+    mode: "onChange", // Validate on blur for better UX
   });
 
   const confirmRegisterValue = watch("confirmRegister");
@@ -75,12 +75,7 @@ const FormCandidateRegister = () => {
               <SelectInputField
                 id="phoneCode"
                 placeholder="+999"
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
+                {...field}
                 error={!!errors.phoneCode}
                 showPlaceholderImage="/assets/flag.svg"
                 className="w-29 min-w-29"
@@ -131,10 +126,7 @@ const FormCandidateRegister = () => {
             id="jobTitle"
             label="Job Title"
             placeholder="ex: Hospital"
-            value={
-              field.value ? { label: field.value, value: field.value } : null
-            }
-            onChange={(option) => field.onChange(option?.value)}
+            {...field}
             error={errors.jobTitle?.message}
             options={[
               { label: "Hospital", value: "hospital" },
@@ -158,12 +150,7 @@ const FormCandidateRegister = () => {
               <SelectInputField
                 id="country"
                 placeholder="country"
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
+                {...field}
                 error={errors.country?.message}
                 options={[
                   { label: "egypt", value: "egypt" },
@@ -180,12 +167,7 @@ const FormCandidateRegister = () => {
               <SelectInputField
                 id="city"
                 placeholder="city"
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
+                {...field}
                 error={errors.city?.message}
                 options={[
                   { label: "cairo", value: "cairo" },
@@ -268,13 +250,7 @@ const FormCandidateRegister = () => {
                   label="Country"
                   id="specificCountry"
                   placeholder="ex: United Arab Emirates (UAE)"
-                  value={
-                    field.value
-                      ? { label: field.value, value: field.value }
-                      : null
-                  }
-                  onChange={(option) => field.onChange(option?.value)}
-                  error={errors.specificCountry?.message ? true : false}
+                  {...field}
                   options={[
                     {
                       label: "United Arab Emirates (UAE)",
