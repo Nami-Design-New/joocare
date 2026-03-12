@@ -28,8 +28,8 @@ type SelectInputFieldProps = {
   containerStyles?: string;
   options: Option[];
   placeholder?: string;
-  value?: Option | null;
-  onChange?: (value: Option) => void;
+  value?: string | null;
+  onChange?: (value: string | null) => void;
   className?: string;
   showPlaceholderImage?: string;
   disabled?: boolean;
@@ -52,9 +52,13 @@ export const SelectInputField = React.forwardRef<
       showPlaceholderImage,
       containerStyles,
       disabled = false,
+      ...props
     },
     ref,
   ) => {
+    const selectedOption = options.find((o) => o.value === value);
+    console.log("selc", selectedOption);
+
     return (
       <div className={cn("flex w-full flex-col", containerStyles)}>
         {label && (
@@ -66,12 +70,14 @@ export const SelectInputField = React.forwardRef<
         <Combobox
           id={id}
           items={options}
-          value={value}
-          onValueChange={(value) => onChange?.(value as Option)}
+          value={options.find((o) => o.value === value) ?? null}
+          onValueChange={(option) => onChange?.((option as Option)?.value ?? null)}
           disabled={disabled}
         >
           <ComboboxTrigger
             ref={ref}
+            {...props}
+
             render={
               <Button
                 variant="outline"
@@ -86,17 +92,17 @@ export const SelectInputField = React.forwardRef<
               ></Button>
             }
           >
-            {value ? (
+            {selectedOption ? (
               <>
-                {showPlaceholderImage && value.image && (
+                {showPlaceholderImage && selectedOption.image && (
                   <Image
-                    src={value.image}
-                    alt={value.label}
+                    src={selectedOption.image}
+                    alt={selectedOption.label}
                     width={30}
                     height={15}
                   />
                 )}
-                <span>{value.label}</span>
+                <span>{selectedOption.label}</span>
               </>
             ) : (
               <span className="text-muted-foreground flex gap-1">
