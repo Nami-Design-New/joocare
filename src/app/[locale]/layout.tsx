@@ -1,5 +1,7 @@
 import { routing } from "@/i18n/routing";
 import MainProviders from "@/shared/providers/MainProviders";
+import Footer from "@/shared/components/Footer";
+import Header from "@/shared/components/header/Header";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
@@ -38,7 +40,11 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <body className={`antialiased ${outfit.className}`}>
-        <MainProviders locale={locale}>{children}</MainProviders>
+        <MainProviders locale={locale}>
+          <Header />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </MainProviders>
       </body>
     </html>
   );

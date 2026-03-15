@@ -10,7 +10,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-secondary px-3 py-12 text-white lg:px-2">
-      <div className="relative container mx-auto">
+      <div className="relative container mx-auto max-w-7xl">
         {/* Top Section: Links & Info */}
         <div className="relative grid grid-cols-1 gap-4 pb-12 md:grid-cols-2 lg:grid-cols-5 lg:gap-12">
           {/* Column 1: Brand Info */}
