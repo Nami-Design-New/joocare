@@ -39,10 +39,7 @@ export default function StepOne() {
             label="Domain"
             placeholder="ex: Hospital"
             disabled={true}
-            value={
-              field.value ? { label: field.value, value: field.value } : null
-            }
-            onChange={(option) => field.onChange(option?.value)}
+            {...field}
             error={errors.domain?.message?.toString()}
             options={[
               { label: "Hospital", value: "hospital" },
@@ -76,12 +73,7 @@ export default function StepOne() {
                 id="phoneCode"
                 placeholder="+999"
                 disabled={true}
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
+                {...field}
                 error={!!errors.phoneCode}
                 showPlaceholderImage={"/assets/flag.svg"}
                 className="w-29 min-w-29"

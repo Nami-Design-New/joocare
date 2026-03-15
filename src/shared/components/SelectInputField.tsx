@@ -57,7 +57,7 @@ export const SelectInputField = React.forwardRef<
     ref,
   ) => {
     const selectedOption = options.find((o) => o.value === value);
-    console.log("selc", selectedOption);
+    // console.log("selectedOption", selectedOption);
 
     return (
       <div className={cn("flex w-full flex-col", containerStyles)}>

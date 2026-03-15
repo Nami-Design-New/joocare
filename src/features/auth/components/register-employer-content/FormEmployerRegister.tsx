@@ -21,6 +21,7 @@ const FormEmployerRegister = () => {
     formState: { errors },
   } = useForm<TRegisterEmployerSchema>({
     resolver: zodResolver(RegisterEmployerSchema),
+    mode: 'onChange'
   });
   const onSubmit: SubmitHandler<TRegisterEmployerSchema> = (data) =>
     console.log(data);
@@ -56,10 +57,7 @@ const FormEmployerRegister = () => {
             id="domain"
             label="Domain"
             placeholder="ex: Hospital"
-            value={
-              field.value ? { label: field.value, value: field.value } : null
-            }
-            onChange={(option) => field.onChange(option?.value)}
+            {...field}
             error={errors.domain?.message}
             options={[
               { label: "Hospital", value: "hospital" },
@@ -91,12 +89,7 @@ const FormEmployerRegister = () => {
               <SelectInputField
                 id="phoneCode"
                 placeholder="+999"
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
+                {...field}
                 error={!!errors.phoneCode}
                 showPlaceholderImage={"/assets/flag.svg"}
                 className="w-29 min-w-29"
