@@ -52,8 +52,6 @@ export default function JobPostStepTwo() {
             control={control}
             name="skills"
             render={({ field }) => {
-              console.log(field);
-
               return (
                 <MultiSelectInputField
                   {...field}
