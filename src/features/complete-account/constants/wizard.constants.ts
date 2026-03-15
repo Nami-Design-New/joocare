@@ -35,7 +35,16 @@ export const steps: StepConfig[] = [
   },
   {
     component: StepThree,
-    fields: ["password"],
+    fields: [
+      "uploadCoverImage",
+      "uploadLogoImage",
+      "organizationPhoneCode",
+      "organizationPhoneNumber",
+      "organizationCountry",
+      "organizationCity",
+      "dateOfEstablishment",
+      "aboutOrganization",
+    ],
   },
 ];
 
@@ -49,20 +58,28 @@ export const defaultValuesWizard: WizardFormData = {
   phoneNumber: "52 987 6543",
 
   // default data step two
-  commercialRegister: "111",
-  issuingCountryLicense: "1111111",
-  organizationSize: "11111",
-  commercialRegistrationIssueDate: "111111111",
-  commercialRegistrationExpiryDate: "11111",
+  commercialRegister: "",
+  issuingCountryLicense: "",
+  organizationSize: "",
+  commercialRegistrationIssueDate: "",
+  commercialRegistrationExpiryDate: "",
   commercialRegistrationImage: [],
-  employerType: "111",
-  medicalFacilityLicenseNumber: "11",
-  licenseIssuingAuthority: "1111",
-  specialtyScopePractice: "1111111",
-  medicalRegistrationIssueDate: "11111",
-  medicalRegistrationExpiryDate: "1111",
+  employerType: "",
+  medicalFacilityLicenseNumber: "",
+  licenseIssuingAuthority: "",
+  specialtyScopePractice: "",
+  medicalRegistrationIssueDate: "",
+  medicalRegistrationExpiryDate: "",
   medicalLicenseImage: [],
 
   // default data step three
-  password: "",
+  uploadCoverImage: [],
+  uploadLogoImage: [],
+  organizationPhoneCode: "",
+  organizationPhoneNumber: "",
+  organizationCountry: "",
+  organizationCity: "",
+  dateOfEstablishment: "",
+  aboutOrganization: "",
+  
 };

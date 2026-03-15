@@ -13,8 +13,12 @@ import {
   RegisterCandidateSchema,
   TRegisterCandidateSchema,
 } from "../../validation/candidate-register-schema";
+import { useState } from "react";
+import { OTPModal } from "../forget-password/OtpModal";
 
 const FormCandidateRegister = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const {
     register,
     control,
@@ -35,9 +39,10 @@ const FormCandidateRegister = () => {
 
   const onSubmit: SubmitHandler<TRegisterCandidateSchema> = (data) => {
     console.log(data);
+    setIsModalOpen(true)
   };
 
-  return (
+  return (<>
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="mt-6 flex flex-col gap-5"
@@ -196,7 +201,8 @@ const FormCandidateRegister = () => {
         control={control}
         render={({ field }) => (
           <FilepondUpload
-            label="Upload CV (optional)"
+            label={`Upload CV`}
+            hint={`"Optional"`}
             files={field.value}
             onChange={field.onChange}
             allowMultiple={false}
@@ -225,22 +231,6 @@ const FormCandidateRegister = () => {
       {/* Conditional License Fields */}
       {confirmRegisterValue && (
         <>
-          <InputField
-            id="licenseTitle"
-            label="License Title"
-            placeholder="ex: License Title"
-            {...register("licenseTitle")}
-            error={errors.licenseTitle?.message}
-          />
-
-          <InputField
-            id="licenseNumber"
-            label="License Number"
-            placeholder="ex: 23121212"
-            {...register("licenseNumber")}
-            error={errors.licenseNumber?.message}
-          />
-
           <>
             <Controller
               name="specificCountry"
@@ -250,6 +240,7 @@ const FormCandidateRegister = () => {
                   label="Country"
                   id="specificCountry"
                   placeholder="ex: United Arab Emirates (UAE)"
+                  error={errors.specificCountry?.message ? true : false}
                   {...field}
                   options={[
                     {
@@ -262,10 +253,30 @@ const FormCandidateRegister = () => {
                 />
               )}
             />
-            <span className={`-mt-3 block text-[12px] ${errors.specificCountry?.message ? "text-red-500" : "text-primary"}`}>
+
+            <span className={`mx-1 -mt-3 block text-[12px] ${errors.specificCountry?.message ? "text-red-500" : "text-primary"}`}>
               Please specify the country issuing your license.
             </span>
           </>
+
+          <InputField
+            id="licenseTitle"
+            label="License Title"
+            hint={`"Optional"`}
+            placeholder="ex: License Title"
+            {...register("licenseTitle")}
+            error={errors.licenseTitle?.message}
+          />
+          <InputField
+            id="licenseNumber"
+            label={`License Number`}
+            hint={`"Optional"`}
+            placeholder="ex: 23121212"
+            {...register("licenseNumber")}
+            error={errors.licenseNumber?.message}
+          />
+
+
 
           <Controller
             name="uploadLicense"
@@ -273,6 +284,7 @@ const FormCandidateRegister = () => {
             render={({ field }) => (
               <FilepondUpload
                 label="Upload the license image"
+                hint={`"Optional"`}
                 files={field.value}
                 onChange={field.onChange}
                 allowMultiple={false}
@@ -297,6 +309,10 @@ const FormCandidateRegister = () => {
         </Button>
       </div>
     </form>
+    <OTPModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+
+  </>
+
   );
 };
 

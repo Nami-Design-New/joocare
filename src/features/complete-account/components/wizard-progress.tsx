@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 interface Props {
   step: number;
   steps: string[];
@@ -11,7 +13,7 @@ export default function WizardProgress({ step, steps, className }: Props) {
     <div className={`w-full ${className}`}>
       <div className="mb-2 flex items-center justify-between">
         {steps.map((_, index) => (
-          <>
+          <Fragment key={index}>
             <div
               key={index}
               className={`flex h-9 w-9 items-center justify-center rounded-full p-2 text-lg font-semibold ${step >= index ? "bg-primary text-white" : "bg-muted text-disabled"} `}
@@ -25,7 +27,7 @@ export default function WizardProgress({ step, steps, className }: Props) {
                 style={{ marginLeft: "-.05rem", marginRight: "-.05rem" }}
               />
             )}
-          </>
+          </Fragment>
         ))}
       </div>
 
