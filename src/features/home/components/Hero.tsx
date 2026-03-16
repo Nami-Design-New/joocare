@@ -4,7 +4,7 @@ import PopularSearches from "./PopularSearches";
 
 export default function Hero() {
   return (
-    <section className="container mx-auto flex flex-col items-center justify-center gap-8 px-3 pt-10 pb-10 text-center md:gap-16 md:pt-30 md:pb-20 lg:px-2">
+    <section className="container mx-auto max-w-7xl flex flex-col items-center justify-center gap-8 px-3 pt-10 pb-10 text-center md:gap-16 md:pt-30 md:pb-20 lg:px-2">
       <div className="mx-auto max-w-3xl">
         <h1 className="text-secondary mb-9 leading-[1.3] font-bold">
           An Integrated Talent Platform for Healthcare and Life Sciences,
