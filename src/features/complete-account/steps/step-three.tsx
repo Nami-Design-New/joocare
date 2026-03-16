@@ -6,6 +6,7 @@ import { TextareaField } from "@/shared/components/TextareaField";
 import { Controller, useFormContext } from "react-hook-form";
 import CoverUploadImage from "../components/cover-upload-image";
 import Image from "next/image";
+import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 
 export default function StepThree() {
   const { register, control, formState: { errors } } = useFormContext();
@@ -13,48 +14,31 @@ export default function StepThree() {
   return (
     <div className="space-y-4 flex flex-col">
       <CoverUploadImage />
+
+      {/* phone number */}
       <>
-        {" "}
         <label htmlFor={"organizationPhoneCode"} className="mx-1 font-semibold mb-2">
           Organization official phone number
           <span className="text-muted-foreground text-sm font-normal mx-2">
             option</span>
         </label>
-        <div className="flex items-center gap-2">
-          <Controller
-            name="organizationPhoneCode"
-            control={control}
-            render={({ field }) => (
-              <SelectInputField
-                id="organizationPhoneCode"
-                placeholder="+999"
-                {...field}
-                // error={!!errors.organizationPhoneCode}
-                showPlaceholderImage={"/assets/flag.svg"}
-                className="w-29 min-w-29"
-                containerStyles="w-fit"
-
-                options={[
-                  { label: "+999", value: "+999", image: "/assets/flag.svg" },
-                  { label: "+24", value: "+24", image: "/assets/logo_1.svg" },
-                  { label: "+55", value: "+55", image: "/assets/flag.svg" },
-                ]}
-              />
-            )}
-          />
-          <InputField
-            id="organizationPhoneNumber"
-            type="text"
-            placeholder="ex:52 987 6543"
-            {...register("organizationPhoneNumber")}
-            error={errors.organizationPhoneNumber?.message ? true : false}
-          />
-        </div>
-        {(errors.organizationPhoneCode || errors.organizationPhoneNumber) && (
+        <Controller
+          name="organizationPhoneNumber"
+          control={control}
+          render={({ field }) => (
+            <PhoneInputCode
+              {...field}
+              defaultCountry="EG"
+              id="organizationPhoneNumber"
+              className="w-full"
+              placeholder="Enter phone number"
+              onChange={(value) => field.onChange(value)}
+            />
+          )}
+        />
+        {errors.organizationPhoneNumber && (
           <span className="-mt-4 text-[12px] text-red-500">
-            {errors.organizationPhoneCode && errors.organizationPhoneNumber
-              ? "Phone code and phone number are required"
-              : errors.organizationPhoneCode?.message?.toString() || errors.organizationPhoneNumber?.message?.toString()}
+            {errors.organizationPhoneNumber.message?.toString()}
           </span>
         )}
       </>
@@ -101,6 +85,7 @@ export default function StepThree() {
           />
         </div>
       </div>
+      
       {/* date of establishment */}
       <InputField
         id="dateOfEstablishment"

@@ -17,10 +17,6 @@ export const stepThreeSchema = z.object({
 
   uploadLogoImage: z.instanceof(File, { message: "Logo image is required" }),
 
-  organizationPhoneCode: z
-    .string()
-    .min(1, { message: "phone code is required" }),
-
   organizationPhoneNumber: z.string().min(1, { message: "phone is required" }),
 
   organizationCountry: z.string().min(1, { message: "Country is required" }),

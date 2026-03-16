@@ -15,6 +15,7 @@ import {
 } from "../../validation/candidate-register-schema";
 import { useState } from "react";
 import { OTPModal } from "../forget-password/OtpModal";
+import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 
 const FormCandidateRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,60 +68,30 @@ const FormCandidateRegister = () => {
         error={errors.email?.message}
       />
 
-      {/* Phone Number */}
-      <div>
-        <label htmlFor="phoneCode" className="mx-1 mb-2 block font-semibold">
-          Phone number
+      <>
+        <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
+          Phone Number
         </label>
-        <div className="flex items-center gap-2">
-          <Controller
-            name="phoneCode"
-            control={control}
-            render={({ field }) => (
-              <SelectInputField
-                id="phoneCode"
-                placeholder="+999"
-                {...field}
-                error={!!errors.phoneCode}
-                showPlaceholderImage="/assets/flag.svg"
-                className="w-29 min-w-29"
-                containerStyles="w-fit"
-                options={[
-                  {
-                    label: "+999",
-                    value: "+999",
-                    image: "/assets/flag.svg",
-                  },
-                  {
-                    label: "+24",
-                    value: "+24",
-                    image: "/assets/logo_1.svg",
-                  },
-                  {
-                    label: "+55",
-                    value: "+55",
-                    image: "/assets/flag.svg",
-                  },
-                ]}
-              />
-            )}
-          />
-          <InputField
-            id="phoneNumber"
-            type="text"
-            placeholder="ex: 52 987 6543"
-            {...register("phoneNumber")}
-            error={false}
-          />
-        </div>
-        {(errors.phoneCode || errors.phoneNumber) && (
-          <span className="mt-1 block text-[12px] text-red-500">
-            {errors.phoneCode?.message ||
-              errors.phoneNumber?.message ||
-              "Phone code and phone number are required"}
+        <Controller
+          name="phoneNumber"
+          control={control}
+          render={({ field }) => (
+            <PhoneInputCode
+              {...field}
+              defaultCountry="EG"
+              id="phoneNumber"
+              className="w-full"
+              placeholder="Enter phone number"
+              onChange={(value) => field.onChange(value)}
+            />
+          )}
+        />
+        {errors.phoneNumber && (
+          <span className="-mt-4 text-[12px] text-red-500">
+            {errors.phoneNumber.message}
           </span>
         )}
-      </div>
+      </>
 
       {/* Job Title */}
       <Controller

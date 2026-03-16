@@ -11,7 +11,6 @@ export const steps: StepConfig[] = [
       "officialEmail",
       "domain",
       "personFullName",
-      "phoneCode",
       "phoneNumber",
     ],
   },
@@ -38,7 +37,6 @@ export const steps: StepConfig[] = [
     fields: [
       "uploadCoverImage",
       "uploadLogoImage",
-      "organizationPhoneCode",
       "organizationPhoneNumber",
       "organizationCountry",
       "organizationCity",
@@ -54,8 +52,7 @@ export const defaultValuesWizard: WizardFormData = {
   officialEmail: "mail@mail.com",
   domain: "hospital",
   personFullName: "John Doe",
-  phoneCode: "+999",
-  phoneNumber: "52 987 6543",
+  phoneNumber: "+201011618275",
 
   // default data step two
   commercialRegister: "",

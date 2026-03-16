@@ -126,27 +126,34 @@ const FormEmployerRegister = () => {
         )}
       </> */}
 
-      <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
-        Contact person _ Phone number
-      </label>
-      <Controller
-        name="phoneNumber"
-        control={control}
-        render={({ field }) => (
-          <PhoneInputCode
-            {...field}
-            id="phoneNumber"
-            className="w-full"
-            placeholder="Enter phone number"
-            onChange={(value) => field.onChange(value)}
-          />
+
+      {/* Phone number */}
+      <>
+        <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
+          Contact person _ Phone number
+        </label>
+        <Controller
+          name="phoneNumber"
+          control={control}
+          render={({ field }) => (
+            <PhoneInputCode
+              {...field}
+              defaultCountry="EG"
+              id="phoneNumber"
+              className="w-full"
+              placeholder="Enter phone number"
+              onChange={(value) => field.onChange(value)}
+            />
+          )}
+        />
+        {errors.phoneNumber && (
+          <span className="-mt-4 text-[12px] text-red-500">
+            {errors.phoneNumber.message}
+          </span>
         )}
-      />
-      {errors.phoneNumber && (
-        <span className="-mt-4 text-[12px] text-red-500">
-          {errors.phoneNumber.message}
-        </span>
-      )}
+      </>
+
+
       <InputField
         id="createPassword"
         type="password"

@@ -29,8 +29,6 @@ export const RegisterCandidateSchema = z
       .min(1, { message: "Email is required" })
       .email({ message: "Please enter a valid email address" }),
 
-    phoneCode: z.string().min(1, { message: "Phone code is required" }),
-
     phoneNumber: phoneNumberSchema,
 
     jobTitle: z.string().min(1, { message: "Job title is required" }),
