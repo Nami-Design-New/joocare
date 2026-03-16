@@ -85,7 +85,7 @@ export default function StepThree() {
           />
         </div>
       </div>
-      
+
       {/* date of establishment */}
       <InputField
         id="dateOfEstablishment"
@@ -95,6 +95,14 @@ export default function StepThree() {
         {...register("dateOfEstablishment")}
         error={errors.dateOfEstablishment?.message?.toString()}
       />
+
+      {/* <YearPicker
+        id="dateOfEstablishment"
+        label="Date of Establishment"
+        placeholder="ex: 2021"
+        {...register("dateOfEstablishment")}
+        error={errors.dateOfEstablishment?.message?.toString()}
+      /> */}
 
       <TextareaField
         id="aboutOrganization"

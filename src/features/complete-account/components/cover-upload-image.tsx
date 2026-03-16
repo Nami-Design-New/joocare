@@ -146,15 +146,15 @@ export default function CoverUploadImage() {
           />
         </div>
       </div>
-        {/* ERRORS */}
-        {(errors.uploadCoverImage || errors.uploadLogoImage) && (
-          <span className="text-[12px] text-red-500 -mt-2">
-            {errors.uploadCoverImage && errors.uploadLogoImage
-              ? "Cover and logo are required"
-              : errors.uploadCoverImage?.message?.toString() ||
-              errors.uploadLogoImage?.message?.toString()}
-          </span>
-        )}
+      {/* ERRORS */}
+      {(errors.uploadCoverImage || errors.uploadLogoImage) && (
+        <span className="text-[12px] text-red-500 -mt-2">
+          {errors.uploadCoverImage && errors.uploadLogoImage
+            ? "Cover and logo are required"
+            : errors.uploadCoverImage?.message?.toString() ||
+            errors.uploadLogoImage?.message?.toString()}
+        </span>
+      )}
 
     </>
   );
