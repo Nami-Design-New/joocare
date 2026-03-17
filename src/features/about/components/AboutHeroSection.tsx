@@ -34,7 +34,7 @@ const aboutStats = [
 
 export default function AboutHeroSection() {
   return (
-    <section className="mx-auto grid pt-14 py-18 lg:py-18 max-w-7xl grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
+    <section className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
       <div>
         <div className="mb-2">
           <SectionTitle sectionTitle="About JooCare" textColor="text-dark" />
@@ -66,7 +66,7 @@ export default function AboutHeroSection() {
         </div>
       </div>
 
-      <div className="relative sticky top-30 mx-auto flex w-full max-w-[340px] justify-center sm:max-w-[520px] lg:max-w-none">
+      <div className="relative mx-auto flex w-full max-w-[340px] justify-center sm:max-w-[520px] lg:max-w-none">
         <div className="relative h-[380px] w-[300px] overflow-hidden rounded-[30px] sm:h-[460px] sm:w-[380px] sm:rounded-[40px]">
           <Image
             src="/assets/about/doctor2.jpg"

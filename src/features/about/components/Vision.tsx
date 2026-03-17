@@ -1,6 +1,5 @@
-import { Fingerprint, Globe, Rocket } from "lucide-react";
-import Image from "next/image";
 import SectionTitle from "@/features/home/components/SectionTitle";
+import Image from "next/image";
 
 export default function Vision() {
   return (
@@ -15,7 +14,7 @@ export default function Vision() {
             Our Vision
           </h2>
 
-          <p className="mb-8 max-w-xl text-left text-sm leading-relaxed text-gray-600 sm:text-base lg:text-justify">
+          <p className="text-muted-foreground mb-8 max-w-xl text-left text-sm leading-relaxed sm:text-base lg:text-justify">
             To become the global architecture for healthcare human capital,
             where data-driven precision eliminates hiring risk and empowers
             every medical professional to reach their highest point of impact.
@@ -27,28 +26,26 @@ export default function Vision() {
           </p>
         </div>
 
-      <div className="relative mx-auto flex w-full max-w-[340px] justify-center sm:max-w-[520px] lg:max-w-none">
-        <div className="relative h-[380px] w-[300px] overflow-hidden rounded-[30px] sm:h-[460px] sm:w-[380px] sm:rounded-[40px]">
-          <Image
-            src="/assets/about/doctor2.jpg"
-            alt="Doctor"
-            fill
-            className="object-cover"
-          />
-        </div>
+        <div className="relative mx-auto flex w-full max-w-[340px] justify-center sm:max-w-[520px] lg:max-w-none">
+          <div className="relative h-[380px] w-[300px] overflow-hidden rounded-[30px] sm:h-[460px] sm:w-[380px] sm:rounded-[40px]">
+            <Image
+              src="/assets/about/doctor2.jpg"
+              alt="Doctor"
+              fill
+              className="object-cover"
+            />
+          </div>
 
-        <div className="absolute top-28 left-0 h-[210px] w-[170px] overflow-hidden rounded-[22px] border-8 border-white shadow-xl sm:top-40 sm:h-[260px] sm:w-[220px] sm:rounded-[30px] sm:border-16">
-          <Image
-            src="/assets/about/doctor1.jpg"
-            alt="Doctor"
-            fill
-            className="object-cover"
-          />
+          <div className="absolute top-28 left-0 h-[210px] w-[170px] overflow-hidden rounded-[22px] border-8 border-white shadow-xl sm:top-40 sm:h-[260px] sm:w-[220px] sm:rounded-[30px] sm:border-16">
+            <Image
+              src="/assets/about/doctor1.jpg"
+              alt="Doctor"
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
       </div>
-
-      </div>
-
     </section>
   );
 }

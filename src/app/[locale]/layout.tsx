@@ -7,14 +7,18 @@ import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
-// app/layout.tsx or pages/_app.tsx
-import { Outfit } from "next/font/google";
+import { Outfit, Noto_Sans } from "next/font/google";
 
-// Import Outfit with weights you want
 const outfit = Outfit({
-  subsets: ["latin"], // Required subset
-  weight: ["400", "500", "600", "700", "800"], // weights you plan to use
-  variable: "--font-outfit", // optional CSS variable
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-outfit",
+});
+
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-noto-sans",
 });
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -38,12 +42,10 @@ export default async function RootLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={`${outfit.variable} ${notoSans.variable}`}>
       <body className={`antialiased ${outfit.className}`}>
         <MainProviders locale={locale}>
-          <Header />
           <main className="min-h-screen">{children}</main>
-          <Footer />
         </MainProviders>
       </body>
     </html>
