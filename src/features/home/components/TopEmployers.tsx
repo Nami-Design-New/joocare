@@ -32,7 +32,7 @@ const employers = [
 export default function TopEmployers() {
   return (
     <section className="bg-white">
-      <div className="container mx-auto flex flex-col items-center gap-8 px-3 py-10 text-center md:py-20 lg:px-2">
+      <div className="container mx-auto max-w-7xl flex flex-col items-center gap-8 px-3 py-10 text-center md:py-20 lg:px-2">
         <div className="flex max-w-103 flex-col items-center gap-4">
           <SectionTitle sectionTitle="Top Employers" />
 

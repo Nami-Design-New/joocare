@@ -10,8 +10,6 @@ export const RegisterEmployerSchema = z.object({
   personFullName: z
     .string()
     .min(1, { message: "Person full name is required" }),
-  // phoneCode: z.string().optional(),
-  phoneCode: z.string(),
   phoneNumber: z.string().min(10, { message: "Phone number is required" }),
   createPassword: z
     .string()

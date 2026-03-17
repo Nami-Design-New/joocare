@@ -8,7 +8,7 @@ export default function AboutPage() {
   return (
     <>
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "About" }]} />
-      <section >
+      <section className="lg:pt-18 sm:pt-14 ">
         <AboutHeroSection />
         <CorePillarsSection />
         <Vision />

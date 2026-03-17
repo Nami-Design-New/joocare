@@ -11,7 +11,7 @@ import { OTPModal } from './OtpModal';
 import { usePathname } from 'next/navigation';
 
 const FormForgetPassword = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false); // <-- modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [userEmail, setUserEmail] = useState('');
     const pathname = usePathname();
     console.log(pathname);

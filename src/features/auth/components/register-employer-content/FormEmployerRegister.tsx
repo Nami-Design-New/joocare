@@ -1,19 +1,23 @@
 "use client";
 
-import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { InputField } from "@/shared/components/InputField";
-import { Button } from "@/shared/components/ui/button";
-import { SelectInputField } from "@/shared/components/SelectInputField";
 import LabelCheckbox from "@/shared/components/LabelCheckbox";
+import { SelectInputField } from "@/shared/components/SelectInputField";
+import { Button } from "@/shared/components/ui/button";
+import { useState } from "react";
 import {
   RegisterEmployerSchema,
   TRegisterEmployerSchema,
 } from "../../validation/employer-register-schema";
+import { OTPModal } from "../forget-password/OtpModal";
+import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 
 const FormEmployerRegister = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     register,
     control,
@@ -21,11 +25,14 @@ const FormEmployerRegister = () => {
     formState: { errors },
   } = useForm<TRegisterEmployerSchema>({
     resolver: zodResolver(RegisterEmployerSchema),
+    mode: 'onChange'
   });
-  const onSubmit: SubmitHandler<TRegisterEmployerSchema> = (data) =>
+  const onSubmit: SubmitHandler<TRegisterEmployerSchema> = (data) => {
     console.log(data);
+    setIsModalOpen(true)
+  }
 
-  return (
+  return (<>
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="mt-6 flex flex-col gap-5"
@@ -56,10 +63,7 @@ const FormEmployerRegister = () => {
             id="domain"
             label="Domain"
             placeholder="ex: Hospital"
-            value={
-              field.value ? { label: field.value, value: field.value } : null
-            }
-            onChange={(option) => field.onChange(option?.value)}
+            {...field}
             error={errors.domain?.message}
             options={[
               { label: "Hospital", value: "hospital" },
@@ -78,7 +82,7 @@ const FormEmployerRegister = () => {
         error={errors.personFullName?.message}
       />
 
-      <>
+      {/* <>
         {" "}
         <label htmlFor={"phoneCode"} className="mx-1 -mb-4 font-semibold">
           Contact person _ Phone number
@@ -91,12 +95,7 @@ const FormEmployerRegister = () => {
               <SelectInputField
                 id="phoneCode"
                 placeholder="+999"
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
+                {...field}
                 error={!!errors.phoneCode}
                 showPlaceholderImage={"/assets/flag.svg"}
                 className="w-29 min-w-29"
@@ -125,7 +124,35 @@ const FormEmployerRegister = () => {
               : errors.phoneCode?.message || errors.phoneNumber?.message}
           </span>
         )}
+      </> */}
+
+
+      {/* Phone number */}
+      <>
+        <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
+          Contact person _ Phone number
+        </label>
+        <Controller
+          name="phoneNumber"
+          control={control}
+          render={({ field }) => (
+            <PhoneInputCode
+              {...field}
+              defaultCountry="EG"
+              id="phoneNumber"
+              className="w-full"
+              placeholder="Enter phone number"
+              onChange={(value) => field.onChange(value)}
+            />
+          )}
+        />
+        {errors.phoneNumber && (
+          <span className="-mt-4 text-[12px] text-red-500">
+            {errors.phoneNumber.message}
+          </span>
+        )}
       </>
+
 
       <InputField
         id="createPassword"
@@ -190,7 +217,12 @@ const FormEmployerRegister = () => {
           Register
         </Button>
       </div>
+
     </form>
+    {/* Otp modal  */}
+    <OTPModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+  </>
+
   );
 };
 

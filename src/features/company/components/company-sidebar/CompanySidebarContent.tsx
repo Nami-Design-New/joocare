@@ -1,21 +1,21 @@
+import { Link } from "@/i18n/navigation";
 import AccountUnderReview from "./AccountUnderReview";
 import CompleteDetails from "./CompleteDetails";
 import SidebarLinks from "./SidebarLinks";
-import { Button } from "@/shared/components/ui/button";
+import { Button, buttonVariants } from "@/shared/components/ui/button";
 
 const CompanySidebarContent = () => {
   return (
-    <aside className="flex flex-col gap-4 pt-6 pb-2 px-3
-      w-[300px] h-[calc(100vh-87px)] bg-white overflow-y-auto no-scrollbar"
-    >
-      <AccountUnderReview />
-      <AccountUnderReview />
+    <aside className="no-scrollbar flex h-[calc(100vh-87px)] w-[300px] flex-col gap-4 overflow-y-auto bg-white px-3 pt-6 pb-2">
       <AccountUnderReview />
       <CompleteDetails />
       <SidebarLinks />
-      <Button className="mt-auto hover:bg-primary/70 rounded-full py-6 text-base">
+      <Link
+        href="/company/post-job"
+        className={`${buttonVariants({ variant: "default", size: "pill" })} hover:bg-primary/70 mt-auto rounded-full py-6 text-base`}
+      >
         Post a Job
-      </Button>
+      </Link>
     </aside>
   );
 };

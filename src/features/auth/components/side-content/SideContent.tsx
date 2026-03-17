@@ -19,13 +19,13 @@ const SideContent = () => {
       <div className="w-5/6 mx-auto p-4 text-white">
         {isEmployerRegister ? (
           <>
-            <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold">
+            <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
               Let’s setup your operating Agreement
             </h2>
           </>
         ) : (
           <>
-            <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold">
+            <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
               Match Faster
             </h2>
             <h3 className="text-[clamp(1.5rem,4vw,3rem)] font-bold mb-4">
