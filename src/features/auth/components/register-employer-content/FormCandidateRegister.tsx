@@ -12,9 +12,14 @@ import { FilepondUpload } from "@/shared/components/FilepondUpload";
 import {
   RegisterCandidateSchema,
   TRegisterCandidateSchema,
-} from "../../validation/employer-candidate-schema";
+} from "../../validation/candidate-register-schema";
+import { useState } from "react";
+import { OTPModal } from "../forget-password/OtpModal";
+import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 
 const FormCandidateRegister = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const {
     register,
     control,
@@ -28,16 +33,17 @@ const FormCandidateRegister = () => {
       confirmRegister: false,
       uploadLicense: [],
     },
-    mode: "onBlur", // Validate on blur for better UX
+    mode: "onChange", // Validate on blur for better UX
   });
 
   const confirmRegisterValue = watch("confirmRegister");
 
   const onSubmit: SubmitHandler<TRegisterCandidateSchema> = (data) => {
     console.log(data);
+    setIsModalOpen(true)
   };
 
-  return (
+  return (<>
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="mt-6 flex flex-col gap-5"
@@ -62,65 +68,30 @@ const FormCandidateRegister = () => {
         error={errors.email?.message}
       />
 
-      {/* Phone Number */}
-      <div>
-        <label htmlFor="phoneCode" className="mx-1 mb-2 block font-semibold">
-          Phone number
+      <>
+        <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
+          Phone Number
         </label>
-        <div className="flex items-center gap-2">
-          <Controller
-            name="phoneCode"
-            control={control}
-            render={({ field }) => (
-              <SelectInputField
-                id="phoneCode"
-                placeholder="+999"
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
-                error={!!errors.phoneCode}
-                showPlaceholderImage="/assets/flag.svg"
-                className="w-29 min-w-29"
-                containerStyles="w-fit"
-                options={[
-                  {
-                    label: "+999",
-                    value: "+999",
-                    image: "/assets/flag.svg",
-                  },
-                  {
-                    label: "+24",
-                    value: "+24",
-                    image: "/assets/logo_1.svg",
-                  },
-                  {
-                    label: "+55",
-                    value: "+55",
-                    image: "/assets/flag.svg",
-                  },
-                ]}
-              />
-            )}
-          />
-          <InputField
-            id="phoneNumber"
-            type="text"
-            placeholder="ex: 52 987 6543"
-            {...register("phoneNumber")}
-            error={false}
-          />
-        </div>
-        {(errors.phoneCode || errors.phoneNumber) && (
-          <span className="mt-1 block text-[12px] text-red-500">
-            {errors.phoneCode?.message ||
-              errors.phoneNumber?.message ||
-              "Phone code and phone number are required"}
+        <Controller
+          name="phoneNumber"
+          control={control}
+          render={({ field }) => (
+            <PhoneInputCode
+              {...field}
+              defaultCountry="EG"
+              id="phoneNumber"
+              className="w-full"
+              placeholder="Enter phone number"
+              onChange={(value) => field.onChange(value)}
+            />
+          )}
+        />
+        {errors.phoneNumber && (
+          <span className="-mt-4 text-[12px] text-red-500">
+            {errors.phoneNumber.message}
           </span>
         )}
-      </div>
+      </>
 
       {/* Job Title */}
       <Controller
@@ -131,10 +102,7 @@ const FormCandidateRegister = () => {
             id="jobTitle"
             label="Job Title"
             placeholder="ex: Hospital"
-            value={
-              field.value ? { label: field.value, value: field.value } : null
-            }
-            onChange={(option) => field.onChange(option?.value)}
+            {...field}
             error={errors.jobTitle?.message}
             options={[
               { label: "Hospital", value: "hospital" },
@@ -158,12 +126,7 @@ const FormCandidateRegister = () => {
               <SelectInputField
                 id="country"
                 placeholder="country"
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
+                {...field}
                 error={errors.country?.message}
                 options={[
                   { label: "egypt", value: "egypt" },
@@ -180,12 +143,7 @@ const FormCandidateRegister = () => {
               <SelectInputField
                 id="city"
                 placeholder="city"
-                value={
-                  field.value
-                    ? { label: field.value, value: field.value }
-                    : null
-                }
-                onChange={(option) => field.onChange(option?.value)}
+                {...field}
                 error={errors.city?.message}
                 options={[
                   { label: "cairo", value: "cairo" },
@@ -214,7 +172,8 @@ const FormCandidateRegister = () => {
         control={control}
         render={({ field }) => (
           <FilepondUpload
-            label="Upload CV (optional)"
+            label={`Upload CV`}
+            hint={`"Optional"`}
             files={field.value}
             onChange={field.onChange}
             allowMultiple={false}
@@ -243,22 +202,6 @@ const FormCandidateRegister = () => {
       {/* Conditional License Fields */}
       {confirmRegisterValue && (
         <>
-          <InputField
-            id="licenseTitle"
-            label="License Title"
-            placeholder="ex: License Title"
-            {...register("licenseTitle")}
-            error={errors.licenseTitle?.message}
-          />
-
-          <InputField
-            id="licenseNumber"
-            label="License Number"
-            placeholder="ex: 23121212"
-            {...register("licenseNumber")}
-            error={errors.licenseNumber?.message}
-          />
-
           <>
             <Controller
               name="specificCountry"
@@ -268,13 +211,8 @@ const FormCandidateRegister = () => {
                   label="Country"
                   id="specificCountry"
                   placeholder="ex: United Arab Emirates (UAE)"
-                  value={
-                    field.value
-                      ? { label: field.value, value: field.value }
-                      : null
-                  }
-                  onChange={(option) => field.onChange(option?.value)}
                   error={errors.specificCountry?.message ? true : false}
+                  {...field}
                   options={[
                     {
                       label: "United Arab Emirates (UAE)",
@@ -286,10 +224,30 @@ const FormCandidateRegister = () => {
                 />
               )}
             />
-            <span className={`-mt-3 block text-[12px] ${errors.specificCountry?.message ? "text-red-500" : "text-primary"}`}>
+
+            <span className={`mx-1 -mt-3 block text-[12px] ${errors.specificCountry?.message ? "text-red-500" : "text-primary"}`}>
               Please specify the country issuing your license.
             </span>
           </>
+
+          <InputField
+            id="licenseTitle"
+            label="License Title"
+            hint={`"Optional"`}
+            placeholder="ex: License Title"
+            {...register("licenseTitle")}
+            error={errors.licenseTitle?.message}
+          />
+          <InputField
+            id="licenseNumber"
+            label={`License Number`}
+            hint={`"Optional"`}
+            placeholder="ex: 23121212"
+            {...register("licenseNumber")}
+            error={errors.licenseNumber?.message}
+          />
+
+
 
           <Controller
             name="uploadLicense"
@@ -297,6 +255,7 @@ const FormCandidateRegister = () => {
             render={({ field }) => (
               <FilepondUpload
                 label="Upload the license image"
+                hint={`"Optional"`}
                 files={field.value}
                 onChange={field.onChange}
                 allowMultiple={false}
@@ -321,6 +280,10 @@ const FormCandidateRegister = () => {
         </Button>
       </div>
     </form>
+    <OTPModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+
+  </>
+
   );
 };
 

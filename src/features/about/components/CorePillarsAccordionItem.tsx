@@ -13,16 +13,12 @@ export default function CorePillarsAccordionItem({
   onToggle,
 }: CorePillarsAccordionItemProps) {
   return (
-    <div className="border-b border-gray-200 pb-4">
+    <div className="border-border border-b pb-4">
       <button
         onClick={onToggle}
         className="flex w-full items-center justify-between gap-4 py-1 text-left"
       >
-        <span
-          className={`text-base font-semibold sm:text-lg ${
-            isOpen ? "text-green-700" : "text-gray-800"
-          }`}
-        >
+        <span className={`text-primary text-base font-semibold sm:text-lg`}>
           {pillar.title}
         </span>
 
@@ -30,7 +26,7 @@ export default function CorePillarsAccordionItem({
       </button>
 
       {isOpen && (
-        <p className="mt-4 max-w-xl text-sm text-gray-600 sm:text-base">
+        <p className="text-muted-foreground mt-4 max-w-xl text-justify text-sm sm:text-base">
           {pillar.content}
         </p>
       )}

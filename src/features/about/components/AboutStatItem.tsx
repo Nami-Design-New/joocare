@@ -10,11 +10,11 @@ export default function AboutStatItem({ value, label }: AboutStatItemProps) {
 
   return (
     <div className="px-2">
-      <h3 className="text-xl font-bold sm:text-2xl">
+      <h4 className="text-2xl font-bold sm:text-4xl">
         {hasPlus && <span className="text-primary">+</span>}
-        <span className="text-secondary">{normalizedValue}</span>
+        <span className="text-foreground">{normalizedValue}</span>
         {hasPercent && <span className="text-primary">%</span>}
-      </h3>
+      </h4>
       <p className="mt-2 text-xs leading-relaxed text-gray-500 sm:text-sm">
         {label}
       </p>

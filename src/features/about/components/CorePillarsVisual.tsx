@@ -1,10 +1,10 @@
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import Image from "next/image";
 
 export default function CorePillarsVisual() {
   return (
-    <div className="relative mx-auto flex h-fit w-full max-w-[340px] flex-col gap-4 sm:max-w-[520px] sm:gap-6 lg:sticky lg:top-24 lg:mx-0 lg:max-w-none">
-      <div className="relative h-[180px] w-[78%] overflow-hidden rounded-tl-[40px] rounded-br-[40px] sm:h-[220px] sm:w-[340px] sm:rounded-tl-[50px] sm:rounded-br-[50px] lg:h-[200px] lg:w-[320px]">
+    <div className="relative mx-auto flex h-fit w-full max-w-85 flex-col gap-4 sm:sm:max-w-130 sm:gap-6 lg:mx-0 lg:max-w-none">
+      <div className="relative h-45 w-[78%] overflow-hidden rounded-tl-[40px] rounded-br-[40px] sm:h-55 sm:w-85 sm:rounded-tl-[50px] sm:rounded-br-[50px] lg:h-50 lg:w-[320px]">
         <Image
           src="/assets/about/corePillar1.jpg"
           alt="Medical recruitment workflow"
@@ -19,11 +19,11 @@ export default function CorePillarsVisual() {
           alt="Decorative dots"
           width={80}
           height={80}
-          className="lg:h-auto sm:h-[100px] sm:w-[100px]"
+          className="sm:h-25 sm:w-25 lg:h-auto"
         />
       </div>
 
-      <div className="absolute top-[60px] right-0 flex w-[72%] items-center gap-2 sm:top-[70px] sm:w-[60%] sm:gap-4">
+      <div className="absolute top-15 right-0 flex w-[72%] items-center gap-2 sm:top-17.5 sm:w-[60%] sm:gap-4">
         <div className="min-w-0 flex-1 rounded-xl bg-white px-4 py-2 shadow-lg sm:px-6 sm:py-3">
           <span className="text-sm text-gray-500 sm:text-base">
             Search jobs
@@ -34,7 +34,7 @@ export default function CorePillarsVisual() {
         </div>
       </div>
 
-      <div className="absolute top-[190px] right-0 z-10 sm:top-[240px] lg:top-[220px]">
+      <div className="absolute top-47.5 right-0 z-10 sm:top-60 lg:top-55">
         <div className="rounded-xl bg-white px-4 py-2 shadow-lg sm:px-6 sm:py-3">
           <span className="flex items-center gap-2 text-sm font-bold sm:text-base">
             <Image
@@ -50,7 +50,7 @@ export default function CorePillarsVisual() {
       </div>
 
       <div className="flex gap-3 sm:gap-6">
-        <div className="relative h-[170px] w-[44%] overflow-hidden rounded-tr-[40px] rounded-bl-[40px] sm:h-[200px] sm:w-[200px] sm:rounded-tr-[50px] sm:rounded-bl-[50px]">
+        <div className="`h-42.5 relative w-[44%] overflow-hidden rounded-tr-[40px] rounded-bl-[40px] sm:h-50 sm:w-50 sm:rounded-tr-[50px] sm:rounded-bl-[50px]">
           <Image
             src="/assets/about/corePillar2.jpg"
             alt="Healthcare professional"
@@ -69,8 +69,8 @@ export default function CorePillarsVisual() {
         </div>
       </div>
 
-      <div className="absolute bottom-4 left-4 rounded-2xl bg-white p-4 shadow-xl sm:bottom-[50px] sm:left-20 sm:p-6">
-        <p className="text-sm font-semibold text-gray-800 sm:text-base">
+      <div className="absolute bottom-4 left-4 rounded-2xl bg-white p-4 shadow-xl sm:bottom-12.5 sm:left-20 sm:p-6">
+        <p className="text-foreground text-sm font-semibold sm:text-base">
           12k+ Verified Doctors
         </p>
 
@@ -97,7 +97,7 @@ export default function CorePillarsVisual() {
             className="-ml-3 h-8 w-8 rounded-full border-2 border-white object-cover sm:h-9 sm:w-9"
           />
           <div className="text-primary -ml-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#EBEFF5] sm:h-9 sm:w-9">
-            +
+            <Plus size={12} />
           </div>
         </div>
       </div>

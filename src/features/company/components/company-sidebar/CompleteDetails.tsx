@@ -1,4 +1,5 @@
-import { Button } from "@/shared/components/ui/button"
+import { Link } from "@/i18n/navigation"
+import { buttonVariants } from "@/shared/components/ui/button"
 
 const CompleteDetails = () => {
     return (
@@ -10,7 +11,11 @@ const CompleteDetails = () => {
                 Please complete your account details so you can use the platform normally and benefit from all its features.
             </p>
 
-            <Button className="bg-destructive hover:bg-destructive/70 w-full rounded-full py-6 text-base">Complete Now </Button>
+            <Link href={'/company/complete-account'} className={` ${buttonVariants({
+                size: "pill",
+                variant: "destructive"
+            })} 
+           text-[16px]`}>Complete Now </Link>
         </section>
     )
 }
