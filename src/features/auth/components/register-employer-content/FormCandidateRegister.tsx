@@ -83,6 +83,8 @@ const FormCandidateRegister = () => {
               className="w-full"
               placeholder="Enter phone number"
               onChange={(value) => field.onChange(value)}
+              error={errors.phoneNumber?.message ? true : false}
+
             />
           )}
         />

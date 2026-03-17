@@ -351,3 +351,15 @@
 .country-flag-size svg{
   width: 30px !important;
 }
+
+.react-datepicker-popper {
+  transform: translate(0px, 62px) !important;
+}
+
+.filepond--error .filepond--panel-root {
+  border: 1px solid red;
+}
+
+.filepond--error .filepond--drop-label {
+  color: red;
+}

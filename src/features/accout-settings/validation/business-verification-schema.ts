@@ -27,7 +27,7 @@ const medicalFacilityLicenseNumberSchema = z
     },
   );
 
-export const stepTwoSchema = z.object({
+export const BusinessVerificationSchema = z.object({
   commercialRegister: commercialRegisterSchema,
   issuingCountryLicense: z
     .string({
@@ -72,3 +72,7 @@ export const stepTwoSchema = z.object({
     })
     .min(1, { message: "medical license image is required" }),
 });
+
+export type TBusinessVerificationSchema = z.infer<
+  typeof BusinessVerificationSchema
+>;

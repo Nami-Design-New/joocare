@@ -7,6 +7,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import CoverUploadImage from "../components/cover-upload-image";
 import Image from "next/image";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
+import { YearPicker } from "@/shared/components/YearPicker";
 
 export default function StepThree() {
   const { register, control, formState: { errors } } = useFormContext();
@@ -33,6 +34,7 @@ export default function StepThree() {
               className="w-full"
               placeholder="Enter phone number"
               onChange={(value) => field.onChange(value)}
+              error={errors.organizationPhoneNumber?.message ? true : false}
             />
           )}
         />
@@ -86,23 +88,22 @@ export default function StepThree() {
         </div>
       </div>
 
-      {/* date of establishment */}
-      <InputField
-        id="dateOfEstablishment"
-        type="date"
-        label="Date of Establishment"
-        placeholder="******"
-        {...register("dateOfEstablishment")}
-        error={errors.dateOfEstablishment?.message?.toString()}
+      <Controller
+        name="dateOfEstablishment"
+        control={control}
+        render={({ field }) => (
+          <YearPicker
+            id="dateOfEstablishment"
+            label="Date of Establishment"
+            placeholder="ex: 2021"
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            name={field.name}
+            error={errors.dateOfEstablishment?.message?.toString()}
+          />
+        )}
       />
-
-      {/* <YearPicker
-        id="dateOfEstablishment"
-        label="Date of Establishment"
-        placeholder="ex: 2021"
-        {...register("dateOfEstablishment")}
-        error={errors.dateOfEstablishment?.message?.toString()}
-      /> */}
 
       <TextareaField
         id="aboutOrganization"

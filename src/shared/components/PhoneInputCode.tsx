@@ -23,15 +23,16 @@ import { cn } from "@/shared/lib/utils";
 
 type PhoneInputCodeProps = Omit<
   React.ComponentProps<"input">,
-  "onChange" | "value" | "ref"
+  "onChange" | "value" | "ref" | "error"
 > &
   Omit<RPNInput.Props<typeof RPNInput.default>, "onChange"> & {
     onChange?: (value: RPNInput.Value) => void;
+    error?: boolean
   };
 
 const PhoneInputCode: React.ForwardRefExoticComponent<PhoneInputCodeProps> =
   React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputCodeProps>(
-    ({ className, onChange, value, ...props }, ref) => {
+    ({ className, onChange, value, error, ...props }, ref) => {
       return (
         <RPNInput.default
           ref={ref}
@@ -51,6 +52,7 @@ const PhoneInputCode: React.ForwardRefExoticComponent<PhoneInputCodeProps> =
            * @param {E164Number | undefined} value - The entered value
            */
           onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
+          numberInputProps={{ error }}
           {...props}
         />
       );
@@ -60,14 +62,18 @@ PhoneInputCode.displayName = "PhoneInputCode";
 
 const InputComponent = React.forwardRef<
   HTMLInputElement,
-  React.ComponentProps<"input">
->(({ className, ...props }, ref) => (
-  <Input
-    className={cn("", className)}
-    {...props}
-    ref={ref}
-  />
-));
+  React.ComponentProps<"input"> & { error?: boolean }
+>(({ className, error, ...props }, ref) => <Input
+  aria-invalid={!!error}
+  className={cn(
+    className,
+    error && "border-red-500 focus-visible:ring-red-500"
+  )}
+  {...props}
+  ref={ref}
+/>
+
+);
 InputComponent.displayName = "InputComponent";
 
 type CountryEntry = { label: string; value: RPNInput.Country | undefined };

@@ -78,6 +78,8 @@ export function OTPModal({ open, onOpenChange, email }: OTPModalProps) {
     const router = useRouter()
     const path = usePathname()
     const forgetPasswordPage = path.includes('forget-password')
+    const basicInfo = path.includes("basic-info")
+
     const {
         control,
         handleSubmit,
@@ -90,10 +92,12 @@ export function OTPModal({ open, onOpenChange, email }: OTPModalProps) {
     const onSubmit: SubmitHandler<TPasswordOtpSchema> = (data) => {
         console.log({ otp: data.otp, email: email }); // { otp: "12345" }
         reset()
-        // onOpenChange(false)
         if (forgetPasswordPage) {
             router.push('/auth/new-password')
-        } else {
+        } else if (basicInfo) {
+            onOpenChange(false)
+        }
+        else {
             router.push('/')
         }
     }

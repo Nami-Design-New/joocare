@@ -22,7 +22,7 @@ const links = [
     },
     {
         label: "Account Settings",
-        href: "/company/account-settings",
+        href: "/company/account-settings/basic-info",
         icon: Settings,
     },
 ]
