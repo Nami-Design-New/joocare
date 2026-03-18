@@ -2,6 +2,8 @@
 
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import SectionTitle from "../home/components/SectionTitle";
+import Image from "next/image";
+import { Button } from "@/shared/components/ui/button";
 
 type SocialItem = {
   icon: React.ComponentType<{ size?: number }>;
@@ -39,8 +41,8 @@ export default function SideCard({
   const resolvedImageSrc =
     imageSrc ??
     (isLoggedIn
-      ? "/assets/contact/candidate.png"
-      : "/assets/contact/employer.png");
+      ? "/assets/contact/employer.svg"
+      : "/assets/contact/candidate.svg");
 
   const resolvedButtonText =
     buttonText ?? (isLoggedIn ? "For Candidates" : "For Employer");
@@ -49,23 +51,18 @@ export default function SideCard({
     <div className="bg-muted flex h-full flex-col rounded-3xl p-5 text-left md:p-6">
       <div className="w-fit">
         <SectionTitle sectionTitle={title} />
+        <h2 className="text-secondary my-4 text-2xl leading-tight font-bold">
+          {subtitle}
+        </h2>
       </div>
-
-      <h2 className="text-secondary my-4 text-2xl leading-tight font-bold">
-        {subtitle}
-      </h2>
-
-      <div className="mt-3 overflow-hidden rounded-2xl">
-        <img
-          src={resolvedImageSrc}
-          alt={imageAlt}
-          className="w-full object-contain transition-transform duration-300 hover:scale-[1.02]"
-        />
-      </div>
-
-      <button className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4 w-full rounded-full px-6 py-2.5 text-sm font-semibold transition-colors">
-        {resolvedButtonText}
-      </button>
+      <section className="flex w-full grow flex-col items-center justify-center gap-2">
+        <div className="relative h-85 w-full">
+          <Image src={resolvedImageSrc} alt={imageAlt} fill />
+        </div>
+        <Button size="pill" className="w-full">
+          {resolvedButtonText}
+        </Button>
+      </section>
 
       {showSocial && (
         <div className="mt-auto pt-10">

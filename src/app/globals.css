@@ -53,6 +53,7 @@
   --shadow-soft: 0 0 20px var(--shadow-soft);
   --color-soft-overlay: var(--soft-overlay);
   --color-body-bg: var(--body-bg);
+  --bg-primary-gradient: var(--primary-gradient);
 }
 
 /* ════════════════════════════════════════
@@ -118,6 +119,7 @@
   --sidebar-ring: oklch(0.285 0.082 252);
 
   --shadow-soft: #0000000d;
+  --primary-gradient: linear-gradient(270deg, #3eb33f 0%, #09760a 100.62%);
 }
 
 /* ════════════════════════════════════════
@@ -170,6 +172,7 @@
   --sidebar-accent-foreground: oklch(0.55 0.13 145);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.55 0.1 252);
+  --primary-gradient: linear-gradient(270deg, #3eb33f 0%, #09760a 100.62%);
 }
 
 /* ════════════════════════════════════════
@@ -213,6 +216,9 @@
 }
 
 @layer utilities {
+  .bg-primary-gradient {
+    background: var(--bg-primary-gradient);
+  }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -348,7 +354,7 @@
   text-decoration: underline;
 }
 
-.country-flag-size svg{
+.country-flag-size svg {
   width: 30px !important;
 }
 

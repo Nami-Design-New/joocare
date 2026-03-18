@@ -2,13 +2,15 @@ import AboutHeroSection from "@/features/about/components/AboutHeroSection";
 import CorePillarsSection from "@/features/about/components/CorePillarsSection";
 import Mission from "@/features/about/components/Misison";
 import Vision from "@/features/about/components/Vision";
-import Breadcrumb from "@/shared/components/Breadcrumb";
+import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
 
 export default function AboutPage() {
   return (
     <>
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "About" }]} />
-      <section className="lg:pt-18 sm:pt-14 ">
+      <PlainBreadcrumb
+        items={[{ label: "Home", href: "/" }, { label: "About" }]}
+      />
+      <section className="sm:pt-14 lg:pt-18">
         <AboutHeroSection />
         <CorePillarsSection />
         <Vision />

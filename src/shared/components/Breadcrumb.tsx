@@ -1,42 +1,50 @@
+import { ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { ChevronRight } from 'lucide-react';
 
-type Crumb = {
+type BreadcrumbItem = {
   label: string;
   href?: string;
 };
 
-export default function Breadcrumb({ items }: { items: Crumb[] }) {
-  const last = items.length - 1;
-  const title = items[last]?.label || "";
+type BreadcrumbProps = {
+  title: string;
+  items: BreadcrumbItem[];
+};
 
+export default function Breadcrumb({ title, items }: BreadcrumbProps) {
   return (
-    <div className="border-b border-[#e6e6e6] bg-[#0D0D0D0D]">
-      <div className="container mx-auto max-w-7xl flex items-center justify-between px-4 py-3 sm:px-6">
-        <h1 className="text-lg font-semibold text-black">{title}</h1>
+    <div className="` bg-primary-gradient px-25 pt-12 pb-38 text-white">
+      <div className="mx-auto flex max-w-6xl items-center justify-between">
+        <h6 className="text-lg font-semibold">{title}</h6>
 
         <nav aria-label="Breadcrumb">
-          <ol className="flex items-center space-x-2 text-sm text-gray-600">
-            {items.map((it, idx) => {
-              const isLast = idx === last;
+          <ol className="flex items-center space-x-2 text-sm text-white/90">
+            {items.map((item, index) => {
+              const isLast = index === items.length - 1;
+
               return (
-                <li key={idx} className="flex items-center">
-                  {!isLast && it.href ? (
+                <li key={index} className="flex items-center space-x-2">
+                  {item.href && !isLast ? (
                     <Link
-                      href={it.href}
-                      className="hover:text-secondary text-sm text-gray-600"
+                      href={item.href}
+                      className="text-white/90 hover:underline"
                     >
-                      {it.label}
+                      {item.label}
                     </Link>
                   ) : (
                     <span
-                      className={`text-sm ${isLast ? "text-secondary font-semibold" : "text-gray-600"}`}
+                      className={`${
+                        isLast ? "font-semibold text-white" : "text-white/70"
+                      }`}
+                      aria-current={isLast ? "page" : undefined}
                     >
-                      {it.label}
+                      {item.label}
                     </span>
                   )}
 
-                  {idx < last && <span className="mx-2 text-[#0D0D0DA6]"><ChevronRight width={20} hanging={20} /></span>}
+                  {!isLast && (
+                    <ChevronRight className="text-white/70" size={20} />
+                  )}
                 </li>
               );
             })}
