@@ -12,7 +12,7 @@ import {
   UserRoundCogIcon,
 } from "lucide-react";
 import Image from "next/image";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +21,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Link } from "@/i18n/navigation";
+import { cn } from "@/shared/lib/utils";
 
 export default function UserDropDown({ companyHeader }: { companyHeader: boolean }) {
   const itemClass =
@@ -76,14 +78,16 @@ export default function UserDropDown({ companyHeader }: { companyHeader: boolean
               </div>
             </div>
 
-            <Button
-              variant="outline"
-              size="pill"
-              className="w-full px-3 py-2"
-              hoverStyle="slidePrimary"
-            >
+            <Link className={cn(buttonVariants(
+              {
+                variant: 'outline',
+                size: "pill",
+                hoverStyle: "slidePrimary",
+              }), 'border-secondary border w-full h-8.5')}
+              href={'/candidate-profile'}>
               View Profile
-            </Button>
+            </Link>
+
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
@@ -92,18 +96,18 @@ export default function UserDropDown({ companyHeader }: { companyHeader: boolean
         {/* Menu Items */}
         <DropdownMenuGroup>
           <DropdownMenuItem className={itemClass}>
-            <Settings className="w-5 h-5 text-muted-foreground group-hover:text-primary"  strokeWidth={2.5}/>
+            <Settings className="w-5 h-5 text-muted-foreground group-hover:text-primary" strokeWidth={2.5} />
             <p>Account settings</p>
           </DropdownMenuItem>
 
           {companyHeader ? (<>
 
             <DropdownMenuItem className={itemClass}>
-              <Gauge className="w-5 h-5 text-muted-foreground group-hover:text-primary"  strokeWidth={2.5}/>
+              <Gauge className="w-5 h-5 text-muted-foreground group-hover:text-primary" strokeWidth={2.5} />
               <p>Dashboard</p>
             </DropdownMenuItem>
             <DropdownMenuItem className={itemClass}>
-              <UserRoundCogIcon className="w-5 h-5 text-muted-foreground group-hover:text-primary"  strokeWidth={2.5}/>
+              <UserRoundCogIcon className="w-5 h-5 text-muted-foreground group-hover:text-primary" strokeWidth={2.5} />
               <p>Job Management</p>
             </DropdownMenuItem>
 

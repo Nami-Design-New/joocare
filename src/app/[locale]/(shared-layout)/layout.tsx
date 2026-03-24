@@ -1,6 +1,6 @@
+import Footer from "@/shared/components/Footer";
 import Header from "@/shared/components/header/Header";
 import React from "react";
-import { Footer } from "react-day-picker";
 
 export default function RootLayout({
   children,
@@ -10,7 +10,8 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <main className="min-h-screen">{children}</main> <Footer />
+      <main className="min-h-screen">{children}</main>
+      <Footer />
     </>
   );
 }
