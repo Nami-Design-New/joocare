@@ -59,7 +59,7 @@ export default function JobsFilterSection() {
             />
 
             <Button variant="default" size="pill" className="shrink-0">
-              Search{" "}
+              Search
             </Button>
           </form>
           <PopularSearchesInteractive

@@ -1,6 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import { Badge } from "@/shared/components/ui/badge";
-import { Button, buttonVariants } from "@/shared/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,15 +11,16 @@ import {
   Bookmark,
   Briefcase,
   DollarSign,
-  Dot,
   LocationEdit,
   Share,
+  Sparkles,
+  Timer,
 } from "lucide-react";
 import Image from "next/image";
 
-export default function CandidateJobCard() {
+export default function SimilarJobCard() {
   return (
-    <Card>
+    <Card className="gap-2">
       <CardHeader className="flex gap-2">
         <Image
           width={52}
@@ -29,18 +29,17 @@ export default function CandidateJobCard() {
           alt="company logo"
         />
         <div className="flex grow flex-col gap-1">
-          <h6 className="text-secondary text-lg font-semibold">
-            Medical Approval
-          </h6>
           <p className="text-foreground text-md font-normal">Health care</p>
           <time className="text-muted-foreground font normal text-xs">
             21 December 2026 , 4:00AM
           </time>
         </div>
-        <p>Resume Match</p>
+        <span className="bg-accent text-primary flex items-center gap-1 rounded-[12px] p-2 text-sm font-semibold">
+          <Sparkles size={16} /> 90 %
+        </span>
       </CardHeader>
       <CardContent>
-        <div className="border-b-border flex flex-col gap-4 border-b pb-4">
+        <div className="flex flex-col gap-2">
           <ul className="items-cente flex gap-2">
             <li className="text-secondary flex items-center gap-1 text-sm font-normal">
               <LocationEdit size={14} color="var(--muted-foreground)" />
@@ -71,32 +70,10 @@ export default function CandidateJobCard() {
           </div>{" "}
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col gap-4">
-        <div className="flex w-full items-center justify-between gap-2">
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="pill"
-              className="border-border text-muted-foreground h-9 px-4 py-2 text-sm"
-            >
-              <Bookmark /> Save
-            </Button>
-            <Button
-              variant="outline"
-              size="pill"
-              className="border-border text-muted-foreground h-9 px-4 py-2 text-sm"
-            >
-              <Share /> Share
-            </Button>
-          </div>
-          <Link
-            className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white`}
-            href="/jobs/mediacl-job"
-          >
-            View Job
-            <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
-          </Link>
-        </div>
+      <CardFooter>
+        <p className="text-foreground flex items-center gap-1 text-sm">
+          <Timer size={16} /> 2 hours ago
+        </p>
       </CardFooter>
     </Card>
   );

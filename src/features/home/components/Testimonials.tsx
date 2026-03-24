@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
 } from "@/shared/components/ui/carousel";
 
-const TestimonialCard = ({
+export const TestimonialCard = ({
   name,
   date,
   text,
