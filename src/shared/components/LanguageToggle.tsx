@@ -13,7 +13,7 @@ export function LanguageToggle() {
   return (
     <Select defaultValue="EN">
       <SelectTrigger
-        className={`${buttonVariants({ variant: "ghost", hoverStyle: "slidePrimary" })} border-0 text-secondary shadow-none bg-transparent flex items-center gap-2 rounded-full min-h-13  `}
+        className={`${buttonVariants({ variant: "ghost", hoverStyle: "slidePrimary" })} text-secondary m-0 flex min-h-13 items-center gap-2 rounded-full border-0 bg-transparent shadow-none`}
       >
         <Globe color="var(--secondary)" />
         <SelectValue placeholder="EN" />

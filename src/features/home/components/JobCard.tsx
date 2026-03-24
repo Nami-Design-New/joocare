@@ -8,27 +8,7 @@ interface JobProps {
   time: string;
 }
 
-const glassConfig = {
-  blur: 0.4, // Frost: 4   → low diffusion, almost clear
-  contrast: 1.8, // Refraction: 80 → strong lens-like bending
-  brightness: 0.8, // Light: 80% → slightly dimmed highlight
-  saturation: 1.5, // Dispersion: 50 → vivid chromatic spread
-  shadowIntensity: 0.2, // Depth: 20  → subtle but present shadow
-  elasticity: 0, // Splay: 0   → no edge elasticity
-  borderRadius: 20,
-};
 const JobCard = ({ title, company, location, type, time }: JobProps) => (
-  //   <LiquidGlass
-  //     blur={glassConfig.blur}
-  //     contrast={glassConfig.contrast}
-  //     brightness={glassConfig.brightness}
-  //     saturation={glassConfig.saturation}
-  //     shadowIntensity={glassConfig.shadowIntensity}
-  //     elasticity={glassConfig.elasticity}
-  //     borderRadius={glassConfig.borderRadius}
-  //     className="glass-element"
-  //   >
-
   <article className="group bg-card border-border group hover:border-primary/50 relative rounded-xl border p-5 transition-all hover:shadow-sm">
     <section className="flex items-start gap-4">
       <Image
@@ -59,7 +39,6 @@ const JobCard = ({ title, company, location, type, time }: JobProps) => (
       </div>
     </section>
   </article>
-  //   {/* </LiquidGlass> */}
 );
 
 export default JobCard;

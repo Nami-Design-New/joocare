@@ -12,15 +12,15 @@ const Header = () => {
   const [toggleSideMenu, setToggleSideMenu] = useState(false);
   const [isAuthed, setIsAuthed] = useState(true);
   const path = usePathname();
-  const companyHeader = path.includes('/company')
+  const companyHeader = path.includes("/company");
 
   const handleToggleMenu = () => {
     setToggleSideMenu((prev) => !prev);
   };
   return (
     <>
-      <header className="flex sticky top-0 justify-between bg-white z-30 items-center py-4  px-3 lg:px-2 w-full shadow-header min-h-[87px]">
-        <div className="container mx-auto flex justify-between items-center">
+      <header className="shadow-header sticky top-0 z-30 flex min-h-21.75 w-full items-center justify-between bg-white px-3 py-4 lg:px-25">
+        <div className="container mx-auto flex items-center justify-between">
           {/* Logo */}
           <div className="flex gap-1">
             <button
@@ -31,10 +31,9 @@ const Header = () => {
             </button>
             <Link
               href="/"
-              className="flex gap-2 items-center justify-center"
+              className="flex items-center justify-center gap-2"
               aria-label="Go to homepage"
             >
-
               <Image
                 src="/assets/logo_1.svg"
                 alt="Joo Care Logo"
@@ -57,7 +56,7 @@ const Header = () => {
           {/* Main Navigation */}
           <nav
             aria-label="Main Navigation"
-            className=" hidden lg:flex justify-center"
+            className="hidden justify-center lg:flex"
           >
             <ul className="flex justify-center space-x-4">
               <li>
@@ -70,11 +69,13 @@ const Header = () => {
                   About
                 </Link>
               </li>
-              {!companyHeader && <li>
-                <Link href="/jobs" className="nav-link">
-                  Jobs
-                </Link>
-              </li>}
+              {!companyHeader && (
+                <li>
+                  <Link href="/jobs" className="nav-link">
+                    Jobs
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link href="/contact" className="nav-link">
                   Contact
@@ -82,9 +83,11 @@ const Header = () => {
               </li>
             </ul>
           </nav>
-          <HeaderActionsButtons isAuthed={isAuthed} companyHeader={companyHeader} />
+          <HeaderActionsButtons
+            isAuthed={isAuthed}
+            companyHeader={companyHeader}
+          />
         </div>
-
       </header>
       {toggleSideMenu && (
         <ResponsiveNavigationBar

@@ -13,8 +13,8 @@ type BreadcrumbProps = {
 
 export default function Breadcrumb({ title, items }: BreadcrumbProps) {
   return (
-    <div className="` bg-primary-gradient px-25 pt-12 pb-38 text-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-between">
+    <div className="` bg-primary-gradient px-3 pt-12 pb-38 text-white lg:px-25">
+      <div className="container mx-auto flex items-center justify-between">
         <h6 className="text-lg font-semibold">{title}</h6>
 
         <nav aria-label="Breadcrumb">

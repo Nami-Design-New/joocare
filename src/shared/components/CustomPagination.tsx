@@ -34,7 +34,7 @@ export function CustomPagination({
   };
 
   return (
-    <div className="flex w-full max-w-2xl flex-wrap items-center justify-center gap-2 md:gap-8">
+    <div className="flex w-full flex-wrap items-center justify-center gap-2 md:gap-8">
       {/* Status */}
       <div className="text-muted-foreground order-2 text-sm font-medium md:order-1">
         Show{" "}

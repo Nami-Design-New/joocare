@@ -17,7 +17,7 @@ export const LiveJobs = () => {
       className="bg-white py-10 md:py-20"
       aria-labelledby="recent-jobs-title"
     >
-      <div className="container mx-auto max-w-7xl px-3 lg:px-2">
+      <div className="container mx-auto px-3 lg:px-25">
         <header className="mb-10 flex items-end justify-between">
           <div className="space-y-4">
             <SectionTitle sectionTitle="Recent Jobs" />
