@@ -1,15 +1,14 @@
 "use client"
 
-import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress";
-import { CircleAlert, Eye, File, Sparkles } from "lucide-react";
+import { CircleAlert, Sparkles } from "lucide-react";
 import Image from "next/image";
 import UploadCvSection from "./UploadCvSection";
 
 
 const SideContentInfos = () => {
     return (
-        <aside className="no-scrollbar flex  flex-col gap-5 overflow-y-auto bg-white px-3 py-6 rounded-2xl shadow">
+        <aside className="no-scrollbar flex  flex-col gap-5 overflow-y-auto bg-white px-3 py-6 rounded-2xl shadow h-full">
 
             {/* image */}
             <section className="w-50 mx-auto flex flex-col justify-center items-center gap-2">

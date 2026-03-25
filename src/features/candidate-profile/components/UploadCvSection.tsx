@@ -57,7 +57,7 @@ const UploadCvSection = () => {
 
 
   return (
-    <section className="flex flex-col gap-2 p-6 bg-[#09760A05]">
+    <>
       {/* hidden input */}
       <input
         type="file"
@@ -78,7 +78,7 @@ const UploadCvSection = () => {
         </Button>
       ) : (
         // ================= HAS CV =================
-        <>
+        <section className="flex flex-col gap-2 p-6 bg-[#09760A05]">
           {/* File Info */}
           <div className="rounded-[8px] p-5 flex justify-center items-center shadow bg-white gap-2">
             <Image
@@ -116,13 +116,13 @@ const UploadCvSection = () => {
             </Button>
           </div>
 
-        </>
+        </section>
       )}
 
       {cvFile && <CVModal open={open} onOpenChange={setOpen} title={"View Cv"} url={URL.createObjectURL(cvFile)} handleDownload={handleDownload} handleUploadClick={handleUploadClick}
         handleDelete={handleDelete} />}
 
-    </section>
+    </>
   )
 }
 

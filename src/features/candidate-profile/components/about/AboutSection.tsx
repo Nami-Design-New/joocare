@@ -1,7 +1,7 @@
 "use client"
-import { EditAboutModal } from "@/features/company-profile/components/EditAboutModal"
 import { Edit2 } from "lucide-react"
 import { useState } from "react"
+import { EditAboutModal } from "./EditAboutModal"
 
 const AboutSection = () => {
     const [open, setOpen] = useState(false)

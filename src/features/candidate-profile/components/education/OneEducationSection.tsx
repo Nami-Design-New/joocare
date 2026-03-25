@@ -1,8 +1,19 @@
+"use client"
+
 import { Edit, Trash2 } from 'lucide-react'
 import Image from 'next/image'
+import { useState } from 'react'
+import { EducationModal } from './EducationModal'
+import DeleteModal from '@/shared/components/modals/DeleteModal'
+
 
 const OneEducationSection = () => {
-    return (
+    const [open, setOpen] = useState(false)
+    const [deleteEducation, setDeleteEducation] = useState(false);
+    const handleDeleteEducation = () => {
+        setDeleteEducation(false);
+    };
+    return (<>
         <div className="flex justify-between items-start gap-2">
             <div className="flex justify-start items-start gap-2">
                 <div className="bg-accent rounded-full p-2">
@@ -16,10 +27,20 @@ const OneEducationSection = () => {
             </div>
 
             <div className="flex items-center gap-3">
-                <Edit width={20} height={20} className="cursor-pointer text-muted-foreground" />
-                <Trash2 width={20} height={20} className="cursor-pointer text-red-400" />
+                <Edit width={20} height={20} className="cursor-pointer text-muted-foreground" onClick={() => setOpen(!open)} />
+                <Trash2 width={20} height={20} className="cursor-pointer text-red-400" onClick={() => setDeleteEducation(true)} />
             </div>
         </div>
+        <EducationModal label="Edit Education" open={open} onOpenChange={setOpen} />
+        <DeleteModal
+            open={deleteEducation}
+            onOpenChange={setDeleteEducation}
+            title="Do you want to delete this Education?"
+            description="The Education will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
+            cancelLabel="Back"
+            onConfirm={handleDeleteEducation}
+        />
+    </>
     )
 }
 

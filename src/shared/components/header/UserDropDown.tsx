@@ -97,7 +97,7 @@ export default function UserDropDown({ companyHeader }: { companyHeader: boolean
         <DropdownMenuGroup>
           <DropdownMenuItem className={itemClass}>
             <Settings className="w-5 h-5 text-muted-foreground group-hover:text-primary" strokeWidth={2.5} />
-            <p>Account settings</p>
+            <Link href={'/candidate/profile'}>Account settings</Link>
           </DropdownMenuItem>
 
           {companyHeader ? (<>

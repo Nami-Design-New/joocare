@@ -20,7 +20,7 @@ const SidebarLinks = ({ links }: ILinksProps) => {
 
     return (
         <nav aria-label="Company navigation">
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-5">
                 {links.map(({ label, href, image, icon: Icon }) => {
                     const isActive = normalizedPathname === href
 

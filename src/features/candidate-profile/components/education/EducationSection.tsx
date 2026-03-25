@@ -1,7 +1,7 @@
 "use client"
-import { EditAboutModal } from "@/features/company-profile/components/EditAboutModal"
 import { Plus } from "lucide-react"
 import { useState } from "react"
+import { EducationModal } from "./EducationModal"
 import OneEducationSection from "./OneEducationSection"
 
 const EducationSection = () => {
@@ -16,8 +16,7 @@ const EducationSection = () => {
             <OneEducationSection />
 
         </section>
-        <EditAboutModal open={open} onOpenChange={setOpen}
-            defaultVal={`Board-certified cardiologist with extensive experience in interventional procedures, cardiac imaging, and preventive cardiology. Passionate about patient-centered care and advancing cardiovascular health through innovative treatments.`}
+        <EducationModal label="Add Education" open={open} onOpenChange={setOpen}
         />
 
     </>
