@@ -31,7 +31,7 @@ export default function CVModal({
             size="sm"
             variant="secondary"
             className="flex items-center gap-1.5 rounded-full px-4"
-            // onClick={() => onDownload?.(applicant)}
+          // onClick={() => onDownload?.(applicant)}
           >
             <Image
               src="/assets/icons/pdf-icon.svg"

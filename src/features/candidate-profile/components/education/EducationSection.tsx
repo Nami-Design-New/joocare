@@ -16,8 +16,8 @@ const EducationSection = () => {
             <OneEducationSection />
 
         </section>
-        <EducationModal label="Add Education" open={open} onOpenChange={setOpen}
-        />
+        {open && <EducationModal label="Add Education" open={open} onOpenChange={setOpen}
+        />}
 
     </>
     )
