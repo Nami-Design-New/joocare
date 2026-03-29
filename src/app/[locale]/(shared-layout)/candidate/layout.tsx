@@ -10,7 +10,7 @@ export default function CandidateProfileLayout({
         <PlainBreadcrumb
             items={[{ label: "Home", href: "/" }, { label: "Overview" }]}
         />
-        <main className="container mx-auto px-3 lg:px-2 grid grid-cols-12 py-12 gap-8 items-start ">
+        <main className="container mx-auto px-3 lg:px-0 grid grid-cols-12 py-12 gap-8 items-start ">
 
             <section className="col-span-3">
                 <CandidateSideContentLinks />

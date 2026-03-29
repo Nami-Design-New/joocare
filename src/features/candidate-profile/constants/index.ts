@@ -13,7 +13,7 @@ export const links = [
   },
   {
     label: "Professional Credentials",
-    href: "/candidate/credentials",
+    href: "/candidate/credentials/qualifications",
     image: "/assets/icons/professional_credentials.svg",
   },
   {
