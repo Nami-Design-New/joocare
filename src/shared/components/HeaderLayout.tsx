@@ -4,13 +4,10 @@ import { usePathname } from "@/i18n/navigation"
 import { Link } from "@/i18n/navigation"
 import { buttonVariants } from "@/shared/components/ui/button"
 
-const navLinks = [
-    { href: "/company/account-settings/basic-info", label: "Basic Info" },
-    { href: "/company/account-settings/business-verification", label: "Business Verification" },
-    { href: "/company/account-settings/change-password", label: "Change Password" },
-]
 
-const HeaderLayout = () => {
+const HeaderLayout = ({ navLinks }: {
+    navLinks: { href: string; label: string }[]
+}) => {
     const pathname = usePathname()
 
     return (

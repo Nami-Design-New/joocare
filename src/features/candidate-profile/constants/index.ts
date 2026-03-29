@@ -18,7 +18,7 @@ export const links = [
   },
   {
     label: "Profile Settings",
-    href: "/candidate/setting/basic-info",
+    href: "/candidate/settings/basic-info",
     icon: Settings,
   },
 ];

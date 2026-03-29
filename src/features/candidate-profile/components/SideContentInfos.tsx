@@ -8,7 +8,7 @@ import UploadCvSection from "./UploadCvSection";
 
 const SideContentInfos = () => {
     return (
-        <aside className="no-scrollbar flex  flex-col gap-5 overflow-y-auto bg-white px-3 py-6 rounded-2xl shadow h-full">
+        <aside className="no-scrollbar flex  flex-col gap-5 overflow-y-auto bg-white px-3 py-6 rounded-2xl shadow min-h-[calc(100vh-250px)]">
 
             {/* image */}
             <section className="w-50 mx-auto flex flex-col justify-center items-center gap-2">

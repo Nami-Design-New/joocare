@@ -6,16 +6,20 @@ import SkillsSection from "@/features/candidate-profile/components/skills/Skills
 
 const CandidateProfilePage = () => {
     return (
-        <main className="grid grid-cols-3 gap-4 items-start">
-            <section className="col-span-2 flex flex-col gap-4">
+        <main className="grid grid-cols-12 gap-8 items-start w-full">
+
+            <section className="col-span-8 flex flex-col gap-4"
+            >
                 <AboutSection />
                 <EducationSection />
                 <SkillsSection />
                 <ExperienceSection />
             </section>
-            <section className="col-span-1">
+
+            <section className="col-span-4">
                 <SideContentInfos />
             </section>
+
         </main>
     )
 }

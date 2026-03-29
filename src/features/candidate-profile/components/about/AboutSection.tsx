@@ -15,9 +15,10 @@ const AboutSection = () => {
                 Board-certified cardiologist with extensive experience in interventional procedures, cardiac imaging, and preventive cardiology. Passionate about patient-centered care and advancing cardiovascular health through innovative treatments.
             </p>
         </div>
-        <EditAboutModal open={open} onOpenChange={setOpen}
-            defaultVal={`Board-certified cardiologist with extensive experience in interventional procedures, cardiac imaging, and preventive cardiology. Passionate about patient-centered care and advancing cardiovascular health through innovative treatments.`}
-        />
+        {open &&
+            <EditAboutModal open={open} onOpenChange={setOpen}
+                defaultVal={`Board-certified cardiologist with extensive experience in interventional procedures, cardiac imaging, and preventive cardiology. Passionate about patient-centered care and advancing cardiovascular health through innovative treatments.`}
+            />}
 
     </>
     )

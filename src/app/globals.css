@@ -183,7 +183,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
   h1 {
     font-size: clamp(1.5rem, 4vw, 3rem);
