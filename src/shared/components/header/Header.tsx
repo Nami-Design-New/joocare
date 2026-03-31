@@ -69,13 +69,13 @@ const Header = () => {
                   About
                 </Link>
               </li>
-              {!companyHeader && (
-                <li>
-                  <Link href="/jobs" className="nav-link">
-                    Jobs
-                  </Link>
-                </li>
-              )}
+              {/* {!companyHeader && ( */}
+              <li>
+                <Link href="/jobs" className="nav-link">
+                  Jobs
+                </Link>
+              </li>
+              {/* )} */}
               <li>
                 <Link href="/contact" className="nav-link">
                   Contact

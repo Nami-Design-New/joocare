@@ -36,7 +36,7 @@ export default function AboutEmployer() {
         international healthcare standards.
       </p>
       <Link
-        href="/company-profile/dddddd"
+        href="/shared-company-profile/sgh-egypt"
         className={cn(
           `${buttonVariants({ variant: "outline", size: "pill", hoverStyle: "slidePrimary" })}`,
           "border-secondary mx-auto h-9 w-fit border px-5 py-2.5",

@@ -10,7 +10,7 @@ import Breadcrumb from "@/shared/components/Breadcrumb";
 
 export default function page() {
   return (
-    <section className="">
+    <section className="bg-body-bg">
       <Breadcrumb
         title="Job Details"
         items={[

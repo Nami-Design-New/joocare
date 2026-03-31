@@ -32,7 +32,7 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 
-export default function JobCard() {
+export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
   const [closeJob, setCloseJob] = useState(false);
   const [pauseJob, setPauseJob] = useState(false);
   const [deleteJob, setDeleteJob] = useState(false);
@@ -64,34 +64,43 @@ export default function JobCard() {
               21 December 2026 , 4:00AM
             </time>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <CircleEllipsis color="var(--muted-foreground)" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem className="flex gap-2">
-                <Edit /> <span>Edit</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex gap-2"
-                onClick={() => setCloseJob(true)}
-              >
-                <CheckCheck /> <span>closed</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex gap-2"
-                onClick={() => setPauseJob(true)}
-              >
-                <EyeOff /> <span>Pause</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="text-destructive flex gap-2"
-                onClick={() => setDeleteJob(true)}
-              >
-                <Trash2 color="var(--destructive)" /> <span>Delete</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Dropdown menu for job actions  or resume match*/}
+
+          {!resumeMatch ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <CircleEllipsis color="var(--muted-foreground)" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem className="flex gap-2">
+                  <Edit /> <span>Edit</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex gap-2"
+                  onClick={() => setCloseJob(true)}
+                >
+                  <CheckCheck /> <span>closed</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex gap-2"
+                  onClick={() => setPauseJob(true)}
+                >
+                  <EyeOff /> <span>Pause</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="text-destructive flex gap-2"
+                  onClick={() => setDeleteJob(true)}
+                >
+                  <Trash2 color="var(--destructive)" /> <span>Delete</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <p className="text-secondary text-[12px]">
+              Resume Match
+            </p>
+          )}
+
         </CardHeader>
         <CardContent>
           <div className="border-b-border flex flex-col gap-4 border-b pb-4">
