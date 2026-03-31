@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Mission() {
   return (
     <section className="bg-white py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
+      <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
         <div className="order-2">
           <div className="mb-2">
             <SectionTitle sectionTitle="Our Mission" textColor="text-dark" />

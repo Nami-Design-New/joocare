@@ -34,13 +34,13 @@ const aboutStats = [
 
 export default function AboutHeroSection() {
   return (
-    <section className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
+    <section className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
       <div>
         <div className="mb-2">
           <SectionTitle sectionTitle="About JooCare" textColor="text-dark" />
         </div>
 
-        <h2 className="text-secondary mb-3 text-3xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">
+        <h2 className="text-secondary mb-3 text-3xl leading-tight font-bold sm:text-3xl lg:mb-2 lg:text-4xl">
           Built for the Complexity of <br />
           Modern Healthcare Hiring
         </h2>
