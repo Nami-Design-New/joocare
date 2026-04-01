@@ -1,9 +1,14 @@
+"use client";
+
 import { Button } from "@/shared/components/ui/button";
 import { ArrowRight, Bookmark } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import { ApplyNowModal } from "../ApplyNowModal";
 
 export default function CandidateJobDetailsCardActions() {
-  return (
+  const [open, setOpen] = useState(false);
+  return (<>
+    <ApplyNowModal open={open} onOpenChange={setOpen} />
     <section className="flex items-center gap-4 max-lg:mt-2">
       <Button
         size="icon"
@@ -11,10 +16,14 @@ export default function CandidateJobDetailsCardActions() {
       >
         <Bookmark size={24} />
       </Button>
-      <Button size="pill" className="flex items-center gap-2">
+      <Button
+        onClick={() => setOpen(true)}
+        size="pill" className="flex items-center gap-2 flex-1">
         {/* <Bookmark size={24} /> */}
         Apply Now <ArrowRight />
       </Button>
     </section>
+
+  </>
   );
 }

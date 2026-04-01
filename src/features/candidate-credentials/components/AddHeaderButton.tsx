@@ -64,7 +64,7 @@ export default function AddHeaderButton() {
             <Button
                 variant="secondary"
                 size="pill"
-                className="flex gap-2"
+                className="flex gap-2 w-fit"
                 onClick={() => setOpen(true)}
             >
                 <PlusCircle size={32} />

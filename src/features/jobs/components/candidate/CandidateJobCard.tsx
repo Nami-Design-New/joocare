@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/shared/components/ui/badge";
-import { Button, buttonVariants } from "@/shared/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   Card,
   CardContent,
@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 
-export default function CandidateJobCard() {
+export default function CandidateJobCard({ appliedBadge }: { appliedBadge?: boolean }) {
   return (
     <Card>
       <CardHeader className="flex gap-2 max-lg:px-2">
@@ -37,7 +37,7 @@ export default function CandidateJobCard() {
             21 December 2026 , 4:00AM
           </time>
         </div>
-        <p className="max-lg:text-[10px]">Resume Match</p>
+        <p className="text-[12px]">Resume Match</p>
       </CardHeader>
       <CardContent className="max-lg:px-2">
         <div className="border-b-border flex flex-col gap-4 border-b pb-4">
@@ -66,7 +66,7 @@ export default function CandidateJobCard() {
               Pharmaceutical
             </li>
           </ul>
-          <div className="text-muted-foreground">
+          <div className="text-muted-foreground text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit...
           </div>{" "}
         </div>
@@ -97,6 +97,16 @@ export default function CandidateJobCard() {
             <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
           </Link>
         </div>
+        {appliedBadge && (
+          <Badge
+            variant="open"
+            size="pill"
+            className="flex w-full justify-start gap-1"
+          >
+            <Dot className="h-4 w-4" strokeWidth={12} /> <span>Applied</span>
+            <span className="grow text-end text-xs text-muted-foreground">21 December 2026 , 4:00AM</span>
+          </Badge>
+        )}
       </CardFooter>
     </Card>
   );

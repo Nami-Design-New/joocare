@@ -5,7 +5,7 @@ import CandidateJobDetailsCardActions from "./CandidateJobDetailsCardActions";
 
 export default function JobDetailsHeader() {
   return (
-    <section className="flex flex-col items-center justify-between rounded-2xl bg-white p-4 lg:flex-row">
+    <section className="flex flex-col lg:items-center justify-between rounded-2xl bg-white p-4 lg:flex-row">
       <div className="flex items-center gap-2 lg:gap-6">
         <Image
           src="/assets/comp-logo.svg"
@@ -23,14 +23,14 @@ export default function JobDetailsHeader() {
               <Sparkles size={16} /> 90 %
             </span>
           </h6>
-          <p className="flex items-center gap-2 max-lg:mt-2">
+          <div className="flex items-center gap-2 max-lg:mt-2">
             <div className="text-muted-foreground text-lg font-normal">
               <span> at Health care </span>
             </div>
             <Badge size="md" className="rounded-sm bg-[#0BA02C]">
               FULL-TIME
             </Badge>
-          </p>
+          </div>
           <p className="text-muted-foreground text-sm">14 Jun, 2026</p>
         </div>
       </div>

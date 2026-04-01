@@ -8,7 +8,7 @@ export default function SavedJobsList() {
   const [page, setPage] = useState(1);
   return (
     <section className="my-11">
-      <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
         {Array.from({ length: 9 }, (_, i) => (
           <CandidateJobCard key={i} />
         ))}
