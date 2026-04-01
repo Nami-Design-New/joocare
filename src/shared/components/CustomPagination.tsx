@@ -61,11 +61,10 @@ export function CustomPagination({
               <PaginationLink
                 isActive={page === currentPage}
                 onClick={() => handleChange(page)}
-                className={`h-8 w-8 rounded-full border-none ${
-                  page === currentPage
+                className={`h-8 w-8 rounded-full border-none ${page === currentPage
                     ? "bg-primary text-white"
                     : "text-muted-foreground"
-                }`}
+                  }`}
               >
                 {page}
               </PaginationLink>

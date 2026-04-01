@@ -42,7 +42,7 @@ export default function SimilarJobsSection() {
           {/* Cards */}
           <CarouselContent className="-ml-6">
             {jobs.map((rev, i) => (
-              <CarouselItem key={i} className="pl-6 md:basis-1/3">
+              <CarouselItem key={i} className="pl-6 md:basis-1/2 lg:basis-1/3">
                 <SimilarJobCard {...rev} />
               </CarouselItem>
             ))}

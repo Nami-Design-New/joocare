@@ -15,7 +15,7 @@ export default function QualificationCard() {
 
   return (
     <>
-      <section className="flex items-center justify-start gap-2 rounded-2xl border bg-white p-2 shadow">
+      <section className="flex flex-col sm:flex-row sm:items-center justify-start gap-2 rounded-2xl border bg-white p-2 shadow">
         <div className="h-38 w-40">
           <Image
             className="h-full w-full rounded-lg"

@@ -134,7 +134,7 @@ export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
         <CardFooter className="flex flex-col gap-4 max-lg:px-2">
           <div className="flex w-full flex-col gap-2 md:flex-row md:items-center">
             <Link
-              className={`lg-max:py-2 lg-max:px-4 lg-max:grow ${buttonVariants({
+              className={` grow ${buttonVariants({
                 variant: "secondary",
                 size: "pill",
               })} `}

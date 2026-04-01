@@ -7,12 +7,34 @@ const CompanyLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <Header />
 
-      <main className="flex min-h-dvh">
-        <CompanySidebar />
+      <main className="grid grid-cols-12 min-h-dvh">
 
-        <section className="bg-background flex-1 px-4 pt-6 pb-8 md:px-7 md:pt-12">
+        {/* Sidebar */}
+        <aside
+          className="
+            col-span-12 
+            lg:col-span-3 
+            xl:col-span-2
+            lg:block
+          "
+        >
+          <CompanySidebar />
+        </aside>
+
+        {/* Content */}
+        <section
+          className="
+            col-span-12 
+            lg:col-span-9 
+            xl:col-span-10
+            px-4 pt-6 pb-8 
+            md:px-7 md:pt-12
+             bg-body-bg
+          "
+        >
           {children}
         </section>
+
       </main>
     </>
   );

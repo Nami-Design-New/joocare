@@ -10,7 +10,7 @@ const CredentialsLayout = ({ children }: { children: ReactNode }) => {
 
     return (
         <main className="flex flex-col space-y-6">
-            <section className="flex justify-between items-center">
+            <section className="flex justify-between sm:items-center flex-wrap sm:flex-nowrap gap-4">
                 <HeaderLayout navLinks={navLinks} />
                 <AddHeaderButton />
             </section>

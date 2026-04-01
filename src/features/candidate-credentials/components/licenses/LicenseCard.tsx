@@ -16,9 +16,9 @@ export default function LicenseCard({ imgSrc }: { imgSrc: string }) {
   return (
     <>
       <section className="flex flex-col items-center justify-start gap-2 rounded-2xl border bg-white p-2 shadow">
-        <div className="w-full grow">
+        <div className="w-full grow h-66">
           <Image
-            className="h-full w-full rounded-lg object-cover"
+            className="h-full w-full rounded-sm object-cover"
             width={100}
             height={100}
             src={imgSrc}

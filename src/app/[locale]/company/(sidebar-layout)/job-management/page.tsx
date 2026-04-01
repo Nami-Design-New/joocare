@@ -7,8 +7,8 @@ import { buttonVariants } from "@/shared/components/ui/button";
 export default function Page() {
   return (
     <section className="flex flex-col gap-12">
-      <header className="flex w-full items-center justify-between">
-        <div className="min-w-52">
+      <header className="flex w-full items-center justify-between gap-2">
+        <div className="w-full md:w-52">
           <JobFilter />
         </div>
 
@@ -16,7 +16,7 @@ export default function Page() {
           className={` ${buttonVariants({
             variant: "default",
             size: "pill",
-          })} min-w-52`}
+          })} md:min-w-52`}
           href="/company/post-job"
         >
           Post a Job
