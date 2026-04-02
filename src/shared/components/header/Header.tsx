@@ -12,15 +12,17 @@ const Header = () => {
   const [toggleSideMenu, setToggleSideMenu] = useState(false);
   const [isAuthed, setIsAuthed] = useState(true);
   const path = usePathname();
-  const companyHeader = path.includes('/company')
+  const companyHeader = path.includes("/company");
+  const isActive = (pathname: string) => path === pathname;
 
   const handleToggleMenu = () => {
     setToggleSideMenu((prev) => !prev);
   };
+
   return (
     <>
-      <header className="flex sticky top-0 justify-between bg-white z-30 items-center py-4  px-3 lg:px-2 w-full shadow-header min-h-[87px]">
-        <div className="container mx-auto flex justify-between items-center">
+      <header className="shadow-header sticky top-0 z-30 flex min-h-21.75 w-full items-center justify-between bg-white px-3 py-4 lg:px-25">
+        <div className="container mx-auto flex items-center justify-between">
           {/* Logo */}
           <div className="flex gap-1">
             <button
@@ -31,10 +33,9 @@ const Header = () => {
             </button>
             <Link
               href="/"
-              className="flex gap-2 items-center justify-center"
+              className="flex items-center justify-center gap-2"
               aria-label="Go to homepage"
             >
-
               <Image
                 src="/assets/logo_1.svg"
                 alt="Joo Care Logo"
@@ -57,34 +58,58 @@ const Header = () => {
           {/* Main Navigation */}
           <nav
             aria-label="Main Navigation"
-            className=" hidden lg:flex justify-center"
+            className="hidden justify-center lg:flex"
           >
             <ul className="flex justify-center space-x-4">
               <li>
-                <Link className="nav-link" href="/">
+                <Link
+                  className={`nav-link ${
+                    isActive("/") ? "text-primary border-primary" : ""
+                  }`}
+                  href="/"
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="nav-link">
+                <Link
+                  className={`nav-link ${
+                    isActive("/about") ? "text-primary border-primary" : ""
+                  }`}
+                  href="/about"
+                >
                   About
                 </Link>
               </li>
-              {!companyHeader && <li>
-                <Link href="/jobs" className="nav-link">
-                  Jobs
-                </Link>
-              </li>}
+              {!companyHeader && (
+                <li>
+                  <Link
+                    className={`nav-link ${
+                      isActive("/jobs") ? "text-primary border-primary" : ""
+                    }`}
+                    href="/jobs"
+                  >
+                    Jobs
+                  </Link>
+                </li>
+              )}
               <li>
-                <Link href="/contact" className="nav-link">
+                <Link
+                  className={`nav-link ${
+                    isActive("/contact") ? "text-primary border-primary" : ""
+                  }`}
+                  href="/contact"
+                >
                   Contact
                 </Link>
               </li>
             </ul>
           </nav>
-          <HeaderActionsButtons isAuthed={isAuthed} companyHeader={companyHeader} />
+          <HeaderActionsButtons
+            isAuthed={isAuthed}
+            companyHeader={companyHeader}
+          />
         </div>
-
       </header>
       {toggleSideMenu && (
         <ResponsiveNavigationBar

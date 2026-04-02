@@ -20,6 +20,7 @@ interface FilepondUploadProps {
   allowImagePreview?: boolean;
   className?: string;
   error?: string | boolean;
+  hint?: string;
 }
 
 export function FilepondUpload({
@@ -33,17 +34,27 @@ export function FilepondUpload({
   allowImagePreview = false,
   className,
   error,
+  hint
 }: FilepondUploadProps) {
+
   return (
     <div className={`w-full space-y-2 ${className}`} >
       {label && (
         <label className="block text-sm font-medium">
           {label}
           {required && <span className="ml-1 text-red-500">*</span>}
+          {hint && (
+            <span className="text-muted-foreground text-sm font-normal">
+              {" "}
+              {hint}{" "}
+            </span>
+          )}
         </label>
       )}
 
+
       <FilePond
+        id={error ? "filepond-error" : ""}
         files={files}
         onupdatefiles={(fileItems) => {
           const files = fileItems.map((item) => item.file as File);

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function JobLocationAndSalaryCard() {
   return (
-    <div className="card border-border shadow-card flex min-h-36 items-center justify-between rounded-2xl border-2 p-8">
+    <div className="card border-border shadow-card flex min-h-36 items-center justify-between rounded-2xl border-2 bg-white p-8">
       <div className="flex flex-col items-center justify-center gap-2">
         <Image
           src={"/assets/icons/dollar.svg"}

@@ -12,6 +12,7 @@ type InputFieldProps = {
   containerStyles?: string;
   disable?: boolean;
   hint?: string;
+  icon?: React.ReactNode
 } & React.ComponentProps<"input">;
 
 export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
@@ -25,6 +26,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
       containerStyles,
       disabled = false,
       hint,
+      icon,
       ...props
     },
     ref,
@@ -37,7 +39,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     return (
       <div className={cn("flex w-full flex-col", containerStyles)}>
         {label && (
-          <label htmlFor={id} className="mb-1 font-semibold">
+          <label htmlFor={id} className="mx-1 mb-1 font-semibold">
             {label}{" "}
             {hint && (
               <span className="text-muted-foreground text-sm font-normal">
@@ -72,6 +74,9 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               )}
             </button>
           )}
+          {icon && <div className="absolute top-1/2 right-3 -translate-y-1/2">
+            {icon}
+          </div>}
         </div>
 
         {error && (

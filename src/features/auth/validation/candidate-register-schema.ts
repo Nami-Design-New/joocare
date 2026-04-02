@@ -29,8 +29,6 @@ export const RegisterCandidateSchema = z
       .min(1, { message: "Email is required" })
       .email({ message: "Please enter a valid email address" }),
 
-    phoneCode: z.string().min(1, { message: "Phone code is required" }),
-
     phoneNumber: phoneNumberSchema,
 
     jobTitle: z.string().min(1, { message: "Job title is required" }),
@@ -43,12 +41,13 @@ export const RegisterCandidateSchema = z
       .string()
       .min(1, { message: "Password is required" })
       .min(6, { message: "Password must be at least 6 characters" }),
-    // CV is optional
-    uploadCV: z
-      .array(z.instanceof(File))
-      .min(1, { message: "CV file is required" })
-      .max(2, { message: "You can upload a maximum of 2 CV files" }),
-      
+    // // CV is optional
+    // uploadCV: z
+    //   .array(z.instanceof(File))
+    //   .min(1, { message: "CV file is required" })
+    //   .max(2, { message: "You can upload a maximum of 2 CV files" }),
+
+    uploadCV: z.array(z.instanceof(File)).optional().default([]),
     confirmRegister: z.boolean().default(false),
 
     // License fields - only required if confirmRegister is true
@@ -59,43 +58,38 @@ export const RegisterCandidateSchema = z
         message: "License title cannot be empty if provided",
       }),
 
-    licenseNumber: z
-      .string()
-      .optional()
-      .refine((value) => !value || /^\d+$/.test(value), {
-        message: "License number must contain only digits",
-      }),
+    licenseNumber: z.string().optional(),
+    // .refine((value) => !value || /^\d+$/.test(value), {
+    //   message: "License number must contain only digits",
+    // }),
 
     specificCountry: z.string().optional(),
 
-    uploadLicense: z
-      .array(z.instanceof(File))
-      .optional()
-      .default([])
-      // .refine((files) => files.length <= 2, {
-      //   message: "You can upload a maximum of 2 license files",
-      // }),
+    uploadLicense: z.array(z.instanceof(File)).optional().default([]),
+    // .refine((files) => files.length <= 2, {
+    //   message: "You can upload a maximum of 2 license files",
+    // }),
   })
   .superRefine((data, ctx) => {
     // Conditional validation when medical license is confirmed
     if (data.confirmRegister) {
-      // Validate license title
-      if (!data.licenseTitle || data.licenseTitle.trim() === "") {
-        ctx.addIssue({
-          path: ["licenseTitle"],
-          message: "License title is required when you have a medical license",
-          code: "custom",
-        });
-      }
+      // // Validate license title
+      // if (!data.licenseTitle || data.licenseTitle.trim() === "") {
+      //   ctx.addIssue({
+      //     path: ["licenseTitle"],
+      //     message: "License title is required when you have a medical license",
+      //     code: "custom",
+      //   });
+      // }
 
-      // Validate license number
-      if (!data.licenseNumber || data.licenseNumber.trim() === "") {
-        ctx.addIssue({
-          path: ["licenseNumber"],
-          message: "License number is required when you have a medical license",
-          code: "custom",
-        });
-      }
+      // // Validate license number
+      // if (!data.licenseNumber || data.licenseNumber.trim() === "") {
+      //   ctx.addIssue({
+      //     path: ["licenseNumber"],
+      //     message: "License number is required when you have a medical license",
+      //     code: "custom",
+      //   });
+      // }
 
       // Validate specific country
       if (!data.specificCountry || data.specificCountry.trim() === "") {
@@ -107,15 +101,15 @@ export const RegisterCandidateSchema = z
         });
       }
 
-      // Validate license upload
-      if (!data.uploadLicense || data.uploadLicense.length === 0) {
-        ctx.addIssue({
-          path: ["uploadLicense"],
-          message:
-            "License image upload is required when you have a medical license",
-          code: "custom",
-        });
-      }
+      // // Validate license upload
+      // if (!data.uploadLicense || data.uploadLicense.length === 0) {
+      //   ctx.addIssue({
+      //     path: ["uploadLicense"],
+      //     message:
+      //       "License image upload is required when you have a medical license",
+      //     code: "custom",
+      //   });
+      // }
     }
   });
 

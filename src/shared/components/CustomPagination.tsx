@@ -34,9 +34,9 @@ export function CustomPagination({
   };
 
   return (
-    <div className="flex w-full max-w-2xl items-center gap-8">
+    <div className="flex w-full flex-wrap items-center justify-center gap-2 md:gap-8">
       {/* Status */}
-      <div className="text-sm font-medium text-gray-700">
+      <div className="text-muted-foreground order-2 text-sm font-medium md:order-1">
         Show{" "}
         <span className="font-semibold">
           {start} - {end}
@@ -61,11 +61,10 @@ export function CustomPagination({
               <PaginationLink
                 isActive={page === currentPage}
                 onClick={() => handleChange(page)}
-                className={`h-8 w-8 rounded-full border-none ${
-                  page === currentPage
+                className={`h-8 w-8 rounded-full border-none ${page === currentPage
                     ? "bg-primary text-white"
                     : "text-muted-foreground"
-                }`}
+                  }`}
               >
                 {page}
               </PaginationLink>

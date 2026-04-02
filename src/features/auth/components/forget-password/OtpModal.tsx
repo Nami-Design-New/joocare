@@ -65,16 +65,21 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { PasswordOtpSchema, TPasswordOtpSchema } from "../../validation/password-otp-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
+import { usePathname } from "@/i18n/navigation"
 
 interface OTPModalProps {
     open: boolean
     onOpenChange: (open: boolean) => void
-    email: string
+    email?: string
 }
 
 export function OTPModal({ open, onOpenChange, email }: OTPModalProps) {
     const [countdown, setCountdown] = useState(48)
     const router = useRouter()
+    const path = usePathname()
+    const forgetPasswordPage = path.includes('forget-password')
+    const basicInfo = path.includes("basic-info")
+
     const {
         control,
         handleSubmit,
@@ -87,8 +92,14 @@ export function OTPModal({ open, onOpenChange, email }: OTPModalProps) {
     const onSubmit: SubmitHandler<TPasswordOtpSchema> = (data) => {
         console.log({ otp: data.otp, email: email }); // { otp: "12345" }
         reset()
-        // onOpenChange(false)
-        router.push('/auth/new-password')
+        if (forgetPasswordPage) {
+            router.push('/auth/new-password')
+        } else if (basicInfo) {
+            onOpenChange(false)
+        }
+        else {
+            router.push('/')
+        }
     }
 
     useEffect(() => {

@@ -8,10 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog";
-import React, { useRef } from "react";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
+import { useRef } from "react";
 import animationData from "../../../../public/assets/lottie/warning.json";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
+import { VariantProps } from "class-variance-authority";
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -20,6 +21,7 @@ type ConfirmDialogProps = {
   description: string;
   confirmLabel?: string;
   cancelLabel?: string;
+  confirmButtonVariant?: VariantProps<typeof buttonVariants>["variant"];
   onConfirm: () => void;
   onCancel?: () => void;
   isLoading?: boolean;
@@ -33,6 +35,7 @@ export default function AlertModal({
   confirmLabel = "Confirm",
   cancelLabel = "Back",
   onConfirm,
+  confirmButtonVariant = "default",
   onCancel,
   isLoading = false,
 }: ConfirmDialogProps) {
@@ -70,6 +73,7 @@ export default function AlertModal({
             <Button
               onClick={onConfirm}
               disabled={isLoading}
+              variant={confirmButtonVariant}
               size="pill"
               className="grow"
             >

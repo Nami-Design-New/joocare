@@ -23,7 +23,7 @@ export const TextareaField = React.forwardRef<
     return (
       <div className={cn("flex flex-col w-full", containerStyles)}>
         {label && (
-          <label htmlFor={id} className="mb-1 font-semibold">
+          <label htmlFor={id} className="mx-1 mb-1 font-semibold">
             {label}
           </label>
         )}

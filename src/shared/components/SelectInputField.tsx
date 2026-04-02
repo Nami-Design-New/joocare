@@ -17,7 +17,7 @@ import { Button } from "./ui/button";
 
 export type Option = {
   label: string;
-  value: string | null;
+  value: string ;
   image?: string;
 };
 
@@ -28,8 +28,8 @@ type SelectInputFieldProps = {
   containerStyles?: string;
   options: Option[];
   placeholder?: string;
-  value?: string | null;
-  onChange?: (value: string | null) => void;
+  value?: string ;
+  onChange?: (value: string) => void;
   className?: string;
   showPlaceholderImage?: string;
   disabled?: boolean;
@@ -72,7 +72,7 @@ export const SelectInputField = React.forwardRef<
           items={options}
           value={options.find((o) => o.value === value) ?? null}
           onValueChange={(option) =>
-            onChange?.((option as Option)?.value ?? null)
+            onChange?.((option as Option)?.value ?? "")
           }
           disabled={disabled}
         >

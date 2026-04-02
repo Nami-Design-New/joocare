@@ -28,6 +28,7 @@ export default function Pros() {
                 brightness={1.2}
                 saturation={1.2}
                 shadowIntensity={0.3}
+                zIndex={1}
               >
                 1
               </LiquidGlass>
@@ -54,6 +55,7 @@ export default function Pros() {
                 brightness={1.2}
                 saturation={1.2}
                 shadowIntensity={0.3}
+                zIndex={1}
               >
                 2
               </LiquidGlass>
@@ -76,6 +78,7 @@ export default function Pros() {
               brightness={1.2}
               saturation={1.2}
               shadowIntensity={0.3}
+              zIndex={1}
             >
               3
             </LiquidGlass>

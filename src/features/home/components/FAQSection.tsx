@@ -28,7 +28,7 @@ export default function FAQSection() {
 
   return (
     <section className="bg-white pt-10 pb-10 md:pt-16 md:pb-48">
-      <div className="container mx-auto px-3 lg:px-2">
+      <div className="container mx-auto px-3 lg:px-25">
         <div className="mb-8 flex flex-col items-center space-y-4">
           {/* Decorative Badge */}
           <SectionTitle sectionTitle="FAQ" />

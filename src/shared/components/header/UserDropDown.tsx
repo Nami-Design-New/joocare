@@ -12,7 +12,7 @@ import {
   UserRoundCogIcon,
 } from "lucide-react";
 import Image from "next/image";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,19 +21,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Link } from "@/i18n/navigation";
+import { cn } from "@/shared/lib/utils";
+import { useState } from "react";
 
-export default function UserDropDown({ companyHeader }: { companyHeader: boolean }) {
+export default function UserDropDown({
+  companyHeader,
+}: {
+  companyHeader: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const toggleOpen = () => setOpen((prev) => !prev);
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
     "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +
     "hover:text-primary focus:text-primary transition-colors";
 
   return (
-    <DropdownMenu >
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="w-[55px] h-[55px] rounded-full relative  border-border  group"
+          className="border-border group relative h-[55px] w-[55px] rounded-full"
         >
           <Image
             src="/profile-placeholder.svg"
@@ -41,24 +50,20 @@ export default function UserDropDown({ companyHeader }: { companyHeader: boolean
             fill
             className="object-cover"
           />{" "}
-          <span className="w-6 h-6 rounded-full flex items-center justify-center absolute -bottom-2 -right-3 bg-white border border-border">
+          <span className="border-border absolute -right-3 -bottom-2 flex h-6 w-6 items-center justify-center rounded-full border bg-white">
             <ChevronDown
               size={20}
               strokeWidth={1.25}
-              className="
-            transition-transform duration-300 ease-in-out
-            group-data-[state=open]:rotate-180
-          "
+              className="transition-transform duration-300 ease-in-out group-data-[state=open]:rotate-180"
             />
           </span>
         </Button>
       </DropdownMenuTrigger>
-
       <DropdownMenuContent className="w-62" align="start">
         {/* Profile Section */}
         <DropdownMenuGroup>
-          <DropdownMenuItem className="flex flex-col gap-2 bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent cursor-default">
-            <div className="flex gap-2 w-full items-center">
+          <DropdownMenuItem className="flex cursor-default flex-col gap-2 bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent">
+            <div className="flex w-full items-center gap-2">
               <Image
                 src="/profile-placeholder.svg"
                 alt="Profile"
@@ -67,7 +72,7 @@ export default function UserDropDown({ companyHeader }: { companyHeader: boolean
                 className="rounded-full"
               />
               <div>
-                <p className="text-black font-semibold text-lg">
+                <p className="text-lg font-semibold text-black">
                   Ahmed Eltatawy
                 </p>
                 <p className="text-md text-muted-foreground font-normal">
@@ -76,14 +81,20 @@ export default function UserDropDown({ companyHeader }: { companyHeader: boolean
               </div>
             </div>
 
-            <Button
-              variant="outline"
-              size="pill"
-              className="w-full px-3 py-2"
-              hoverStyle="slidePrimary"
+            <Link
+              className={cn(
+                buttonVariants({
+                  variant: "outline",
+                  size: "pill",
+                  hoverStyle: "slidePrimary",
+                }),
+                "border-secondary h-8.5 w-full border",
+              )}
+              href={"/candidate/profile"}
+              onClick={() => toggleOpen()}
             >
               View Profile
-            </Button>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
@@ -92,26 +103,55 @@ export default function UserDropDown({ companyHeader }: { companyHeader: boolean
         {/* Menu Items */}
         <DropdownMenuGroup>
           <DropdownMenuItem className={itemClass}>
-            <Settings className="w-5 h-5 text-muted-foreground group-hover:text-primary"  strokeWidth={2.5}/>
-            <p>Account settings</p>
+            <Settings
+              className="text-muted-foreground group-hover:text-primary h-5 w-5"
+              strokeWidth={2.5}
+            />
+            <Link
+              href={
+                companyHeader
+                  ? "/company/account-settings/basic-info"
+                  : "/candidate/settings/basic-info"
+              }
+              onClick={() => toggleOpen()}
+            >
+              Account settings
+            </Link>
           </DropdownMenuItem>
 
-          {companyHeader ? (<>
-
+          {companyHeader ? (
+            <>
+              <DropdownMenuItem className={itemClass}>
+                <Gauge
+                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
+                  strokeWidth={2.5}
+                />
+                <Link href={"/company/dashboard"} onClick={() => toggleOpen()}>
+                  Dashboard
+                </Link>{" "}
+              </DropdownMenuItem>
+              <DropdownMenuItem className={itemClass}>
+                <UserRoundCogIcon
+                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
+                  strokeWidth={2.5}
+                />
+                <Link
+                  href={"/company/job-management"}
+                  onClick={() => toggleOpen()}
+                >
+                  Job Management
+                </Link>
+              </DropdownMenuItem>
+            </>
+          ) : (
             <DropdownMenuItem className={itemClass}>
-              <Gauge className="w-5 h-5 text-muted-foreground group-hover:text-primary"  strokeWidth={2.5}/>
-              <p>Dashboard</p>
-            </DropdownMenuItem>
-            <DropdownMenuItem className={itemClass}>
-              <UserRoundCogIcon className="w-5 h-5 text-muted-foreground group-hover:text-primary"  strokeWidth={2.5}/>
-              <p>Job Management</p>
-            </DropdownMenuItem>
-
-          </>) : (
-
-            <DropdownMenuItem className={itemClass}>
-              <Bookmark className=" text-muted-foreground group-hover:text-primary" strokeWidth={2.5} />
-              <p>Saved</p>
+              <Bookmark
+                className="text-muted-foreground group-hover:text-primary"
+                strokeWidth={2.5}
+              />
+              <Link href={"/jobs/saved"} onClick={() => toggleOpen()}>
+                Saved
+              </Link>
             </DropdownMenuItem>
           )}
         </DropdownMenuGroup>
@@ -120,12 +160,8 @@ export default function UserDropDown({ companyHeader }: { companyHeader: boolean
 
         {/* Logout */}
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            className="group cursor-pointer flex items-center gap-2 text-md font-semibold text-destructive 
-            bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent  
-            hover:text-destructive/80 transition-colors"
-          >
-            <LogOut className="w-5 h-5 text-destructive group-hover:text-destructive/80 transition-colors" />
+          <DropdownMenuItem className="group text-md text-destructive hover:text-destructive/80 flex cursor-pointer items-center gap-2 bg-transparent font-semibold transition-colors hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent">
+            <LogOut className="text-destructive group-hover:text-destructive/80 h-5 w-5 transition-colors" />
             <p className="text-destructive group-hover:text-destructive/80">
               Log out
             </p>

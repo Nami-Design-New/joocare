@@ -30,10 +30,14 @@ const medicalFacilityLicenseNumberSchema = z
 export const stepTwoSchema = z.object({
   commercialRegister: commercialRegisterSchema,
   issuingCountryLicense: z
-    .string()
+    .string({
+      error: "issuing country license is required",
+    })
     .min(1, { message: "issuing country license is required" }),
   organizationSize: z
-    .string()
+    .string({
+      error: "organization size is required",
+    })
     .min(1, { message: "organization size is required" }),
   commercialRegistrationIssueDate: z
     .string()
@@ -42,7 +46,9 @@ export const stepTwoSchema = z.object({
     .string()
     .min(1, { message: "commercial registration expiry date is required" }),
   commercialRegistrationImage: z
-    .array(z.instanceof(File))
+    .array(z.instanceof(File), {
+      error: "commercial registration image is required",
+    })
     .min(1, { message: "commercial registration image is required" }),
   employerType: z.string().min(1, { message: "employer type is required" }),
   medicalFacilityLicenseNumber: medicalFacilityLicenseNumberSchema,
@@ -50,7 +56,9 @@ export const stepTwoSchema = z.object({
     .string()
     .min(1, { message: "license issuing authority is required" }),
   specialtyScopePractice: z
-    .string()
+    .string({
+      error: "specialty scope practice is required",
+    })
     .min(1, { message: "specialty scope practice is required" }),
   medicalRegistrationIssueDate: z
     .string()
@@ -59,6 +67,8 @@ export const stepTwoSchema = z.object({
     .string()
     .min(1, { message: "medical registration expiry date is required" }),
   medicalLicenseImage: z
-    .array(z.instanceof(File))
+    .array(z.instanceof(File), {
+      error: "medical license image is required",
+    })
     .min(1, { message: "medical license image is required" }),
 });

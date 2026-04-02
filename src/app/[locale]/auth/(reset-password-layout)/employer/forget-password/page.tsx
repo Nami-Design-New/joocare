@@ -10,8 +10,8 @@ const ForgetPassword = () => {
         </p>
 
         {/* form  */}
-        <FormForgetPassword />
-        
+        <FormForgetPassword btnLabel='Send' />
+
       </section>
 
     </main>

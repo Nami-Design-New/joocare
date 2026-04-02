@@ -1,6 +1,7 @@
 "use client";
 
 import { InputField } from "@/shared/components/InputField";
+import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -59,48 +60,30 @@ export default function StepOne() {
         error={errors.personFullName?.message?.toString()}
       />
 
-      <>
-        {" "}
-        <label htmlFor={"phoneCode"} className="mx-1 -mb-4 font-semibold">
-          Contact person _ Phone number
-        </label>
-        <div className="flex items-center gap-2">
-          <Controller
-            name="phoneCode"
-            control={control}
-            render={({ field }) => (
-              <SelectInputField
-                id="phoneCode"
-                placeholder="+999"
-                disabled={true}
-                {...field}
-                error={!!errors.phoneCode}
-                showPlaceholderImage={"/assets/flag.svg"}
-                className="w-29 min-w-29"
-                containerStyles="w-fit"
 
-                options={[
-                  { label: "+999", value: "+999", image: "/assets/flag.svg" },
-                  { label: "+24", value: "+24", image: "/assets/logo_1.svg" },
-                  { label: "+55", value: "+55", image: "/assets/flag.svg" },
-                ]}
-              />
-            )}
-          />
-          <InputField
-            id="phoneNumber"
-            type="text"
-            placeholder="ex:52 987 6543"
-            disabled={true}
-            {...register("phoneNumber")}
-            error={errors.phoneNumber?.message ? true : false}
-          />
-        </div>
-        {(errors.phoneCode || errors.phoneNumber) && (
+      {/* Phone Number */}
+      <>
+        <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
+          Phone Number
+        </label>
+        <Controller
+          name="phoneNumber"
+          control={control}
+          render={({ field }) => (
+            <PhoneInputCode
+              {...field}
+              disabled={true}
+              defaultCountry="EG"
+              id="phoneNumber"
+              className="w-full"
+              placeholder="Enter phone number"
+              onChange={(value) => field.onChange(value)}
+            />
+          )}
+        />
+        {errors.phoneNumber && (
           <span className="-mt-4 text-[12px] text-red-500">
-            {errors.phoneCode && errors.phoneNumber
-              ? "Phone code and phone number are required"
-              : errors.phoneCode?.message?.toString() || errors.phoneNumber?.message?.toString()}
+            {errors.phoneNumber.message?.toString()}
           </span>
         )}
       </>

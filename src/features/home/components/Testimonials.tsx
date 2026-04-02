@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
 } from "@/shared/components/ui/carousel";
 
-const TestimonialCard = ({
+export const TestimonialCard = ({
   name,
   date,
   text,
@@ -64,7 +64,7 @@ export const Testimonials = () => {
 
   return (
     <section className="bg-background py-10 md:py-20">
-      <div className="container mx-auto px-3 lg:px-2">
+      <div className="container mx-auto px-3 lg:px-25">
         <Carousel
           opts={{
             align: "start",

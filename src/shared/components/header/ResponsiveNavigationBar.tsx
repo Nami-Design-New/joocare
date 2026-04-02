@@ -1,4 +1,4 @@
-"useClient";
+"use client";
 
 import { Link } from "@/i18n/navigation";
 import { X } from "lucide-react";
@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { Button } from "../ui/button";
 import UserProfileCard from "./UserProfileCard";
+import { useState } from "react";
 
 export default function ResponsiveNavigationBar({
   toggleSideMenu,
@@ -22,8 +23,8 @@ export default function ResponsiveNavigationBar({
   const router = useRouter();
 
   return createPortal(
-    <section className="fixed h-dvh inset-0 bg-white z-50 flex flex-col  gap-6 py-6 px-4">
-      <header className="flex justify-between items-center w-full ">
+    <section className="fixed inset-0 z-50 flex h-dvh flex-col gap-6 bg-white px-4 py-6 lg:hidden">
+      <header className="flex w-full items-center justify-between">
         <Image src="/assets/logo_1.svg" width={70} height={30} alt="Logo" />
         <button
           className="cursor-pointer"
@@ -32,32 +33,48 @@ export default function ResponsiveNavigationBar({
           <X />
         </button>
       </header>
-      <nav aria-label="Main Navigation" className=" flex flex-1  ">
+      <nav aria-label="Main Navigation" className="flex flex-1">
         <ul className="flex flex-col space-y-4">
           <li>
-            <Link className="nav-link" href="/">
+            <Link
+              className="nav-link"
+              href="/"
+              onClick={() => setToggleSideMenu(false)}
+            >
               Home
             </Link>
           </li>
           <li>
-            <Link href="/about" className="nav-link">
+            <Link
+              href="/about"
+              className="nav-link"
+              onClick={() => setToggleSideMenu(false)}
+            >
               About
             </Link>
           </li>
           <li>
-            <Link href="/jobs" className="nav-link">
+            <Link
+              href="/jobs"
+              className="nav-link"
+              onClick={() => setToggleSideMenu(false)}
+            >
               Jobs
             </Link>
           </li>
           <li>
-            <Link href="/contact" className="nav-link">
+            <Link
+              href="/contact"
+              className="nav-link"
+              onClick={() => setToggleSideMenu(false)}
+            >
               Contact
             </Link>
           </li>
         </ul>
       </nav>
       <div
-        className="flex justify-between items-center gap-2 "
+        className="flex items-center justify-between gap-2"
         role="region"
         aria-label="User Actions"
       >
