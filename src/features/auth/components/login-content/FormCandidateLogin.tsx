@@ -11,8 +11,11 @@ import {
   loginCandidateSchema,
   TLoginCandidateSchema,
 } from "../../validation/candidate-login-schema";
+import { useLogin } from "../../hooks/useLogin";
 
 const FormCandidateLogin = () => {
+  const { login } = useLogin();
+
   const {
     register,
     handleSubmit,
@@ -20,8 +23,11 @@ const FormCandidateLogin = () => {
   } = useForm<TLoginCandidateSchema>({
     resolver: zodResolver(loginCandidateSchema),
   });
-  const onSubmit: SubmitHandler<TLoginCandidateSchema> = (data) =>
-    console.log(data);
+
+  const onSubmit: SubmitHandler<TLoginCandidateSchema> = async (data) => {
+    await login(data.email, data.password)
+
+  };
 
   return (
     <form
@@ -45,7 +51,7 @@ const FormCandidateLogin = () => {
         error={errors.password?.message}
       />
       <Link href="/auth/candidate/forget-password" className="text-xs hover:text-primary">
-        Forgot password?
+        Forgot password?d
       </Link>
       <div className="flex justify-center">
         <Button

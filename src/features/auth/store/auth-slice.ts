@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "../index.types";
+import { User } from "../../../shared/types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {

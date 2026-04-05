@@ -18,22 +18,22 @@ const JobOverviewCard: React.FC = () => {
         <JobOverviewItem
           label="Job Category"
           value="Surgeon"
-          icon="/assets/icons/category-icon.svg"
+          icon="/assets/icons/job-category.svg"
         />
         <JobOverviewItem
           label="Specialty"
           value="Cardiology"
-          icon="/assets/icons/category-icon.svg"
+          icon="/assets/icons/specialty.svg"
         />
         <JobOverviewItem
           label="Role category"
           value="Clinical"
-          icon="/assets/icons/category-icon.svg"
+          icon="/assets/icons/role-category.svg"
         />
         <JobOverviewItem
           label="Seniority Level"
           value="Mid Level"
-          icon="/assets/icons/favorite-chart.svg"
+          icon="/assets/icons/seniority.svg"
         />
       </div>
     </div>
