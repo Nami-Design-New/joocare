@@ -30,7 +30,7 @@ const LoginCandidatePage = () => {
           or
         </div>
 
-        <SocialLoginButtons />
+        <SocialLoginButtons role="candidate" />
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">

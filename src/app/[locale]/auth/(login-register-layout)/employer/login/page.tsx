@@ -30,7 +30,7 @@ const LoginEmployerPage = () => {
         </div>
 
         {/* social buttons */}
-        <SocialLoginButtons />
+        <SocialLoginButtons role="employer" />
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">

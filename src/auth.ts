@@ -1,9 +1,12 @@
 import { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import LinkedInProvider from "next-auth/providers/linkedin";
 import { AuthSessionUser } from "./shared/types";
 import { apiFetch, ApiFetchResponse } from "./shared/lib/fetch-manager";
 
 type AuthRole = "candidate" | "employer";
+type SocialProvider = "google" | "linkedin";
 
 function extractToken(payload: ApiFetchResponse | null) {
   const data = payload?.data as Record<string, unknown> | undefined;
@@ -104,11 +107,111 @@ async function authorizeWithEndpoint({
   };
 }
 
+function parseSocialProvider(providerId: string): {
+  role: AuthRole;
+  provider: SocialProvider;
+} | null {
+  const mapping: Record<string, { role: AuthRole; provider: SocialProvider }> = {
+    "google-candidate": { role: "candidate", provider: "google" },
+    "google-employer": { role: "employer", provider: "google" },
+    "linkedin-candidate": { role: "candidate", provider: "linkedin" },
+    "linkedin-employer": { role: "employer", provider: "linkedin" },
+  };
+
+  return mapping[providerId] ?? null;
+}
+
+async function authorizeWithSocialEndpoint({
+  role,
+  provider,
+  providerId,
+  name,
+  email,
+  image,
+}: {
+  role: AuthRole;
+  provider: SocialProvider;
+  providerId: string;
+  name: string;
+  email: string;
+  image?: string | null;
+}) {
+  const baseUrl =
+    role === "employer"
+      ? process.env.NEXT_PUBLIC_BASE_COMPANY_URL
+      : process.env.NEXT_PUBLIC_BASE_USER_URL;
+
+  if (!baseUrl) {
+    throw new Error("Authentication endpoint is not configured.");
+  }
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("email", email);
+  formData.append("provider", provider);
+  formData.append("provider_id", providerId);
+  formData.append("image", image ?? "");
+  formData.append("phone", "");
+  formData.append("phone_code", "");
+
+  const { data, ok, message } = await apiFetch(`${baseUrl}/auth/social-login`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const accessToken = extractToken(data);
+  const loginUser = extractUser(data);
+
+  if (!ok || !accessToken || !loginUser?.id) {
+    throw new Error(message || "Social login failed.");
+  }
+
+  return {
+    id: String(loginUser.id),
+    user: loginUser,
+    accessToken,
+    authRole: role,
+    authMessage: message ?? "Login successful.",
+  };
+}
+
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/en/auth/candidate/login",
   },
   providers: [
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? [
+          GoogleProvider({
+            id: "google-candidate",
+            name: "Google Candidate",
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          }),
+          GoogleProvider({
+            id: "google-employer",
+            name: "Google Employer",
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          }),
+        ]
+      : []),
+    ...(process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET
+      ? [
+          LinkedInProvider({
+            id: "linkedin-candidate",
+            name: "LinkedIn Candidate",
+            clientId: process.env.LINKEDIN_CLIENT_ID,
+            clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+          }),
+          LinkedInProvider({
+            id: "linkedin-employer",
+            name: "LinkedIn Employer",
+            clientId: process.env.LINKEDIN_CLIENT_ID,
+            clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+          }),
+        ]
+      : []),
     Credentials({
       id: "candidate-credentials",
       name: "Candidate Credentials",
@@ -143,7 +246,30 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      if (account?.provider) {
+        const socialProvider = parseSocialProvider(account.provider);
+
+        if (socialProvider && user?.email) {
+          const socialSession = await authorizeWithSocialEndpoint({
+            role: socialProvider.role,
+            provider: socialProvider.provider,
+            providerId: account.providerAccountId,
+            name: user.name ?? user.email,
+            email: user.email,
+            image: user.image,
+          });
+
+          token.user = socialSession.user;
+          token.accessToken = socialSession.accessToken;
+          token.id = socialSession.id;
+          token.authRole = socialSession.authRole;
+          token.authMessage = socialSession.authMessage;
+
+          return token;
+        }
+      }
+
       if (user) {
         token.user = user.user;
         token.accessToken = user.accessToken;
