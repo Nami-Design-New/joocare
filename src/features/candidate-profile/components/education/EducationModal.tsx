@@ -118,7 +118,7 @@ export function EducationModal({
         university: form.university.trim(),
         countryId: form.countryId,
         startDate: form.startDate,
-        endDate: form.endDate,
+        endDate: form.endDate?.trim() || undefined,
         locale,
         token: session.accessToken,
       };
@@ -208,6 +208,7 @@ export function EducationModal({
               id="endDate"
               label="End Date"
               type="date"
+            
               {...register("endDate")}
               error={errors.endDate?.message}
             />

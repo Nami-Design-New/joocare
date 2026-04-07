@@ -81,7 +81,7 @@ function normalizeDateLabel(value: string | null) {
 
 function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationViewModel {
   const startYear = normalizeDateLabel(entry.start_date);
-  const endYear = normalizeDateLabel(entry.end_date);
+  const endYear = entry.end_date ? normalizeDateLabel(entry.end_date) : "Present";
   const period =
     startYear && endYear ? `${startYear} - ${endYear}` : startYear ?? endYear ?? null;
 

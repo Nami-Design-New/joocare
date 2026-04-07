@@ -72,7 +72,7 @@ type EducationPayload = {
   degree: string;
   university: string;
   startDate: string;
-  endDate: string;
+  endDate?: string;
   countryId: string;
   locale?: string;
   token: string;
@@ -83,7 +83,9 @@ function buildEducationFormData(payload: EducationPayload, includeMethodOverride
   formData.append("degree", payload.degree);
   formData.append("university", payload.university);
   formData.append("start_date", payload.startDate);
-  formData.append("end_date", payload.endDate);
+  if (payload.endDate) {
+    formData.append("end_date", payload.endDate);
+  }
   formData.append("country_id", payload.countryId);
 
   if (includeMethodOverride) {
