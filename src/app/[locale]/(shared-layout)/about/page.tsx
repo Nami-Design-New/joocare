@@ -1,10 +1,14 @@
+import { authOptions } from "@/auth";
 import AboutHeroSection from "@/features/about/components/AboutHeroSection";
 import CorePillarsSection from "@/features/about/components/CorePillarsSection";
 import Mission from "@/features/about/components/Misison";
 import Vision from "@/features/about/components/Vision";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
+import { getServerSession } from "next-auth";
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const session = await getServerSession(authOptions);
+  console.log('session', session);
   return (
     <>
       <PlainBreadcrumb

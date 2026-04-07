@@ -9,22 +9,23 @@ import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
 
 import { FilepondUpload } from "@/shared/components/FilepondUpload";
+import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
+import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
+import { useState } from "react";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { useRegisterCandidate } from "../../hooks/useRegisterCandidate";
 import {
   RegisterCandidateSchema,
   TRegisterCandidateSchema,
 } from "../../validation/candidate-register-schema";
-import { useState } from "react";
-import { toast } from "sonner";
-import { useLocale } from "next-intl";
 import { OTPModal } from "../forget-password/OtpModal";
-import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
-import { parsePhoneNumber } from "react-phone-number-input";
-import { useRegisterCandidate } from "../../hooks/useRegisterCandidate";
-import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
+import useGetCountries from "@/shared/hooks/useGetCountries";
+import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 
 const FormCandidateRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { jobTitles, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetJobTitles();
+  const { countries, isLoading: countryLoading, error: countryError, hasNextPage: countryHasNextPage, fetchNextPage: countryFetchNextPage, isFetchingNextPage: countryIsFetchingNextPage } = useGetCountries();
 
   const {
     register,
@@ -42,14 +43,11 @@ const FormCandidateRegister = () => {
     mode: "onChange", // Validate on blur for better UX
   });
 
+  const verificationEmail = watch("email");
+  const countryId = watch("country");
+  const { cities, isLoading: cityLoading, error: cityError, hasNextPage: cityHasNextPage, fetchNextPage: cityFetchNextPage, isFetchingNextPage: cityIsFetchingNextPage } = useGetCitiesByCountryId(Number(countryId));
+
   const confirmRegisterValue = watch("confirmRegister");
-
-  // FormCandidateRegister.tsx
-  const jobTitleOptions = jobTitles.map((jt: { id: number | string; title: string }) => ({
-    label: jt.title,
-    value: String(jt.id),
-  }));
-
   const { mutate: submitRegister, isPending } = useRegisterCandidate(() =>
     setIsModalOpen(true)
   );
@@ -134,10 +132,15 @@ const FormCandidateRegister = () => {
           <SelectInputField
             id="jobTitle"
             label="Job Title"
+            withSearchInput={true}
             placeholder="ex: Hospital"
             {...field}
             error={errors.jobTitle?.message ?? (error instanceof Error ? error.message : undefined)}
-            options={jobTitleOptions}
+            options={jobTitles.map((jt) => ({
+              label: jt.title,
+              value: String(jt.id),
+            }))}
+
             disabled={isLoading}
             onReachEnd={() => fetchNextPage()}
             hasNextPage={!!hasNextPage}
@@ -160,12 +163,14 @@ const FormCandidateRegister = () => {
                 id="country"
                 placeholder="country"
                 {...field}
+                options={countries.map((c) => ({
+                  label: c.name,
+                  value: String(c.id),
+                }))}
                 error={errors.country?.message}
-                options={[
-                  { label: "egypt", value: "1" },
-                  { label: "saudi", value: "2" },
-                  { label: "canada", value: "3" },
-                ]}
+                onReachEnd={() => countryFetchNextPage()}
+                hasNextPage={!!countryHasNextPage}
+                isFetchingNextPage={countryIsFetchingNextPage}
               />
             )}
           />
@@ -178,11 +183,14 @@ const FormCandidateRegister = () => {
                 placeholder="city"
                 {...field}
                 error={errors.city?.message}
-                options={[
-                  { label: "cairo", value: "1" },
-                  { label: "alex", value: "2" },
-                  { label: "reyad", value: "3" },
-                ]}
+                options={cities.map((c) => ({
+                  label: c.name,
+                  value: String(c.id),
+                }))}
+                disabled={!countryId}
+                onReachEnd={() => cityFetchNextPage()}
+                hasNextPage={!!cityHasNextPage}
+                isFetchingNextPage={cityIsFetchingNextPage}
               />
             )}
           />
@@ -246,15 +254,13 @@ const FormCandidateRegister = () => {
                   placeholder="ex: United Arab Emirates (UAE)"
                   error={errors.specificCountry?.message ? true : false}
                   {...field}
-                  options={[
-                    {
-                      label: "United Arab Emirates (UAE)",
-                      value: "1",
-                    },
-                    { label: "Egypt", value: "2" },
-                    { label: "Saudi Arabia", value: "3" },
-                    { label: "Canada", value: "4" },
-                  ]}
+                  options={countries.map((c) => ({
+                    label: c.name,
+                    value: String(c.id),
+                  }))}
+                  onReachEnd={() => countryFetchNextPage()}
+                  hasNextPage={!!countryHasNextPage}
+                  isFetchingNextPage={countryIsFetchingNextPage}
                 />
               )}
             />
@@ -267,7 +273,6 @@ const FormCandidateRegister = () => {
           <InputField
             id="licenseTitle"
             label="License Title"
-            hint={`"Optional"`}
             placeholder="ex: License Title"
             {...register("licenseTitle")}
             error={errors.licenseTitle?.message}
@@ -315,7 +320,7 @@ const FormCandidateRegister = () => {
     <OTPModal
       open={isModalOpen}
       onOpenChange={setIsModalOpen}
-      // email={verificationEmail}
+      email={verificationEmail}
       role="candidate"
       purpose="email-confirm"
     />
