@@ -40,6 +40,7 @@ const FormEmployerRegister = () => {
     resolver: zodResolver(RegisterEmployerSchema),
     mode: "onChange",
   });
+
   const email = watch("officialEmail");
   const jobTitleOptions = jobTitles.map(
     (jt: { id: number | string; name?: string; title?: string }) => ({

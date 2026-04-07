@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { changePasswordService } from "../services/change-password-service";
 import { ChangePasswordPayload } from "../types";
+import { changePasswordService } from "../services/change-password-service";
 
 
 export const useChangePassword = ({ token }: { token: string }) => {
