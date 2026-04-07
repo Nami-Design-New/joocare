@@ -12,9 +12,9 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog";
 import {
+  addUserSkills,
   getSkillOptions,
   getUserSkills,
-  syncUserSkills,
   type SkillOption,
 } from "../../services/skills-client-service";
 import { MultiSelectInputSkills } from "./MultiSelectInputSkills";
@@ -108,8 +108,8 @@ export function EditSkillsModal({
         )
         .filter((id): id is string => Boolean(id));
 
-      await syncUserSkills({
-        selectedSkillIds: selectedIds,
+      await addUserSkills({
+        skillIds: selectedIds,
         locale,
         token: session.accessToken,
       });
