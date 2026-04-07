@@ -7,11 +7,10 @@ import {
   Combobox,
   ComboboxContent,
   ComboboxEmpty,
-  // ComboboxInput,
+  ComboboxInput,
   ComboboxItem,
   ComboboxList,
   ComboboxTrigger,
-  // ComboboxValue,
 } from "./ui/combobox";
 import { Button } from "./ui/button";
 
@@ -34,9 +33,13 @@ type SelectInputFieldProps = {
   className?: string;
   showPlaceholderImage?: string;
   disabled?: boolean;
+
+  // pagination
   onReachEnd?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
+
+  withSearchInput?: boolean;
 };
 
 export const SelectInputField = React.forwardRef<
@@ -59,28 +62,45 @@ export const SelectInputField = React.forwardRef<
       onReachEnd,
       hasNextPage,
       isFetchingNextPage,
+      withSearchInput = false,
       ...props
     },
     ref,
   ) => {
     const listRef = React.useRef<HTMLDivElement | null>(null);
-    const sentinelRef = React.useRef<HTMLDivElement | null>(null);
-    React.useEffect(() => {
-      if (!listRef.current || !sentinelRef.current) return;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-          if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
-            onReachEnd?.();
-          }
-        },
-        { root: listRef.current, threshold: 0.1 },
-      );
-      observer.observe(sentinelRef.current);
-      return () => observer.disconnect();
-    }, [hasNextPage, isFetchingNextPage, onReachEnd]);
+    const observerRef = React.useRef<IntersectionObserver | null>(null);
+
+    //  stable callback
+    const handleObserver = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        if (isFetchingNextPage) return;
+
+        if (observerRef.current) {
+          observerRef.current.disconnect();
+        }
+
+        observerRef.current = new IntersectionObserver(
+          (entries) => {
+            if (
+              entries[0].isIntersecting &&
+              hasNextPage &&
+              !isFetchingNextPage
+            ) {
+              onReachEnd?.();
+            }
+          },
+          {
+            root: listRef.current,
+            rootMargin: "100px", // preload before reaching bottom
+          },
+        );
+
+        if (node) observerRef.current.observe(node);
+      },
+      [hasNextPage, isFetchingNextPage, onReachEnd],
+    );
+
     const selectedOption = options.find((o) => o.value === value);
-    // console.log("selectedOption", selectedOption);
 
     return (
       <div className={cn("flex w-full flex-col", containerStyles)}>
@@ -93,7 +113,7 @@ export const SelectInputField = React.forwardRef<
         <Combobox
           id={id}
           items={options}
-          value={options.find((o) => o.value === value) ?? null}
+          value={selectedOption ?? null}
           onValueChange={(option) =>
             onChange?.((option as Option)?.value ?? "")
           }
@@ -104,7 +124,6 @@ export const SelectInputField = React.forwardRef<
             {...props}
             render={
               <Button
-                // variant="outline"
                 className={cn(
                   "bg-muted border-input h-13 w-full justify-between rounded-full px-4 text-sm font-normal",
                   "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
@@ -113,7 +132,7 @@ export const SelectInputField = React.forwardRef<
                   className,
                 )}
                 aria-invalid={!!error}
-              ></Button>
+              />
             }
           >
             {selectedOption ? (
@@ -133,47 +152,51 @@ export const SelectInputField = React.forwardRef<
                 {showPlaceholderImage && (
                   <Image
                     src={showPlaceholderImage}
-                    alt="flag assets"
+                    alt="placeholder"
                     width={30}
                     height={15}
                   />
                 )}
                 {placeholder || "Select an option"}
               </span>
-            )}{" "}
+            )}
           </ComboboxTrigger>
 
           <ComboboxContent>
-            {/* <ComboboxInput
-              showTrigger={false}
-              placeholder="Search..."
-            /> */}
+            {withSearchInput && (
+              <ComboboxInput
+                showTrigger={false}
+                placeholder="Search..."
+              />
+            )}
 
             <ComboboxEmpty>No results found.</ComboboxEmpty>
 
             <ComboboxList
               ref={listRef}
-              onScroll={(e) => {
-                const el = e.currentTarget;
-                const remaining = el.scrollHeight - el.scrollTop - el.clientHeight;
-                if (remaining <= 4 && hasNextPage && !isFetchingNextPage) onReachEnd?.();
-              }}
+              className="max-h-60 overflow-y-auto"
             >
-              {(item) => (
-                <ComboboxItem key={item.value} value={item}>
-                  {item.image && (
-                    <Image
-                      src={item.image}
-                      alt={item.label}
-                      width={30}
-                      height={15}
-                    />
+              {(item: Option) => (
+                <>
+                  <ComboboxItem key={item.value} value={item}>
+                    {item.image && (
+                      <Image
+                        src={item.image}
+                        alt={item.label}
+                        width={30}
+                        height={15}
+                      />
+                    )}
+                    {item.label}
+                  </ComboboxItem>
+
+                  {/* ❗ مهم: sentinel يكون مرتبط بآخر item */}
+                  {item === options[options.length - 1] && (
+                    <div ref={handleObserver} className="h-1" />
                   )}
-                  {item.label}
-                </ComboboxItem>
+                </>
               )}
             </ComboboxList>
-            <div ref={sentinelRef} className="h-1 w-full" />
             {isFetchingNextPage && (
               <div className="text-muted-foreground px-2 pb-2 text-center text-xs">
                 Loading...

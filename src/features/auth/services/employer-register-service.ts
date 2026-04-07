@@ -1,6 +1,6 @@
 import { TRegisterEmployerSchema } from "../validation/employer-register-schema";
 
-export const registerEmployer = async (data: TRegisterEmployerSchema) => {
+export const registerEmployerService = async (data: TRegisterEmployerSchema) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_COMPANY_URL}/auth/register`, {
         method: "POST",
         headers: {

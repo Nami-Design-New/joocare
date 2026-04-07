@@ -6,20 +6,18 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { InputField } from "@/shared/components/InputField";
 import LabelCheckbox from "@/shared/components/LabelCheckbox";
+import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
+import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import { useState } from "react";
-import { toast } from "sonner";
-import { useLocale } from "next-intl";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { useRegisterEmployer } from "../../hooks/useRegisterEmployer";
 import {
   RegisterEmployerSchema,
   TRegisterEmployerSchema,
 } from "../../validation/employer-register-schema";
 import { OTPModal } from "../forget-password/OtpModal";
-import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
-import { useRegisterEmployer } from "../../hooks/useRegisterEmployer";
-import { parsePhoneNumber } from "react-phone-number-input";
-import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 
 const FormEmployerRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -100,6 +98,7 @@ const FormEmployerRegister = () => {
               id="domain"
               label="Domain"
               placeholder="ex: Hospital"
+              withSearchInput={true}
               {...field}
               error={
                 errors.domain?.message ??
@@ -208,7 +207,7 @@ const FormEmployerRegister = () => {
             className="w-1/3"
             size={"pill"}
             type="submit"
-            // disabled={isSubmitting}
+          // disabled={isSubmitting}
           >
             {isPending ? "Registering..." : "Register"}
           </Button>
@@ -219,6 +218,8 @@ const FormEmployerRegister = () => {
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         email={email}
+        role="employer"
+        purpose="email-confirm"
       />
     </>
   );

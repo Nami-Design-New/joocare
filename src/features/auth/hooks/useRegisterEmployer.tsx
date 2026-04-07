@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { registerEmployer } from "../services/employer-register";
+import { registerEmployerService } from "../services/employer-register-service";
 import { toast } from "sonner";
 
 export const useRegisterEmployer = (onSuccess: () => void) => {
     return useMutation({
-        mutationFn: registerEmployer,
+        mutationFn: registerEmployerService,
         onSuccess: (data) => {
             console.log("data", data);
             toast.success("Registration successful! Please verify your email.");

@@ -1,6 +1,6 @@
 import { TRegisterCandidateSchema } from "../validation/candidate-register-schema";
 
-export const registerCandidate = async (data: TRegisterCandidateSchema) => {
+export const registerCandidateService = async (data: TRegisterCandidateSchema) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_USER_URL}/auth/register`, {
         method: "POST",
         headers: {

@@ -1,12 +1,12 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export default function useGetJobTitles() {
+export default function useGetCountries() {
     const query = useInfiniteQuery({
-        queryKey: ["job-titles"],
+        queryKey: ["countries"],
         initialPageParam: 1,
         queryFn: async ({ pageParam }) => {
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/job-titles?page=${pageParam}&pagination=on&limit_per_page=10`
+                `${process.env.NEXT_PUBLIC_BASE_URL}/countries?page=${pageParam}&pagination=on&limit_per_page=10`
             );
 
             if (!res.ok) {
@@ -31,6 +31,6 @@ export default function useGetJobTitles() {
 
     return {
         ...query,
-        jobTitles: query.data?.pages.flatMap((page) => page.data) ?? [],
+        countries: query.data?.pages.flatMap((page) => page.data) ?? [],
     };
 }
