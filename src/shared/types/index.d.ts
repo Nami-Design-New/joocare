@@ -31,6 +31,7 @@ export interface ICompanyUser {
   phone: string | null;
   phone_code: string | null;
   domain: string | null;
+  domain_id: number | null;
   person_name: string | null;
   person_phone: string | null;
   person_phone_code: string | null;

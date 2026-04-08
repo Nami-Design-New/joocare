@@ -1,12 +1,12 @@
 import { apiFetch, type ApiResult } from "@/shared/lib/fetch-manager";
-import { ChangePasswordPayload } from "../types";
+import { UpdateBasicInfoPayload } from "../types";
 
-export async function changePasswordService(
-    payload: ChangePasswordPayload,
+export async function updateBasicInfoService(
+    payload: UpdateBasicInfoPayload,
     { token }: { token: string },
 ): Promise<ApiResult> {
     const response = await apiFetch(
-        `${process.env.NEXT_PUBLIC_BASE_USER_URL}/auth/change-password`,
+        `${process.env.NEXT_PUBLIC_BASE_COMPANY_URL}/auth/update-basic-info`,
         {
             method: "POST",
             headers: {
@@ -18,7 +18,7 @@ export async function changePasswordService(
     );
 
     if (!response.ok) {
-        throw new Error(response.message ?? "Failed to change password");
+        throw new Error(response.message ?? "Failed to update basic info");
     }
     return response;
 }

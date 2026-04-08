@@ -32,13 +32,13 @@ const FormCandidateRegister = () => {
     control,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TRegisterCandidateSchema>({
     resolver: zodResolver(RegisterCandidateSchema),
     defaultValues: {
-      uploadCV: [],
+      uploadCV: "",
       confirmRegister: false,
-      uploadLicense: [],
+      uploadLicense: "",
     },
     mode: "onChange", // Validate on blur for better UX
   });
@@ -53,6 +53,8 @@ const FormCandidateRegister = () => {
   );
 
   const onSubmit: SubmitHandler<TRegisterCandidateSchema> = (data) => {
+    console.log("data registdere", data);
+
     const parsed = parsePhoneNumber(data.phoneNumber);
 
     submitRegister({
@@ -212,11 +214,13 @@ const FormCandidateRegister = () => {
         name="uploadCV"
         control={control}
         render={({ field }) => (
+
           <FilepondUpload
-            label={`Upload CV`}
-            hint={`"Optional"`}
-            files={field.value}
-            onChange={field.onChange}
+            label="Upload CV"
+            hint='"Optional"'
+            value={field.value}                         // the stored path
+            onUploadSuccess={(imagePath) => field.onChange(imagePath)} // ✅ set path
+            onRemove={() => field.onChange("")}          // ✅ clear on remove
             allowMultiple={false}
             maxFiles={1}
             error={errors.uploadCV?.message}
@@ -292,9 +296,10 @@ const FormCandidateRegister = () => {
             render={({ field }) => (
               <FilepondUpload
                 label="Upload the license image"
-                hint={`"Optional"`}
-                files={field.value}
-                onChange={field.onChange}
+                hint='"Optional"'
+                value={field.value}
+                onUploadSuccess={(imagePath) => field.onChange(imagePath)} // ✅
+                onRemove={() => field.onChange("")}
                 allowMultiple={false}
                 maxFiles={1}
                 error={errors.uploadLicense?.message}
@@ -311,9 +316,9 @@ const FormCandidateRegister = () => {
           className="w-1/3"
           size="pill"
           type="submit"
-          disabled={isSubmitting}
+          disabled={isPending}
         >
-          {isSubmitting ? "Registering..." : "Register"}
+          {isPending ? "Registering..." : "Register"}
         </Button>
       </div>
     </form>

@@ -6,7 +6,7 @@ export async function changePasswordService(
     { token }: { token: string },
 ): Promise<ApiResult> {
     const response = await apiFetch(
-        `${process.env.NEXT_PUBLIC_BASE_USER_URL}/auth/change-password`,
+        `${process.env.NEXT_PUBLIC_BASE_COMPANY_URL}/auth/change-password`,
         {
             method: "POST",
             headers: {

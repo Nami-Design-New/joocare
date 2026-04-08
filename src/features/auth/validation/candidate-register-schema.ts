@@ -23,7 +23,7 @@ const optionalString = z
   .transform((val) => (val?.trim() === "" ? undefined : val));
 
 const optionalFileArray = z
-  .array(z.instanceof(File))
+  .array(z.string())
   .optional()
   .transform((val) => (val && val.length === 0 ? undefined : val));
 
@@ -61,7 +61,7 @@ export const RegisterCandidateSchema = z
       .min(6, { message: "Password must be at least 6 characters" }),
 
     // Sends undefined (omitted) if no files uploaded
-    uploadCV: optionalFileArray,
+    uploadCV: z.string().optional(),
 
     confirmRegister: z.boolean().default(false),
 
@@ -76,7 +76,7 @@ export const RegisterCandidateSchema = z
     specificCountry: optionalString,
 
     // Sends undefined (omitted) if no files uploaded
-    uploadLicense: optionalFileArray,
+    uploadLicense: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (data.confirmRegister) {
