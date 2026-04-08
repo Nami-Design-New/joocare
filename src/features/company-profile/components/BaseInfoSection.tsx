@@ -1,6 +1,8 @@
 "use client"
 
-const BaseInfoSection = () => {
+import { TCompanyProfileViewModel } from "../types"
+
+const BaseInfoSection = ({ companyProfileData }: { companyProfileData: TCompanyProfileViewModel }) => {
     return (
         <div className="rounded-2xl bg-white flex flex-col gap-5 p-4 border">
             <div className="flex items-center justify-between">
@@ -12,7 +14,7 @@ const BaseInfoSection = () => {
                     Official Email
                 </span>
                 <span className="text-sm font-semibold">
-                    sgheg@gmail.com
+                    {companyProfileData?.email}
                 </span>
             </div>
             <div className="flex justify-between items-center">
@@ -20,7 +22,7 @@ const BaseInfoSection = () => {
                     Location
                 </span>
                 <span className="text-sm font-semibold">
-                    Cairo, Egypt
+                    {companyProfileData?.city?.name}, {companyProfileData?.country?.name}
                 </span>
             </div>
             <div className="flex justify-between items-center">
@@ -28,7 +30,7 @@ const BaseInfoSection = () => {
                     Official phone number
                 </span>
                 <span className="text-sm font-semibold">
-                    +96612345678
+                    {companyProfileData?.phone_code}{companyProfileData?.phone}
                 </span>
             </div>
             <div className="flex justify-between items-center">
@@ -36,7 +38,7 @@ const BaseInfoSection = () => {
                     Founded
                 </span>
                 <span className="text-sm font-semibold">
-                    2015
+                    {companyProfileData?.established_date}
                 </span>
             </div>
         </div>

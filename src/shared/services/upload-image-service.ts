@@ -9,9 +9,9 @@ export const uploadImageService = async (file: File) => {
 
     const res = await apiFetch(`${baseUrl}/images`, {
         method: "POST",
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
+        // headers: {
+        //     "Content-Type": "multipart/form-data",
+        // },
         body: formData,
     });
 

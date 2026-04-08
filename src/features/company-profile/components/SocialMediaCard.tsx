@@ -15,7 +15,7 @@ const SocialMediaCard = ({ link, title, src }: ISocialMediaProps) => {
                 <Image src={src} alt="facebook icon" width={35} height={35} />
                 <div>
                     <h5 className="text-sm">{title}</h5>
-                    <Link href={'#'} className="text-primary text-sm ">
+                    <Link href={link} className="text-primary text-sm ">
                         {link}
                     </Link>
                 </div>
