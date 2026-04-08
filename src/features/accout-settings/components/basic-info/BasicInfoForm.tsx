@@ -15,7 +15,7 @@ import { BasicInfoSchema, TBasicInfoSchema } from "../../validation/basic-info-s
 import { OTPModal } from "@/features/auth/components/forget-password/OtpModal";
 import { useSession } from "next-auth/react";
 import { useUpdateBasicInfo } from "../../hooks/useUpdateBasicInfo";
-import { parsePhoneNumber } from "react-phone-number-input";
+import { parsePhoneNumber, getCountries, getCountryCallingCode, Country } from "react-phone-number-input";
 import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
@@ -34,21 +34,25 @@ const asCompanyUser = (user: unknown): ICompanyUser | undefined => {
 };
 
 /** Build react-hook-form default values from user data. */
-const buildDefaults = (user?: ICompanyUser): TBasicInfoSchema => ({
-  companyName: user?.name ?? "",
-  officialEmail: user?.email ?? "",
-  domain: user?.domain_id?.toString() ?? "",
-  personFullName: user?.person_name ?? "",
-  phoneNumber: user?.person_phone
-    ? `${user.person_phone_code}${user.person_phone}`
-    : "",
-  orgOfficialPhoneNumber: user?.phone
-    ? `${user.phone_code}${user.phone}`
-    : "",
-  country: user?.country_id?.toString() ?? "",
-  city: user?.city_id?.toString() ?? "",
-  dateOfEstablishment: user?.established_date ?? "",
-});
+const buildDefaults = (user?: ICompanyUser): TBasicInfoSchema => {
+  const cleanPhone = (phone?: string | null) => phone?.replace(/[^\d]/g, "") || "";
+
+  return {
+    companyName: user?.name ?? "",
+    officialEmail: user?.email ?? "",
+    domain: user?.domain_id?.toString() ?? "",
+    personFullName: user?.person_name ?? "",
+    phoneNumber: user?.person_phone
+      ? `${user.person_phone_code ?? ""}${cleanPhone(user.person_phone)}`
+      : "",
+    orgOfficialPhoneNumber: user?.phone
+      ? `${user.phone_code ?? ""}${cleanPhone(user.phone)}`
+      : "",
+    country: user?.country_id?.toString() ?? "",
+    city: user?.city_id?.toString() ?? "",
+    dateOfEstablishment: user?.established_date ?? "",
+  };
+};
 
 /** Parse an international phone string into code + national number. */
 const parsePhoneData = (phoneNumber: string) => {
@@ -66,6 +70,16 @@ const parsePhoneData = (phoneNumber: string) => {
   }
 };
 
+/** Get default ISO country code based on calling code. */
+const getCountryCodeByPhoneCode = (phoneCode?: string | null): Country => {
+  if (!phoneCode) return "EG";
+  const numericCode = phoneCode.replace(/\D/g, "");
+  const match = getCountries().find(
+    (country) => getCountryCallingCode(country) === numericCode
+  );
+  return match || "EG";
+};
+
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
@@ -75,8 +89,9 @@ const BasicInfoForm = () => {
   const { data: session } = useSession();
   const token = session?.accessToken ?? "";
   const userData = useMemo(() => asCompanyUser(session?.user), [session?.user]);
+  console.log('user data', userData);
 
-  // ── modals ───────────────────────────────────────────────────────────
+  // ── modals ──────────────────── ───────────────────────────────────────
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOtpOpen, setIsModalOtpOpen] = useState(false);
   const [userEmail, setUserEmail] = useState("");
@@ -111,7 +126,7 @@ const BasicInfoForm = () => {
   } = useGetCitiesByCountryId(selectedCountryId ?? 0);
 
   // ── mutation ─────────────────────────────────────────────────────────
-  const { mutate: updateBasicInfo } = useUpdateBasicInfo({ token });
+  const { mutate: updateBasicInfo, isPending } = useUpdateBasicInfo({ token });
 
   // ── form ─────────────────────────────────────────────────────────────
   const {
@@ -141,6 +156,8 @@ const BasicInfoForm = () => {
     const personPhone = parsePhoneData(data.phoneNumber);
     const orgPhone = parsePhoneData(data.orgOfficialPhoneNumber);
 
+    console.log("data :::", data.phoneNumber, personPhone)
+
     updateBasicInfo({
       name: data.companyName,
       email: data.officialEmail,
@@ -155,6 +172,7 @@ const BasicInfoForm = () => {
       established_date: data.dateOfEstablishment,
     });
   };
+  // console.log("phone :: ", personPhone, orgPhone, data.phoneNumber, data.orgOfficialPhoneNumber);
 
   return (
     <>
@@ -233,7 +251,7 @@ const BasicInfoForm = () => {
             render={({ field }) => (
               <PhoneInputCode
                 {...field}
-                defaultCountry="EG"
+                defaultCountry={getCountryCodeByPhoneCode(userData?.person_phone_code)}
                 id="phoneNumber"
                 className="w-full"
                 placeholder="ex:52 987 6543"
@@ -266,7 +284,7 @@ const BasicInfoForm = () => {
             render={({ field }) => (
               <PhoneInputCode
                 {...field}
-                defaultCountry="EG"
+                defaultCountry={getCountryCodeByPhoneCode(userData?.phone_code)}
                 id="orgOfficialPhoneNumber"
                 className="w-full"
                 placeholder="ex:52 987 6543"
@@ -362,8 +380,9 @@ const BasicInfoForm = () => {
             size="pill"
             className="w-1/3 md:w-56"
             type="submit"
+            disabled={isPending}
           >
-            Save
+            {isPending ? "Saving..." : "Save"}
           </Button>
         </div>
       </form>
