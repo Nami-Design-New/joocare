@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { updateImageAndCoverService } from "../services/update-image-and-cover";
+import { updateImageAndCoverService } from "../services/update-image-and-cover-service";
 
 export const useUpdateImageAndCover = ({ token }: { token: string }) => {
     const queryClient = useQueryClient();

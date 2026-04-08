@@ -1,8 +1,9 @@
 "use client"
 
 import { TCompanyProfileViewModel } from "../types"
+import TextSkeleton from "./TextSkeleton"
 
-const BaseInfoSection = ({ companyProfileData }: { companyProfileData: TCompanyProfileViewModel }) => {
+const BaseInfoSection = ({ companyProfileData, isPending }: { companyProfileData: TCompanyProfileViewModel, isPending: boolean }) => {
     return (
         <div className="rounded-2xl bg-white flex flex-col gap-5 p-4 border">
             <div className="flex items-center justify-between">
@@ -13,33 +14,33 @@ const BaseInfoSection = ({ companyProfileData }: { companyProfileData: TCompanyP
                 <span className="text-sm font-semibold text-muted-foreground">
                     Official Email
                 </span>
-                <span className="text-sm font-semibold">
+                {isPending ? <TextSkeleton /> : <span className="text-sm font-semibold">
                     {companyProfileData?.email}
-                </span>
+                </span>}
             </div>
             <div className="flex justify-between items-center">
                 <span className="text-sm font-semibold text-muted-foreground">
                     Location
                 </span>
-                <span className="text-sm font-semibold">
+                {isPending ? <TextSkeleton /> : <span className="text-sm font-semibold">
                     {companyProfileData?.city?.name}, {companyProfileData?.country?.name}
-                </span>
+                </span>}
             </div>
             <div className="flex justify-between items-center">
                 <span className="text-sm font-semibold text-muted-foreground">
                     Official phone number
                 </span>
-                <span className="text-sm font-semibold">
+                {isPending ? <TextSkeleton /> : <span className="text-sm font-semibold">
                     {companyProfileData?.phone_code}{companyProfileData?.phone}
-                </span>
+                </span>}
             </div>
             <div className="flex justify-between items-center">
                 <span className="text-sm font-semibold text-muted-foreground">
                     Founded
                 </span>
-                <span className="text-sm font-semibold">
+                {isPending ? <TextSkeleton /> : <span className="text-sm font-semibold">
                     {companyProfileData?.established_date}
-                </span>
+                </span>}
             </div>
         </div>
     )

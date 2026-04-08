@@ -11,20 +11,20 @@ import { useSession } from "next-auth/react"
 const MyProfilePage = () => {
     const { data: session } = useSession();
 
-    const { data: companyProfileData } = useGetCompanyProfile(session?.accessToken);
+    const { data: companyProfileData, isPending } = useGetCompanyProfile(session?.accessToken);
 
 
     return (
         <div className="space-y-6">
             <ProfileHeader companyProfileData={companyProfileData as TCompanyProfileViewModel} />
-            <AboutSection companyProfileData={companyProfileData as TCompanyProfileViewModel} />
+            <AboutSection companyProfileData={companyProfileData as TCompanyProfileViewModel} isPending={isPending} />
             <div className="grid grid-cols-9 gap-6">
                 <div className="col-span-9 lg:col-span-5">
-                    <SocialMediaSection companyProfileData={companyProfileData as TCompanyProfileViewModel} />
+                    <SocialMediaSection companyProfileData={companyProfileData as TCompanyProfileViewModel} isPending={isPending} />
                 </div>
 
                 <div className="col-span-9 lg:col-span-4">
-                    <BaseInfoSection companyProfileData={companyProfileData as TCompanyProfileViewModel} />
+                    <BaseInfoSection companyProfileData={companyProfileData as TCompanyProfileViewModel} isPending={isPending} />
                 </div>
             </div>
         </div>
