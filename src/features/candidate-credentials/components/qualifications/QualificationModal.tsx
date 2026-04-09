@@ -156,15 +156,17 @@ export function QualificationModal({
   }, []);
 
   const onSubmit: SubmitHandler<QualificationSchemaOutput> = (form) => {
+    const imagePayload = qualification?.id
+      ? storedImagePath ?? undefined
+      : storedImagePath ?? (showExistingImage ? qualification?.image ?? null : null);
+
     const payload = {
       degree: form.degree.trim(),
       university: form.university.trim(),
       countryId: form.countryId,
       startDate: form.startDate,
       endDate: form.endDate?.trim() || undefined,
-      image:
-        storedImagePath ??
-        (showExistingImage ? qualification?.image ?? null : null),
+      image: imagePayload,
       locale,
     };
     const optimisticQualification = buildOptimisticQualification({
