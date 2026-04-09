@@ -63,7 +63,7 @@ export function FilepondUpload({
         allowMultiple={allowMultiple}
         maxFiles={maxFiles}
         name={name}
-        // ✅ FilePond handles upload internally via server.process
+        //  FilePond handles upload internally via server.process
         server={{
           process: (fieldName, file, _metadata, load, error, progress) => {
             const formData = new FormData();

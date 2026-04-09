@@ -1,9 +1,9 @@
 "use client";
 
-import { FilepondUpload } from "@/shared/components/FilepondUpload";
 import { InputField } from "@/shared/components/InputField";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { SelectInputField } from "@/shared/components/SelectInputField";
+import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetExperiences from "@/shared/hooks/useGetExperiences";
@@ -469,7 +469,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         name="uploadCV"
         control={control}
         render={({ field }) => (
-          <FilepondUpload
+          <StoredFilepondUpload
             label="Upload CV"
             hint={`"Optional"`}
             files={field.value}
