@@ -126,12 +126,16 @@ export function CertificateModal({
   });
 
   const onSubmit: SubmitHandler<CertificateSchemaOutput> = (form) => {
+    const imagePayload = certificate?.id
+      ? storedImagePath ?? undefined
+      : storedImagePath ?? (showExistingImage ? certificate?.image ?? null : null);
+
     const payload = {
       name: form.name.trim(),
       company: form.company.trim(),
       startDate: form.startDate,
       endDate: form.endDate?.trim() || undefined,
-      image: storedImagePath ?? (showExistingImage ? certificate?.image ?? null : null),
+      image: imagePayload,
       locale,
     };
     const optimisticCertificate = buildOptimisticCertificate({

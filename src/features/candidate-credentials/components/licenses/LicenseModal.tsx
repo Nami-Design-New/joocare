@@ -129,11 +129,15 @@ export function LicenseModal({
   }, []);
 
   const onSubmit: SubmitHandler<LicenseSchemaOutput> = (form) => {
+    const imagePayload = license?.id
+      ? storedImagePath ?? undefined
+      : storedImagePath ?? (showExistingImage ? license?.image ?? null : null);
+
     const payload = {
       title: form.title.trim(),
       number: form.number.trim(),
       countryId: form.countryId,
-      image: storedImagePath ?? (showExistingImage ? license?.image ?? null : null),
+      image: imagePayload,
       locale,
     };
     const optimisticLicense = buildOptimisticLicense({
