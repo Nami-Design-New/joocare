@@ -2,79 +2,75 @@
 
 import Image from "next/image";
 import { useMemo, useRef } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import { cn } from "@/shared/lib/utils";
 import { Plus } from "lucide-react";
+import { cn } from "@/shared/lib/utils";
 
-type FormValues = {
-    uploadCoverImage?: File | string;
-    uploadLogoImage?: File | string;
-};
+interface ProfileImageProps {
+  value?: File[] | string | null;
+  onChange: (files: File[]) => void;
+  error?: string | boolean;
+}
 
-const ProfileImage = () => {
-    const {
-        control,
-        formState: { errors },
-    } = useForm<FormValues>();
+const ProfileImage = ({ value, onChange, error }: ProfileImageProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    const logoInputRef = useRef<HTMLInputElement>(null);
-    const logoValue = useWatch({ control, name: "uploadLogoImage" });
+  const preview = useMemo(() => {
+    const selectedFile = Array.isArray(value) ? value[0] : null;
 
-    const logoPreview = useMemo(() => {
-        if (logoValue instanceof File) {
-            return URL.createObjectURL(logoValue);
-        }
-        return logoValue ?? null;
-    }, [logoValue]);
+    if (selectedFile instanceof File) {
+      return URL.createObjectURL(selectedFile);
+    }
 
-    return (
-        <div className="w-full">
-            <div className="relative flex justify-center">
+    return typeof value === "string" ? value : null;
+  }, [value]);
 
-                {/* LOGO */}
-                <Controller
-                    name="uploadLogoImage"
-                    control={control}
-                    render={({ field: { onChange } }) => (
-                        <div
-                            className={cn(
-                                "relative",
-                                "w-37.5 h-37.5 rounded-full border bg-white",
-                                "flex items-center justify-center cursor-pointer",
-                                "ring-4 ring-white",
-                                errors.uploadLogoImage && "border-red-500"
-                            )}
-                        >
-                            <Image
-                                src={logoPreview ? logoPreview : "/assets/image_2.svg"}
-                                alt="Logo"
-                                fill
-                                className="object-cover rounded-full"
-                            />
+  return (
+    <div className="w-full">
+      <div className="relative flex justify-center">
+        <div
+          className={cn(
+            "relative flex h-37.5 w-37.5 cursor-pointer items-center justify-center rounded-full border bg-white ring-4 ring-white",
+            error && "border-red-500",
+          )}
+        >
+          <Image
+            src={preview ? preview : "/assets/image_2.svg"}
+            alt="Profile"
+            fill
+            className="rounded-full object-cover"
+          />
 
-                            <input
-                                ref={logoInputRef}
-                                type="file"
-                                hidden
-                                accept="image/*"
-                                onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (!file) return;
-                                    onChange(file);
-                                }}
-                            />
+          <input
+            ref={inputRef}
+            type="file"
+            hidden
+            accept="image/*"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
 
-                            <div
-                                onClick={() => logoInputRef.current?.click()}
-                                className="w-7 h-7 absolute bottom-0 right-3 bg-primary transition flex items-center justify-center  rounded-full">
-                                <Plus width={16} className="text-white" />
-                            </div>
-                        </div>
-                    )}
-                />
-            </div>
+              if (!file) {
+                return;
+              }
+
+              onChange([file]);
+            }}
+          />
+
+          <div
+            onClick={() => inputRef.current?.click()}
+            className="bg-primary absolute right-3 bottom-0 flex h-7 w-7 items-center justify-center rounded-full transition"
+          >
+            <Plus width={16} className="text-white" />
+          </div>
         </div>
-    );
+      </div>
+      {typeof error === "string" && error ? (
+        <span className="mt-2 block text-center text-[12px] text-red-500">
+          {error}
+        </span>
+      ) : null}
+    </div>
+  );
 };
 
 export default ProfileImage;

@@ -1,11 +1,25 @@
-import BasicInfoForm from "@/features/candidate-settings/components/basic-info/BasicInfoForm"
+import { getCandidateProfile } from "@/features/candidate-profile/services/profile-service";
+import BasicInfoForm from "@/features/candidate-settings/components/basic-info/BasicInfoForm";
+import { mapCandidateProfileToSettingsProfile } from "@/features/candidate-settings/services/basic-info-service";
 
-const BasicInfoPage = () => {
+const BasicInfoPage = async () => {
+  const profile = await getCandidateProfile();
+
+  if (!profile) {
     return (
-        <main className="p-6 rounded-2xl bg-white">
-            <BasicInfoForm />
-        </main>
-    )
-}
+      <main className="rounded-2xl bg-white p-6">
+        <p className="text-muted-foreground text-sm">
+          Unable to load profile information.
+        </p>
+      </main>
+    );
+  }
 
-export default BasicInfoPage
+  return (
+    <main className="rounded-2xl bg-white p-6">
+      <BasicInfoForm profile={mapCandidateProfileToSettingsProfile(profile)} />
+    </main>
+  );
+};
+
+export default BasicInfoPage;

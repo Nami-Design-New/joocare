@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
-import { addUserSkills, getUserSkills } from "../services/skills-client-service";
+import { addUserSkills, updateUserSkills } from "../services/skills-client-service";
 
 async function resolveCandidateToken() {
   const session = await getServerSession(authOptions);
@@ -17,37 +17,45 @@ async function resolveCandidateToken() {
 
 export async function saveSkillsAction({
   skillIds,
-  skillLabels,
   locale = "en",
 }: {
-  skillIds?: string[];
-  skillLabels?: string[];
+  skillIds: string[];
   locale?: string;
 }) {
   const token = await resolveCandidateToken();
-  let resolvedSkillIds = skillIds ?? [];
 
-  if (resolvedSkillIds.length === 0 && skillLabels && skillLabels.length > 0) {
-    const currentSkills = await getUserSkills({
-      locale,
-      token,
-    });
-
-    const labelSet = new Set(skillLabels);
-    resolvedSkillIds = currentSkills
-      .filter((skill) => labelSet.has(skill.label))
-      .map((skill) => skill.skillId);
-  }
-
-  await addUserSkills({
-    skillIds: resolvedSkillIds,
+  const result = await addUserSkills({
+    skillIds,
     locale,
     token,
   });
+  console.log("[saveSkillsAction] addUserSkills response:", result);
+  revalidatePath(`/${locale}/candidate/profile`);
+
+  return {
+    message: result.message || "Skills saved successfully.",
+  };
+}
+
+export async function updateSkillsAction({
+  deletedSkillIds,
+  locale = "en",
+}: {
+  deletedSkillIds: string[];
+  locale?: string;
+}) {
+  const token = await resolveCandidateToken();
+
+  const result = await updateUserSkills({
+    skillIds: deletedSkillIds,
+    locale,
+    token,
+  });
+  console.log("[updateSkillsAction] updateUserSkills response:", result);
 
   revalidatePath(`/${locale}/candidate/profile`);
 
   return {
-    message: "Skills saved successfully.",
+    message: result.message || "Skills updated successfully.",
   };
 }

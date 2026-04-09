@@ -1,6 +1,7 @@
 // shared/components/FilepondUpload.tsx
 "use client";
 
+import { useMemo, useSyncExternalStore } from "react";
 import { FilePond } from "react-filepond";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond/dist/filepond.min.css";
@@ -20,6 +21,13 @@ interface FilepondUploadProps {
   className?: string;
   error?: string | boolean;
   hint?: string;
+  processFile?: (file: File) => Promise<{ path: string }>;
+  onStoredPathChange?: (path: string | null) => void;
+  onUploadError?: (message: string | null) => void;
+  acceptedFileTypes?: string[];
+  existingFileUrl?: string | null;
+  existingFileLabel?: string | null;
+  onExistingFileRemove?: () => void;
 }
 
 export function FilepondUpload({

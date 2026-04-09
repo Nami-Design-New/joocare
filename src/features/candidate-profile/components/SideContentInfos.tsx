@@ -18,6 +18,7 @@ const SideContentInfos = ({
   const displayLocation = profile?.location || "-";
   const displayPhone = profile?.fullPhone || "-";
   const displayAge = profile?.age ? String(profile.age) : "-";
+  const displayExp = profile?.experience || "-";
 
   return (
     <aside className="no-scrollbar flex flex-col gap-5 overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow lg:h-dvh">
@@ -81,7 +82,7 @@ const SideContentInfos = ({
             {" "}
             Experience{" "}
           </h6>
-          <span className="text-sm font-semibold">-</span>
+          <span className="text-sm font-semibold">{displayExp}</span>
         </div>
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">Age</h6>

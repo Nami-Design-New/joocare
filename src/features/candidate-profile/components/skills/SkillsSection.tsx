@@ -1,10 +1,13 @@
 "use client";
 import { Edit2, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import OneSkillSection from "./OneSkillSection";
 import { AddSkillsModal } from "./AddSkillsModal";
 import { EditSkillsModal } from "./EditSkillsModal";
-import type { CandidateProfileViewModel } from "../../types/profile.types";
+import type {
+  CandidateProfileViewModel,
+  CandidateSkillViewModel,
+} from "../../types/profile.types";
 
 const SkillsSection = ({
   profile,
@@ -14,12 +17,7 @@ const SkillsSection = ({
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
 
-  const [skills, setSkills] = useState<string[]>(profile?.skills ?? []);
-
-  useEffect(() => {
-    setSkills(profile?.skills ?? []);
-  }, [profile?.skills]);
-  console.log( "" , profile?.skills);
+  const [skills, setSkills] = useState<CandidateSkillViewModel[]>(profile?.skills ?? []);
 
   return (
     <>
@@ -43,7 +41,7 @@ const SkillsSection = ({
 
         <div className="flex flex-wrap gap-2">
           {skills.length > 0 ? (
-            skills.map((skill) => <OneSkillSection key={skill} label={skill} />)
+            skills.map((skill) => <OneSkillSection key={skill.id} label={skill.label} />)
           ) : (
             <p className="text-muted-foreground text-sm">
               No skills added yet.
@@ -55,6 +53,7 @@ const SkillsSection = ({
       <AddSkillsModal
         open={addOpen}
         onOpenChange={setAddOpen}
+        skills={skills}
         onSave={(newSkills) => setSkills(newSkills)}
       />
 

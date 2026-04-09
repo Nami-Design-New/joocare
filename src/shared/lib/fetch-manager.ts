@@ -58,10 +58,11 @@ export async function apiFetch<T = Record<string, unknown>>(
     body,
     cache,
   });
-  console.log(response);
 
   const data =
     ((await response.json().catch(() => null)) as ApiFetchResponse<T> | null) ?? null;
+ 
+  // console.log("from Fetch Api", data);
   const statusCode =
     response.status === 401 ? 401 : (data?.code ?? response.status);
   const ok = statusCode >= 200 && statusCode < 300;

@@ -4,12 +4,12 @@ import { apiFetch } from "@/shared/lib/fetch-manager";
 export type SkillOption = {
   id: string;
   label: string;
+  deleteId?: string;
 };
 
-export type UserSkillRecord = {
-  id: string;
-  skillId: string;
-  label: string;
+export type UserSkillsCatalog = {
+  suggested: SkillOption[];
+  skills: SkillOption[];
 };
 
 function parseSkillOption(entry: unknown): SkillOption | null {
@@ -22,7 +22,8 @@ function parseSkillOption(entry: unknown): SkillOption | null {
     record.skill && typeof record.skill === "object"
       ? (record.skill as Record<string, unknown>)
       : null;
-  const id = nestedSkill?.id ?? record.skill_id ?? record.id;
+  const rawId = record.id;
+  const id = nestedSkill?.id ?? record.skill_id ?? rawId;
   const label =
     nestedSkill?.name ??
     nestedSkill?.title ??
@@ -35,87 +36,45 @@ function parseSkillOption(entry: unknown): SkillOption | null {
     return {
       id: String(id),
       label,
+      deleteId:
+        (nestedSkill || record.skill_id) &&
+          (typeof rawId === "number" || typeof rawId === "string")
+          ? String(rawId)
+          : String(id),
     };
   }
 
   return null;
 }
 
-function findSkillCollections(data: unknown, keyHint = ""): unknown[][] {
-  if (!data || typeof data !== "object") {
-    return [];
-  }
+function mergeSkillOptions(...collections: unknown[][]) {
+  const uniqueSkills = new Map<string, SkillOption>();
 
-  const record = data as Record<string, unknown>;
-  const matches: unknown[][] = [];
-
-  for (const [key, value] of Object.entries(record)) {
-    const normalizedKey = key.toLowerCase();
-
-    if (Array.isArray(value)) {
-      if (normalizedKey.includes("skill") || keyHint.includes("skill")) {
-        matches.push(value);
+  collections
+    .flat()
+    .map(parseSkillOption)
+    .filter((skill): skill is SkillOption => Boolean(skill))
+    .forEach((skill) => {
+      if (!uniqueSkills.has(skill.id)) {
+        uniqueSkills.set(skill.id, skill);
       }
+    });
 
-      for (const item of value) {
-        matches.push(...findSkillCollections(item, normalizedKey));
-      }
-      continue;
-    }
-
-    if (value && typeof value === "object") {
-      matches.push(...findSkillCollections(value, normalizedKey));
-    }
-  }
-
-  return matches;
+  return Array.from(uniqueSkills.values());
 }
 
-function getBestSkillCollection(data: unknown): unknown[] {
-  const collections = findSkillCollections(data);
-  const parsedCollections = collections
-    .map((collection) => collection.map(parseSkillOption).filter((skill): skill is SkillOption => Boolean(skill)))
-    .filter((collection) => collection.length > 0);
+function getArrayAtPath(value: unknown, path: string[]) {
+  let current: unknown = value;
 
-  if (parsedCollections.length === 0) {
-    return [];
+  for (const key of path) {
+    if (!current || typeof current !== "object") {
+      return [];
+    }
+
+    current = (current as Record<string, unknown>)[key];
   }
 
-  parsedCollections.sort((a, b) => b.length - a.length);
-  return parsedCollections[0];
-}
-
-export async function getSkillOptions({
-  locale = "en",
-  token,
-}: {
-  locale?: string;
-  token: string;
-}) {
-  const { ok, data, message } = await apiFetch(
-    `${getUserApiUrl()}/auth/update-profile/form-data`,
-    {
-      method: "GET",
-      locale,
-      token,
-    },
-  );
-
-  if (!ok) {
-    throw new Error(message || "Failed to load skills.");
-  }
-
-  const parsedOptions = getBestSkillCollection(data) as SkillOption[];
-
-  if (parsedOptions.length > 0) {
-    return parsedOptions;
-  }
-
-  const currentSkills = await getUserSkills({ locale, token });
-  return currentSkills.map((skill) => ({
-    id: skill.skillId,
-    label: skill.label,
-  }));
+  return Array.isArray(current) ? current : [];
 }
 
 export async function getUserSkills({
@@ -135,50 +94,27 @@ export async function getUserSkills({
   );
 
   if (!ok) {
-    throw new Error(message || "Failed to load current skills.");
+    throw new Error(message || "Failed to load skills.");
   }
 
-  const items = Array.isArray(data?.data)
-    ? data.data
-    : data?.data && typeof data.data === "object" && Array.isArray((data.data as { data?: unknown[] }).data)
-      ? (data.data as { data: unknown[] }).data
-      : [];
-
-  return items
-    .map((item) => {
-      if (!item || typeof item !== "object") {
-        return null;
-      }
-
-      const record = item as Record<string, unknown>;
-      const nestedSkill =
-        record.skill && typeof record.skill === "object"
-          ? (record.skill as Record<string, unknown>)
-          : null;
-      const itemId = record.id;
-      const skillId = nestedSkill?.id ?? record.skill_id ?? record.id;
-      const label =
-        nestedSkill?.name ??
-        nestedSkill?.title ??
-        record.name ??
-        record.title ??
-        record.label;
-
-      if (
-        (typeof itemId === "number" || typeof itemId === "string") &&
-        (typeof skillId === "number" || typeof skillId === "string") &&
-        typeof label === "string"
-      ) {
-        return {
-          id: String(itemId),
-          skillId: String(skillId),
-          label,
-        } satisfies UserSkillRecord;
-      }
-
-      return null;
-    })
-    .filter((item): item is UserSkillRecord => Boolean(item));
+  return {
+    suggested: mergeSkillOptions(
+      getArrayAtPath(data, ["suggested"]),
+      getArrayAtPath(data, ["data", "suggested"]),
+      getArrayAtPath(data, ["data", "data", "suggested"]),
+    ),
+    skills: mergeSkillOptions(
+      getArrayAtPath(data, ["skills"]),
+      getArrayAtPath(data, ["data", "skills"]),
+      getArrayAtPath(data, ["data", "data", "skills"]),
+      getArrayAtPath(data, ["skills", "original", "data"]),
+      getArrayAtPath(data, ["data", "skills", "original", "data"]),
+      getArrayAtPath(data, ["data", "data", "skills", "original", "data"]),
+      getArrayAtPath(data, ["skills", "original", "data", "data"]),
+      getArrayAtPath(data, ["data", "skills", "original", "data", "data"]),
+      getArrayAtPath(data, ["data", "data", "skills", "original", "data", "data"]),
+    ),
+  } satisfies UserSkillsCatalog;
 }
 
 export async function addUserSkills({
@@ -191,24 +127,102 @@ export async function addUserSkills({
   token: string;
 }) {
   if (skillIds.length === 0) {
-    return null;
+    return {
+      data: null,
+      message: "No new skills to add.",
+    };
   }
 
   const formData = new FormData();
   skillIds.forEach((id) => {
     formData.append("skills[]", id);
   });
+  console.log("[addUserSkills] request payload:", {
+    locale,
+    skillIds,
+    entries: Array.from(formData.entries()),
+  });
+  console.log("[addUserSkills] request formData:",
+    formData
+  );
 
-  const { ok, data, message } = await apiFetch(`${getUserApiUrl()}/user-skills`, {
+
+  const result = await apiFetch(`${getUserApiUrl()}/user-skills`, {
     method: "POST",
     locale,
     token,
     body: formData,
   });
+  console.log("[addUserSkills] api response:", {
+    ok: result.ok,
+    statusCode: result.statusCode,
+    message: result.message,
+    data: result.data,
+  });
+  const { ok, data, message } = result;
 
   if (!ok) {
     throw new Error(message || "Failed to save skills.");
   }
 
-  return data;
+  return {
+    data,
+    message,
+  };
+}
+
+export async function updateUserSkills({
+  skillIds,
+  locale = "en",
+  token,
+}: {
+  skillIds: string[];
+  locale?: string;
+  token: string;
+}) {
+  if (skillIds.length === 0) {
+    return {
+      data: null,
+      message: "No skills to delete.",
+    };
+  }
+
+  const formData = new FormData();
+  skillIds.forEach((id) => {
+    formData.append("skills[]", id);
+  });
+  formData.append("_method", "put");
+
+  console.log("[updateUserSkills] request payload:", {
+    locale,
+    skillIds,
+    entries: Array.from(formData.entries()),
+  });
+  console.log("[updateUserSkills] request formData:",
+    formData
+  );
+
+  const result = await apiFetch(`${getUserApiUrl()}/user-skills`, {
+    method: "POST",
+    locale,
+    token,
+    body: formData,
+
+  });
+  console.log("[updateUserSkills] api response:", {
+    ok: result.ok,
+    statusCode: result.statusCode,
+    message: result.message,
+    data: result.data,
+  });
+  const { ok, data, message } = result;
+
+  if (!ok) {
+    throw new Error(message || "Failed to update skills.");
+  }
+
+  return {
+    data,
+    message,
+  };
 }

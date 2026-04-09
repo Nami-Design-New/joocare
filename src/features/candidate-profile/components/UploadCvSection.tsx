@@ -1,15 +1,38 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image"
-import { Button } from "@/shared/components/ui/button"
-import { File, Eye } from "lucide-react"
+import Image from "next/image";
+import { Button } from "@/shared/components/ui/button";
+import { File, Eye } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import CVModal from "./CVModal"
+import CVModal from "./CVModal";
 import { deleteCvAction, updateCvAction } from "../actions/cv-actions";
 import { cvSchema } from "../validation/cv-schema";
+
+function getShortFileName(fileName: string) {
+  const trimmedName = fileName.trim();
+
+  if (!trimmedName) {
+    return "CV";
+  }
+
+  const lastDotIndex = trimmedName.lastIndexOf(".");
+  const hasExtension = lastDotIndex > 0;
+  const extension = hasExtension ? trimmedName.slice(lastDotIndex + 1) : "";
+  const baseName = hasExtension
+    ? trimmedName.slice(0, lastDotIndex)
+    : trimmedName;
+
+  if (baseName.length <= 14) {
+    return trimmedName;
+  }
+
+  const shortBase = `${baseName.slice(0, 6)}...${baseName.slice(-4)}`;
+
+  return extension ? `${shortBase}.${extension}` : shortBase;
+}
 
 const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
   const [currentCvUrl, setCurrentCvUrl] = useState<string | null>(cvUrl);
@@ -55,7 +78,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
   const hasCv = Boolean(selectedCvFile || currentCvUrl);
   const displayFileName = useMemo(() => {
     if (selectedCvFile) {
-      return selectedCvFile.name;
+      return getShortFileName(selectedCvFile.name);
     }
 
     if (!currentCvUrl) {
@@ -63,8 +86,11 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
     }
 
     const cleanUrl = currentCvUrl.split("?")[0];
-    return decodeURIComponent(cleanUrl.split("/").pop() || "CV");
+    return getShortFileName(
+      decodeURIComponent(cleanUrl.split("/").pop() || "CV"),
+    );
   }, [currentCvUrl, selectedCvFile]);
+
   const displayFileSize = selectedCvFile
     ? `${(selectedCvFile.size / (1024 * 1024)).toFixed(1)}MB`
     : null;
@@ -98,7 +124,8 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
       setCurrentCvUrl(null);
       toast.success(response.message);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to upload CV.";
+      const message =
+        error instanceof Error ? error.message : "Failed to upload CV.";
       toast.error(message);
     } finally {
       setIsUploading(false);
@@ -135,13 +162,13 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
       setOpen(false);
       toast.success(response.message);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to delete CV.";
+      const message =
+        error instanceof Error ? error.message : "Failed to delete CV.";
       toast.error(message);
     } finally {
       setIsDeleting(false);
     }
   };
-
 
   return (
     <>
@@ -166,9 +193,9 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
         </Button>
       ) : (
         // ================= HAS CV =================
-        <section className="flex flex-col gap-2 p-6 bg-[#09760A05]">
+        <section className="flex flex-col gap-2 bg-[#09760A05] p-6">
           {/* File Info */}
-          <div className="rounded-[8px] p-5 flex justify-center items-center shadow bg-white gap-2">
+          <div className="flex items-center justify-center gap-2 rounded-[8px] bg-white p-5 shadow">
             <Image
               src={"/assets/pdf_file.svg"}
               alt="pdf"
@@ -190,22 +217,21 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
             <Button
               variant="secondary"
               onClick={handleDownload}
-              className="flex-1 flex items-center justify-center gap-1 h-8 text-[12px] rounded-full"
+              className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[12px]"
             >
-              <File className="w-3 h-3" />
+              <File className="h-3 w-3" />
               Download
             </Button>
 
             <Button
               variant="outline"
               onClick={handleView}
-              className="flex-1 flex items-center justify-center gap-1 h-8 text-[12px] rounded-full"
+              className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[12px]"
             >
-              <Eye className="w-3 h-3" />
+              <Eye className="h-3 w-3" />
               View
             </Button>
           </div>
-
         </section>
       )}
 
@@ -222,9 +248,8 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
           isDeleting={isDeleting}
         />
       )}
-
     </>
-  )
-}
+  );
+};
 
-export default UploadCvSection
+export default UploadCvSection;

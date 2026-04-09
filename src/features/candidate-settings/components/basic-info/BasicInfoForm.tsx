@@ -1,70 +1,283 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-
 import { InputField } from "@/shared/components/InputField";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { Button } from "@/shared/components/ui/button";
-
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
-import { FilepondUpload } from "@/shared/components/FilepondUpload";
+import { SelectInputField } from "@/shared/components/SelectInputField";
+import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
+import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
+import useGetCountries from "@/shared/hooks/useGetCountries";
+import useGetExperiences from "@/shared/hooks/useGetExperiences";
+import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
+import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
+import { Button } from "@/shared/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Controller,
+  type SubmitHandler,
+  useForm,
+  useWatch,
+} from "react-hook-form";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { toast } from "sonner";
+import {
+  storeUploadedFileAction,
+  updateCandidateBasicInfoAction,
+} from "../../actions/basic-info-actions";
+import type { CandidateSettingsProfile } from "../../services/basic-info-service";
+import {
+  SettingBasicInfoSchema,
+  type TSettingBasicInfoSchema,
+} from "../../validation/basic-info-schema";
 import ProfileImage from "./ProfileImage";
-import { SettingBasicInfoSchema, TSettingBasicInfoSchema } from "../../validation/basic-info-schema";
 
-const BasicInfoForm = () => {
+interface BasicInfoFormProps {
+  profile: CandidateSettingsProfile;
+}
+
+const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
+  const locale = useLocale();
+  const router = useRouter();
+  const [isSaving, setIsSaving] = useState(false);
+  const [jobTitleSearch, setJobTitleSearch] = useState("");
+  const [specialtySearch, setSpecialtySearch] = useState("");
+  const [experienceSearch, setExperienceSearch] = useState("");
+  const [countrySearch, setCountrySearch] = useState("");
+  const [citySearch, setCitySearch] = useState("");
+  const [uploadedImagePath, setUploadedImagePath] = useState<string | null>(null);
+  const [uploadedCvPath, setUploadedCvPath] = useState<string | null>(null);
+  const [showExistingCv, setShowExistingCv] = useState(Boolean(profile.cv));
+  const defaultValues = useMemo<TSettingBasicInfoSchema>(
+    () => ({
+      fullName: profile.name,
+      email: profile.email,
+      phoneNumber:
+        profile.phoneCode && profile.phone
+          ? `${profile.phoneCode}${profile.phone}`
+          : profile.phone,
+      jobTitle: profile.jobTitleId,
+      specialty: profile.specialtyId,
+      yearsOfExperience: profile.experienceId,
+      country: profile.countryId,
+      city: profile.cityId,
+      dateOfBirth: profile.birthDate,
+      profileImage: [],
+      uploadCV: [],
+    }),
+    [profile],
+  );
 
   const {
     register,
     control,
     handleSubmit,
-    watch,
+    reset,
+    setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<TSettingBasicInfoSchema>({
     resolver: zodResolver(SettingBasicInfoSchema),
-    mode: 'onChange',
+    mode: "onChange",
+    defaultValues,
   });
-  const onSubmit: SubmitHandler<TSettingBasicInfoSchema> = (data) => {
-    console.log(data);
-  }
 
-  return (<>
+  const selectedCountryId = useWatch({ control, name: "country" });
+  const previousCountryId = useRef<string | undefined>(profile.countryId);
+  const {
+    jobTitles,
+    isLoading: isJobTitlesLoading,
+    error: jobTitlesError,
+    hasNextPage: hasMoreJobTitles,
+    fetchNextPage: fetchMoreJobTitles,
+    isFetchingNextPage: isFetchingMoreJobTitles,
+  } = useGetJobTitles(jobTitleSearch);
+  const {
+    specialties,
+    isLoading: isSpecialtiesLoading,
+    error: specialtiesError,
+    hasNextPage: hasMoreSpecialties,
+    fetchNextPage: fetchMoreSpecialties,
+    isFetchingNextPage: isFetchingMoreSpecialties,
+  } = useGetSpecialties(specialtySearch);
+  const {
+    experiences,
+    isLoading: isExperiencesLoading,
+    error: experiencesError,
+    hasNextPage: hasMoreExperiences,
+    fetchNextPage: fetchMoreExperiences,
+    isFetchingNextPage: isFetchingMoreExperiences,
+  } = useGetExperiences(experienceSearch);
+  const {
+    countries,
+    isLoading: isCountriesLoading,
+    error: countriesError,
+    hasNextPage: hasMoreCountries,
+    fetchNextPage: fetchMoreCountries,
+    isFetchingNextPage: isFetchingMoreCountries,
+  } = useGetCountries(countrySearch);
+  const {
+    cities,
+    isLoading: isCitiesLoading,
+    error: citiesError,
+    hasNextPage: hasMoreCities,
+    fetchNextPage: fetchMoreCities,
+    isFetchingNextPage: isFetchingMoreCities,
+  } = useGetCitiesByCountryId(Number(selectedCountryId), citySearch);
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues, reset]);
+
+  useEffect(() => {
+    if (!selectedCountryId) {
+      setValue("city", "");
+    }
+  }, [selectedCountryId, setValue]);
+
+  useEffect(() => {
+    setUploadedImagePath(null);
+    setUploadedCvPath(null);
+    setShowExistingCv(Boolean(profile.cv));
+  }, [profile.image, profile.cv]);
+
+  const currentCvLabel = useMemo(() => {
+    if (!profile.cv) {
+      return null;
+    }
+
+    try {
+      const pathname = new URL(profile.cv).pathname;
+      return decodeURIComponent(pathname.split("/").filter(Boolean).pop() ?? "Current CV");
+    } catch {
+      return decodeURIComponent(profile.cv.split("/").filter(Boolean).pop() ?? "Current CV");
+    }
+  }, [profile.cv]);
+
+  useEffect(() => {
+    if (
+      previousCountryId.current &&
+      selectedCountryId &&
+      previousCountryId.current !== selectedCountryId
+    ) {
+      setValue("city", "");
+      setCitySearch("");
+    }
+
+    previousCountryId.current = selectedCountryId;
+  }, [selectedCountryId, setValue]);
+
+  const onSubmit: SubmitHandler<TSettingBasicInfoSchema> = async (data) => {
+    const parsedPhone = parsePhoneNumber(data.phoneNumber);
+
+    if (!parsedPhone) {
+      toast.error("Please enter a valid phone number.");
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      const formData = new FormData();
+      formData.append("name", data.fullName.trim());
+      formData.append("phone", parsedPhone.nationalNumber ?? "");
+      formData.append("phone_code", `+${parsedPhone.countryCallingCode ?? ""}`);
+      formData.append("job_title_id", data.jobTitle);
+      formData.append("specialty_id", data.specialty);
+      formData.append("country_id", data.country);
+      formData.append("city_id", data.city);
+      formData.append("experience_id", data.yearsOfExperience);
+      formData.append("birth_date", data.dateOfBirth);
+
+      if (uploadedImagePath) {
+        formData.append("image", uploadedImagePath);
+      }
+
+      if (uploadedCvPath) {
+        formData.append("cv", uploadedCvPath);
+      }
+
+      const response = await updateCandidateBasicInfoAction(formData, locale);
+      toast.success(response.message ?? "Profile updated successfully.");
+      router.refresh();
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to update profile information.";
+      toast.error(message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="mt-6 flex flex-col gap-5"
     >
-      <div className={"flex w-full flex-col"}>
-        <h3 className="mx-1 mb-1 font-semibold text-base">
-          Profile Picture
-        </h3>
-        <ProfileImage />
+      <div className="flex w-full flex-col">
+        <h3 className="mx-1 mb-1 text-base font-semibold">Profile Picture</h3>
+        <Controller
+          name="profileImage"
+          control={control}
+          render={({ field }) => (
+            <ProfileImage
+              value={field.value?.length ? field.value : profile.image}
+              onChange={async (files) => {
+                field.onChange(files);
+
+                const imageFile = files[0];
+                if (!(imageFile instanceof File)) {
+                  setUploadedImagePath(null);
+                  return;
+                }
+
+                clearErrors("profileImage");
+
+                try {
+                  const uploadFormData = new FormData();
+                  uploadFormData.append("image", imageFile);
+                  const result = await storeUploadedFileAction(uploadFormData, locale);
+                  setUploadedImagePath(result.path);
+                } catch (error) {
+                  const message =
+                    error instanceof Error ? error.message : "Failed to upload profile image.";
+                  setUploadedImagePath(null);
+                  setError("profileImage", {
+                    type: "server",
+                    message,
+                  });
+                }
+              }}
+              error={errors.profileImage?.message}
+            />
+          )}
+        />
       </div>
 
       <InputField
         id="fullName"
         label="Full Name"
-        type={"text"}
+        type="text"
         placeholder="ex: JooCore"
         {...register("fullName")}
         error={errors.fullName?.message}
       />
 
-      <div className="flex justify-center items-end gap-2">
-        <InputField
-          id="email"
-          type="email"
-          label="Email"
-          placeholder="ex: mail@mail.com"
-          disabled={true}
-          {...register("email")}
-          error={errors.email?.message}
-        />
-      </div>
+      <InputField
+        id="email"
+        type="email"
+        label="Email"
+        placeholder="ex: mail@mail.com"
+        disabled
+        {...register("email")}
+        error={errors.email?.message}
+      />
 
-
-      {/* Phone number */}
-      <>
-        <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
+      <div>
+        <label htmlFor="phoneNumber" className="mx-1 mb-1 block font-semibold">
           Phone number
         </label>
         <Controller
@@ -72,25 +285,23 @@ const BasicInfoForm = () => {
           control={control}
           render={({ field }) => (
             <PhoneInputCode
-              // {...field}
               defaultCountry="EG"
               id="phoneNumber"
               className="w-full"
               placeholder="ex:52 987 6543"
+              value={field.value}
               onChange={(value) => field.onChange(value)}
-              error={errors.phoneNumber?.message ? true : false}
-
+              error={Boolean(errors.phoneNumber?.message)}
             />
           )}
         />
-        {errors.phoneNumber && (
-          <span className="-mt-4 text-[12px] text-red-500">
+        {errors.phoneNumber ? (
+          <span className="mt-1 text-[12px] text-red-500">
             {errors.phoneNumber.message}
           </span>
-        )}
-      </>
+        ) : null}
+      </div>
 
-      {/* Job Title */}
       <Controller
         name="jobTitle"
         control={control}
@@ -98,34 +309,56 @@ const BasicInfoForm = () => {
           <SelectInputField
             id="jobTitle"
             label="Job Title"
-            placeholder="eConsultant Internist"
+            placeholder="ex: Consultant Internist"
+            withSearchInput
+            searchPlaceholder="Search job titles..."
             {...field}
-            error={errors.jobTitle?.message}
-            options={[
-              { label: "Hospital", value: "hospital" },
-              { label: "Software", value: "software" },
-              { label: "Company", value: "company" },
-            ]}
+            error={
+              errors.jobTitle?.message ??
+              (jobTitlesError instanceof Error
+                ? jobTitlesError.message
+                : undefined)
+            }
+            options={jobTitles.map((jobTitle) => ({
+              label: jobTitle.title,
+              value: String(jobTitle.id),
+            }))}
+            disabled={isJobTitlesLoading}
+            onReachEnd={() => fetchMoreJobTitles()}
+            hasNextPage={Boolean(hasMoreJobTitles)}
+            isFetchingNextPage={isFetchingMoreJobTitles}
+            onSearchChange={setJobTitleSearch}
           />
         )}
       />
-      {/* Specialty && Years of Experience */}
-      <div className="flex flex-col lg:flex-row items-center gap-2">
+
+      <div className="flex flex-col items-center gap-2 lg:flex-row">
         <Controller
-          name="country"
+          name="specialty"
           control={control}
           render={({ field }) => (
             <SelectInputField
               label="Specialty"
               id="specialty"
               placeholder="ex: Cardiology"
+              withSearchInput
+              searchPlaceholder="Search specialties..."
               {...field}
-              error={errors.specialty?.message}
-              options={[
-                { label: "egypt", value: "egypt" },
-                { label: "saudi", value: "saudi" },
-                { label: "canada", value: "canada" },
-              ]}
+              error={
+                errors.specialty?.message ??
+                (specialtiesError instanceof Error
+                  ? specialtiesError.message
+                  : undefined)
+              }
+              options={specialties.map((specialty) => ({
+                label: specialty.title,
+                value: String(specialty.id),
+              }))}
+              disabled={isSpecialtiesLoading}
+              onReachEnd={() => fetchMoreSpecialties()}
+              hasNextPage={Boolean(hasMoreSpecialties)}
+              isFetchingNextPage={isFetchingMoreSpecialties}
+              onSearchChange={setSpecialtySearch}
             />
           )}
         />
@@ -136,18 +369,30 @@ const BasicInfoForm = () => {
             <SelectInputField
               label="Years of Experience"
               id="yearsOfExperience"
-              placeholder="ex:3-5 years"
+              placeholder="ex: 3-5 years"
+              withSearchInput
+              searchPlaceholder="Search experience..."
               {...field}
-              error={errors.yearsOfExperience?.message}
-              options={[
-                { label: "cairo", value: "cairo" },
-                { label: "alex", value: "alex" },
-                { label: "reyad", value: "reyad" },
-              ]}
+              error={
+                errors.yearsOfExperience?.message ??
+                (experiencesError instanceof Error
+                  ? experiencesError.message
+                  : undefined)
+              }
+              options={experiences.map((experience) => ({
+                label: experience.title,
+                value: String(experience.id),
+              }))}
+              disabled={isExperiencesLoading}
+              onReachEnd={() => fetchMoreExperiences()}
+              hasNextPage={Boolean(hasMoreExperiences)}
+              isFetchingNextPage={isFetchingMoreExperiences}
+              onSearchChange={setExperienceSearch}
             />
           )}
         />
       </div>
+
       <div>
         <label htmlFor="country" className="mx-1 mb-2 block font-semibold">
           Current Location
@@ -160,13 +405,24 @@ const BasicInfoForm = () => {
               <SelectInputField
                 id="country"
                 placeholder="country"
+                withSearchInput
+                searchPlaceholder="Search countries..."
                 {...field}
-                error={errors.country?.message}
-                options={[
-                  { label: "egypt", value: "egypt" },
-                  { label: "saudi", value: "saudi" },
-                  { label: "canada", value: "canada" },
-                ]}
+                error={
+                  errors.country?.message ??
+                  (countriesError instanceof Error
+                    ? countriesError.message
+                    : undefined)
+                }
+                options={countries.map((country) => ({
+                  label: country.name,
+                  value: String(country.id),
+                }))}
+                disabled={isCountriesLoading}
+                onReachEnd={() => fetchMoreCountries()}
+                hasNextPage={Boolean(hasMoreCountries)}
+                isFetchingNextPage={isFetchingMoreCountries}
+                onSearchChange={setCountrySearch}
               />
             )}
           />
@@ -177,13 +433,24 @@ const BasicInfoForm = () => {
               <SelectInputField
                 id="city"
                 placeholder="city"
+                withSearchInput
+                searchPlaceholder="Search cities..."
                 {...field}
-                error={errors.city?.message}
-                options={[
-                  { label: "cairo", value: "cairo" },
-                  { label: "alex", value: "alex" },
-                  { label: "reyad", value: "reyad" },
-                ]}
+                error={
+                  errors.city?.message ??
+                  (citiesError instanceof Error
+                    ? citiesError.message
+                    : undefined)
+                }
+                options={cities.map((city) => ({
+                  label: city.name,
+                  value: String(city.id),
+                }))}
+                disabled={!selectedCountryId || isCitiesLoading}
+                onReachEnd={() => fetchMoreCities()}
+                hasNextPage={Boolean(hasMoreCities)}
+                isFetchingNextPage={isFetchingMoreCities}
+                onSearchChange={setCitySearch}
               />
             )}
           />
@@ -194,39 +461,74 @@ const BasicInfoForm = () => {
         id="dateOfBirth"
         type="date"
         label="Date of birth"
-        placeholder="ex: mail@mail.com"
         {...register("dateOfBirth")}
         error={errors.dateOfBirth?.message}
       />
 
-      {/* Upload CV */}
       <Controller
         name="uploadCV"
         control={control}
         render={({ field }) => (
-          <FilepondUpload
-            label={`Upload CV`}
+          <StoredFilepondUpload
+            label="Upload CV"
             hint={`"Optional"`}
             files={field.value}
             onChange={field.onChange}
+            allowImagePreview={false}
+            acceptedFileTypes={[
+              "application/pdf",
+              "application/msword",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            ]}
+            processFile={async (file) => {
+              const uploadFormData = new FormData();
+              uploadFormData.append("image", file);
+              return storeUploadedFileAction(uploadFormData, locale);
+            }}
+            onStoredPathChange={(path) => {
+              setUploadedCvPath(path);
+              if (path) {
+                clearErrors("uploadCV");
+              }
+            }}
+            onUploadError={(message) => {
+              if (!message) {
+                clearErrors("uploadCV");
+                return;
+              }
+
+              setError("uploadCV", {
+                type: "server",
+                message,
+              });
+            }}
+            existingFileUrl={showExistingCv ? profile.cv : null}
+            existingFileLabel={currentCvLabel}
+            onExistingFileRemove={() => {
+              setShowExistingCv(false);
+              setUploadedCvPath(null);
+              field.onChange([]);
+            }}
             allowMultiple={false}
-            maxFiles={2}
+            maxFiles={1}
             error={errors.uploadCV?.message}
           />
         )}
       />
 
-
-      <div className="flex justify-center items-center">
-        <Button variant={"secondary"} hoverStyle={'slidePrimary'} size={'pill'} className='w-1/3 md:w-56' type="submit">
-          Save
+      <div className="flex items-center justify-center">
+        <Button
+          variant={"secondary"}
+          hoverStyle={"slidePrimary"}
+          size={"pill"}
+          className="w-1/3 md:w-56"
+          type="submit"
+          disabled={isSaving}
+        >
+          {isSaving ? "Saving..." : "Save"}
         </Button>
       </div>
-
     </form>
-
-  </>
-
   );
 };
 

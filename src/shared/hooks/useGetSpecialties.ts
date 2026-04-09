@@ -1,9 +1,9 @@
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export default function useGetJobTitles(search = "") {
+export default function useGetSpecialties(search = "") {
     const query = useInfiniteQuery({
-        queryKey: ["job-titles", search],
+        queryKey: ["specialties", search],
         initialPageParam: 1,
         queryFn: async ({ pageParam }) => {
             const params = new URLSearchParams({
@@ -16,7 +16,7 @@ export default function useGetJobTitles(search = "") {
                 params.set("search", search.trim());
             }
 
-            const res = await fetch(`${getBaseApiUrl()}/job-titles?${params.toString()}`);
+            const res = await fetch(`${getBaseApiUrl()}/specialties?${params.toString()}`);
 
             if (!res.ok) {
                 throw new Error("Network error");
@@ -41,6 +41,6 @@ export default function useGetJobTitles(search = "") {
 
     return {
         ...query,
-        jobTitles: query.data?.pages.flatMap((page) => page.data) ?? [],
+        specialties: query.data?.pages.flatMap((page) => page.data) ?? [],
     };
 }
