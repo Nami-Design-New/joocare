@@ -52,12 +52,18 @@ const ProfileHeader = ({
                     control={control}
                     render={({ field: { onChange } }) => (
                         <div className="relative w-full h-93.75 rounded-[40px] overflow-hidden border">
-                            <Image
-                                src={coverPreview || "/assets/cover.svg"}
-                                alt="cover"
-                                fill
-                                className="object-cover"
-                            />
+                            {coverPreview ? (
+                                <Image
+                                    src={coverPreview}
+                                    alt="cover"
+                                    fill
+                                    className="object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                    uploading...
+                                </div>
+                            )}
 
                             {loadingField === "cover" && (
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white">
@@ -105,13 +111,19 @@ const ProfileHeader = ({
                             "flex items-center justify-center cursor-pointer",
                             "ring-4 ring-white",
                         )}>
-                            <Image
-                                src={logoPreview || "/assets/image_2.svg"}
-                                alt="logo"
-                                fill
-                                className="object-cover rounded-full"
-                            />
 
+                            {logoPreview ? (
+                                <Image
+                                    src={logoPreview}
+                                    alt="logo"
+                                    fill
+                                    className="object-cover rounded-full"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                    uploading...
+                                </div>
+                            )}
                             {loadingField === "logo" && (
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-xs rounded-full">
                                     Uploading...

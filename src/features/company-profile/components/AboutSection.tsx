@@ -14,11 +14,16 @@ const AboutSection = ({ companyProfileData, isPending }: { companyProfileData: T
                 <h2 className="text-xl font-semibold ">About</h2>
                 <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />
             </div>
-            <p className="text-muted-foreground text-sm text-justify">{isPending ? <div className="w-full flex flex-col gap-2">
-                <TextSkeleton />
-                <TextSkeleton />
-                <TextSkeleton />
-            </div> : companyProfileData?.bio}</p>
+            {isPending ? (
+                <div className="w-full flex flex-col gap-2">
+                    <TextSkeleton />
+                    <TextSkeleton />
+                </div>
+            ) : (
+                <p className="text-muted-foreground text-sm text-justify">
+                    {companyProfileData?.bio}
+                </p>
+            )}
         </div>
         <EditAboutModal open={open} onOpenChange={setOpen}
             defaultVal={companyProfileData?.bio}

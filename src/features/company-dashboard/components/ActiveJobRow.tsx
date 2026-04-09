@@ -4,34 +4,36 @@ import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/shared/components/ui/button";
 import { TableCell, TableRow } from "@/shared/components/ui/table";
 import { Eye } from "lucide-react";
-import { activeJobType } from "../index.type";
+import { CompanyJob } from "../index.type";
+import { formatDate } from "@/shared/util/formateDate";
 
 export default function ActiveJobRow({
   activeJob,
   onView,
 }: {
-  activeJob: activeJobType;
-  onView?: (a: activeJobType) => void;
+  activeJob: CompanyJob;
+  onView?: (a: CompanyJob) => void;
 }) {
   return (
     <TableRow className="border-border border-b bg-white text-center transition-colors">
       <TableCell className="text-muted-foreground w-12 px-4 py-5 font-medium text-ellipsis">
-        {activeJob.jobTitle}
+        {activeJob?.job_title?.title}
       </TableCell>
       <TableCell className="text-foreground text-md px-4 py-5 font-normal">
-        {activeJob.jobViews}
+        {activeJob.views_num}
       </TableCell>
       <TableCell className="text-foreground text-md px-4 py-5 font-normal">
-        {activeJob.applicants}
+        {activeJob.applications_count}
       </TableCell>
       <TableCell className="text-foreground text-md px-4 py-5 font-normal">
-        {activeJob.postedSince}
+        {formatDate(activeJob.created_at)}
       </TableCell>
 
       <TableCell>
         <div className="flex items-center gap-2">
           <Link
-            href="/company/job/candidates"
+            // href={`/company/job/${activeJob?.id}/candidates`}
+            href={`/company/job/candidates`}
             className={` ${buttonVariants({
               variant: "default",
               size: "sm",

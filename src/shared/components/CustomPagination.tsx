@@ -56,14 +56,14 @@ export function CustomPagination({
           </PaginationItem>
 
           {/* Page Numbers */}
-          {pages.slice(0, 5).map((page) => (
+          {pages.map((page) => (
             <PaginationItem key={page}>
               <PaginationLink
                 isActive={page === currentPage}
                 onClick={() => handleChange(page)}
                 className={`h-8 w-8 rounded-full border-none ${page === currentPage
-                    ? "bg-primary text-white"
-                    : "text-muted-foreground"
+                  ? "bg-primary text-white"
+                  : "text-muted-foreground"
                   }`}
               >
                 {page}

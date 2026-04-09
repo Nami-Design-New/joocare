@@ -80,8 +80,8 @@ export function FilepondUpload({
             xhr.onload = () => {
               if (xhr.status >= 200 && xhr.status < 300) {
                 const response = JSON.parse(xhr.responseText);
-                const imagePath = response.data.image; // ✅ extract data.image
-                onUploadSuccess(imagePath);            // ✅ send to form
+                const imagePath = response.data.image; //  extract data.image
+                onUploadSuccess(imagePath);            //  send to form
                 load(response.data.id);                // FilePond needs a server ID
               } else {
                 error("Upload failed");
@@ -99,7 +99,7 @@ export function FilepondUpload({
             };
           },
           revert: () => {
-            onRemove?.(); // ✅ clear the value from form on file remove
+            onRemove?.(); //  clear the value from form on file remove
           },
         }}
         onremovefile={() => onRemove?.()}

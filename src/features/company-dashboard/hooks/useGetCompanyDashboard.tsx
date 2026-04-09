@@ -1,43 +1,18 @@
-import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
+import { getCompanyDashboardService } from "../services/company-dashboard-service";
 
 export default function useGetCompanyDashboard({ token }: { token: string }) {
-    const query = useInfiniteQuery({
-        queryKey: ["company-dashboard"],
-        initialPageParam: 1,
-        queryFn: async ({ pageParam }) => {
-            const params = new URLSearchParams({
-                page: String(pageParam),
-                pagination: "on",
-                limit_per_page: "10",
-            });
+    const locale = useLocale();
 
-            const res = await apiFetch(`${getCompanyApiUrl()}/dashboard?${params.toString()}`, {
-                method: "GET",
-                token,
-            });
-            console.log("res dashboard", res);
+    return useQuery({
+        queryKey: ["company-dashboard", token, locale],
+        queryFn: () =>
+            getCompanyDashboardService({
+                token: token!,
+                locale,
+            }),
 
-            if (!res.ok) {
-                throw new Error("Network error");
-            }
-
-            const data = await res?.data?.data
-
-            return data;
-        },
-        getNextPageParam: (lastPage) => {
-            if (!lastPage?.next_page_url) return undefined;
-
-            const url = new URL(lastPage.next_page_url);
-            const page = Number(url.searchParams.get("page"));
-            return Number.isNaN(page) ? undefined : page;
-        }
+        enabled: !!token,
     });
-
-    return {
-        ...query,
-        countries: query.data?.pages.flatMap((page) => page.data) ?? [],
-    };
 }

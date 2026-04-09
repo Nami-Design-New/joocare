@@ -13,11 +13,21 @@ const SocialMediaSection = ({ companyProfileData, isPending }: { companyProfileD
                 <h2 className="text-xl font-semibold ">Social Media</h2>
                 <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />
             </div>
-            <SocialMediaCard title="LinkedIn" link={companyProfileData?.linkedin} src="/assets/icons/social-icons/linkedin.svg" isPending={isPending} />
-            <SocialMediaCard title="Facebook" link={companyProfileData?.facebook} src="/assets/icons/social-icons/facebook.svg" isPending={isPending} />
-            <SocialMediaCard title="Instagram" link={companyProfileData?.instagram} src="/assets/icons/social-icons/instagram.svg" isPending={isPending} />
-            <SocialMediaCard title="X/Twitter" link={companyProfileData?.twitter} src="/assets/icons/social-icons/twitter.svg" isPending={isPending} />
-            <SocialMediaCard title="Snapchat" link={companyProfileData?.snapchat} src="/assets/icons/social-icons/snap.svg" isPending={isPending} />
+            {companyProfileData?.linkedin !== null &&
+                <SocialMediaCard title="LinkedIn" link={companyProfileData?.linkedin} src="/assets/icons/social-icons/linkedin.svg" isPending={isPending} />
+            }
+            {companyProfileData?.facebook !== null &&
+                <SocialMediaCard title="Facebook" link={companyProfileData?.facebook} src="/assets/icons/social-icons/facebook.svg" isPending={isPending} />
+            }
+            {companyProfileData?.instagram !== null &&
+                <SocialMediaCard title="Instagram" link={companyProfileData?.instagram} src="/assets/icons/social-icons/instagram.svg" isPending={isPending} />
+            }
+            {companyProfileData?.twitter !== null &&
+                <SocialMediaCard title="X/Twitter" link={companyProfileData?.twitter} src="/assets/icons/social-icons/twitter.svg" isPending={isPending} />
+            }
+            {companyProfileData?.snapchat !== null &&
+                <SocialMediaCard title="Snapchat" link={companyProfileData?.snapchat} src="/assets/icons/social-icons/snap.svg" isPending={isPending} />
+            }
 
         </div>
         <EditSocialMediaModal open={open} onOpenChange={setOpen} companyProfileData={companyProfileData} />

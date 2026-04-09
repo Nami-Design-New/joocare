@@ -10,6 +10,8 @@ import { activeJobType } from "../index.type";
 import ActiveJobRow from "./ActiveJobRow";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import useGetCompanyJobs from "../hooks/useGetCompanyJobs";
 
 type activeJobsProps = {
   activeJobs: activeJobType[];
@@ -28,6 +30,10 @@ export default function ActiveJobsTable({
   onView,
 }: activeJobsProps) {
   const [page, setPage] = useState(1);
+  const { data: session } = useSession();
+  const token = session?.accessToken as string
+  const { jobs, total, isLoading: jobsLoading } = useGetCompanyJobs({ token, page });
+
   return (
     <section>
       <div className="border-border w-full overflow-x-auto rounded-2xl border bg-white">
@@ -46,11 +52,11 @@ export default function ActiveJobsTable({
           </TableHeader>
 
           <TableBody>
-            {activeJobs.map((activeJob) => (
+            {jobs.map((activeJob) => (
               <ActiveJobRow
                 key={activeJob.id}
                 activeJob={activeJob}
-                onView={onView}
+              // onView={onView}
               />
             ))}
           </TableBody>
@@ -59,7 +65,7 @@ export default function ActiveJobsTable({
       <div className="mt-4 flex w-full items-center justify-center">
         <CustomPagination
           currentPage={page}
-          totalItems={57}
+          totalItems={total}
           pageSize={10}
           onPageChange={setPage}
         />

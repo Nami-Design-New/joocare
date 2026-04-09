@@ -298,7 +298,7 @@ const FormCandidateRegister = () => {
                 label="Upload the license image"
                 hint='"Optional"'
                 value={field.value}
-                onUploadSuccess={(imagePath) => field.onChange(imagePath)} // ✅
+                onUploadSuccess={(imagePath) => field.onChange(imagePath)}
                 onRemove={() => field.onChange("")}
                 allowMultiple={false}
                 maxFiles={1}

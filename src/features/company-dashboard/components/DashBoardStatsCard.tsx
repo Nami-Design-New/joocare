@@ -1,3 +1,5 @@
+import TextSkeleton from "@/features/company-profile/components/TextSkeleton";
+
 export type statCardBadge = {
   label: string;
 };
@@ -11,7 +13,7 @@ export type dashboardStatCardType = {
   title: string;
 
   /** Primary numeric / text value  e.g. "327" or "+12" */
-  primaryValue: string;
+  primaryValue: string | number;
 
   /** Supporting description shown below the primary value */
   description: string;
@@ -26,6 +28,7 @@ export type dashboardStatCardType = {
 
   /** Extra Tailwind classes forwarded to the root element */
   className?: string;
+  isPending?: boolean;
 };
 
 export default function DashBoardStatsCard({
@@ -35,6 +38,7 @@ export default function DashBoardStatsCard({
   icon,
   badge,
   addState,
+  isPending,
   className = "",
 }: dashboardStatCardType) {
   return (
@@ -46,7 +50,7 @@ export default function DashBoardStatsCard({
         <div className="flex items-center justify-between gap-2">
           <p>
             <span className="text-primary text-3xl font-extrabold">
-              {primaryValue}{" "}
+              {isPending ? <TextSkeleton /> : primaryValue}{" "}
             </span>
             {badge && (
               <span className="text-md text-muted-foreground font-normal">
@@ -57,10 +61,10 @@ export default function DashBoardStatsCard({
           {addState && (
             <p className="">
               <span className="text-secondary text-xl font-semibold">
-                {addState.value}
+                {isPending ? <TextSkeleton /> : addState.value}
               </span>{" "}
               <span className="text-muted-foreground">
-                {addState.label}
+                {isPending ? <TextSkeleton /> : addState.label}
               </span>{" "}
             </p>
           )}
