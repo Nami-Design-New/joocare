@@ -48,28 +48,28 @@ export const stepThreeSchema = z.object({
   organizationCity: z.string().min(1, { message: "City is required" }),
 
   dateOfEstablishment: z
-    .string().optional(),
-  // .trim()
-  // .min(1, { message: "Date of establishment is required" })
-  // .refine((val) => {
-  //   const year = Number(val);
-  //   return !isNaN(year);
-  // }, {
-  //   message: "Please enter a valid year",
-  // })
-  // .refine((val) => {
-  //   const year = Number(val);
-  //   return year >= 1900;
-  // }, {
-  //   message: "Please enter a year greater than or equal to 1900",
-  // })
-  // .refine((val) => {
-  //   const year = Number(val);
-  //   const currentYear = new Date().getFullYear();
-  //   return year <= currentYear;
-  // }, {
-  //   message: "Year cannot be in the future",
-  // }),
+    .string()
+    .trim()
+    .min(1, { message: "Date of establishment is required" })
+    .refine((val) => {
+      const year = Number(val);
+      return !isNaN(year);
+    }, {
+      message: "Please enter a valid year",
+    })
+    .refine((val) => {
+      const year = Number(val);
+      return year >= 1900;
+    }, {
+      message: "Please enter a year greater than or equal to 1900",
+    })
+    .refine((val) => {
+      const year = Number(val);
+      const currentYear = new Date().getFullYear();
+      return year <= currentYear;
+    }, {
+      message: "Year cannot be in the future",
+    }),
   aboutOrganization: z
     .string()
     .min(10, {

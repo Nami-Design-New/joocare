@@ -148,7 +148,7 @@ export default function StepThree() {
         name="dateOfEstablishment"
         control={control}
         render={({ field }) => (
-          <InputField
+          <YearPicker
             id="dateOfEstablishment"
             label="Date of Establishment"
             placeholder="ex: 2021"
