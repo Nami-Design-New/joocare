@@ -4,18 +4,8 @@ import ActiveJobsTable from "@/features/company-dashboard/components/ActiveJobsT
 import DashBoardStatsCard from "@/features/company-dashboard/components/DashBoardStatsCard";
 import PieChartCard from "@/features/company-dashboard/components/PieChartCard";
 import useGetCompanyDashboard from "@/features/company-dashboard/hooks/useGetCompanyDashboard";
-import { activeJobType } from "@/features/company-dashboard/index.type";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-
-const MOCK_ACTIVE_JOBS: activeJobType[] = Array.from({ length: 6 }, (_, i) => ({
-  id: i + 1,
-  jobTitle: "Consultant Internist",
-  jobViews: 12,
-  applicants: 2,
-  postedSince: "21 December 2026",
-  cvUrl: "/cv/applicant.pdf",
-}));
 
 const DashboardPage = () => {
   const { data: session } = useSession();

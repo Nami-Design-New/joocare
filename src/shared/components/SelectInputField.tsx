@@ -106,7 +106,7 @@ export const SelectInputField = React.forwardRef<
       [hasNextPage, isFetchingNextPage, onReachEnd],
     );
 
-    const selectedOption = options.find((o) => o.value === value);
+    const selectedOption = options?.find((o) => o.value === value);
 
     return (
       <div className={cn("flex w-full flex-col", containerStyles)}>

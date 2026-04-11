@@ -1,0 +1,24 @@
+import { apiFetch, type ApiResult } from "@/shared/lib/fetch-manager";
+import { UpdateBusinessVerificationPayload } from "../types";
+
+export async function updateBusinessVerificationService(
+    payload: UpdateBusinessVerificationPayload,
+    { token }: { token: string },
+): Promise<ApiResult> {
+    const response = await apiFetch(
+        `${process.env.NEXT_PUBLIC_BASE_COMPANY_URL}/auth/update-profile`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            body: JSON.stringify(payload),
+            token: token,
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error(response.message ?? "Failed to update basic info");
+    }
+    return response;
+}

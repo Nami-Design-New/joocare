@@ -1,5 +1,6 @@
 import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
+import { TCompanyProfileViewModel } from "../types";
 
 export async function getCompanyProfileService({
     token,
@@ -14,5 +15,5 @@ export async function getCompanyProfileService({
         token,
     });
 
-    return res.data?.data?.company;
+    return res.data?.data?.company as TCompanyProfileViewModel;
 }

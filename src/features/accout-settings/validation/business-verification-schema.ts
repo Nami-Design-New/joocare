@@ -1,78 +1,48 @@
 import { z } from "zod";
 
-const commercialRegisterSchema = z
-  .string()
-  .min(1, { message: "commercial register is required" })
-  .refine(
-    (value) => {
-      const digitsOnly = value.replace(/\D/g, "");
-      return digitsOnly;
-      // return digitsOnly.length >= 7 && digitsOnly.length <= 15;
-    },
-    {
-      message: "commercial register must be digits",
-    },
-  );
-const medicalFacilityLicenseNumberSchema = z
-  .string()
-  .min(1, { message: "medical facility license number is required" })
-  .refine(
-    (value) => {
-      const digitsOnly = value.replace(/\D/g, "");
-      return digitsOnly;
-      // return digitsOnly.length >= 7 && digitsOnly.length <= 15;
-    },
-    {
-      message: "medical facility license number must be digits",
-    },
-  );
-
 export const BusinessVerificationSchema = z.object({
-  commercialRegister: commercialRegisterSchema,
-  issuingCountryLicense: z
+  commercial_registration_number: z.string().min(1, { message: "This field is required" }),
+  license_issue_country_id: z
     .string({
       error: "issuing country license is required",
     })
     .min(1, { message: "issuing country license is required" }),
-  organizationSize: z
+  organization_size_id: z
     .string({
       error: "organization size is required",
     })
     .min(1, { message: "organization size is required" }),
-  commercialRegistrationIssueDate: z
+  commercial_registration_issue_date: z
     .string()
     .min(1, { message: "commercial registration issue date is required" }),
-  commercialRegistrationExpiryDate: z
+  commercial_registration_expiry_date: z
     .string()
     .min(1, { message: "commercial registration expiry date is required" }),
-  commercialRegistrationImage: z
-    .array(z.instanceof(File), {
-      error: "commercial registration image is required",
-    })
-    .min(1, { message: "commercial registration image is required" }),
-  employerType: z.string().min(1, { message: "employer type is required" }),
-  medicalFacilityLicenseNumber: medicalFacilityLicenseNumberSchema,
-  licenseIssuingAuthority: z
+  commercial_registration_image: z
+    .any()
+    .optional(),
+  employer_type_id: z.string().min(1, { message: "employer type is required" }),
+  medical_facility_license_number: z.string().min(1, { message: "This field is required" }),
+  license_issuing_authority: z
     .string()
     .min(1, { message: "license issuing authority is required" }),
-  specialtyScopePractice: z
+  specialty_id: z
     .string({
       error: "specialty scope practice is required",
     })
     .min(1, { message: "specialty scope practice is required" }),
-  medicalRegistrationIssueDate: z
+  medical_license_issue_date: z
     .string()
     .min(1, { message: "medical registration issue date is required" }),
-  medicalRegistrationExpiryDate: z
+  medical_license_expiry_date: z
     .string()
     .min(1, { message: "medical registration expiry date is required" }),
-  medicalLicenseImage: z
-    .array(z.instanceof(File), {
-      error: "medical license image is required",
-    })
-    .min(1, { message: "medical license image is required" }),
+  medical_license_image: z
+    .any()
+    .optional(),
 });
 
 export type TBusinessVerificationSchema = z.infer<
   typeof BusinessVerificationSchema
 >;
+

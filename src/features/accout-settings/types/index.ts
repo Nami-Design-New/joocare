@@ -20,3 +20,20 @@ export type UpdateBasicInfoPayload = {
 export type UpdateEmailPayload = {
     email: string;
 }
+
+export type UpdateBusinessVerificationPayload = {
+    commercial_registration_number: string;
+    commercial_registration_issue_date: string;
+    commercial_registration_expiry_date: string;
+    license_issue_country_id: number;
+    organization_size_id: number;
+    employer_type_id: number;
+    medical_facility_license_number: string;
+    license_issuing_authority: string;
+    specialty_id: number;
+    medical_license_issue_date: string;
+    medical_license_expiry_date: string;
+    medical_license_image: string;
+    commercial_registration_image: string;
+}
+

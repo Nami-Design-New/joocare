@@ -89,7 +89,7 @@ const BasicInfoForm = () => {
   const { data: session } = useSession();
   const token = session?.accessToken ?? "";
   const userData = useMemo(() => asCompanyUser(session?.user), [session?.user]);
-  console.log('user data', userData);
+  // console.log('user data', userData);
 
   // ── modals ──────────────────── ───────────────────────────────────────
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -156,7 +156,7 @@ const BasicInfoForm = () => {
     const personPhone = parsePhoneData(data.phoneNumber);
     const orgPhone = parsePhoneData(data.orgOfficialPhoneNumber);
 
-    console.log("data :::", data.phoneNumber, personPhone)
+    // console.log("data :::", data.phoneNumber, personPhone)
 
     updateBasicInfo({
       name: data.companyName,
