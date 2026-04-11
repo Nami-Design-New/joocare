@@ -5,6 +5,7 @@ interface Props {
   isLastStep: boolean;
   next: () => void;
   prev: () => void;
+  isPending: boolean;
 }
 
 export default function WizardNavigation({
@@ -12,6 +13,7 @@ export default function WizardNavigation({
   isLastStep,
   next,
   prev,
+  isPending
 }: Props) {
 
   return (
@@ -23,7 +25,7 @@ export default function WizardNavigation({
           size="pill"
           onClick={prev}
           className="w-1/3 lg:w-56"
-
+          disabled={isPending}
         >
           Prev
         </Button>
@@ -36,8 +38,9 @@ export default function WizardNavigation({
           size="pill"
           onClick={next}
           className="w-1/3 lg:w-56"
+          disabled={isPending}
         >
-          Next
+          {isPending ? "Loading..." : "Next"}
         </Button>
       )}
 
@@ -47,8 +50,9 @@ export default function WizardNavigation({
           size="pill"
           type="submit"
           className="w-1/3 lg:w-56"
+          disabled={isPending}
         >
-          Submit
+          {isPending ? "Loading..." : "Submit"}
         </Button>
       )}
     </div>

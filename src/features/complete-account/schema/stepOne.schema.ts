@@ -1,14 +1,14 @@
 import { z } from "zod";
 
 export const stepOneSchema = z.object({
-  companyName: z.string().min(1, { message: "company name is required" }),
-  officialEmail: z
+  name: z.string().min(1, { message: "company name is required3333" }),
+  email: z
     .string()
     .min(1, { message: "email is required" })
     .email({ message: "Not valid email" }),
-  domain: z.string().min(1, { message: "Domain is required" }),
-  personFullName: z
+  domain_id: z.string().min(1, { message: "Domain is required" }),
+  person_name: z
     .string()
     .min(1, { message: "Person full name is required" }),
-  phoneNumber: z.string().min(10, { message: "Phone number is required" }),
+  person_phone: z.string().min(10, { message: "Phone number is required" }),
 });

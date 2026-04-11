@@ -253,11 +253,9 @@ export default function BusinessVerificationForm() {
                             label="Commercial Registration Image"
                             files={field.value}
                             onChange={field.onChange}
-                            allowImagePreview={false}
+                            allowImagePreview={true}
                             acceptedFileTypes={[
-                                "application/pdf",
-                                "application/msword",
-                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                "image/*",
                             ]}
                             processFile={async (file) => {
                                 const uploadFormData = new FormData();
@@ -411,6 +409,9 @@ export default function BusinessVerificationForm() {
                             allowMultiple={false}
                             maxFiles={2}
                             allowImagePreview={true}
+                            acceptedFileTypes={[
+                                "image/*",
+                            ]}
                             processFile={async (file) => {
                                 const uploadFormData = new FormData();
                                 uploadFormData.append("image", file);
