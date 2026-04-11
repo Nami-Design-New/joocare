@@ -7,7 +7,7 @@ export default function JobShareCard() {
         Share this job:
       </h2>
       <div className="flex gap-2">
-        <div className="text-primary bg-accent flex items-center gap-2 rounded-[4px] px-4 py-2">
+        <div className="text-primary bg-accent flex items-center gap-2 rounded-lg px-4 py-2">
           <Image
             src="/assets/icons/pin-link-icon.svg"
             alt="link icon"
@@ -17,7 +17,7 @@ export default function JobShareCard() {
           <span className="text-lg">Copy Link</span>
         </div>
         <div className="flex gap-2">
-          <div className="bg-accent flex items-center justify-center rounded-[4px] p-2.5">
+          <div className="bg-accent flex items-center justify-center rounded-lg p-2.5">
             <Image
               src="/assets/icons/linkedin-filled.svg"
               width={20}
@@ -25,7 +25,7 @@ export default function JobShareCard() {
               alt="Linked in icon"
             />
           </div>
-          <div className="bg-accent flex items-center justify-center rounded-[4px] p-2.5">
+          <div className="bg-accent flex items-center justify-center rounded-lg p-2.5">
             <Image
               src="/assets/icons/facebook-filled.svg"
               width={20}
@@ -33,7 +33,7 @@ export default function JobShareCard() {
               alt="Facebook icon"
             />
           </div>
-          <div className="bg-accent flex items-center justify-center rounded-[4px] p-2.5">
+          <div className="bg-accent flex items-center justify-center rounded-lg p-2.5">
             <Image
               src="/assets/icons/x-filled.svg"
               width={20}
@@ -42,7 +42,7 @@ export default function JobShareCard() {
             />
           </div>
 
-          <div className="bg-accent flex items-center justify-center rounded-[4px] p-2.5">
+          <div className="bg-accent flex items-center justify-center rounded-lg p-2.5">
             <Image
               src="/assets/icons/envelope.svg"
               width={20}

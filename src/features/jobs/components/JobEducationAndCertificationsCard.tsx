@@ -1,8 +1,8 @@
-import React from "react";
-import JobOverviewItem from "./JobOverviewItem";
 import Image from "next/image";
+import { JobDetails, NamedEntity } from "../types/jobs.types";
+import JobOverviewItem from "./JobOverviewItem";
 
-export default function JobEducationAndCertificationsCard() {
+export default function JobEducationAndCertificationsCard({ job }: { job: JobDetails }) {
   return (
     <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-8">
       <h2 className="text-foreground mb-4 text-lg font-semibold">
@@ -11,7 +11,7 @@ export default function JobEducationAndCertificationsCard() {
       <div className="flex flex-col gap-6">
         <JobOverviewItem
           label="Education Level"
-          value="Mid Level"
+          value={job.eduction_level.title}
           icon="/assets/icons/exp.svg"
         />
         <div>
@@ -29,25 +29,18 @@ export default function JobEducationAndCertificationsCard() {
             </div>
             <div>
               <ul className="mt-2 flex flex-col gap-2">
-                <li className="edu-certificate">Diploma in Medical Billing</li>
-                <li className="edu-certificate">
-                  Certified Nursing Assistant (CNA)
-                </li>
-                <li className="edu-certificate">Basic Life Support (BLS)</li>
-                <li className="edu-certificate">
-                  Advanced Cardiac Life Support (ACLS)
-                </li>
-                <li className="edu-certificate">Phlebotomy Certification</li>
-                <li className="edu-certificate">
-                  Registered Health Information Technician (RHIT)
-                </li>
+                {
+                  job.mandatory_certifications.map((item: NamedEntity) =>
+                    <li className="edu-certificate" key={item.id}>{item.title}</li>
+                  )
+                }
               </ul>
             </div>
           </div>
         </div>
         <JobOverviewItem
           label="Availability"
-          value="Availabe"
+          value={job.availability.title}
           icon="/assets/icons/case.svg"
         />
       </div>{" "}

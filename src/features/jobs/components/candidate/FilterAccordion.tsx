@@ -2,7 +2,7 @@
 
 import { cn } from "@/shared/lib/utils";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { AccordionSection } from "../../index.types";
+import { AccordionSection } from "../../types/index.types";
 
 interface AccordionProps {
   section: AccordionSection;

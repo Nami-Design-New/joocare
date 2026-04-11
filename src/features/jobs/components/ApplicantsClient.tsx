@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ApplicantsTable from "@/features/jobs/components/Applicantstable";
 import CVModal from "@/features/jobs/components/CVModal";
-import { Applicant } from "@/features/jobs/index.types";
+import { Applicant } from "@/features/jobs/types/index.types";
 
 type Props = {
   applicants: Applicant[];

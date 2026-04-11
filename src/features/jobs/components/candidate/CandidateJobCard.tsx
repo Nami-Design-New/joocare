@@ -1,4 +1,10 @@
 import { Link } from "@/i18n/navigation";
+import { JobListItem } from "@/features/jobs/types/jobs.types";
+import {
+  getJobLocation,
+  getJobPostedAtLabel,
+  getJobSalary,
+} from "@/features/jobs/utils";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -19,34 +25,29 @@ import {
 import Image from "next/image";
 
 type CandidateJobCardProps = {
-  title?: string;
-  company?: string;
-  companyLogo?: string | null;
-  postedAtLabel?: string;
-  location?: string;
-  employmentType?: string;
-  salary?: string;
-  experience?: string;
-  domain?: string;
-  excerpt?: string;
+  job: JobListItem;
   href?: string;
   appliedBadge?: boolean;
 };
 
 export default function CandidateJobCard({
-  title = "Healthcare Opportunity",
-  company = "Joocare Employer",
-  companyLogo,
-  postedAtLabel = "Recently posted",
-  location = "Location not specified",
-  employmentType = "Not specified",
-  salary = "Salary not specified",
-  experience = "Experience not specified",
-  domain = "Healthcare",
-  excerpt = "Explore the job details to learn more about the role and employer.",
+  job,
   href = "/jobs",
   appliedBadge,
 }: CandidateJobCardProps) {
+  const title = job.title || job.job_title?.title || "Healthcare Opportunity";
+  const company = job.company?.name || "Joocare Employer";
+  const companyLogo = job.company?.image;
+  const postedAtLabel = job?.created_at;
+  const location = getJobLocation(job);
+  const category = job?.category?.title || "Not specified";
+  const employmentType = job?.employment_type?.title || "Not specified";
+  const salary = getJobSalary(job);
+  const experience = job.experience?.title || "Experience not specified";
+  const specialty = job.specialty?.title || "Healthcare";
+  const excerpt =
+    job.description || "Explore the job details to learn more about the role and employer.";
+
   return (
     <Card>
       <CardHeader className="flex gap-2 max-lg:px-2">
@@ -76,7 +77,7 @@ export default function CandidateJobCard({
             </li>
             <li className="text-secondary flex items-center gap-1 text-sm font-normal">
               <Briefcase size={14} color="var(--muted-foreground)" />
-              {employmentType}
+              {category}
             </li>
             <li className="text-secondary flex items-center gap-1 text-sm font-normal">
               <DollarSign size={14} color="var(--muted-foreground)" />
@@ -91,7 +92,7 @@ export default function CandidateJobCard({
               {employmentType}
             </li>
             <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
-              {domain}
+              {specialty}
             </li>
           </ul>
           <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p>

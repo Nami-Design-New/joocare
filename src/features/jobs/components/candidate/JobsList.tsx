@@ -2,9 +2,9 @@
 
 import {
   buildJobsPagePath,
-  JobListItem,
-  JobsSearchFilters,
-} from "@/features/jobs/services/jobs-listing-service";
+} from "@/features/jobs/utils";
+import { JobListItem } from "@/features/jobs/types/jobs.types";
+import { JobsSearchFilters } from "@/features/jobs/types/index.types";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import CandidateJobCard from "./CandidateJobCard";
 
@@ -38,17 +38,8 @@ export default function JobsList({
           jobs.map((job) => (
             <CandidateJobCard
               key={job.id}
-              title={job.title}
-              company={job.company}
-              companyLogo={job.companyLogo}
-              postedAtLabel={job.postedAtLabel}
-              location={job.location}
-              employmentType={job.employmentType}
-              salary={job.salary}
-              experience={job.experience}
-              domain={job.domain}
-              excerpt={job.excerpt}
-              href={`/jobs/${job.slug}`}
+              job={job}
+              href={`/jobs/${job.id}`}
             />
           ))
         ) : (

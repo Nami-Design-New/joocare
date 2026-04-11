@@ -2,7 +2,7 @@ import { Badge } from "@/shared/components/ui/badge";
 import Image from "next/image";
 import { JobActionButtons } from "./JobActionButtons";
 import JobStatusBadge from "./JobStatusBadge";
-import { JobStatus } from "../index.types";
+import { JobStatus } from "../types/index.types";
 import PositionCard, { positionCardProps } from "./PositionCard";
 
 type JobHeaderProps = positionCardProps & {

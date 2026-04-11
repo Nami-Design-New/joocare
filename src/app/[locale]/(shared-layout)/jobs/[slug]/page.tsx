@@ -6,9 +6,22 @@ import JobEducationAndCertificationsCard from "@/features/jobs/components/JobEdu
 import JobLocationAndSalaryCard from "@/features/jobs/components/JobLocationAndSalaryCard";
 import JobOverviewCard from "@/features/jobs/components/JobOverviewCard";
 import JobShareCard from "@/features/jobs/components/JobShareCard";
+import { getJobDetails } from "@/features/jobs/services/job-details-service";
 import Breadcrumb from "@/shared/components/Breadcrumb";
 
-export default function page() {
+export default async function page({
+  params
+}: {
+  params: Promise<{ locale: string, slug: string }>;
+}) {
+
+  const { slug } = await params
+  console.log(await params);
+
+  const jobDetails = await getJobDetails(slug)
+
+  console.log(jobDetails.job);
+
   return (
     <section className="bg-body-bg">
       <Breadcrumb
@@ -20,20 +33,20 @@ export default function page() {
       />
       <section className="px-3 lg:px-25">
         <section className="container mx-auto mt-4 lg:-mt-20">
-          <JobDetailsHeader />
+          <JobDetailsHeader job={jobDetails.job} />
           <div className="grid grid-cols-1 gap-5 pt-7 md:grid-cols-3">
             <div className="col-span-2 flex flex-col gap-8">
-              <JobDescriptionCard />
-              <AboutEmployer />
+              <JobDescriptionCard job={jobDetails.job} />
+              <AboutEmployer employer={jobDetails?.job?.company} />
             </div>
             <div className="col-span-1 flex flex-col gap-8">
-              <JobLocationAndSalaryCard />
-              <JobOverviewCard />
-              <JobEducationAndCertificationsCard />
+              <JobLocationAndSalaryCard job={jobDetails.job} />
+              <JobOverviewCard job={jobDetails.job} />
+              <JobEducationAndCertificationsCard job={jobDetails.job} />
               <JobShareCard />
             </div>
           </div>
-          <SimilarJobsSection />
+          <SimilarJobsSection jobs={jobDetails.similar_jobs} />
         </section>{" "}
       </section>
     </section>

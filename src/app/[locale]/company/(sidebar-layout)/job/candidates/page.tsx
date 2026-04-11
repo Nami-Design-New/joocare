@@ -1,7 +1,7 @@
 import ApplicantsClient from "@/features/jobs/components/ApplicantsClient";
 import CandidatesFilter from "@/features/jobs/components/CandidatesFilter";
 import PositionCard from "@/features/jobs/components/PositionCard";
-import { Applicant } from "@/features/jobs/index.types";
+import { Applicant } from "@/features/jobs/types/index.types";
 
 const MOCK_APPLICANTS: Applicant[] = Array.from({ length: 6 }, (_, i) => ({
   id: i + 1,

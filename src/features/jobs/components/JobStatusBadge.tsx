@@ -1,6 +1,6 @@
 import { Badge } from "@/shared/components/ui/badge";
 import { Dot } from "lucide-react";
-import { JobStatus } from "../index.types";
+import { JobStatus } from "../types/index.types";
 
 export default function JobStatusBadge({
   status,

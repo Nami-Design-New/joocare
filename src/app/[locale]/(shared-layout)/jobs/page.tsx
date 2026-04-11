@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 
 import type { PopularSearchesItem } from "@/features/home/components/PopularSearches";
-import type { AccordionSection, FilterState } from "@/features/jobs/index.types";
+import type { AccordionSection, FilterState } from "@/features/jobs/types/index.types";
 import JobsFilterSection from "@/features/jobs/components/candidate/JobsFilterSection";
 import JobsList from "@/features/jobs/components/candidate/JobsList";
 import JobsSideBarFilter from "@/features/jobs/components/candidate/JobsSideBarFilter";
 import MobileFilterDrawer from "@/features/jobs/components/candidate/MobileFilterDrawer";
 import {
-  buildJobsPagePath,
   getJobsFiltersData,
   getJobsListing,
+} from "@/features/jobs/services/jobs-listing-service";
+import {
+  buildJobsPagePath,
   getSiteOrigin,
   normalizeJobsSearchParams,
-} from "@/features/jobs/services/jobs-listing-service";
+} from "@/features/jobs/utils";
 import Breadcrumb from "@/shared/components/Breadcrumb";
 type PageProps = {
   params: Promise<{ locale: string }>;
@@ -213,14 +215,14 @@ export default async function Page({ params, searchParams }: PageProps) {
         itemListElement: jobsData.data.map((job, index) => ({
           "@type": "ListItem",
           position: index + 1,
-          url: `${getSiteOrigin()}/${locale}/jobs/${job.slug}`,
-          name: job.title,
+          url: `${getSiteOrigin()}/${locale}/jobs/${job.id}`,
+          name: job.title ?? "Job",
         })),
       },
     ],
   };
-
-  console.log("JObs :::", jobsData);
+  console.log(jobsData);
+  console.log(filtersData);
 
   return (
     <section className="bg-body-bg">
@@ -280,9 +282,9 @@ export default async function Page({ params, searchParams }: PageProps) {
               <div className="col-span-4 lg:col-span-3">
                 <JobsList
                   jobs={jobsData.data}
-                  currentPage={jobsData.pagination.currentPage}
-                  totalItems={jobsData.pagination.total}
-                  pageSize={jobsData.pagination.perPage}
+                  currentPage={jobsData.current_page}
+                  totalItems={jobsData.total}
+                  pageSize={jobsData.per_page}
                   locale={locale}
                   filters={normalizedParams}
                 />

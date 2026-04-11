@@ -10,7 +10,7 @@ import {
 } from "@/shared/components/ui/sheet";
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
-import { AccordionSection, FilterState } from "../../index.types";
+import { AccordionSection, FilterState } from "../../types/index.types";
 import JobFilterSidebar from "./JobsSideBarFilter";
 
 type MobileFilterDrawerProps = {

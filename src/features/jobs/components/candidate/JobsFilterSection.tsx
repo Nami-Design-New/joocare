@@ -2,11 +2,11 @@
 
 import { PopularSearchesItem } from "@/features/home/components/PopularSearches";
 import PopularSearchesInteractive from "@/features/home/components/PopularSearchesInteractive";
-import { buildJobsPagePath } from "@/features/jobs/services/jobs-listing-service";
+import { buildJobsPagePath } from "@/features/jobs/utils";
 import { InputField } from "@/shared/components/InputField";
 import { Option, SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 type JobsFilterSectionProps = {
   locale: string;
@@ -32,19 +32,6 @@ export default function JobsFilterSection({
   hiddenInputs,
 }: JobsFilterSectionProps) {
   const [location, setLocation] = useState<string>(country);
-  const [countrySearch, setCountrySearch] = useState("");
-
-  const filteredCountries = useMemo(() => {
-    const normalizedSearch = countrySearch.trim().toLowerCase();
-
-    if (!normalizedSearch) {
-      return countries;
-    }
-
-    return countries.filter((item) =>
-      item.label.toLowerCase().includes(normalizedSearch),
-    );
-  }, [countries, countrySearch]);
 
   return (
     <section className="px-3 lg:px-25">
@@ -80,13 +67,10 @@ export default function JobsFilterSection({
             <input type="hidden" name="country" value={location} />
             <SelectInputField
               id="location"
-              options={filteredCountries}
+              options={countries}
               placeholder="By country"
               value={location}
               onChange={setLocation}
-              withSearchInput
-              searchPlaceholder="Search country"
-              onSearchChange={setCountrySearch}
               className="bg-white"
               containerStyles="w-auto grow"
             />
