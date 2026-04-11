@@ -59,6 +59,8 @@ export async function apiFetch<T = Record<string, unknown>>(
     cache,
   });
 
+
+
   // console.log("Jobs data:::" , data);
   const data =
     ((await response.json().catch(() => null)) as ApiFetchResponse<T> | null) ?? null;

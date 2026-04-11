@@ -2,6 +2,8 @@
 // BASE / SHARED ENTITIES
 // ==============================
 
+import { CompanyBase } from "@/features/shared-company-profile/company-profile.type";
+
 export type NamedEntity = {
   id: number;
   title: string;
@@ -45,12 +47,7 @@ export type Currency = {
 // COMPANY
 // ==============================
 
-export type CompanyBase = {
-  id: number;
-  name: string | null;
-  image: string | null;
-  cover: string | null;
-};
+
 
 export type CompanyDetails = CompanyBase & {
   email: string;
