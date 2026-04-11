@@ -35,7 +35,10 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
         </div>
       </div>
 
-      <CandidateJobDetailsCardActions />
+      <CandidateJobDetailsCardActions
+        jobId={job.id}
+        initialIsSaved={job.is_saved}
+      />
     </section>
   );
 }

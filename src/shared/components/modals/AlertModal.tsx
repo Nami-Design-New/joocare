@@ -22,6 +22,7 @@ type ConfirmDialogProps = {
   confirmLabel?: string;
   cancelLabel?: string;
   confirmButtonVariant?: VariantProps<typeof buttonVariants>["variant"];
+  hasBackButton?: boolean;
   onConfirm: () => void;
   onCancel?: () => void;
   isLoading?: boolean;
@@ -35,7 +36,7 @@ export default function AlertModal({
   confirmLabel = "Confirm",
   cancelLabel = "Back",
   onConfirm,
-  confirmButtonVariant = "default",
+  confirmButtonVariant = "default", hasBackButton = true,
   onCancel,
   isLoading = false,
 }: ConfirmDialogProps) {
@@ -79,7 +80,7 @@ export default function AlertModal({
             >
               {isLoading ? "Saving..." : confirmLabel}
             </Button>
-            <Button
+            {hasBackButton && <Button
               type="button"
               variant="outline"
               size="pill"
@@ -88,7 +89,7 @@ export default function AlertModal({
               className="grow"
             >
               {cancelLabel}
-            </Button>
+            </Button>}
           </div>
         </DialogFooter>
       </DialogContent>

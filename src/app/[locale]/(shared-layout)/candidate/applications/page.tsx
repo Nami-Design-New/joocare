@@ -1,16 +1,35 @@
-import CandidateJobCard from "@/features/jobs/components/candidate/CandidateJobCard";
+import CandidateApplicationsList from "@/features/jobs/components/candidate/CandidateApplicationsList";
+import { getApplications } from "@/features/jobs/services/applications-service";
 
-export default function CandidateApplicationsPage() {
-    return (
-        <section className="grid grid-cols-1 gap-4 lg:grid-cols-2 py-4">
-            <div className="col-span-1">
-                <CandidateJobCard appliedBadge={true} />
-            </div>
-            <div className="col-span-1">
-                <CandidateJobCard appliedBadge={true} />
-            </div>
+export default async function CandidateApplicationsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const { locale } = await params;
+  const resolvedSearchParams = await searchParams;
+  const pageParam = resolvedSearchParams.page;
+  const page =
+    typeof pageParam === "string"
+      ? Number.parseInt(pageParam, 10)
+      : Array.isArray(pageParam) && pageParam[0]
+        ? Number.parseInt(pageParam[0], 10)
+        : 1;
+  const applications = await getApplications(
+    Number.isNaN(page) || page < 1 ? 1 : page,
+    locale,
+  );
 
-        </section>
-    )
+  return (
+    <CandidateApplicationsList
+      jobs={applications.data}
+      currentPage={applications.current_page}
+      totalItems={applications.total}
+      pageSize={applications.per_page}
+      locale={locale}
+    />
+  );
 }
 

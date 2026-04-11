@@ -1,51 +1,74 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { JobListItem } from "@/features/jobs/types/jobs.types";
 import CandidateJobCard from "./CandidateJobCard";
 import { CustomPagination } from "@/shared/components/CustomPagination";
+import { buildSavedJobsPagePath } from "@/features/jobs/utils";
 
-const mockJob: JobListItem = {
-  id: 0,
-  title: "Healthcare Opportunity",
-  job_title_id: null,
-  job_title: null,
-  company: null,
-  country: null,
-  city: null,
-  experience: null,
-  employment_type: null,
-  specialty: null,
-  currency_id: null,
-  currency: null,
-  salary_type_id: null,
-  salary_type: null,
-  min_salary: null,
-  max_salary: null,
-  description: null,
-  is_applied: false,
-  is_saved: false,
-  created_at: new Date(0).toISOString(),
-  updated_at: new Date(0).toISOString(),
+type SavedJobsListProps = {
+  jobs: JobListItem[];
+  currentPage: number;
+  totalItems: number;
+  pageSize: number;
+  locale: string;
 };
 
-export default function SavedJobsList() {
-  const [page, setPage] = useState(1);
+export default function SavedJobsList({
+  jobs,
+  currentPage,
+  totalItems,
+  pageSize,
+  locale,
+}: SavedJobsListProps) {
+  const [visibleJobs, setVisibleJobs] = useState(jobs);
+  const [visibleTotal, setVisibleTotal] = useState(totalItems);
+
+  useEffect(() => {
+    setVisibleJobs(jobs);
+    setVisibleTotal(totalItems);
+  }, [jobs, totalItems]);
+
+  const buildPageHref = (page: number) => buildSavedJobsPagePath(locale, page);
+
   return (
     <section className="my-11">
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
-        {Array.from({ length: 9 }, (_, i) => (
-          <CandidateJobCard key={i} job={{ ...mockJob, id: i + 1 }} />
-        ))}
+        {visibleJobs.length > 0 ? (
+          visibleJobs.map((job) => (
+            <CandidateJobCard
+              key={job.id}
+              job={job}
+              href={`/jobs/${job.id}`}
+              onSavedChange={(nextSavedState) => {
+                setVisibleJobs((currentJobs) =>
+                  nextSavedState
+                    ? currentJobs
+                    : currentJobs.filter((currentJob) => currentJob.id !== job.id),
+                );
+                setVisibleTotal((currentTotal) =>
+                  nextSavedState ? currentTotal : Math.max(0, currentTotal - 1),
+                );
+              }}
+            />
+          ))
+        ) : (
+          <div className="border-border text-muted-foreground col-span-full rounded-2xl border border-dashed p-8 text-center">
+            No saved jobs found.
+          </div>
+        )}
       </section>
-      <section className="mt-4 w-full">
+      {currentPage > 1 || visibleTotal > pageSize ? (
+        <section className="mt-4 w-full">
         <CustomPagination
-          currentPage={page}
-          totalItems={57}
-          pageSize={10}
-          onPageChange={setPage}
+          currentPage={currentPage}
+          totalItems={visibleTotal}
+          pageSize={pageSize}
+          onPageChange={() => undefined}
+          getHref={buildPageHref}
         />
-      </section>
+        </section>
+      ) : null}
     </section>
   );
 }

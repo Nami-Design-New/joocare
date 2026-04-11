@@ -2,7 +2,6 @@ import { Link } from "@/i18n/navigation";
 import { JobListItem } from "@/features/jobs/types/jobs.types";
 import {
   getJobLocation,
-  getJobPostedAtLabel,
   getJobSalary,
 } from "@/features/jobs/utils";
 import { Badge } from "@/shared/components/ui/badge";
@@ -15,7 +14,6 @@ import {
 } from "@/shared/components/ui/card";
 import {
   ArrowRight,
-  Bookmark,
   Briefcase,
   DollarSign,
   Dot,
@@ -23,22 +21,25 @@ import {
   Share,
 } from "lucide-react";
 import Image from "next/image";
+import ToggleSavedJobButton from "./ToggleSavedJobButton";
 
 type CandidateJobCardProps = {
   job: JobListItem;
   href?: string;
   appliedBadge?: boolean;
+  onSavedChange?: (nextSavedState: boolean) => void;
 };
 
 export default function CandidateJobCard({
   job,
   href = "/jobs",
   appliedBadge,
+  onSavedChange,
 }: CandidateJobCardProps) {
   const title = job.title || job.job_title?.title || "Healthcare Opportunity";
   const company = job.company?.name || "Joocare Employer";
   const companyLogo = job.company?.image;
-  const postedAtLabel = job?.created_at;
+  const postedAtLabel = job.created_at;
   const location = getJobLocation(job);
   const category = job?.category?.title || "Not specified";
   const employmentType = job?.employment_type?.title || "Not specified";
@@ -101,13 +102,11 @@ export default function CandidateJobCard({
       <CardFooter className="flex flex-col gap-4  max-lg:px-2">
         <div className="flex w-full items-center justify-between gap-2 border-b-border border-t pt-4">
           <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="pill"
-              className="border-border text-muted-foreground h-9 px-4 py-2 text-sm"
-            >
-              <Bookmark /> Save
-            </Button>
+            <ToggleSavedJobButton
+              jobId={job.id}
+              initialIsSaved={job.is_saved}
+              onSavedChange={onSavedChange}
+            />
             <Button
               variant="outline"
               size="pill"

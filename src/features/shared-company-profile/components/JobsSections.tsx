@@ -36,7 +36,7 @@ export default function JobsSections({
                 href={`/jobs/${job.id}`}
               />
             ))}
-          <JobsSectionsInfinite slug={slug} locale={locale} />
+            <JobsSectionsInfinite slug={slug} locale={locale} />
           </div>
         </>
       ) : (

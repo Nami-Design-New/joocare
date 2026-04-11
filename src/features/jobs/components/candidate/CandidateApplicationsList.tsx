@@ -1,0 +1,58 @@
+"use client";
+
+import { JobListItem } from "@/features/jobs/types/jobs.types";
+import { buildCandidateApplicationsPagePath } from "@/features/jobs/utils";
+import { CustomPagination } from "@/shared/components/CustomPagination";
+import CandidateJobCard from "./CandidateJobCard";
+
+type CandidateApplicationsListProps = {
+  jobs: JobListItem[];
+  currentPage: number;
+  totalItems: number;
+  pageSize: number;
+  locale: string;
+};
+
+export default function CandidateApplicationsList({
+  jobs,
+  currentPage,
+  totalItems,
+  pageSize,
+  locale,
+}: CandidateApplicationsListProps) {
+  const buildPageHref = (page: number) =>
+    buildCandidateApplicationsPagePath(locale, page);
+
+  return (
+    <>
+      <section className="grid grid-cols-1 gap-4 py-4 lg:grid-cols-2">
+        {jobs.length > 0 ? (
+          jobs.map((job) => (
+            <CandidateJobCard
+              key={job.id}
+              job={job}
+              href={`/jobs/${job.id}`}
+              appliedBadge
+            />
+          ))
+        ) : (
+          <div className="border-border text-muted-foreground col-span-full rounded-2xl border border-dashed p-8 text-center">
+            No applications found.
+          </div>
+        )}
+      </section>
+
+      {currentPage > 1 || totalItems > pageSize ? (
+        <section className="mt-4 w-full">
+          <CustomPagination
+            currentPage={currentPage}
+            totalItems={totalItems}
+            pageSize={pageSize}
+            onPageChange={() => undefined}
+            getHref={buildPageHref}
+          />
+        </section>
+      ) : null}
+    </>
+  );
+}
