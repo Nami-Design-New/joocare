@@ -7,6 +7,7 @@ import { File, Eye } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { storeUploadedFile } from "@/shared/services/store-uploaded-file-service";
 import CVModal from "./CVModal";
 import { deleteCvAction, updateCvAction } from "../actions/cv-actions";
 import { cvSchema } from "../validation/cv-schema";
@@ -32,6 +33,18 @@ function getShortFileName(fileName: string) {
   const shortBase = `${baseName.slice(0, 6)}...${baseName.slice(-4)}`;
 
   return extension ? `${shortBase}.${extension}` : shortBase;
+}
+
+function resolveStoredFileUrl(path: string | null) {
+  if (!path) {
+    return null;
+  }
+
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  return `https://joocare.nami-tec.com/storage/${path.replace(/^\/+/, "")}`;
 }
 
 const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
@@ -74,7 +87,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
     };
   }, [selectedCvFile]);
 
-  const displayUrl = objectUrlRef.current ?? currentCvUrl;
+  const displayUrl = objectUrlRef.current ?? resolveStoredFileUrl(currentCvUrl);
   const hasCv = Boolean(selectedCvFile || currentCvUrl);
   const displayFileName = useMemo(() => {
     if (selectedCvFile) {
@@ -98,7 +111,6 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
   // open file picker
   const handleUploadClick = () => {
     fileInputRef.current?.click();
-    setOpen(false);
   };
 
   // handle file change
@@ -115,13 +127,19 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
 
     try {
       setIsUploading(true);
+      const uploadedFile = await storeUploadedFile({
+        file,
+        locale,
+      });
+
       const payload = new FormData();
-      payload.append("cv", file);
+      payload.append("cv", uploadedFile.path);
       payload.append("locale", locale);
       const response = await updateCvAction(payload, session?.accessToken);
 
       setSelectedCvFile(file);
-      setCurrentCvUrl(null);
+      setCurrentCvUrl(uploadedFile.path);
+      setOpen(false);
       toast.success(response.message);
     } catch (error) {
       const message =
@@ -246,6 +264,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
           handleUploadClick={handleUploadClick}
           handleDelete={handleDelete}
           isDeleting={isDeleting}
+          isUploading={isUploading}
         />
       )}
     </>

@@ -1,17 +1,33 @@
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
 
+function normalizeStoredCvPath(cvPath: string) {
+  const trimmedPath = cvPath.trim();
+
+  if (!trimmedPath) {
+    return "";
+  }
+
+  const imagesIndex = trimmedPath.indexOf("images/");
+
+  if (imagesIndex >= 0) {
+    return trimmedPath.slice(imagesIndex);
+  }
+
+  return trimmedPath;
+}
+
 export async function uploadCv({
-  file,
+  cvPath,
   locale = "en",
   token,
 }: {
-  file: File;
+  cvPath: string;
   locale?: string;
   token: string;
 }) {
   const formData = new FormData();
-  formData.append("cv", file);
+  formData.append("cv", normalizeStoredCvPath(cvPath));
 
   const { ok, data, message } = await apiFetch(`${getUserApiUrl()}/auth/update-cv`, {
     method: "POST",
@@ -19,9 +35,6 @@ export async function uploadCv({
     token,
     body: formData,
   });
-
-  console.log(ok, data, message);
-
 
   if (!ok) {
     throw new Error(message || "Failed to upload CV.");

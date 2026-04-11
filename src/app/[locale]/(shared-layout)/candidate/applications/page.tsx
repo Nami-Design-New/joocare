@@ -24,7 +24,7 @@ export default async function CandidateApplicationsPage({
 
   return (
     <CandidateApplicationsList
-      jobs={applications.data}
+      applications={applications.data}
       currentPage={applications.current_page}
       totalItems={applications.total}
       pageSize={applications.per_page}
@@ -32,4 +32,3 @@ export default async function CandidateApplicationsPage({
     />
   );
 }
-

@@ -70,6 +70,7 @@ export type CandidateProfileApiUser = {
   experience: CandidateProfileApiLookup | null;
   age: number | string | null;
   bio: string | null;
+  is_profile_complete: boolean | null;
   licenses: unknown[];
   certifications: unknown[];
   qualifications: unknown[];
@@ -107,6 +108,7 @@ export type CandidateProfileViewModel = {
   location: string | null;
   jobTitle: string | null;
   experience: string | null;
+  isProfileComplete: boolean | null;
   skills: CandidateSkillViewModel[];
   educations: CandidateEducationViewModel[];
   experiences: CandidateExperienceViewModel[];

@@ -139,6 +139,7 @@ export async function getCandidateProfile() {
     image: user.image ?? null,
     cv: user.cv ?? null,
     bio: user.bio ?? null,
+    isProfileComplete: user.is_profile_complete ?? null,
     age: normalizeAge(user.age),
     experience: user.experience?.title ?? null,
     location: buildLocation(country, city),

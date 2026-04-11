@@ -233,6 +233,16 @@ export type SimilarJob = JobListItem
 // API RESPONSES
 // ==============================
 
+export type CandidateApplicationItem = {
+  id: number;
+  user_id: number;
+  job_id: number;
+  job: JobListItem;
+  cv: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type JobsListingResponse = {
   message: string;
   code: number;
@@ -245,6 +255,24 @@ export type JobsListingResponse = {
 
   next_page_url: string | null;
   prev_page_url: string | null;
+};
+
+export type CandidateApplicationsResponse = {
+  message: string;
+  code: number;
+  data: CandidateApplicationItem[];
+
+  current_page: number;
+  first_page_url: string;
+  from: number | null;
+  last_page: number;
+  last_page_url: string;
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number | null;
+  total: number;
 };
 
 export type JobDetailsResponse = {

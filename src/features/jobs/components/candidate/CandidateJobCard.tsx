@@ -27,6 +27,7 @@ type CandidateJobCardProps = {
   job: JobListItem;
   href?: string;
   appliedBadge?: boolean;
+  appliedAtLabel?: string;
   onSavedChange?: (nextSavedState: boolean) => void;
 };
 
@@ -34,6 +35,7 @@ export default function CandidateJobCard({
   job,
   href = "/jobs",
   appliedBadge,
+  appliedAtLabel,
   onSavedChange,
 }: CandidateJobCardProps) {
   const title = job.title || job.job_title?.title || "Healthcare Opportunity";
@@ -48,6 +50,8 @@ export default function CandidateJobCard({
   const specialty = job.specialty?.title || "Healthcare";
   const excerpt =
     job.description || "Explore the job details to learn more about the role and employer.";
+  const shouldShowAppliedBadge = appliedBadge || job.is_applied;
+  const appliedLabel = appliedAtLabel || postedAtLabel;
 
   return (
     <Card>
@@ -123,14 +127,14 @@ export default function CandidateJobCard({
             <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
           </Link>
         </div>
-        {appliedBadge && (
+        {shouldShowAppliedBadge && (
           <Badge
             variant="open"
             size="pill"
             className="flex w-full justify-start gap-1"
           >
             <Dot className="h-4 w-4" strokeWidth={12} /> <span>Applied</span>
-            <span className="grow text-end text-xs text-muted-foreground">{postedAtLabel}</span>
+            <span className="grow text-end text-xs text-muted-foreground">{appliedLabel}</span>
           </Badge>
         )}
       </CardFooter>

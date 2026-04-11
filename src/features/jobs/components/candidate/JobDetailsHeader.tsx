@@ -38,6 +38,7 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
       <CandidateJobDetailsCardActions
         jobId={job.id}
         initialIsSaved={job.is_saved}
+        isApplied={job.is_applied}
       />
     </section>
   );

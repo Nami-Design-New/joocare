@@ -22,6 +22,7 @@ type ConfirmDialogProps = {
   handleUploadClick: () => void;
   handleDelete: () => void;
   isDeleting?: boolean;
+  isUploading?: boolean;
 };
 export default function CVModal({
   open,
@@ -33,6 +34,7 @@ export default function CVModal({
   handleUploadClick,
   handleDelete,
   isDeleting = false,
+  isUploading = false,
 }: ConfirmDialogProps) {
   const isPdf = isPdfFileName(fileName);
 
@@ -73,7 +75,7 @@ export default function CVModal({
             variant="destructive"
             className="flex items-center gap-1.5 rounded-full px-4 h-10"
             onClick={() => handleDelete()}
-            disabled={isDeleting}
+            disabled={isDeleting || isUploading}
           >
             <Trash className="h-4 w-4" />
             {isDeleting ? "Deleting..." : "Delete"}
@@ -83,9 +85,10 @@ export default function CVModal({
             variant="default"
             className="flex items-center gap-1.5 rounded-full px-4 h-10"
             onClick={() => handleUploadClick()}
+            disabled={isUploading || isDeleting}
           >
             <RefreshCw className="h-4 w-4" />
-            Update
+            {isUploading ? "Updating..." : "Update"}
           </Button>
         </div>
 

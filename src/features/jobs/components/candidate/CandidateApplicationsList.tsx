@@ -1,12 +1,12 @@
 "use client";
 
-import { JobListItem } from "@/features/jobs/types/jobs.types";
+import { CandidateApplicationItem } from "@/features/jobs/types/jobs.types";
 import { buildCandidateApplicationsPagePath } from "@/features/jobs/utils";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import CandidateJobCard from "./CandidateJobCard";
 
 type CandidateApplicationsListProps = {
-  jobs: JobListItem[];
+  applications: CandidateApplicationItem[];
   currentPage: number;
   totalItems: number;
   pageSize: number;
@@ -14,7 +14,7 @@ type CandidateApplicationsListProps = {
 };
 
 export default function CandidateApplicationsList({
-  jobs,
+  applications,
   currentPage,
   totalItems,
   pageSize,
@@ -26,13 +26,14 @@ export default function CandidateApplicationsList({
   return (
     <>
       <section className="grid grid-cols-1 gap-4 py-4 lg:grid-cols-2">
-        {jobs.length > 0 ? (
-          jobs.map((job) => (
+        {applications.length > 0 ? (
+          applications.map((application) => (
             <CandidateJobCard
-              key={job.id}
-              job={job}
-              href={`/jobs/${job.id}`}
+              key={application.id}
+              job={application.job}
+              href={`/jobs/${application.job.id}`}
               appliedBadge
+              appliedAtLabel={application.created_at}
             />
           ))
         ) : (

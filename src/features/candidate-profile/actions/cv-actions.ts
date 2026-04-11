@@ -21,21 +21,19 @@ async function resolveCandidateToken(passedToken?: string) {
 
 export async function updateCvAction(formData: FormData, accessToken?: string) {
   const token = await resolveCandidateToken(accessToken);
-  console.log("Token :::::", token);
 
   const locale = typeof formData.get("locale") === "string" ? String(formData.get("locale")) : "en";
-  const file = formData.get("cv");
+  const cvPath = typeof formData.get("cv") === "string" ? String(formData.get("cv")) : "";
 
-  if (!(file instanceof File)) {
-    throw new Error("CV file is required.");
+  if (!cvPath.trim()) {
+    throw new Error("CV path is required.");
   }
 
   const response = await uploadCv({
-    file,
+    cvPath,
     locale,
     token,
   });
-  console.log("response :::::", response);
 
   revalidatePath(`/${locale}/candidate/profile`);
 

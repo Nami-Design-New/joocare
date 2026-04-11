@@ -21,7 +21,7 @@ const SideContentInfos = ({
   const displayExp = profile?.experience || "-";
 
   return (
-    <aside className="no-scrollbar flex flex-col gap-5 overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow lg:h-dvh">
+    <aside className="no-scrollbar flex flex-col gap-5  overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow">
       {/* image */}
       <section className="mx-auto flex w-50 flex-col items-center justify-center gap-2">
         <Image

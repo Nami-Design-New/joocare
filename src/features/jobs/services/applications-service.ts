@@ -3,14 +3,14 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
-import { JobsListingResponse } from "../types/jobs.types";
+import { CandidateApplicationItem, CandidateApplicationsResponse } from "../types/jobs.types";
 
 const APPLICATIONS_PAGE_SIZE = 10;
 
 export async function getApplications(
   page: number,
   locale: string,
-): Promise<JobsListingResponse> {
+): Promise<CandidateApplicationsResponse> {
   const session = await getServerSession(authOptions);
   const params = new URLSearchParams({
     pagination: "on",
@@ -18,7 +18,7 @@ export async function getApplications(
     page: String(page),
   });
 
-  const result = await apiFetch(
+  const result = await apiFetch<CandidateApplicationItem[]>(
     `${getUserApiUrl()}/applications?${params.toString()}`,
     {
       method: "GET",
@@ -32,7 +32,7 @@ export async function getApplications(
     throw new Error(result.message || "Failed to load applications.");
   }
 
-  const response = result.data as unknown as JobsListingResponse;
+  const response = result.data as CandidateApplicationsResponse;
 
   if (!response?.data) {
     throw new Error("Applications payload is missing.");
