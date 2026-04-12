@@ -19,7 +19,7 @@ export default function AboutEmployer({ employer }: { employer: CompanyDetails }
         />
         <div>
           <h3 className="text-lg font-semibold">{employer?.name}</h3>
-          <p className="text-muted-foreground text-base">{employer.domain.title}</p>
+          <p className="text-muted-foreground text-base">{employer?.domain?.title}</p>
         </div>
       </div>
       <p className="text-muted-foreground py-3 text-justify text-sm">

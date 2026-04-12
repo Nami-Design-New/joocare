@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { JobDetails } from "../types/jobs.types";
+import { getJobSalary } from "../utils";
 
 export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
   return (
@@ -11,9 +12,9 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
           height={38}
           alt="currancy icon"
         />
-        <h4 className="text-foreground text-lg font-semibold">Salary ({job.currency.code})</h4>
-        <p className="text-primary text-md font-semibold">{job.min_salary} - {job.max_salary}</p>
-        <span className="text-muted-foreground text-sm">{job.salary_type.title}</span>
+        <h4 className="text-foreground text-lg font-semibold">Salary {job?.salary_type === null ? null : (job?.currency?.code)}</h4>
+        <p className="text-primary text-md font-semibold">{getJobSalary(job)}</p>
+        <span className="text-muted-foreground text-sm">{job?.salary_type?.title}</span>
       </div>
       <div className="bg-muted h-full w-0.5"></div>
       <div className="flex flex-col items-center justify-center gap-1">
@@ -25,7 +26,7 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
         />
         <h4 className="text-foreground text-lg font-semibold">Job Location</h4>
         <p className="text-muted-foreground text-md text-center font-semibold">
-          {job?.city?.name}{job.city_id === null ? "" : ","}<br />{job?.country?.name}
+          {job?.city?.name}{job?.city_id === null ? "" : ","}<br />{job?.country?.name}
         </p>
       </div>
     </div>

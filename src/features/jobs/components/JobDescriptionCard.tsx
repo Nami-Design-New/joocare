@@ -12,7 +12,7 @@ export default function JobDescriptionCard({ job }: { job: JobDetails }) {
 
       <DescriptionSection title="Qualifications">
         <p className="mb-5 text-sm font-normal">
-          {job.description}
+          {job?.description}
         </p>
         <Link href="/" className="block w-full border-b pb-5 text-[#1C7ED6]">
           Learn more about our benefits
@@ -28,7 +28,7 @@ export default function JobDescriptionCard({ job }: { job: JobDetails }) {
 
       <div>
         <h3 className="text-primary font-outfit text-xl font-bold">Skills:</h3>
-        <ItemList items={job.skills} variant="dashed" />
+        <ItemList items={job?.skills} variant="dashed" />
       </div>
     </div>
   );

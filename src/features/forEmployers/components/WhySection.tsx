@@ -1,9 +1,10 @@
 import { MoveRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { Button } from "@/shared/components/ui/button";
+import { Button, buttonVariants } from "@/shared/components/ui/button";
 import SectionTitle from "../../home/components/SectionTitle";
 import { FeatureItem } from "./FeatureItem";
 import type { WhySectionProps } from "../types";
+import { cn } from "@/shared/lib/utils";
 
 export default function WhySection({
   title,
@@ -30,18 +31,19 @@ export default function WhySection({
               {description}
             </p>
 
-            <Button
-              asChild
-              variant="default"
-              size="pill"
-              hoverStyle="slideSecondary"
-              className="flex w-full items-center justify-center gap-2 sm:mt-8 sm:w-fit"
+            <Link
+              href="/auth/employer/register"
+              className={cn(buttonVariants({
+                variant: "default"
+                , size: "pill"
+                , hoverStyle: "slideSecondary"
+              }), "mx-auto mt-6 flex w-full items-center justify-center gap-2 sm:mt-8 sm:w-fit")}
             >
-              <Link href="/auth/employer/register">
-                Get Started For Free
-                <MoveRight className="mt-[3px]" size={16} />
-              </Link>
-            </Button>
+
+              Get Started For Free
+              <MoveRight className="mt-0.75" size={16} />
+
+            </Link>
           </div>
 
           <div className="lg:col-span-7">

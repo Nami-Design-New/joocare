@@ -39,7 +39,7 @@ export const LiveJobs = ({
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {jobs.map((job) => (
-            <JobCard key={job.id} {...job} />
+            <JobCard key={job?.id} {...job} />
           ))}
         </div>
       </div>

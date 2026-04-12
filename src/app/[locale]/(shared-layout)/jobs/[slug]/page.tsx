@@ -16,11 +16,10 @@ export default async function page({
 }) {
 
   const { slug } = await params
-  console.log(await params);
 
   const jobDetails = await getJobDetails(slug)
 
-  console.log(jobDetails.job);
+
 
   return (
     <section className="bg-body-bg">
@@ -33,10 +32,10 @@ export default async function page({
       />
       <section className="px-3 lg:px-25">
         <section className="container mx-auto mt-4 lg:-mt-20">
-          <JobDetailsHeader job={jobDetails.job} />
+          <JobDetailsHeader job={jobDetails?.job} />
           <div className="grid grid-cols-1 gap-5 pt-7 md:grid-cols-3">
             <div className="col-span-2 flex flex-col gap-8">
-              <JobDescriptionCard job={jobDetails.job} />
+              <JobDescriptionCard job={jobDetails?.job} />
               <AboutEmployer employer={jobDetails?.job?.company} />
             </div>
             <div className="col-span-1 flex flex-col gap-8">
@@ -44,7 +43,7 @@ export default async function page({
               <JobOverviewCard job={jobDetails.job} />
               <JobEducationAndCertificationsCard job={jobDetails.job} />
               <JobShareCard
-                title={jobDetails.job.title ?? jobDetails.job.job_title.title}
+                title={jobDetails?.job?.title ?? jobDetails?.job?.job_title?.title}
               />
             </div>
           </div>

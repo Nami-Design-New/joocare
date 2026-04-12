@@ -9,7 +9,7 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
     <section className="flex flex-col lg:items-center justify-between rounded-2xl bg-white p-4 lg:flex-row">
       <div className="flex items-center gap-2 lg:gap-6">
         <Image
-          src={job?.company.image ?? "/assets/comp-logo.svg"}
+          src={job?.company?.image ?? "/assets/comp-logo.svg"}
           alt={`company logo`}
           width={96}
           height={86}
@@ -31,14 +31,14 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
               {job?.employment_type?.title}
             </Badge>
           </div>
-          <p className="text-muted-foreground text-sm">{job.created_at}</p>
+          <p className="text-muted-foreground text-sm">{job?.created_at}</p>
         </div>
       </div>
 
       <CandidateJobDetailsCardActions
-        jobId={job.id}
-        initialIsSaved={job.is_saved}
-        isApplied={job.is_applied}
+        jobId={job?.id}
+        initialIsSaved={job?.is_saved}
+        isApplied={job?.is_applied}
       />
     </section>
   );

@@ -11,7 +11,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
       <div className="flex flex-col gap-6">
         <JobOverviewItem
           label="Education Level"
-          value={job.eduction_level.title}
+          value={job?.eduction_level?.title}
           icon="/assets/icons/exp.svg"
         />
         <div>
@@ -31,7 +31,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
               <ul className="mt-2 flex flex-col gap-2">
                 {
                   job.mandatory_certifications.map((item: NamedEntity) =>
-                    <li className="edu-certificate" key={item.id}>{item.title}</li>
+                    <li className="edu-certificate" key={item?.id}>{item?.title}</li>
                   )
                 }
               </ul>

@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "@/shared/components/ui/carousel";
 import SimilarJobCard from "./SimilarJobCard";
-import { SimilarJob } from "@/features/jobs/services/job-details-service";
+import { SimilarJob } from "@/features/jobs/types/jobs.types";
 
 export default function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
 
@@ -38,7 +38,7 @@ export default function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
           <CarouselContent className="-ml-6">
             {jobs.map((job, i) => (
               <CarouselItem key={i} className="pl-6 md:basis-1/2 lg:basis-1/3">
-                <SimilarJobCard job={job} />
+                <SimilarJobCard  job={job} />
               </CarouselItem>
             ))}
           </CarouselContent>

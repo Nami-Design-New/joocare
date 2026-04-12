@@ -1,6 +1,8 @@
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
 interface JobProps {
+  id: string;
   title: string;
   company: string;
   location: string;
@@ -8,8 +10,8 @@ interface JobProps {
   timeLabel: string;
 }
 
-const JobCard = ({ title, company, location, type, timeLabel }: JobProps) => (
-  <article className="group bg-card border-border group hover:border-primary/50 relative rounded-xl border p-5 transition-all hover:shadow-sm">
+const JobCard = ({ title, company, location, type, timeLabel, id }: JobProps) => (
+  <Link href={`/jobs/${id}`} className="group bg-card border-border group hover:border-primary/50 relative rounded-xl border p-5 transition-all hover:shadow-sm">
     <section className="flex items-start gap-4">
       <Image
         src="/assets/comp-logo.svg"
@@ -38,7 +40,7 @@ const JobCard = ({ title, company, location, type, timeLabel }: JobProps) => (
         </footer>
       </div>
     </section>
-  </article>
+  </Link>
 );
 
 export default JobCard;
