@@ -5,11 +5,11 @@ import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
 import { CandidateApplicationItem, CandidateApplicationsResponse } from "../types/jobs.types";
 
-const APPLICATIONS_PAGE_SIZE = 10;
+const APPLICATIONS_PAGE_SIZE = 1;
 
 export async function getJobManagementService(
   page: number,
-  locale: string,
+  locale: string
 ): Promise<CandidateApplicationsResponse> {
   const session = await getServerSession(authOptions);
   const params = new URLSearchParams({

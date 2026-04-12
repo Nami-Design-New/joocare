@@ -1,11 +1,16 @@
 "use client";
 
 import { SelectInputField } from "@/shared/components/SelectInputField";
-import { useState } from "react";
+
 type Option = {
   label: string;
   value: string;
   image?: string;
+};
+
+type JobFilterProps = {
+  value?: string;
+  onStatusChange?: (status: string) => void;
 };
 
 const jobTypes: Option[] = [
@@ -14,16 +19,16 @@ const jobTypes: Option[] = [
   { label: "Paused Time", value: "paused" },
   { label: "Draft", value: "draft" },
 ];
-export default function JobFilter() {
-  const [jobType, setJobType] = useState<Option | undefined>();
+
+export default function JobFilter({ value = "", onStatusChange }: JobFilterProps) {
   return (
     <form>
       <SelectInputField
         id="jobType"
         options={jobTypes}
         placeholder="Status"
-        value={jobType}
-        onChange={() => setJobType}
+        value={value}
+        onChange={(nextValue) => onStatusChange?.(nextValue)}
         className="bg-white"
         containerStyles="w-auto grow"
       />

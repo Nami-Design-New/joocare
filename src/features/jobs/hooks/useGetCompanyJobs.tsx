@@ -1,10 +1,17 @@
 import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
-import { CompanyJob } from "@/features/company-dashboard/index.type";
 import { useQuery } from "@tanstack/react-query";
+import { JobListItem } from "../types/jobs.types";
 
-interface JobsPage {
-    data: CompanyJob[];
+export type ManagedCompanyJob = JobListItem & {
+    status: {
+        status: string;
+        created_at: string;
+    };
+};
+
+export interface JobsPage {
+    data: ManagedCompanyJob[];
     current_page: number;
     last_page: number;
     next_page_url: string | null;
@@ -12,18 +19,34 @@ interface JobsPage {
     total: number;
 }
 
-export default function useGetCompanyJobs({ token, page }: { token: string, page: number }) {
+type UseGetCompanyJobsParams = {
+    token: string;
+    page: number;
+    status?: string;
+    initialData?: JobsPage;
+};
+
+export default function useGetCompanyJobs({
+    token,
+    page,
+    status = "",
+    initialData,
+}: UseGetCompanyJobsParams) {
     const query = useQuery({
-        queryKey: ["company-jobs-table", page],
+        queryKey: ["company-jobs", page, status],
         queryFn: async (): Promise<JobsPage> => {
             const params = new URLSearchParams({
                 page: String(page),
                 pagination: "on",
-                limit_per_page: "2",
+                limit_per_page: "10",
             });
 
+            if (status) {
+                params.set("status", status);
+            }
+
             const res = await apiFetch(
-                `${getCompanyApiUrl()}/my-jobs?${params.toString()}`,
+                `${getCompanyApiUrl()}/jobs?${params.toString()}`,
                 { method: "GET", token }
             );
 
@@ -34,6 +57,7 @@ export default function useGetCompanyJobs({ token, page }: { token: string, page
             return res?.data;
         },
         enabled: !!token,
+        placeholderData: initialData,
 
     });
 

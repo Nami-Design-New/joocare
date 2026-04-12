@@ -26,9 +26,8 @@ import {
   Dot,
   Edit,
   EyeOff,
-  LocationEdit,
   MapPin,
-  Trash2,
+  Trash2
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -36,7 +35,12 @@ import { JobListItem } from "../types/jobs.types";
 import { getJobLocation, getJobSalary } from "../utils";
 
 type JobCardProps = {
-  job: JobListItem;
+  job: JobListItem & {
+    status: {
+      status: string;
+      created_at: string;
+    };
+  };
   href?: string;
   appliedBadge?: boolean;
   appliedAtLabel?: string;
@@ -78,8 +82,6 @@ export default function JobCard({ resumeMatch,
   const experience = job?.experience?.title || "Experience not specified";
   const specialty = job?.specialty?.title || "Healthcare";
   const excerpt = job?.description || "Explore the job details to learn more about the role and employer.";
-  const shouldShowAppliedBadge = appliedBadge || job?.is_applied;
-  const appliedLabel = appliedAtLabel || postedAtLabel;
 
   return (
     <>
