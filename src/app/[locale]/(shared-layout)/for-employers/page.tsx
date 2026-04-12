@@ -5,6 +5,8 @@ import HireSection from "@/features/forEmployers/components/HireSection";
 import { getForEmployersPageData } from "@/features/forEmployers/services";
 import WhySection from "@/features/forEmployers/components/WhySection";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
+import HttpStatusState from "@/shared/components/HttpStatusState";
+import { getHttpStatusCode } from "@/shared/lib/http-error";
 
 export default async function ForEmployers({
   params,
@@ -12,7 +14,26 @@ export default async function ForEmployers({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const pageData = await getForEmployersPageData(locale);
+  let pageData;
+
+  try {
+    pageData = await getForEmployersPageData(locale);
+  } catch (error) {
+    const statusCode = getHttpStatusCode(error);
+
+    if (statusCode && [401, 403, 404, 422, 429, 503].includes(statusCode)) {
+      return (
+        <HttpStatusState
+          statusCode={statusCode}
+          error={error}
+          primaryHref="/"
+          primaryLabel="Back to home"
+        />
+      );
+    }
+
+    throw error;
+  }
 
   return (
     <>
@@ -42,9 +63,11 @@ export default async function ForEmployers({
         title={pageData.hireSteps.title}
         description={pageData.hireSteps.description}
         items={pageData.hireSteps.items}
-      />  <section className="px-3 lg:px-25">
+      />
+      <section className="px-3 lg:px-25">
         <section className="container mx-auto">
-          <FAQSection title={pageData.faqs.title} items={pageData.faqs.items} />   </section>
+          <FAQSection title={pageData.faqs.title} items={pageData.faqs.items} />
+        </section>
       </section>
     </>
   );

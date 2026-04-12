@@ -46,10 +46,6 @@ export function useInfiniteLookup({
 
       const data = await res.json();
 
-      if (data.code !== 200) {
-        throw new Error(data.message || "Something went wrong");
-      }
-
       return data;
     },
     getNextPageParam: (lastPage) => {

@@ -53,10 +53,6 @@ export default function useGetLicenses() {
 
       const data = (await res.json()) as LicensesPageResponse;
 
-      if (data.code && data.code >= 400) {
-        throw new Error(data.message || "Failed to load licenses.");
-      }
-
       return data;
     },
     getNextPageParam: (lastPage) => {

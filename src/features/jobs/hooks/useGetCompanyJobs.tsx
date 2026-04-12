@@ -50,11 +50,11 @@ export default function useGetCompanyJobs({
                 { method: "GET", token }
             );
 
-            if (!res.ok) throw new Error("Network error");
+            if (!res.ok || !res.data) {
+                throw new Error(res.message || "Something went wrong");
+            }
 
-            if (res.data?.code !== 200) throw new Error(res.data?.message || "Something went wrong");
-
-            return res?.data;
+            return res.data as JobsPage;
         },
         enabled: !!token,
         placeholderData: initialData,

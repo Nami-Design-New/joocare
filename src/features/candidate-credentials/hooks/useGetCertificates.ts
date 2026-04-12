@@ -56,10 +56,6 @@ export default function useGetCertificates() {
 
       const data = (await res.json()) as CertificatesPageResponse;
 
-      if (data.code && data.code >= 400) {
-        throw new Error(data.message || "Failed to load certificates.");
-      }
-
       return data;
     },
     getNextPageParam: (lastPage) => {

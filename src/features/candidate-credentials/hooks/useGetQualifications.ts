@@ -56,10 +56,6 @@ export default function useGetQualifications() {
 
       const data = (await res.json()) as QualificationsPageResponse;
 
-      if (data.code && data.code >= 400) {
-        throw new Error(data.message || "Failed to load qualifications.");
-      }
-
       return data;
     },
     getNextPageParam: (lastPage) => {

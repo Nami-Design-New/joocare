@@ -7,6 +7,8 @@ import { getHomePageData } from "@/features/home/services/home-service";
 import { Testimonials } from "@/features/home/components/Testimonials";
 import TopEmployers from "@/features/home/components/TopEmployers";
 import WhyUs from "@/features/home/components/WhyUs";
+import HttpStatusState from "@/shared/components/HttpStatusState";
+import { getHttpStatusCode } from "@/shared/lib/http-error";
 
 export default async function Home({
   params,
@@ -14,7 +16,28 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const homeData = await getHomePageData(locale);
+  let homeData;
+
+  try {
+    homeData = await getHomePageData(locale);
+  } catch (error) {
+    const statusCode = getHttpStatusCode(error);
+
+    if (statusCode && [401, 403, 404, 422, 429, 503].includes(statusCode)) {
+      return (
+        <HttpStatusState
+          statusCode={statusCode}
+          error={error}
+          primaryHref="/jobs"
+          primaryLabel="Browse jobs"
+          secondaryHref="/for-employers"
+          secondaryLabel="For employers"
+        />
+      );
+    }
+
+    throw error;
+  }
 
   return (
     <section className="">

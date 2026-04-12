@@ -83,11 +83,7 @@ async function fetchLookupOptions(
     throw new Error(`Failed to fetch ${endpoint}.`);
   }
 
-  const payload = (await response.json()) as { code?: number; data?: RawLookupItem[] };
-
-  if (payload.code !== 200) {
-    throw new Error(`Failed to fetch ${endpoint}.`);
-  }
+  const payload = (await response.json()) as { data?: RawLookupItem[] };
 
   return (payload.data ?? [])
     .map((item) => normalizeLookupItem(item, locale))
