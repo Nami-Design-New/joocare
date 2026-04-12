@@ -9,6 +9,7 @@ export default function EmployersHero() {
           <div className="mb-2">
             <SectionTitle
               sectionTitle="Your Healthcare Recruitment, Simplified!"
+              translationKey="yourHealthcareRecruitmentSimplified"
               textColor="text-dark"
             />
           </div>

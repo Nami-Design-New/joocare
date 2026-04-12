@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import PopularSearches, { type PopularSearchesItem } from "./PopularSearches";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface Props {
   items: PopularSearchesItem[];
@@ -17,6 +18,7 @@ export default function PopularSearchesInteractive({
   maxVisible,
 }: Props) {
   const router = useRouter();
+  const t = useTranslations("Home");
   const searchParams = useSearchParams();
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -33,11 +35,14 @@ export default function PopularSearchesInteractive({
   return (
     <PopularSearches
       items={items}
+      title={t("popularSearches")}
       maxVisible={isExpanded ? undefined : maxVisible}
       onItemClick={handleItemClick}
       onShowMore={() => setIsExpanded(true)}
       onShowLess={() => setIsExpanded(false)}
       isExpanded={isExpanded}
+      showMoreLabel={t("showMore")}
+      showLessLabel={t("showLess")}
     />
   );
 }

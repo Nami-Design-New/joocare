@@ -1,5 +1,6 @@
 "use client"
 import { Edit2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { EditAboutModal } from "./EditAboutModal"
 import type { CandidateProfileViewModel } from "../../types/profile.types"
@@ -10,14 +11,15 @@ const AboutSection = ({
     profile: CandidateProfileViewModel | null
 }) => {
     const [open, setOpen] = useState(false)
+    const t = useTranslations("Candidate")
     const bioText = profile?.bio ?? ""
     const aboutText =
         bioText ||
-        "No bio has been added yet."
+        t("noBioYet")
     return (<>
         <div className="rounded-2xl bg-white flex flex-col gap-4 p-4 border">
             <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold ">About</h3>
+                <h3 className="text-xl font-semibold ">{t("about")}</h3>
                 <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />
             </div>
             <p className="text-muted-foreground text-sm text-justify">

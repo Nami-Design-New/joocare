@@ -20,7 +20,6 @@ export default async function page({
 
   const jobDetails = await getJobDetails(slug)
 
-  console.log(jobDetails.job);
 
   return (
     <section className="bg-body-bg">

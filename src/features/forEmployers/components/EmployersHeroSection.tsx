@@ -18,6 +18,7 @@ export default function EmployersHeroSection({
           <div className="mb-2">
             <SectionTitle
               sectionTitle="Your Healthcare Recruitment, Simplified!"
+              translationKey="yourHealthcareRecruitmentSimplified"
               textColor="text-dark"
             />
           </div>

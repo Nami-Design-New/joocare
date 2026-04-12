@@ -1,10 +1,10 @@
 "use client";
 
-import { usePathname } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { Menu } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import HeaderActionsButtons from "./HeaderActionsButtons";
 import ResponsiveNavigationBar from "./ResponsiveNavigationBar";
@@ -13,6 +13,8 @@ const Header = () => {
   const [toggleSideMenu, setToggleSideMenu] = useState(false);
   const path = usePathname();
   const { data: session } = useSession();
+  const tCommon = useTranslations("Common");
+  const tHeader = useTranslations("Header");
   const companyHeader = path.includes("/company");
   const isActive = (pathname: string) => path === pathname;
   const homeHref = session?.authRole === "employer" ? "/for-employers" : "/";
@@ -36,7 +38,7 @@ const Header = () => {
             <Link
               href={homeHref}
               className="flex items-center justify-center gap-2"
-              aria-label="Go to homepage"
+              aria-label={tHeader("goHome")}
             >
               <Image
                 src="/assets/logo_1.svg"
@@ -58,10 +60,7 @@ const Header = () => {
           </div>
 
           {/* Main Navigation */}
-          <nav
-            aria-label="Main Navigation"
-            className="hidden justify-center lg:flex"
-          >
+          <nav aria-label={tHeader("mainNavigation")} className="hidden justify-center lg:flex">
             <ul className="flex justify-center space-x-4">
               <li>
                 <Link
@@ -70,7 +69,7 @@ const Header = () => {
                   }`}
                   href={homeHref}
                 >
-                  Home
+                  {tCommon("home")}
                 </Link>
               </li>
               <li>
@@ -80,7 +79,7 @@ const Header = () => {
                   }`}
                   href="/about"
                 >
-                  About
+                  {tCommon("about")}
                 </Link>
               </li>
               {!companyHeader && (
@@ -91,7 +90,7 @@ const Header = () => {
                     }`}
                     href="/jobs"
                   >
-                    Jobs
+                    {tCommon("jobs")}
                   </Link>
                 </li>
               )}
@@ -102,7 +101,7 @@ const Header = () => {
                   }`}
                   href="/contact"
                 >
-                  Contact
+                  {tCommon("contact")}
                 </Link>
               </li>
             </ul>

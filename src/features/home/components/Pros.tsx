@@ -15,6 +15,7 @@ export default function Pros({
     <>
       <SectionTitle
         sectionTitle="The Joocare Model"
+        translationKey="joocareModel"
         textColor="text-white"
         icon="/assets/icons/section-title-white-icon.svg"
       />

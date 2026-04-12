@@ -19,7 +19,7 @@ export default function FAQSection({
     <section className="bg-white pt-10 pb-10 md:pt-16 md:pb-48">
       <div className="container mx-auto px-3 lg:px-25">
         <div className="mb-8 flex flex-col items-center space-y-4">
-          <SectionTitle sectionTitle="FAQ" />
+          <SectionTitle sectionTitle="FAQ" translationKey="faq" />
           <h2>{title}</h2>
         </div>
 

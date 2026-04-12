@@ -8,6 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/shared/components/ui/pagination";
+import { useTranslations } from "next-intl";
 
 type CustomPaginationProps = {
   currentPage: number;
@@ -46,6 +47,7 @@ export function CustomPagination({
   onPageChange,
   getHref,
 }: CustomPaginationProps) {
+  const t = useTranslations("Pagination");
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, totalItems);
@@ -62,11 +64,11 @@ export function CustomPagination({
     <div className="flex w-full flex-wrap items-center justify-center gap-2 md:gap-8">
       {/* Status */}
       <div className="text-muted-foreground order-2 text-sm font-medium md:order-1">
-        Show{" "}
+        {t("show")}{" "}
         <span className="font-semibold">
           {start} - {end}
         </span>{" "}
-        from <span className="font-semibold">{totalItems}</span>
+        {t("from")} <span className="font-semibold">{totalItems}</span>
       </div>
 
       {/* Pagination */}

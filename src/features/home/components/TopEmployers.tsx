@@ -14,7 +14,7 @@ export default function TopEmployers({
     <section className="bg-white">
       <div className="container mx-auto flex flex-col items-center gap-8 px-3 py-10 text-center md:py-20 lg:px-25">
         <div className="flex max-w-103 flex-col items-center gap-4">
-          <SectionTitle sectionTitle="Top Employers" />
+          <SectionTitle sectionTitle="Top Employers" translationKey="topEmployers" />
 
           <h2>{title}</h2>
         </div>

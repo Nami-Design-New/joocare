@@ -23,6 +23,7 @@ export default function WhySection({
             <div className="mb-2">
               <SectionTitle
                 sectionTitle="Talent at the Right Time"
+                translationKey="talentAtTheRightTime"
                 textColor="text-dark"
               />
             </div>

@@ -20,13 +20,13 @@ export const TestimonialCard = ({
   text: string;
   rate: number;
 }) => (
-  <div className="bg-card flex flex-col justify-between gap-3 rounded-tl-4xl rounded-br-4xl p-6">
-    <div className="flex justify-between">
-      <div>
+  <div className="bg-card flex flex-col justify-between gap-3 rounded-tl-4xl rounded-br-4xl p-6 rtl:rounded-tl-none rtl:rounded-tr-4xl rtl:rounded-bl-4xl rtl:rounded-br-none">
+    <div className="flex items-start justify-between gap-4">
+      <div className="text-start">
         <h5 className="text-secondary text-xl font-normal">{name}</h5>
         <p className="text-muted-foreground text-xs">{date}</p>
       </div>
-      <div className="mb-4 flex gap-1">
+      <div className="mb-4 flex shrink-0 gap-1">
         {[...Array(5)].map((_, i) => {
           const isFilled = i < Math.round(rate || 0);
 
@@ -39,7 +39,7 @@ export const TestimonialCard = ({
         })}
       </div>
     </div>
-    <p className="text-muted-foreground leading-tight">{text}</p>
+    <p className="text-muted-foreground text-start leading-tight">{text}</p>
   </div>
 );
 
@@ -60,16 +60,16 @@ export const Testimonials = ({
           }}
         >
           {/* Header */}
-          <div className="mb-12 flex items-center justify-between">
-            <div className="space-y-4">
-              <SectionTitle sectionTitle="What Professionals Say" />
+          <div className="mb-12 flex items-center justify-between gap-4">
+            <div className="space-y-4 text-start">
+              <SectionTitle sectionTitle="What Professionals Say" translationKey="whatProfessionalsSay" />
               <h2>{title}</h2>
             </div>
 
             {/* Shadcn carousel controls wired to the same Carousel context */}
-            <div className="flex gap-4">
-              <CarouselPrevious className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
-              <CarouselNext className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
+            <div className="flex gap-4 rtl:flex-row-reverse">
+              <CarouselPrevious className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white rtl-flip" />
+              <CarouselNext className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white rtl-flip" />
             </div>
           </div>
 

@@ -15,7 +15,7 @@ export const ImpactSection = ({
       <div className="container mx-auto px-3 lg:px-25">
         <div className="grid gap-12 lg:grid-cols-2">
           <div className="flex flex-col justify-center">
-            <SectionTitle sectionTitle="Proven Hiring Impact" />
+            <SectionTitle sectionTitle="Proven Hiring Impact" translationKey="provenHiringImpact" />
             <h2 className="text-foreground mt-4 mb-8">{title}</h2>
             <p className="text-muted-foreground mb-8 max-w-132 text-xl">{description}</p>
             <Button

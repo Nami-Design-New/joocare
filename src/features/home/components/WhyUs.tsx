@@ -24,7 +24,7 @@ export default function WhyUs({
   return (
     <section className="bg-white px-0 py-10 md:py-20">
       <div className="container mx-auto mb-8 flex flex-col items-center space-y-4 px-3 lg:px-25">
-        <SectionTitle sectionTitle="Why Joocare?" />
+        <SectionTitle sectionTitle="Why Joocare?" translationKey="whyJoocare" />
         <h2 className="text-center">{title}</h2>
       </div>
       <div className="flex flex-col lg:flex-row">
@@ -35,7 +35,7 @@ export default function WhyUs({
             items={legacyModels}
           />
         </div>
-        <div className="relative hidden w-70 shrink-0 xl:flex">
+        <div className="relative hidden w-70 shrink-0 xl:flex mirror-vertical" >
           <Image
             src="/assets/why-container.svg"
             fill

@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import { createPortal } from "react-dom";
 import { Button } from "../ui/button";
 import UserProfileCard from "./UserProfileCard";
@@ -18,6 +19,8 @@ export default function ResponsiveNavigationBar({
 }) {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const tCommon = useTranslations("Common");
+  const tHeader = useTranslations("Header");
   const isAuthed = status === "authenticated";
   const homeHref = session?.authRole === "employer" ? "/for-employers" : "/";
 
@@ -32,7 +35,7 @@ export default function ResponsiveNavigationBar({
           <X />
         </button>
       </header>
-      <nav aria-label="Main Navigation" className="flex flex-1">
+      <nav aria-label={tHeader("mainNavigation")} className="flex flex-1">
         <ul className="flex flex-col space-y-4">
           <li>
             <Link
@@ -40,7 +43,7 @@ export default function ResponsiveNavigationBar({
               href={homeHref}
               onClick={() => setToggleSideMenu(false)}
             >
-              Home
+              {tCommon("home")}
             </Link>
           </li>
           <li>
@@ -49,7 +52,7 @@ export default function ResponsiveNavigationBar({
               className="nav-link"
               onClick={() => setToggleSideMenu(false)}
             >
-              About
+              {tCommon("about")}
             </Link>
           </li>
           <li>
@@ -58,7 +61,7 @@ export default function ResponsiveNavigationBar({
               className="nav-link"
               onClick={() => setToggleSideMenu(false)}
             >
-              Jobs
+              {tCommon("jobs")}
             </Link>
           </li>
           <li>
@@ -67,7 +70,7 @@ export default function ResponsiveNavigationBar({
               className="nav-link"
               onClick={() => setToggleSideMenu(false)}
             >
-              Contact
+              {tCommon("contact")}
             </Link>
           </li>
         </ul>
@@ -75,7 +78,7 @@ export default function ResponsiveNavigationBar({
       <div
         className="flex items-center justify-between gap-2"
         role="region"
-        aria-label="User Actions"
+        aria-label={tHeader("userActions")}
       >
         {/* <Button variant="outline" size="icon-circle" aria-label="Search">
         <Search />
@@ -91,7 +94,7 @@ export default function ResponsiveNavigationBar({
               size="pill"
               className="flex-1"
             >
-              Login
+              {tCommon("login")}
             </Button>
             <Button
               onClick={() => router.push("/auth/candidate/register")}
@@ -100,7 +103,7 @@ export default function ResponsiveNavigationBar({
               size="pill"
               className="flex-1"
             >
-              Join Now
+              {tCommon("joinNow")}
             </Button>
           </>
         )}

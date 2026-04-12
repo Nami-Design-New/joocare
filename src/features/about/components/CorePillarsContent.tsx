@@ -18,7 +18,7 @@ export default function CorePillarsContent({
   return (
     <div className="px-1 sm:px-0">
       <div className="mb-4">
-        <SectionTitle sectionTitle="Why choose us?" textColor="text-dark" />
+        <SectionTitle sectionTitle="Why choose us?" translationKey="whyChooseUs" textColor="text-dark" />
       </div>
 
       <h2 className="text-secondary mb-6 text-3xl leading-tight font-bold sm:mb-8 sm:text-4xl lg:text-5xl">

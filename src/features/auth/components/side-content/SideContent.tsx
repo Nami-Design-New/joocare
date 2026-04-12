@@ -1,12 +1,13 @@
-"use client";
+﻿"use client";
 
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 
 const SideContent = () => {
   const pathname = usePathname();
+  const t = useTranslations("AuthSideContent");
   const isEmployerLogin = pathname.includes("employer/login");
   const isCandidateLogin = pathname.includes("candidate/login");
-
   const isEmployerRegister = pathname.includes("employer/register");
   const isCandidateRegister = pathname.includes("candidate/register");
 
@@ -17,33 +18,24 @@ const SideContent = () => {
     >
       <div className="mx-auto w-5/6 p-4 text-white">
         {isEmployerRegister ? (
-          <>
-            <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
-              Let’s setup your operating Agreement
-            </h2>
-          </>
+          <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
+            {t("employerRegisterTitle")}
+          </h2>
         ) : (
           <>
             <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
-              Match Faster
+              {t("candidateTitlePrimary")}
             </h2>
             <h3 className="mb-4 text-[clamp(1.5rem,4vw,3rem)] font-bold">
-              work smarter
+              {t("candidateTitleSecondary")}
             </h3>
           </>
         )}
 
         <p className="text-justify text-[clamp(.8rem,4vw,1.2rem)] [word-spacing:0.1rem]">
-          {(isEmployerLogin || isCandidateLogin) &&
-            `
-          With smart tools and AI-powered insights, joocare helps you find the
-          right opportunity and land the job you deserve with confidence.
-            `}
-          {isEmployerRegister &&
-            `
-            With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
-          {isCandidateRegister &&
-            `With smart tools and AI-powered insights, joocare helps you to find the right opportunity and land the job you deserve with confidence." to "Joocare leverages AI-driven tools and insights to connect you with opportunities that match your skills and career goals, empowering you to succeed with confidence.`}
+          {(isEmployerLogin || isCandidateLogin) && t("candidateLoginDescription")}
+          {isEmployerRegister && t("employerDescription")}
+          {isCandidateRegister && t("candidateRegisterDescription")}
         </p>
       </div>
     </aside>

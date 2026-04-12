@@ -11,7 +11,7 @@ import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
 import { Button } from "@/shared/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -39,6 +39,7 @@ interface BasicInfoFormProps {
 
 const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const locale = useLocale();
+  const t = useTranslations("CandidateSettings");
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [jobTitleSearch, setJobTitleSearch] = useState("");
@@ -150,11 +151,11 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
     try {
       const pathname = new URL(profile.cv).pathname;
-      return decodeURIComponent(pathname.split("/").filter(Boolean).pop() ?? "Current CV");
+      return decodeURIComponent(pathname.split("/").filter(Boolean).pop() ?? t("currentCv"));
     } catch {
-      return decodeURIComponent(profile.cv.split("/").filter(Boolean).pop() ?? "Current CV");
+      return decodeURIComponent(profile.cv.split("/").filter(Boolean).pop() ?? t("currentCv"));
     }
-  }, [profile.cv]);
+  }, [profile.cv, t]);
 
   useEffect(() => {
     if (
@@ -173,7 +174,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     const parsedPhone = parsePhoneNumber(data.phoneNumber);
 
     if (!parsedPhone) {
-      toast.error("Please enter a valid phone number.");
+      toast.error(t("validPhoneError"));
       return;
     }
 
@@ -199,13 +200,13 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       }
 
       const response = await updateCandidateBasicInfoAction(formData, locale);
-      toast.success(response.message ?? "Profile updated successfully.");
+      toast.success(response.message ?? t("updateSuccess"));
       router.refresh();
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : "Failed to update profile information.";
+          : t("updateFailure");
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -218,7 +219,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       className="mt-6 flex flex-col gap-5"
     >
       <div className="flex w-full flex-col">
-        <h3 className="mx-1 mb-1 text-base font-semibold">Profile Picture</h3>
+        <h3 className="mx-1 mb-1 text-base font-semibold">{t("profilePicture")}</h3>
         <Controller
           name="profileImage"
           control={control}
@@ -243,7 +244,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                   setUploadedImagePath(result.path);
                 } catch (error) {
                   const message =
-                    error instanceof Error ? error.message : "Failed to upload profile image.";
+                    error instanceof Error ? error.message : t("uploadProfileImageFailure");
                   setUploadedImagePath(null);
                   setError("profileImage", {
                     type: "server",
@@ -259,9 +260,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       <InputField
         id="fullName"
-        label="Full Name"
+        label={t("fullName")}
         type="text"
-        placeholder="ex: JooCore"
+        placeholder={t("fullNamePlaceholder")}
         {...register("fullName")}
         error={errors.fullName?.message}
       />
@@ -269,8 +270,8 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       <InputField
         id="email"
         type="email"
-        label="Email"
-        placeholder="ex: mail@mail.com"
+        label={t("email")}
+        placeholder={t("emailPlaceholder")}
         disabled
         {...register("email")}
         error={errors.email?.message}
@@ -278,7 +279,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       <div>
         <label htmlFor="phoneNumber" className="mx-1 mb-1 block font-semibold">
-          Phone number
+          {t("phoneNumber")}
         </label>
         <Controller
           name="phoneNumber"
@@ -288,7 +289,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
               defaultCountry="EG"
               id="phoneNumber"
               className="w-full"
-              placeholder="ex:52 987 6543"
+              placeholder={t("phonePlaceholder")}
               value={field.value}
               onChange={(value) => field.onChange(value)}
               error={Boolean(errors.phoneNumber?.message)}
@@ -308,10 +309,10 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         render={({ field }) => (
           <SelectInputField
             id="jobTitle"
-            label="Job Title"
-            placeholder="ex: Consultant Internist"
+            label={t("jobTitle")}
+            placeholder={t("jobTitlePlaceholder")}
             withSearchInput
-            searchPlaceholder="Search job titles..."
+            searchPlaceholder={t("searchJobTitles")}
             {...field}
             error={
               errors.jobTitle?.message ??
@@ -338,11 +339,11 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           control={control}
           render={({ field }) => (
             <SelectInputField
-              label="Specialty"
+              label={t("specialty")}
               id="specialty"
-              placeholder="ex: Cardiology"
+              placeholder={t("specialtyPlaceholder")}
               withSearchInput
-              searchPlaceholder="Search specialties..."
+              searchPlaceholder={t("searchSpecialties")}
               {...field}
               error={
                 errors.specialty?.message ??
@@ -367,11 +368,11 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           control={control}
           render={({ field }) => (
             <SelectInputField
-              label="Years of Experience"
+              label={t("yearsOfExperience")}
               id="yearsOfExperience"
-              placeholder="ex: 3-5 years"
+              placeholder={t("yearsOfExperiencePlaceholder")}
               withSearchInput
-              searchPlaceholder="Search experience..."
+              searchPlaceholder={t("searchExperience")}
               {...field}
               error={
                 errors.yearsOfExperience?.message ??
@@ -395,7 +396,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       <div>
         <label htmlFor="country" className="mx-1 mb-2 block font-semibold">
-          Current Location
+          {t("currentLocation")}
         </label>
         <div className="flex items-center gap-2">
           <Controller
@@ -404,9 +405,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
             render={({ field }) => (
               <SelectInputField
                 id="country"
-                placeholder="country"
+                placeholder={t("countryPlaceholder")}
                 withSearchInput
-                searchPlaceholder="Search countries..."
+                searchPlaceholder={t("searchCountries")}
                 {...field}
                 error={
                   errors.country?.message ??
@@ -432,9 +433,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
             render={({ field }) => (
               <SelectInputField
                 id="city"
-                placeholder="city"
+                placeholder={t("cityPlaceholder")}
                 withSearchInput
-                searchPlaceholder="Search cities..."
+                searchPlaceholder={t("searchCities")}
                 {...field}
                 error={
                   errors.city?.message ??
@@ -460,7 +461,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       <InputField
         id="dateOfBirth"
         type="date"
-        label="Date of birth"
+        label={t("dateOfBirth")}
         {...register("dateOfBirth")}
         error={errors.dateOfBirth?.message}
       />
@@ -470,8 +471,8 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         control={control}
         render={({ field }) => (
           <StoredFilepondUpload
-            label="Upload CV"
-            hint={`"Optional"`}
+            label={t("uploadCv")}
+            hint={`"${t("optional")}"`}
             files={field.value}
             onChange={field.onChange}
             allowImagePreview={false}
@@ -525,7 +526,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           type="submit"
           disabled={isSaving}
         >
-          {isSaving ? "Saving..." : "Save"}
+          {isSaving ? t("saving") : t("save")}
         </Button>
       </div>
     </form>

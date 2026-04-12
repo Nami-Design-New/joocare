@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import { LanguageToggle } from "../LanguageToggle";
 import { Button, buttonVariants } from "../ui/button";
 import UserDropDown from "./UserDropDown";
@@ -18,6 +19,8 @@ function HeaderActionsButtons({
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const tCommon = useTranslations("Common");
+  const tHeader = useTranslations("Header");
 
   const { status } = useSession();
 
@@ -29,7 +32,7 @@ function HeaderActionsButtons({
       <div
         className="flex items-center justify-center space-x-0 lg:space-x-4"
         role="region"
-        aria-label="User Actions"
+        aria-label={tHeader("userActions")}
       >
         {/*  Loading Skeleton (prevents flashing) */}
         {isLoading && (
@@ -49,7 +52,7 @@ function HeaderActionsButtons({
               size="pill"
               className="hidden lg:flex"
             >
-              Login
+              {tCommon("login")}
             </Button>
 
             <Button
@@ -59,7 +62,7 @@ function HeaderActionsButtons({
               size="pill"
               className="hidden lg:flex"
             >
-              Join Now
+              {tCommon("joinNow")}
             </Button>
           </>
         )}
@@ -71,7 +74,7 @@ function HeaderActionsButtons({
               variant="outline"
               className="border-border relative"
               size="icon-circle"
-              aria-label="Notifications"
+              aria-label={tHeader("notifications")}
               onClick={() => setOpen(true)}
             >
               <Image
@@ -91,7 +94,7 @@ function HeaderActionsButtons({
         )}
 
         {/*  Always visible */}
-        <LanguageToggle aria-label="Toggle Language" />
+        <LanguageToggle />
 
         {/*  Mobile Notifications */}
         {!isLoading && isAuthed && (
@@ -99,7 +102,7 @@ function HeaderActionsButtons({
             variant="outline"
             className="border-border relative h-8 w-8 md:hidden"
             size="icon-circle"
-            aria-label="Notifications"
+            aria-label={tHeader("notifications")}
           >
             <Image
               src="/assets/icons/notification.svg"
@@ -126,7 +129,7 @@ function HeaderActionsButtons({
               },
             )}`}
           >
-            For Employer <ChevronRight size={24} />
+            {tHeader("forEmployerCta")} <ChevronRight size={24} className="rtl-flip" />
           </Link>
         )}
       </div>

@@ -3,6 +3,7 @@
 import { Progress } from "@/shared/components/ui/progress";
 import { CircleAlert, Sparkles } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import UploadCvSection from "./UploadCvSection";
 import type { CandidateProfileViewModel } from "../types/profile.types";
 
@@ -11,9 +12,10 @@ const SideContentInfos = ({
 }: {
   profile: CandidateProfileViewModel | null;
 }) => {
-  const displayName = profile?.name || "Candidate";
+  const t = useTranslations("Candidate");
+  const displayName = profile?.name || t("candidate");
   const displayImage = profile?.image || "/assets/profile_image.svg";
-  const displayJobTitle = profile?.jobTitle || "Candidate account";
+  const displayJobTitle = profile?.jobTitle || t("candidateAccount");
   const displayEmail = profile?.email || "-";
   const displayLocation = profile?.location || "-";
   const displayPhone = profile?.fullPhone || "-";
@@ -44,7 +46,7 @@ const SideContentInfos = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-center gap-2">
             <Sparkles className="text-primary h-4 w-4" />
-            <span className="text-sm font-semibold">Hiring Readines</span>
+            <span className="text-sm font-semibold">{t("hiringReadiness")}</span>
           </div>
           <span className="text-primary">85%</span>
         </div>
@@ -52,7 +54,7 @@ const SideContentInfos = ({
         <div className="flex items-center gap-2">
           <CircleAlert className="text-primary h-4 w-4" />
           <span className="text-muted-foreground max-w-62 text-[12px]">
-            Add your ACLS certificate to unlock premium job matches.
+            {t("readinessHint")}
           </span>
         </div>
       </section>
@@ -62,30 +64,30 @@ const SideContentInfos = ({
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">
             {" "}
-            Email{" "}
+            {t("email")}
           </h6>
           <span className="text-sm font-semibold">{displayEmail}</span>
         </div>
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">
             {" "}
-            Location{" "}
+            {t("location")}
           </h6>
           <span className="text-sm font-semibold">{displayLocation}</span>
         </div>
         <div className="flex items-center justify-between p-2">
-          <h6 className="text-muted-foreground text-sm font-semibold">Phone</h6>
+          <h6 className="text-muted-foreground text-sm font-semibold">{t("phone")}</h6>
           <span className="text-sm font-semibold">{displayPhone}</span>
         </div>
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">
             {" "}
-            Experience{" "}
+            {t("experience")}
           </h6>
           <span className="text-sm font-semibold">{displayExp}</span>
         </div>
         <div className="flex items-center justify-between p-2">
-          <h6 className="text-muted-foreground text-sm font-semibold">Age</h6>
+          <h6 className="text-muted-foreground text-sm font-semibold">{t("age")}</h6>
           <span className="text-sm font-semibold">{displayAge}</span>
         </div>
       </section>

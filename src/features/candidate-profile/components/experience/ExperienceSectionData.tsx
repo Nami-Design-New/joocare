@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import {
   Accordion,
@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/shared/components/ui/accordion";
 import { CalendarRange, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import type { CandidateProfileViewModel } from "../../types/profile.types";
 import { ExperienceModal } from "./ExperienceModal";
@@ -18,13 +19,14 @@ export function ExperienceSectionData({
   profile: CandidateProfileViewModel | null;
 }) {
   const [open, setOpen] = useState(false);
+  const t = useTranslations("Candidate");
   const experiences = profile?.experiences ?? [];
 
   return (
     <>
       <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         <div className="mb-2 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-gray-900">Experience</h2>
+          <h2 className="text-lg font-bold text-gray-900">{t("experienceTitle")}</h2>
           <Plus
             size={22}
             className="cursor-pointer"
@@ -46,14 +48,14 @@ export function ExperienceSectionData({
                       {exp.title}
                     </span>
                     <div className="flex items-center gap-2">
-                    {exp.organization && (
+                      {exp.organization && (
                         <span className="text-sm font-semibold">
                           {exp.organization}
                         </span>
                       )}
                       <span className="text-secondary flex items-center gap-1 text-[12px]">
                         <CalendarRange size={16} />
-                        {exp.startDateLabel ?? "Start date"} - {exp.endDateLabel ?? "Present"}
+                        {exp.startDateLabel ?? t("startDate")} - {exp.endDateLabel ?? t("present")}
                       </span>
                     </div>
                   </div>
@@ -82,7 +84,7 @@ export function ExperienceSectionData({
                     </ul>
                   ) : (
                     <p className="text-muted-foreground text-[12px]">
-                      No details added yet.
+                      {t("noDetailsYet")}
                     </p>
                   )}
                 </AccordionContent>
@@ -90,12 +92,12 @@ export function ExperienceSectionData({
             ))}
           </Accordion>
         ) : (
-          <p className="text-sm text-muted-foreground">No experience added yet.</p>
+          <p className="text-sm text-muted-foreground">{t("noExperienceYet")}</p>
         )}
       </div>
 
       <ExperienceModal
-        label="Add Experience"
+        label={t("addExperience")}
         open={open}
         onOpenChange={setOpen}
         experience={null}

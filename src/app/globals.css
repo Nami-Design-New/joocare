@@ -381,3 +381,16 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+html[dir='rtl'] {
+  .rtl-flip {
+    transform: rotate(180deg);
+  }
+  .mirror-vertical {
+    transform: scaleX(-1);
+  }
+}
+
+html[dir='rtl'] .rtl-flip-diagonal {
+  transform: scaleX(-1);
+}

@@ -19,7 +19,7 @@ export const LiveJobs = ({
       <div className="container mx-auto px-3 lg:px-25">
         <header className="mb-10 flex items-end justify-between">
           <div className="space-y-4">
-            <SectionTitle sectionTitle="Recent Jobs" />
+            <SectionTitle sectionTitle="Recent Jobs" translationKey="recentJobs" />
             <h2 id="recent-jobs-title">{title}</h2>
           </div>
           <Button

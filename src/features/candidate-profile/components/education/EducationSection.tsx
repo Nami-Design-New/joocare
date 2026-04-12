@@ -1,5 +1,6 @@
 "use client"
 import { Plus } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { EducationModal } from "./EducationModal"
 import OneEducationSection from "./OneEducationSection"
@@ -11,11 +12,12 @@ const EducationSection = ({
     profile: CandidateProfileViewModel | null
 }) => {
     const [open, setOpen] = useState(false)
+    const t = useTranslations("Candidate")
     const educations = profile?.educations ?? []
     return (<>
         <section className="rounded-2xl bg-white flex flex-col gap-5 p-4 border">
             <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold ">Education</h3>
+                <h3 className="text-xl font-semibold ">{t("education")}</h3>
                 <Plus size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />
             </div>
 
@@ -26,11 +28,11 @@ const EducationSection = ({
                     ))}
                 </div>
             ) : (
-                <p className="text-sm text-muted-foreground">No education added yet.</p>
+                <p className="text-sm text-muted-foreground">{t("noEducationYet")}</p>
             )}
 
         </section>
-        {open && <EducationModal label="Add Education" open={open} onOpenChange={setOpen} education={null}
+        {open && <EducationModal label={t("addEducation")} open={open} onOpenChange={setOpen} education={null}
         />}
 
     </>

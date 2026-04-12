@@ -8,8 +8,10 @@ import { Button } from '@/shared/components/ui/button';
 import { ChangePasswordSchema, TChangePasswordSchema } from '../../validation/change-password-schema';
 import { useChangePassword } from '../../hooks/useChangePassword';
 import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 
 const ChangePasswordForm = () => {
+    const t = useTranslations("CandidateChangePassword");
     const { data: session } = useSession();
     const token = session?.accessToken || "";
     const { mutate: changePassword, isPending } = useChangePassword({ token });
@@ -34,23 +36,23 @@ const ChangePasswordForm = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 items-center justify-center">
-            <InputField label='Current password' id="currentPassword" type={"password"}
+            <InputField label={t("currentPassword")} id="currentPassword" type={"password"}
                 error={errors.currentPassword?.message} {...register('currentPassword')}
-                placeholder="*******" />
+                placeholder={t("passwordPlaceholder")} />
 
-            <InputField label='New password' id="newPassword" type={"password"}
+            <InputField label={t("newPassword")} id="newPassword" type={"password"}
                 error={errors.newPassword?.message} {...register('newPassword')}
-                placeholder="*******" />
+                placeholder={t("passwordPlaceholder")} />
 
-            <InputField label='Confirm new password' id="confirmNewPassword"
+            <InputField label={t("confirmNewPassword")} id="confirmNewPassword"
                 type={"password"}
                 error={errors.confirmNewPassword?.message}
                 {...register('confirmNewPassword')}
 
 
-                placeholder="*******" />
+                placeholder={t("passwordPlaceholder")} />
             <Button variant={"secondary"} hoverStyle={'slidePrimary'} size={'pill'} className='w-1/3 md:w-56' type="submit" disabled={isPending}>
-                {isPending ? "Saving..." : "Save"}
+                {isPending ? t("saving") : t("save")}
             </Button>
 
         </form>

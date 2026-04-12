@@ -14,7 +14,8 @@ import {
   DialogTitle
 } from "@/shared/components/ui/dialog";
 import { useSession } from "next-auth/react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import SuccessModal from "@/shared/components/modals/SuccessModal";
@@ -58,6 +59,7 @@ export function ApplyNowModal({
   onApplySuccess,
 }: ApplyNowModalProps) {
   const locale = useLocale();
+  const t = useTranslations("Job");
   const router = useRouter();
   const { data: session, status } = useSession();
   const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false);
@@ -102,7 +104,7 @@ export function ApplyNowModal({
 
     if (!isCandidate) {
       onOpenChange(false);
-      toast.error("Only candidate accounts can apply to jobs.");
+      toast.error(t("onlyCandidatesCanApply"));
       return;
     }
 
@@ -125,7 +127,7 @@ export function ApplyNowModal({
       } catch (error) {
         if (active) {
           const message =
-            error instanceof Error ? error.message : "Failed to load your CV.";
+            error instanceof Error ? error.message : t("failedToLoadCv");
           setCvError(message);
         }
       } finally {
@@ -140,7 +142,7 @@ export function ApplyNowModal({
     return () => {
       active = false;
     };
-  }, [open, status, session?.accessToken, isCandidate, locale, onOpenChange]);
+  }, [open, status, session?.accessToken, isCandidate, locale, onOpenChange, t]);
 
   async function handleApply() {
     if (isApplying) {
@@ -148,7 +150,7 @@ export function ApplyNowModal({
     }
 
     if (status === "loading") {
-      toast.error("Please wait a moment and try again.");
+      toast.error(t("pleaseWait"));
       return;
     }
 
@@ -159,12 +161,12 @@ export function ApplyNowModal({
     }
 
     if (!isCandidate) {
-      toast.error("Only candidate accounts can apply to jobs.");
+      toast.error(t("onlyCandidatesCanApply"));
       return;
     }
 
     if (!canApply) {
-      setCvError("Please upload your CV first before applying.");
+      setCvError(t("uploadCvFirst"));
       return;
     }
 
@@ -182,12 +184,12 @@ export function ApplyNowModal({
       onOpenChange(false);
       onApplySuccess?.();
       setIsOpenSuccessModal(true);
-      toast.success(response.message ?? "Application submitted successfully.");
+      toast.success(response.message ?? t("applySuccess"));
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : "Failed to submit your application.";
+          : t("applyFailure");
       toast.error(message);
     } finally {
       setIsApplying(false);
@@ -201,20 +203,18 @@ export function ApplyNowModal({
           <div className="flex flex-col gap-6">
             <DialogHeader>
               <DialogTitle className="text-[28px] text-black">
-                CV submission required
+                {t("cvSubmissionTitle")}
               </DialogTitle>
             </DialogHeader>
             <DialogDescription className="text-muted-foreground text-lg">
-              To complete your application for this position, the medical entity
-              needs to review your CV. You can use your saved CV or upload a new
-              one now in PDF or Word format.
+              {t("cvSubmissionDescription")}
             </DialogDescription>
 
             <div className="flex flex-col gap-5 rounded-b-[4px] border border-[#D9D9D9]">
               <div className="px-6 pt-2">
                 {isLoadingCv ? (
                   <div className="rounded-xl border border-[#0B7A75] bg-[#F8FBFB] px-4 py-5 text-sm text-muted-foreground">
-                    Loading your CV...
+                    {t("loadingCv")}
                   </div>
                 ) : hasExistingCv ? (
                   <div className="rounded-xl border border-[#0B7A75] bg-[#F8FBFB] px-4 py-5">
@@ -227,9 +227,9 @@ export function ApplyNowModal({
                           : undefined
                       }
                     >
-                      <img
+                      <Image
                         src="/assets/pdf_file.svg"
-                        alt="cv file"
+                        alt={t("cvFileAlt")}
                         width={24}
                         height={24}
                       />
@@ -242,14 +242,14 @@ export function ApplyNowModal({
               {hasExistingCv ? (
                 <div className="flex items-center gap-4 px-6">
                   <div className="h-px flex-1 bg-border" />
-                  <span className="text-sm font-medium text-foreground">OR</span>
+                  <span className="text-sm font-medium text-foreground">{t("or")}</span>
                   <div className="h-px flex-1 bg-border" />
                 </div>
               ) : null}
 
               <div className="px-6 pb-6">
                 <StoredFilepondUpload
-                  label={hasExistingCv ? "Upload New CV" : "Upload CV"}
+                  label={hasExistingCv ? t("uploadNewCv") : t("uploadCv")}
                   files={uploadedFiles}
                   onChange={setUploadedFiles}
                   maxFiles={1}
@@ -279,7 +279,7 @@ export function ApplyNowModal({
                       router.push("/candidate/profile");
                     }}
                   >
-                    Go to profile
+                    {t("goToProfile")}
                   </Button>
                 ) : null}
               </div>
@@ -293,7 +293,7 @@ export function ApplyNowModal({
                 disabled={isApplying || isLoadingCv}
                 onClick={() => void handleApply()}
               >
-                {isApplying ? "Applying..." : "Apply Now"}
+                {isApplying ? t("applying") : t("applyNow")}
               </Button>
             </DialogFooter>
           </div>
@@ -309,14 +309,14 @@ export function ApplyNowModal({
         open={isOpenSuccessModal}
         onOpenChange={setIsOpenSuccessModal}
         variant="submitted"
-        title="Your request has been successfully submitted!"
-        description="Congratulations! Your CV is now in the hands of the recruitment team. You can review your submitted applications or continue exploring more opportunities."
+        title={t("applicationSubmittedTitle")}
+        description={t("applicationSubmittedDescription")}
         primaryAction={{
-          label: "Go to Applications",
+          label: t("goToApplications"),
           href: "/candidate/applications",
         }}
         secondaryAction={{
-          label: "Explore more jobs",
+          label: t("exploreMoreJobs"),
           href: "/jobs",
         }}
       />

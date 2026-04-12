@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { PlusCircle } from "lucide-react";
 import { usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/shared/components/ui/button";
 import { QualificationModal } from "./qualifications/QualificationModal";
@@ -21,33 +22,33 @@ type ModalConfig = {
     Component: React.ComponentType<ModalProps>;
 };
 
-const MODAL_CONFIGS: ModalConfig[] = [
-    {
-        key: "qualifications",
-        label: "Add Qualifications",
-        Component: QualificationModal,
-    },
-    {
-        key: "certificates",
-        label: "Add Certificates",
-        Component: CertificateModal,
-    },
-    {
-        key: "licenses",
-        label: "Add Licenses",
-        Component: LicenseModal,
-    },
-];
-
 export default function AddHeaderButton() {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
+    const t = useTranslations("Candidate");
 
     const activeConfig = useMemo(() => {
-        return MODAL_CONFIGS.find((item) =>
+        const modalConfigs: ModalConfig[] = [
+            {
+                key: "qualifications",
+                label: t("addQualifications"),
+                Component: QualificationModal,
+            },
+            {
+                key: "certificates",
+                label: t("addCertificates"),
+                Component: CertificateModal,
+            },
+            {
+                key: "licenses",
+                label: t("addLicenses"),
+                Component: LicenseModal,
+            },
+        ];
+        return modalConfigs.find((item) =>
             pathname?.includes(item.key)
         );
-    }, [pathname]);
+    }, [pathname, t]);
 
     const ModalComponent = activeConfig?.Component;
 
@@ -68,7 +69,7 @@ export default function AddHeaderButton() {
                 onClick={() => setOpen(true)}
             >
                 <PlusCircle size={32} />
-                {activeConfig?.label ?? "Add Item"}
+                {activeConfig?.label ?? t("addItem")}
             </Button>
         </>
     );

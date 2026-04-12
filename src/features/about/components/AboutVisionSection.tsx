@@ -19,7 +19,7 @@ export default function AboutVisionSection({
       <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
         <div>
           <div className="mb-2">
-            <SectionTitle sectionTitle="Our Vision" textColor="text-dark" />
+            <SectionTitle sectionTitle="Our Vision" translationKey="ourVision" textColor="text-dark" />
           </div>
 
           <h2 className="text-secondary mb-3 text-3xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">

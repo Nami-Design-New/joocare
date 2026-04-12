@@ -3,6 +3,7 @@
 import { Button } from "@/shared/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { ApplyNowModal } from "../ApplyNowModal";
 import ToggleSavedJobButton from "./ToggleSavedJobButton";
@@ -16,6 +17,7 @@ export default function CandidateJobDetailsCardActions({
   initialIsSaved: boolean;
   isApplied: boolean;
 }) {
+  const t = useTranslations("Job");
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [hasApplied, setHasApplied] = useState(isApplied);
@@ -43,7 +45,7 @@ export default function CandidateJobDetailsCardActions({
               disabled
               className="border-primary text-primary hover:bg-transparent flex-1 cursor-not-allowed border bg-white"
             >
-              Already Applied
+              {t("alreadyApplied")}
             </Button>
           ) : (
             <Button
@@ -51,7 +53,7 @@ export default function CandidateJobDetailsCardActions({
               size="pill"
               className="flex flex-1 items-center gap-2"
             >
-              Apply Now <ArrowRight />
+              {t("applyNow")} <ArrowRight className="rtl-flip" />
             </Button>
           )}
         </>

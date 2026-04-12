@@ -5,6 +5,7 @@ import HireSection from "@/features/forEmployers/components/HireSection";
 import { getForEmployersPageData } from "@/features/forEmployers/services";
 import WhySection from "@/features/forEmployers/components/WhySection";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
+import { getTranslations } from "next-intl/server";
 
 export default async function ForEmployers({
   params,
@@ -12,12 +13,14 @@ export default async function ForEmployers({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const tCommon = await getTranslations({ locale, namespace: "Common" });
+  const tPage = await getTranslations({ locale, namespace: "ForEmployersPage" });
   const pageData = await getForEmployersPageData(locale);
 
   return (
     <>
       <PlainBreadcrumb
-        items={[{ label: "Home", href: "/" }, { label: "For Employers" }]}
+        items={[{ label: tCommon("home"), href: "/" }, { label: tPage("breadcrumbTitle") }]}
       />
       <section className="px-3 lg:px-25">
         <section className="container mx-auto">

@@ -12,6 +12,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 export default function UserProfileCard({
   companyHeader,
@@ -20,6 +21,7 @@ export default function UserProfileCard({
 }) {
   const { logout } = useLogout();
   const { data: session } = useSession();
+  const tCommon = useTranslations("Common");
   const isEmployer = session?.authRole === "employer" || companyHeader;
   const profileHref = isEmployer
     ? "/company/company-profile"
@@ -29,8 +31,8 @@ export default function UserProfileCard({
     : "/candidate/settings/basic-info";
   const displayName = session?.user?.name || "User";
   const subtitle = isEmployer
-    ? "Company account"
-    : "Candidate account";
+    ? tCommon("companyAccount")
+    : tCommon("candidateAccount");
   const imageSrc = session?.user?.image || "/profile-placeholder.svg";
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
@@ -53,14 +55,14 @@ export default function UserProfileCard({
             href={profileHref}
             className="text-secondary text-normal flex items-center gap-1 font-normal"
           >
-            View Profile <ArrowUpRight size={16} />
+            {tCommon("viewProfile")} <ArrowUpRight size={16} className="rtl-flip-diagonal" />
           </Link>
         </div>
       </div>
       <ul className="flex flex-col gap-2 p-2">
         <li className={itemClass}>
           <Settings className="text-muted-foreground group-hover:text-muted-foreground h-5 w-5" />
-          <Link href={settingsHref}>Account settings</Link>
+          <Link href={settingsHref}>{tCommon("accountSettings")}</Link>
         </li>
         {isEmployer ? (
           <>
@@ -69,20 +71,20 @@ export default function UserProfileCard({
                 className="text-muted-foreground group-hover:text-primary h-5 w-5"
                 strokeWidth={2.5}
               />
-              <Link href="/company/dashboard">Dashboard</Link>
+              <Link href="/company/dashboard">{tCommon("dashboard")}</Link>
             </li>
             <li className={itemClass}>
               <UserRoundCogIcon
                 className="text-muted-foreground group-hover:text-primary h-5 w-5"
                 strokeWidth={2.5}
               />
-              <Link href="/company/job-management">Job Management</Link>
+              <Link href="/company/job-management">{tCommon("jobManagement")}</Link>
             </li>
           </>
         ) : (
           <li className={itemClass}>
             <Bookmark className="text-muted-foreground group-hover:text-muted-foreground h-5 w-5" />
-            <Link href="/jobs/saved">Saved</Link>
+            <Link href="/jobs/saved">{tCommon("saved")}</Link>
           </li>
         )}
       </ul>
@@ -92,7 +94,7 @@ export default function UserProfileCard({
         className="bg-destructive mt-4 w-full text-white"
         onClick={logout}
       >
-        Log out
+        {tCommon("logout")}
       </Button>
     </section>
   );

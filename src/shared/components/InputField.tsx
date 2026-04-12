@@ -57,7 +57,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             type={inputType}
             aria-invalid={!!error}
             disabled={disabled}
-            className={cn(isPassword && "pr-10", className)}
+            className={cn(isPassword && "ltr:pr-10 rtl:pl-10", className)}
             {...props}
           />
 
@@ -65,7 +65,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2"
+              className="text-muted-foreground absolute top-1/2 -translate-y-1/2 ltr:right-3 rtl:left-3"
             >
               {showPassword ? (
                 <EyeOffIcon className="h-4 w-4" />
@@ -74,7 +74,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               )}
             </button>
           )}
-          {icon && <div className="absolute top-1/2 right-3 -translate-y-1/2">
+          {icon && <div className="absolute top-1/2 -translate-y-1/2 ltr:right-3 rtl:left-3">
             {icon}
           </div>}
         </div>

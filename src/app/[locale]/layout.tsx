@@ -1,10 +1,8 @@
 import { routing } from "@/i18n/routing";
 import MainProviders from "@/shared/providers/MainProviders";
-import Footer from "@/shared/components/Footer";
-import Header from "@/shared/components/header/Header";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { Outfit, Noto_Sans } from "next/font/google";
@@ -16,7 +14,7 @@ const outfit = Outfit({
 });
 
 const notoSans = Noto_Sans({
-  subsets: ["latin"],
+  subsets: ["latin", "arabic"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-noto-sans",
 });
@@ -40,11 +38,18 @@ export default async function RootLayout({ children, params }: Props) {
 
   // Enable static rendering for next-intl
   setRequestLocale(locale);
+  const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${outfit.variable} ${notoSans.variable}`}>
-      <body className={`antialiased ${outfit.className}`}>
-        <MainProviders locale={locale}>
+    <html
+      lang={locale}
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      className={`${outfit.variable} ${notoSans.variable}`}
+    >
+      <body
+        className={`antialiased ${locale === "ar" ? notoSans.className : outfit.className}`}
+      >
+        <MainProviders locale={locale} messages={messages}>
           <main className="min-h-screen">{children}</main>
         </MainProviders>
       </body>

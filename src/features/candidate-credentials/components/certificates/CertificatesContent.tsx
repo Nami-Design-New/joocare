@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/shared/components/ui/button";
+import { useTranslations } from "next-intl";
 import useGetCertificates from "../../hooks/useGetCertificates";
 import { CredentialCardSkeletonList } from "../shared/CredentialCardSkeleton";
 import CredentialsEmptyState from "../shared/CredentialsEmptyState";
@@ -8,6 +9,7 @@ import InfiniteScrollTrigger from "../shared/InfiniteScrollTrigger";
 import CertificateCard from "./CertificateCard";
 
 export default function CertificatesContent() {
+  const t = useTranslations("Candidate");
   const {
     certificates,
     isInitialLoading,
@@ -26,7 +28,7 @@ export default function CertificatesContent() {
   if (isError) {
     return (
       <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-5 text-sm text-red-700">
-        <p>{error instanceof Error ? error.message : "Unable to load certificates."}</p>
+        <p>{error instanceof Error ? error.message : t("loadCertificatesError")}</p>
         <Button
           type="button"
           variant="outline"
@@ -34,7 +36,7 @@ export default function CertificatesContent() {
           className="mt-4"
           onClick={() => void refetch()}
         >
-          Try again
+          {t("retry")}
         </Button>
       </div>
     );
@@ -43,8 +45,8 @@ export default function CertificatesContent() {
   if (certificates.length === 0) {
     return (
       <CredentialsEmptyState
-        title="No certificates added yet"
-        description="Use the add button above to create your first certificate entry."
+        title={t("noCertificatesTitle")}
+        description={t("noCertificatesDescription")}
       />
     );
   }

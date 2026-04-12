@@ -152,7 +152,7 @@ export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
               href="/company/job/medical"
             >
               View Details
-              <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+              <ArrowRight size={18} strokeWidth={1.5} className="size-5 rtl-flip" />
             </Link>
           </div>
           <Badge

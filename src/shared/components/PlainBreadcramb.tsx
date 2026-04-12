@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type Crumb = {
   label: string;
@@ -7,6 +8,7 @@ type Crumb = {
 };
 
 export default function PlainBreadcrumb({ items }: { items: Crumb[] }) {
+  const t = useTranslations("Breadcrumb");
   const last = items.length - 1;
   const title = items[last]?.label || "";
 
@@ -15,7 +17,7 @@ export default function PlainBreadcrumb({ items }: { items: Crumb[] }) {
       <div className="container mx-auto flex items-center justify-between py-3">
         <h1 className="text-lg font-semibold text-black">{title}</h1>
 
-        <nav aria-label="Breadcrumb">
+        <nav aria-label={t("ariaLabel")}>
           <ol className="flex items-center space-x-2 text-sm text-gray-600">
             {items.map((it, idx) => {
               const isLast = idx === last;
@@ -38,7 +40,11 @@ export default function PlainBreadcrumb({ items }: { items: Crumb[] }) {
 
                   {idx < last && (
                     <span className="mx-2 text-[#0D0D0DA6]">
-                      <ChevronRight width={20} hanging={20} />
+                      <ChevronRight
+                        width={20}
+                        hanging={20}
+                        className="rtl-flip"
+                      />
                     </span>
                   )}
                 </li>

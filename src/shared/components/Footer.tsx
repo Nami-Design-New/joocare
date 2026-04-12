@@ -1,46 +1,45 @@
-"use client";
+﻿"use client";
 
+import { Link } from "@/i18n/navigation";
 import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import BackToTopButton from "./BackToTopButton";
-import { Link } from "@/i18n/navigation";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const { data: session, status } = useSession();
+  const tFooter = useTranslations("Footer");
+  const tCommon = useTranslations("Common");
   const authRole = status === "authenticated" ? session?.authRole : undefined;
   const isCandidate = authRole === "candidate";
   const isEmployer = authRole === "employer";
 
   const candidateLinks = isEmployer
-    ? [
-      { href: "/jobs", label: "Explore Jobs" },
-    ]
+    ? [{ href: "/jobs", label: tFooter("exploreJobs") }]
     : isCandidate
       ? [
-        { href: "/jobs", label: "Explore Jobs" },
-        { href: "/faq", label: "FAQ" },
-      ]
+          { href: "/jobs", label: tFooter("exploreJobs") },
+          { href: "/faq", label: tCommon("faq") },
+        ]
       : [
-        { href: "/jobs", label: "Explore Jobs" },
-        { href: "/auth/candidate/register", label: "Create Profile" },
-        { href: "/faq", label: "FAQ" },
-      ];
+          { href: "/jobs", label: tFooter("exploreJobs") },
+          { href: "/auth/candidate/register", label: tFooter("createProfile") },
+          { href: "/faq", label: tCommon("faq") },
+        ];
 
   const employerLinks = isCandidate
     ? []
     : [
-      { href: "/for-employers", label: "For Employers" },
-      { href: "/for-employers#how-it-works", label: "How It Works" },
-    ];
+        { href: "/for-employers", label: tFooter("forEmployers") },
+        { href: "/for-employers#how-it-works", label: tFooter("howItWorks") },
+      ];
 
   return (
     <footer className="bg-secondary px-3 py-12 text-white lg:px-25">
       <div className="relative container mx-auto max-w-7xl">
-        {/* Top Section: Links & Info */}
         <div className="relative grid grid-cols-1 gap-4 pb-12 md:grid-cols-2 lg:grid-cols-5 lg:gap-12">
-          {/* Column 1: Brand Info */}
           <div className="space-y-6">
             <div className="flex items-center gap-2">
               <Image
@@ -51,15 +50,12 @@ const Footer = () => {
               />
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-gray-300">
-              An AI-powered healthcare recruitment platform supporting
-              compliant, data-driven hiring across medical and life sciences
-              sectors.
+              {tFooter("description")}
             </p>
           </div>
 
-          {/* Column 2: Candidates */}
           <div className="bg-before">
-            <h4>For Candidates</h4>
+            <h4>{tFooter("forCandidates")}</h4>
             <ul className="text-md space-y-4 text-gray-300">
               {candidateLinks.map((item) => (
                 <li key={item.label}>
@@ -71,10 +67,9 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 3: Employers */}
           {employerLinks.length > 0 ? (
             <div className="bg-before">
-              <h4>For Employers</h4>
+              <h4>{tFooter("forEmployers")}</h4>
               <ul className="text-md space-y-4 text-gray-300">
                 {employerLinks.map((item) => (
                   <li key={item.label}>
@@ -85,59 +80,52 @@ const Footer = () => {
                 ))}
               </ul>
             </div>
-          ) : (
-            null
-          )}
+          ) : null}
 
-          {/* Column 4: Company*/}
           <div className="bg-before">
-            <h4>Company & Trust</h4>
+            <h4>{tFooter("companyTrust")}</h4>
             <ul className="text-md mb-8 space-y-4 text-gray-300">
               <li>
                 <Link href="/about" className="transition hover:text-white">
-                  About Joocare
+                  {tFooter("aboutJoocare")}
                 </Link>
               </li>
               <li>
                 <span className="cursor-not-allowed opacity-70">
-                  Data Privacy & Security
+                  {tFooter("dataPrivacy")}
                 </span>
               </li>
               <li>
                 <span className="cursor-not-allowed opacity-70">
-                  Terms & Conditions
+                  {tFooter("terms")}
                 </span>
               </li>
             </ul>
           </div>
 
           <div className="bg-before">
-            <h4>Get in Touch</h4>
+            <h4>{tFooter("getInTouch")}</h4>
             <ul className="text-md mb-8 space-y-4 text-gray-300">
               <li>
                 <Link href="/contact" className="transition hover:text-white">
-                  Contact us
+                  {tFooter("contactUs")}
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Section: Socials & Copyright */}
         <div className="relative grid grid-cols-1 gap-4 pb-12 lg:grid-cols-5 lg:gap-12">
-          {/* Social Icons */}
           <div className="order-last col-span-1 flex items-center justify-center gap-2 lg:order-first lg:gap-4">
-            {[Linkedin, Facebook, Instagram, Twitter, Ghost].map(
-              (Icon, idx) => (
-                <Link
-                  key={idx}
-                  href="#"
-                  className="flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-white transition hover:bg-white/20"
-                >
-                  <Icon size={14} color="var(--secondary)" />
-                </Link>
-              ),
-            )}
+            {[Linkedin, Facebook, Instagram, Twitter, Ghost].map((Icon, idx) => (
+              <Link
+                key={idx}
+                href="#"
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-white transition hover:bg-white/20"
+              >
+                <Icon size={14} color="var(--secondary)" />
+              </Link>
+            ))}
           </div>
           <div className="relative col-span-1 h-7 w-full lg:col-span-4">
             <Image
@@ -146,12 +134,11 @@ const Footer = () => {
               fill
               className="ml-0"
             />
-          </div>{" "}
+          </div>
         </div>
-      </div>{" "}
-      {/* Copyright */}
+      </div>
       <p className="relative border-t border-[#0D0D0D73] pt-4 text-center text-lg text-white">
-        All rights reserved - JooCare © {currentYear} <BackToTopButton />
+        {tFooter("allRightsReserved")} © {currentYear} <BackToTopButton />
       </p>
     </footer>
   );

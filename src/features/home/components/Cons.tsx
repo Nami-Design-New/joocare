@@ -14,7 +14,7 @@ export default function Cons({
 }) {
   return (
     <div className="">
-      <SectionTitle sectionTitle="The Legacy Model" />
+      <SectionTitle sectionTitle="The Legacy Model" translationKey="legacyModel" />
       <h3 className="text-secondary mt-2 text-xl font-semibold">{title}</h3>
       <p className="text-4 text-muted-foreground mt-6 mb-10">{description}</p>
       <ul className="flex flex-col items-start gap-8">

@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import { useJobShare } from "../../hooks/useJobShare";
 import ToggleSavedJobButton from "./ToggleSavedJobButton";
 
@@ -41,19 +42,20 @@ export default function CandidateJobCard({
   appliedAtLabel,
   onSavedChange,
 }: CandidateJobCardProps) {
+  const t = useTranslations("Job");
   const { data: session } = useSession();
-  const title = job.title || job.job_title?.title || "Healthcare Opportunity";
-  const company = job.company?.name || "Joocare Employer";
+  const title = job.title || job.job_title?.title || t("healthcareOpportunity");
+  const company = job.company?.name || t("joocareEmployer");
   const companyLogo = job.company?.image;
   const postedAtLabel = job.created_at;
   const location = getJobLocation(job);
-  const category = job?.category?.title || "Not specified";
-  const employmentType = job?.employment_type?.title || "Not specified";
+  const category = job?.category?.title || t("notSpecified");
+  const employmentType = job?.employment_type?.title || t("notSpecified");
   const salary = getJobSalary(job);
-  const experience = job.experience?.title || "Experience not specified";
-  const specialty = job.specialty?.title || "Healthcare";
+  const experience = job.experience?.title || t("experienceNotSpecified");
+  const specialty = job.specialty?.title || t("healthcare");
   const excerpt =
-    job.description || "Explore the job details to learn more about the role and employer.";
+    job.description || t("jobExcerptFallback");
   const shouldShowAppliedBadge = appliedBadge || job.is_applied;
   const appliedLabel = appliedAtLabel || postedAtLabel;
   const { shareJob } = useJobShare({ title, path: href });
@@ -125,15 +127,15 @@ export default function CandidateJobCard({
               className="border-border text-muted-foreground h-9 px-4 py-2 text-sm"
               onClick={() => void shareJob()}
             >
-              <Share /> Share
+              <Share /> {t("share")}
             </Button>
           </div>
           <Link
             className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white`}
             href={href}
           >
-            View Job
-            <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+            {t("viewJob")}
+            <ArrowRight size={18} strokeWidth={1.5} className="size-5 rtl-flip" />
           </Link>
         </div>
         {shouldShowAppliedBadge && (
@@ -142,7 +144,7 @@ export default function CandidateJobCard({
             size="pill"
             className="flex w-full justify-start gap-1"
           >
-            <Dot className="h-4 w-4" strokeWidth={12} /> <span>Applied</span>
+            <Dot className="h-4 w-4" strokeWidth={12} /> <span>{t("applied")}</span>
             <span className="grow text-end text-xs text-muted-foreground">{appliedLabel}</span>
           </Badge>
         )}

@@ -114,7 +114,7 @@ export default function ContactForm({
 
   return (
     <div className="h-full">
-      <SectionTitle sectionTitle="REQUEST FOR DEMO" />
+      <SectionTitle sectionTitle="REQUEST FOR DEMO" translationKey="requestForDemo" />
 
       <h2 className="text-secondary my-4 text-2xl font-bold">
         Send your message

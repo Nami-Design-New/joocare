@@ -23,6 +23,7 @@ import { cn } from "@/shared/lib/utils";
 import { useState } from "react";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 export default function UserDropDown({
   companyHeader,
@@ -32,6 +33,7 @@ export default function UserDropDown({
   const [open, setOpen] = useState(false);
   const { logout } = useLogout();
   const { data: session } = useSession();
+  const tCommon = useTranslations("Common");
   const toggleOpen = () => setOpen((prev) => !prev);
   const isEmployer = session?.authRole === "employer" || companyHeader;
   const profileHref = isEmployer
@@ -39,8 +41,8 @@ export default function UserDropDown({
     : "/candidate/profile";
   const displayName = session?.user?.name || "User";
   const subtitle = isEmployer
-    ? "Company account"
-    : "Candidate account";
+    ? tCommon("companyAccount")
+    : tCommon("candidateAccount");
   const imageSrc = session?.user?.image || "/profile-placeholder.svg";
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
@@ -101,7 +103,7 @@ export default function UserDropDown({
               href={profileHref}
               onClick={() => toggleOpen()}
             >
-              View Profile
+              {tCommon("viewProfile")}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -123,7 +125,7 @@ export default function UserDropDown({
               }
               onClick={() => toggleOpen()}
             >
-              Account settings
+              {tCommon("accountSettings")}
             </Link>
           </DropdownMenuItem>
 
@@ -135,7 +137,7 @@ export default function UserDropDown({
                   strokeWidth={2.5}
                 />
                 <Link href={"/company/dashboard"} onClick={() => toggleOpen()}>
-                  Dashboard
+                  {tCommon("dashboard")}
                 </Link>{" "}
               </DropdownMenuItem>
               <DropdownMenuItem className={itemClass}>
@@ -147,7 +149,7 @@ export default function UserDropDown({
                   href={"/company/job-management"}
                   onClick={() => toggleOpen()}
                 >
-                  Job Management
+                  {tCommon("jobManagement")}
                 </Link>
               </DropdownMenuItem>
             </>
@@ -158,7 +160,7 @@ export default function UserDropDown({
                 strokeWidth={2.5}
               />
               <Link href={"/jobs/saved"} onClick={() => toggleOpen()}>
-                Saved
+                {tCommon("saved")}
               </Link>
             </DropdownMenuItem>
           )}
@@ -177,7 +179,7 @@ export default function UserDropDown({
           >
             <LogOut className="text-destructive group-hover:text-destructive/80 h-5 w-5 transition-colors" />
             <p className="text-destructive group-hover:text-destructive/80">
-              Log out
+              {tCommon("logout")}
             </p>
           </DropdownMenuItem>
         </DropdownMenuGroup>

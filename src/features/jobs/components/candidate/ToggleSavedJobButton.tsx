@@ -2,6 +2,7 @@
 
 import { Bookmark } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/shared/components/ui/button";
 import LoginAlertModal from "@/shared/components/modals/LoginAlertModal";
@@ -22,6 +23,7 @@ export default function ToggleSavedJobButton({
   className = "",
   onSavedChange,
 }: ToggleSavedJobButtonProps) {
+  const t = useTranslations("Job");
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const { isSaved, toggleSaved, isPending } = useToggleSavedJob(
     jobId,
@@ -50,7 +52,7 @@ export default function ToggleSavedJobButton({
               : "bg-accent text-primary"
           } ${className}`}
           aria-pressed={isSaved}
-          aria-label={isSaved ? "Unsave job" : "Save job"}
+          aria-label={isSaved ? t("unsaveJob") : t("saveJob")}
         >
           <Bookmark size={24} fill={isSaved ? "currentColor" : "none"} />
         </Button>
@@ -78,7 +80,7 @@ export default function ToggleSavedJobButton({
         aria-pressed={isSaved}
       >
         <Bookmark fill={isSaved ? "currentColor" : "none"} />
-        {isSaved ? "Saved" : "Save"}
+        {isSaved ? t("saved") : t("save")}
       </Button>
     </>
   );

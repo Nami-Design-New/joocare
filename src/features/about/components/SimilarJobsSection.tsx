@@ -23,7 +23,7 @@ export default function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
           {/* Header */}
           <div className="mb-12 flex items-center justify-between">
             <div className="space-y-4">
-              <SectionTitle sectionTitle="Similar Jobs" />
+              <SectionTitle sectionTitle="Similar Jobs" translationKey="similarJobs" />
               <h2>Handpicked for your profile</h2>
             </div>
 
