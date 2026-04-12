@@ -6,6 +6,7 @@ import {
 import { JobListItem } from "@/features/jobs/types/jobs.types";
 import { JobsSearchFilters } from "@/features/jobs/types/index.types";
 import { CustomPagination } from "@/shared/components/CustomPagination";
+import EmptyDataState from "@/shared/components/EmptyDataState";
 import CandidateJobCard from "./CandidateJobCard";
 
 type JobsListProps = {
@@ -43,9 +44,10 @@ export default function JobsList({
             />
           ))
         ) : (
-          <div className="border-border text-muted-foreground col-span-full rounded-2xl border border-dashed p-8 text-center">
-            No jobs matched the current search and filters.
-          </div>
+          <EmptyDataState
+            title="No Data"
+            description="No jobs matched the current search and filters."
+          />
         )}
       </section>
       {currentPage > 1 || totalItems > pageSize ? (

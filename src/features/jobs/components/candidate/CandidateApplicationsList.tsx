@@ -3,6 +3,7 @@
 import { CandidateApplicationItem } from "@/features/jobs/types/jobs.types";
 import { buildCandidateApplicationsPagePath } from "@/features/jobs/utils";
 import { CustomPagination } from "@/shared/components/CustomPagination";
+import EmptyDataState from "@/shared/components/EmptyDataState";
 import CandidateJobCard from "./CandidateJobCard";
 
 type CandidateApplicationsListProps = {
@@ -37,9 +38,10 @@ export default function CandidateApplicationsList({
             />
           ))
         ) : (
-          <div className="border-border text-muted-foreground col-span-full rounded-2xl border border-dashed p-8 text-center">
-            No applications found.
-          </div>
+          <EmptyDataState
+            title="No Data"
+            description="You have not submitted any applications yet."
+          />
         )}
       </section>
 

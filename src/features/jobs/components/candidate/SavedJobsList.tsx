@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { JobListItem } from "@/features/jobs/types/jobs.types";
 import CandidateJobCard from "./CandidateJobCard";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import { buildSavedJobsPagePath } from "@/features/jobs/utils";
+import EmptyDataState from "@/shared/components/EmptyDataState";
 
 type SavedJobsListProps = {
   jobs: JobListItem[];
@@ -21,13 +22,9 @@ export default function SavedJobsList({
   pageSize,
   locale,
 }: SavedJobsListProps) {
-  const [visibleJobs, setVisibleJobs] = useState(jobs);
-  const [visibleTotal, setVisibleTotal] = useState(totalItems);
-
-  useEffect(() => {
-    setVisibleJobs(jobs);
-    setVisibleTotal(totalItems);
-  }, [jobs, totalItems]);
+  const [removedJobIds, setRemovedJobIds] = useState<number[]>([]);
+  const visibleJobs = jobs.filter((job) => !removedJobIds.includes(job.id));
+  const visibleTotal = Math.max(0, totalItems - removedJobIds.length);
 
   const buildPageHref = (page: number) => buildSavedJobsPagePath(locale, page);
 
@@ -41,21 +38,19 @@ export default function SavedJobsList({
               job={job}
               href={`/jobs/${job.id}`}
               onSavedChange={(nextSavedState) => {
-                setVisibleJobs((currentJobs) =>
-                  nextSavedState
-                    ? currentJobs
-                    : currentJobs.filter((currentJob) => currentJob.id !== job.id),
-                );
-                setVisibleTotal((currentTotal) =>
-                  nextSavedState ? currentTotal : Math.max(0, currentTotal - 1),
+                setRemovedJobIds((currentIds) =>
+                  nextSavedState || currentIds.includes(job.id)
+                    ? currentIds
+                    : [...currentIds, job.id],
                 );
               }}
             />
           ))
         ) : (
-          <div className="border-border text-muted-foreground col-span-full rounded-2xl border border-dashed p-8 text-center">
-            No saved jobs found.
-          </div>
+          <EmptyDataState
+            title="No Data"
+            description="You have not saved any jobs yet."
+          />
         )}
       </section>
       {currentPage > 1 || visibleTotal > pageSize ? (
