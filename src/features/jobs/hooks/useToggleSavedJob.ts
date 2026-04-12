@@ -4,7 +4,7 @@ import type { InfiniteData, QueryKey } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { CompanyJobsResponse } from "@/features/shared-company-profile/company-profile.type";
@@ -47,10 +47,6 @@ export function useToggleSavedJob(
   const locale = useLocale();
   const [isSaved, setIsSaved] = useState(initialIsSaved);
   const { onSavedChange, onAuthRequired } = options;
-
-  useEffect(() => {
-    setIsSaved(initialIsSaved);
-  }, [initialIsSaved, jobId]);
 
   const mutation = useMutation({
     mutationFn: async (nextSavedState: boolean) => {
@@ -107,8 +103,13 @@ export function useToggleSavedJob(
       return;
     }
 
-    if (!session?.accessToken || session.authRole !== "candidate") {
+    if (!session?.accessToken) {
       onAuthRequired?.();
+      return;
+    }
+
+    if (session.authRole !== "candidate") {
+      toast.error("Only candidate accounts can save jobs.");
       return;
     }
 

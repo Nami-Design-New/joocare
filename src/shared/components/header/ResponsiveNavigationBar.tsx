@@ -17,8 +17,9 @@ export default function ResponsiveNavigationBar({
   companyHeader: boolean;
 }) {
   const router = useRouter();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const isAuthed = status === "authenticated";
+  const homeHref = session?.authRole === "employer" ? "/for-employers" : "/";
 
   return createPortal(
     <section className="fixed inset-0 z-50 flex h-dvh flex-col gap-6 bg-white px-4 py-6 lg:hidden">
@@ -36,7 +37,7 @@ export default function ResponsiveNavigationBar({
           <li>
             <Link
               className="nav-link"
-              href="/"
+              href={homeHref}
               onClick={() => setToggleSideMenu(false)}
             >
               Home

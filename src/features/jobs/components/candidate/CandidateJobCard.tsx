@@ -22,6 +22,7 @@ import {
   Share,
 } from "lucide-react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useJobShare } from "../../hooks/useJobShare";
 import ToggleSavedJobButton from "./ToggleSavedJobButton";
 
@@ -40,6 +41,7 @@ export default function CandidateJobCard({
   appliedAtLabel,
   onSavedChange,
 }: CandidateJobCardProps) {
+  const { data: session } = useSession();
   const title = job.title || job.job_title?.title || "Healthcare Opportunity";
   const company = job.company?.name || "Joocare Employer";
   const companyLogo = job.company?.image;
@@ -55,6 +57,7 @@ export default function CandidateJobCard({
   const shouldShowAppliedBadge = appliedBadge || job.is_applied;
   const appliedLabel = appliedAtLabel || postedAtLabel;
   const { shareJob } = useJobShare({ title, path: href });
+  const isEmployer = session?.authRole === "employer";
 
   return (
     <Card>
@@ -109,11 +112,13 @@ export default function CandidateJobCard({
       <CardFooter className="flex flex-col gap-4  max-lg:px-2">
         <div className="flex w-full items-center justify-between gap-2 border-b-border border-t pt-4">
           <div className="flex gap-2">
-            <ToggleSavedJobButton
-              jobId={job.id}
-              initialIsSaved={job.is_saved}
-              onSavedChange={onSavedChange}
-            />
+            {!isEmployer ? (
+              <ToggleSavedJobButton
+                jobId={job.id}
+                initialIsSaved={job.is_saved}
+                onSavedChange={onSavedChange}
+              />
+            ) : null}
             <Button
               variant="outline"
               size="pill"

@@ -10,8 +10,8 @@ export default function HireSection({
   const steps = items.slice(0, 3);
 
   return (
-    <section className="bg-[#EEF8F0] py-12 sm:py-20">
-      <div className="mx-auto  px-4 sm:px-6">
+    <section id="how-it-works" className="bg-[#EEF8F0] py-12 sm:py-20">
+      <div className="mx-auto container  px-3 lg:px-25">
         <div className="mb-8 lg:w-[50%]">
           <h2 className="text-secondary text-4xl leading-tight font-bold sm:text-5xl">
             {title}

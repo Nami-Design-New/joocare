@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,7 +119,7 @@
   --sidebar-ring: #1c2628;
 
   --shadow-soft: #0000000d;
-  --primary-gradient: linear-gradient(270deg, #3eb33f 0%, #09760a 100.62%);
+  --primary-gradient: linear-gradient(270deg, #00694b 0%, #1c2628 100.62%);
 }
 
 /* ════════════════════════════════════════
@@ -154,7 +154,7 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.55 0.1 252);
-  --body-bg: "#F7FAF7";
+  --body-bg: '#F7FAF7';
   --bg-disabled: #a6a6a6;
 
   --destructive: oklch(0.65 0.22 27);
@@ -172,7 +172,7 @@
   --sidebar-accent-foreground: oklch(0.55 0.13 145);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.55 0.1 252);
-  --primary-gradient: linear-gradient(270deg, #3eb33f 0%, #09760a 100.62%);
+  --primary-gradient: linear-gradient(270deg, #00694b 0%, #1c2628 100.62%);
 }
 
 /* ════════════════════════════════════════
@@ -233,7 +233,7 @@
   .dashed-list {
     list-style: none;
     li::marker {
-      content: "-   ";
+      content: '-   ';
     }
   }
 }
@@ -244,13 +244,13 @@
 }
 
 .bg-before::before {
-  content: "";
+  content: '';
   position: absolute;
 
   min-width: 24px;
   height: 100%;
   inset-inline-start: 0;
-  background-image: url("../../public/assets/footer2.svg");
+  background-image: url('../../public/assets/footer2.svg');
   background-size: cover;
   background-position: center;
   opacity: 1;
@@ -258,11 +258,11 @@
 }
 
 .bg-container {
-  background-image: url("../../public/assets/container.svg");
+  background-image: url('../../public/assets/container.svg');
   background-color: var(--color-primary);
 }
 .bg-container-gray {
-  background-image: url("../../public/assets/why.svg");
+  background-image: url('../../public/assets/why.svg');
   background-color: var(--color-gray);
 }
 /* file pond */

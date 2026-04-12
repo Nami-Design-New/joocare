@@ -62,27 +62,27 @@ export default function UserProfileCard({
           <Settings className="text-muted-foreground group-hover:text-muted-foreground h-5 w-5" />
           <Link href={settingsHref}>Account settings</Link>
         </li>
-        {companyHeader ? (
+        {isEmployer ? (
           <>
             <li className={itemClass}>
               <Gauge
                 className="text-muted-foreground group-hover:text-primary h-5 w-5"
                 strokeWidth={2.5}
               />
-              <p>Dashboard</p>
+              <Link href="/company/dashboard">Dashboard</Link>
             </li>
             <li className={itemClass}>
               <UserRoundCogIcon
                 className="text-muted-foreground group-hover:text-primary h-5 w-5"
                 strokeWidth={2.5}
               />
-              <p>Job Management</p>
+              <Link href="/company/job-management">Job Management</Link>
             </li>
           </>
         ) : (
           <li className={itemClass}>
             <Bookmark className="text-muted-foreground group-hover:text-muted-foreground h-5 w-5" />
-            <p>Saved</p>
+            <Link href="/jobs/saved">Saved</Link>
           </li>
         )}
       </ul>

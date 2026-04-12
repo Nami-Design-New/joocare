@@ -19,9 +19,9 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
             <span className="max-md:text-[16px]">
               {job?.title === null ? job?.job_title?.title : job?.title}
             </span>
-            <span className="bg-accent text-primary flex items-center gap-1 rounded-[12px] p-2 text-sm font-semibold">
+            {/* <span className="bg-accent text-primary flex items-center gap-1 rounded-[12px] p-2 text-sm font-semibold">
               <Sparkles size={16} /> 90 %
-            </span>
+            </span> */}
           </h6>
           <div className="flex items-center gap-2 mt-2">
             <div className="text-muted-foreground text-lg font-normal">

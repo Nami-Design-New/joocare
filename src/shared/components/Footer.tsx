@@ -2,11 +2,38 @@
 
 import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import BackToTopButton from "./BackToTopButton";
 import { Link } from "@/i18n/navigation";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { data: session, status } = useSession();
+  const authRole = status === "authenticated" ? session?.authRole : undefined;
+  const isCandidate = authRole === "candidate";
+  const isEmployer = authRole === "employer";
+
+  const candidateLinks = isEmployer
+    ? [
+      { href: "/jobs", label: "Explore Jobs" },
+    ]
+    : isCandidate
+      ? [
+        { href: "/jobs", label: "Explore Jobs" },
+        { href: "/faq", label: "FAQ" },
+      ]
+      : [
+        { href: "/jobs", label: "Explore Jobs" },
+        { href: "/auth/candidate/register", label: "Create Profile" },
+        { href: "/faq", label: "FAQ" },
+      ];
+
+  const employerLinks = isCandidate
+    ? []
+    : [
+      { href: "/for-employers", label: "For Employers" },
+      { href: "/for-employers#how-it-works", label: "How It Works" },
+    ];
 
   return (
     <footer className="bg-secondary px-3 py-12 text-white lg:px-25">
@@ -34,56 +61,33 @@ const Footer = () => {
           <div className="bg-before">
             <h4>For Candidates</h4>
             <ul className="text-md space-y-4 text-gray-300">
-              <li>
-                <Link href="/jobs" className="transition hover:text-white">
-                  Explore Jobs
-                </Link>
-              </li>
-              <li>
-                <Link href="/profile" className="transition hover:text-white">
-                  Create Profile
-                </Link>
-              </li>
-              <li>
-                <Link href="/resources" className="transition hover:text-white">
-                  Career Resources
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="transition hover:text-white">
-                  FAQ
-                </Link>
-              </li>
+              {candidateLinks.map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className="transition hover:text-white">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Column 3: Employers */}
-          <div className="bg-before">
-            <h4>For Employers</h4>
-            <ul className="text-md space-y-4 text-gray-300">
-              <li>
-                <Link href="/for-employers" className="transition hover:text-white">
-                  For Employers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/how-it-works"
-                  className="transition hover:text-white"
-                >
-                  How It Works
-                </Link>
-              </li>
-              {/* <li>
-                <Link
-                  href="/ai-solutions"
-                  className="transition hover:text-white"
-                >
-                  AI Hiring Solutions
-                </Link>
-              </li> */}
-            </ul>
-          </div>
+          {employerLinks.length > 0 ? (
+            <div className="bg-before">
+              <h4>For Employers</h4>
+              <ul className="text-md space-y-4 text-gray-300">
+                {employerLinks.map((item) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className="transition hover:text-white">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            null
+          )}
 
           {/* Column 4: Company*/}
           <div className="bg-before">
@@ -95,14 +99,14 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="transition hover:text-white">
+                <span className="cursor-not-allowed opacity-70">
                   Data Privacy & Security
-                </Link>
+                </span>
               </li>
               <li>
-                <Link href="/terms" className="transition hover:text-white">
+                <span className="cursor-not-allowed opacity-70">
                   Terms & Conditions
-                </Link>
+                </span>
               </li>
             </ul>
           </div>
@@ -111,8 +115,8 @@ const Footer = () => {
             <h4>Get in Touch</h4>
             <ul className="text-md mb-8 space-y-4 text-gray-300">
               <li>
-                <Link href="/terms" className="transition hover:text-white">
-                  Contacat us
+                <Link href="/contact" className="transition hover:text-white">
+                  Contact us
                 </Link>
               </li>
             </ul>

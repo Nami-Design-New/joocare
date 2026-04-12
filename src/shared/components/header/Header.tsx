@@ -4,6 +4,7 @@ import { usePathname } from "@/i18n/navigation";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import HeaderActionsButtons from "./HeaderActionsButtons";
 import ResponsiveNavigationBar from "./ResponsiveNavigationBar";
@@ -11,8 +12,10 @@ import ResponsiveNavigationBar from "./ResponsiveNavigationBar";
 const Header = () => {
   const [toggleSideMenu, setToggleSideMenu] = useState(false);
   const path = usePathname();
+  const { data: session } = useSession();
   const companyHeader = path.includes("/company");
   const isActive = (pathname: string) => path === pathname;
+  const homeHref = session?.authRole === "employer" ? "/for-employers" : "/";
 
   const handleToggleMenu = () => {
     setToggleSideMenu((prev) => !prev);
@@ -31,7 +34,7 @@ const Header = () => {
               {<Menu />}
             </button>
             <Link
-              href="/"
+              href={homeHref}
               className="flex items-center justify-center gap-2"
               aria-label="Go to homepage"
             >
@@ -63,9 +66,9 @@ const Header = () => {
               <li>
                 <Link
                   className={`nav-link ${
-                    isActive("/") ? "text-primary border-primary" : ""
+                    isActive(homeHref) ? "text-primary border-primary" : ""
                   }`}
-                  href="/"
+                  href={homeHref}
                 >
                   Home
                 </Link>

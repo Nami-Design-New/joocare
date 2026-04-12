@@ -117,7 +117,7 @@ export default function UserDropDown({
             />
             <Link
               href={
-                companyHeader
+                isEmployer
                   ? "/company/account-settings/basic-info"
                   : "/candidate/settings/basic-info"
               }
@@ -127,7 +127,7 @@ export default function UserDropDown({
             </Link>
           </DropdownMenuItem>
 
-          {companyHeader ? (
+          {isEmployer ? (
             <>
               <DropdownMenuItem className={itemClass}>
                 <Gauge

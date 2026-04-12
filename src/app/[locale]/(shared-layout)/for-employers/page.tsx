@@ -36,13 +36,15 @@ export default async function ForEmployers({
             description={pageData.whyJoocare.description}
             items={pageData.whyJoocare.items}
           />
-          <HireSection
-            title={pageData.hireSteps.title}
-            description={pageData.hireSteps.description}
-            items={pageData.hireSteps.items}
-          />
-          <FAQSection title={pageData.faqs.title} items={pageData.faqs.items} />
         </section>
+      </section>
+      <HireSection
+        title={pageData.hireSteps.title}
+        description={pageData.hireSteps.description}
+        items={pageData.hireSteps.items}
+      />  <section className="px-3 lg:px-25">
+        <section className="container mx-auto">
+          <FAQSection title={pageData.faqs.title} items={pageData.faqs.items} />   </section>
       </section>
     </>
   );
