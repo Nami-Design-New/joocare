@@ -1,11 +1,19 @@
-import Banner from "@/features/forEmployers/Banner";
-import EmployersHero from "@/features/forEmployers/EmployersHero";
-import FAQ from "@/features/forEmployers/FAQ";
-import Hire from "@/features/forEmployers/Hire";
-import Why from "@/features/forEmployers/Why";
+import BannerSection from "@/features/forEmployers/components/BannerSection";
+import EmployersHeroSection from "@/features/forEmployers/components/EmployersHeroSection";
+import FAQSection from "@/features/forEmployers/components/FAQSection";
+import HireSection from "@/features/forEmployers/components/HireSection";
+import { getForEmployersPageData } from "@/features/forEmployers/services";
+import WhySection from "@/features/forEmployers/components/WhySection";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
 
-export default function ForEmployers() {
+export default async function ForEmployers({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const pageData = await getForEmployersPageData(locale);
+
   return (
     <>
       <PlainBreadcrumb
@@ -13,11 +21,27 @@ export default function ForEmployers() {
       />
       <section className="px-3 lg:px-25">
         <section className="container mx-auto">
-          <EmployersHero />
-          <Banner />
-          <Why />
-          <Hire />
-          <FAQ />
+          <EmployersHeroSection
+            title={pageData.hero.title}
+            description={pageData.hero.description}
+            images={pageData.hero.images}
+          />
+          <BannerSection
+            title={pageData.banner.title}
+            description={pageData.banner.description}
+            image={pageData.banner.image}
+          />
+          <WhySection
+            title={pageData.whyJoocare.title}
+            description={pageData.whyJoocare.description}
+            items={pageData.whyJoocare.items}
+          />
+          <HireSection
+            title={pageData.hireSteps.title}
+            description={pageData.hireSteps.description}
+            items={pageData.hireSteps.items}
+          />
+          <FAQSection title={pageData.faqs.title} items={pageData.faqs.items} />
         </section>
       </section>
     </>

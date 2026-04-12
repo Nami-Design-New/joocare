@@ -62,7 +62,7 @@ const Footer = () => {
             <h4>For Employers</h4>
             <ul className="text-md space-y-4 text-gray-300">
               <li>
-                <Link href="/employers" className="transition hover:text-white">
+                <Link href="/for-employers" className="transition hover:text-white">
                   For Employers
                 </Link>
               </li>
@@ -74,14 +74,14 @@ const Footer = () => {
                   How It Works
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/ai-solutions"
                   className="transition hover:text-white"
                 >
                   AI Hiring Solutions
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -106,12 +106,11 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          {/* Column5:  Contact */}
+
           <div className="bg-before">
             <h4>Get in Touch</h4>
             <ul className="text-md mb-8 space-y-4 text-gray-300">
               <li>
-                {" "}
                 <Link href="/terms" className="transition hover:text-white">
                   Contacat us
                 </Link>

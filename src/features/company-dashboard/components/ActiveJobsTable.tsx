@@ -6,17 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/shared/components/ui/table";
-import { activeJobType } from "../index.type";
 import ActiveJobRow from "./ActiveJobRow";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import useGetCompanyJobs from "../hooks/useGetCompanyJobs";
-
-type activeJobsProps = {
-  activeJobs: activeJobType[];
-  onView?: (activeJob: activeJobType) => void;
-};
 
 const tabelHeaderTitles = [
   "Job Title",
@@ -80,7 +74,6 @@ export default function ActiveJobsTable() {
           totalItems={total}
           pageSize={perPage}
           currentPage={page}
-          totalPages={lastPage}
           onPageChange={handlePageChange}
         />
       </div>
