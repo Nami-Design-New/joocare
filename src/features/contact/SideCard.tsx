@@ -4,6 +4,7 @@ import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import SectionTitle from "../home/components/SectionTitle";
 import Image from "next/image";
 import { Button } from "@/shared/components/ui/button";
+import type { ContactRole } from "./types";
 
 type SocialItem = {
   icon: React.ComponentType<{ size?: number }>;
@@ -11,7 +12,9 @@ type SocialItem = {
 };
 
 type SideCardProps = {
-  isLoggedIn?: boolean;
+  role?: ContactRole;
+  canSwitchRole?: boolean;
+  onSwitchRole?: () => void;
   title?: string;
   subtitle?: string;
   imageSrc?: string;
@@ -29,7 +32,9 @@ const defaultSocialItems: SocialItem[] = [
 ];
 
 export default function SideCard({
-  isLoggedIn = true,
+  role = "candidate",
+  canSwitchRole = false,
+  onSwitchRole,
   title = "Contact Us",
   subtitle = "Get in Touch with us",
   imageSrc,
@@ -40,12 +45,12 @@ export default function SideCard({
 }: SideCardProps) {
   const resolvedImageSrc =
     imageSrc ??
-    (isLoggedIn
+    (role === "employer"
       ? "/assets/contact/employer.svg"
       : "/assets/contact/candidate.svg");
 
   const resolvedButtonText =
-    buttonText ?? (isLoggedIn ? "For Candidates" : "For Employer");
+    buttonText ?? (role === "employer" ? "For Candidate" : "For Employer");
 
   return (
     <div className="bg-muted flex h-full flex-col rounded-3xl p-5 text-left lg:p-6">
@@ -59,9 +64,11 @@ export default function SideCard({
         <div className="relative h-48 w-full xl:h-95">
           <Image src={resolvedImageSrc} alt={imageAlt} fill />
         </div>
-        <Button size="pill" className="w-full">
-          {resolvedButtonText}
-        </Button>
+        {canSwitchRole ? (
+          <Button size="pill" className="w-full" onClick={onSwitchRole}>
+            {resolvedButtonText}
+          </Button>
+        ) : null}
       </section>
 
       {showSocial && (

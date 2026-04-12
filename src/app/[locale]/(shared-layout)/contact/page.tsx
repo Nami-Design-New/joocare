@@ -1,7 +1,19 @@
 import ContactLayout from "@/features/contact/ContactLayout";
+import { getNextAuthToken } from "@/shared/util/auth.util";
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const authSession = await getNextAuthToken();
   const isLoggedIn = true; // غيرها حسب auth
 
-  return <ContactLayout isLoggedIn={isLoggedIn} />;
+  void isLoggedIn;
+
+  return (
+    <ContactLayout
+      authRole={authSession?.authRole}
+      initialValues={{
+        name: authSession?.user?.name ?? "",
+        email: authSession?.user?.email ?? "",
+      }}
+    />
+  );
 }
