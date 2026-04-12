@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import ContactForm from "@/features/contact/ContactForm";
-import SideCard from "@/features/contact/SideCard";
+import ContactSection from "@/features/contact/ContactSection";
 import FaqAccordionSection from "@/features/faq/components/FaqAccordionSection";
 import FaqPagination from "@/features/faq/components/FaqPagination";
 import { getFaqsPageData } from "@/features/faq/services";
@@ -11,6 +10,7 @@ import {
   normalizeFaqPageParam,
 } from "@/features/faq/utils";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
+import { getNextAuthToken } from "@/shared/util/auth.util";
 
 type PageProps = {
   params: Promise<{ locale: string }>;
@@ -53,7 +53,7 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
   const currentPage = normalizeFaqPageParam(resolvedSearchParams.page);
   const faqsData = await getFaqsPageData(locale, currentPage);
   const copy = getFaqPageCopy(locale, faqsData.currentPage);
-  const isLoggedIn = false;
+  const authSession = await getNextAuthToken();
   const canonicalPath = buildFaqPagePath(locale, faqsData.currentPage);
   const siteOrigin = getSiteOrigin();
 
@@ -112,17 +112,16 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
           totalItems={faqsData.totalItems}
         />
 
-        <div className="bg-body-bg flex flex-col gap-12 py-20 container mx-auto px-3  lg:px-20">
+        <div className="bg-body-bg container mx-auto flex flex-col gap-12 px-3 py-20 lg:px-20">
           <h2 className="text-center text-5xl font-bold">{copy.tryTitle}</h2>
-          <div className="bg-card  shadow-soft  grid grid-cols-12 gap-8 rounded-3xl border p-6 md:p-7  ">
-            <div className="col-span-12 md:col-span-5">
-              <SideCard isLoggedIn={isLoggedIn} />
-            </div>
-
-            <div className="col-span-12 md:col-span-7">
-              <ContactForm isLoggedIn={isLoggedIn} />
-            </div>
-          </div>
+          <ContactSection
+            authRole={authSession?.authRole}
+            initialValues={{
+              name: authSession?.user?.name ?? "",
+              email: authSession?.user?.email ?? "",
+            }}
+            containerClassName="bg-card shadow-soft grid grid-cols-12 gap-8 rounded-3xl border p-6 md:p-7"
+          />
         </div>
       </section>
     </>
