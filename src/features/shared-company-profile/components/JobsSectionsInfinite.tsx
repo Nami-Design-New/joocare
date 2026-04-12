@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 import CandidateJobCard from "@/features/jobs/components/candidate/CandidateJobCard";
 import JobCardSkeleton from "./JobCardSkeleton";
+import JobsSectionErrorState from "./JobsSectionErrorState";
 import { useInfiniteCompanyJobs } from "../hooks/useInfiniteCompanyJobs";
 
 type JobsSectionsInfiniteProps = {
@@ -18,8 +19,10 @@ export default function JobsSectionsInfinite({
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const {
     data,
+    error,
     hasNextPage,
     fetchNextPage,
+    isFetchNextPageError,
     isFetchingNextPage,
   } = useInfiniteCompanyJobs({ slug, locale });
 
@@ -50,6 +53,26 @@ export default function JobsSectionsInfinite({
 
   if (additionalJobs.length === 0 && !hasNextPage && !isFetchingNextPage) {
     return null;
+  }
+
+  if (isFetchNextPageError) {
+    return (
+      <>
+        {additionalJobs.map((job) => (
+          <CandidateJobCard
+            key={job.id}
+            job={job}
+            href={`/jobs/${job.id}`}
+          />
+        ))}
+        <JobsSectionErrorState
+          error={error}
+          onRetry={() => {
+            void fetchNextPage();
+          }}
+        />
+      </>
+    );
   }
 
   return (

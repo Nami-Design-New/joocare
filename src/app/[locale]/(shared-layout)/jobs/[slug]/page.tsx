@@ -8,6 +8,8 @@ import JobOverviewCard from "@/features/jobs/components/JobOverviewCard";
 import JobShareCard from "@/features/jobs/components/JobShareCard";
 import { getJobDetails } from "@/features/jobs/services/job-details-service";
 import Breadcrumb from "@/shared/components/Breadcrumb";
+import HttpStatusState from "@/shared/components/HttpStatusState";
+import { getHttpStatusCode } from "@/shared/lib/http-error";
 
 export default async function page({
   params
@@ -16,10 +18,28 @@ export default async function page({
 }) {
 
   const { slug } = await params
+  let jobDetails;
 
-  const jobDetails = await getJobDetails(slug)
+  try {
+    jobDetails = await getJobDetails(slug)
+  } catch (error) {
+    const statusCode = getHttpStatusCode(error);
 
+    if (statusCode && [401, 403, 404, 422, 429, 503].includes(statusCode)) {
+      return (
+        <HttpStatusState
+          statusCode={statusCode}
+          error={error}
+          primaryHref="/jobs"
+          primaryLabel="Browse jobs"
+          secondaryHref="/"
+          secondaryLabel="Back to home"
+        />
+      );
+    }
 
+    throw error;
+  }
 
   return (
     <section className="bg-body-bg">

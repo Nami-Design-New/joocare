@@ -1,4 +1,5 @@
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
+import { createHttpStatusError } from "@/shared/lib/http-error";
 import { getLocale } from "next-intl/server";
 import { CompanyJobsResponse, CompanyProfileApiResponse } from "../company-profile.type";
 import { buildCompanyJobsSearchParams, FetchCompanyJobsPageOptions } from "../utils/company-jobs-utils";
@@ -15,7 +16,7 @@ export async function getCompanyProfile(slug: string): Promise<CompanyProfileApi
     });
 
     if (!response.ok) {
-        throw new Error("Can not fetch Company profile");
+        throw createHttpStatusError(response.status, "Can not fetch Company profile");
     }
     const payload = (await response.json()) as CompanyProfileApiResponse;
     const companyProfile = payload.data;
@@ -45,7 +46,10 @@ export async function fetchCompanyJobsPageServer({
     );
 
     if (!response.ok) {
-        throw new Error("Can not fetch jobs for selected Company profile");
+        throw createHttpStatusError(
+            response.status,
+            "Can not fetch jobs for selected Company profile",
+        );
     }
 
     const payload = (await response.json()) as CompanyJobsResponse;
@@ -72,14 +76,13 @@ export async function fetchCompanyJobsPageClient({
     });
 
     if (!response.ok) {
-        throw new Error("Can not fetch jobs for selected Company profile");
+        throw createHttpStatusError(
+            response.status,
+            "Can not fetch jobs for selected Company profile",
+        );
     }
 
     const payload = (await response.json()) as CompanyJobsResponse;
-
-    if (payload.code !== 200) {
-        throw new Error(payload.message || "Can not fetch jobs for selected Company profile");
-    }
 
     return payload;
 }

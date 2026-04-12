@@ -50,8 +50,8 @@ export default function CandidateJobCard({
   const category = job?.category?.title || "Not specified";
   const employmentType = job?.employment_type?.title || "Not specified";
   const salary = getJobSalary(job);
-  const experience = job.experience?.title || "Experience not specified";
-  const specialty = job.specialty?.title || "Healthcare";
+  const experience = job?.experience?.title || "Experience not specified";
+  const specialty = job?.specialty?.title || "Healthcare";
   const excerpt =
     job.description || "Explore the job details to learn more about the role and employer.";
   const shouldShowAppliedBadge = appliedBadge || job.is_applied;

@@ -4,6 +4,7 @@ import { authOptions } from "@/auth";
 
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
+import { createHttpStatusError } from "@/shared/lib/http-error";
 import { JobDetailsResponse } from "../types/jobs.types";
 
 
@@ -28,7 +29,10 @@ export async function getJobDetails(slug: number | string): Promise<{
     );
 
     if (!result.ok || !result.data) {
-        throw new Error(result.message || "Failed to fetch job details");
+        throw createHttpStatusError(
+            result.statusCode,
+            result.message || "Failed to fetch job details",
+        );
     }
 
     const jobDetails = result.data.data;

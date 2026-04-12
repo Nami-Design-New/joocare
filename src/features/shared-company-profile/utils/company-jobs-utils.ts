@@ -2,7 +2,7 @@ import { infiniteQueryOptions } from "@tanstack/react-query";
 
 import { CompanyJobsResponse } from "../company-profile.type";
 
-export const COMPANY_SHARED_PROFILE_JOBS_PAGE_SIZE = 3;
+export const COMPANY_SHARED_PROFILE_JOBS_PAGE_SIZE = 10;
 
 export type FetchCompanyJobsPageOptions = {
   slug: string;

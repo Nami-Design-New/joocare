@@ -25,10 +25,6 @@ export default function useGetCitiesByCountryId(countryId: number, search = "") 
 
             const data = await res.json();
 
-            if (data.code !== 200) {
-                throw new Error(data.message || "Something went wrong");
-            }
-
             return data;
         },
         enabled: !!countryId,
