@@ -26,13 +26,37 @@ import {
   Dot,
   Edit,
   EyeOff,
-  LocationEdit,
-  Trash2,
+  MapPin,
+  Trash2
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { JobListItem } from "../types/jobs.types";
+import { getJobLocation, getJobSalary } from "../utils";
 
-export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
+type JobCardProps = {
+  job: JobListItem & {
+    status: {
+      status: string;
+      created_at: string;
+    };
+  };
+  href?: string;
+  appliedBadge?: boolean;
+  appliedAtLabel?: string;
+  onSavedChange?: (nextSavedState: boolean) => void;
+  resumeMatch?: boolean
+};
+
+
+export default function JobCard({ resumeMatch,
+  job,
+  href = "",
+  appliedBadge,
+  appliedAtLabel,
+  onSavedChange
+
+}: JobCardProps) {
   const [closeJob, setCloseJob] = useState(false);
   const [pauseJob, setPauseJob] = useState(false);
   const [deleteJob, setDeleteJob] = useState(false);
@@ -45,6 +69,20 @@ export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
   const handleDeleteJob = () => {
     setDeleteJob(false);
   };
+
+
+  const title = job?.job_title?.title || "Healthcare Opportunity3";
+  const company = job?.company?.name || "Joocare Employer";
+  const companyLogo = job?.company?.image;
+  const postedAtLabel = job?.created_at;
+  const location = getJobLocation(job);
+  const category = job?.category?.title || "Not specified";
+  const employmentType = job?.employment_type?.title || "Not specified";
+  const salary = getJobSalary(job);
+  const experience = job?.experience?.title || "Experience not specified";
+  const specialty = job?.specialty?.title || "Healthcare";
+  const excerpt = job?.description || "Explore the job details to learn more about the role and employer.";
+
   return (
     <>
       <Card className="max-lg:py-2">
@@ -52,16 +90,16 @@ export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
           <Image
             width={52}
             height={46}
-            src="/assets/comp-logo.svg"
-            alt="company logo"
+            src={companyLogo || "/assets/comp-logo.svg"}
+            alt={`${company} logo`}
           />
           <div className="flex grow flex-col gap-1">
             <h6 className="text-secondary text-lg font-semibold">
-              Medical Approval
+              {title}
             </h6>
-            <p className="text-foreground text-md font-normal">Health care</p>
-            <time className="text-muted-foreground font normal text-xs">
-              21 December 2026 , 4:00AM
+            <p className="text-foreground text-md font-normal">{company}</p>
+            <time className="text-muted-foreground text-xs font-normal">
+              {postedAtLabel}
             </time>
           </div>
           {/* Dropdown menu for job actions  or resume match*/}
@@ -100,35 +138,33 @@ export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
           )}
         </CardHeader>
         <CardContent className="max-lg:px-2">
-          <div className="border-b-border flex flex-col gap-4 border-b pb-4">
+          <div className=" flex flex-col gap-4  ">
             <ul className="items-cente flex gap-2">
               <li className="text-secondary flex items-center gap-1 text-sm font-normal">
-                <LocationEdit size={14} color="var(--muted-foreground)" />
-                cairo,Egypt
+                <MapPin size={14} color="var(--muted-foreground)" />
+                {location}
               </li>
               <li className="text-secondary flex items-center gap-1 text-sm font-normal">
                 <Briefcase size={14} color="var(--muted-foreground)" />
-                Pharmce{" "}
+                {category}
               </li>
               <li className="text-secondary flex items-center gap-1 text-sm font-normal">
                 <DollarSign size={14} color="var(--muted-foreground)" />
-                4000$ : 10000${" "}
+                {salary}
               </li>
             </ul>
             <ul className="items-cente flex gap-2">
               <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
-                +3 Exp
+                {experience}
               </li>
               <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
-                Full time
+                {employmentType}
               </li>
               <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
-                Pharmaceutical
+                {specialty}
               </li>
             </ul>
-            <div className="text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit...
-            </div>{" "}
+            <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p>
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4 max-lg:px-2">
@@ -138,7 +174,7 @@ export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
                 variant: "secondary",
                 size: "pill",
               })} `}
-              href="/company/job/candidates"
+              href={`/company/job/candidates/${job.id}`}
             >
               View Candidates 280
             </Link>
@@ -149,7 +185,7 @@ export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
                   size: "pill",
                 },
               )}`}
-              href="/company/job/medical"
+              href={`/company/job/medical/${job.id}`}
             >
               View Details
               <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
@@ -160,8 +196,13 @@ export default function JobCard({ resumeMatch }: { resumeMatch?: boolean }) {
             size="pill"
             className="flex w-full justify-start gap-1"
           >
-            <Dot className="h-4 w-4" strokeWidth={12} /> <span>Open</span>
-            <span className="grow text-end">21 December 2026 , 4:00AM</span>
+            <Dot className="h-4 w-4" strokeWidth={12} /> <span>
+              {job.status.status}
+            </span>
+            <span className="grow text-end">
+              {
+                job.status.created_at}
+            </span>
           </Badge>
         </CardFooter>
       </Card>

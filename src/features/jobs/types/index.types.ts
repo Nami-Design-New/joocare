@@ -5,7 +5,7 @@ export type Applicant = {
   email: string;
   phone: string;
   date: string;
-  cvUrl: string;
+  cvUrl: string | null;
 };
 
 // Candidate jobs

@@ -13,7 +13,7 @@ interface PdfViewerProps {
 
 export default function PdfViewer({ url }: PdfViewerProps) {
   const [numPages, setNumPages] = useState<number>(0);
-
+  console.log(url);
   return (
     <div className="no-scrollbar mt-10 flex h-125 flex-col items-center overflow-scroll">
       <Document

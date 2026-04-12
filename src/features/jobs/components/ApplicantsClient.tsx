@@ -19,12 +19,25 @@ export default function ApplicantsClient({ applicants }: Props) {
     setSelectedApplicant(applicant);
     setOpen(true);
   };
+  console.log("application", applicants);
 
   return (
     <>
-      <ApplicantsTable applicants={applicants} onView={handleView} />
+      <ApplicantsTable
+        applicants={applicants}
+        onView={handleView}
+        onDownload={(applicant) => {
+          if (!applicant.cvUrl) return;
+          window.open(applicant.cvUrl, "_blank", "noopener,noreferrer");
+        }}
+      />
 
-      <CVModal open={open} onOpenChange={setOpen} title={"View Cv"} />
+      <CVModal
+        open={open}
+        onOpenChange={setOpen}
+        title={"View Cv"}
+        pdfUrl={selectedApplicant?.cvUrl}
+      />
     </>
   );
 }

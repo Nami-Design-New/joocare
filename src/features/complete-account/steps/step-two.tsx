@@ -20,6 +20,7 @@ export default function StepTwo() {
   const [countrySearch, setCountrySearch] = useState("");
   const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
   const [employerTypesSearch, setEmployerTypesSearch] = useState("");
+  // const [showExistingCv, setShowExistingCv] = useState(Boolean(profile.cv));
 
   const {
     countries,
@@ -338,6 +339,13 @@ export default function StepTwo() {
                 });
               }}
               error={errors.medicalLicenseImage?.message?.toString()}
+            // existingFileUrl={showExistingCv ? profile.cv : null} 
+            // existingFileLabel={currentCvLabel}
+            // onExistingFileRemove={() => {
+            //   setShowExistingCv(false);
+            //   setUploadedCvPath(null);
+            //   field.onChange([]);
+            // }}
             />
           )}
         />
