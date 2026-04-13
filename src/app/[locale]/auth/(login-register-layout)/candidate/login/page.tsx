@@ -10,7 +10,7 @@ const LoginCandidatePage = () => {
     <main className="h-[calc(100vh-75px)] flex items-center justify-center gap-4 ">
       <section
         aria-labelledby="employer-login-page"
-        className="w-3/4 mx-auto p-4"
+        className="w-full md:w-3/4 mx-auto p-4"
       >
         {/* header text */}
         <h1>Welcome Back</h1>

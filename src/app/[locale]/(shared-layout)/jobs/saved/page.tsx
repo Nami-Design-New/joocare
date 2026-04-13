@@ -28,8 +28,8 @@ export default async function page({
       <PlainBreadcrumb
         items={[{ label: "Home", href: "/" }, { label: "Saved" }]}
       />
-      <section className="px-3 lg:px-25">
-        <div className="container mx-auto">
+      <section className="layout-shell">
+        <div className="layout-content">
           <SavedJobsList
             jobs={savedJobs.data}
             currentPage={savedJobs.current_page}

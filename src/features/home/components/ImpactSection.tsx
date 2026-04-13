@@ -16,8 +16,9 @@ export const ImpactSection = ({
 
   return (
     <section className="bg-background py-10 md:py-20">
-      <div className="container mx-auto px-3 lg:px-25">
-        <div className="grid gap-12 lg:grid-cols-2">
+      <div className="layout-shell">
+
+        <div className="layout-content grid gap-12 lg:grid-cols-2">
           <div className="flex flex-col justify-center">
             <SectionTitle sectionTitle="Proven Hiring Impact" />
             <h2 className="text-foreground mt-4 mb-8">{title}</h2>

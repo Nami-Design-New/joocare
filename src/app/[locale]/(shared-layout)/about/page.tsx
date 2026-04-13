@@ -19,8 +19,8 @@ export default async function AboutPage({
         items={[{ label: "Home", href: "/" }, { label: "About" }]}
       />
       <section className="pt-6 sm:pt-14 lg:pt-18">
-        <section className="px-3 lg:px-25">
-          <section className="container mx-auto">
+        <section className="layout-shell">
+          <section className="layout-content">
             <AboutHeroSection
               title={aboutData.aboutSection.title}
               description={aboutData.aboutSection.description}

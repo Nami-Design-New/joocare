@@ -250,8 +250,8 @@ export default async function Page({ params, searchParams }: PageProps) {
       />
 
 
-      <section className="px-3 lg:px-25">
-        <section className="container mx-auto">
+      <section className="layout-shell">
+        <section className="layout-content">
           <div className="mt-4 flex items-center justify-between lg:mt-6 lg:hidden">
             <MobileFilterDrawer
               actionPath={actionPath}
