@@ -1,9 +1,9 @@
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export default function useGetSpecialties(search = "") {
+export default function useGetSpecialties(search = "", categoryId?: number) {
     const query = useInfiniteQuery({
-        queryKey: ["specialties", search],
+        queryKey: ["specialties", search, categoryId],
         initialPageParam: 1,
         queryFn: async ({ pageParam }) => {
             const params = new URLSearchParams({
@@ -16,6 +16,10 @@ export default function useGetSpecialties(search = "") {
                 params.set("search", search.trim());
             }
 
+            if (categoryId) {
+                params.set("category_id", String(categoryId));
+            }
+
             const res = await fetch(`${getBaseApiUrl()}/specialties?${params.toString()}`);
 
             if (!res.ok) {
@@ -26,6 +30,7 @@ export default function useGetSpecialties(search = "") {
 
             return data;
         },
+        enabled: !categoryId || categoryId > 0,
         getNextPageParam: (lastPage) => {
             if (!lastPage?.next_page_url) return undefined;
 

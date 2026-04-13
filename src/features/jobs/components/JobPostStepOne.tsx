@@ -27,6 +27,12 @@ import useGetSalaryTypes from "@/shared/hooks/useGetSalaryTypes";
 import useGetCurrencies from "@/shared/hooks/useGetCurrencies";
 import { useState } from "react";
 
+type LookupOptionItem = {
+  id?: number | string;
+  title?: string;
+  name?: string;
+};
+
 // ─── tiny helper: surface zod error message under a field ───────────────────
 function FieldError({ name }: { name: string }) {
   const {
@@ -51,17 +57,16 @@ export default function JobPostStepOne() {
   const { data: session } = useSession();
   const token = session?.accessToken as string
 
-  // company profile data
-  const { data: companyProfileData, isPending: isCompanyProfilePending } = useGetCompanyProfile({ token });
-
   // search states
   const [specialtySearch, setSpecialtySearch] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
+  const [citySearch, setCitySearch] = useState("");
   const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
   const [employerTypesSearch, setEmployerTypesSearch] = useState("");
   const [licensesSearch, setLicensesSearch] = useState("");
   const [categorySearch, setCategorySearch] = useState("");
   const [roleCategorySearch, setRoleCategorySearch] = useState("");
+  const [seniorityLevelsSearch, setSeniorityLevelsSearch] = useState("");
   const [experienceSearch, setExperienceSearch] = useState("");
   const [mandatoryCertificationsSearch, setMandatoryCertificationsSearch] = useState("");
   const [educationLevelsSearch, setEducationLevelsSearch] = useState("");
@@ -77,18 +82,16 @@ export default function JobPostStepOne() {
     fetchNextPage: fetchMoreCountries,
     isFetchingNextPage: isFetchingMoreCountries,
   } = useGetCountries(countrySearch);
-
   const [selectedCountryId, setSelectedCountryId] = useState<number | null>(null);
-
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const {
     cities,
     isLoading: citiesLoading,
+    error: citiesError,
     hasNextPage: citiesHasNextPage,
     fetchNextPage: citiesFetchNextPage,
     isFetchingNextPage: citiesIsFetchingNextPage,
-  } = useGetCitiesByCountryId(selectedCountryId ?? 0);
-
-  //organization sizes
+  } = useGetCitiesByCountryId(selectedCountryId ?? 0, citySearch);
   const {
     organizationSizes,
     isLoading: isOrganizationSizesLoading,
@@ -97,8 +100,6 @@ export default function JobPostStepOne() {
     fetchNextPage: fetchMoreOrganizationSizes,
     isFetchingNextPage: isFetchingMoreOrganizationSizes,
   } = useGetOrganizationSizes(organizationSizesSearch);
-
-  ///employer-types
   const {
     employerTypes,
     isLoading: isEmployerTypesLoading,
@@ -107,8 +108,6 @@ export default function JobPostStepOne() {
     fetchNextPage: fetchMoreEmployerTypes,
     isFetchingNextPage: isFetchingMoreEmployerTypes,
   } = useGetEmployerTypes(employerTypesSearch);
-
-  //specialties
   const {
     specialties,
     isLoading: isSpecialtiesLoading,
@@ -116,21 +115,19 @@ export default function JobPostStepOne() {
     hasNextPage: hasMoreSpecialties,
     fetchNextPage: fetchMoreSpecialties,
     isFetchingNextPage: isFetchingMoreSpecialties,
-  } = useGetSpecialties(specialtySearch);
-
-  //licenses
-  const {
-    licenses,
-    isLoading: isLicensesLoading,
-    error: licensesError,
-    hasNextPage: hasMoreLicenses,
-    fetchNextPage: fetchMoreLicenses,
-    isFetchingNextPage: isFetchingMoreLicenses,
-  } = useGetLicenses(licensesSearch);
-
+  } = useGetSpecialties(specialtySearch, selectedCategoryId ?? undefined);
+  // const {
+  //   licenses,
+  //   isLoading: isLicensesLoading,
+  //   error: licensesError,
+  //   hasNextPage: hasMoreLicenses,
+  //   fetchNextPage: fetchMoreLicenses,
+  //   isFetchingNextPage: isFetchingMoreLicenses,
+  // } = useGetLicenses(licensesSearch);
   const {
     categories,
     isLoading: categoriesLoading,
+    error: categoriesError,
     hasNextPage: categoriesHasNextPage,
     fetchNextPage: fetchCategoriesNextPage,
     isFetchingNextPage: categoriesFetchingNextPage,
@@ -138,6 +135,7 @@ export default function JobPostStepOne() {
   const {
     roleCategories,
     isLoading: roleCategoriesLoading,
+    error: roleCategoriesError,
     hasNextPage: roleCategoriesHasNextPage,
     fetchNextPage: fetchRoleCategoriesNextPage,
     isFetchingNextPage: roleCategoriesFetchingNextPage,
@@ -145,10 +143,11 @@ export default function JobPostStepOne() {
   const {
     seniorityLevels,
     isLoading: seniorityLevelsLoading,
+    error: seniorityLevelsError,
     hasNextPage: seniorityLevelsHasNextPage,
     fetchNextPage: fetchseniorityLevelsNextPage,
     isFetchingNextPage: seniorityLevelsFetchingNextPage,
-  } = useGetSeniorityLevels(roleCategorySearch);
+  } = useGetSeniorityLevels(seniorityLevelsSearch);
   const {
     experiences,
     isLoading: isExperiencesLoading,
@@ -203,12 +202,20 @@ export default function JobPostStepOne() {
   const {
     control,
     register,
+    setValue,
     watch,
     formState: { errors },
   } = useFormContext<JobFormData>();
   console.log(errors);
 
   const addSalary = watch("addSalary");
+  const selectedJobTitle = watch("title");
+  const isOtherJobTitle = selectedJobTitle === "__other__";
+  const toSelectOptions = (items: LookupOptionItem[]) =>
+    items.map((item) => ({
+      label: item.title ?? item.name ?? "",
+      value: String(item.id ?? ""),
+    }));
 
   return (
     <div className="space-y-4">
@@ -224,15 +231,35 @@ export default function JobPostStepOne() {
                 id="title"
                 label="Job Title"
                 placeholder="ex: Cardiac surgeon"
-                error={errors.title?.message}
+                error={
+                  errors.title?.message ??
+                  (employerTypesError instanceof Error
+                    ? employerTypesError.message
+                    : undefined)
+                }
+                onChange={(value) => {
+                  field.onChange(value);
+                  if (value !== "__other__") {
+                    setValue("otherJobTitle", "");
+                  }
+                }}
                 options={[
-                  { label: "Cardiac Surgeon", value: "cardiac-surgeon" },
-                  { label: "Nurse", value: "nurse" },
-                  { label: "Radiologist", value: "radiologist" },
+                  ...employerTypes.map((type) => ({
+                    label: type.title,
+                    value: String(type.id),
+                  })),
+                  { label: "Other", value: "__other__" },
                 ]}
+                disabled={isEmployerTypesLoading}
+                onReachEnd={() => fetchMoreEmployerTypes()}
+                hasNextPage={Boolean(hasMoreEmployerTypes)}
+                isFetchingNextPage={isFetchingMoreEmployerTypes}
+                onSearchChange={setEmployerTypesSearch}
               />
             )}
           />
+
+
         </div>
         <div>
           <Controller
@@ -243,18 +270,46 @@ export default function JobPostStepOne() {
                 {...field}
                 id="license"
                 label="Professional License"
-                placeholder="ex: Without Medical license"
-                error={errors.license?.message}
+                placeholder="ex: DHA License"
+                error={
+                  errors.license?.message
+                  // ?? (licensesError instanceof Error
+                  //   ? licensesError.message
+                  //   : undefined)
+                }
                 options={[
-                  { label: "With Medical License", value: "with" },
-                  { label: "Without Medical License", value: "without" },
-                ]}
+                  {
+                    title: "with medical license",
+                    value: "with_medical_license"
+                  },
+                  {
+                    title: "without medical license",
+                    value: "without_medical_license"
+                  }
+                ].map((item) => ({
+                  label: item.title,
+                  value: item.value,
+                }))}
+                // disabled={isLicensesLoading}
+                // onReachEnd={() => fetchMoreLicenses()}
+                // hasNextPage={Boolean(hasMoreLicenses)}
+                // isFetchingNextPage={isFetchingMoreLicenses}
+                onSearchChange={setLicensesSearch}
               />
             )}
           />
         </div>
       </div>
-
+      <div>
+        {isOtherJobTitle && (
+          <InputField
+            id="otherJobTitle"
+            label="Other job title"
+            placeholder="Enter job title"
+            {...register("otherJobTitle")}
+            error={errors.otherJobTitle?.message}
+          />
+        )}</div>
       {/* ── Salary Section ── */}
       <div className="bg-muted rounded-[12px] p-3">
         <div className="mb-5 flex items-center justify-between">
@@ -317,12 +372,18 @@ export default function JobPostStepOne() {
                     label="Salary Type"
                     className="bg-white"
                     placeholder="Hourly"
-                    error={errors.salary?.type?.message}
-                    options={[
-                      { label: "Hourly", value: "hourly" },
-                      { label: "Monthly", value: "monthly" },
-                      { label: "Annual", value: "annual" },
-                    ]}
+                    error={
+                      errors.salary?.type?.message ??
+                      (salaryTypesError instanceof Error
+                        ? salaryTypesError.message
+                        : undefined)
+                    }
+                    options={toSelectOptions(salaryTypes)}
+                    disabled={isSalaryTypesLoading}
+                    onReachEnd={() => fetchMoreSalaryTypes()}
+                    hasNextPage={Boolean(hasMoreSalaryTypes)}
+                    isFetchingNextPage={isFetchingMoreSalaryTypes}
+                    onSearchChange={setSalaryTypesSearch}
                   />
                 )}
               />
@@ -340,12 +401,18 @@ export default function JobPostStepOne() {
                     label="Currency"
                     className="bg-white"
                     placeholder="Choose"
-                    error={errors.salary?.currency?.message}
-                    options={[
-                      { label: "USD", value: "USD" },
-                      { label: "AED", value: "AED" },
-                      { label: "EUR", value: "EUR" },
-                    ]}
+                    error={
+                      errors.salary?.currency?.message ??
+                      (currenciesError instanceof Error
+                        ? currenciesError.message
+                        : undefined)
+                    }
+                    options={toSelectOptions(currencies)}
+                    disabled={isCurrenciesLoading}
+                    onReachEnd={() => fetchMoreCurrencies()}
+                    hasNextPage={Boolean(hasMoreCurrencies)}
+                    isFetchingNextPage={isFetchingMoreCurrencies}
+                    onSearchChange={setCurrenciesSearch}
                   />
                 )}
               />
@@ -365,12 +432,23 @@ export default function JobPostStepOne() {
                 {...field}
                 id="category"
                 label="Category"
-                error={errors.category?.message}
-                options={[
-                  { label: "Clinical", value: "clinical" },
-                  { label: "Surgical", value: "surgical" },
-                  { label: "Diagnostic", value: "diagnostic" },
-                ]}
+                error={
+                  errors.category?.message ??
+                  (categoriesError instanceof Error
+                    ? categoriesError.message
+                    : undefined)
+                }
+                options={toSelectOptions(categories)}
+                onChange={(value) => {
+                  field.onChange(value);
+                  setSelectedCategoryId(Number(value));
+                  setValue("specialty", "");
+                }}
+                disabled={categoriesLoading}
+                onReachEnd={() => fetchCategoriesNextPage()}
+                hasNextPage={Boolean(categoriesHasNextPage)}
+                isFetchingNextPage={categoriesFetchingNextPage}
+                onSearchChange={setCategorySearch}
               />
             )}
           />
@@ -384,12 +462,18 @@ export default function JobPostStepOne() {
                 {...field}
                 id="specialty"
                 label="Specialty"
-                error={errors.specialty?.message}
-                options={[
-                  { label: "Cardiology", value: "cardiology" },
-                  { label: "Neurology", value: "neurology" },
-                  { label: "Orthopedics", value: "orthopedics" },
-                ]}
+                error={
+                  errors.specialty?.message ??
+                  (specialtiesError instanceof Error
+                    ? specialtiesError.message
+                    : undefined)
+                }
+                options={toSelectOptions(specialties)}
+                disabled={isSpecialtiesLoading || !selectedCategoryId}
+                onReachEnd={() => fetchMoreSpecialties()}
+                hasNextPage={Boolean(hasMoreSpecialties)}
+                isFetchingNextPage={isFetchingMoreSpecialties}
+                onSearchChange={setSpecialtySearch}
               />
             )}
           />
@@ -413,12 +497,18 @@ export default function JobPostStepOne() {
                   label="Employment Type"
                   className="bg-white"
                   placeholder="ex: Full-time"
-                  error={errors.employmentType?.message}
-                  options={[
-                    { label: "Full-time", value: "full-time" },
-                    { label: "Part-time", value: "part-time" },
-                    { label: "Contract", value: "contract" },
-                  ]}
+                  error={
+                    errors.employmentType?.message ??
+                    (organizationSizesError instanceof Error
+                      ? organizationSizesError.message
+                      : undefined)
+                  }
+                  options={toSelectOptions(organizationSizes)}
+                  disabled={isOrganizationSizesLoading}
+                  onReachEnd={() => fetchMoreOrganizationSizes()}
+                  hasNextPage={Boolean(hasMoreOrganizationSizes)}
+                  isFetchingNextPage={isFetchingMoreOrganizationSizes}
+                  onSearchChange={setOrganizationSizesSearch}
                 />
               )}
             />
@@ -434,12 +524,18 @@ export default function JobPostStepOne() {
                   label="Role Category"
                   className="bg-white"
                   placeholder="ex: Clinical"
-                  error={errors.roleCategory?.message}
-                  options={[
-                    { label: "Clinical", value: "clinical" },
-                    { label: "Administrative", value: "administrative" },
-                    { label: "Support", value: "support" },
-                  ]}
+                  error={
+                    errors.roleCategory?.message ??
+                    (roleCategoriesError instanceof Error
+                      ? roleCategoriesError.message
+                      : undefined)
+                  }
+                  options={toSelectOptions(roleCategories)}
+                  disabled={roleCategoriesLoading}
+                  onReachEnd={() => fetchRoleCategoriesNextPage()}
+                  hasNextPage={Boolean(roleCategoriesHasNextPage)}
+                  isFetchingNextPage={roleCategoriesFetchingNextPage}
+                  onSearchChange={setRoleCategorySearch}
                 />
               )}
             />
@@ -455,12 +551,18 @@ export default function JobPostStepOne() {
                   label="Seniority Level"
                   placeholder="select"
                   className="bg-white"
-                  options={[
-                    { label: "Junior", value: "junior" },
-                    { label: "Mid", value: "mid" },
-                    { label: "Senior", value: "senior" },
-                    { label: "Lead", value: "lead" },
-                  ]}
+                  error={
+                    errors.seniorityLevel?.message ??
+                    (seniorityLevelsError instanceof Error
+                      ? seniorityLevelsError.message
+                      : undefined)
+                  }
+                  options={toSelectOptions(seniorityLevels)}
+                  disabled={seniorityLevelsLoading}
+                  onReachEnd={() => fetchseniorityLevelsNextPage()}
+                  hasNextPage={Boolean(seniorityLevelsHasNextPage)}
+                  isFetchingNextPage={seniorityLevelsFetchingNextPage}
+                  onSearchChange={setSeniorityLevelsSearch}
                 />
               )}
             />
@@ -483,12 +585,26 @@ export default function JobPostStepOne() {
                   label="Country"
                   className="bg-white"
                   placeholder="ex: United Arab Emirates (UAE)"
-                  error={errors.country?.message}
-                  options={[
-                    { label: "United Arab Emirates", value: "UAE" },
-                    { label: "Saudi Arabia", value: "SA" },
-                    { label: "Egypt", value: "EG" },
-                  ]}
+                  error={
+                    errors.country?.message ??
+                    (countriesError instanceof Error
+                      ? countriesError.message
+                      : undefined)
+                  }
+                  onChange={(value) => {
+                    field.onChange(value);
+                    setSelectedCountryId(Number(value));
+                    setValue("city", "");
+                  }}
+                  options={countries.map((country) => ({
+                    label: country.name,
+                    value: String(country.id),
+                  }))}
+                  disabled={isCountriesLoading}
+                  onReachEnd={() => fetchMoreCountries()}
+                  hasNextPage={Boolean(hasMoreCountries)}
+                  isFetchingNextPage={isFetchingMoreCountries}
+                  onSearchChange={setCountrySearch}
                 />
               )}
             />
@@ -504,12 +620,19 @@ export default function JobPostStepOne() {
                   label="City"
                   className="bg-white"
                   placeholder="ex: Dubai"
-                  error={errors.city?.message}
-                  options={[
-                    { label: "Dubai", value: "dubai" },
-                    { label: "Abu Dhabi", value: "abu-dhabi" },
-                    { label: "Cairo", value: "cairo" },
-                  ]}
+                  error={
+                    errors.city?.message ??
+                    (citiesError instanceof Error ? citiesError.message : undefined)
+                  }
+                  options={cities.map((city) => ({
+                    label: city.name,
+                    value: String(city.id),
+                  }))}
+                  disabled={citiesLoading || !selectedCountryId}
+                  onReachEnd={() => citiesFetchNextPage()}
+                  hasNextPage={Boolean(citiesHasNextPage)}
+                  isFetchingNextPage={citiesIsFetchingNextPage}
+                  onSearchChange={setCitySearch}
                 />
               )}
             />
@@ -528,14 +651,18 @@ export default function JobPostStepOne() {
               id="experience-years"
               label="Years of Experience"
               placeholder="select"
-              error={errors.yearsOfExperience?.message}
-              options={[
-                { label: "0 – 1 years", value: "0-1" },
-                { label: "1 – 3 years", value: "1-3" },
-                { label: "3 – 5 years", value: "3-5" },
-                { label: "5 – 10 years", value: "5-10" },
-                { label: "10+ years", value: "10+" },
-              ]}
+              error={
+                errors.yearsOfExperience?.message ??
+                (experiencesError instanceof Error
+                  ? experiencesError.message
+                  : undefined)
+              }
+              options={toSelectOptions(experiences)}
+              disabled={isExperiencesLoading}
+              onReachEnd={() => fetchMoreExperiences()}
+              hasNextPage={Boolean(hasMoreExperiences)}
+              isFetchingNextPage={isFetchingMoreExperiences}
+              onSearchChange={setExperienceSearch}
             />
           )}
         />
@@ -560,13 +687,18 @@ export default function JobPostStepOne() {
                     label="Education Level"
                     placeholder="select"
                     className="bg-white"
-                    error={errors.educationLevel?.message}
-                    options={[
-                      { label: "High School", value: "high-school" },
-                      { label: "Bachelor's", value: "bachelors" },
-                      { label: "Master's", value: "masters" },
-                      { label: "PhD", value: "phd" },
-                    ]}
+                    error={
+                      errors.educationLevel?.message ??
+                      (educationLevelsError instanceof Error
+                        ? educationLevelsError.message
+                        : undefined)
+                    }
+                    options={toSelectOptions(educationLevels)}
+                    disabled={isEducationLevelsLoading}
+                    onReachEnd={() => fetchMoreEducationLevels()}
+                    hasNextPage={Boolean(hasMoreEducationLevels)}
+                    isFetchingNextPage={isFetchingMoreEducationLevels}
+                    onSearchChange={setEducationLevelsSearch}
                   />
                 );
               }}
@@ -583,12 +715,18 @@ export default function JobPostStepOne() {
                   label="Mandatory Certifications"
                   placeholder="select"
                   className="bg-white"
-                  error={errors.mandatoryCertifications?.message}
-                  options={[
-                    { label: "BLS", value: "bls" },
-                    { label: "ACLS", value: "acls" },
-                    { label: "PALS", value: "pals" },
-                  ]}
+                  error={
+                    errors.mandatoryCertifications?.message ??
+                    (mandatoryCertificationsError instanceof Error
+                      ? mandatoryCertificationsError.message
+                      : undefined)
+                  }
+                  options={toSelectOptions(mandatoryCertifications)}
+                  disabled={isMandatoryCertificationsLoading}
+                  onReachEnd={() => fetchMoreMandatoryCertifications()}
+                  hasNextPage={Boolean(hasMoreMandatoryCertifications)}
+                  isFetchingNextPage={isFetchingMoreMandatoryCertifications}
+                  onSearchChange={setMandatoryCertificationsSearch}
                 />
               )}
             />
@@ -610,13 +748,18 @@ export default function JobPostStepOne() {
                   label="Availability"
                   className="bg-white"
                   placeholder="select"
-                  error={errors.availability?.message}
-                  options={[
-                    { label: "Immediate", value: "immediate" },
-                    { label: "2 weeks", value: "2-weeks" },
-                    { label: "1 month", value: "1-month" },
-                    { label: "Flexible", value: "flexible" },
-                  ]}
+                  error={
+                    errors.availability?.message ??
+                    (availabilitiesError instanceof Error
+                      ? availabilitiesError.message
+                      : undefined)
+                  }
+                  options={toSelectOptions(availabilities)}
+                  disabled={isAvailabilitiesLoading}
+                  onReachEnd={() => fetchMoreAvailabilities()}
+                  hasNextPage={Boolean(hasMoreAvailabilities)}
+                  isFetchingNextPage={isFetchingMoreAvailabilities}
+                  onSearchChange={setAvailabilitiesSearch}
                 />
               )}
             />

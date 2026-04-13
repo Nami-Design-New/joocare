@@ -7,6 +7,7 @@ import { Button } from "@/shared/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import {
   JobFormData,
   jobFormDefaults,
@@ -14,6 +15,8 @@ import {
   StepIndex,
   stepSchemas,
 } from "../validation/job-post-schema";
+import { usePostStepOne } from "../hooks/usePostStepOne";
+import { usePostStepTwo } from "../hooks/usePostStepTwo";
 import JobPostStepOne from "./JobPostStepOne";
 import JobPostStepTwo from "./JobPostStepTwo";
 import JobReviewPanel from "./JobReviewPanel";
@@ -24,6 +27,15 @@ export default function PostJobForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [createdJobId, setCreatedJobId] = useState<number | null>(null);
+  const { data: session } = useSession();
+  const token = session?.accessToken || "";
+  const { mutateAsync: postStepOne, isPending: isPostingStepOne } = usePostStepOne({
+    token,
+  });
+  const { mutateAsync: postStepTwo, isPending: isPostingStepTwo } = usePostStepTwo({
+    token,
+  });
   // inside PostJobForm
   const [saveDraftOpen, setSaveDraftOpen] = useState(false);
   const [saveSuccessOpen, setSaveSuccessOpen] = useState(false);
@@ -49,7 +61,71 @@ export default function PostJobForm() {
       stepSchemas[currentStep as StepIndex].shape,
     ) as (keyof JobFormData)[];
     const valid = await trigger(fields);
-    if (valid) setCurrentStep((s) => s + 1);
+    if (!valid) return;
+
+    if (currentStep === 0) {
+      const data = getValues();
+      const stepOneResponse = await postStepOne({
+        job_title_id: data.title === "__other__" ? undefined : Number(data.title),
+        title: data.title === "__other__" ? data.otherJobTitle?.trim() ?? "" : undefined,
+        professional_license: data.license,
+        has_salary: data.addSalary,
+        min_salary: Number(data.salary?.min ?? 0),
+        max_salary: Number(data.salary?.max ?? 0),
+        currency_id: Number(data.salary?.currency ?? 0),
+        salary_type_id: Number(data.salary?.type ?? 0),
+        category_id: Number(data.category),
+        specialty_id: Number(data.specialty),
+        employment_type_id: Number(data.employmentType),
+        role_category_id: Number(data.roleCategory),
+        seniority_level_id: Number(data.seniorityLevel || 0),
+        country_id: Number(data.country),
+        city_id: Number(data.city),
+        experience_id: Number(data.yearsOfExperience),
+        mandatory_certifications: data.mandatoryCertifications
+          ? [Number(data.mandatoryCertifications)]
+          : [],
+        eduction_level_id: Number(data.educationLevel),
+        availability_id: Number(data.availability),
+      });
+
+      console.log(stepOneResponse);
+
+      const nextCreatedJobId = Number(
+        stepOneResponse.data?.data?.job?.id ??
+        stepOneResponse.data?.job?.id ??
+        stepOneResponse.data?.data?.id ??
+        stepOneResponse.data?.id,
+      );
+
+      if (!nextCreatedJobId) {
+        throw new Error("Unable to resolve created job id from step one response.");
+      }
+
+      setCreatedJobId(nextCreatedJobId);
+      setCurrentStep((s) => s + 1);
+      return;
+    }
+
+    if (currentStep === 1) {
+      const data = getValues();
+      const effectiveJobId = createdJobId;
+      if (!effectiveJobId) {
+        throw new Error("Job id is missing. Please complete step one first.");
+      }
+
+      await postStepTwo({
+        jobId: effectiveJobId,
+        payload: {
+          description: data.description,
+          skills: (data.skills ?? []).map((skillId) => Number(skillId)),
+        },
+      });
+      setCurrentStep((s) => s + 1);
+      return;
+    }
+
+    setCurrentStep((s) => s + 1);
   };
 
   const handleBack = () => setCurrentStep((s) => s - 1);
@@ -108,12 +184,13 @@ export default function PostJobForm() {
                 <Button
                   type="button"
                   onClick={handleNext}
+                  disabled={isPostingStepOne || isPostingStepTwo}
                   variant="secondary"
                   hoverStyle="slidePrimary"
                   size="pill"
                   className="w-1/6"
                 >
-                  Next
+                  {isPostingStepOne || isPostingStepTwo ? "Saving..." : "Next"}
                 </Button>
               ) : (
                 <Button

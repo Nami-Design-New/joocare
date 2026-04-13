@@ -1,0 +1,3246 @@
+{
+  "info": {
+    "_postman_id": "1bbee37b-979b-4e60-9352-46a2301ea787",
+    "name": "Joocare Copy",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40282253",
+    "_collection_link": "https://go.postman.co/collection/40282253-1bbee37b-979b-4e60-9352-46a2301ea787?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "General",
+      "item": [
+        {
+          "name": "job titles",
+          "item": [
+            {
+              "name": "get all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/job-titles?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "job-titles"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "countries",
+          "item": [
+            {
+              "name": "get all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/countries?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "countries"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "cities",
+          "item": [
+            {
+              "name": "cities by coountry id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/demo-requests/cities?country_id=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "demo-requests",
+                    "cities"
+                  ],
+                  "query": [
+                    {
+                      "key": "country_id",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/cities?pagination=on&limit_per_page=10&page=1&country_id=2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "cities"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "2"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "faqs",
+          "item": [
+            {
+              "name": "get all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/faqs?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "faqs"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "contacts",
+          "item": [
+            {
+              "name": "contacts",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/contacts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "contacts"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "send contact",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Ibrahim Khashaba",
+                      "type": "text",
+                      "uuid": "632b3444-6c5b-440c-aa86-62f880f84773"
+                    },
+                    {
+                      "key": "email",
+                      "value": "ibrahim@emp.com",
+                      "type": "text",
+                      "uuid": "62dd2636-a1bf-4972-851c-ea4496620afe"
+                    },
+                    {
+                      "key": "inquiry_type_id",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "2b9ae866-ed1e-4ca4-9664-cf3b2cbd92c6"
+                    },
+                    {
+                      "key": "message",
+                      "value": "test messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest messagetest message",
+                      "type": "text",
+                      "uuid": "a2e2fb8f-0557-4380-8e1e-7df2db66066f"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/contacts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "contacts"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "demo-requests",
+          "item": [
+            {
+              "name": "demo-requests",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/demo-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "demo-requests"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "send demo-request",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "company_name",
+                      "value": "Hospital",
+                      "type": "text",
+                      "uuid": "632b3444-6c5b-440c-aa86-62f880f84773"
+                    },
+                    {
+                      "key": "email",
+                      "value": "ibrahim@hos.com",
+                      "type": "text",
+                      "uuid": "62dd2636-a1bf-4972-851c-ea4496620afe"
+                    },
+                    {
+                      "key": "inquiry_type_id",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "2b9ae866-ed1e-4ca4-9664-cf3b2cbd92c6"
+                    },
+                    {
+                      "key": "message",
+                      "value": "test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test ",
+                      "type": "text",
+                      "uuid": "a2e2fb8f-0557-4380-8e1e-7df2db66066f"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0152454",
+                      "type": "text",
+                      "uuid": "3d925650-8267-4c66-beaf-e5c59f34393e"
+                    },
+                    {
+                      "key": "phone_code",
+                      "value": "+20",
+                      "type": "text",
+                      "uuid": "393c6f71-a4fe-440f-9318-2aacdaaf263c"
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "66bcb241-9192-468e-88ee-adddbe719ab6"
+                    },
+                    {
+                      "key": "city_id",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "086adcf3-834c-4469-bd95-f34fa85f16f3"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/demo-requests",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "demo-requests"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "pages content",
+          "item": [
+            {
+              "name": "home",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/home",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "home"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "about",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/about",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "about"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "auth home",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/home",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "home"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Auth",
+          "item": [
+            {
+              "name": "password",
+              "item": [
+                {
+                  "name": "forgot-password",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{userToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "email",
+                          "value": "test@eple.com",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{userUrl}}/auth/forgot-password",
+                      "host": [
+                        "{{userUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "forgot-password"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "verify-otp",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{userToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                      },
+                      {
+                        "key": "Accept-Language",
+                        "value": "ar",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "email",
+                          "value": "test@eple.com",
+                          "type": "text"
+                        },
+                        {
+                          "key": "otp",
+                          "value": "12345",
+                          "type": "text",
+                          "uuid": "957d799b-9f69-4568-8da6-a361d61d47ae"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{userUrl}}/auth/verify-otp",
+                      "host": [
+                        "{{userUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify-otp"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "reset-password",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{userToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "email",
+                          "value": "test@eple.com",
+                          "type": "text"
+                        },
+                        {
+                          "key": "otp",
+                          "value": "12345",
+                          "type": "text",
+                          "uuid": "957d799b-9f69-4568-8da6-a361d61d47ae"
+                        },
+                        {
+                          "key": "password",
+                          "value": "12345678",
+                          "type": "text",
+                          "uuid": "6aaff7e7-f57c-4e94-aa1e-96f68ca9a04f"
+                        },
+                        {
+                          "key": "password_confirmation",
+                          "value": "12345678",
+                          "type": "text",
+                          "uuid": "f21f878c-67a2-47da-9b63-2948c487dc3b"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{userUrl}}/auth/reset-password",
+                      "host": [
+                        "{{userUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "reset-password"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "email",
+              "item": [
+                {
+                  "name": "verify-email",
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "email",
+                          "value": "test@eple.com",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{userUrl}}/auth/email/verify",
+                      "host": [
+                        "{{userUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "email",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "email/confirm",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{companyToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "email",
+                          "value": "test@eple.com",
+                          "type": "text"
+                        },
+                        {
+                          "key": "otp",
+                          "value": "12345",
+                          "type": "text",
+                          "uuid": "0549e5fa-be1e-4106-bbc1-51a44c304841"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{userUrl}}/auth/email/confirm",
+                      "host": [
+                        "{{userUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "email",
+                        "confirm"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "register",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "ddsfsdvc",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "test@eple.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0217412825",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone_code",
+                      "value": "+20",
+                      "type": "text"
+                    },
+                    {
+                      "key": "job_title_id",
+                      "value": "1",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "1",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "city_id",
+                      "value": "78",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "password",
+                      "value": "123456",
+                      "type": "text"
+                    },
+                    {
+                      "key": "has_medical_license",
+                      "value": "0",
+                      "type": "text"
+                    },
+                    {
+                      "key": "license_country_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "license_title",
+                      "value": "Doctor License",
+                      "type": "text"
+                    },
+                    {
+                      "key": "license_number",
+                      "value": "LIC-12345",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "cv",
+                      "type": "file",
+                      "value": null,
+                      "disabled": true
+                    },
+                    {
+                      "key": "license_image",
+                      "type": "file",
+                      "value": null
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/register",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "test@eple.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "123456",
+                      "type": "text",
+                      "uuid": "e71d76bb-f827-4bf9-80f3-e74cd359cc04"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/login",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "social-login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Ahmed Mohamed",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "ahmed@gmail.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "provider",
+                      "value": "google",
+                      "type": "text"
+                    },
+                    {
+                      "key": "provider_id",
+                      "value": "10987654321",
+                      "type": "text"
+                    },
+                    {
+                      "key": "image",
+                      "value": "https://example.com/avatar.jpg",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "1012345678",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone_code",
+                      "value": "+20",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/social-login",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "social-login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "logout",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "email",
+                      "value": "test@example.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "e71d76bb-f827-4bf9-80f3-e74cd359cc04"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/logout",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "profile",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/profile",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "profile"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "profile form-data",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/update-profile/form-data",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "update-profile",
+                    "form-data"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "change passwrd",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "password",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "e71d76bb-f827-4bf9-80f3-e74cd359cc04"
+                    },
+                    {
+                      "key": "password_confirmation",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "b86695b5-18d1-48b7-9f15-b904613bbeb7"
+                    },
+                    {
+                      "key": "current_password",
+                      "value": "12345678",
+                      "type": "text",
+                      "uuid": "e409df45-bcf2-4f46-a110-0ce8458a40a2"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/change-password",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "change-password"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update-profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Ibrahim Ahmed",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone_code",
+                      "value": "+20",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "01012345671",
+                      "type": "text"
+                    },
+                    {
+                      "key": "job_title_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "specialty_id",
+                      "value": "2",
+                      "type": "text"
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "city_id",
+                      "value": "7",
+                      "type": "text"
+                    },
+                    {
+                      "key": "experience_id",
+                      "value": "2",
+                      "type": "text"
+                    },
+                    {
+                      "key": "birth_date",
+                      "value": "1995-05-10",
+                      "type": "text"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "081b42d6-cbfa-41fa-90a8-f84b64198b1f",
+                      "src": "/C:/Users/Ayman01002964233/Downloads/circle-logo (1).png"
+                    },
+                    {
+                      "key": "cv",
+                      "type": "file",
+                      "uuid": "b4534866-130a-42f4-be12-3328effac98b",
+                      "src": "/C:/Users/Ayman01002964233/Downloads/فاتورة ضريببة #24.pdf"
+                    },
+                    {
+                      "key": "email",
+                      "value": "test@eple.com",
+                      "type": "text",
+                      "uuid": "dc67fc5f-f381-47e0-a838-d78fd2a811ca"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/update-profile",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "update-profile"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update-cv",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "cv",
+                      "type": "file",
+                      "uuid": "b4534866-130a-42f4-be12-3328effac98b",
+                      "src": "/C:/Users/Ayman01002964233/Desktop/New DOCX Document.pdf"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/update-cv",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "update-cv"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "destroy-cv",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/auth/delete-cv",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "delete-cv"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "companies",
+          "item": [
+            {
+              "name": "get Company",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/companies/1?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "companies",
+                    "1"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "applications",
+          "item": [
+            {
+              "name": "get applications",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/applications?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "applications"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "make application",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "job_id",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "6a67413f-48a2-4961-b3de-0a716e54ee49"
+                    },
+                    {
+                      "key": "cv",
+                      "type": "file",
+                      "uuid": "4be5991d-80c5-445b-a7e5-53a7edcc8f3f",
+                      "value": null,
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/jobs",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "jobs"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "qualifications",
+          "item": [
+            {
+              "name": "qualifications",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/qualifications?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "qualifications"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "store qualification",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "degree",
+                      "value": "master",
+                      "type": "text",
+                      "uuid": "9657de8b-7d39-4915-90f6-c7b753f5384d"
+                    },
+                    {
+                      "key": "university",
+                      "value": "cairo university",
+                      "type": "text",
+                      "uuid": "e74b8e3e-b5f7-4c48-9336-b84a8330e5b8"
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "159d2362-2c72-4286-b3ef-e4870fe7763d"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-02-07",
+                      "type": "text",
+                      "uuid": "9fac31cd-47c4-4401-adb5-e704855b0bf4"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2026-01-31",
+                      "type": "text",
+                      "uuid": "d4df026c-18ed-4d17-9d86-aa3f0ccb843c"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "facca162-db21-4889-ba0b-1fe1bf910ebc",
+                      "src": "/C:/Users/Ayman01002964233/Downloads/Group.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/qualifications",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "qualifications"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update qualification",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "degree",
+                      "value": "master",
+                      "type": "text",
+                      "uuid": "9657de8b-7d39-4915-90f6-c7b753f5384d"
+                    },
+                    {
+                      "key": "university",
+                      "value": "cairo university",
+                      "type": "text",
+                      "uuid": "e74b8e3e-b5f7-4c48-9336-b84a8330e5b8"
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "159d2362-2c72-4286-b3ef-e4870fe7763d"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-02-07",
+                      "type": "text",
+                      "uuid": "9fac31cd-47c4-4401-adb5-e704855b0bf4"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-01-31",
+                      "type": "text",
+                      "uuid": "d4df026c-18ed-4d17-9d86-aa3f0ccb843c"
+                    },
+                    {
+                      "key": "_method",
+                      "value": "put",
+                      "type": "text",
+                      "uuid": "b8e507aa-879e-4b0a-89c6-e7603486eba0"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "ae351a8d-dffd-4606-9bc3-38b9d91305ba",
+                      "src": "/C:/Users/Ayman01002964233/Downloads/circle-logo (2).png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/qualifications/1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "qualifications",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete qualification",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/qualifications/1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "qualifications",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "certifications",
+          "item": [
+            {
+              "name": "certifications",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/certifications?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "certifications"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "store certification",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "AWS Certified Solutions Architect",
+                      "type": "text"
+                    },
+                    {
+                      "key": "company",
+                      "value": "Amazon Web Services",
+                      "type": "text"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2023-01-01",
+                      "type": "text",
+                      "uuid": "9fac31cd-47c4-4401-adb5-e704855b0bf4"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2026-01-01",
+                      "type": "text",
+                      "uuid": "d4df026c-18ed-4d17-9d86-aa3f0ccb843c"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "facca162-db21-4889-ba0b-1fe1bf910ebc",
+                      "src": "/C:/Users/Ayman01002964233/Downloads/Group.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/certifications",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "certifications"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update certification",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "AWS Certified Solutions Architect",
+                      "type": "text"
+                    },
+                    {
+                      "key": "company",
+                      "value": "Amazon Web Services",
+                      "type": "text"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2023-01-01",
+                      "type": "text",
+                      "uuid": "9fac31cd-47c4-4401-adb5-e704855b0bf4"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2026-01-01",
+                      "type": "text",
+                      "uuid": "d4df026c-18ed-4d17-9d86-aa3f0ccb843c"
+                    },
+                    {
+                      "key": "_method",
+                      "value": "put",
+                      "type": "text",
+                      "uuid": "b8e507aa-879e-4b0a-89c6-e7603486eba0"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "71a3e6d1-bd8e-4d4a-a610-b274faaabe1d",
+                      "src": "/C:/Users/Ayman01002964233/Downloads/circle-logo (2).png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/certifications/11",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "certifications",
+                    "11"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete certification",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/certifications/12",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "certifications",
+                    "12"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "user-licenses",
+          "item": [
+            {
+              "name": "user-licenses",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-licenses?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-licenses"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "store user-license",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "title",
+                      "value": "General Practitioner License",
+                      "type": "text"
+                    },
+                    {
+                      "key": "number",
+                      "value": "GPL-2024-3321",
+                      "type": "text"
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "facca162-db21-4889-ba0b-1fe1bf910ebc",
+                      "src": "/C:/Users/Ayman01002964233/Downloads/Group.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-licenses",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-licenses"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update user-license",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "title",
+                      "value": "General Practitioner License",
+                      "type": "text"
+                    },
+                    {
+                      "key": "number",
+                      "value": "GPL-2024-3321",
+                      "type": "text"
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "_method",
+                      "value": "put",
+                      "type": "text",
+                      "uuid": "b8e507aa-879e-4b0a-89c6-e7603486eba0"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "71a3e6d1-bd8e-4d4a-a610-b274faaabe1d",
+                      "src": "/C:/Users/Ayman01002964233/Downloads/Group.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-licenses/8",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-licenses",
+                    "8"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete user-license",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-licenses/8",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-licenses",
+                    "8"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "user-experiences",
+          "item": [
+            {
+              "name": "user-experiences",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-experiences?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-experiences"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "store user-experience",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "title",
+                      "value": "General Practitioner License",
+                      "type": "text"
+                    },
+                    {
+                      "key": "company",
+                      "value": "test",
+                      "type": "text"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2023-01-01",
+                      "type": "text",
+                      "uuid": "4f2a9077-eaba-4985-9497-24c93b2b4041"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2026-01-01",
+                      "type": "text",
+                      "uuid": "09d38dad-366a-4f71-a76b-00f6ce422f69",
+                      "disabled": true
+                    },
+                    {
+                      "key": "is_current",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "cc5bdefb-c530-4d2e-ae07-e3c1ca1ad92e"
+                    },
+                    {
+                      "key": "responsibilities[]",
+                      "value": "description",
+                      "type": "text",
+                      "uuid": "4b8acbdc-99bd-4b73-8ec4-6d36776f9dd0"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-experiences",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-experiences"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update user-experience",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "title",
+                      "value": "General Practitioner License",
+                      "type": "text"
+                    },
+                    {
+                      "key": "company",
+                      "value": "test",
+                      "type": "text"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2023-01-01",
+                      "type": "text"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2026-01-01",
+                      "type": "text"
+                    },
+                    {
+                      "key": "is_current",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "responsibilities[]",
+                      "value": "description",
+                      "type": "text"
+                    },
+                    {
+                      "key": "_method",
+                      "value": "put",
+                      "type": "text",
+                      "uuid": "b8e507aa-879e-4b0a-89c6-e7603486eba0"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-experiences/22",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-experiences",
+                    "22"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete user-experience",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-experiences/22",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-experiences",
+                    "22"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "user-educations",
+          "item": [
+            {
+              "name": "user-educations",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-educations?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-educations"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "store user-educations",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "degree",
+                      "value": "license",
+                      "type": "text"
+                    },
+                    {
+                      "key": "university",
+                      "value": "test",
+                      "type": "text"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2023-01-01",
+                      "type": "text",
+                      "uuid": "4f2a9077-eaba-4985-9497-24c93b2b4041"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2026-01-01",
+                      "type": "text",
+                      "uuid": "09d38dad-366a-4f71-a76b-00f6ce422f69"
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "cc5bdefb-c530-4d2e-ae07-e3c1ca1ad92e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-educations",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-educations"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update user-educations",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "degree",
+                      "value": "license",
+                      "type": "text"
+                    },
+                    {
+                      "key": "university",
+                      "value": "test",
+                      "type": "text"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2023-01-01",
+                      "type": "text"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2026-01-01",
+                      "type": "text"
+                    },
+                    {
+                      "key": "country_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "_method",
+                      "value": "put",
+                      "type": "text",
+                      "uuid": "55895487-351c-429b-b575-ba7d68d95db5"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-educations/18",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-educations",
+                    "18"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete user-educations",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-educations/15",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-educations",
+                    "15"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "user-skills",
+          "item": [
+            {
+              "name": "user-skills",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-skills?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-skills"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "store user-skills",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "skills[]",
+                      "value": "1",
+                      "type": "text",
+                      "uuid": "5197a521-3cd2-4830-a66d-96bf0268d9dc"
+                    },
+                    {
+                      "key": "skills[]",
+                      "value": "2",
+                      "type": "text",
+                      "uuid": "647dd30e-f076-4936-a56b-68163269d5c9"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-skills",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-skills"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete user-skill",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-skills/38",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-skills",
+                    "38"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "user-bio",
+          "item": [
+            {
+              "name": "update bio",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "bio",
+                      "value": "aa aaa a a a a a s dasd ",
+                      "type": "text",
+                      "uuid": "31b31af2-8376-460a-b1ff-c6b48f2a7378"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/user-bio",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "user-bio"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "jobs",
+          "item": [
+            {
+              "name": "jobs",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/jobs?pagination=on&limit_per_page=10&page=1&search=developer&country=1&professional_license=with_medical_license&availability=within_3_months&role_categories[]=1&role_categories[]=2&seniority_levels[]=1&seniority_levels[]=3&domain=tech&specialties[]=4&specialties[]=5&experiences[]=2&employment_types[]=1&min_salary=3000&max_salary=10000",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "jobs"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "search",
+                      "value": "developer"
+                    },
+                    {
+                      "key": "country",
+                      "value": "1"
+                    },
+                    {
+                      "key": "professional_license",
+                      "value": "with_medical_license",
+                      "description": "with_medical_license or without_medical_license"
+                    },
+                    {
+                      "key": "availability",
+                      "value": "within_3_months",
+                      "description": "immediately, within_1_month, within_2_months, within_3_months"
+                    },
+                    {
+                      "key": "role_categories[]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "role_categories[]",
+                      "value": "2"
+                    },
+                    {
+                      "key": "seniority_levels[]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "seniority_levels[]",
+                      "value": "3"
+                    },
+                    {
+                      "key": "domain",
+                      "value": "tech"
+                    },
+                    {
+                      "key": "specialties[]",
+                      "value": "4"
+                    },
+                    {
+                      "key": "specialties[]",
+                      "value": "5"
+                    },
+                    {
+                      "key": "experiences[]",
+                      "value": "2"
+                    },
+                    {
+                      "key": "employment_types[]",
+                      "value": "1"
+                    },
+                    {
+                      "key": "min_salary",
+                      "value": "3000"
+                    },
+                    {
+                      "key": "max_salary",
+                      "value": "10000"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "saved jobs",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/saved-jobs?pagination=on&limit_per_page=10&page=1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "saved-jobs"
+                  ],
+                  "query": [
+                    {
+                      "key": "pagination",
+                      "value": "on"
+                    },
+                    {
+                      "key": "limit_per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "saved",
+                      "value": "1",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get job",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{userUrl}}/jobs/1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "jobs",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "save or unsave",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{userToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "_method",
+                      "value": "put",
+                      "type": "text",
+                      "uuid": "7c6874a7-5eac-4cda-804d-2243c81f4516"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{userUrl}}/jobs/1",
+                  "host": [
+                    "{{userUrl}}"
+                  ],
+                  "path": [
+                    "jobs",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "",
+      "disabled": true
+    },
+    {
+      "key": "userUrl",
+      "value": "",
+      "disabled": true
+    },
+    {
+      "key": "companyUrl",
+      "value": "",
+      "disabled": true
+    },
+    {
+      "key": "userToken",
+      "value": ""
+    },
+    {
+      "key": "companyToken",
+      "value": ""
+    },
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "userUrl",
+      "value": ""
+    },
+    {
+      "key": "companyUrl",
+      "value": ""
+    }
+  ]
+}

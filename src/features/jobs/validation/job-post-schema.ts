@@ -9,6 +9,7 @@ export const step1Schema = z
   .object({
     // ── Core Info ──────────────────────────────
     title: z.string().min(1, "Job title is required"),
+    otherJobTitle: z.string().optional(),
     license: z.string().min(1, "Professional license is required"),
 
     // ── Salary (conditionally required) ────────
@@ -50,6 +51,14 @@ export const step1Schema = z
   })
   // Salary fields are required only when the toggle is ON
   .superRefine((data, ctx) => {
+    if (data.title === "__other__" && !data.otherJobTitle?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Other job title is required",
+        path: ["otherJobTitle"],
+      });
+    }
+
     if (data.addSalary) {
       if (!data.salary?.min && data.salary?.min !== 0) {
         ctx.addIssue({
@@ -135,6 +144,7 @@ export const STEPS = [
 
 export const jobFormDefaults: Partial<JobFormData> = {
   title: "",
+  otherJobTitle: "",
   license: "",
   addSalary: false,
   salary: { min: undefined, max: undefined, type: "", currency: "" },

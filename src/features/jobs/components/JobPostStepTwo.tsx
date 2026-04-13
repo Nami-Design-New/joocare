@@ -1,13 +1,14 @@
 "use client";
 
 import { SelectInputField } from "@/shared/components/SelectInputField";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
 import "ckeditor5/ckeditor5.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { MultiSelectInputField } from "@/shared/components/MultiSelectInputField";
+import useGetSkills from "@/shared/hooks/useGetSkills";
 
 export default function JobPostStepTwo() {
   const {
@@ -16,9 +17,15 @@ export default function JobPostStepTwo() {
     formState: { errors },
   } = useFormContext<JobFormData>();
   console.log(watch());
-
-  console.log(errors);
-
+  const [skillsSearch, setSkillsSearch] = useState("");
+  const {
+    skills,
+    isLoading: isSkillsLoading,
+    error: skillsError,
+    hasNextPage: hasMoreSkills,
+    fetchNextPage: fetchMoreSkills,
+    isFetchingNextPage: isFetchingMoreSkills,
+  } = useGetSkills(skillsSearch);
   return (
     <div>
       <div className="grid grid-cols-1 gap-4">
@@ -32,7 +39,7 @@ export default function JobPostStepTwo() {
                   Job Description
                 </label>
                 <CKEditor
-                  editor={ClassicEditor}
+                  editor={ClassicEditor as any}
                   data={field.value || ""}
                   onChange={(_, editor) => {
                     field.onChange(editor.getData());
@@ -58,17 +65,26 @@ export default function JobPostStepTwo() {
                   id="skills"
                   label="Skills"
                   placeholder="ex: Improvement"
-                  error={errors.skills?.message}
-                  options={[
-                    { label: "Critical Thinking", value: "critical-thinking" },
-                    { label: "Patient Care", value: "patient-care" },
-                    { label: "Surgical Skills", value: "surgical-skills" },
-                    { label: "Diagnosis", value: "diagnosis" },
-                  ]}
+                  error={
+                    errors.skills?.message ??
+                    (skillsError instanceof Error
+                      ? skillsError.message
+                      : undefined)
+                  }
+                  options={skills.map((item) => ({
+                    label: item.title,
+                    value: String(item.id),
+                  }))}
+                  disabled={isSkillsLoading}
+                // onReachEnd={() => fetchMoreSkills()}
+                // hasNextPage={Boolean(hasMoreSkills)}
+                // isFetchingNextPage={isFetchingMoreSkills}
+                // onSearchChange={setSkillsSearch}
                 />
               );
             }}
           />
+
         </div>
       </div>
     </div>
