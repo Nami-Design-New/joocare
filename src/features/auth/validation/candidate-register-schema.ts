@@ -61,7 +61,7 @@ export const RegisterCandidateSchema = z
       .min(6, { message: "Password must be at least 6 characters" }),
 
     // Sends undefined (omitted) if no files uploaded
-    uploadCV: optionalFileArray,
+    uploadCV: optionalString,
 
     confirmRegister: z.boolean().default(false),
 
@@ -76,7 +76,7 @@ export const RegisterCandidateSchema = z
     specificCountry: optionalString,
 
     // Sends undefined (omitted) if no files uploaded
-    uploadLicense: optionalFileArray,
+    uploadLicense: optionalString,
   })
   .superRefine((data, ctx) => {
     if (data.confirmRegister) {

@@ -176,35 +176,35 @@ export const authOptions: NextAuthOptions = {
   providers: [
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
       ? [
-          GoogleProvider({
-            id: "google-candidate",
-            name: "Google Candidate",
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          }),
-          GoogleProvider({
-            id: "google-employer",
-            name: "Google Employer",
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          }),
-        ]
+        GoogleProvider({
+          id: "google-candidate",
+          name: "Google Candidate",
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        }),
+        GoogleProvider({
+          id: "google-employer",
+          name: "Google Employer",
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        }),
+      ]
       : []),
     ...(process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET
       ? [
-          LinkedInProvider({
-            id: "linkedin-candidate",
-            name: "LinkedIn Candidate",
-            clientId: process.env.LINKEDIN_CLIENT_ID,
-            clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-          }),
-          LinkedInProvider({
-            id: "linkedin-employer",
-            name: "LinkedIn Employer",
-            clientId: process.env.LINKEDIN_CLIENT_ID,
-            clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-          }),
-        ]
+        LinkedInProvider({
+          id: "linkedin-candidate",
+          name: "LinkedIn Candidate",
+          clientId: process.env.LINKEDIN_CLIENT_ID,
+          clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+        }),
+        LinkedInProvider({
+          id: "linkedin-employer",
+          name: "LinkedIn Employer",
+          clientId: process.env.LINKEDIN_CLIENT_ID,
+          clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+        }),
+      ]
       : []),
     Credentials({
       id: "candidate-credentials",
@@ -213,8 +213,20 @@ export const authOptions: NextAuthOptions = {
         email: {},
         password: {},
         locale: {},
+        accessToken: {},
+        user: {},
       },
       async authorize(credentials) {
+        // token from register
+        if (credentials?.accessToken) {
+          return {
+            id: "temp-id",
+            user: JSON.parse(credentials.user || "{}"),
+            accessToken: credentials.accessToken,
+            authRole: "candidate",
+            authMessage: "Registered successfully",
+          };
+        }
         return authorizeWithEndpoint({
           credentials,
           baseUrl: getUserApiUrl(),
@@ -229,8 +241,20 @@ export const authOptions: NextAuthOptions = {
         email: {},
         password: {},
         locale: {},
+        accessToken: {},
+        user: {},
       },
       async authorize(credentials) {
+        // token from register
+        if (credentials?.accessToken) {
+          return {
+            id: "temp-id",
+            user: JSON.parse(credentials.user || "{}"),
+            accessToken: credentials.accessToken,
+            authRole: "employer",
+            authMessage: "Registered successfully",
+          };
+        }
         return authorizeWithEndpoint({
           credentials,
           baseUrl: getCompanyApiUrl(),

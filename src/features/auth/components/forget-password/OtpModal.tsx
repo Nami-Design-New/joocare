@@ -35,6 +35,7 @@ import {
   confirmEmailVerification,
   requestEmailVerification,
 } from "../../lib/email-verification";
+import { signIn } from "next-auth/react";
 
 interface OTPModalProps {
   open: boolean;
@@ -60,6 +61,8 @@ export function OTPModal({
   const path = usePathname();
   const locale = useLocale();
   const forgetPasswordPage = path.includes("forget-password");
+  const registerCandidatePage = path.includes("auth/candidate/register")
+  const registerEmployerPage = path.includes("auth/employer/register");
   const basicInfo = path.includes("basic-info");
 
   const handleGenericSuccess = async () => {
@@ -77,6 +80,10 @@ export function OTPModal({
       router.push("/auth/new-password");
     } else if (basicInfo) {
       onOpenChange(false);
+    } else if (registerEmployerPage) {
+      router.push('/for-employers')
+    } else if (registerCandidatePage) {
+      router.push('/')
     } else {
       router.push("/");
     }
@@ -114,14 +121,31 @@ export function OTPModal({
       }
 
       if (purpose === "email-confirm" && email && role) {
-        const message = await confirmEmailVerification({
+        const { data: otpData, message } = await confirmEmailVerification({
           role,
           email,
           otp: data.otp,
           locale,
         });
 
-        toast.success(message);
+        const accessToken = otpData?.data?.token
+        const user = otpData?.data?.company || otpData?.data?.user;
+
+        const providerByRole: Record<string, string> = {
+          candidate: "candidate-credentials",
+          employer: "employer-credentials",
+        };
+
+        // login after register
+        if (accessToken && role) {
+          await signIn(providerByRole[role], {
+            redirect: false,
+            accessToken,
+            user: JSON.stringify(user),
+          });
+        }
+
+        // toast.success(message);
         reset();
         onOpenChange(false);
         await handleGenericSuccess();

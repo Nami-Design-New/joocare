@@ -15,7 +15,7 @@ const providerByRole: Record<LoginRole, string> = {
 
 const defaultRedirectByRole: Record<LoginRole, string> = {
   candidate: "/",
-  employer: "/company/company-profile",
+  employer: "/for-employers",
 };
 
 export const useLogin = (role: LoginRole) => {

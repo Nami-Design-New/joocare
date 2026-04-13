@@ -9,7 +9,7 @@ const employerProtectedRoute = "/company";
 
 function getDefaultPath(locale: string, authRole?: "candidate" | "employer") {
   if (authRole === "employer") {
-    return `/${locale}${employerProtectedRoute}/company-profile`;
+    return `/${locale}${employerProtectedRoute}/for-employers`;
   }
 
   if (authRole === "candidate") {

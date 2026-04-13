@@ -48,7 +48,7 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
 
       toast.success(message);
       setUserEmail(data.email);
-      reset();
+      // reset();
       setIsModalOpen(true);
     } catch (error) {
       toast.error(
