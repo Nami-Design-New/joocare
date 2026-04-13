@@ -60,7 +60,6 @@ export default async function JobDetailsPage({
             actions={
               <JobActionButtons
                 jobId={job.id}
-                editHref={`/company/post-job?jobId=${job.id}`}
                 candidatesHref={`/company/job/candidates/${job.id}`}
                 applicationsCount={job.applications_count}
                 currentStatus={normalizeJobStatus(statusLabel)}

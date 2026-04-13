@@ -36,6 +36,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { JobListItem } from "../types/jobs.types";
 import { getJobLocation, getJobSalary, normalizeJobStatus } from "../utils";
+import { useQueryClient } from "@tanstack/react-query";
 
 type JobCardProps = {
   job: JobListItem & {
@@ -43,6 +44,7 @@ type JobCardProps = {
       status: string;
       created_at: string;
     } | null;
+    applications_count: number
   };
   href?: string;
   appliedBadge?: boolean;
@@ -63,15 +65,19 @@ export default function JobCard({ resumeMatch,
   const [closeJob, setCloseJob] = useState(false);
   const [pauseJob, setPauseJob] = useState(false);
   const [deleteJob, setDeleteJob] = useState(false);
+  const queryClient = useQueryClient();
   const { updateStatus, isPending } = useUpdateCompanyJobStatus(job.id, {
     onSuccess: () => {
       setCloseJob(false);
       setPauseJob(false);
+      queryClient.invalidateQueries({ queryKey: ["company-profile"] });
+
     },
   });
   const { deleteJob: deleteCompanyJob, isPending: isDeleting } = useDeleteCompanyJob(job.id, {
     onSuccess: () => {
       setDeleteJob(false);
+      queryClient.invalidateQueries({ queryKey: ["company-profile"] });
     },
   });
 
@@ -132,16 +138,20 @@ export default function JobCard({ resumeMatch,
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem className="flex gap-2">
-                  <Edit /> <span>Edit</span>
+                  <Link
+                    href={`/company/post-job?editId=${job.id}`}
+                    className="flex gap-2 items-center ">
+                    <Edit /> <span>Edit</span>
+                  </Link>
                 </DropdownMenuItem>
                 {normalizedStatus !== "open" ? (
                   <DropdownMenuItem
-                  className="flex gap-2"
-                  disabled={isPending}
-                  onClick={handleOpenJob}
-                >
-                  <Play /> <span>Open</span>
-                </DropdownMenuItem>
+                    className="flex gap-2"
+                    disabled={isPending}
+                    onClick={handleOpenJob}
+                  >
+                    <Play /> <span>Open</span>
+                  </DropdownMenuItem>
                 ) : null}
                 <DropdownMenuItem
                   className="flex gap-2"
@@ -202,13 +212,13 @@ export default function JobCard({ resumeMatch,
             <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p>
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col gap-4 max-lg:px-2">
+        <CardFooter className="flex flex-col gap-4 max-lg:px-2 flex-1 justify-end ">
           <div className="flex w-full flex-col gap-2 md:flex-row md:items-center">
             <Link
               className={` grow ${buttonVariants({
                 variant: "secondary",
                 size: "pill",
-              })} `}
+              })} lg:w-2/3`}
               href={`/company/job/candidates/${job.id}`}
             >
               View Candidates {job.applications_count}
@@ -219,7 +229,7 @@ export default function JobCard({ resumeMatch,
                   variant: "default",
                   size: "pill",
                 },
-              )}`}
+              )} lg:w-1/3`}
               href={`/company/job/${job.id}`}
             >
               View Details
@@ -248,6 +258,7 @@ export default function JobCard({ resumeMatch,
         confirmLabel="Yes, close the advertisement."
         cancelLabel="Back"
         onConfirm={handleCloseJob}
+        isLoading={isPending}
       />
       <AlertModal
         open={pauseJob}
@@ -258,6 +269,7 @@ export default function JobCard({ resumeMatch,
         confirmLabel="Yes, stop the advertisement"
         cancelLabel="Back"
         onConfirm={handlePauseJob}
+        isLoading={isPending}
       />
       <DeleteModal
         open={deleteJob}
