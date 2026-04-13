@@ -34,8 +34,8 @@ export default function JobsFilterSection({
   const [location, setLocation] = useState<string>(country);
 
   return (
-    <section className="px-3 lg:px-25">
-      <section className="container mx-auto mt-4 lg:-mt-24">
+    <section className="layout-shell">
+      <section className="layout-content mt-4 lg:-mt-24">
         <section className="rounded-2xl bg-white p-4">
           <div className="mx-auto mb-6 max-w-5xl text-center">
             <h1 className="text-secondary text-3xl font-semibold lg:text-4xl">

@@ -5,7 +5,7 @@ import FormEmployerRegister from "@/features/auth/components/register-employer-c
 const RegisterEmployerPage = () => {
   return (
     <div className="flex items-center justify-center gap-4 ">
-      <div className="w-3/4 mx-auto p-4">
+      <div className="w-full md:w-3/4 mx-auto p-4">
         {/* header text */}
         <h1>Start your business</h1>
 

@@ -196,6 +196,18 @@
 }
 
 @layer components {
+  .layout-shell {
+    @apply px-3 lg:px-25;
+  }
+
+  .layout-content {
+    @apply container mx-auto;
+  }
+
+  .layout-container {
+    @apply container mx-auto px-3 lg:px-25;
+  }
+
   .nav-link {
     @apply text-secondary border-b-2 border-transparent px-2 py-1 text-lg transition-colors;
   }

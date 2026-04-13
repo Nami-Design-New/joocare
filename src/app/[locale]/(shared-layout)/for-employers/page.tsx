@@ -40,8 +40,8 @@ export default async function ForEmployers({
       <PlainBreadcrumb
         items={[{ label: "Home", href: "/" }, { label: "For Employers" }]}
       />
-      <section className="px-3 lg:px-25">
-        <section className="container mx-auto">
+      <section className="layout-shell">
+        <section className="layout-content">
           <EmployersHeroSection
             title={pageData.hero.title}
             description={pageData.hero.description}
@@ -64,8 +64,8 @@ export default async function ForEmployers({
         description={pageData.hireSteps.description}
         items={pageData.hireSteps.items}
       />
-      <section className="px-3 lg:px-25">
-        <section className="container mx-auto">
+      <section className="layout-shell">
+        <section className="layout-content">
           <FAQSection title={pageData.faqs.title} items={pageData.faqs.items} />
         </section>
       </section>

@@ -20,7 +20,7 @@ export default function RouteErrorFallback({
   const meta = getHttpStatusMeta(statusCode, getHttpErrorMessage(error));
 
   return (
-    <section className="flex min-h-[50vh] items-center justify-center px-3 py-16 lg:px-25">
+    <section className="layout-shell flex min-h-[50vh] items-center justify-center py-16">
       <div className="bg-card w-full max-w-2xl rounded-3xl border p-8 text-center shadow-sm">
         <p className="text-primary text-sm font-semibold">{statusCode}</p>
         <h1 className="text-foreground mt-3 text-3xl font-semibold">

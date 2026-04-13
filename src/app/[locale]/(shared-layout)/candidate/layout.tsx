@@ -13,8 +13,8 @@ export default async function CandidateProfileLayout({
       <PlainBreadcrumb
         items={[{ label: "Home", href: "/" }, { label: "Overview" }]}
       />
-      <main className="px-3 pb-12 lg:px-25">
-        <section className="container mx-auto">
+      <main className="layout-shell pb-12">
+        <section className="layout-content">
           {" "}
           <section className="mt-4 grid grid-cols-12 items-start gap-4 lg:mt-6">
             <section className="col-span-12 lg:col-span-3">

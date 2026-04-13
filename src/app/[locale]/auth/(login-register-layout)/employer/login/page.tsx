@@ -8,7 +8,7 @@ import Link from "next/link";
 const LoginEmployerPage = () => {
   return (
     <div className="h-[calc(100vh-75px)] flex items-center justify-center gap-4 ">
-      <div className="md:w-3/4 mx-auto p-4">
+      <div className="w-full md:w-3/4  mx-auto p-4">
         {/* header text */}
         <h1>
           Welcome back,

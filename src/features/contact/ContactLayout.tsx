@@ -16,8 +16,8 @@ export default function ContactLayout({
         title="Contact us"
         items={[{ label: "Home", href: "/" }, { label: "Contact us" }]}
       />
-      <section className="px-3 lg:px-25">
-        <section className="container mx-auto">
+      <section className="layout-shell">
+        <section className="layout-content">
           <ContactSection
             authRole={authRole}
             initialValues={initialValues}

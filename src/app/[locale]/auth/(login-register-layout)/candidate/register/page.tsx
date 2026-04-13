@@ -6,7 +6,7 @@ import SocialLoginButtons from "@/features/auth/components/login-content/SocialL
 const RegisterCandidatePage = () => {
   return (
     <div className="flex items-center justify-center gap-4 ">
-      <div className="w-3/4 mx-auto p-4">
+      <div className="w-full md:w-3/4 mx-auto p-4">
         {/* header text */}
         <h1>Let’s Get Started</h1>
 
@@ -22,7 +22,7 @@ const RegisterCandidatePage = () => {
           or
         </div>
 
-        <SocialLoginButtons />
+        <SocialLoginButtons role="candidate" />
 
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">

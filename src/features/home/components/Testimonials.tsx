@@ -52,36 +52,39 @@ export const Testimonials = ({
 }) => {
   return (
     <section className="bg-background py-10 md:py-20">
-      <div className="container mx-auto px-3 lg:px-25">
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-        >
-          {/* Header */}
-          <div className="mb-12 flex items-center justify-between">
-            <div className="space-y-4">
-              <SectionTitle sectionTitle="What Professionals Say" />
-              <h2>{title}</h2>
+      <div className="layout-shell">
+        <div className="layout-content">
+
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            {/* Header */}
+            <div className="mb-12 flex items-center justify-between">
+              <div className="space-y-4">
+                <SectionTitle sectionTitle="What Professionals Say" />
+                <h2>{title}</h2>
+              </div>
+
+              {/* Shadcn carousel controls wired to the same Carousel context */}
+              <div className="flex gap-4">
+                <CarouselPrevious className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
+                <CarouselNext className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
+              </div>
             </div>
 
-            {/* Shadcn carousel controls wired to the same Carousel context */}
-            <div className="flex gap-4">
-              <CarouselPrevious className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
-              <CarouselNext className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
-            </div>
-          </div>
-
-          {/* Cards */}
-          <CarouselContent className="-ml-6">
-            {reviews.map((rev) => (
-              <CarouselItem key={rev.id} className="pl-6 md:basis-1/3">
-                <TestimonialCard {...rev} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+            {/* Cards */}
+            <CarouselContent className="-ml-6">
+              {reviews.map((rev) => (
+                <CarouselItem key={rev.id} className="pl-6 md:basis-1/3">
+                  <TestimonialCard {...rev} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
       </div>
     </section>
   );

@@ -23,8 +23,8 @@ const Header = () => {
 
   return (
     <>
-      <header className="shadow-header sticky top-0 z-30 flex min-h-21.75 w-full items-center justify-between bg-white px-3 py-4 lg:px-25">
-        <div className="container mx-auto flex items-center justify-between">
+      <header className="layout-shell shadow-header sticky top-0 z-30 flex min-h-21.75 w-full items-center justify-between bg-white py-4">
+        <div className="layout-content flex items-center justify-between">
           {/* Logo */}
           <div className="flex gap-1">
             <button

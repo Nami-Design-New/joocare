@@ -23,12 +23,12 @@ export default function WhyUs({
 }) {
   return (
     <section className="bg-white px-0 py-10 md:py-20">
-      <div className="container mx-auto mb-8 flex flex-col items-center space-y-4 px-3 lg:px-25">
+      <div className="layout-container mb-8 flex flex-col items-center space-y-4">
         <SectionTitle sectionTitle="Why Joocare?" />
         <h2 className="text-center">{title}</h2>
       </div>
       <div className="flex flex-col lg:flex-row">
-        <div className="bg-container-gray container mx-auto flex flex-col px-3 py-10 md:py-20 lg:flex-row lg:px-25 lg:pl-22">
+        <div className="bg-container-gray layout-container flex flex-col py-10 md:py-20 lg:flex-row lg:pl-22">
           <Cons
             title={legacyModelTitle}
             description={legacyModelDescription}
@@ -43,7 +43,7 @@ export default function WhyUs({
             className="object-cover"
           />
         </div>
-        <div className="bg-container container mx-auto flex flex-col px-3 py-10 pr-4 text-white md:py-20 lg:px-25">
+        <div className="bg-container layout-container flex flex-col py-10 pr-4 text-white md:py-20">
           <Pros
             title={joocareModelTitle}
             description={joocareModelDescription}
