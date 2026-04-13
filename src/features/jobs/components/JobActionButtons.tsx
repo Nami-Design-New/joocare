@@ -12,7 +12,6 @@ import { JobStatus } from "../types/index.types";
 
 type JobActionButtonsProps = {
   jobId?: number | string;
-  editHref?: string;
   candidatesHref?: string;
   applicationsCount?: number;
   currentStatus?: JobStatus;
@@ -21,7 +20,6 @@ type JobActionButtonsProps = {
 
 export function JobActionButtons({
   jobId,
-  editHref,
   candidatesHref,
   applicationsCount,
   currentStatus = "open",
@@ -56,7 +54,8 @@ export function JobActionButtons({
     deleteCompanyJob();
   };
 
-  const resolvedEditHref = editHref ?? (jobId ? `/company/post-job?jobId=${jobId}` : "/company/post-job");
+  const resolvedCompleteHref = jobId ? `/company/post-job?jobId=${jobId}` : "/company/post-job";
+  const resolvedEditHref = jobId ? `/company/post-job?editId=${jobId}` : "/company/post-job";
   const isDraft = currentStatus === "draft";
   const isClosed = currentStatus === "closed";
   const isOpen = currentStatus === "open";
@@ -67,7 +66,7 @@ export function JobActionButtons({
       <div className="flex w-full flex-wrap gap-3">
         {isDraft ? (
           <Link
-            href={resolvedEditHref}
+            href={resolvedCompleteHref}
             className={`${buttonVariants({
               variant: "default",
               size: "pill",
@@ -137,6 +136,7 @@ export function JobActionButtons({
         confirmLabel="Yes, close the advertisement."
         cancelLabel="Back"
         onConfirm={handleCloseJob}
+        isLoading={isPending}
       />
       <AlertModal
         open={pauseJob}
@@ -147,6 +147,7 @@ export function JobActionButtons({
         confirmLabel="Yes, stop the advertisement"
         cancelLabel="Back"
         onConfirm={handlePauseJob}
+        isLoading={isPending}
       />
       <DeleteModal
         open={deleteJob}
