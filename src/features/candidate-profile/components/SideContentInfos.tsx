@@ -4,24 +4,38 @@ import { Progress } from "@/shared/components/ui/progress";
 import { CircleAlert, Sparkles } from "lucide-react";
 import Image from "next/image";
 import UploadCvSection from "./UploadCvSection";
+import type { CandidateProfileViewModel } from "../types/profile.types";
 
-const SideContentInfos = () => {
+const SideContentInfos = ({
+  profile,
+}: {
+  profile: CandidateProfileViewModel | null;
+}) => {
+  const displayName = profile?.name || "Candidate";
+  const displayImage = profile?.image || "/assets/profile_image.svg";
+  const displayJobTitle = profile?.jobTitle || "Candidate account";
+  const displayEmail = profile?.email || "-";
+  const displayLocation = profile?.location || "-";
+  const displayPhone = profile?.fullPhone || "-";
+  const displayAge = profile?.age ? String(profile.age) : "-";
+  const displayExp = profile?.experience || "-";
+
   return (
-    <aside className="no-scrollbar flex flex-col gap-5 overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow lg:h-dvh">
+    <aside className="no-scrollbar flex flex-col gap-5  overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow">
       {/* image */}
       <section className="mx-auto flex w-50 flex-col items-center justify-center gap-2">
         <Image
-          src={"/assets/profile_image.svg"}
+          src={displayImage}
           alt="profile image"
           width={150}
           height={150}
           className="rounded-full"
         />
         <h2 className="mt-1 text-xl font-semibold text-black">
-          Dr. Ahmed Al-Rashid
+          {displayName}
         </h2>
         <span className="text-primary text-sm font-semibold">
-          Consultant Cardiologist
+          {displayJobTitle}
         </span>
       </section>
 
@@ -50,34 +64,34 @@ const SideContentInfos = () => {
             {" "}
             Email{" "}
           </h6>
-          <span className="text-sm font-semibold">saeed@gmail.com</span>
+          <span className="text-sm font-semibold">{displayEmail}</span>
         </div>
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">
             {" "}
             Location{" "}
           </h6>
-          <span className="text-sm font-semibold">Cairo, Egypt</span>
+          <span className="text-sm font-semibold">{displayLocation}</span>
         </div>
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">Phone</h6>
-          <span className="text-sm font-semibold">+201050345200</span>
+          <span className="text-sm font-semibold">{displayPhone}</span>
         </div>
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">
             {" "}
             Experience{" "}
           </h6>
-          <span className="text-sm font-semibold">+12 year</span>
+          <span className="text-sm font-semibold">{displayExp}</span>
         </div>
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">Age</h6>
-          <span className="text-sm font-semibold">32</span>
+          <span className="text-sm font-semibold">{displayAge}</span>
         </div>
       </section>
 
       {/* upload cv */}
-      <UploadCvSection />
+      <UploadCvSection cvUrl={profile?.cv ?? null} />
     </aside>
   );
 };

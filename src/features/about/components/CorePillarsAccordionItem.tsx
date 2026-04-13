@@ -1,8 +1,8 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
-import type { Pillar } from "./core-pillars-data";
+import type { AboutPillar } from "../types/about.types";
 
 type CorePillarsAccordionItemProps = {
-  pillar: Pillar;
+  pillar: AboutPillar;
   isOpen: boolean;
   onToggle: () => void;
 };

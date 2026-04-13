@@ -1,7 +1,8 @@
 import { cn } from '@/shared/lib/utils'
 import Image from 'next/image'
+import { CompanyProfile } from '../company-profile.type'
 
-export default function HeaderSection() {
+export default function HeaderSection({ company }: { company: CompanyProfile }) {
     return (
         <>
             <div className="w-full h-72 mb-20">
@@ -14,8 +15,8 @@ export default function HeaderSection() {
                             "hover:bg-border transition")}
                     >
                         <Image
-                            src={"/assets/cover.svg"}
-                            alt="Cover"
+                            src={company?.cover ?? "/assets/cover.svg"}
+                            alt={`${company.name}'s cover image`}
                             fill
                             className="object-cover"
                         />
@@ -31,8 +32,8 @@ export default function HeaderSection() {
                         )}
                     >
                         <Image
-                            src={"/assets/image_2.svg"}
-                            alt="Logo"
+                            src={company?.image ?? "/assets/image_2.svg"}
+                            alt={`${company.name}'s logo image`}
                             fill
                             className="object-cover rounded-full"
                         />
@@ -41,11 +42,11 @@ export default function HeaderSection() {
                 </div>
                 <div className="hidden lg:flex items-center justify-start mt-2">
                     <div className="w-48"></div>
-                    <h2 className="text-[28px] font-semibold">Saudi German Hospital</h2>
+                    <h2 className="text-[28px] font-semibold">{company.name}</h2>
                 </div>
             </div>
 
-            <h2 className="text-[28px] font-semibold lg:mb-0 mb-8 lg:opacity-0">Saudi German Hospital</h2>
+            <h2 className="text-[28px] font-semibold lg:mb-0 mb-8 lg:opacity-0">{company.name}</h2>
 
         </>
     )

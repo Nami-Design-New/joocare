@@ -1,7 +1,8 @@
 import React from "react";
 import JobOverviewItem from "./JobOverviewItem";
+import { JobDetails } from "../types/jobs.types";
 
-const JobOverviewCard: React.FC = () => {
+export default function JobOverviewCard({ job }: { job: JobDetails }) {
   return (
     <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-8">
       <h2 className="text-foreground mb-4 text-lg font-semibold">
@@ -11,33 +12,32 @@ const JobOverviewCard: React.FC = () => {
         <div className="col-span-2">
           <JobOverviewItem
             label="Experience"
-            value="3-5 years"
+            value={job?.eduction_level?.title}
             icon="/assets/icons/exp.svg"
           />
         </div>
         <JobOverviewItem
           label="Job Category"
-          value="Surgeon"
-          icon="/assets/icons/category-icon.svg"
+          value={job?.category?.title}
+          icon="/assets/icons/job-category.svg"
         />
         <JobOverviewItem
           label="Specialty"
-          value="Cardiology"
-          icon="/assets/icons/category-icon.svg"
+          value={job?.specialty?.title}
+          icon="/assets/icons/specialty.svg"
         />
         <JobOverviewItem
           label="Role category"
-          value="Clinical"
-          icon="/assets/icons/category-icon.svg"
+          value={job?.role_category?.title}
+          icon="/assets/icons/role-category.svg"
         />
         <JobOverviewItem
           label="Seniority Level"
-          value="Mid Level"
-          icon="/assets/icons/favorite-chart.svg"
+          value={job?.seniority_level?.title}
+          icon="/assets/icons/seniority.svg"
         />
       </div>
     </div>
   );
 };
 
-export default JobOverviewCard;

@@ -6,225 +6,223 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { InputField } from "@/shared/components/InputField";
 import LabelCheckbox from "@/shared/components/LabelCheckbox";
+import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
+import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import { useState } from "react";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { useRegisterEmployer } from "../../hooks/useRegisterEmployer";
 import {
   RegisterEmployerSchema,
   TRegisterEmployerSchema,
 } from "../../validation/employer-register-schema";
 import { OTPModal } from "../forget-password/OtpModal";
-import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 
 const FormEmployerRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
+    jobTitles,
+    isLoading,
+    error,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGetJobTitles();
+
+  const {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<TRegisterEmployerSchema>({
     resolver: zodResolver(RegisterEmployerSchema),
-    mode: 'onChange'
+    mode: "onChange",
   });
+
+  const email = watch("officialEmail");
+  const jobTitleOptions = jobTitles.map(
+    (jt: { id: number | string; name?: string; title?: string }) => ({
+      label: jt.name ?? jt.title ?? String(jt.id),
+      value: String(jt.id),
+    }),
+  );
+
+  const { mutate: submitRegister, isPending } = useRegisterEmployer(() =>
+    setIsModalOpen(true),
+  );
+
   const onSubmit: SubmitHandler<TRegisterEmployerSchema> = (data) => {
-    console.log(data);
-    setIsModalOpen(true)
-  }
+    const parsed = parsePhoneNumber(data.phoneNumber);
 
-  return (<>
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="mt-6 flex flex-col gap-5"
-    >
-      <InputField
-        id="companyName"
-        label="Company Name"
-        type={"text"}
-        placeholder="ex: JooCore"
-        {...register("companyName")}
-        error={errors.companyName?.message}
-      />
+    submitRegister({
+      name: data.companyName,
+      email: data.officialEmail,
+      domain_id: Number(data.domain),
+      password: data.createPassword,
+      person_name: data.personFullName,
+      person_phone: parsed?.nationalNumber ?? "",
+      person_phone_code: `+${parsed?.countryCallingCode ?? ""}`,
+    });
+  };
 
-      <InputField
-        id="officialEmail"
-        type="email"
-        label="Official Email"
-        placeholder="ex: mail@mail.com"
-        {...register("officialEmail")}
-        error={errors.officialEmail?.message}
-      />
+  return (
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-6 flex flex-col gap-5"
+      >
+        <InputField
+          id="companyName"
+          label="Company Name"
+          type={"text"}
+          placeholder="ex: JooCore"
+          {...register("companyName")}
+          error={errors.companyName?.message}
+        />
 
-      <Controller
-        name="domain"
-        control={control}
-        render={({ field }) => (
-          <SelectInputField
-            id="domain"
-            label="Domain"
-            placeholder="ex: Hospital"
-            {...field}
-            error={errors.domain?.message}
-            options={[
-              { label: "Hospital", value: "hospital" },
-              { label: "Software", value: "software" },
-              { label: "Company", value: "company" },
-            ]}
-          />
-        )}
-      />
-      <InputField
-        id="personFullName"
-        type="text"
-        label="Contact person _ full name "
-        placeholder="ex: John Doe"
-        {...register("personFullName")}
-        error={errors.personFullName?.message}
-      />
+        <InputField
+          id="officialEmail"
+          type="email"
+          label="Official Email"
+          placeholder="ex: mail@mail.com"
+          {...register("officialEmail")}
+          error={errors.officialEmail?.message}
+        />
 
-      {/* <>
-        {" "}
-        <label htmlFor={"phoneCode"} className="mx-1 -mb-4 font-semibold">
-          Contact person _ Phone number
-        </label>
-        <div className="flex items-center gap-2">
-          <Controller
-            name="phoneCode"
-            control={control}
-            render={({ field }) => (
-              <SelectInputField
-                id="phoneCode"
-                placeholder="+999"
-                {...field}
-                error={!!errors.phoneCode}
-                showPlaceholderImage={"/assets/flag.svg"}
-                className="w-29 min-w-29"
-                containerStyles="w-fit"
-
-                options={[
-                  { label: "+999", value: "+999", image: "/assets/flag.svg" },
-                  { label: "+24", value: "+24", image: "/assets/logo_1.svg" },
-                  { label: "+55", value: "+55", image: "/assets/flag.svg" },
-                ]}
-              />
-            )}
-          />
-          <InputField
-            id="phoneNumber"
-            type="text"
-            placeholder="ex:52 987 6543"
-            {...register("phoneNumber")}
-            error={errors.phoneNumber?.message ? true : false}
-          />
-        </div>
-        {(errors.phoneCode || errors.phoneNumber) && (
-          <span className="-mt-4 text-[12px] text-red-500">
-            {errors.phoneCode && errors.phoneNumber
-              ? "Phone code and phone number are required"
-              : errors.phoneCode?.message || errors.phoneNumber?.message}
-          </span>
-        )}
-      </> */}
-
-
-      {/* Phone number */}
-      <>
-        <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
-          Contact person _ Phone number
-        </label>
         <Controller
-          name="phoneNumber"
+          name="domain"
           control={control}
           render={({ field }) => (
-            <PhoneInputCode
+            <SelectInputField
+              id="domain"
+              label="Domain"
+              placeholder="ex: Hospital"
+              withSearchInput={true}
               {...field}
-              defaultCountry="EG"
-              id="phoneNumber"
-              className="w-full"
-              placeholder="Enter phone number"
-              onChange={(value) => field.onChange(value)}
-              error={errors.phoneNumber?.message ? true : false}
-
+              error={
+                errors.domain?.message ??
+                (error instanceof Error ? error.message : undefined)
+              }
+              options={jobTitleOptions}
+              disabled={isLoading}
+              onReachEnd={() => fetchNextPage()}
+              hasNextPage={!!hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
             />
           )}
         />
-        {errors.phoneNumber && (
-          <span className="-mt-4 text-[12px] text-red-500">
-            {errors.phoneNumber.message}
-          </span>
-        )}
-      </>
+        <InputField
+          id="personFullName"
+          type="text"
+          label="Contact person _ full name "
+          placeholder="ex: John Doe"
+          {...register("personFullName")}
+          error={errors.personFullName?.message}
+        />
 
+        {/* Phone number */}
+        <>
+          <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
+            Contact person _ Phone number
+          </label>
+          <Controller
+            name="phoneNumber"
+            control={control}
+            render={({ field }) => (
+              <PhoneInputCode
+                {...field}
+                defaultCountry="AE"
+                id="phoneNumber"
+                className="w-full"
+                placeholder="Enter phone number"
+                onChange={(value) => field.onChange(value)}
+                error={errors.phoneNumber?.message ? true : false}
+              />
+            )}
+          />
+          {errors.phoneNumber && (
+            <span className="-mt-4 text-[12px] text-red-500">
+              {errors.phoneNumber.message}
+            </span>
+          )}
+        </>
 
-      <InputField
-        id="createPassword"
-        type="password"
-        label="Create password"
-        placeholder="******"
-        {...register("createPassword")}
-        error={errors.createPassword?.message}
-      />
+        <InputField
+          id="createPassword"
+          type="password"
+          label="Create password"
+          placeholder="******"
+          {...register("createPassword")}
+          error={errors.createPassword?.message}
+        />
 
-      <Controller
-        name="confirmRegister"
-        control={control}
-        render={({ field }) => (
-          <LabelCheckbox
-            id="confirmRegister"
-            checked={field.value}
-            onCheckedChange={field.onChange}
-            error={errors.confirmRegister?.message}
-          >
-            I confirm that I am an employee of the company and that I am
-            authoried to use JooCare services on its behalf.
-          </LabelCheckbox>
-        )}
-      />
-
-      <Controller
-        name="termsAndConditions"
-        control={control}
-        render={({ field }) => (
-          <LabelCheckbox
-            id="termsAndConditions"
-            checked={field.value}
-            onCheckedChange={field.onChange}
-            error={errors.termsAndConditions?.message}
-          >
-            I agree to the{" "}
-            <Link
-              href="#"
-              className="underline-primary text-secondary underline"
+        <Controller
+          name="confirmRegister"
+          control={control}
+          render={({ field }) => (
+            <LabelCheckbox
+              id="confirmRegister"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              error={errors.confirmRegister?.message}
             >
-              Terms & Conditions
-            </Link>
-            and
-            <Link
-              href="#"
-              className="underline-primary text-secondary underline"
+              I confirm that I am an employee of the company and that I am
+              authoried to use JooCare services on its behalf.
+            </LabelCheckbox>
+          )}
+        />
+
+        <Controller
+          name="termsAndConditions"
+          control={control}
+          render={({ field }) => (
+            <LabelCheckbox
+              id="termsAndConditions"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              error={errors.termsAndConditions?.message}
             >
-              Privacy Policy.
-            </Link>
-          </LabelCheckbox>
-        )}
+              I agree to the{" "}
+              <Link
+                href="#"
+                className="underline-primary text-secondary underline"
+              >
+                Terms & Conditions
+              </Link>
+              and
+              <Link
+                href="#"
+                className="underline-primary text-secondary underline"
+              >
+                Privacy Policy.
+              </Link>
+            </LabelCheckbox>
+          )}
+        />
+
+        <div className="mt-2.5 flex justify-center">
+          <Button
+            hoverStyle={"slideSecondary"}
+            className="w-1/3"
+            size={"pill"}
+            type="submit"
+          // disabled={isSubmitting}
+          >
+            {isPending ? "Registering..." : "Register"}
+          </Button>
+        </div>
+      </form>
+      {/* Otp modal  */}
+      <OTPModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        email={email}
+        role="employer"
+        purpose="email-confirm"
       />
-
-      <div className="mt-2.5 flex justify-center">
-        <Button
-          hoverStyle={"slideSecondary"}
-          className="w-1/3"
-          size={"pill"}
-          type="submit"
-        >
-          Register
-        </Button>
-      </div>
-
-    </form>
-    {/* Otp modal  */}
-    <OTPModal open={isModalOpen} onOpenChange={setIsModalOpen} />
-  </>
-
+    </>
   );
 };
 

@@ -37,7 +37,7 @@ export default function Why() {
 
   return (
     <section className="py-20 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mx-auto  px-4 sm:px-6">
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           {/* Left column */}
           <div className="lg:col-span-5">
@@ -66,15 +66,15 @@ export default function Why() {
             </p>
 
             <Button
-            variant="default"
-            size="pill"
-            hoverStyle="slideSecondary"
-            className="w-full flex items-center justify-center gap-2 sm:mt-8 sm:w-fit"
-          >
-            Get Started For Free
-      
-            <MoveRight className="mt-[3px]" size={16} />
-          </Button>
+              variant="default"
+              size="pill"
+              hoverStyle="slideSecondary"
+              className="w-full flex items-center justify-center gap-2 sm:mt-8 sm:w-fit"
+            >
+              Get Started For Free
+
+              <MoveRight className="mt-[3px]" size={16} />
+            </Button>
           </div>
 
           {/* Right column */}

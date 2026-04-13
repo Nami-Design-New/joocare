@@ -8,41 +8,72 @@ import LabelCheckbox from "@/shared/components/LabelCheckbox";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
 
-import { FilepondUpload } from "@/shared/components/FilepondUpload";
+import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
+import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
+import { useState } from "react";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { useRegisterCandidate } from "../../hooks/useRegisterCandidate";
 import {
   RegisterCandidateSchema,
   TRegisterCandidateSchema,
 } from "../../validation/candidate-register-schema";
-import { useState } from "react";
 import { OTPModal } from "../forget-password/OtpModal";
-import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
+import useGetCountries from "@/shared/hooks/useGetCountries";
+import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
+import { FilepondUpload } from "@/shared/components/FilepondUpload";
 
 const FormCandidateRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { jobTitles, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetJobTitles();
+  const { countries, isLoading: countryLoading, error: countryError, hasNextPage: countryHasNextPage, fetchNextPage: countryFetchNextPage, isFetchingNextPage: countryIsFetchingNextPage } = useGetCountries();
 
   const {
     register,
     control,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TRegisterCandidateSchema>({
     resolver: zodResolver(RegisterCandidateSchema),
     defaultValues: {
-      uploadCV: [],
+      uploadCV: "",
       confirmRegister: false,
-      uploadLicense: [],
+      uploadLicense: "",
     },
     mode: "onChange", // Validate on blur for better UX
   });
 
+  const verificationEmail = watch("email");
+  const countryId = watch("country");
+  const { cities, isLoading: cityLoading, error: cityError, hasNextPage: cityHasNextPage, fetchNextPage: cityFetchNextPage, isFetchingNextPage: cityIsFetchingNextPage } = useGetCitiesByCountryId(Number(countryId));
+
   const confirmRegisterValue = watch("confirmRegister");
+  const { mutate: submitRegister, isPending } = useRegisterCandidate(() =>
+    setIsModalOpen(true)
+  );
 
   const onSubmit: SubmitHandler<TRegisterCandidateSchema> = (data) => {
-    console.log(data);
-    setIsModalOpen(true)
-  };
+    console.log("data registdere", data);
 
+    const parsed = parsePhoneNumber(data.phoneNumber);
+
+    submitRegister({
+      name: data.fullName,
+      email: data.email,
+      phone: parsed?.nationalNumber ?? "",
+      phone_code: `+${parsed?.countryCallingCode ?? ""}`,
+      job_title_id: data.jobTitle,
+      country_id: data.country,
+      city_id: data.city,
+      password: data.createPassword,
+      has_medical_license: data.confirmRegister,
+      license_country_id: data.country,
+      license_title: data.licenseTitle,
+      license_number: data.licenseNumber,
+      cv: data.uploadCV,
+      license: data.uploadLicense,
+    });
+  };
   return (<>
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -103,14 +134,19 @@ const FormCandidateRegister = () => {
           <SelectInputField
             id="jobTitle"
             label="Job Title"
+            withSearchInput={true}
             placeholder="ex: Hospital"
             {...field}
-            error={errors.jobTitle?.message}
-            options={[
-              { label: "Hospital", value: "hospital" },
-              { label: "Software", value: "software" },
-              { label: "Company", value: "company" },
-            ]}
+            error={errors.jobTitle?.message ?? (error instanceof Error ? error.message : undefined)}
+            options={jobTitles.map((jt) => ({
+              label: jt.title,
+              value: String(jt.id),
+            }))}
+
+            disabled={isLoading}
+            onReachEnd={() => fetchNextPage()}
+            hasNextPage={!!hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
           />
         )}
       />
@@ -129,12 +165,14 @@ const FormCandidateRegister = () => {
                 id="country"
                 placeholder="country"
                 {...field}
+                options={countries.map((c) => ({
+                  label: c.name,
+                  value: String(c.id),
+                }))}
                 error={errors.country?.message}
-                options={[
-                  { label: "egypt", value: "egypt" },
-                  { label: "saudi", value: "saudi" },
-                  { label: "canada", value: "canada" },
-                ]}
+                onReachEnd={() => countryFetchNextPage()}
+                hasNextPage={!!countryHasNextPage}
+                isFetchingNextPage={countryIsFetchingNextPage}
               />
             )}
           />
@@ -147,11 +185,14 @@ const FormCandidateRegister = () => {
                 placeholder="city"
                 {...field}
                 error={errors.city?.message}
-                options={[
-                  { label: "cairo", value: "cairo" },
-                  { label: "alex", value: "alex" },
-                  { label: "reyad", value: "reyad" },
-                ]}
+                options={cities.map((c) => ({
+                  label: c.name,
+                  value: String(c.id),
+                }))}
+                disabled={!countryId}
+                onReachEnd={() => cityFetchNextPage()}
+                hasNextPage={!!cityHasNextPage}
+                isFetchingNextPage={cityIsFetchingNextPage}
               />
             )}
           />
@@ -173,13 +214,15 @@ const FormCandidateRegister = () => {
         name="uploadCV"
         control={control}
         render={({ field }) => (
+
           <FilepondUpload
-            label={`Upload CV`}
-            hint={`"Optional"`}
-            files={field.value}
-            onChange={field.onChange}
+            label="Upload CV"
+            hint='"Optional"'
+            value={field.value}                         // the stored path
+            onUploadSuccess={(imagePath) => field.onChange(imagePath)} // ✅ set path
+            onRemove={() => field.onChange("")}          // ✅ clear on remove
             allowMultiple={false}
-            maxFiles={2}
+            maxFiles={1}
             error={errors.uploadCV?.message}
           />
         )}
@@ -215,14 +258,13 @@ const FormCandidateRegister = () => {
                   placeholder="ex: United Arab Emirates (UAE)"
                   error={errors.specificCountry?.message ? true : false}
                   {...field}
-                  options={[
-                    {
-                      label: "United Arab Emirates (UAE)",
-                      value: "United Arab Emirates (UAE)",
-                    },
-                    { label: "Egypt", value: "Egypt" },
-                    { label: "Saudi Arabia", value: "Saudi Arabia" },
-                  ]}
+                  options={countries.map((c) => ({
+                    label: c.name,
+                    value: String(c.id),
+                  }))}
+                  onReachEnd={() => countryFetchNextPage()}
+                  hasNextPage={!!countryHasNextPage}
+                  isFetchingNextPage={countryIsFetchingNextPage}
                 />
               )}
             />
@@ -235,7 +277,6 @@ const FormCandidateRegister = () => {
           <InputField
             id="licenseTitle"
             label="License Title"
-            hint={`"Optional"`}
             placeholder="ex: License Title"
             {...register("licenseTitle")}
             error={errors.licenseTitle?.message}
@@ -249,19 +290,18 @@ const FormCandidateRegister = () => {
             error={errors.licenseNumber?.message}
           />
 
-
-
           <Controller
             name="uploadLicense"
             control={control}
             render={({ field }) => (
               <FilepondUpload
                 label="Upload the license image"
-                hint={`"Optional"`}
-                files={field.value}
-                onChange={field.onChange}
+                hint='"Optional"'
+                value={field.value}
+                onUploadSuccess={(imagePath) => field.onChange(imagePath)}
+                onRemove={() => field.onChange("")}
                 allowMultiple={false}
-                maxFiles={2}
+                maxFiles={1}
                 error={errors.uploadLicense?.message}
               />
             )}
@@ -276,13 +316,19 @@ const FormCandidateRegister = () => {
           className="w-1/3"
           size="pill"
           type="submit"
-          disabled={isSubmitting}
+          disabled={isPending}
         >
-          {isSubmitting ? "Registering..." : "Register"}
+          {isPending ? "Registering..." : "Register"}
         </Button>
       </div>
     </form>
-    <OTPModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+    <OTPModal
+      open={isModalOpen}
+      onOpenChange={setIsModalOpen}
+      email={verificationEmail}
+      role="candidate"
+      purpose="email-confirm"
+    />
 
   </>
 

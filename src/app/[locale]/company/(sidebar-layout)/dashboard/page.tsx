@@ -1,19 +1,18 @@
+"use client"
+
 import ActiveJobsTable from "@/features/company-dashboard/components/ActiveJobsTable";
 import DashBoardStatsCard from "@/features/company-dashboard/components/DashBoardStatsCard";
 import PieChartCard from "@/features/company-dashboard/components/PieChartCard";
-import { activeJobType } from "@/features/company-dashboard/index.type";
+import useGetCompanyDashboard from "@/features/company-dashboard/hooks/useGetCompanyDashboard";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
-const MOCK_ACTIVE_JOBS: activeJobType[] = Array.from({ length: 6 }, (_, i) => ({
-  id: i + 1,
-  jobTitle: "Consultant Internist",
-  jobViews: 12,
-  applicants: 2,
-  postedSince: "21 December 2026",
-  cvUrl: "/cv/applicant.pdf",
-}));
-
 const DashboardPage = () => {
+  const { data: session } = useSession();
+  const token = session?.accessToken as string
+  const { data: companyDashboardData, isPending } = useGetCompanyDashboard({ token });
+  // console.log("companydashboard data", companyDashboardData);
+
   return (
     <section className="space-y-6">
       <h1 className="text-foreground text-xl font-semibold">Active Jobs</h1>
@@ -22,8 +21,9 @@ const DashboardPage = () => {
         {/* Top 3 stats cards */}
         <div className="col-span-1">
           <DashBoardStatsCard
+            isPending={isPending}
             title="Active job postings"
-            primaryValue="+12"
+            primaryValue={`+${Number(companyDashboardData?.active_jobs)}`}
             description="Current active job postings"
             icon={
               <Image
@@ -37,9 +37,10 @@ const DashboardPage = () => {
         </div>
         <div className="col-span-1">
           <DashBoardStatsCard
+            isPending={isPending}
             title="Total Application Volume"
-            primaryValue="327"
-            addState={{ label: "this week", value: "+12" }}
+            primaryValue={Number(companyDashboardData?.total_applications)}
+            addState={{ label: "this week", value: `+${Number(companyDashboardData?.applications_this_week)}` }}
             description="Total applications across all jobs"
             icon={
               <Image
@@ -53,8 +54,9 @@ const DashboardPage = () => {
         </div>{" "}
         <div className="col-span-1">
           <DashBoardStatsCard
+            isPending={isPending}
             title="Latest Activity"
-            primaryValue="+12"
+            primaryValue={`+${Number(companyDashboardData?.applications_latest_activity)}`}
             badge={{ label: "Application" }}
             description="2 hours ago"
             icon={
@@ -70,8 +72,9 @@ const DashboardPage = () => {
         {/* Left column stacked: Talant intake + Pie chart */}
         <div className="xl:col-start-1 xl:row-start-2 xl:row-end-3">
           <DashBoardStatsCard
+            isPending={isPending}
             title="Talant intake"
-            primaryValue="320"
+            primaryValue={`${Number(companyDashboardData?.cvs_downloaded)}`}
             description="CVs downloaded"
             icon={
               <Image
@@ -83,13 +86,16 @@ const DashboardPage = () => {
             }
           />
         </div>
-        <PieChartCard className="lg:col-span-2 lg:col-start-1 lg:row-start-3 xl:col-span-1 xl:row-start-3 xl:row-end-4" />
+        <PieChartCard
+          isPending={isPending}
+          companyDashboardData={companyDashboardData}
+          className="lg:col-span-2 lg:col-start-1 lg:row-start-3 xl:col-span-1 xl:row-start-3 xl:row-end-4" />
         {/* Right column table spanning 2 columns */}
         <div className="lg:col-span-2 lg:row-start-4 xl:col-span-2 xl:col-start-2 xl:row-start-2 xl:row-end-4">
-          <ActiveJobsTable activeJobs={MOCK_ACTIVE_JOBS} />
+          <ActiveJobsTable />
         </div>
       </div>
-    </section>
+    </section >
   );
 };
 export default DashboardPage;

@@ -1,13 +1,20 @@
 import { Plus, Search } from "lucide-react";
 import Image from "next/image";
+import type { AboutImage } from "../types/about.types";
 
-export default function CorePillarsVisual() {
+export default function CorePillarsVisual({ images }: { images: AboutImage[] }) {
+  const firstImage = images[0];
+  const secondImage = images[1];
+  const thirdImage = images[2];
+  const fourthImage = images[3];
+  const fifthImage = images[4];
+
   return (
     <div className="relative mx-auto flex h-fit w-full max-w-85 flex-col gap-4 sm:sm:max-w-130 sm:gap-6 lg:mx-0 lg:max-w-none">
       <div className="relative h-45 w-[78%] overflow-hidden rounded-tl-[40px] rounded-br-[40px] sm:h-55 sm:w-85 sm:rounded-tl-[50px] sm:rounded-br-[50px] lg:h-50 lg:w-[320px]">
         <Image
-          src="/assets/about/corePillar1.jpg"
-          alt="Medical recruitment workflow"
+          src={firstImage?.image ?? "/assets/about/corePillar1.jpg"}
+          alt={firstImage?.alt ?? "Medical recruitment workflow"}
           fill
           className="object-cover"
         />
@@ -52,8 +59,8 @@ export default function CorePillarsVisual() {
       <div className="flex gap-3 sm:gap-6">
         <div className="`h-42.5 relative w-[44%] overflow-hidden rounded-tr-[40px] rounded-bl-[40px] sm:h-50 sm:w-50 sm:rounded-tr-[50px] sm:rounded-bl-[50px]">
           <Image
-            src="/assets/about/corePillar2.jpg"
-            alt="Healthcare professional"
+            src={secondImage?.image ?? "/assets/about/corePillar2.jpg"}
+            alt={secondImage?.alt ?? "Healthcare professional"}
             fill
             className="object-cover"
           />
@@ -61,8 +68,8 @@ export default function CorePillarsVisual() {
 
         <div className="relative h-[240px] w-[56%] overflow-hidden rounded-tl-[40px] rounded-br-[40px] sm:h-[300px] sm:w-[260px] sm:rounded-tl-[50px] sm:rounded-br-[50px]">
           <Image
-            src="/assets/about/corePillar3.jpg"
-            alt="Clinical team"
+            src={thirdImage?.image ?? "/assets/about/corePillar3.jpg"}
+            alt={thirdImage?.alt ?? "Clinical team"}
             fill
             className="object-cover"
           />
@@ -76,17 +83,17 @@ export default function CorePillarsVisual() {
 
         <div className="mt-3 flex items-center">
           <Image
-            src="/assets/about/doc1.jpg"
+            src={fourthImage?.image ?? "/assets/about/doc1.jpg"}
             width={36}
             height={36}
-            alt="Verified doctor"
+            alt={fourthImage?.alt ?? "Verified doctor"}
             className="h-8 w-8 rounded-full border-2 border-white object-cover sm:h-9 sm:w-9"
           />
           <Image
-            src="/assets/about/doc2.jpg"
+            src={fifthImage?.image ?? "/assets/about/doc2.jpg"}
             width={36}
             height={36}
-            alt="Verified doctor"
+            alt={fifthImage?.alt ?? "Verified doctor"}
             className="-ml-3 h-8 w-8 rounded-full border-2 border-white object-cover sm:h-9 sm:w-9"
           />
           <Image

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ApplicantsTable from "@/features/jobs/components/Applicantstable";
 import CVModal from "@/features/jobs/components/CVModal";
-import { Applicant } from "@/features/jobs/index.types";
+import { Applicant } from "@/features/jobs/types/index.types";
 
 type Props = {
   applicants: Applicant[];
@@ -19,12 +19,25 @@ export default function ApplicantsClient({ applicants }: Props) {
     setSelectedApplicant(applicant);
     setOpen(true);
   };
+  console.log("application", applicants);
 
   return (
     <>
-      <ApplicantsTable applicants={applicants} onView={handleView} />
+      <ApplicantsTable
+        applicants={applicants}
+        onView={handleView}
+        onDownload={(applicant) => {
+          if (!applicant.cvUrl) return;
+          window.open(applicant.cvUrl, "_blank", "noopener,noreferrer");
+        }}
+      />
 
-      <CVModal open={open} onOpenChange={setOpen} title={"View Cv"} />
+      <CVModal
+        open={open}
+        onOpenChange={setOpen}
+        title={"View Cv"}
+        pdfUrl={selectedApplicant?.cvUrl}
+      />
     </>
   );
 }

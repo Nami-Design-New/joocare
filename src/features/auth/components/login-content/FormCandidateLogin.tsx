@@ -11,17 +11,26 @@ import {
   loginCandidateSchema,
   TLoginCandidateSchema,
 } from "../../validation/candidate-login-schema";
+import { useLogin } from "../../hooks/useLogin";
 
 const FormCandidateLogin = () => {
+  const { login } = useLogin("candidate");
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<TLoginCandidateSchema>({
     resolver: zodResolver(loginCandidateSchema),
   });
-  const onSubmit: SubmitHandler<TLoginCandidateSchema> = (data) =>
-    console.log(data);
+
+  const onSubmit: SubmitHandler<TLoginCandidateSchema> = async (data) => {
+    try {
+      await login(data.email, data.password);
+    } catch {
+      // Toast feedback is handled in the login hook.
+    }
+  };
 
   return (
     <form
@@ -53,8 +62,9 @@ const FormCandidateLogin = () => {
           className="w-1/3"
           size={"pill"}
           type="submit"
+          disabled={isSubmitting}
         >
-          Login
+          {isSubmitting ? "Logging..." : "Login"}
         </Button>
       </div>
     </form>

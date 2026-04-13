@@ -10,25 +10,34 @@ import {
 } from "@/shared/components/ui/dialog";
 import { RefreshCw, Trash } from "lucide-react";
 import Image from "next/image";
+import { isPdfFileName } from "../validation/cv-schema";
 
 type ConfirmDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
   url?: string;
+  fileName: string;
   handleDownload: () => void;
   handleUploadClick: () => void;
   handleDelete: () => void;
+  isDeleting?: boolean;
+  isUploading?: boolean;
 };
 export default function CVModal({
   open,
   onOpenChange,
   title,
   url,
+  fileName,
   handleDownload,
   handleUploadClick,
   handleDelete,
+  isDeleting = false,
+  isUploading = false,
 }: ConfirmDialogProps) {
+  const isPdf = isPdfFileName(fileName);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="mb-25 max-w-150 rounded-2xl p-8 text-center">
@@ -52,7 +61,13 @@ export default function CVModal({
           </Button>
         </DialogHeader>
 
-        <PdfViewer url={url ? url : "/cv.pdf"} />
+        {isPdf && url ? (
+          <PdfViewer url={url} />
+        ) : (
+          <div className="text-muted-foreground flex min-h-60 items-center justify-center rounded-2xl border border-dashed p-6 text-sm">
+            Preview is available for PDF files only. You can still download, update, or delete this CV.
+          </div>
+        )}
 
         <div className="flex justify-center items-center gap-2">
           <Button
@@ -60,18 +75,20 @@ export default function CVModal({
             variant="destructive"
             className="flex items-center gap-1.5 rounded-full px-4 h-10"
             onClick={() => handleDelete()}
+            disabled={isDeleting || isUploading}
           >
             <Trash className="h-4 w-4" />
-            Delete
+            {isDeleting ? "Deleting..." : "Delete"}
           </Button>
           <Button
             size="sm"
             variant="default"
             className="flex items-center gap-1.5 rounded-full px-4 h-10"
             onClick={() => handleUploadClick()}
+            disabled={isUploading || isDeleting}
           >
             <RefreshCw className="h-4 w-4" />
-            Update
+            {isUploading ? "Updating..." : "Update"}
           </Button>
         </div>
 

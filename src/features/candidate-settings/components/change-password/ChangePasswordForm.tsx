@@ -5,9 +5,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { InputField } from '@/shared/components/InputField';
 import { Button } from '@/shared/components/ui/button';
-import { ChangePasswordSchema, TChangePasswordSchema } from '@/features/accout-settings/validation/change-password-schema';
+import { ChangePasswordSchema, TChangePasswordSchema } from '../../validation/change-password-schema';
+import { useChangePassword } from '../../hooks/useChangePassword';
+import { useSession } from 'next-auth/react';
 
 const ChangePasswordForm = () => {
+    const { data: session } = useSession();
+    const token = session?.accessToken || "";
+    const { mutate: changePassword, isPending } = useChangePassword({ token });
 
     const {
         register,
@@ -19,7 +24,11 @@ const ChangePasswordForm = () => {
     });
 
     const onSubmit: SubmitHandler<TChangePasswordSchema> = (data) => {
-        console.log(data);
+        changePassword({
+            current_password: data.currentPassword,
+            password: data.newPassword,
+            password_confirmation: data.confirmNewPassword,
+        });
         reset()
     }
 
@@ -40,8 +49,8 @@ const ChangePasswordForm = () => {
 
 
                 placeholder="*******" />
-            <Button variant={"secondary"} hoverStyle={'slidePrimary'} size={'pill'} className='w-1/3 md:w-56' type="submit">
-                Save
+            <Button variant={"secondary"} hoverStyle={'slidePrimary'} size={'pill'} className='w-1/3 md:w-56' type="submit" disabled={isPending}>
+                {isPending ? "Saving..." : "Save"}
             </Button>
 
         </form>

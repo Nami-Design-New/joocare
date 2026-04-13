@@ -5,7 +5,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/shared/components/ui/table";
-import { Applicant } from "../index.types";
+import { Applicant } from "../types/index.types";
 import ApplicantRow from "./ApplicantRow";
 
 // ─── Types ────────────────────────────────────────────────────────────────────

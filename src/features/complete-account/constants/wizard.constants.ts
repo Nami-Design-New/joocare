@@ -7,11 +7,11 @@ export const steps: StepConfig[] = [
   {
     component: StepOne,
     fields: [
-      "companyName",
-      "officialEmail",
-      "domain",
-      "personFullName",
-      "phoneNumber",
+      "name",
+      "email",
+      "domain_id",
+      "person_name",
+      "person_phone",
     ],
   },
   {
@@ -48,11 +48,12 @@ export const steps: StepConfig[] = [
 
 export const defaultValuesWizard: WizardFormData = {
   // default data step one
-  companyName: "JooCore",
-  officialEmail: "mail@mail.com",
-  domain: "hospital",
-  personFullName: "John Doe",
-  phoneNumber: "+201011618275",
+  name: "",
+  email: "",
+  domain_id: "",
+  person_name: "",
+  person_phone: "",
+  person_phone_code: "",
 
   // default data step two
   commercialRegister: "",
@@ -70,13 +71,13 @@ export const defaultValuesWizard: WizardFormData = {
   medicalLicenseImage: [],
 
   // default data step three
-  uploadCoverImage: [],
-  uploadLogoImage: [],
+  uploadCoverImage: "",
+  uploadLogoImage: "",
   organizationPhoneCode: "",
   organizationPhoneNumber: "",
   organizationCountry: "",
   organizationCity: "",
   dateOfEstablishment: "",
   aboutOrganization: "",
-  
+
 };

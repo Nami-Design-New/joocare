@@ -1,9 +1,8 @@
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
-import { Checkbox } from "@/shared/components/ui/checkbox";
-import { Label } from "@/shared/components/ui/label";
 import { cn } from "@/shared/lib/utils";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { AccordionSection } from "../../types/index.types";
 
 interface AccordionProps {
   section: AccordionSection;
@@ -47,26 +46,23 @@ export default function FilterAccordion({
       {isOpen && (
         <div className="flex flex-col gap-2.5 pb-4">
           {section.options.map((option) => {
-            const id = `${section.key}-${option}`;
-            const checked = selected.includes(option);
+            const id = `${section.key}-${option.value}`;
+            const checked = selected.includes(option.value);
             return (
-              <div key={option} className="flex items-center gap-2.5">
-                <Checkbox
+              <label key={option.value} htmlFor={id} className="flex cursor-pointer items-center gap-2.5">
+                <input
                   id={id}
+                  name={section.name}
+                  type={section.type ?? "checkbox"}
+                  value={option.value}
                   checked={checked}
-                  onCheckedChange={(value) => onCheck(option, !!value)}
-                  className={cn(
-                    "border-border h-5 w-5 rounded-[2px] bg-[#E5E7EB] outline-0",
-                    "data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:h-5 data-[state=checked]:w-5 data-[state=checked]:rounded-[2px]",
-                  )}
+                  onChange={(event) => onCheck(option.value, event.target.checked)}
+                  className="border-border text-primary focus:ring-primary h-4 w-4 rounded border"
                 />
-                <Label
-                  htmlFor={id}
-                  className="text-foreground/75 cursor-pointer text-sm font-normal select-none"
-                >
-                  {option}
-                </Label>
-              </div>
+                <span className="text-foreground/75 text-sm font-normal select-none">
+                  {option.label}
+                </span>
+              </label>
             );
           })}
         </div>

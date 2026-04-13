@@ -3,8 +3,9 @@ import { z } from "zod";
 export const ForgetPasswordSchema = z.object({
   email: z
     .string()
-    .min(1, { message: "This field is required" })
-    .email({ message: "Not valid email" }),
+    .trim()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Please enter a valid email address" }),
 });
 
 export type TForgetPasswordSchema = z.infer<typeof ForgetPasswordSchema>;

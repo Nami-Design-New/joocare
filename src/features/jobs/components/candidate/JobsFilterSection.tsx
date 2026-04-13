@@ -2,55 +2,72 @@
 
 import { PopularSearchesItem } from "@/features/home/components/PopularSearches";
 import PopularSearchesInteractive from "@/features/home/components/PopularSearchesInteractive";
+import { buildJobsPagePath } from "@/features/jobs/utils";
 import { InputField } from "@/shared/components/InputField";
 import { Option, SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
 import { useState } from "react";
-const POPULAR_SEARCHES: PopularSearchesItem[] = [
-  { id: "1", label: "Plastic Surgeon" },
-  { id: "2", label: "Dermatologist" },
-  { id: "3", label: "Dermatologist" },
-  { id: "4", label: "Dermatologist" },
-  { id: "5", label: "Dermatologist" },
-  { id: "6", label: "Dermatologist" },
-  { id: "7", label: "Dermatologist" },
-  { id: "8", label: "Dermatologist" },
-  { id: "9", label: "Dermatologist" },
-  { id: "10", label: "Dermatologist" },
-  { id: "11", label: "Dermatologist" },
-  { id: "12", label: "Dermatologist" },
-  { id: "13", label: "Dermatologist" },
-  { id: "14", label: "Dermatologist" },
-  { id: "15", label: "Dermatologist" },
-  { id: "16", label: "Dermatologist" },
-  { id: "17", label: "Dermatologist" },
-  { id: "18", label: "Dermatologist" },
-  { id: "19", label: "Dermatologist" },
-  { id: "20", label: "Dermatologist" },
-  // ...
-];
-const locations: Option[] = [
-  { label: "Egypt", value: "egypt" },
-  { label: "UAE", value: "uae" },
-  { label: "Saudi Arabia", value: "ksa" },
-];
-export default function JobsFilterSection() {
-  const [location, setLocation] = useState<Option | undefined>();
+
+type JobsFilterSectionProps = {
+  locale: string;
+  actionPath: string;
+  heading: string;
+  description: string;
+  search: string;
+  country: string;
+  countries: Option[];
+  popularSearches: PopularSearchesItem[];
+  hiddenInputs: Array<{ name: string; value: string }>;
+};
+
+export default function JobsFilterSection({
+  locale,
+  actionPath,
+  heading,
+  description,
+  search,
+  country,
+  countries,
+  popularSearches,
+  hiddenInputs,
+}: JobsFilterSectionProps) {
+  const [location, setLocation] = useState<string>(country);
+
   return (
     <section className="px-3 lg:px-25">
       <section className="container mx-auto mt-4 lg:-mt-24">
         <section className="rounded-2xl bg-white p-4">
-          <form className="bg-border mx-auto mb-4 flex w-full max-w-5xl flex-wrap items-center justify-center gap-2 rounded-lg p-2 md:flex-nowrap md:rounded-full">
+          <div className="mx-auto mb-6 max-w-5xl text-center">
+            <h1 className="text-secondary text-3xl font-semibold lg:text-4xl">
+              {heading}
+            </h1>
+            <p className="text-muted-foreground mt-3 text-sm leading-6 lg:text-base">
+              {description}
+            </p>
+          </div>
+
+          <form
+            action={actionPath}
+            method="get"
+            className="bg-border mx-auto mb-4 flex w-full max-w-5xl flex-wrap items-center justify-center gap-2 rounded-lg p-2 md:flex-nowrap md:rounded-full"
+          >
+            {hiddenInputs.map((input) => (
+              <input key={`${input.name}-${input.value}`} type="hidden" name={input.name} value={input.value} />
+            ))}
+
             <InputField
+              name="search"
+              defaultValue={search}
               className="grow bg-white"
               containerStyles="w-auto grow"
               id="search"
               placeholder="Job title or keyword"
             />
 
+            <input type="hidden" name="country" value={location} />
             <SelectInputField
               id="location"
-              options={locations}
+              options={countries}
               placeholder="By country"
               value={location}
               onChange={setLocation}
@@ -58,12 +75,31 @@ export default function JobsFilterSection() {
               containerStyles="w-auto grow"
             />
 
-            <Button variant="default" size="pill" className="shrink-0">
+            <Button type="submit" variant="default" size="pill" className="shrink-0">
               Search
             </Button>
           </form>
           <PopularSearchesInteractive
-            items={POPULAR_SEARCHES}
+            items={popularSearches.map((item) => ({
+              ...item,
+              href: buildJobsPagePath(locale, {
+                page: 1,
+                search: item.label,
+                country: "",
+                professionalLicense: "",
+                domain: "",
+                minSalary: "",
+                maxSalary: "",
+                roleCategories: [],
+                seniorityLevels: [],
+                specialties: [],
+                experiences: [],
+                availabilities: [],
+                salaryTypes: [],
+                categories: [],
+                employmentTypes: [],
+              }),
+            }))}
             variant="hero"
             maxVisible={10}
           />

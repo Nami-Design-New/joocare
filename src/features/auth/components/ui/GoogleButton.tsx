@@ -4,9 +4,19 @@ import Image from "next/image";
 //components
 import { Button } from "@/shared/components/ui/button";
 
-const GoogleButton = () => {
+const GoogleButton = ({
+  onClick,
+}: {
+  onClick?: () => void | Promise<void>;
+}) => {
   return (
-    <Button variant={"outline"} size={"xl"} className="w-1/2 gap-2 text-lg border-border">
+    <Button
+      variant={"outline"}
+      size={"xl"}
+      className="w-1/2 gap-2 text-lg border-border"
+      type="button"
+      onClick={onClick}
+    >
       Google
       <Image
         src="/assets/icons/google-symbol.svg"

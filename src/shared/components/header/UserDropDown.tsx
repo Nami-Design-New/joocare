@@ -3,12 +3,9 @@
 import {
   Bookmark,
   ChevronDown,
-  ChevronUp,
   Gauge,
-  LayoutDashboard,
   LogOut,
   Settings,
-  User,
   UserRoundCogIcon,
 } from "lucide-react";
 import Image from "next/image";
@@ -24,6 +21,8 @@ import {
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/shared/lib/utils";
 import { useState } from "react";
+import { useLogout } from "@/features/auth/hooks/useLogout";
+import { useSession } from "next-auth/react";
 
 export default function UserDropDown({
   companyHeader,
@@ -31,7 +30,20 @@ export default function UserDropDown({
   companyHeader: boolean;
 }) {
   const [open, setOpen] = useState(false);
+  const { logout } = useLogout();
+  const { data: session } = useSession();
   const toggleOpen = () => setOpen((prev) => !prev);
+  console.log('session header', session);
+
+  const isEmployer = session?.authRole === "employer" || companyHeader;
+  const profileHref = isEmployer
+    ? "/company/company-profile"
+    : "/candidate/profile";
+  const displayName = session?.user?.name || "User";
+  const subtitle = isEmployer
+    ? "Company account"
+    : "Candidate account";
+  const imageSrc = session?.user?.image || "/profile-placeholder.svg";
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
     "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +
@@ -45,10 +57,10 @@ export default function UserDropDown({
           className="border-border group relative h-[55px] w-[55px] rounded-full"
         >
           <Image
-            src="/profile-placeholder.svg"
+            src={imageSrc}
             alt="User Avatar"
             fill
-            className="object-cover"
+            className="rounded-full object-cover"
           />{" "}
           <span className="border-border absolute -right-3 -bottom-2 flex h-6 w-6 items-center justify-center rounded-full border bg-white">
             <ChevronDown
@@ -65,18 +77,16 @@ export default function UserDropDown({
           <DropdownMenuItem className="flex cursor-default flex-col gap-2 bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent">
             <div className="flex w-full items-center gap-2">
               <Image
-                src="/profile-placeholder.svg"
+                src={imageSrc}
                 alt="Profile"
                 width={60}
                 height={60}
                 className="rounded-full"
               />
               <div>
-                <p className="text-lg font-semibold text-black">
-                  Ahmed Eltatawy
-                </p>
+                <p className="text-lg font-semibold text-black">{displayName}</p>
                 <p className="text-md text-muted-foreground font-normal">
-                  Consultant Internist
+                  {subtitle}
                 </p>
               </div>
             </div>
@@ -90,7 +100,7 @@ export default function UserDropDown({
                 }),
                 "border-secondary h-8.5 w-full border",
               )}
-              href={"/candidate/profile"}
+              href={profileHref}
               onClick={() => toggleOpen()}
             >
               View Profile
@@ -109,7 +119,7 @@ export default function UserDropDown({
             />
             <Link
               href={
-                companyHeader
+                isEmployer
                   ? "/company/account-settings/basic-info"
                   : "/candidate/settings/basic-info"
               }
@@ -119,7 +129,7 @@ export default function UserDropDown({
             </Link>
           </DropdownMenuItem>
 
-          {companyHeader ? (
+          {isEmployer ? (
             <>
               <DropdownMenuItem className={itemClass}>
                 <Gauge
@@ -160,7 +170,13 @@ export default function UserDropDown({
 
         {/* Logout */}
         <DropdownMenuGroup>
-          <DropdownMenuItem className="group text-md text-destructive hover:text-destructive/80 flex cursor-pointer items-center gap-2 bg-transparent font-semibold transition-colors hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent">
+          <DropdownMenuItem
+            className="group text-md text-destructive hover:text-destructive/80 flex cursor-pointer items-center gap-2 bg-transparent font-semibold transition-colors hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent"
+            onClick={async () => {
+              toggleOpen();
+              await logout();
+            }}
+          >
             <LogOut className="text-destructive group-hover:text-destructive/80 h-5 w-5 transition-colors" />
             <p className="text-destructive group-hover:text-destructive/80">
               Log out

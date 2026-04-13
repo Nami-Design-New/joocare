@@ -18,7 +18,7 @@ export default function Hire() {
       desc: "Specify your needs using our smart filtration parameters. Our AI-driven engine analyzes your operational demands in real-time, instantly bypassing traditional search hurdles to present a curated shortlist of professionals who match your precise clinical criteria.",
     },
     {
-        img: "/assets/employers/artboard.gif",
+      img: "/assets/employers/artboard.gif",
       id: 3,
       title: "Screen & Hire",
       desc: "Experience the power of intelligent selection. Review comprehensive, pre-verified profiles and engage directly with candidates through our secure liaison channel. Finalize your hiring with total confidence, backed by automated credentialing and transparent validation.",
@@ -27,7 +27,7 @@ export default function Hire() {
 
   return (
     <section className="bg-[#EEF8F0] py-12 sm:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mx-auto  px-4 sm:px-6">
         <div className="mb-8 lg:w-[50%]">
           <h2 className="text-secondary text-4xl leading-tight font-bold sm:text-5xl">
             Hire Top Medical Talent in 3
@@ -48,11 +48,11 @@ export default function Hire() {
             >
               <div className="flex h-56 items-center justify-center">
                 {/* <StepIllustration step={s.id} /> */}
-                <Image  src={s.img}
-                    alt={s.title}
-                    width={200}
-                    height={200}
-                    className="object-contain" />
+                <Image src={s.img}
+                  alt={s.title}
+                  width={200}
+                  height={200}
+                  className="object-contain" />
               </div>
 
               <div className="mt-6 flex-1">

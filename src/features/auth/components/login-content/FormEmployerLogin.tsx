@@ -11,17 +11,25 @@ import {
   loginEmployerSchema,
   TLoginEmployerSchema,
 } from "../../validation/employer-login-schema";
+import { useLogin } from "../../hooks/useLogin";
 
 const FormEmployerLogin = () => {
+  const { login } = useLogin("employer");
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<TLoginEmployerSchema>({
     resolver: zodResolver(loginEmployerSchema),
   });
-  const onSubmit: SubmitHandler<TLoginEmployerSchema> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<TLoginEmployerSchema> = async (data) => {
+    try {
+      await login(data.email, data.password);
+    } catch {
+      // Toast feedback is handled in the login hook.
+    }
+  };
 
   return (
     <form
@@ -53,8 +61,9 @@ const FormEmployerLogin = () => {
           className="w-1/3"
           size={"pill"}
           type="submit"
+          disabled={isSubmitting}
         >
-          Login
+          {isSubmitting ? "Logging..." : "Login"}
         </Button>
       </div>
     </form>

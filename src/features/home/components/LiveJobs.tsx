@@ -2,16 +2,15 @@ import { Button } from "@/shared/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import SectionTitle from "./SectionTitle";
 import JobCard from "./JobCard";
+import type { HomeRecentJob } from "../types/home.types";
 
-export const LiveJobs = () => {
-  const jobs = Array(8).fill({
-    title: "Registered nurse",
-    company: "Reliance Health",
-    location: "Cairo, Egypt",
-    type: "Full time",
-    time: "2 hours", // ISO 8601 duration
-  });
-
+export const LiveJobs = ({
+  title,
+  jobs,
+}: {
+  title: string;
+  jobs: HomeRecentJob[];
+}) => {
   return (
     <section
       className="bg-white py-10 md:py-20"
@@ -21,9 +20,7 @@ export const LiveJobs = () => {
         <header className="mb-10 flex items-end justify-between">
           <div className="space-y-4">
             <SectionTitle sectionTitle="Recent Jobs" />
-            <h2 id="recent-jobs-title">
-              A snapshot of healthcare hiring <br /> in motion
-            </h2>
+            <h2 id="recent-jobs-title">{title}</h2>
           </div>
           <Button
             variant="outline"
@@ -41,8 +38,8 @@ export const LiveJobs = () => {
         </header>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {jobs.map((job, i) => (
-            <JobCard key={i} {...job} />
+          {jobs.map((job) => (
+            <JobCard key={job?.id} {...job} />
           ))}
         </div>
       </div>

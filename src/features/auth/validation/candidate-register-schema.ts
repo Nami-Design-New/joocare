@@ -1,8 +1,9 @@
 import { z } from "zod";
 
-// Validation helper for phone number (digits only, spaces allowed but will be validated)
 const phoneNumberSchema = z
-  .string()
+  .string({
+    message: 'Phone number is required',
+  })
   .min(1, { message: "Phone number is required" })
   .regex(/^[\d\s\-\+\(\)]+$/, {
     message: "Phone number contains invalid characters",
@@ -12,10 +13,19 @@ const phoneNumberSchema = z
       const digitsOnly = value.replace(/\D/g, "");
       return digitsOnly.length >= 7 && digitsOnly.length <= 15;
     },
-    {
-      message: "Phone number must be between 7-15 digits",
-    },
+    { message: "Phone number must be between 7-15 digits" },
   );
+
+// Reusable transforms
+const optionalString = z
+  .string()
+  .optional()
+  .transform((val) => (val?.trim() === "" ? undefined : val));
+
+const optionalFileArray = z
+  .array(z.instanceof(File))
+  .optional()
+  .transform((val) => (val && val.length === 0 ? undefined : val));
 
 export const RegisterCandidateSchema = z
   .object({
@@ -31,85 +41,74 @@ export const RegisterCandidateSchema = z
 
     phoneNumber: phoneNumberSchema,
 
-    jobTitle: z.string().min(1, { message: "Job title is required" }),
+    jobTitle: z.string({
+      message: 'Job title is required',
+    }).min(1, { message: "Job title is required" }),
 
-    country: z.string().min(1, { message: "Country is required" }),
+    country: z.string({
+      message: 'Country is required',
+    }).min(1, { message: "Country is required" }),
 
-    city: z.string().min(1, { message: "City is required" }),
+    city: z.string({
+      message: 'City is required',
+    }).min(1, { message: "City is required" }),
 
     createPassword: z
-      .string()
+      .string({
+        message: 'Password is required',
+      })
       .min(1, { message: "Password is required" })
       .min(6, { message: "Password must be at least 6 characters" }),
-    // // CV is optional
-    // uploadCV: z
-    //   .array(z.instanceof(File))
-    //   .min(1, { message: "CV file is required" })
-    //   .max(2, { message: "You can upload a maximum of 2 CV files" }),
 
-    uploadCV: z.array(z.instanceof(File)).optional().default([]),
+    // Sends undefined (omitted) if no files uploaded
+    uploadCV: optionalString,
+
     confirmRegister: z.boolean().default(false),
 
-    // License fields - only required if confirmRegister is true
+    // Sends undefined (omitted) if left empty
     licenseTitle: z
       .string()
       .optional()
-      .refine((value) => !value || value.trim().length > 0, {
-        message: "License title cannot be empty if provided",
-      }),
+      .transform((val) => (val?.trim() === "" ? undefined : val)),
 
-    licenseNumber: z.string().optional(),
-    // .refine((value) => !value || /^\d+$/.test(value), {
-    //   message: "License number must contain only digits",
-    // }),
+    licenseNumber: optionalString,
 
-    specificCountry: z.string().optional(),
+    specificCountry: optionalString,
 
-    uploadLicense: z.array(z.instanceof(File)).optional().default([]),
-    // .refine((files) => files.length <= 2, {
-    //   message: "You can upload a maximum of 2 license files",
-    // }),
+    // Sends undefined (omitted) if no files uploaded
+    uploadLicense: optionalString,
   })
   .superRefine((data, ctx) => {
-    // Conditional validation when medical license is confirmed
     if (data.confirmRegister) {
-      // // Validate license title
-      // if (!data.licenseTitle || data.licenseTitle.trim() === "") {
-      //   ctx.addIssue({
-      //     path: ["licenseTitle"],
-      //     message: "License title is required when you have a medical license",
-      //     code: "custom",
-      //   });
-      // }
-
-      // // Validate license number
-      // if (!data.licenseNumber || data.licenseNumber.trim() === "") {
-      //   ctx.addIssue({
-      //     path: ["licenseNumber"],
-      //     message: "License number is required when you have a medical license",
-      //     code: "custom",
-      //   });
-      // }
-
-      // Validate specific country
-      if (!data.specificCountry || data.specificCountry.trim() === "") {
+      // specificCountry
+      if (!data.specificCountry) {
         ctx.addIssue({
           path: ["specificCountry"],
-          message:
-            "License country is required when you have a medical license",
+          message: "License country is required when you have a medical license",
           code: "custom",
         });
       }
 
-      // // Validate license upload
-      // if (!data.uploadLicense || data.uploadLicense.length === 0) {
-      //   ctx.addIssue({
-      //     path: ["uploadLicense"],
-      //     message:
-      //       "License image upload is required when you have a medical license",
-      //     code: "custom",
-      //   });
-      // }
+      // licenseTitle
+      if (!data.licenseTitle) {
+        ctx.addIssue({
+          path: ["licenseTitle"],
+          message: "License title is required",
+          code: "custom",
+        });
+      } else if (data.licenseTitle.length < 2) {
+        ctx.addIssue({
+          path: ["licenseTitle"],
+          message: "License title must be at least 2 characters",
+          code: "custom",
+        });
+      } else if (data.licenseTitle.length > 100) {
+        ctx.addIssue({
+          path: ["licenseTitle"],
+          message: "License title must be at most 100 characters",
+          code: "custom",
+        });
+      }
     }
   });
 

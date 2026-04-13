@@ -13,7 +13,7 @@ type BreadcrumbProps = {
 
 export default function Breadcrumb({ title, items }: BreadcrumbProps) {
   return (
-    <div className="` bg-primary-gradient px-3 py-4 text-white lg:px-25 lg:pt-12 lg:pb-38">
+    <div className="bg-primary-gradient px-3 py-4 text-white lg:px-25 lg:pt-12 lg:pb-38">
       <div className="container mx-auto flex items-center justify-between">
         <h6 className="text-lg font-semibold">{title}</h6>
 
@@ -33,9 +33,8 @@ export default function Breadcrumb({ title, items }: BreadcrumbProps) {
                     </Link>
                   ) : (
                     <span
-                      className={`${
-                        isLast ? "font-semibold text-white" : "text-white/70"
-                      }`}
+                      className={`${isLast ? "font-semibold text-white" : "text-white/70"
+                        }`}
                       aria-current={isLast ? "page" : undefined}
                     >
                       {item.label}

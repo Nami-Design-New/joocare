@@ -14,7 +14,7 @@ export default function HowItWorksCard({
 }: HowItWorksCardProps) {
   return (
     <section className="border-border flex flex-col items-center justify-center gap-3 border-b px-2 pt-4 pb-8">
-      <div className="bg-primary irems-center flex size-14 justify-center rounded-full">
+      <div className="bg-primary items-center flex size-14 justify-center rounded-full">
         <Image src={icon} width={28} height={28} alt={`${title} Icon`} />
       </div>
 

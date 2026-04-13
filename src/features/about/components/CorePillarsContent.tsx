@@ -1,12 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import SectionTitle from "@/features/home/components/SectionTitle";
-import { Button } from "@/shared/components/ui/button";
+import { Link } from "@/i18n/navigation";
+import { buttonVariants } from "@/shared/components/ui/button";
+import { cn } from "@/shared/lib/utils";
+import { useState } from "react";
+import type { AboutPillar } from "../types/about.types";
 import CorePillarsAccordionItem from "./CorePillarsAccordionItem";
-import { corePillars } from "./core-pillars-data";
 
-export default function CorePillarsContent() {
+export default function CorePillarsContent({
+  title,
+  items,
+}: {
+  title: string;
+  items: AboutPillar[];
+}) {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
@@ -16,15 +24,13 @@ export default function CorePillarsContent() {
       </div>
 
       <h2 className="text-secondary mb-6 text-3xl leading-tight font-bold sm:mb-8 sm:text-4xl lg:text-5xl">
-        Core Pillars of the
-        <br />
-        <span className="text-primary">Joocare</span> Framework
+        {title}
       </h2>
 
       <div className="space-y-6">
-        {corePillars.map((pillar, index) => (
+        {items.map((pillar, index) => (
           <CorePillarsAccordionItem
-            key={pillar.title}
+            key={pillar.id}
             pillar={pillar}
             isOpen={openIndex === index}
             onToggle={() => setOpenIndex(openIndex === index ? -1 : index)}
@@ -32,14 +38,17 @@ export default function CorePillarsContent() {
         ))}
       </div>
 
-      <Button
-        variant="default"
-        size="pill"
-        hoverStyle="slideSecondary"
-        className="mt-8 w-full justify-center gap-2 sm:w-fit"
+      <Link
+
+        href={"/auth/candidate/login"}
+        className={cn(buttonVariants({
+          variant: "default"
+          , size: "pill",
+          hoverStyle: "slideSecondary"
+        }), "mt-8 w-full justify-center gap-2 sm:w-fit")}
       >
         Get Started For Free
-      </Button>
+      </Link>
     </div>
   );
 }

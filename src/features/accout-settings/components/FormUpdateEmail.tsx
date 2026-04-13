@@ -9,6 +9,8 @@ import { Button } from '@/shared/components/ui/button'
 import { usePathname } from 'next/navigation';
 import { ForgetPasswordSchema, TForgetPasswordSchema } from '@/features/auth/validation/forget-password-schema';
 import { OTPModal } from '@/features/auth/components/forget-password/OtpModal';
+import { useSession } from 'next-auth/react';
+import { useUpdateEmail } from '../hooks/useUpdateEmail';
 
 interface IFormUpdateEmailProps {
     open: boolean
@@ -24,7 +26,9 @@ const FormUpdateEmail = ({ open, onOpenChange, btnLabel, email, setUserEmail, se
     const pathname = usePathname();
     const employerForgetPassword = pathname.includes("candidate")
     const basicInfo = pathname.includes("basic-info")
-
+    const { data: session } = useSession();
+    const token = session?.accessToken ?? "";
+    const { mutate: updateEmail, isPending } = useUpdateEmail({ token });
     const {
         register,
         handleSubmit,
@@ -37,6 +41,7 @@ const FormUpdateEmail = ({ open, onOpenChange, btnLabel, email, setUserEmail, se
     const onSubmit: SubmitHandler<TForgetPasswordSchema> = (data) => {
         console.log(data);
         setUserEmail(data.email);
+        updateEmail({ email: data.email });
         reset()
         setIsModalOtpOpen(true)
         onOpenChange(false);

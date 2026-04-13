@@ -13,10 +13,9 @@ const SideContent = () => {
   return (
     <aside
       aria-labelledby="auth-heading"
-      className="hidden md:flex sticky top-[86px] h-[calc(100vh-86px)] 
-      bg-[linear-gradient(45deg,#0A3463,#6CABEC)] items-center gap-4"
+      className="sticky top-21.5 hidden h-[calc(100vh-86px)] items-center gap-4 bg-[linear-gradient(42.95deg,#1C2628,#00694B)] md:flex"
     >
-      <div className="w-5/6 mx-auto p-4 text-white">
+      <div className="mx-auto w-5/6 p-4 text-white">
         {isEmployerRegister ? (
           <>
             <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
@@ -28,13 +27,13 @@ const SideContent = () => {
             <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
               Match Faster
             </h2>
-            <h3 className="text-[clamp(1.5rem,4vw,3rem)] font-bold mb-4">
+            <h3 className="mb-4 text-[clamp(1.5rem,4vw,3rem)] font-bold">
               work smarter
             </h3>
           </>
         )}
 
-        <p className="text-[clamp(.8rem,4vw,1.2rem)] [word-spacing:0.1rem] text-justify">
+        <p className="text-justify text-[clamp(.8rem,4vw,1.2rem)] [word-spacing:0.1rem]">
           {(isEmployerLogin || isCandidateLogin) &&
             `
           With smart tools and AI-powered insights, joocare helps you find the

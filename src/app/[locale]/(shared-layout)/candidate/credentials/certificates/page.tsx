@@ -1,12 +1,5 @@
-import CertificateCard from "@/features/candidate-credentials/components/certificates/CertificateCard";
+import CertificatesContent from "@/features/candidate-credentials/components/certificates/CertificatesContent";
 
 export default function CertificatesPage() {
-    return (
-        <div className="flex flex-col gap-3">
-            <CertificateCard />
-            <CertificateCard />
-            <CertificateCard />
-        </div>
-
-    )
+  return <CertificatesContent />;
 }

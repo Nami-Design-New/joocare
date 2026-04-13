@@ -8,7 +8,7 @@ function makeQueryClient(): QueryClient {
         staleTime: 60 * 1000, // 1 minute
         refetchOnMount: false,
         refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
+        refetchOnReconnect: false, retry: 1,
       },
     },
   });

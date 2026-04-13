@@ -2,8 +2,12 @@ import { ChartPieDonut } from "./ChartPieDonut";
 
 export default function PieChartCard({
   className = "",
+  companyDashboardData,
+  isPending,
 }: {
   className?: string;
+  companyDashboardData: any;
+  isPending?: boolean;
 }) {
   return (
     <section
@@ -12,7 +16,7 @@ export default function PieChartCard({
       <h5 className="text-foreground text-xl font-semibold">
         Category Breakdown
       </h5>
-      <ChartPieDonut />
+      <ChartPieDonut isPending={isPending} companyDashboardData={companyDashboardData} />
     </section>
   );
 }

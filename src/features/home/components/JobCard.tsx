@@ -1,15 +1,17 @@
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
 interface JobProps {
+  id: string;
   title: string;
   company: string;
   location: string;
   type: string;
-  time: string;
+  timeLabel: string;
 }
 
-const JobCard = ({ title, company, location, type, time }: JobProps) => (
-  <article className="group bg-card border-border group hover:border-primary/50 relative rounded-xl border p-5 transition-all hover:shadow-sm">
+const JobCard = ({ title, company, location, type, timeLabel, id }: JobProps) => (
+  <Link href={`/jobs/${id}`} className="group bg-card border-border group hover:border-primary/50 relative rounded-xl border p-5 transition-all hover:shadow-sm">
     <section className="flex items-start gap-4">
       <Image
         src="/assets/comp-logo.svg"
@@ -31,14 +33,14 @@ const JobCard = ({ title, company, location, type, time }: JobProps) => (
           </span>
           <time
             className="bg-muted text-muted-foreground rounded-xl px-2.5 py-1 text-xs font-medium tracking-wider"
-            dateTime={time}
+            dateTime={timeLabel}
           >
-            {time} ago
+            {timeLabel}
           </time>
         </footer>
       </div>
     </section>
-  </article>
+  </Link>
 );
 
 export default JobCard;

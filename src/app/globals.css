@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -73,12 +73,12 @@
   --popover-foreground: oklch(0.089 0 0);
 
   /* Primary — main blue #0a3463 */
-  --secondary: oklch(0.285 0.082 252);
+  --secondary: #1c2628;
   --secondary-08: #0a346314;
   --secondary-foreground: oklch(1 0 0); /* white text on blue */
 
   /* Secondary — green #09760a */
-  --primary: oklch(0.468 0.148 145);
+  --primary: #00694b;
   --primary-bg: #09760a14;
   --primary-soft: #3790a81a;
   --primary-foreground: oklch(1 0 0); /* white text on green */
@@ -90,12 +90,12 @@
 
   /* Accent — lighter green tint for hover/active states */
   --accent: oklch(0.468 0.148 145 / 8%); /* second-color08 */
-  --accent-foreground: oklch(0.468 0.148 145);
+  --accent-foreground: #00694b;
 
   /* Borders & Inputs */
   --border: oklch(0.089 0 0 / 8%); /* #0d0d0d14 — input-stroke */
   --input: oklch(0.089 0 0 / 8%);
-  --ring: oklch(0.285 0.082 252); /* focus ring = primary */
+  --ring: #1c2628; /* focus ring = primary */
   --soft-overlay: oklch(0.18 0 0 / 0.02); /* #12121205 */
   --body-bg: #f7faf7;
   --bg-disabled: #a6a6a6;
@@ -111,15 +111,15 @@
   /* Sidebar */
   --sidebar: oklch(1 0 0);
   --sidebar-foreground: oklch(0.089 0 0);
-  --sidebar-primary: oklch(0.285 0.082 252);
+  --sidebar-primary: #1c2628;
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.468 0.148 145 / 8%);
-  --sidebar-accent-foreground: oklch(0.468 0.148 145);
+  --sidebar-accent-foreground: #00694b;
   --sidebar-border: oklch(0.089 0 0 / 8%);
-  --sidebar-ring: oklch(0.285 0.082 252);
+  --sidebar-ring: #1c2628;
 
   --shadow-soft: #0000000d;
-  --primary-gradient: linear-gradient(270deg, #3eb33f 0%, #09760a 100.62%);
+  --primary-gradient: linear-gradient(270deg, #00694b 0%, #1c2628 100.62%);
 }
 
 /* ════════════════════════════════════════
@@ -154,7 +154,7 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.55 0.1 252);
-  --body-bg: "#F7FAF7";
+  --body-bg: '#F7FAF7';
   --bg-disabled: #a6a6a6;
 
   --destructive: oklch(0.65 0.22 27);
@@ -172,7 +172,7 @@
   --sidebar-accent-foreground: oklch(0.55 0.13 145);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.55 0.1 252);
-  --primary-gradient: linear-gradient(270deg, #3eb33f 0%, #09760a 100.62%);
+  --primary-gradient: linear-gradient(270deg, #00694b 0%, #1c2628 100.62%);
 }
 
 /* ════════════════════════════════════════
@@ -233,7 +233,7 @@
   .dashed-list {
     list-style: none;
     li::marker {
-      content: "-   ";
+      content: '-   ';
     }
   }
 }
@@ -244,13 +244,13 @@
 }
 
 .bg-before::before {
-  content: "";
+  content: '';
   position: absolute;
 
   min-width: 24px;
   height: 100%;
   inset-inline-start: 0;
-  background-image: url("../../public/assets/footer2.svg");
+  background-image: url('../../public/assets/footer2.svg');
   background-size: cover;
   background-position: center;
   opacity: 1;
@@ -258,11 +258,11 @@
 }
 
 .bg-container {
-  background-image: url("../../public/assets/container.svg");
+  background-image: url('../../public/assets/container.svg');
   background-color: var(--color-primary);
 }
 .bg-container-gray {
-  background-image: url("../../public/assets/why.svg");
+  background-image: url('../../public/assets/why.svg');
   background-color: var(--color-gray);
 }
 /* file pond */

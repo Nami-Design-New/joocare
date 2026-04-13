@@ -10,9 +10,19 @@ import {
 } from "@/shared/components/ui/sheet";
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import { AccordionSection, FilterState } from "../../types/index.types";
 import JobFilterSidebar from "./JobsSideBarFilter";
 
-export default function MobileFilterDrawer() {
+type MobileFilterDrawerProps = {
+  actionPath: string;
+  search: string;
+  country: string;
+  filters: FilterState;
+  sections: AccordionSection[];
+  salaryTypeOptions: AccordionSection["options"];
+};
+
+export default function MobileFilterDrawer(props: MobileFilterDrawerProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -43,7 +53,7 @@ export default function MobileFilterDrawer() {
           We override its `hidden lg:flex` via a wrapper that forces it visible.
         */}
         <div className="[&>aside]:flex [&>aside]:rounded-none [&>aside]:shadow-none">
-          <JobFilterSidebar />
+          <JobFilterSidebar {...props} />
         </div>
       </SheetContent>
     </Sheet>

@@ -1,5 +1,6 @@
 "use client"
 
+import FormUpdateEmail from "@/features/accout-settings/components/FormUpdateEmail"
 import {
     Dialog,
     DialogContent,
@@ -7,7 +8,6 @@ import {
     DialogHeader,
     DialogTitle
 } from "@/shared/components/ui/dialog"
-import FormUpdateEmail from "@/features/accout-settings/components/FormUpdateEmail"
 
 interface EnterEmailModalProps {
     open: boolean

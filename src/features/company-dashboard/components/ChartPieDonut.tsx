@@ -1,12 +1,8 @@
 "use client";
 
+import TextSkeleton from "@/features/company-profile/components/TextSkeleton";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
-
-const data = [
-  { name: "Nursing", value: 25, color: "#4F7CAC" },
-  { name: "Physicians", value: 25, color: "#7BAE7F" },
-  { name: "Allied Health", value: 50, color: "#F4A259" },
-];
+const COLORS = ["#4F7CAC", "#7BAE7F", "#F4A259", "#FF8042", "#A28EFF"];
 
 const renderInsideLabel = ({
   cx,
@@ -15,6 +11,13 @@ const renderInsideLabel = ({
   innerRadius,
   outerRadius,
   percent,
+}: {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  percent: number;
 }) => {
   const RADIAN = Math.PI / 180;
 
@@ -37,15 +40,15 @@ const renderInsideLabel = ({
   );
 };
 
-export function ChartPieDonut() {
+export function ChartPieDonut({ isPending, companyDashboardData }: { isPending?: boolean, companyDashboardData: any }) {
   return (
     <div className="flex items-center justify-between pb-0">
       <div className="aspect-square w-full max-w-[160px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
-              data={data}
-              dataKey="value"
+              data={companyDashboardData?.categories_percentage}
+              dataKey="percentage"
               cx="50%"
               cy="50%"
               innerRadius={50}
@@ -53,18 +56,23 @@ export function ChartPieDonut() {
               label={renderInsideLabel}
               labelLine={false}
             >
-              {data.map((entry, index) => (
-                <Cell key={index} fill={entry.color} />
-              ))}
+              {companyDashboardData?.categories_percentage.map(
+                (_: any, index: number) => (
+                  <Cell
+                    key={index}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                )
+              )}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
       </div>
       <div className="space-y-3">
-        {data.map((item) => (
-          <div key={item.name} className="flex items-center gap-2">
-            <span className="h-3 w-3" style={{ backgroundColor: item.color }} />
-            <span className="text-muted-foreground text-sm">{item.name}</span>
+        {companyDashboardData?.categories_percentage.map((item: any, index: number) => (
+          <div key={index} className="flex items-center gap-2">
+            <span className="h-3 w-3" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+            {isPending ? <TextSkeleton /> : <span className="text-muted-foreground text-sm">{item.category_title}</span>}
           </div>
         ))}
       </div>

@@ -7,15 +7,10 @@ import {
   CarouselPrevious,
 } from "@/shared/components/ui/carousel";
 import SimilarJobCard from "./SimilarJobCard";
+import { SimilarJob } from "@/features/jobs/types/jobs.types";
 
-export default function SimilarJobsSection() {
-  const jobs = Array(8).fill({
-    title: "Registered nurse",
-    company: "Reliance Health",
-    location: "Cairo, Egypt",
-    type: "Full time",
-    time: "2 hours",
-  });
+export default function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
+
   return (
     <section className="py-10 md:py-20">
       <div>
@@ -41,9 +36,9 @@ export default function SimilarJobsSection() {
 
           {/* Cards */}
           <CarouselContent className="-ml-6">
-            {jobs.map((rev, i) => (
+            {jobs.map((job, i) => (
               <CarouselItem key={i} className="pl-6 md:basis-1/2 lg:basis-1/3">
-                <SimilarJobCard {...rev} />
+                <SimilarJobCard  job={job} />
               </CarouselItem>
             ))}
           </CarouselContent>

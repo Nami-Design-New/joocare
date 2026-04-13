@@ -3,87 +3,97 @@
 import { InputField } from "@/shared/components/InputField";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { SelectInputField } from "@/shared/components/SelectInputField";
+import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import { Controller, useFormContext } from "react-hook-form";
 
 export default function StepOne() {
   const { register, control, formState: { errors }, } = useFormContext();
+  const {
+    jobTitles,
+    isLoading: jobTitlesLoading,
+    hasNextPage: jobTitlesHasNextPage,
+    fetchNextPage: jobTitlesFetchNextPage,
+    isFetchingNextPage: jobTitlesIsFetchingNextPage,
+  } = useGetJobTitles();
 
   return (
     <div className="flex flex-col gap-y-5">
 
       <InputField
-        id="companyName"
+        id="name"
         label="Company Name"
         type={"text"}
         placeholder="ex: JooCore"
         disabled={true}
-        {...register("companyName")}
-        error={errors.companyName?.message?.toString()}
+        {...register("name")}
+        error={errors.name?.message?.toString()}
       />
 
       <InputField
-        id="officialEmail"
+        id="email"
         type="email"
         label="Official Email"
         placeholder="ex: mail@mail.com"
         disabled={true}
-        {...register("officialEmail")}
-        error={errors.officialEmail?.message?.toString()}
+        {...register("email")}
+        error={errors.email?.message?.toString()}
       />
 
       <Controller
-        name="domain"
+        name="domain_id"
         control={control}
         render={({ field }) => (
           <SelectInputField
-            id="domain"
+            id="domain_id"
             label="Domain"
             placeholder="ex: Hospital"
-            disabled={true}
             {...field}
-            error={errors.domain?.message?.toString()}
-            options={[
-              { label: "Hospital", value: "hospital" },
-              { label: "Software", value: "software" },
-              { label: "Company", value: "company" },
-            ]}
+            error={errors.domain_id?.message as string}
+            options={jobTitles.map((jt) => ({
+              label: jt.name ?? jt.title ?? String(jt.id),
+              value: String(jt.id),
+            }))}
+            disabled={true}
+            onReachEnd={() => jobTitlesFetchNextPage()}
+            hasNextPage={!!jobTitlesHasNextPage}
+            isFetchingNextPage={jobTitlesIsFetchingNextPage}
           />
         )}
       />
       <InputField
-        id="personFullName"
+        id="person_name"
         type="text"
         label="Contact person _ full name "
         placeholder="ex: John Doe"
         disabled={true}
-        {...register("personFullName")}
-        error={errors.personFullName?.message?.toString()}
+        {...register("person_name")}
+        error={errors.person_name?.message?.toString()}
       />
 
 
       {/* Phone Number */}
       <>
-        <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
+        <label htmlFor="person_phone" className="mx-1 -mb-4 font-semibold">
           Phone Number
         </label>
         <Controller
-          name="phoneNumber"
+          name="person_phone"
           control={control}
           render={({ field }) => (
             <PhoneInputCode
               {...field}
               disabled={true}
               defaultCountry="EG"
-              id="phoneNumber"
+              id="person_phone"
               className="w-full"
               placeholder="Enter phone number"
               onChange={(value) => field.onChange(value)}
             />
           )}
         />
-        {errors.phoneNumber && (
+        {errors.person_phone && (
           <span className="-mt-4 text-[12px] text-red-500">
-            {errors.phoneNumber.message?.toString()}
+            {errors.person_phone.message?.toString()}
           </span>
         )}
       </>

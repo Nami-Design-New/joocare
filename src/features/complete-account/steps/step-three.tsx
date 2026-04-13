@@ -3,14 +3,43 @@
 import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { TextareaField } from "@/shared/components/TextareaField";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 import CoverUploadImage from "../components/cover-upload-image";
 import Image from "next/image";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { YearPicker } from "@/shared/components/YearPicker";
+import { useState } from "react";
+import useGetCountries from "@/shared/hooks/useGetCountries";
+import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 
 export default function StepThree() {
-  const { register, control, formState: { errors } } = useFormContext();
+  const { register, control, setValue, formState: { errors } } = useFormContext();
+
+  const [countrySearch, setCountrySearch] = useState("");
+  const [citySearch, setCitySearch] = useState("");
+
+  const {
+    countries,
+    isLoading: isCountriesLoading,
+    error: countriesError,
+    hasNextPage: hasMoreCountries,
+    fetchNextPage: fetchMoreCountries,
+    isFetchingNextPage: isFetchingMoreCountries,
+  } = useGetCountries(countrySearch);
+
+  const selectedCountry = useWatch({
+    control,
+    name: "organizationCountry",
+  });
+
+  const {
+    cities,
+    isLoading: isCitiesLoading,
+    error: citiesError,
+    hasNextPage: hasMoreCities,
+    fetchNextPage: fetchMoreCities,
+    isFetchingNextPage: isFetchingMoreCities,
+  } = useGetCitiesByCountryId(Number(selectedCountry), citySearch);
 
   return (
     <div className="space-y-4 flex flex-col">
@@ -56,15 +85,31 @@ export default function StepThree() {
             control={control}
             render={({ field }) => (
               <SelectInputField
+                withSearchInput={true}
                 id="organizationCountry"
                 placeholder="country"
+                className="bg-white hover:bg-transparent"
                 {...field}
-                error={errors.organizationCountry?.message?.toString()}
-                options={[
-                  { label: "egypt", value: "egypt" },
-                  { label: "saudi", value: "saudi" },
-                  { label: "canada", value: "canada" },
-                ]}
+                onChange={(val) => {
+                  field.onChange(val);
+                  // Clear the city when the country changes
+                  setValue("organizationCity", "");
+                }}
+                error={
+                  errors.organizationCountry?.message?.toString() ??
+                  (countriesError instanceof Error
+                    ? countriesError.message
+                    : undefined)
+                }
+                options={countries.map((country) => ({
+                  label: country.name,
+                  value: String(country.id),
+                }))}
+                disabled={isCountriesLoading}
+                onReachEnd={() => fetchMoreCountries()}
+                hasNextPage={Boolean(hasMoreCountries)}
+                isFetchingNextPage={isFetchingMoreCountries}
+                onSearchChange={setCountrySearch}
               />
             )}
           />
@@ -73,15 +118,26 @@ export default function StepThree() {
             control={control}
             render={({ field }) => (
               <SelectInputField
+                withSearchInput={true}
                 id="organizationCity"
                 placeholder="city"
+                className="bg-white hover:bg-transparent"
                 {...field}
-                error={errors.organizationCity?.message?.toString()}
-                options={[
-                  { label: "cairo", value: "cairo" },
-                  { label: "alex", value: "alex" },
-                  { label: "reyad", value: "reyad" },
-                ]}
+                error={
+                  errors.organizationCity?.message?.toString() ??
+                  (citiesError instanceof Error
+                    ? citiesError.message
+                    : undefined)
+                }
+                options={cities.map((city) => ({
+                  label: city.name,
+                  value: String(city.id),
+                }))}
+                disabled={isCitiesLoading || !selectedCountry}
+                onReachEnd={() => fetchMoreCities()}
+                hasNextPage={Boolean(hasMoreCities)}
+                isFetchingNextPage={isFetchingMoreCities}
+                onSearchChange={setCitySearch}
               />
             )}
           />

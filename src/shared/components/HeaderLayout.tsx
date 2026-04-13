@@ -17,7 +17,8 @@ const HeaderLayout = ({
   const pathname = usePathname();
 
   return (
-    <header className="w-full rounded-full p-2 shadow sm:w-fit sm:pe-0">
+    <header className="w-full rounded-full p-2 shadow sm:w-fit sm:pe-0 bg-white
+    ">
       <Swiper
         modules={[FreeMode]}
         freeMode={true}

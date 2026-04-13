@@ -6,44 +6,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shared/components/ui/accordion";
-import { CalendarRange, Edit, Plus, Trash2 } from "lucide-react";
+import { CalendarRange, Plus } from "lucide-react";
 import { useState } from "react";
+import type { CandidateProfileViewModel } from "../../types/profile.types";
 import { ExperienceModal } from "./ExperienceModal";
 import ExperienceActions from "./ExperienceActions";
 
-interface ExperienceEntry {
-  id: string;
-  title: string;
-  department: string;
-  startDate: string;
-  endDate: string;
-  bullets: string[];
-}
-
-const initialExperiences: ExperienceEntry[] = [
-  {
-    id: "exp-1",
-    title: "Consultant Interventional",
-    department: "Health care",
-    startDate: "Jan 2020",
-    endDate: "Present",
-    bullets: [
-      "Supervise cardiology fellowship training program with 12 fellows",
-      "Chair of the Cardiac Catheterization Lab quality improvement committee",
-    ],
-  },
-  {
-    id: "exp-2",
-    title: "Consultant Interventional",
-    department: "Health care",
-    startDate: "Jan 2020",
-    endDate: "Present",
-    bullets: [],
-  },
-];
-
-export function ExperienceSection() {
+export function ExperienceSection({
+  profile,
+}: {
+  profile: CandidateProfileViewModel | null;
+}) {
   const [open, setOpen] = useState(false);
+  const experiences = profile?.experiences ?? [];
 
   return (
     <>
@@ -61,10 +36,10 @@ export function ExperienceSection() {
         {/* Accordion */}
         <Accordion
           type="multiple"
-          defaultValue={["exp-1"]}
+          defaultValue={experiences.length > 0 ? [experiences[0].id] : []}
           className="divide-y divide-gray-100"
         >
-          {initialExperiences.map((exp) => (
+          {experiences.map((exp) => (
             <AccordionItem key={exp.id} value={exp.id} className="border-none">
               <div className="flex items-start justify-between gap-2">
                 {/* Left meta — clicking this area does NOT toggle */}
@@ -73,19 +48,21 @@ export function ExperienceSection() {
                     {exp.title}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold">
-                      {exp.department}
-                    </span>
+                    {exp.organization && (
+                      <span className="text-sm font-semibold">
+                        {exp.organization}
+                      </span>
+                    )}
                     <span className="text-secondary flex items-center gap-1 text-[12px]">
                       <CalendarRange size={16} />
-                      {exp.startDate} – {exp.endDate}
+                      {exp.startDateLabel ?? "Start date"} - {exp.endDateLabel ?? "Present"}
                     </span>
                   </div>
                 </div>
 
                 {/* Right: action buttons + shadcn chevron trigger */}
                 <div className="flex items-center gap-1 lg:gap-4">
-                  <ExperienceActions />
+                  <ExperienceActions experience={exp} />
                   {/* AccordionTrigger scoped to just the chevron */}
                   <AccordionTrigger
                     iconType="arrow"
@@ -121,6 +98,7 @@ export function ExperienceSection() {
         label="Add Experience"
         open={open}
         onOpenChange={setOpen}
+        experience={null}
       />
     </>
   );
