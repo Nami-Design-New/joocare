@@ -8,7 +8,6 @@ import LabelCheckbox from "@/shared/components/LabelCheckbox";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
 
-import { FilepondUpload } from "@/shared/components/FilepondUpload";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import { useState } from "react";
@@ -21,6 +20,7 @@ import {
 import { OTPModal } from "../forget-password/OtpModal";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
+import { FilepondUpload } from "@/shared/components/FilepondUpload";
 
 const FormCandidateRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

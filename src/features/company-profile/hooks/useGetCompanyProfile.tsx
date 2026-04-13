@@ -6,7 +6,7 @@ export default function useGetCompanyProfile({ token }: { token: string }) {
     const locale = useLocale();
 
     return useQuery({
-        queryKey: ["company-profile", token, locale],
+        queryKey: ["company-profile", locale],
         queryFn: () =>
             getCompanyProfileService({
                 token: token,

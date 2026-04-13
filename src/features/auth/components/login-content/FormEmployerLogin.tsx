@@ -63,7 +63,7 @@ const FormEmployerLogin = () => {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Logging in..." : "Login"}
+          {isSubmitting ? "Logging..." : "Login"}
         </Button>
       </div>
     </form>
