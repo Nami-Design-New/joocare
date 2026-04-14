@@ -23,6 +23,7 @@ import {
 } from "../../validation/password-otp-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
 import { useLocale } from "next-intl";
 import { toast } from "sonner";
 import {
@@ -121,7 +122,7 @@ export function OTPModal({
       }
 
       if (purpose === "email-confirm" && email && role) {
-        const { data: otpData, message } = await confirmEmailVerification({
+        const { data: otpData } = await confirmEmailVerification({
           role,
           email,
           otp: data.otp,
@@ -143,6 +144,7 @@ export function OTPModal({
             accessToken,
             user: JSON.stringify(user),
           });
+          void requestNotificationPermission();
         }
 
         // toast.success(message);

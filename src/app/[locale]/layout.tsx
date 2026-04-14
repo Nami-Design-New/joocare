@@ -1,13 +1,11 @@
 import { routing } from "@/i18n/routing";
 import MainProviders from "@/shared/providers/MainProviders";
-import Footer from "@/shared/components/Footer";
-import Header from "@/shared/components/header/Header";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import { Noto_Sans, Outfit } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
-import { Outfit, Noto_Sans } from "next/font/google";
 
 const outfit = Outfit({
   subsets: ["latin"],

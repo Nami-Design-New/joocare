@@ -33,7 +33,6 @@ export default function UserDropDown({
   const { logout } = useLogout();
   const { data: session } = useSession();
   const toggleOpen = () => setOpen((prev) => !prev);
-  console.log('session header', session);
 
   const isEmployer = session?.authRole === "employer" || companyHeader;
   const profileHref = isEmployer
