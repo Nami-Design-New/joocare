@@ -28,6 +28,7 @@ export const settingService = async () => {
       method: "GET",
     },
   );
+  // console.log("data setting", data);
 
   if (!ok) {
     throw new Error(message || "Failed to fetch settings");
