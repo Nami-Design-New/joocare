@@ -34,6 +34,7 @@ export type HomeRecentJob = {
   location: string;
   type: string;
   timeLabel: string;
+  image: string;
 };
 
 export type HomeRate = {

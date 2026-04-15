@@ -23,7 +23,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="layout-shell shadow-header sticky top-0 z-30 flex h-19 w-full items-center justify-between bg-white py-4">
+      <header className="layout-shell shadow-header sticky top-0 z-30 flex max-h-19 w-full items-center justify-between bg-white py-4">
         <div className="layout-content flex items-center justify-between">
           {/* Logo */}
           <div className="flex gap-1">

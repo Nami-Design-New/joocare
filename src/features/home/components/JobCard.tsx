@@ -8,13 +8,14 @@ interface JobProps {
   location: string;
   type: string;
   timeLabel: string;
+  image: string;
 }
 
-const JobCard = ({ title, company, location, type, timeLabel, id }: JobProps) => (
+const JobCard = ({ title, company, location, type, timeLabel, id, image }: JobProps) => (
   <Link href={`/jobs/${id}`} className="group bg-card border-border group hover:border-primary/50 relative rounded-xl border p-5 transition-all hover:shadow-sm">
     <section className="flex items-start gap-4">
       <Image
-        src="/assets/comp-logo.svg"
+        src={image || "/assets/recent-job-image.svg"}
         width={57}
         height={50}
         alt={`${company} logo`}

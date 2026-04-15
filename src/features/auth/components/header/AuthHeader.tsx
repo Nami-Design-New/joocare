@@ -12,14 +12,14 @@ const AuthHeader = () => {
   const hiddenDynamicLink = pathname.includes("password");
 
   return (
-    <header className="sticky top-0 bg-white px-[clamp(.1rem,2vw,3rem)] py-4 w-full shadow-header z-3 ">
+    <header className="sticky top-0 bg-white px-[clamp(.1rem,2vw,3rem)] py-4 w-full shadow-header z-3 h-19">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" aria-label="Homepage">
           <Image
             src="/assets/logo_1.svg"
             alt="Joocare Logo"
-            width={100}
-            height={40}
+            width={120}
+            height={100}
             priority
           />
         </Link>

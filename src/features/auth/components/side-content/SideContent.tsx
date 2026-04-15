@@ -13,7 +13,7 @@ const SideContent = () => {
   return (
     <aside
       aria-labelledby="auth-heading"
-      className="sticky top-21.5 hidden h-[calc(100vh-86px)] items-center gap-4 bg-[linear-gradient(42.95deg,#1C2628,#00694B)] md:flex"
+      className="sticky top-21.5 hidden h-[calc(100vh-76px)] items-center gap-4 bg-[linear-gradient(42.95deg,#1C2628,#00694B)] md:flex"
     >
       <div className="mx-auto w-5/6 p-4 text-white">
         {isEmployerRegister ? (
