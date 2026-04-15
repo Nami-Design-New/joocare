@@ -109,7 +109,6 @@ export default function JobCard({ resumeMatch,
     updateStatus("open");
   };
 
-  console.log('normal state', job.status?.status);
 
   return (
     <>
@@ -221,7 +220,15 @@ export default function JobCard({ resumeMatch,
                 {specialty}
               </li>
             </ul>
-            <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p>
+            {/* <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p> */}
+            <div
+              className="prose prose-sm max-w-none border-b pb-5"
+              dangerouslySetInnerHTML={{
+                __html:
+                  excerpt ||
+                  "<p>No description available.</p>",
+              }}
+            />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4 max-lg:px-2 flex-1 justify-end ">

@@ -75,7 +75,9 @@ type HomeApiResponse = {
         rate?: string | number | null;
         comment?: string | null;
         created_at?: string | null;
-        user?: { name?: string | null } | null;
+        name?: string | null;
+        date?: string | null;
+        text?: string | null;
       }>;
     };
     faqs?: {
@@ -235,8 +237,8 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
       items:
         rates?.rates?.map((rate) => ({
           id: String(rate.id ?? ""),
-          name: rate.user?.name ?? "Anonymous professional",
-          date: rate.created_at ? formatDate(rate.created_at) : "",
+          name: rate?.name ?? "Anonymous professional",
+          date: rate.date,
           text: rate.comment ?? "",
           rate: Number(rate.rate ?? 0),
         })) ?? [],

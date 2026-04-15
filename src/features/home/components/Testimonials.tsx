@@ -15,10 +15,13 @@ export const TestimonialCard = ({
   text,
   rate,
 }: {
-  name: string;
-  date: string;
-  text: string;
-  rate: number;
+  id?: string | number | undefined;
+  rate?: string | number | null | undefined;
+  comment?: string | null | undefined;
+  created_at?: string | null | undefined;
+  name?: string | null | undefined;
+  date?: string | null | undefined;
+  text?: string | null | undefined;
 }) => (
   <div className="bg-card flex flex-col justify-between gap-3 rounded-tl-4xl rounded-br-4xl p-6">
     <div className="flex justify-between">
@@ -28,7 +31,7 @@ export const TestimonialCard = ({
       </div>
       <div className="mb-4 flex gap-1">
         {[...Array(5)].map((_, i) => {
-          const isFilled = i < Math.round(rate || 0);
+          const isFilled = i < Math.round(Number(rate) || 0);
 
           return (
             <Star
@@ -50,6 +53,8 @@ export const Testimonials = ({
   title: string;
   reviews: HomeRate[];
 }) => {
+  console.log("review ::", reviews);
+
   return (
     <section className="bg-background py-10 md:py-20">
       <div className="layout-shell">

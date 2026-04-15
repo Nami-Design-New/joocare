@@ -86,7 +86,7 @@ export function JobActionButtons({
             <Edit className="h-4 w-4" /> Edit
           </Link>
         ) : null}
-        {isPaused ? (
+        {isPaused || isClosed ? (
           <Button
             variant="default"
             size="pill"
@@ -121,7 +121,7 @@ export function JobActionButtons({
         <Button
           variant="destructive"
           size="pill"
-          className={`flex items-center justify-center gap-2 ${isClosed ? "w-full" : isDraft || isPaused ? "flex-1" : ""}`}
+          className={`flex items-center justify-center gap-2 ${isClosed ? "w-full" : isDraft || isPaused || isOpen ? "flex-1" : ""}`}
           disabled={isDeleting}
           onClick={() => setDeleteJob(true)}
         >

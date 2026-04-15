@@ -3,7 +3,6 @@ import { JobDetails, NamedEntity } from "../types/jobs.types";
 import JobOverviewItem from "./JobOverviewItem";
 
 export default function JobEducationAndCertificationsCard({ job }: { job: JobDetails }) {
-  const educationLevel = job.education_level?.title ?? job.eduction_level?.title ?? "Not specified";
   const availability = job.availability?.title ?? "Not specified";
 
   return (
@@ -14,7 +13,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
       <div className="flex flex-col gap-6">
         <JobOverviewItem
           label="Education Level"
-          value={educationLevel}
+          value={job.education_levels}
           icon="/assets/icons/exp.svg"
         />
         <div>

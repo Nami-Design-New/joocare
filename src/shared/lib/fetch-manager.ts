@@ -23,7 +23,10 @@ type ApiFetchOptions = {
   headers?: HeadersInit;
   body?: BodyInit | null;
   cache?: RequestCache;
+  skipUnauthorizedHandler?: boolean;
 };
+
+export const UNAUTHORIZED_EVENT = "app:unauthorized";
 
 function getHeaderValue(headers: Headers, names: string[]) {
   for (const name of names) {
@@ -82,6 +85,7 @@ export async function apiFetch<T = Record<string, unknown>>(
     headers,
     body,
     cache = "no-store",
+    skipUnauthorizedHandler = false,
   } = options;
 
   const requestHeaders = new Headers(headers);
@@ -114,6 +118,22 @@ export async function apiFetch<T = Record<string, unknown>>(
   const statusCode = resolveStatusCode(response);
   const ok = statusCode >= 200 && statusCode < 300;
   const message = resolveMessage(response, data);
+
+  if (
+    statusCode === 401 &&
+    token &&
+    !skipUnauthorizedHandler &&
+    typeof window !== "undefined"
+  ) {
+    window.dispatchEvent(
+      new CustomEvent(UNAUTHORIZED_EVENT, {
+        detail: {
+          message,
+          statusCode,
+        },
+      }),
+    );
+  }
 
   return {
     response,

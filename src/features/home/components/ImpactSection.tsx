@@ -1,18 +1,19 @@
 import { Link } from "@/i18n/navigation";
+import { buttonVariants } from "@/shared/components/ui/button";
+import { cn } from "@/shared/lib/utils";
+import { settingService } from "@/shared/services/settings-services";
 import Image from "next/image";
 import SectionTitle from "./SectionTitle";
 import StatCard from "./StatCard";
-import { buttonVariants } from "@/shared/components/ui/button";
-import { cn } from "@/shared/lib/utils";
 
-export const ImpactSection = ({
+export const ImpactSection = async ({
   title,
   description,
 }: {
   title: string;
   description: string;
 }) => {
-
+  const settings = await settingService()
 
   return (
     <section className="bg-background py-10 md:py-20">
@@ -43,12 +44,12 @@ export const ImpactSection = ({
 
           <div className="grid grid-cols-2 gap-4">
             <StatCard
-              value="500,000"
+              value={settings?.verified_healthcare_professionals}
               label="Verified Healthcare Professionals"
             />
-            <StatCard value="100,000" label="Active Job opportunities" />
-            <StatCard value="500" label="Healthcare Specializations Covered" />
-            <StatCard value="98%" label="Hiring Success Rate" />
+            <StatCard value={settings?.active_job_opportunities} label="Active Job opportunities" />
+            <StatCard value={settings?.healthcare_specializations_covered} label="Healthcare Specializations Covered" />
+            <StatCard value={settings?.hiring_success_rate} label="Hiring Success Rate" />
           </div>
         </div>
       </div>

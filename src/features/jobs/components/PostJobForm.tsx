@@ -62,7 +62,7 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
     country: String(job.country_id ?? ""),
     city: String(job.city_id ?? ""),
     yearsOfExperience: String(job.experience_id ?? ""),
-    educationLevel: job.eduction_level_id ? [String(job.eduction_level_id)] : [],
+    educationLevel: job.education_levels ? [String(job.education_levels)] : [],
     mandatoryCertifications: (job.mandatory_certifications ?? []).map((item) =>
       String(item.id),
     ),
@@ -194,7 +194,7 @@ export default function PostJobForm() {
       mandatory_certifications: (data.mandatoryCertifications ?? []).map((item) =>
         Number(item),
       ),
-      eduction_level_id: (data.educationLevel ?? []).map((item) => Number(item)),
+      education_levels: (data.educationLevel ?? []).map((item) => Number(item)),
       availability_id: Number(data.availability),
     };
 
@@ -229,7 +229,7 @@ export default function PostJobForm() {
       mandatory_certifications: (data.mandatoryCertifications ?? []).map((item) =>
         Number(item),
       ),
-      eduction_level_id: (data.educationLevel ?? []).map((item) => Number(item)),
+      education_levels: (data.educationLevel ?? []).map((item) => Number(item)),
       availability_id: Number(data.availability),
       description: data.description,
       skills: (data.skills ?? []).map((s) => Number(s)),

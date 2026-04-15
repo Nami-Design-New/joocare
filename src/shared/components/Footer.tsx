@@ -1,17 +1,33 @@
-"use client";
-
 import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
 import BackToTopButton from "./BackToTopButton";
 import { Link } from "@/i18n/navigation";
+import { settingService } from "../services/settings-services";
 
-const Footer = () => {
+const Footer = async () => {
   const currentYear = new Date().getFullYear();
-  const { data: session, status } = useSession();
-  const authRole = status === "authenticated" ? session?.authRole : undefined;
+  const [session, settings] = await Promise.all([
+    getServerSession(authOptions),
+    settingService().catch(() => null),
+  ]);
+  const authRole = session?.authRole;
   const isCandidate = authRole === "candidate";
   const isEmployer = authRole === "employer";
+  const footerLogo = settings?.footer_logo || "/assets/logo-light.svg";
+  const footerText =
+    settings?.footer_text ||
+    "An AI-powered healthcare recruitment platform supporting compliant, data-driven hiring across medical and life sciences sectors.";
+  const copyrightText =
+    settings?.copyright || `All rights reserved - JooCare © ${currentYear}`;
+  const socialLinks = [
+    { href: settings?.linkedin, icon: Linkedin, label: "LinkedIn" },
+    { href: settings?.facebook, icon: Facebook, label: "Facebook" },
+    { href: settings?.instagram, icon: Instagram, label: "Instagram" },
+    { href: settings?.twitter, icon: Twitter, label: "Twitter" },
+    { href: settings?.snapchat, icon: Ghost, label: "Snapchat" },
+  ].filter((item) => Boolean(item.href));
 
   const candidateLinks = isEmployer
     ? [
@@ -44,16 +60,14 @@ const Footer = () => {
           <div className="space-y-6">
             <div className="flex items-center gap-2">
               <Image
-                src="/assets/logo-light.svg"
+                src={"/assets/logo-light.svg"}
                 alt="Joo Care Logo"
                 width={140}
                 height={60}
               />
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-gray-300">
-              An AI-powered healthcare recruitment platform supporting
-              compliant, data-driven hiring across medical and life sciences
-              sectors.
+              {footerText}
             </p>
           </div>
 
@@ -127,17 +141,18 @@ const Footer = () => {
         <div className="relative grid grid-cols-1 gap-4 pb-12 lg:grid-cols-5 lg:gap-12">
           {/* Social Icons */}
           <div className="order-last col-span-1 flex items-center justify-center gap-2 lg:order-first lg:gap-4">
-            {[Linkedin, Facebook, Instagram, Twitter, Ghost].map(
-              (Icon, idx) => (
-                <Link
-                  key={idx}
-                  href="#"
-                  className="flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-white transition hover:bg-white/20"
-                >
-                  <Icon size={14} color="var(--secondary)" />
-                </Link>
-              ),
-            )}
+            {socialLinks.map(({ href, icon: Icon, label }) => (
+              <Link
+                key={label}
+                href={href!}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={label}
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-white transition hover:bg-white/50"
+              >
+                <Icon size={14} color="var(--secondary)" />
+              </Link>
+            ))}
           </div>
           <div className="relative col-span-1 h-7 w-full lg:col-span-4">
             <Image
@@ -151,7 +166,7 @@ const Footer = () => {
       </div>{" "}
       {/* Copyright */}
       <p className="relative border-t border-[#0D0D0D73] pt-4 text-center text-lg text-white">
-        All rights reserved - JooCare © {currentYear} <BackToTopButton />
+        {copyrightText} <BackToTopButton />
       </p>
     </footer>
   );

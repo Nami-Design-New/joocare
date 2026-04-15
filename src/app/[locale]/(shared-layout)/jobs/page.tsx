@@ -221,8 +221,8 @@ export default async function Page({ params, searchParams }: PageProps) {
       },
     ],
   };
-  console.log(jobsData);
-  console.log(filtersData);
+  // console.log(jobsData);
+  // console.log(filtersData);
 
   return (
     <section className="bg-body-bg">

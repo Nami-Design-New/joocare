@@ -7,14 +7,26 @@ import { toast } from "sonner";
 import { getAuthApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
 
+type LogoutOptions = {
+  redirectTo?: string;
+  showSuccessToast?: boolean;
+  showErrorToast?: boolean;
+};
+
 export const useLogout = () => {
   const router = useRouter();
   const locale = useLocale();
   const { data: session } = useSession();
 
-  const logout = async () => {
+  const logout = async (options: LogoutOptions = {}) => {
+    const {
+      redirectTo,
+      showSuccessToast = true,
+      showErrorToast = true,
+    } = options;
     const authRole = session?.authRole;
     const accessToken = session?.accessToken;
+    const resolvedRedirectTo = redirectTo ?? "/";
 
     try {
       if (authRole && accessToken) {
@@ -23,21 +35,26 @@ export const useLogout = () => {
           locale,
           token: accessToken,
           body: new FormData(),
+          skipUnauthorizedHandler: true,
         });
 
         if (!ok) {
           throw new Error(message || "Logout failed.");
         }
 
-        toast.success(message || "Logged out successfully.");
+        if (showSuccessToast) {
+          toast.success(message || "Logged out successfully.");
+        }
       }
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Logout failed.";
-      toast.error(message);
+      if (showErrorToast) {
+        toast.error(message);
+      }
     } finally {
       await signOut({ redirect: false });
-      router.push("/");
+      router.push(resolvedRedirectTo);
       router.refresh();
     }
   };

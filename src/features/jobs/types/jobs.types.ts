@@ -180,9 +180,7 @@ export type JobDetails = {
   experience_id: number | null;
   experience: NamedEntity | null;
 
-  eduction_level_id: number | null;
-  eduction_level: NamedEntity | null;
-  education_level?: NamedEntity | null;
+  education_levels: [];
 
   availability_id: number | null;
   availability: NamedEntity | null;

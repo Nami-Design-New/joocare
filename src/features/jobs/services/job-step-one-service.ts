@@ -29,8 +29,8 @@ export async function jobStepOneService(
         formData.append(`mandatory_certifications[${index}]`, String(item));
     });
 
-    payload.eduction_level_id.forEach((item, index) => {
-        formData.append(`eduction_level_id[${index}]`, String(item));
+    payload.education_levels.forEach((item, index) => {
+        formData.append(`education_levels[${index}]`, String(item));
     });
 
     const response = await apiFetch(

@@ -11,9 +11,14 @@ export default function JobDescriptionCard({ job }: { job: JobDetails }) {
       <h3 className="text-primary mb-4 text-xl font-bold">Job description</h3>
 
       <DescriptionSection title="Qualifications">
-        <p className="mb-5 text-sm font-normal">
-          {job?.description}
-        </p>
+        <div
+          className="prose prose-sm max-w-none border-b pb-5"
+          dangerouslySetInnerHTML={{
+            __html:
+              job.description ||
+              "<p>No description available.</p>",
+          }}
+        />
         <Link href="/" className="block w-full border-b pb-5 text-[#1C7ED6]">
           Learn more about our benefits
         </Link>

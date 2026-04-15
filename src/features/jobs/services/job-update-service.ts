@@ -15,7 +15,7 @@ export type UpdateJobPayload = {
   city_id?: number;
   experience_id?: number;
   mandatory_certifications?: number[];
-  eduction_level_id?: number[];
+  education_levels?: number[];
   availability_id?: number;
   has_salary?: number;
   skills?: number[];
@@ -56,9 +56,9 @@ export async function updateJobService(
   if (payload.country_id !== undefined) formData.append("country_id", String(payload.country_id));
   if (payload.city_id !== undefined) formData.append("city_id", String(payload.city_id));
   if (payload.experience_id !== undefined) formData.append("experience_id", String(payload.experience_id));
-  if (payload.eduction_level_id) {
-    payload.eduction_level_id.forEach((educationLevelId, index) => {
-      formData.append(`eduction_level_id[${index}]`, String(educationLevelId));
+  if (payload.education_levels) {
+    payload.education_levels.forEach((educationLevelId, index) => {
+      formData.append(`education_levels[${index}]`, String(educationLevelId));
     });
   }
   if (payload.availability_id !== undefined) formData.append("availability_id", String(payload.availability_id));
