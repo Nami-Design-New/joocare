@@ -60,12 +60,13 @@ type HomeApiResponse = {
       jobs?: Array<{
         id?: number | string;
         title?: string | null;
-        created_at?: string | null;
+        updated_at?: string | null;
         company?: { name?: string | null } | string | null;
         job_title?: { title?: string | null } | null;
         country?: { name?: string | null } | null;
         city?: { name?: string | null } | null;
         employment_type?: { title?: string | null } | null;
+        image?: string | null;
       }>;
     };
     rates?: {
@@ -228,7 +229,9 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
                 : job.company?.name ?? "Joocare Employer",
             location: locationParts.join(", ") || "Location not specified",
             type: job.employment_type?.title ?? "Not specified",
-            timeLabel: buildJobTimeLabel(job.created_at),
+            timeLabel: buildJobTimeLabel(job.updated_at),
+            image: job.image ?? "/assets/recent-job-image.svg",
+            updated_at: job.updated_at ?? "",
           };
         }) ?? [],
     },

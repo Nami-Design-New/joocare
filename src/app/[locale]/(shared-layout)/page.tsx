@@ -39,6 +39,7 @@ export default async function Home({
     throw error;
   }
 
+  console.log("Home page data:", homeData);
   return (
     <section className="">
       <Hero

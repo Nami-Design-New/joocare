@@ -121,7 +121,7 @@ export function JobActionButtons({
         <Button
           variant="destructive"
           size="pill"
-          className={`flex items-center justify-center gap-2 ${isClosed ? "w-full" : isDraft || isPaused || isOpen ? "flex-1" : ""}`}
+          className={`flex-1 items-center justify-center gap-2 `}
           disabled={isDeleting}
           onClick={() => setDeleteJob(true)}
         >

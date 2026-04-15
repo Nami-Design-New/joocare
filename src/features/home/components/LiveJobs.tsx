@@ -12,6 +12,7 @@ export const LiveJobs = ({
   title: string;
   jobs: HomeRecentJob[];
 }) => {
+
   return (
     <section
       className="bg-white py-10 md:py-20"

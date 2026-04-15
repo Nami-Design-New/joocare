@@ -1,10 +1,10 @@
-import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";
-import Image from "next/image";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
-import BackToTopButton from "./BackToTopButton";
 import { Link } from "@/i18n/navigation";
+import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";
+import { getServerSession } from "next-auth";
+import Image from "next/image";
 import { settingService } from "../services/settings-services";
+import BackToTopButton from "./BackToTopButton";
 
 const Footer = async () => {
   const currentYear = new Date().getFullYear();
@@ -113,15 +113,16 @@ const Footer = async () => {
                 </Link>
               </li>
               <li>
-                <span className="cursor-not-allowed opacity-70">
+                <Link href="/privacy-policy" className="transition hover:text-white">
                   Data Privacy & Security
-                </span>
+                </Link>
               </li>
               <li>
-                <span className="cursor-not-allowed opacity-70">
+                <Link href="/terms-conditions" className="transition hover:text-white">
                   Terms & Conditions
-                </span>
+                </Link>
               </li>
+
             </ul>
           </div>
 

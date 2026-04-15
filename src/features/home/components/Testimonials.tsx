@@ -63,7 +63,7 @@ export const Testimonials = ({
           <Carousel
             opts={{
               align: "start",
-              loop: true,
+              loop: false,
             }}
           >
             {/* Header */}
