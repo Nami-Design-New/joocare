@@ -1,9 +1,13 @@
 import Image from "next/image";
 import React from "react";
 
+type valueProps = {
+  id: number | string;
+  title: string;
+};
 type JobOverviewItemProps = {
   label: string;
-  value: [];
+  value: valueProps[] | string | undefined;
   icon?: string;
 };
 
@@ -12,7 +16,6 @@ const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
   value,
   icon,
 }) => {
-  console.log("JobOverviewItem", value);
 
   return (
     <div>

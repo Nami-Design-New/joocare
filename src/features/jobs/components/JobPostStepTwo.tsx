@@ -9,14 +9,10 @@ import "ckeditor5/ckeditor5.css";
 // import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import dynamic from "next/dynamic";
-
-// ✅ dynamic هنا بس
 const CKEditor = dynamic(
   () => import("@ckeditor/ckeditor5-react").then((mod) => mod.CKEditor),
   { ssr: false }
 );
-
-// ✅ import عادي
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 
@@ -56,6 +52,9 @@ export default function JobPostStepTwo() {
                   data={field.value || ""}
                   onChange={(_, editor) => {
                     field.onChange(editor.getData());
+                  }}
+                  config={{
+                    licenseKey: "GPL",
                   }}
                 />
                 {errors.description && (

@@ -11,7 +11,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
       <div className="flex flex-col gap-6">
         <JobOverviewItem
           label="Education Level"
-          value={job?.eduction_level?.title ?? "-"}
+          value={job?.education_levels}
           icon="/assets/icons/exp.svg"
         />
         <div>
