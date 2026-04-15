@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
+import { apiFetch } from "@/shared/lib/fetch-manager";
 import { extractCertificateItems, mapCertificate } from "../services/certificate-utils";
 import type { CertificateViewModel } from "../types/certificate.types";
 
@@ -41,22 +42,20 @@ export default function useGetCertificates() {
         limit_per_page: "10",
       });
 
-      const res = await fetch(`${getUserApiUrl()}/certifications?${params.toString()}`, {
-        headers: {
-          Accept: "application/json",
-          "Accept-Language": locale,
-          Authorization: `Bearer ${token}`,
+      const { data, ok, message } = await apiFetch<unknown>(
+        `${getUserApiUrl()}/certifications?${params.toString()}`,
+        {
+          method: "GET",
+          locale,
+          token,
         },
-        cache: "no-store",
-      });
+      );
 
-      if (!res.ok) {
-        throw new Error("Failed to load certificates.");
+      if (!ok) {
+        throw new Error(message || "Failed to load certificates.");
       }
 
-      const data = (await res.json()) as CertificatesPageResponse;
-
-      return data;
+      return (data ?? {}) as CertificatesPageResponse;
     },
     getNextPageParam: (lastPage) => {
       if (!lastPage?.next_page_url) {

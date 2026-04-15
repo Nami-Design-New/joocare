@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import NextAuthProvider from "./next-auth-provider/next-auth.provider";
 import { Toaster } from "sonner";
+import UnauthorizedSessionHandler from "@/features/auth/components/UnauthorizedSessionHandler";
 
 export default function MainProviders({
   children,
@@ -20,6 +21,7 @@ export default function MainProviders({
       <TanstackQueryProvider>
         <NextAuthProvider>
           <Provider store={store}>
+            <UnauthorizedSessionHandler />
             {children}
             <Toaster position="top-right" richColors closeButton />
           </Provider>

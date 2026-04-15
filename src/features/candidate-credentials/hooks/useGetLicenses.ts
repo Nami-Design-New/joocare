@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
+import { apiFetch } from "@/shared/lib/fetch-manager";
 import { extractLicenseItems, mapLicense } from "../services/license-utils";
 import type { LicenseViewModel } from "../types/license.types";
 
@@ -38,22 +39,20 @@ export default function useGetLicenses() {
         limit_per_page: "10",
       });
 
-      const res = await fetch(`${getUserApiUrl()}/user-licenses?${params.toString()}`, {
-        headers: {
-          Accept: "application/json",
-          "Accept-Language": locale,
-          Authorization: `Bearer ${token}`,
+      const { data, ok, message } = await apiFetch<unknown>(
+        `${getUserApiUrl()}/user-licenses?${params.toString()}`,
+        {
+          method: "GET",
+          locale,
+          token,
         },
-        cache: "no-store",
-      });
+      );
 
-      if (!res.ok) {
-        throw new Error("Failed to load licenses.");
+      if (!ok) {
+        throw new Error(message || "Failed to load licenses.");
       }
 
-      const data = (await res.json()) as LicensesPageResponse;
-
-      return data;
+      return (data ?? {}) as LicensesPageResponse;
     },
     getNextPageParam: (lastPage) => {
       if (!lastPage?.next_page_url) {

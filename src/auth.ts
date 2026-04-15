@@ -171,7 +171,7 @@ async function authorizeWithSocialEndpoint({
 
 export const authOptions: NextAuthOptions = {
   pages: {
-    signIn: "/en/auth/candidate/login",
+    signIn: "/auth/candidate/login",
   },
   providers: [
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
