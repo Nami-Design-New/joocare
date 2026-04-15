@@ -23,7 +23,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="layout-shell shadow-header sticky top-0 z-30 flex min-h-21.75 w-full items-center justify-between bg-white py-4">
+      <header className="layout-shell shadow-header sticky top-0 z-30 flex h-19 w-full items-center justify-between bg-white py-4">
         <div className="layout-content flex items-center justify-between">
           {/* Logo */}
           <div className="flex gap-1">
@@ -49,7 +49,7 @@ const Header = () => {
               <Image
                 src="/assets/logo_1.svg"
                 alt="Joo Care Logo"
-                width={100}
+                width={125}
                 height={100}
                 priority
                 className="hidden lg:block"
@@ -65,9 +65,8 @@ const Header = () => {
             <ul className="flex justify-center space-x-4">
               <li>
                 <Link
-                  className={`nav-link ${
-                    isActive(homeHref) ? "text-primary border-primary" : ""
-                  }`}
+                  className={`nav-link ${isActive(homeHref) ? "text-primary border-primary" : ""
+                    }`}
                   href={homeHref}
                 >
                   Home
@@ -75,9 +74,8 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  className={`nav-link ${
-                    isActive("/about") ? "text-primary border-primary" : ""
-                  }`}
+                  className={`nav-link ${isActive("/about") ? "text-primary border-primary" : ""
+                    }`}
                   href="/about"
                 >
                   About
@@ -86,9 +84,8 @@ const Header = () => {
               {!companyHeader && (
                 <li>
                   <Link
-                    className={`nav-link ${
-                      isActive("/jobs") ? "text-primary border-primary" : ""
-                    }`}
+                    className={`nav-link ${isActive("/jobs") ? "text-primary border-primary" : ""
+                      }`}
                     href="/jobs"
                   >
                     Jobs
@@ -97,9 +94,8 @@ const Header = () => {
               )}
               <li>
                 <Link
-                  className={`nav-link ${
-                    isActive("/contact") ? "text-primary border-primary" : ""
-                  }`}
+                  className={`nav-link ${isActive("/contact") ? "text-primary border-primary" : ""
+                    }`}
                   href="/contact"
                 >
                   Contact
