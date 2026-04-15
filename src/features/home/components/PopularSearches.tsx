@@ -112,7 +112,7 @@ export default function PopularSearches({
           {title}
         </h4>
 
-        {(hasHidden || isExpanded) && (
+        {(isExpanded) && (
           <Button
             variant="outline"
             size="pill"
