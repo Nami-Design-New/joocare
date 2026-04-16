@@ -31,7 +31,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
               <ul className="mt-2 flex flex-col gap-2">
                 {job.mandatory_certifications?.map((item) => (
                   <li className="edu-certificate" key={item?.id}>
-                    {item?.title}
+                    {item.title ?? item.mandatory_certification?.title ?? "-"}
                   </li>
                 ))}
                 {job.mandatory_certifications?.length === 0 && (

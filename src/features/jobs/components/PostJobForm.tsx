@@ -37,6 +37,40 @@ type FormMode = "create" | "complete" | "edit";
 
 const STEPS = ["Job Details", "Job Description & Requirements", "Job Preview"];
 const LAST_STEP = STEPS.length - 1;
+const CUSTOM_CERTIFICATION_PREFIX = "__custom__:";
+
+function normalizeMandatoryCertificationValue(value: string) {
+  return value.startsWith(CUSTOM_CERTIFICATION_PREFIX)
+    ? value.slice(CUSTOM_CERTIFICATION_PREFIX.length)
+    : Number(value);
+}
+
+function getJobFromMutationResponse(response: unknown): JobDetails | null {
+  if (!response || typeof response !== "object") return null;
+
+  const responseRecord = response as { data?: unknown; job?: unknown };
+
+  if (responseRecord.data && typeof responseRecord.data === "object") {
+    const nestedData = responseRecord.data as { job?: unknown; data?: unknown };
+
+    if (nestedData.job && typeof nestedData.job === "object") {
+      return nestedData.job as JobDetails;
+    }
+
+    if (nestedData.data && typeof nestedData.data === "object") {
+      const deeperData = nestedData.data as { job?: unknown };
+      if (deeperData.job && typeof deeperData.job === "object") {
+        return deeperData.job as JobDetails;
+      }
+    }
+  }
+
+  if (responseRecord.job && typeof responseRecord.job === "object") {
+    return responseRecord.job as JobDetails;
+  }
+
+  return null;
+}
 
 // ─── Map API job → form defaults ────────────────────────
 function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
@@ -62,10 +96,20 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
     country: String(job.country_id ?? ""),
     city: String(job.city_id ?? ""),
     yearsOfExperience: String(job.experience_id ?? ""),
-    educationLevel: job.education_levels ? [String(job.education_levels)] : [],
-    mandatoryCertifications: (job.mandatory_certifications ?? []).map((item) =>
-      String(item.id),
-    ),
+    educationLevel: (job.education_levels ?? []).map((item) => String(item.id)),
+    mandatoryCertifications: (job.mandatory_certifications ?? [])
+      .map((item) => {
+        if (item.mandatory_certification_id != null) {
+          return String(item.mandatory_certification_id);
+        }
+
+        if (item.title?.trim()) {
+          return `${CUSTOM_CERTIFICATION_PREFIX}${item.title.trim()}`;
+        }
+
+        return null;
+      })
+      .filter((item): item is string => Boolean(item)),
     availability: String(job.availability_id ?? ""),
     description: job.description ?? "",
     skills: (job.skills ?? []).map((s) => String(s.id)),
@@ -155,14 +199,10 @@ export default function PostJobForm() {
       payload: { status },
     });
 
-    const stepThreeData = stepThreeResponse.data as Record<string, any>;
-    const nextReviewJob =
-      stepThreeData?.data?.job ??
-      stepThreeData?.job ??
-      null;
+    const nextReviewJob = getJobFromMutationResponse(stepThreeResponse.data);
 
     if (nextReviewJob) {
-      setReviewJob(nextReviewJob as JobDetails);
+      setReviewJob(nextReviewJob);
     }
   };
 
@@ -191,8 +231,8 @@ export default function PostJobForm() {
       country_id: Number(data.country),
       city_id: Number(data.city),
       experience_id: Number(data.yearsOfExperience),
-      mandatory_certifications: (data.mandatoryCertifications ?? []).map((item) =>
-        Number(item),
+      mandatory_certifications: (data.mandatoryCertifications ?? []).map(
+        normalizeMandatoryCertificationValue,
       ),
       education_levels: (data.educationLevel ?? []).map((item) => Number(item)),
       availability_id: Number(data.availability),
@@ -226,8 +266,8 @@ export default function PostJobForm() {
       country_id: Number(data.country),
       city_id: Number(data.city),
       experience_id: Number(data.yearsOfExperience),
-      mandatory_certifications: (data.mandatoryCertifications ?? []).map((item) =>
-        Number(item),
+      mandatory_certifications: (data.mandatoryCertifications ?? []).map(
+        normalizeMandatoryCertificationValue,
       ),
       education_levels: (data.educationLevel ?? []).map((item) => Number(item)),
       availability_id: Number(data.availability),
@@ -286,8 +326,8 @@ export default function PostJobForm() {
       const data = getValues();
       const stepOneResponse = await postStepOne(buildStepOnePayload(data));
 
-      const stepOneData = stepOneResponse.data as Record<string, any>;
-      const nextCreatedJobId = Number(stepOneData?.data?.job?.id);
+      const nextCreatedJob = getJobFromMutationResponse(stepOneResponse.data);
+      const nextCreatedJobId = Number(nextCreatedJob?.id);
 
       if (!nextCreatedJobId) {
         throw new Error("Unable to resolve created job id from step one response.");
@@ -312,12 +352,8 @@ export default function PostJobForm() {
           skills: (data.skills ?? []).map((skillId) => Number(skillId)),
         },
       });
-      const stepTwoData = stepTwoResponse.data as Record<string, any>;
-      const nextReviewJob =
-        stepTwoData?.data?.job ??
-        stepTwoData?.job ??
-        null;
-      setReviewJob(nextReviewJob as JobDetails | null);
+      const nextReviewJob = getJobFromMutationResponse(stepTwoResponse.data);
+      setReviewJob(nextReviewJob);
       setCurrentStep((s) => s + 1);
       return;
     }

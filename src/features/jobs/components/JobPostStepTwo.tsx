@@ -48,7 +48,7 @@ export default function JobPostStepTwo() {
                   Job Description
                 </label>
                 <CKEditor
-                  editor={ClassicEditor as any}
+                  editor={ClassicEditor}
                   data={field.value || ""}
                   onChange={(_, editor) => {
                     field.onChange(editor.getData());

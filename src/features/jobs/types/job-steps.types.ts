@@ -13,7 +13,7 @@ export type JobStepOnePayload = {
     country_id: number,
     city_id: number,
     experience_id: number,
-    mandatory_certifications: number[],
+    mandatory_certifications: Array<number | string>,
     education_levels: number[],
     availability_id: number,
     has_salary: 0 | 1,

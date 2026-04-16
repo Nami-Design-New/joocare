@@ -14,7 +14,7 @@ export type UpdateJobPayload = {
   country_id?: number;
   city_id?: number;
   experience_id?: number;
-  mandatory_certifications?: number[];
+  mandatory_certifications?: Array<number | string>;
   education_levels?: number[];
   availability_id?: number;
   has_salary?: number;
@@ -72,8 +72,11 @@ export async function updateJobService(
   }
 
   if (payload.mandatory_certifications) {
-    payload.mandatory_certifications.forEach((certId, index) => {
-      formData.append(`mandatory_certifications[${index}]`, String(certId));
+    payload.mandatory_certifications.forEach((certification, index) => {
+      formData.append(
+        `mandatory_certifications[${index}]`,
+        String(certification),
+      );
     });
   }
 
