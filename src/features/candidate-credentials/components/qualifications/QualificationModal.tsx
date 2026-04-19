@@ -94,9 +94,9 @@ function buildOptimisticQualification({
   });
   const endLabel = endDate
     ? new Date(endDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-      })
+      year: "numeric",
+      month: "short",
+    })
     : "Present";
 
   return {
@@ -182,31 +182,31 @@ export function QualificationModal({
       (current) =>
         qualification?.id
           ? replaceInfiniteItem<QualificationViewModel>(
-              current,
-              ["qualifications", "qualification"],
-              optimisticQualification,
-            )
+            current,
+            ["qualifications", "qualification"],
+            optimisticQualification,
+          )
           : prependInfiniteItem<QualificationViewModel>(
-              current,
-              ["qualifications", "qualification"],
-              optimisticQualification,
-            ),
+            current,
+            ["qualifications", "qualification"],
+            optimisticQualification,
+          ),
     );
 
     startTransition(async () => {
       try {
         const response = qualification?.id
           ? await updateQualificationAction({
-              id: qualification.id,
-              ...payload,
-            })
+            id: qualification.id,
+            ...payload,
+          })
           : await createQualificationAction(payload);
 
         toast.success(
           response.message ??
-            (qualification?.id
-              ? "Qualification updated successfully."
-              : "Qualification added successfully."),
+          (qualification?.id
+            ? "Qualification updated successfully."
+            : "Qualification added successfully."),
         );
         await queryClient.invalidateQueries({
           queryKey: qualificationsQueryKeyPrefix(locale),

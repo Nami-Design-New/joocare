@@ -21,16 +21,15 @@ const LoginEmployerPage = () => {
         {/* Login form */}
         <FormEmployerLogin />
 
-        <div
+        {/* <div
           className="flex items-center gap-3 my-4 text-sm text-gray-500 font-medium 
           before:content-[''] before:flex-1 before:h-px before:bg-gray-200
           after:content-[''] after:flex-1 after:h-px after:bg-gray-200"
         >
           or
         </div>
+        <SocialLoginButtons role="employer" /> */}
 
-        {/* social buttons */}
-        <SocialLoginButtons role="employer" />
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">

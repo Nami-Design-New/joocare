@@ -22,20 +22,21 @@ export const RegisterEmployerSchema = z.object({
     .max(100, { message: "Person full name must be less than 100 characters" }),
   phoneNumber: z.string({
     message: "Phone number is required",
-  }).min(10, { message: "Phone number is required" }),
+  }).min(7, { message: "Phone number is required" })
+    .max(15, { message: "Phone number must be less than 15 characters" }),
   createPassword: z
     .string()
     .min(6, { message: "Password must be at least 6 characters" })
-    .max(15, { message: "Password must be less than 16 characters" }),
+    .max(15, { message: "Password must be less than 15 characters" }),
   confirmRegister: z.boolean({
-    message: "You must accept the terms",
+    message: "You must confirm that you are authorized to represent this company",
   }).refine((val) => val === true, {
-    message: "You must accept the terms",
+    message: "You must confirm that you are authorized to represent this company",
   }),
   termsAndConditions: z.boolean({
-    message: "You must accept the terms",
+    message: "You must accept the Privacy Policy and Terms & Conditions",
   }).refine((val) => val === true, {
-    message: "You must accept the terms",
+    message: "You must accept the Privacy Policy and Terms & Conditions",
   }),
 });
 

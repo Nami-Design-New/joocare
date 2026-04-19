@@ -115,7 +115,7 @@ export function StoredFilepondUpload({
   return (
     <div className={`w-full space-y-2 ${className ?? ""}`}>
       {label ? (
-        <label className="block text-sm font-medium">
+        <label className="block text-base font-semibold">
           {label}
           {required ? <span className="ml-1 text-red-500">*</span> : null}
           {hint ? (
