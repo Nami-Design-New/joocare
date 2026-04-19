@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { useLocale } from "next-intl";
 import { toast } from "sonner";
@@ -30,7 +30,7 @@ import {
 } from "../../services/infinite-query-cache";
 import type { LicenseFormValues, LicenseViewModel } from "../../types/license.types";
 import {
-  licenseSchema,
+  createLicenseSchema,
   type LicenseSchemaOutput,
   type LicenseSchemaValues,
 } from "../../validation/license-schema";
@@ -98,6 +98,13 @@ export function LicenseModal({
   const [countrySearch, setCountrySearch] = useState("");
   const [storedImagePath, setStoredImagePath] = useState<string | null>(null);
   const [showExistingImage, setShowExistingImage] = useState(Boolean(license?.image));
+  const licenseFormSchema = useMemo(
+    () =>
+      createLicenseSchema({
+        requireImage: !(license?.image && showExistingImage),
+      }),
+    [license?.image, showExistingImage],
+  );
   const {
     register,
     control,
@@ -106,7 +113,7 @@ export function LicenseModal({
     clearErrors,
     formState: { errors },
   } = useForm<LicenseSchemaValues, undefined, LicenseSchemaOutput>({
-    resolver: zodResolver(licenseSchema),
+    resolver: zodResolver(licenseFormSchema),
     defaultValues: toFormState(license),
   });
   const {
@@ -248,6 +255,7 @@ export function LicenseModal({
                 label="Upload Image"
                 files={field.value}
                 onChange={field.onChange}
+                required={!(license?.image && showExistingImage)}
                 allowMultiple={false}
                 maxFiles={1}
                 allowImagePreview

@@ -141,7 +141,7 @@ const Footer = async () => {
         {/* Bottom Section: Socials & Copyright */}
         <div className="relative grid grid-cols-1 gap-4 pb-12 lg:grid-cols-5 lg:gap-12">
           {/* Social Icons */}
-          <div className="order-last col-span-1 flex items-center justify-center gap-2 lg:order-first lg:gap-4">
+          <div className="order-last col-span-1 flex items-center gap-2 lg:order-first lg:gap-4">
             {socialLinks.map(({ href, icon: Icon, label }) => (
               <Link
                 key={label}
