@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { useLocale } from "next-intl";
 import { toast } from "sonner";
@@ -33,7 +33,7 @@ import type {
   QualificationViewModel,
 } from "../../types/qualification.types";
 import {
-  qualificationSchema,
+  createQualificationSchema,
   type QualificationSchemaOutput,
   type QualificationSchemaValues,
 } from "../../validation/qualification-schema";
@@ -125,6 +125,13 @@ export function QualificationModal({
   const [countrySearch, setCountrySearch] = useState("");
   const [storedImagePath, setStoredImagePath] = useState<string | null>(null);
   const [showExistingImage, setShowExistingImage] = useState(Boolean(qualification?.image));
+  const qualificationFormSchema = useMemo(
+    () =>
+      createQualificationSchema({
+        requireImage: !(qualification?.image && showExistingImage),
+      }),
+    [qualification?.image, showExistingImage],
+  );
   const {
     register,
     control,
@@ -133,7 +140,7 @@ export function QualificationModal({
     clearErrors,
     formState: { errors },
   } = useForm<QualificationSchemaValues, undefined, QualificationSchemaOutput>({
-    resolver: zodResolver(qualificationSchema),
+    resolver: zodResolver(qualificationFormSchema),
     defaultValues: toFormState(qualification),
   });
   const {
@@ -240,6 +247,7 @@ export function QualificationModal({
                 label="Upload Image"
                 files={field.value}
                 onChange={field.onChange}
+                required={!(qualification?.image && showExistingImage)}
                 allowMultiple={false}
                 maxFiles={1}
                 allowImagePreview

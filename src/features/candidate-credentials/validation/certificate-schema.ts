@@ -3,7 +3,14 @@ import { z } from "zod";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
-export const certificateSchema = z
+type CreateCertificateSchemaOptions = {
+  requireImage?: boolean;
+};
+
+export const createCertificateSchema = ({
+  requireImage = true,
+}: CreateCertificateSchemaOptions = {}) =>
+  z
   .object({
     name: z
       .string()
@@ -19,7 +26,7 @@ export const certificateSchema = z
     endDate: z.string().optional(),
     image: z
       .array(z.instanceof(File))
-      .min(1, "Certificate image is required.")
+      .min(requireImage ? 1 : 0, "Certificate image is required.")
       .max(1, "Only one image is allowed.")
       .refine(
         (files) => files.every((file) => ALLOWED_IMAGE_TYPES.includes(file.type)),
@@ -38,6 +45,8 @@ export const certificateSchema = z
     message: "End date must be after start date.",
     path: ["endDate"],
   });
+
+export const certificateSchema = createCertificateSchema();
 
 export type CertificateSchemaValues = z.input<typeof certificateSchema>;
 export type CertificateSchemaOutput = z.output<typeof certificateSchema>;

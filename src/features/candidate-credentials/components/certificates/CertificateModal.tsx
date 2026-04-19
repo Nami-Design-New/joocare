@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { useLocale } from "next-intl";
 import { toast } from "sonner";
@@ -31,7 +31,7 @@ import type {
   CertificateViewModel,
 } from "../../types/certificate.types";
 import {
-  certificateSchema,
+  createCertificateSchema,
   type CertificateSchemaOutput,
   type CertificateSchemaValues,
 } from "../../validation/certificate-schema";
@@ -113,6 +113,13 @@ export function CertificateModal({
   const [isPending, startTransition] = useTransition();
   const [storedImagePath, setStoredImagePath] = useState<string | null>(null);
   const [showExistingImage, setShowExistingImage] = useState(Boolean(certificate?.image));
+  const certificateFormSchema = useMemo(
+    () =>
+      createCertificateSchema({
+        requireImage: !(certificate?.image && showExistingImage),
+      }),
+    [certificate?.image, showExistingImage],
+  );
   const {
     register,
     control,
@@ -121,7 +128,7 @@ export function CertificateModal({
     clearErrors,
     formState: { errors },
   } = useForm<CertificateSchemaValues, undefined, CertificateSchemaOutput>({
-    resolver: zodResolver(certificateSchema),
+    resolver: zodResolver(certificateFormSchema),
     defaultValues: toFormState(certificate),
   });
 
@@ -209,6 +216,7 @@ export function CertificateModal({
                 label="Upload Image"
                 files={field.value}
                 onChange={field.onChange}
+                required={!(certificate?.image && showExistingImage)}
                 allowMultiple={false}
                 maxFiles={1}
                 allowImagePreview
