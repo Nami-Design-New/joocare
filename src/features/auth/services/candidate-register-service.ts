@@ -6,7 +6,8 @@ type RegisterCandidatePayload = {
     email: string;
     phone: string;
     phone_code: string;
-    job_title_id: string;
+    job_title_id?: string;
+    title?: string;
     country_id: string;
     city_id: string;
     password: string;

@@ -22,11 +22,6 @@ const optionalString = z
   .optional()
   .transform((val) => (val?.trim() === "" ? undefined : val));
 
-const optionalFileArray = z
-  .array(z.instanceof(File))
-  .optional()
-  .transform((val) => (val && val.length === 0 ? undefined : val));
-
 export const RegisterCandidateSchema = z
   .object({
     fullName: z
@@ -44,6 +39,7 @@ export const RegisterCandidateSchema = z
     jobTitle: z.string({
       message: 'Job title is required',
     }).min(1, { message: "Job title is required" }),
+    otherJobTitle: z.string().default(""),
 
     country: z.string({
       message: 'Country is required',
@@ -61,7 +57,10 @@ export const RegisterCandidateSchema = z
       .min(6, { message: "Password must be at least 6 characters" }),
 
     // Sends undefined (omitted) if no files uploaded
-    uploadCV: optionalString,
+    uploadCV: z
+      .string("cv is required")
+      .min(1, { message: "cv is required" })
+      .transform((val) => (val?.trim() === "" ? undefined : val)),
 
     confirmRegister: z.boolean().default(false),
 
@@ -79,6 +78,14 @@ export const RegisterCandidateSchema = z
     uploadLicense: optionalString,
   })
   .superRefine((data, ctx) => {
+    if (data.jobTitle === "__other__" && !data.otherJobTitle.trim()) {
+      ctx.addIssue({
+        path: ["otherJobTitle"],
+        message: "Other job title is required",
+        code: "custom",
+      });
+    }
+
     if (data.confirmRegister) {
       // specificCountry
       if (!data.specificCountry) {
