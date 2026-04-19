@@ -41,12 +41,6 @@ type StoredImageResponse = {
 
 const STORAGE_BASE_URL = "https://joocare.nami-tec.com/storage";
 
-
-
-
-
-
-
 function normalizeDate(value: unknown) {
   if (typeof value !== "string" || !value) {
     return "";

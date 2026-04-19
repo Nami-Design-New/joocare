@@ -29,9 +29,9 @@ const SideContentInfos = ({
           alt="profile image"
           width={150}
           height={150}
-          className="rounded-full"
+          className="rounded-full h-37.5 w-37.5"
         />
-        <h2 className="mt-1 text-xl font-semibold text-black">
+        <h2 className="mt-1 text-[21px] font-semibold text-black">
           {displayName}
         </h2>
         <span className="text-primary text-sm font-semibold">

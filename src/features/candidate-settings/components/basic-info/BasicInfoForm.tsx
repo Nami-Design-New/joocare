@@ -209,7 +209,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       const response = await updateCandidateBasicInfoAction(formData, locale);
       toast.success(response.message ?? "Profile updated successfully.");
-      router.refresh();
+      router.push("/candidate/profile");
     } catch (error) {
       const message =
         error instanceof Error
