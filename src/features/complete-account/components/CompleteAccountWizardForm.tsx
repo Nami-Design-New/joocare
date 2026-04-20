@@ -2,10 +2,11 @@
 
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { FormProvider, useForm } from "react-hook-form";
+import SuccessModal from "@/shared/components/modals/SuccessModal";
 
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { parsePhoneNumber } from "react-phone-number-input";
 import { steps } from "../constants/wizard.constants";
 import { useWizard } from "../hooks/use-wizard";
@@ -24,6 +25,25 @@ const COMPLETE_ACCOUNT_FORM_STEPS = [
 ];
 
 const cleanPhone = (phone?: string | null) => phone?.replace(/[^\d]/g, "") || "";
+const formatDateForInput = (value?: string | Date | null) => {
+  if (!value) return "";
+
+  if (typeof value === "string") {
+    return value.slice(0, 10);
+  }
+
+  return value.toISOString().slice(0, 10);
+};
+
+const formatDateForApi = (value?: string | Date | null) => {
+  if (!value) return "";
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  return value.toISOString().slice(0, 10);
+};
 
 export default function CompleteAccountWizardForm() {
 
@@ -39,6 +59,7 @@ export default function CompleteAccountWizardForm() {
   const { mutateAsync: postStepThree, isPending: isPendingStepThree } = usePostStepThree({ token });
 
   const wizard = useWizard(steps.length);
+  const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false);
 
   const methods = useForm<WizardFormData>({
     resolver: typedZodResolver(WizardSchema),
@@ -59,14 +80,14 @@ export default function CompleteAccountWizardForm() {
         commercialRegister: profileData.commercial_registration_number?.toString() || "",
         issuingCountryLicense: profileData.license_issue_country_id?.toString() || "",
         organizationSize: profileData.organization_size_id?.toString() || "",
-        commercialRegistrationIssueDate: profileData.commercial_registration_issue_date ? new Date(profileData.commercial_registration_issue_date) : undefined as unknown as Date,
-        commercialRegistrationExpiryDate: profileData.commercial_registration_expiry_date ? new Date(profileData.commercial_registration_expiry_date) : undefined as unknown as Date,
+        commercialRegistrationIssueDate: formatDateForInput(profileData.commercial_registration_issue_date),
+        commercialRegistrationExpiryDate: formatDateForInput(profileData.commercial_registration_expiry_date),
         employerType: profileData.employer_type_id?.toString() || "",
         medicalFacilityLicenseNumber: profileData.medical_facility_license_number?.toString() || "",
         licenseIssuingAuthority: profileData.license_issuing_authority || "",
         specialtyScopePractice: profileData.specialty_id?.toString() || "",
-        medicalRegistrationIssueDate: profileData.medical_license_issue_date ? new Date(profileData.medical_license_issue_date) : undefined as unknown as Date,
-        medicalRegistrationExpiryDate: profileData.medical_license_expiry_date ? new Date(profileData.medical_license_expiry_date) : undefined as unknown as Date,
+        medicalRegistrationIssueDate: formatDateForInput(profileData.medical_license_issue_date),
+        medicalRegistrationExpiryDate: formatDateForInput(profileData.medical_license_expiry_date),
         organizationPhoneNumber: profileData.phone_code && profileData.phone
           ? `${profileData.phone_code}${cleanPhone(profileData.phone)}`
           : "",
@@ -109,16 +130,16 @@ export default function CompleteAccountWizardForm() {
       } else if (wizard.step === 1) {
         await postStepTwo({
           commercial_registration_number: data.commercialRegister || "",
-          commercial_registration_issue_date: data.commercialRegistrationIssueDate?.toISOString?.() || "",
-          commercial_registration_expiry_date: data.commercialRegistrationExpiryDate?.toISOString?.() || "",
+          commercial_registration_issue_date: formatDateForApi(data.commercialRegistrationIssueDate),
+          commercial_registration_expiry_date: formatDateForApi(data.commercialRegistrationExpiryDate),
           license_issue_country_id: data.issuingCountryLicense || "",
           organization_size_id: data.organizationSize || "",
           employer_type_id: data.employerType || "",
           medical_facility_license_number: data.medicalFacilityLicenseNumber || "",
           license_issuing_authority: data.licenseIssuingAuthority || "",
           specialty_id: data.specialtyScopePractice || "",
-          medical_license_issue_date: data.medicalRegistrationIssueDate?.toISOString?.() || "",
-          medical_license_expiry_date: data.medicalRegistrationExpiryDate?.toISOString?.() || "",
+          medical_license_issue_date: formatDateForApi(data.medicalRegistrationIssueDate),
+          medical_license_expiry_date: formatDateForApi(data.medicalRegistrationExpiryDate),
           commercial_registration_image: data.commercialRegistrationImagePath || profileData?.commercial_registration_image || "",
           medical_license_image: data.medicalLicenseImagePath || profileData?.medical_license_image || "",
         });
@@ -149,6 +170,7 @@ export default function CompleteAccountWizardForm() {
         cover_image: typeof data.uploadCoverImage === "string" ? data.uploadCoverImage : "",
         logo_image: typeof data.uploadLogoImage === "string" ? data.uploadLogoImage : "",
       });
+      setIsOpenSuccessModal(true);
       // console.log("All steps submitted successfully!");
     } catch (e) {
       console.error(e);
@@ -173,6 +195,13 @@ export default function CompleteAccountWizardForm() {
           isPending={isPendingStepOne || isPendingStepTwo || isPendingStepThree}
         />
       </form>
+
+      <SuccessModal
+        open={isOpenSuccessModal}
+        onOpenChange={setIsOpenSuccessModal}
+        title="Saved successfully"
+        description="You can return to complete the job details and publish them at any time from the 'Job Management' list."
+      />
     </FormProvider>
   );
 }

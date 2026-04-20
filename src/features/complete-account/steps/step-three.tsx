@@ -12,12 +12,14 @@ import { YearPicker } from "@/shared/components/YearPicker";
 import { useState } from "react";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
+import SuccessModal from "@/shared/components/modals/SuccessModal";
 
 export default function StepThree() {
   const { register, control, setValue, formState: { errors } } = useFormContext();
 
   const [countrySearch, setCountrySearch] = useState("");
   const [citySearch, setCitySearch] = useState("");
+  const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false);
 
   const {
     countries,
@@ -55,7 +57,7 @@ export default function StepThree() {
     isFetchingNextPage: isFetchingMoreCities,
   } = useGetCitiesByCountryId(Number(selectedCountry), citySearch);
 
-  return (
+  return (<>
     <div className="space-y-4 flex flex-col">
       <CoverUploadImage />
 
@@ -251,5 +253,13 @@ export default function StepThree() {
 
       </div>
     </div>
+    <SuccessModal
+      open={isOpenSuccessModal}
+      onOpenChange={setIsOpenSuccessModal}
+      title="Welcome to jooCare"
+      description="Your business verification documents have been successfully submitted and are currently under review. "
+    />
+  </>
+
   );
 }
