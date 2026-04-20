@@ -81,17 +81,17 @@ const Header = () => {
                   About
                 </Link>
               </li>
-              {!companyHeader && (
-                <li>
-                  <Link
-                    className={`nav-link ${isActive("/jobs") ? "text-primary border-primary" : ""
-                      }`}
-                    href="/jobs"
-                  >
-                    Jobs
-                  </Link>
-                </li>
-              )}
+              {/* {!companyHeader && ( */}
+              <li>
+                <Link
+                  className={`nav-link ${isActive("/jobs") ? "text-primary border-primary" : ""
+                    }`}
+                  href="/jobs"
+                >
+                  Jobs
+                </Link>
+              </li>
+              {/* )} */}
               <li>
                 <Link
                   className={`nav-link ${isActive("/contact") ? "text-primary border-primary" : ""

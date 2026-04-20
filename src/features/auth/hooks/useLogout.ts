@@ -6,6 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { getAuthApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
+import { useQueryClient } from "@tanstack/react-query";
 
 type LogoutOptions = {
   redirectTo?: string;
@@ -17,7 +18,7 @@ export const useLogout = () => {
   const router = useRouter();
   const locale = useLocale();
   const { data: session } = useSession();
-
+  const queryClient = useQueryClient();
   const logout = async (options: LogoutOptions = {}) => {
     const {
       redirectTo,
@@ -54,6 +55,7 @@ export const useLogout = () => {
       }
     } finally {
       await signOut({ redirect: false });
+      queryClient.clear();
       router.push(resolvedRedirectTo);
       router.refresh();
     }
