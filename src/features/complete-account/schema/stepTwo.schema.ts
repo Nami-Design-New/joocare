@@ -46,6 +46,7 @@ export const stepTwoSchema = z.object({
   path: ["commercialRegistrationIssueDate"],
 })
   .refine((data) => parseDateValue(data.commercialRegistrationExpiryDate) >= today, {
+    message: "Commercial registration expiry date must be today or a future date",
     path: ["commercialRegistrationExpiryDate"],
   })
   .refine(
@@ -53,12 +54,14 @@ export const stepTwoSchema = z.object({
       parseDateValue(data.commercialRegistrationExpiryDate) >
       parseDateValue(data.commercialRegistrationIssueDate),
     {
+      message: "Commercial registration expiry date must be after issue date",
       path: ["commercialRegistrationExpiryDate"],
     }
   ).refine((data) => parseDateValue(data.medicalRegistrationIssueDate) <= today, {
-    path: ["medicalRegistrationIssueDate"],
+  path: ["medicalRegistrationIssueDate"],
   })
   .refine((data) => parseDateValue(data.medicalRegistrationExpiryDate) >= today, {
+    message: "Medical license expiry date must be today or a future date",
     path: ["medicalRegistrationExpiryDate"],
   })
   .refine(

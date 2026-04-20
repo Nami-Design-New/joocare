@@ -86,6 +86,8 @@ function JobPostStepOneContent() {
   const {
     control,
     register,
+    clearErrors,
+    trigger,
     setValue,
     watch,
     formState: { errors },
@@ -373,7 +375,26 @@ function JobPostStepOneContent() {
               <Switch
                 id="add-salary"
                 checked={field.value}
-                onCheckedChange={field.onChange}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked);
+
+                  if (!checked) {
+                    setValue(
+                      "salary",
+                      { min: undefined, max: undefined, type: "", currency: "" },
+                      { shouldDirty: true, shouldTouch: true, shouldValidate: false },
+                    );
+                    clearErrors("salary");
+                    return;
+                  }
+
+                  void trigger([
+                    "salary.min",
+                    "salary.max",
+                    "salary.type",
+                    "salary.currency",
+                  ]);
+                }}
               />
             )}
           />
@@ -385,7 +406,7 @@ function JobPostStepOneContent() {
             {/* Salary Range */}
             <div className="space-y-2">
               <label className="mb-1 block font-semibold">
-                Salary Range (USD / year)
+                Salary Range
               </label>
               <div className="flex items-end gap-3">
                 <div className="flex-1">
@@ -452,6 +473,7 @@ function JobPostStepOneContent() {
                     label="Currency"
                     className="bg-white"
                     placeholder="Choose"
+                    withSearchInput
                     error={
                       errors.salary?.currency?.message ??
                       (currenciesError instanceof Error
