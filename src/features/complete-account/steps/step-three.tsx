@@ -3,6 +3,7 @@
 import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { TextareaField } from "@/shared/components/TextareaField";
+import { parsePhoneNumber } from "react-phone-number-input";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import CoverUploadImage from "../components/cover-upload-image";
 import Image from "next/image";
@@ -31,6 +32,19 @@ export default function StepThree() {
     control,
     name: "organizationCountry",
   });
+  const organizationPhoneNumber = useWatch({
+    control,
+    name: "organizationPhoneNumber",
+  });
+  const organizationPhoneCountry = (() => {
+    try {
+      return organizationPhoneNumber
+        ? parsePhoneNumber(organizationPhoneNumber)?.country || "AE"
+        : "AE";
+    } catch {
+      return "AE";
+    }
+  })();
 
   const {
     cities,
@@ -58,7 +72,7 @@ export default function StepThree() {
           render={({ field }) => (
             <PhoneInputCode
               {...field}
-              defaultCountry="EG"
+              defaultCountry={organizationPhoneCountry}
               id="organizationPhoneNumber"
               className="w-full"
               placeholder="Enter phone number"

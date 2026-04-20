@@ -3,25 +3,27 @@
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { defaultValuesWizard, steps } from "../constants/wizard.constants";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { steps } from "../constants/wizard.constants";
 import { useWizard } from "../hooks/use-wizard";
+import { usePostStepOne } from "../hooks/usePostStepOne";
+import { usePostStepThree } from "../hooks/usePostStepThree";
+import { usePostStepTwo } from "../hooks/usePostStepTwo";
 import { WizardSchema } from "../schema/wizard.schema";
 import { WizardFormData } from "../types/wizard.types";
 import WizardNavigation from "./wizard-navigation";
 import WizardProgress from "./wizard-progress";
-import { useSession } from "next-auth/react";
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
-import { usePostStepOne } from "../hooks/usePostStepOne";
-import { usePostStepTwo } from "../hooks/usePostStepTwo";
-import { usePostStepThree } from "../hooks/usePostStepThree";
-import { useEffect, useState } from "react";
-import { parsePhoneNumber } from "react-phone-number-input";
 
 const COMPLETE_ACCOUNT_FORM_STEPS = [
   "Account Setup",
   "Business Verification",
   "Company Profile",
 ];
+
+const cleanPhone = (phone?: string | null) => phone?.replace(/[^\d]/g, "") || "";
 
 export default function CompleteAccountWizardForm() {
 
@@ -31,7 +33,6 @@ export default function CompleteAccountWizardForm() {
 
   // get profile data
   const { data: profileData } = useGetCompanyProfile({ token });
-  console.log(profileData);
   // hooks
   const { mutateAsync: postStepOne, isPending: isPendingStepOne } = usePostStepOne({ token });
   const { mutateAsync: postStepTwo, isPending: isPendingStepTwo } = usePostStepTwo({ token });
@@ -53,7 +54,7 @@ export default function CompleteAccountWizardForm() {
         domain_id: profileData.domain_id?.toString() || "",
         person_name: profileData.person_name || "",
         person_phone: profileData.person_phone_code && profileData.person_phone
-          ? `${profileData.person_phone_code}${profileData.person_phone}`
+          ? `${profileData.person_phone_code}${cleanPhone(profileData.person_phone)}`
           : "",
         commercialRegister: profileData.commercial_registration_number?.toString() || "",
         issuingCountryLicense: profileData.license_issue_country_id?.toString() || "",
@@ -66,7 +67,9 @@ export default function CompleteAccountWizardForm() {
         specialtyScopePractice: profileData.specialty_id?.toString() || "",
         medicalRegistrationIssueDate: profileData.medical_license_issue_date ? new Date(profileData.medical_license_issue_date) : undefined as unknown as Date,
         medicalRegistrationExpiryDate: profileData.medical_license_expiry_date ? new Date(profileData.medical_license_expiry_date) : undefined as unknown as Date,
-        organizationPhoneNumber: profileData.phone_code && profileData.phone ? `${profileData.phone_code}${profileData.phone}` : "",
+        organizationPhoneNumber: profileData.phone_code && profileData.phone
+          ? `${profileData.phone_code}${cleanPhone(profileData.phone)}`
+          : "",
         organizationCountry: profileData.country_id?.toString() || "",
         organizationCity: profileData.city_id?.toString() || "",
         dateOfEstablishment: profileData.established_date || "",
@@ -146,7 +149,7 @@ export default function CompleteAccountWizardForm() {
         cover_image: typeof data.uploadCoverImage === "string" ? data.uploadCoverImage : "",
         logo_image: typeof data.uploadLogoImage === "string" ? data.uploadLogoImage : "",
       });
-      console.log("All steps submitted successfully!");
+      // console.log("All steps submitted successfully!");
     } catch (e) {
       console.error(e);
     }

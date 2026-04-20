@@ -57,7 +57,7 @@ export function OTPModal({
   successRedirectPath,
   onSuccess,
 }: OTPModalProps) {
-  const [countdown, setCountdown] = useState(48);
+  const [countdown, setCountdown] = useState(60);
   const router = useRouter();
   const path = usePathname();
   const locale = useLocale();
@@ -82,7 +82,7 @@ export function OTPModal({
     } else if (basicInfo) {
       onOpenChange(false);
     } else if (registerEmployerPage) {
-      router.push('/for-employers')
+      router.push('/company/company-profile')
     } else if (registerCandidatePage) {
       router.push('/')
     } else {
@@ -165,7 +165,7 @@ export function OTPModal({
 
   useEffect(() => {
     if (!open) return;
-    const timeout = setTimeout(() => setCountdown(48), 0);
+    const timeout = setTimeout(() => setCountdown(60), 0);
     const timer = setInterval(() => {
       setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
@@ -197,7 +197,7 @@ export function OTPModal({
         toast.success(message);
       }
 
-      setCountdown(48);
+      setCountdown(60);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to resend code.",

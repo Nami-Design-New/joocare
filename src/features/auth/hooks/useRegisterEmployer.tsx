@@ -6,7 +6,7 @@ export const useRegisterEmployer = (onSuccess: () => void) => {
     return useMutation({
         mutationFn: registerEmployerService,
         onSuccess: (data) => {
-            console.log("data", data);
+            // console.log("data", data);
             toast.success("Registration successful! Please verify your email.");
             onSuccess();
         },
