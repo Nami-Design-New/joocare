@@ -13,6 +13,7 @@ import { useWizard } from "../hooks/use-wizard";
 import { usePostStepOne } from "../hooks/usePostStepOne";
 import { usePostStepThree } from "../hooks/usePostStepThree";
 import { usePostStepTwo } from "../hooks/usePostStepTwo";
+import { defaultValuesWizard } from "../constants/wizard.constants";
 import { WizardSchema } from "../schema/wizard.schema";
 import { WizardFormData } from "../types/wizard.types";
 import WizardNavigation from "./wizard-navigation";
@@ -63,12 +64,18 @@ export default function CompleteAccountWizardForm() {
 
   const methods = useForm<WizardFormData>({
     resolver: typedZodResolver(WizardSchema),
+    defaultValues: defaultValuesWizard,
     mode: "onChange",
   });
 
   // hydrate form
   useEffect(() => {
     if (profileData) {
+      const profileImages = profileData as typeof profileData & {
+        cover_image?: string | null;
+        logo_image?: string | null;
+      };
+
       methods.reset({
         name: profileData.name || "",
         email: profileData.email || "",
@@ -101,8 +108,8 @@ export default function CompleteAccountWizardForm() {
         instagram: profileData.instagram || "",
         snapchat: profileData.snapchat || "",
         website: profileData.website || "",
-        uploadCoverImage: (profileData as any).cover_image || "",
-        uploadLogoImage: (profileData as any).logo_image || "",
+        uploadCoverImage: profileImages.cover_image || "",
+        uploadLogoImage: profileImages.logo_image || "",
       });
     }
   }, [profileData, methods]);
@@ -167,8 +174,8 @@ export default function CompleteAccountWizardForm() {
         city_id: Number(data.organizationCity),
         established_date: data.dateOfEstablishment || "",
         bio: data.aboutOrganization || "",
-        cover_image: typeof data.uploadCoverImage === "string" ? data.uploadCoverImage : "",
-        logo_image: typeof data.uploadLogoImage === "string" ? data.uploadLogoImage : "",
+        cover_image: data.uploadCoverImage || "",
+        logo_image: data.uploadLogoImage || "",
       });
       setIsOpenSuccessModal(true);
       // console.log("All steps submitted successfully!");

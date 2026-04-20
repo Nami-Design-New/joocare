@@ -99,7 +99,7 @@ export default function CoverUploadImage() {
           <Controller
             name="uploadCoverImage"
             control={control}
-            render={({ field: { onChange } }) => (
+            render={() => (
               <div
                 onClick={() => !coverUploading && coverInputRef.current?.click()}
                 className={cn(
@@ -169,7 +169,7 @@ export default function CoverUploadImage() {
           <Controller
             name="uploadLogoImage"
             control={control}
-            render={({ field: { onChange } }) => (
+            render={() => (
               <div
                 onClick={() => !logoUploading && logoInputRef.current?.click()}
                 className={cn(
