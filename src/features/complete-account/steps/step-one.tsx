@@ -4,13 +4,21 @@ import { InputField } from "@/shared/components/InputField";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import useGetDomains from "@/shared/hooks/useGetDomains";
-import { Controller, useFormContext } from "react-hook-form";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 export default function StepOne() {
   const { register, control, formState: { errors }, } = useFormContext();
+  const personPhone = useWatch({ control, name: "person_phone" });
+  const defaultCountry = (() => {
+    try {
+      return personPhone ? parsePhoneNumber(personPhone)?.country || "AE" : "AE";
+    } catch {
+      return "AE";
+    }
+  })();
   const {
     domains,
-    isLoading: domainsLoading,
     hasNextPage: domainsHasNextPage,
     fetchNextPage: domainsFetchNextPage,
     isFetchingNextPage: domainsIsFetchingNextPage,
@@ -83,7 +91,7 @@ export default function StepOne() {
             <PhoneInputCode
               {...field}
               disabled={true}
-              defaultCountry="AE"
+              defaultCountry={defaultCountry}
               id="person_phone"
               className="w-full"
               placeholder="Enter phone number"

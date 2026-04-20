@@ -1,11 +1,11 @@
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { stepThreeService } from "../services/step-three-service";
 import { useRouter } from "@/i18n/navigation";
 
 export const usePostStepThree = ({ token }: { token: string }) => {
     const router = useRouter();
-    const queryClient = new QueryClient()
+    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (payload: {
             facebook?: string;
@@ -23,10 +23,10 @@ export const usePostStepThree = ({ token }: { token: string }) => {
             cover_image?: string;
             logo_image?: string;
         }) => stepThreeService(payload, { token }),
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
             toast.success(res.message);
+            await queryClient.invalidateQueries({ queryKey: ["company-profile"] });
             router.push("/company/company-profile");
-            queryClient.invalidateQueries({ queryKey: ["company-profile"] })
         },
         onError: (error) => {
             toast.error(error.message);

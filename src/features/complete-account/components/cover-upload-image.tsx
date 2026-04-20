@@ -177,7 +177,7 @@ export default function CoverUploadImage() {
                   "w-37.5 h-37.5 rounded-full border",
                   "flex flex-col items-center justify-center cursor-pointer",
                   "bg-[#EBEBEB] hover:bg-[#e0e0e0] transition-colors duration-200",
-                  "ring-4 ring-white z-50",
+                  "ring-4 ring-white z-10",
                   errors.uploadLogoImage ? "border-red-500" : "border-transparent",
                   logoUploading && "pointer-events-none"
                 )}
