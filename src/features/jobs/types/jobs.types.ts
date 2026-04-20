@@ -177,6 +177,8 @@ export type JobDetails = {
 
   category_id: number | null;
   category: NamedEntity | null;
+  education_level_id: number | null;
+  education_level: NamedEntity | null;
 
   seniority_level_id: number | null;
   seniority_level: NamedEntity | null;
