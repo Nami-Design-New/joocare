@@ -3,19 +3,19 @@
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { defaultValuesWizard, steps } from "../constants/wizard.constants";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { parsePhoneNumber } from "react-phone-number-input";
+import { steps } from "../constants/wizard.constants";
 import { useWizard } from "../hooks/use-wizard";
+import { usePostStepOne } from "../hooks/usePostStepOne";
+import { usePostStepThree } from "../hooks/usePostStepThree";
+import { usePostStepTwo } from "../hooks/usePostStepTwo";
 import { WizardSchema } from "../schema/wizard.schema";
 import { WizardFormData } from "../types/wizard.types";
 import WizardNavigation from "./wizard-navigation";
 import WizardProgress from "./wizard-progress";
-import { useSession } from "next-auth/react";
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
-import { usePostStepOne } from "../hooks/usePostStepOne";
-import { usePostStepTwo } from "../hooks/usePostStepTwo";
-import { usePostStepThree } from "../hooks/usePostStepThree";
-import { useEffect, useState } from "react";
-import { parsePhoneNumber } from "react-phone-number-input";
 
 const COMPLETE_ACCOUNT_FORM_STEPS = [
   "Account Setup",

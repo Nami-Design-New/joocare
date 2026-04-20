@@ -9,7 +9,7 @@ import LabelCheckbox from "@/shared/components/LabelCheckbox";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
-import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
+import useGetDomains from "@/shared/hooks/useGetDomains";
 import { useState } from "react";
 import { parsePhoneNumber } from "react-phone-number-input";
 import { useRegisterEmployer } from "../../hooks/useRegisterEmployer";
@@ -22,13 +22,13 @@ import { OTPModal } from "../forget-password/OtpModal";
 const FormEmployerRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
-    jobTitles,
+    domains,
     isLoading,
     error,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useGetJobTitles();
+  } = useGetDomains();
 
   const {
     register,
@@ -42,7 +42,7 @@ const FormEmployerRegister = () => {
   });
 
   const email = watch("officialEmail");
-  const jobTitleOptions = jobTitles.map(
+  const domainsOptions = domains.map(
     (jt: { id: number | string; name?: string; title?: string }) => ({
       label: jt.name ?? jt.title ?? String(jt.id),
       value: String(jt.id),
@@ -105,7 +105,7 @@ const FormEmployerRegister = () => {
                 errors.domain?.message ??
                 (error instanceof Error ? error.message : undefined)
               }
-              options={jobTitleOptions}
+              options={domainsOptions}
               disabled={isLoading}
               onReachEnd={() => fetchNextPage()}
               hasNextPage={!!hasNextPage}
