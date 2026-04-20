@@ -21,6 +21,7 @@ import { usePostStepTwo } from "../hooks/usePostStepTwo";
 import { usePostStepThree } from "../hooks/usePostStepThree";
 import { useGetCompanyJob } from "../hooks/useGetCompanyJob";
 import { useUpdateJob } from "../hooks/useUpdateJob";
+import { JobStepOnePayload } from "../types/job-steps.types";
 import { JobDetails } from "../types/jobs.types";
 import JobPostStepOne from "./JobPostStepOne";
 import JobPostStepTwo from "./JobPostStepTwo";
@@ -217,12 +218,14 @@ export default function PostJobForm() {
   };
 
   // ─── Build edit payload from form values ──────────────
-  const buildStepOnePayload = (data: JobFormData) => {
-    const basePayload = {
+  const buildStepOnePayload = (data: JobFormData): JobStepOnePayload => {
+    const hasSalary: JobStepOnePayload["has_salary"] = data.addSalary ? 1 : 0;
+
+    const basePayload: JobStepOnePayload = {
       job_title_id: data.title === "__other__" ? undefined : Number(data.title),
       title: data.title === "__other__" ? data.otherJobTitle?.trim() ?? "" : undefined,
       professional_license: data.license,
-      has_salary: data.addSalary ? 1 : 0,
+      has_salary: hasSalary,
       category_id: Number(data.category),
       specialty_id: Number(data.specialty),
       employment_type_id: Number(data.employmentType),

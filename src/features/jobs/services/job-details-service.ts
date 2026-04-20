@@ -15,7 +15,7 @@ import { JobDetailsResponse } from "../types/jobs.types";
 
 function normalizeJobDetailsPayload(jobDetails: JobDetailsResponse["data"]) {
     const job = jobDetails.job;
-    const normalizedEducationLevel = job.education_level ?? job.eduction_level ?? null;
+    const normalizedEducationLevel = job.education_level ?? null;
 
     return {
         job: {

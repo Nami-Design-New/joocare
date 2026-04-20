@@ -85,7 +85,7 @@ export async function requestNotificationPermission(
     return null;
   }
 
-  let permission = Notification.permission;
+  let permission: NotificationPermission = Notification.permission;
 
   if (permission === "default") {
     console.info("[Notifications] Requesting browser notification permission.");

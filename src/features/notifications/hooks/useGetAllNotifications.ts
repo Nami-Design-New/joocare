@@ -21,25 +21,26 @@ export function useNotificationsInfinite(
 ) {
   const { enabled = true, limit = 10 } = options;
 
-  const query = useInfiniteQuery<NotificationsResponse>({
+  const query = useInfiniteQuery<NotificationsResponse, Error>({
     queryKey: notificationsQueryKey(role),
-    queryFn: async ({ pageParam = 1 }) => {
+    queryFn: async ({ pageParam = 1 }): Promise<NotificationsResponse> => {
       if (!role || !token) {
         throw new Error("Missing notification auth context.");
       }
 
       const res = await getNotifications({
         role,
-        page: pageParam,
+        page: Number(pageParam),
         limit,
         token,
       });
 
-      if (!res.ok || !res.data) {
+      if (!res.ok || !res.data?.data) {
         throw new Error(res.message || "Failed to load notifications.");
       }
+      // console.log("notification s ::", res.data.data);
 
-      return res.data;
+      return res.data.data;
     },
     getNextPageParam: (lastPage) => {
       const current = lastPage?.current_page ?? 1;
