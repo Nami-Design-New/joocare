@@ -54,6 +54,8 @@ export function DrawerScrollableContent({
   }, hasMore);
 
   async function handleNotificationClick(item: Notification) {
+    console.log("itemsssssss::::: ", item);
+
     if (!item.is_read) {
       try {
         await markAsReadAsync(item.id);
@@ -67,6 +69,7 @@ export function DrawerScrollableContent({
       router.push("/company/complete-account");
     }
   }
+  // console.log('data notify:::', data);
 
   return (
     <Drawer direction="right" open={open} onOpenChange={onOpenChange}>

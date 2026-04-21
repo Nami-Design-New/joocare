@@ -20,6 +20,7 @@ import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 import { ICompanyUser } from "@/shared/types";
+import useGetDomains from "@/shared/hooks/useGetDomains";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -98,12 +99,12 @@ const BasicInfoForm = () => {
 
   // ── lookups ──────────────────────────────────────────────────────────
   const {
-    jobTitles,
-    isLoading: jobTitlesLoading,
-    hasNextPage: jobTitlesHasNextPage,
-    fetchNextPage: jobTitlesFetchNextPage,
-    isFetchingNextPage: jobTitlesIsFetchingNextPage,
-  } = useGetJobTitles();
+    domains,
+    isLoading: domainsLoading,
+    hasNextPage: domainsHasNextPage,
+    fetchNextPage: domainsFetchNextPage,
+    isFetchingNextPage: domainsIsFetchingNextPage,
+  } = useGetDomains();
 
   const {
     countries,
@@ -219,14 +220,14 @@ const BasicInfoForm = () => {
               placeholder="ex: Hospital"
               {...field}
               error={errors.domain?.message}
-              options={jobTitles.map((jt) => ({
+              options={domains.map((jt) => ({
                 label: jt.name ?? jt.title ?? String(jt.id),
                 value: String(jt.id),
               }))}
-              disabled={jobTitlesLoading}
-              onReachEnd={() => jobTitlesFetchNextPage()}
-              hasNextPage={!!jobTitlesHasNextPage}
-              isFetchingNextPage={jobTitlesIsFetchingNextPage}
+              disabled={domainsLoading}
+              onReachEnd={() => domainsFetchNextPage()}
+              hasNextPage={!!domainsHasNextPage}
+              isFetchingNextPage={domainsIsFetchingNextPage}
             />
           )}
         />
@@ -314,6 +315,7 @@ const BasicInfoForm = () => {
               control={control}
               render={({ field }) => (
                 <SelectInputField
+                  withSearchInput
                   id="country"
                   placeholder="country"
                   {...field}
@@ -338,6 +340,7 @@ const BasicInfoForm = () => {
               control={control}
               render={({ field }) => (
                 <SelectInputField
+                  withSearchInput
                   id="city"
                   placeholder="city"
                   {...field}

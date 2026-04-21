@@ -57,7 +57,7 @@ export function useNotificationsInfinite(
   });
 
   const pages = query.data?.pages ?? [];
-  const data: Notification[] = pages.flatMap((page) => page?.data ?? []);
+  const data: Notification[] = pages.flatMap((page) => page ?? []);
   const unreadCount = data.filter((item) => !item.is_read).length;
   const total = pages[0]?.total ?? data.length;
 

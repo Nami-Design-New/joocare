@@ -24,7 +24,10 @@ export type Notification = {
   updated_at: string;
 };
 
-export type NotificationsResponse = PaginatedResponse<Notification>;
+export type NotificationsResponse = Notification[] &
+  Omit<PaginatedResponse<Notification>, "data"> & {
+    data: Notification[];
+  };
 
 export type NotificationMutationResponse = {
   code?: number;

@@ -22,7 +22,7 @@ function patchNotificationReadState(
     ...currentData,
     pages: currentData.pages.map((page) => ({
       ...page,
-      data: page.data.map((notification) =>
+      data: page.map((notification) =>
         notification.id === notificationId
           ? { ...notification, is_read: true }
           : notification,
@@ -72,6 +72,8 @@ export function useMarkAsRead(
       };
     },
     onError: (error, _notificationId, context) => {
+      console.log("error:::::", error);
+
       queryClient.setQueryData(
         notificationsQueryKey(role),
         context?.previousData,

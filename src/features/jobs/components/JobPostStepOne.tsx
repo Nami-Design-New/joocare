@@ -176,7 +176,7 @@ function JobPostStepOneContent() {
     isLoading: seniorityLevelsLoading,
     error: seniorityLevelsError,
     hasNextPage: seniorityLevelsHasNextPage,
-    fetchNextPage: fetchseniorityLevelsNextPage,
+    fetchNextPage: fetchSeniorityLevelsNextPage,
     isFetchingNextPage: seniorityLevelsFetchingNextPage,
   } = useGetSeniorityLevels(seniorityLevelsSearch);
   const {
@@ -504,7 +504,7 @@ function JobPostStepOneContent() {
               <SelectInputField
                 {...field}
                 id="category"
-                label="Category"
+                label="Job Category"
                 error={
                   errors.category?.message ??
                   (categoriesError instanceof Error
@@ -631,7 +631,7 @@ function JobPostStepOneContent() {
                   }
                   options={toSelectOptions(seniorityLevels)}
                   disabled={seniorityLevelsLoading}
-                  onReachEnd={() => fetchseniorityLevelsNextPage()}
+                  onReachEnd={() => fetchSeniorityLevelsNextPage()}
                   hasNextPage={Boolean(seniorityLevelsHasNextPage)}
                   isFetchingNextPage={seniorityLevelsFetchingNextPage}
                   onSearchChange={setSeniorityLevelsSearch}
