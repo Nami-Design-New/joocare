@@ -209,3 +209,12 @@ export function normalizeJobStatus(status: string | null | undefined): JobStatus
       return "open";
   }
 }
+
+export function truncateText(text: string, maxLength = 150) {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + "...";
+}
+export function stripHtml(html: string) {
+  if (!html) return "";
+  return html.replace(/<[^>]*>/g, "");
+}

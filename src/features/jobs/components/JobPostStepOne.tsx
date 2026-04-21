@@ -9,26 +9,26 @@ import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
 
 // import hooks for fetching select options
+import useGetAvailabilities from "@/shared/hooks/useGetAvailabilities";
+import useGetCategories from "@/shared/hooks/useGetCategories";
+import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 import useGetCountries from "@/shared/hooks/useGetCountries";
-import useGetOrganizationSizes from "@/shared/hooks/useGetOrganizationSizes";
+import useGetCurrencies from "@/shared/hooks/useGetCurrencies";
+import useGetEducationLevels from "@/shared/hooks/useGetEducationLevels";
 import useGetEmployerTypes from "@/shared/hooks/useGetEmployerTypes";
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import useGetExperiences from "@/shared/hooks/useGetExperiences";
+import useGetMandatoryCertifications from "@/shared/hooks/useGetMandatoryCertifications";
+import useGetOrganizationSizes from "@/shared/hooks/useGetOrganizationSizes";
+import useGetRoleCategories from "@/shared/hooks/useGetRoleCategories";
+import useGetSalaryTypes from "@/shared/hooks/useGetSalaryTypes";
+import useGetSeniorityLevels from "@/shared/hooks/useGetSeniorityLevels";
+import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
 import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
-import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
-import useGetLicenses from "@/shared/hooks/useGetLicenses";
-import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
-import useGetCategories from "@/shared/hooks/useGetCategories";
-import useGetExperiences from "@/shared/hooks/useGetExperiences";
-import useGetRoleCategories from "@/shared/hooks/useGetRoleCategories";
-import useGetSeniorityLevels from "@/shared/hooks/useGetSeniorityLevels";
-import useGetMandatoryCertifications from "@/shared/hooks/useGetMandatoryCertifications";
-import useGetEducationLevels from "@/shared/hooks/useGetEducationLevels";
-import useGetAvailabilities from "@/shared/hooks/useGetAvailabilities";
-import useGetSalaryTypes from "@/shared/hooks/useGetSalaryTypes";
-import useGetCurrencies from "@/shared/hooks/useGetCurrencies";
 import { useState } from "react";
 import { JobPostStepOneSkeleton } from "./JobPostStepOneSkeleton";
+import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
+import useGetEmploymentTypes from "@/shared/hooks/useGetEmploymentTypes";
 
 const CUSTOM_CERTIFICATION_PREFIX = "__custom__:";
 
@@ -70,6 +70,8 @@ function JobPostStepOneContent() {
   const [citySearch, setCitySearch] = useState("");
   const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
   const [employerTypesSearch, setEmployerTypesSearch] = useState("");
+  const [employmentTypesSearch, setEmploymentTypesSearch] = useState("");
+  const [jobTitlesSearch, setJobTitlesSearch] = useState("");
   const [licensesSearch, setLicensesSearch] = useState("");
   const [categorySearch, setCategorySearch] = useState("");
   const [roleCategorySearch, setRoleCategorySearch] = useState("");
@@ -84,6 +86,8 @@ function JobPostStepOneContent() {
   const {
     control,
     register,
+    clearErrors,
+    trigger,
     setValue,
     watch,
     formState: { errors },
@@ -125,6 +129,23 @@ function JobPostStepOneContent() {
     fetchNextPage: fetchMoreEmployerTypes,
     isFetchingNextPage: isFetchingMoreEmployerTypes,
   } = useGetEmployerTypes(employerTypesSearch);
+  const {
+    employmentTypes,
+    isLoading: isEmploymentTypesLoading,
+    error: employmentTypesError,
+    hasNextPage: hasMoreEmploymentTypes,
+    fetchNextPage: fetchMoreEmploymentTypes,
+    isFetchingNextPage: isFetchingMoreEmploymentTypes,
+  } = useGetEmploymentTypes(employmentTypesSearch);
+  const {
+    jobTitles,
+    isLoading: isJobTitlesLoading,
+    error: jobTitlesError,
+    hasNextPage: hasMoreJobTitles,
+    fetchNextPage: fetchMoreJobTitles,
+    isFetchingNextPage: isFetchingMoreJobTitles,
+  } = useGetJobTitles(jobTitlesSearch);
+
   const {
     specialties,
     isLoading: isSpecialtiesLoading,
@@ -265,8 +286,8 @@ function JobPostStepOneContent() {
                 withSearchInput
                 error={
                   errors.title?.message ??
-                  (employerTypesError instanceof Error
-                    ? employerTypesError.message
+                  (jobTitlesError instanceof Error
+                    ? jobTitlesError.message
                     : undefined)
                 }
                 onChange={(value) => {
@@ -276,17 +297,17 @@ function JobPostStepOneContent() {
                   }
                 }}
                 options={[
-                  ...employerTypes.map((type) => ({
+                  ...jobTitles.map((type) => ({
                     label: type.title,
                     value: String(type.id),
                   })),
                   { label: "Other", value: "__other__" },
                 ]}
-                disabled={isEmployerTypesLoading}
-                onReachEnd={() => fetchMoreEmployerTypes()}
-                hasNextPage={Boolean(hasMoreEmployerTypes)}
-                isFetchingNextPage={isFetchingMoreEmployerTypes}
-                onSearchChange={setEmployerTypesSearch}
+                disabled={isJobTitlesLoading}
+                onReachEnd={() => fetchMoreJobTitles()}
+                hasNextPage={Boolean(hasMoreJobTitles)}
+                isFetchingNextPage={isFetchingMoreJobTitles}
+                onSearchChange={setJobTitlesSearch}
               />
             )}
           />
@@ -354,7 +375,26 @@ function JobPostStepOneContent() {
               <Switch
                 id="add-salary"
                 checked={field.value}
-                onCheckedChange={field.onChange}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked);
+
+                  if (!checked) {
+                    setValue(
+                      "salary",
+                      { min: undefined, max: undefined, type: "", currency: "" },
+                      { shouldDirty: true, shouldTouch: true, shouldValidate: false },
+                    );
+                    clearErrors("salary");
+                    return;
+                  }
+
+                  void trigger([
+                    "salary.min",
+                    "salary.max",
+                    "salary.type",
+                    "salary.currency",
+                  ]);
+                }}
               />
             )}
           />
@@ -366,7 +406,7 @@ function JobPostStepOneContent() {
             {/* Salary Range */}
             <div className="space-y-2">
               <label className="mb-1 block font-semibold">
-                Salary Range (USD / year)
+                Salary Range
               </label>
               <div className="flex items-end gap-3">
                 <div className="flex-1">
@@ -433,6 +473,7 @@ function JobPostStepOneContent() {
                     label="Currency"
                     className="bg-white"
                     placeholder="Choose"
+                    withSearchInput
                     error={
                       errors.salary?.currency?.message ??
                       (currenciesError instanceof Error
@@ -530,16 +571,16 @@ function JobPostStepOneContent() {
                   placeholder="ex: Full-time"
                   error={
                     errors.employmentType?.message ??
-                    (organizationSizesError instanceof Error
-                      ? organizationSizesError.message
+                    (employmentTypesError instanceof Error
+                      ? employmentTypesError.message
                       : undefined)
                   }
-                  options={toSelectOptions(organizationSizes)}
-                  disabled={isOrganizationSizesLoading}
-                  onReachEnd={() => fetchMoreOrganizationSizes()}
-                  hasNextPage={Boolean(hasMoreOrganizationSizes)}
-                  isFetchingNextPage={isFetchingMoreOrganizationSizes}
-                  onSearchChange={setOrganizationSizesSearch}
+                  options={toSelectOptions(employmentTypes)}
+                  disabled={isEmploymentTypesLoading}
+                  onReachEnd={() => fetchMoreEmploymentTypes()}
+                  hasNextPage={Boolean(hasMoreEmploymentTypes)}
+                  isFetchingNextPage={isFetchingMoreEmploymentTypes}
+                  onSearchChange={setEmploymentTypesSearch}
                 />
               )}
             />

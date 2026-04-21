@@ -55,7 +55,7 @@ export default function StepThree() {
     isFetchingNextPage: isFetchingMoreCities,
   } = useGetCitiesByCountryId(Number(selectedCountry), citySearch);
 
-  return (
+  return (<>
     <div className="space-y-4 flex flex-col">
       <CoverUploadImage />
 
@@ -251,5 +251,7 @@ export default function StepThree() {
 
       </div>
     </div>
+  </>
+
   );
 }

@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+const optionalSalaryNumber = z.preprocess((value) => {
+  if (value === "" || value == null) {
+    return undefined;
+  }
+
+  return value;
+}, z.coerce.number().min(0).optional());
+
 // ─────────────────────────────────────────────
 // STEP 1 — Job Post Schema
 // Matches: JobPostStepOne component
@@ -30,8 +38,8 @@ export const step1Schema = z
 
     salary: z
       .object({
-        min: z.coerce.number().min(0).optional(),
-        max: z.coerce.number().min(0).optional(),
+        min: optionalSalaryNumber,
+        max: optionalSalaryNumber,
         type: z.string().optional(),
         currency: z.string().optional(),
       })
@@ -84,7 +92,7 @@ export const step1Schema = z
       if (data.salary.min == null) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Minimum salary is required",
+          message: "Min salary is required",
           path: ["salary", "min"],
         });
       }
@@ -92,7 +100,7 @@ export const step1Schema = z
       if (data.salary.max == null) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Maximum salary is required",
+          message: "Max salary is required",
           path: ["salary", "max"],
         });
       }

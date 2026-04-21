@@ -4,6 +4,8 @@ import { JobListItem } from "@/features/jobs/types/jobs.types";
 import {
   getJobLocation,
   getJobSalary,
+  stripHtml,
+  truncateText,
 } from "@/features/jobs/utils";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
@@ -59,6 +61,8 @@ export default function CandidateJobCard({
   const { shareJob } = useJobShare({ title, path: href });
   const isEmployer = session?.authRole === "employer";
 
+  const plainText = stripHtml(excerpt || "");
+  const shortText = truncateText(plainText, 70);
   return (
     <Card>
       <CardHeader className="flex gap-2 max-lg:px-2">
@@ -106,7 +110,18 @@ export default function CandidateJobCard({
               {specialty}
             </li>
           </ul>
-          <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p>
+          {/* <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p> */}
+          {/* <div
+            className="prose prose-sm max-w-none border-b pb-5"
+            dangerouslySetInnerHTML={{
+              __html:
+                excerpt ||
+                "<p>No description available.</p>",
+            }}
+          /> */}
+          <p className="text-sm text-gray-600 line-clamp-3">
+            {shortText || "No description available."}
+          </p>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4  max-lg:px-2">

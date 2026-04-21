@@ -20,8 +20,8 @@ export const usePostStepThree = ({ token }: { token: string }) => {
             city_id: number;
             established_date: string;
             bio: string;
-            cover_image?: string;
-            logo_image?: string;
+            cover?: string;
+            image?: string;
         }) => stepThreeService(payload, { token }),
         onSuccess: async (res) => {
             toast.success(res.message);

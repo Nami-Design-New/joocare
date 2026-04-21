@@ -77,6 +77,7 @@ export default function JobPostStepTwo() {
                   id="skills"
                   label="Skills"
                   placeholder="ex: Improvement"
+                  withSearchInput
                   error={
                     errors.skills?.message ??
                     (skillsError instanceof Error

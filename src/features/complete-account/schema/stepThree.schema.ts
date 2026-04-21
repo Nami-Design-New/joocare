@@ -11,6 +11,9 @@ import { optional, z } from "zod";
 //       message: "Only JPEG, PNG, or WebP images are allowed",
 //     },
 //   );
+const imageFileSchema = z
+  .string("Image is required").min(1, { message: "Image is required" })
+
 const optionalUrl = z
   .string()
   .trim()
@@ -37,9 +40,9 @@ const optionalUrl = z
     }
   );
 export const stepThreeSchema = z.object({
-  uploadCoverImage: z.string().optional(),
+  uploadCoverImage: z.string("cover image is required").min(1, { message: "cover image is required" }),
 
-  uploadLogoImage: z.string().optional(),
+  uploadLogoImage: z.string("logo image is required").min(1, { message: "logo image is required" }),
 
   organizationPhoneNumber: z.string().optional(),
 

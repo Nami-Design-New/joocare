@@ -6,6 +6,12 @@ import { useRef, useState } from "react";
 import { useFormContext, Controller, useWatch } from "react-hook-form";
 import { useUploadImage } from "@/shared/hooks/useUploadImage";
 
+// ✅ Lives outside the component — survives step navigation
+const imagePreviewCache = {
+  cover: null as string | null,
+  logo: null as string | null,
+};
+
 export default function CoverUploadImage() {
   const {
     control,
@@ -19,28 +25,30 @@ export default function CoverUploadImage() {
   const [coverUploading, setCoverUploading] = useState(false);
   const [logoUploading, setLogoUploading] = useState(false);
 
-  const [coverLocalPreview, setCoverLocalPreview] = useState<string | null>(null);
-  const [logoLocalPreview, setLogoLocalPreview] = useState<string | null>(null);
-
-  const coverValue = useWatch({ control, name: "uploadCoverImage" });
-  const logoValue = useWatch({ control, name: "uploadLogoImage" });
+  // ✅ Initialize from cache so images reappear when returning to step
+  const [coverLocalPreview, setCoverLocalPreview] = useState<string | null>(
+    () => imagePreviewCache.cover
+  );
+  const [logoLocalPreview, setLogoLocalPreview] = useState<string | null>(
+    () => imagePreviewCache.logo
+  );
 
   const { mutateAsync: uploadImage } = useUploadImage();
 
-  const coverPreview =
-    coverLocalPreview ??
-    (coverValue && typeof coverValue === "string"
-      ? `${process.env.NEXT_PUBLIC_BASE_URL}/${coverValue}`
-      : null);
+  // ✅ Wrapped setters that also update the cache
+  const setCoverPreview = (url: string | null) => {
+    imagePreviewCache.cover = url;
+    setCoverLocalPreview(url);
+  };
 
-  const logoPreview =
-    logoLocalPreview ??
-    (logoValue && typeof logoValue === "string"
-      ? `${process.env.NEXT_PUBLIC_BASE_URL}/${logoValue}`
-      : null);
+  const setLogoPreview = (url: string | null) => {
+    imagePreviewCache.logo = url;
+    setLogoLocalPreview(url);
+  };
+
   const handleCoverChange = async (file: File) => {
     const localUrl = URL.createObjectURL(file);
-    setCoverLocalPreview(localUrl);
+    setCoverPreview(localUrl); // ✅ saves to cache too
     setCoverUploading(true);
 
     try {
@@ -49,15 +57,13 @@ export default function CoverUploadImage() {
 
       if (response?.data?.message === "Success" && imagePath) {
         setValue("uploadCoverImage", imagePath);
-        // Don't touch localPreview — keep showing the blob URL
       } else {
         throw new Error("Upload failed or no image path returned");
       }
     } catch (error) {
       console.error("Failed to upload cover image", error);
-      // Only revoke on failure
       URL.revokeObjectURL(localUrl);
-      setCoverLocalPreview(null);
+      setCoverPreview(null); // ✅ clears cache too
       setValue("uploadCoverImage", null);
     } finally {
       setCoverUploading(false);
@@ -66,7 +72,7 @@ export default function CoverUploadImage() {
 
   const handleLogoChange = async (file: File) => {
     const localUrl = URL.createObjectURL(file);
-    setLogoLocalPreview(localUrl);
+    setLogoPreview(localUrl); // ✅ saves to cache too
     setLogoUploading(true);
 
     try {
@@ -75,15 +81,13 @@ export default function CoverUploadImage() {
 
       if (response?.data?.message === "Success" && imagePath) {
         setValue("uploadLogoImage", imagePath);
-        // ✅ Don't touch localPreview — keep showing the blob URL
       } else {
         throw new Error("Upload failed or no image path returned");
       }
     } catch (error) {
       console.error("Failed to upload logo image", error);
-      // ❌ Only revoke on failure
       URL.revokeObjectURL(localUrl);
-      setLogoLocalPreview(null);
+      setLogoPreview(null); // ✅ clears cache too
       setValue("uploadLogoImage", null);
     } finally {
       setLogoUploading(false);
@@ -99,7 +103,7 @@ export default function CoverUploadImage() {
           <Controller
             name="uploadCoverImage"
             control={control}
-            render={({ field: { onChange } }) => (
+            render={() => (
               <div
                 onClick={() => !coverUploading && coverInputRef.current?.click()}
                 className={cn(
@@ -110,50 +114,30 @@ export default function CoverUploadImage() {
                   coverUploading && "pointer-events-none"
                 )}
               >
-                {coverPreview ? (
+                {coverLocalPreview ? (
                   <Image
-                    src={coverPreview}
+                    src={coverLocalPreview}
                     alt="Cover"
                     fill
                     className="object-cover rounded-[50px]"
                   />
                 ) : (
                   <div className="flex flex-col items-center gap-2 text-foreground/50">
-                    <Image
-                      width={60}
-                      height={60}
-                      src="/assets/icons/upload-image-icon.svg"
-                      alt="upload"
-                    />
+                    <Image width={60} height={60} src="/assets/icons/upload-image-icon.svg" alt="upload" />
                     <span className="text-sm">Upload a cover image</span>
                   </div>
                 )}
 
-                {/* Uploading overlay */}
                 {coverUploading && (
                   <div className="absolute inset-0 rounded-[50px] bg-black/50 flex flex-col items-center justify-center gap-2 z-10">
-                    <svg
-                      className="animate-spin text-white"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    >
+                    <svg className="animate-spin text-white" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                       <path d="M12 2a10 10 0 0 1 10 10" />
                     </svg>
                     <span className="text-white text-sm font-medium">Uploading...</span>
                   </div>
                 )}
 
-                <input
-                  ref={coverInputRef}
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  disabled={coverUploading}
+                <input ref={coverInputRef} type="file" accept="image/*" hidden disabled={coverUploading}
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (!file) return;
@@ -169,7 +153,7 @@ export default function CoverUploadImage() {
           <Controller
             name="uploadLogoImage"
             control={control}
-            render={({ field: { onChange } }) => (
+            render={() => (
               <div
                 onClick={() => !logoUploading && logoInputRef.current?.click()}
                 className={cn(
@@ -182,50 +166,25 @@ export default function CoverUploadImage() {
                   logoUploading && "pointer-events-none"
                 )}
               >
-                {logoPreview ? (
-                  <Image
-                    src={logoPreview}
-                    alt="Logo"
-                    fill
-                    className="object-cover rounded-full"
-                  />
+                {logoLocalPreview ? (
+                  <Image src={logoLocalPreview} alt="Logo" fill className="object-cover rounded-full" />
                 ) : (
                   <div className="flex flex-col items-center gap-1 text-center text-foreground/50 px-1">
-                    <Image
-                      width={40}
-                      height={40}
-                      src="/assets/icons/upload-image-icon.svg"
-                      alt="upload"
-                    />
+                    <Image width={40} height={40} src="/assets/icons/upload-image-icon.svg" alt="upload" />
                     <span className="text-[10px] leading-tight">Organization Logo</span>
                   </div>
                 )}
 
-                {/* Uploading overlay */}
                 {logoUploading && (
                   <div className="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center gap-1 z-10">
-                    <svg
-                      className="animate-spin text-white"
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    >
+                    <svg className="animate-spin text-white" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                       <path d="M12 2a10 10 0 0 1 10 10" />
                     </svg>
                     <span className="text-white text-[10px] font-medium">Uploading</span>
                   </div>
                 )}
 
-                <input
-                  ref={logoInputRef}
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  disabled={logoUploading}
+                <input ref={logoInputRef} type="file" accept="image/*" hidden disabled={logoUploading}
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (!file) return;

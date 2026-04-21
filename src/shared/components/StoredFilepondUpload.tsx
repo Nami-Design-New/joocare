@@ -28,6 +28,32 @@ type StoredFilepondUploadProps = {
   onExistingFileRemove?: () => void;
 };
 
+function resolveExistingFileUrl(url?: string | null) {
+  if (!url) {
+    return null;
+  }
+
+  const normalizedUrl = url.trim().replace(/\\/g, "/");
+
+  if (
+    normalizedUrl.startsWith("blob:") ||
+    normalizedUrl.startsWith("data:") ||
+    normalizedUrl.startsWith("http://") ||
+    normalizedUrl.startsWith("https://")
+  ) {
+    return normalizedUrl;
+  }
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/+$/, "");
+  const relativePath = normalizedUrl.replace(/^\/+/, "");
+
+  if (!baseUrl) {
+    return `/${relativePath}`;
+  }
+
+  return `${baseUrl}/${relativePath}`;
+}
+
 function getFileName(url: string, fallback = "Uploaded file") {
   try {
     const pathname = new URL(url).pathname;
@@ -84,22 +110,23 @@ export function StoredFilepondUpload({
   onExistingFileRemove,
 }: StoredFilepondUploadProps) {
   const hasLocalFiles = files.length > 0;
-  const shouldShowExistingFile = !hasLocalFiles && Boolean(existingFileUrl);
+  const resolvedExistingFileUrl = resolveExistingFileUrl(existingFileUrl);
+  const shouldShowExistingFile = !hasLocalFiles && Boolean(resolvedExistingFileUrl);
 
   const pondFiles = useMemo(() => {
     if (hasLocalFiles) {
       return files;
     }
 
-    if (!existingFileUrl) {
+    if (!resolvedExistingFileUrl) {
       return [];
     }
 
-    const fileName = existingFileLabel || getFileName(existingFileUrl);
+    const fileName = existingFileLabel || getFileName(resolvedExistingFileUrl);
 
     return [
       {
-        source: existingFileUrl,
+        source: resolvedExistingFileUrl,
         options: {
           type: "local" as const,
           file: {
@@ -110,7 +137,7 @@ export function StoredFilepondUpload({
         },
       },
     ];
-  }, [existingFileLabel, existingFileUrl, files, hasLocalFiles]);
+  }, [existingFileLabel, files, hasLocalFiles, resolvedExistingFileUrl]);
 
   return (
     <div className={`w-full space-y-2 ${className ?? ""}`}>
@@ -166,7 +193,8 @@ export function StoredFilepondUpload({
           load: shouldShowExistingFile
             ? async (_source, load, serverError) => {
               try {
-                const response = await fetch(existingFileUrl!);
+                const response = await fetch(resolvedExistingFileUrl!);
+
 
                 if (!response.ok) {
                   throw new Error("Failed to load file.");
@@ -200,12 +228,12 @@ export function StoredFilepondUpload({
           }
         }}
         onremovefile={(_error, fileItem) => {
-          if (fileItem?.origin === FileOrigin.LOCAL) {
-            onExistingFileRemove?.();
-            return;
-          }
+          // if (fileItem?.origin === FileOrigin.LOCAL) {
+          //   return;
+          // }
+          onExistingFileRemove?.();
 
-          onStoredPathChange?.(null);
+          // onStoredPathChange?.(null);
         }}
         labelIdle={`
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">

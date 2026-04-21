@@ -7,6 +7,7 @@ import { Button } from "@/shared/components/ui/button";
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { useEffect, useMemo, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import type { Path } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import {
@@ -71,6 +72,15 @@ function getJobFromMutationResponse(response: unknown): JobDetails | null {
   }
 
   return null;
+}
+
+function toOptionalNumber(value: string | number | null | undefined) {
+  if (value === "" || value == null) {
+    return undefined;
+  }
+
+  const parsedValue = Number(value);
+  return Number.isFinite(parsedValue) ? parsedValue : undefined;
 }
 
 // ─── Map API job → form defaults ────────────────────────
@@ -168,7 +178,7 @@ export default function PostJobForm() {
     mode: "onChange",
   });
 
-  const { handleSubmit, trigger, getValues, reset } = methods;
+  const { handleSubmit, trigger, getValues, reset, setError } = methods;
 
   // ─── Hydrate form when existing job arrives ───────────
   useEffect(() => {
@@ -247,10 +257,10 @@ export default function PostJobForm() {
 
     return {
       ...basePayload,
-      min_salary: Number(data.salary?.min),
-      max_salary: Number(data.salary?.max),
-      currency_id: Number(data.salary?.currency),
-      salary_type_id: Number(data.salary?.type),
+      min_salary: toOptionalNumber(data.salary?.min),
+      max_salary: toOptionalNumber(data.salary?.max),
+      currency_id: toOptionalNumber(data.salary?.currency),
+      salary_type_id: toOptionalNumber(data.salary?.type),
     };
   };
 
@@ -285,10 +295,10 @@ export default function PostJobForm() {
 
     return {
       ...basePayload,
-      min_salary: Number(data.salary?.min),
-      max_salary: Number(data.salary?.max),
-      currency_id: Number(data.salary?.currency),
-      salary_type_id: Number(data.salary?.type),
+      min_salary: toOptionalNumber(data.salary?.min),
+      max_salary: toOptionalNumber(data.salary?.max),
+      currency_id: toOptionalNumber(data.salary?.currency),
+      salary_type_id: toOptionalNumber(data.salary?.type),
     };
   };
 
@@ -300,8 +310,30 @@ export default function PostJobForm() {
     const fields = Object.keys(
       stepSchemas[currentStep as StepIndex].shape,
     ) as (keyof JobFormData)[];
-    const valid = await trigger(fields);
-    if (!valid) return;
+    const values = getValues();
+    const stepFields: string[] = [...fields];
+
+    if (currentStep === 0 && values.addSalary) {
+      stepFields.push("salary.min", "salary.max", "salary.type", "salary.currency");
+    }
+
+      const valid = await trigger(stepFields as Parameters<typeof trigger>[0]);
+
+      const schemaResult = stepSchemas[currentStep as StepIndex].safeParse(getValues());
+      if (!schemaResult.success) {
+        schemaResult.error.issues.forEach((issue) => {
+          const fieldPath = issue.path.join(".");
+
+          if (!fieldPath) return;
+
+          setError(fieldPath as Path<JobFormData>, {
+            type: "manual",
+            message: issue.message,
+          });
+        });
+      }
+
+      if (!valid || !schemaResult.success) return;
 
     // ── EDIT mode: just advance, no API calls ───────────
     if (isEditMode) {
