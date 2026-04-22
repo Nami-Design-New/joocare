@@ -49,7 +49,7 @@ type HomeApiResponse = {
     };
     top_employers?: {
       title?: string | null;
-      companies?: Array<{ id?: number | string; image?: string | null }>;
+      top_employers?: Array<{ id?: number | string; image?: string | null }>;
     };
     proven_hiring_impact?: {
       title?: string | null;
@@ -205,7 +205,7 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
     topEmployers: {
       title: data.top_employers?.title ?? "",
       companies:
-        data.top_employers?.companies?.map((company) => ({
+        data.top_employers?.top_employers?.map((company) => ({
           id: String(company.id ?? ""),
           image: company.image ?? null,
         })) ?? [],

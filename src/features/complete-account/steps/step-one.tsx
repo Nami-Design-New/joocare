@@ -10,9 +10,11 @@ import { Controller, useFormContext, useWatch } from "react-hook-form";
 export default function StepOne() {
   const { register, control, formState: { errors }, } = useFormContext();
   const personPhone = useWatch({ control, name: "person_phone" });
+  // console.log("person phone", parsePhoneNumber(personPhone)?.country);
+
   const defaultCountry = (() => {
     try {
-      return personPhone ? parsePhoneNumber(personPhone)?.country || "AE" : "AE";
+      return personPhone ? parsePhoneNumber(personPhone)?.country : "AE";
     } catch {
       return "AE";
     }

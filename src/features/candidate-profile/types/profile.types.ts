@@ -81,6 +81,7 @@ export type CandidateProfileApiUser = {
   date_of_birth?: string | null;
   created_at: string;
   updated_at: string;
+  hiring_readiness_score?: number | null;
 };
 
 export type CandidateProfileApiResponse = {
@@ -112,6 +113,7 @@ export type CandidateProfileViewModel = {
   skills: CandidateSkillViewModel[];
   educations: CandidateEducationViewModel[];
   experiences: CandidateExperienceViewModel[];
+  hiring_readiness_score?: number | null;
 };
 
 export type CandidateSkillViewModel = {
