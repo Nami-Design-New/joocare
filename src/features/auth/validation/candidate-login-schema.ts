@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 
 export const loginCandidateSchema = z.object({
   email: z
@@ -8,7 +8,7 @@ export const loginCandidateSchema = z.object({
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters" })
-    .max(20, { message: "Password must be less than 21 characters" }),
+    .max(15, { message: "Password must be at most 15 characters" }),
 });
 
 export type TLoginCandidateSchema = z.infer<typeof loginCandidateSchema>;

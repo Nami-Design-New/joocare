@@ -175,5 +175,6 @@ export async function getCandidateProfile() {
     skills,
     educations,
     experiences,
+    hiring_readiness_score: user.hiring_readiness_score ?? null,
   } satisfies CandidateProfileViewModel;
 }

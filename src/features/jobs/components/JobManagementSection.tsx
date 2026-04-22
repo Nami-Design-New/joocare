@@ -46,6 +46,8 @@ export default function JobManagementSection() {
     const displayedTotal = data?.total ?? total;
     const displayedPerPage = data?.per_page ?? perPage;
 
+    console.log("data job ", data);
+
     return (
         <div className="flex flex-col gap-2">
             <header className="flex w-full items-center justify-between gap-2">
@@ -60,11 +62,31 @@ export default function JobManagementSection() {
                     className={` ${buttonVariants({
                         variant: "default",
                         size: "pill",
-                    })} md:min-w-52`}
+                    })} md:min-w-52 
+                    ${(data as any)?.code === 403 ? "pointer-events-none opacity-50" : ""}`}
                     href="/company/post-job"
                 >
                     Post a Job
                 </Link>
+
+                {/* <div className="relative group mt-auto order-3">
+                    <Link
+                        href="/company/post-job"
+                        className={`${buttonVariants({ variant: "default", size: "pill" })} 
+    hover:bg-primary/70 rounded-full py-6 text-base
+    ${companyProfileData?.status !== "approved" ? "pointer-events-none opacity-50" : ""}`}
+                    >
+                        Post a Job
+                    </Link>
+
+                    {companyProfileData?.status !== "approved" && (
+                        <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
+      whitespace-nowrap rounded bg-black text-white text-xs px-3 py-1 
+      opacity-0 group-hover:opacity-100 transition">
+                            You can't post a job until your account is approved
+                        </span>
+                    )}
+                </div> */}
             </header>
             <section className="grid grid-cols-1 gap-4 py-4 lg:grid-cols-2">
                 {displayedJobs.length > 0 ? (

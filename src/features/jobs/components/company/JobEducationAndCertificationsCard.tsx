@@ -4,7 +4,7 @@ import { JobDetails } from "../../types/jobs.types";
 
 export default function JobEducationAndCertificationsCard({ job }: { job: JobDetails }) {
   return (
-    <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-8">
+    <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white py-8 px-6">
       <h2 className="text-foreground mb-4 text-lg font-semibold">
         Education & Certifications section
       </h2>

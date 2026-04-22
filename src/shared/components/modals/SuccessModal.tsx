@@ -42,11 +42,6 @@ export default function SuccessModal({
 }: ConfirmDialogProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const isSubmittedVariant = variant === "submitted";
-  useEffect(() => {
-    setTimeout(() => {
-      onOpenChange(false);
-    }, 3000);
-  }, [open]);
 
   const renderAction = (
     action: SuccessModalAction,
@@ -82,7 +77,7 @@ export default function SuccessModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={!isSubmittedVariant}
-        className="max-w-175 rounded-2xl p-8 text-center"
+        className="max-w-150 rounded-2xl p-8 text-center"
       >
 
         <div className="relative overflow-hidden rounded-[24px] bg-white px-6 pb-7 pt-12 text-center sm:px-8">

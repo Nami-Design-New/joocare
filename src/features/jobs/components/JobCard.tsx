@@ -102,13 +102,17 @@ export default function JobCard({ resumeMatch,
   const experience = job?.experience?.title || "Experience not specified";
   const specialty = job?.specialty?.title || "Healthcare";
   const excerpt = job?.description || "Explore the job details to learn more about the role and employer.";
-  const statusLabel = job.status?.status ?? "Draft";
+  const statusLabel = (() => {
+    const rawStatus = job.status?.status ?? "draft";
+    return rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1).toLowerCase();
+  })();
   const statusDate = job.status?.created_at ?? job.updated_at ?? "";
-  const normalizedStatus = normalizeJobStatus(job.status?.status);
+  const normalizedStatus = normalizeJobStatus(job.status?.status ?? "draft");
   const handleOpenJob = () => {
     updateStatus("open");
   };
 
+  { console.log(normalizedStatus, job) }
 
   return (
     <>

@@ -19,6 +19,7 @@ const SideContentInfos = ({
   const displayPhone = profile?.fullPhone || "-";
   const displayAge = profile?.age ? String(profile.age) : "-";
   const displayExp = profile?.experience || "-";
+  const hiringReadiness = profile?.hiring_readiness_score;
 
   return (
     <aside className="no-scrollbar flex flex-col gap-5  overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow">
@@ -46,9 +47,9 @@ const SideContentInfos = ({
             <Sparkles className="text-primary h-4 w-4" />
             <span className="text-sm font-semibold">Hiring Readines</span>
           </div>
-          <span className="text-primary">85%</span>
+          <span className="text-primary">{hiringReadiness}%</span>
         </div>
-        <Progress value={60} />
+        <Progress value={hiringReadiness} />
         <div className="flex items-center gap-2">
           <CircleAlert className="text-primary h-4 w-4" />
           <span className="text-muted-foreground max-w-62 text-[12px]">

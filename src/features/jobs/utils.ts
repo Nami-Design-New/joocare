@@ -186,11 +186,11 @@ export function getJobSalary(
   job: Pick<JobListItem | JobDetails, "min_salary" | "max_salary" | "currency">,
 ) {
   if (job.min_salary && job.max_salary) {
-    return `${job.min_salary} - ${job.max_salary}${job.currency?.code ? ` ${job.currency.code}` : ""}`;
+    return `${job.min_salary} - ${job.max_salary} `;
   }
 
   if (job.min_salary || job.max_salary) {
-    return `${job.min_salary || job.max_salary}${job.currency?.code ? ` ${job.currency.code}` : ""}`;
+    return `${job.min_salary || job.max_salary} `;
   }
 
   return "Salary not specified";

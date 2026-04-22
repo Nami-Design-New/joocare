@@ -49,7 +49,7 @@ export const ImpactSection = async ({
             />
             <StatCard value={settings?.active_job_opportunities} label="Active Job opportunities" />
             <StatCard value={settings?.healthcare_specializations_covered} label="Healthcare Specializations Covered" />
-            <StatCard value={settings?.hiring_success_rate} label="Hiring Success Rate" />
+            <StatCard value={settings?.hiring_success_rate} label="Hiring Success Rate" percentage="%" />
           </div>
         </div>
       </div>

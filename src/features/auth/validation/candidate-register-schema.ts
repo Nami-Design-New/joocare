@@ -53,8 +53,7 @@ export const RegisterCandidateSchema = z
       .string({
         message: 'Password is required',
       })
-      .min(1, { message: "Password is required" })
-      .min(6, { message: "Password must be at least 6 characters" }),
+      .min(6, { message: "Password must be at least 6 characters" }).max(15, { message: "Password must be at most 15 characters" }),
 
     // Sends undefined (omitted) if no files uploaded
     uploadCV: z

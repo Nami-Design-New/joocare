@@ -23,7 +23,7 @@ export const TestimonialCard = ({
   date?: string | null | undefined;
   text?: string | null | undefined;
 }) => (
-  <div className="bg-card flex flex-col justify-between gap-3 rounded-tl-4xl rounded-br-4xl p-6">
+  <div className="bg-card flex flex-col justify-between gap-3 rounded-tl-4xl rounded-br-4xl p-6 h-full w-full">
     <div className="flex justify-between">
       <div>
         <h5 className="text-secondary text-xl font-normal">{name}</h5>
@@ -53,7 +53,7 @@ export const Testimonials = ({
   title: string;
   reviews: HomeRate[];
 }) => {
-  console.log("review ::", reviews);
+  // console.log("review ::", reviews);
 
   return (
     <section className="bg-background py-10 md:py-20">
@@ -81,9 +81,9 @@ export const Testimonials = ({
             </div>
 
             {/* Cards */}
-            <CarouselContent className="-ml-6">
+            <CarouselContent className="-ml-6 items-stretch">
               {reviews.map((rev) => (
-                <CarouselItem key={rev.id} className="pl-6 md:basis-1/3">
+                <CarouselItem key={rev.id} className="pl-6 md:basis-1/3 flex">
                   <TestimonialCard {...rev} />
                 </CarouselItem>
               ))}

@@ -1,12 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 
 import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 import { EnterEmailModal } from "@/features/auth/components/forget-password/EnterEmailModal";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
@@ -16,26 +16,20 @@ import { OTPModal } from "@/features/auth/components/forget-password/OtpModal";
 import { useSession } from "next-auth/react";
 import { useUpdateBasicInfo } from "../../hooks/useUpdateBasicInfo";
 import { parsePhoneNumber, getCountries, getCountryCallingCode, Country } from "react-phone-number-input";
-import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
-import { ICompanyUser } from "@/shared/types";
 import useGetDomains from "@/shared/hooks/useGetDomains";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import { TCompanyProfileViewModel } from "@/features/company-profile/types";
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Safely cast the session user to `ICompanyUser` (returns undefined when N/A). */
-const asCompanyUser = (user: unknown): ICompanyUser | undefined => {
-  if (user && typeof user === "object" && "person_name" in user) {
-    return user as ICompanyUser;
-  }
-  return undefined;
-};
-
 /** Build react-hook-form default values from user data. */
-const buildDefaults = (user?: ICompanyUser): TBasicInfoSchema => {
+const buildDefaults = (
+  user?: TCompanyProfileViewModel
+): TBasicInfoSchema => {
   const cleanPhone = (phone?: string | null) => phone?.replace(/[^\d]/g, "") || "";
 
   return {
@@ -89,8 +83,7 @@ const BasicInfoForm = () => {
   // ── session & user data ──────────────────────────────────────────────
   const { data: session } = useSession();
   const token = session?.accessToken ?? "";
-  const userData = useMemo(() => asCompanyUser(session?.user), [session?.user]);
-  // console.log('user data', userData);
+  const { data: userData } = useGetCompanyProfile({ token });
 
   // ── modals ──────────────────── ───────────────────────────────────────
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -114,18 +107,6 @@ const BasicInfoForm = () => {
     isFetchingNextPage: countriesIsFetchingNextPage,
   } = useGetCountries();
 
-  const [selectedCountryId, setSelectedCountryId] = useState<number | null>(
-    userData?.country_id ?? null
-  );
-
-  const {
-    cities,
-    isLoading: citiesLoading,
-    hasNextPage: citiesHasNextPage,
-    fetchNextPage: citiesFetchNextPage,
-    isFetchingNextPage: citiesIsFetchingNextPage,
-  } = useGetCitiesByCountryId(selectedCountryId ?? 0);
-
   // ── mutation ─────────────────────────────────────────────────────────
   const { mutate: updateBasicInfo, isPending } = useUpdateBasicInfo({ token });
 
@@ -135,21 +116,30 @@ const BasicInfoForm = () => {
     control,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm<TBasicInfoSchema>({
     resolver: zodResolver(BasicInfoSchema),
     mode: "onChange",
     defaultValues: buildDefaults(userData),
   });
+  const officialEmail = useWatch({ control, name: "officialEmail" });
+  const selectedCountryValue = useWatch({ control, name: "country" });
+  const selectedCountryId = selectedCountryValue
+    ? parseInt(selectedCountryValue, 10) || null
+    : null;
+
+  const {
+    cities,
+    isLoading: citiesLoading,
+    hasNextPage: citiesHasNextPage,
+    fetchNextPage: citiesFetchNextPage,
+    isFetchingNextPage: citiesIsFetchingNextPage,
+  } = useGetCitiesByCountryId(selectedCountryId ?? 0);
 
   // Sync form values when session data arrives (async).
   useEffect(() => {
     if (!userData) return;
     reset(buildDefaults(userData));
-    if (userData.country_id) {
-      setSelectedCountryId(userData.country_id);
-    }
   }, [userData, reset]);
 
   // ── submit handler ───────────────────────────────────────────────────
@@ -328,10 +318,7 @@ const BasicInfoForm = () => {
                   onReachEnd={() => countriesFetchNextPage()}
                   hasNextPage={!!countriesHasNextPage}
                   isFetchingNextPage={countriesIsFetchingNextPage}
-                  onChange={(value) => {
-                    field.onChange(value);
-                    setSelectedCountryId(parseInt(value) || null);
-                  }}
+                  onChange={field.onChange}
                 />
               )}
             />
@@ -393,7 +380,7 @@ const BasicInfoForm = () => {
       {/* enter email modal */}
       <EnterEmailModal
         setUserEmail={setUserEmail}
-        email={watch("officialEmail")}
+        email={officialEmail}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         setIsModalOtpOpen={setIsModalOtpOpen}
