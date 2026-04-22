@@ -83,6 +83,12 @@ function toOptionalNumber(value: string | number | null | undefined) {
   return Number.isFinite(parsedValue) ? parsedValue : undefined;
 }
 
+
+function getJobStatus(job: JobDetails) {
+  console.log("job status:", job.current_status?.status, job.status, job);
+  return job.status;
+}
+
 // ─── Map API job → form defaults ────────────────────────
 function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
   const hasSalary = Boolean(job.has_salary);
@@ -190,6 +196,7 @@ export default function PostJobForm() {
       // In complete mode, set the createdJobId so step-by-step flow works
       if (mode === "complete") {
         setCreatedJobId(existingJob.id);
+        setCurrentStep(getJobStatus(existingJob) === "Draft" ? 1 : 0);
       }
 
       setFormHydrated(true);
@@ -222,6 +229,8 @@ export default function PostJobForm() {
       await submitStepThreeStatus("draft");
       setSaveDraftOpen(false);
       setSaveSuccessOpen(true);
+      router.push("/company/job-management");
+      queryClient.invalidateQueries({ queryKey: ['company-jobs'] });
     } catch {
       // errors are already handled in mutation onError toast
     }
@@ -317,23 +326,23 @@ export default function PostJobForm() {
       stepFields.push("salary.min", "salary.max", "salary.type", "salary.currency");
     }
 
-      const valid = await trigger(stepFields as Parameters<typeof trigger>[0]);
+    const valid = await trigger(stepFields as Parameters<typeof trigger>[0]);
 
-      const schemaResult = stepSchemas[currentStep as StepIndex].safeParse(getValues());
-      if (!schemaResult.success) {
-        schemaResult.error.issues.forEach((issue) => {
-          const fieldPath = issue.path.join(".");
+    const schemaResult = stepSchemas[currentStep as StepIndex].safeParse(getValues());
+    if (!schemaResult.success) {
+      schemaResult.error.issues.forEach((issue) => {
+        const fieldPath = issue.path.join(".");
 
-          if (!fieldPath) return;
+        if (!fieldPath) return;
 
-          setError(fieldPath as Path<JobFormData>, {
-            type: "manual",
-            message: issue.message,
-          });
+        setError(fieldPath as Path<JobFormData>, {
+          type: "manual",
+          message: issue.message,
         });
-      }
+      });
+    }
 
-      if (!valid || !schemaResult.success) return;
+    if (!valid || !schemaResult.success) return;
 
     // ── EDIT mode: just advance, no API calls ───────────
     if (isEditMode) {
