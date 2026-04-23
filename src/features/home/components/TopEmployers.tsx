@@ -25,7 +25,7 @@ export default function TopEmployers({
             {companies.map((company) => (
               <div
                 key={company.id}
-                className="border-border relative h-12 w-full rounded-lg border"
+                className="relative h-12 w-full rounded-lg"
               >
                 <Image
                   src={company.image ?? "/assets/icons/top-empoyers/kbc.svg"}

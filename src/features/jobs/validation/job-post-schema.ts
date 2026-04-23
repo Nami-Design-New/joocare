@@ -6,7 +6,7 @@ const optionalSalaryNumber = z.preprocess((value) => {
   }
 
   return value;
-}, z.coerce.number().min(0).optional());
+}, z.coerce.number().min(0).max(9999999999, "Salary must not exceed 10 digits").optional());
 
 // ─────────────────────────────────────────────
 // STEP 1 — Job Post Schema
