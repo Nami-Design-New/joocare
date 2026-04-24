@@ -27,12 +27,10 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
   const resetRole: PasswordResetRole = pathname.includes("/employer/")
     ? "employer"
     : "candidate";
-  const usesOfficialEmail = pathname.includes("/employer/") || pathname.includes("basic-info");
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm<TForgetPasswordSchema>({
     resolver: zodResolver(ForgetPasswordSchema),
@@ -58,25 +56,27 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
-      <InputField
-        // label={usesOfficialEmail ? "Official Email" : "Email"}
-        label={"Email"}
-        id="email"
-        type="email"
-        error={errors.email?.message}
-        {...register("email")}
-        placeholder="ex:mail@mail.com"
-      />
-      <Button
-        variant="secondary"
-        size="pill"
-        className="w-full"
-        type="submit"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Sending..." : btnLabel}
-      </Button>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
+        <InputField
+          // label={usesOfficialEmail ? "Official Email" : "Email"}
+          label={"Email"}
+          id="email"
+          type="email"
+          error={errors.email?.message}
+          {...register("email")}
+          placeholder="ex:mail@mail.com"
+        />
+        <Button
+          variant="secondary"
+          size="pill"
+          className="w-full"
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Sending..." : btnLabel}
+        </Button>
+      </form>
 
       <OTPModal
         email={userEmail}
@@ -85,7 +85,7 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
       />
-    </form>
+    </>
   );
 };
 
