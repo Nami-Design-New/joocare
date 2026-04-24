@@ -20,7 +20,7 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
 
 
   return (
-    <Card className="gap-2 hover:border-primary hover:border">
+    <Card className="h-full gap-2 hover:border-primary hover:border">
       <CardHeader className="flex gap-2">
         <Image
           width={52}
@@ -72,7 +72,7 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
           </div>
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="mt-auto">
         <p className="text-foreground flex items-center gap-1 text-sm">
           <Timer size={16} /> {job?.created_at}
         </p>

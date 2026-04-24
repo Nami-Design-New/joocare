@@ -38,12 +38,13 @@ export default function ApplicantsTable({
           </TableHeader>
 
           <TableBody>
-            {applicants.map((applicant) => (
+            {applicants.map((applicant, index) => (
               <ApplicantRow
                 key={applicant.id}
                 applicant={applicant}
                 onDownload={onDownload}
                 onView={onView}
+                index={index}
               />
             ))}
           </TableBody>

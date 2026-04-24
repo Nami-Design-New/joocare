@@ -13,7 +13,7 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
           alt="currancy icon"
         />
         <h4 className="text-foreground text-lg font-semibold">Salary {job?.salary_type === null ? null : (job?.currency?.code)}</h4>
-        <p className="text-primary text-md font-semibold">{getJobSalary(job)}</p>
+        <p className="text-primary text-md font-semibold">{getJobSalary(job)} {job?.salary_type ? `${job?.currency?.code}` : ""}</p>
         <span className="text-muted-foreground text-sm">{job?.salary_type?.title}</span>
       </div>
       <div className="bg-muted h-full w-0.5"></div>
