@@ -19,7 +19,7 @@ export function ExperienceSectionData({
 }) {
   const [open, setOpen] = useState(false);
   const experiences = profile?.experiences ?? [];
-  console.log("experiences", experiences);
+  // console.log("experiences", experiences);
   return (
     <>
       <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">

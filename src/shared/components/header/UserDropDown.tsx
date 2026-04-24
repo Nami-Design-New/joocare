@@ -42,7 +42,6 @@ export default function UserDropDown({
 
   const isEmployer = session?.authRole === "employer" || companyHeader;
   const token = session?.accessToken || "";
-  console.log("token::", token, isEmployer);
 
   const { data: companyProfileData } = useGetCompanyProfile({
     token: isEmployer ? token : "",
@@ -50,7 +49,6 @@ export default function UserDropDown({
   const { data: candidateProfileData } = useGetCandidateProfile({
     token: !isEmployer ? token : "",
   });
-  console.log("candidateProfileData::", candidateProfileData);
 
   const profileHref = isEmployer
     ? "/company/company-profile"
@@ -61,7 +59,7 @@ export default function UserDropDown({
     : "Candidate account";
   const imageSrc = getSafeImageSrc(
     (isEmployer ? companyProfileData?.image : candidateProfileData?.image) ??
-      session?.user?.image,
+    session?.user?.image,
   );
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +

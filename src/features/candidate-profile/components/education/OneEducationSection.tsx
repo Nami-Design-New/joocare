@@ -64,9 +64,14 @@ const OneEducationSection = ({
           </div>
           <div className="flex flex-col gap-2">
             <h3 className="text-lg font-semibold">{education.university}</h3>
-            <p className="text-muted-foreground text-sm font-normal">
-              {education.degree ?? "No degree details added yet."}
-            </p>
+            <div className="flex gap-2 items-center">
+              <p className="text-muted-foreground text-sm font-normal">
+                {education.degree ?? "No degree details added yet."}
+              </p>
+              <p className="text-muted-foreground text-xs font-normal">
+                ( {`${education.gpa}`} )
+              </p>
+            </div>
             <span className="text-muted-foreground text-sm font-normal">
               {education.period ?? "No period added yet."}
             </span>

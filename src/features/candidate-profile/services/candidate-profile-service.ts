@@ -31,9 +31,7 @@ export async function getCandidateProfileService({
         locale,
         token,
     });
-    console.log("res", res);
 
-    // const user = res.data?.data;
 
     if (!res.ok) {
         return null;

@@ -42,6 +42,10 @@ function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationVi
     id: String(entry.id),
     university: entry.university ?? "Education",
     degree: entry.degree,
+    gpa:
+      entry.gpa === null || entry.gpa === undefined || entry.gpa === ""
+        ? null
+        : String(entry.gpa),
     period,
     countryId: entry.country_id ? String(entry.country_id) : null,
     startDate: entry.start_date,

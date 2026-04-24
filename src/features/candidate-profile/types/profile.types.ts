@@ -42,6 +42,7 @@ export type CandidateProfileApiEducation = {
   user_id: number;
   degree: string | null;
   university: string | null;
+  gpa?: number | string | null;
   country_id: number | null;
   start_date: string | null;
   end_date: string | null;
@@ -126,6 +127,7 @@ export type CandidateEducationViewModel = {
   id: string;
   university: string;
   degree: string | null;
+  gpa: string | null;
   period: string | null;
   countryId: string | null;
   startDate: string | null;
