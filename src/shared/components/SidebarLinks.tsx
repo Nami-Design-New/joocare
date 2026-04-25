@@ -17,7 +17,7 @@ interface ILinkItem {
 
 interface ILinksProps {
   links: ILinkItem[];
-  companyProfileData: TCompanyProfile | undefined
+  companyProfileData?: TCompanyProfile | undefined
 
 }
 

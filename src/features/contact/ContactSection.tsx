@@ -6,14 +6,21 @@ import ContactForm from "./ContactForm";
 import SideCard from "./SideCard";
 import type { ContactInitialValues, ContactRole } from "./types";
 
+export type ContactSocialLink = {
+  href: string;
+  platform: "linkedin" | "facebook" | "instagram" | "twitter" | "snapchat";
+};
+
 export default function ContactSection({
   authRole,
   initialValues,
   containerClassName,
+  socialLinks = [],
 }: {
   authRole?: ContactRole;
   initialValues?: ContactInitialValues;
   containerClassName?: string;
+  socialLinks?: ContactSocialLink[];
 }) {
   const { data: session, status } = useSession();
   const [guestRole, setGuestRole] = useState<ContactRole>("candidate");
@@ -27,6 +34,7 @@ export default function ContactSection({
     <div className={containerClassName}>
       <div className="col-span-12 lg:col-span-5">
         <SideCard
+          socialLinks={socialLinks}
           role={activeRole}
           canSwitchRole={canSwitchRole}
           onSwitchRole={() =>

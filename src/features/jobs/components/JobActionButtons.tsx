@@ -64,6 +64,35 @@ export function JobActionButtons({
   return (
     <>
       <div className="flex w-full flex-wrap gap-3">
+        {isOpen && (<>
+          <Link
+            href={resolvedEditHref}
+            className={`${buttonVariants({
+              variant: "secondary",
+              size: "pill",
+            })} items-center gap-2`}
+          >
+            <Edit className="h-4 w-4" /> Edit
+          </Link>
+          <Button
+            variant="default"
+            size="pill"
+            className="flex items-center gap-2"
+            disabled={isPending}
+            onClick={() => setCloseJob(true)}
+          >
+            <CheckCheck className="h-4 w-4" /> Closed
+          </Button>
+          <Button
+            size="pill"
+            className="bg-foreground flex items-center gap-2"
+            disabled={isPending}
+            onClick={() => setPauseJob(true)}
+          >
+            <EyeOff className="h-4 w-4" /> Paused
+          </Button>
+        </>
+        )}
         {isDraft ? (
           <Link
             href={resolvedCompleteHref}
@@ -75,18 +104,8 @@ export function JobActionButtons({
             Complete Post
           </Link>
         ) : null}
-        {!isDraft && !isClosed ? (
-          <Link
-            href={resolvedEditHref}
-            className={`${buttonVariants({
-              variant: "secondary",
-              size: "pill",
-            })} items-center gap-2`}
-          >
-            <Edit className="h-4 w-4" /> Edit
-          </Link>
-        ) : null}
-        {isPaused || isClosed ? (
+
+        {isPaused ? (
           <Button
             variant="default"
             size="pill"
@@ -97,27 +116,7 @@ export function JobActionButtons({
             <Play className="h-4 w-4" /> Resume
           </Button>
         ) : null}
-        {!isDraft && !isClosed && !isPaused ? (
-          <Button
-            variant="default"
-            size="pill"
-            className="flex items-center gap-2"
-            disabled={isPending}
-            onClick={() => setCloseJob(true)}
-          >
-            <CheckCheck className="h-4 w-4" /> Closed
-          </Button>
-        ) : null}
-        {isOpen ? (
-          <Button
-            size="pill"
-            className="bg-foreground flex items-center gap-2"
-            disabled={isPending}
-            onClick={() => setPauseJob(true)}
-          >
-            <EyeOff className="h-4 w-4" /> Paused
-          </Button>
-        ) : null}
+
         <Button
           variant="destructive"
           size="pill"

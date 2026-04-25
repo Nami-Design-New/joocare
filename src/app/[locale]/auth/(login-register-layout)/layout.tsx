@@ -5,7 +5,7 @@ import SideContent from "@/features/auth/components/side-content/SideContent";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div role="application" className="h-dvh">
+    <div role="application" className="min-h-dvh">
       <AuthHeader />
       <main className="md:grid grid-cols-2 bg-background ">
         {/* side content */}
