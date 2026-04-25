@@ -121,12 +121,12 @@ export default async function Page({ params, searchParams }: PageProps) {
       type: "radio",
       options: filtersData.domains,
     },
-    {
-      key: "specialties",
-      label: "Specialty",
-      name: "specialties[]",
-      options: filtersData.specialties,
-    },
+    // {
+    //   key: "specialties",
+    //   label: "Specialty",
+    //   name: "specialties[]",
+    //   options: filtersData.specialties,
+    // },
     {
       key: "experiences",
       label: "Experience",

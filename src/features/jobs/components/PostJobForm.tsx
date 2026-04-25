@@ -21,6 +21,7 @@ import { usePostStepOne } from "../hooks/usePostStepOne";
 import { usePostStepTwo } from "../hooks/usePostStepTwo";
 import { usePostStepThree } from "../hooks/usePostStepThree";
 import { useGetCompanyJob } from "../hooks/useGetCompanyJob";
+import { useUpdateStepOne } from "../hooks/useUpdateStepOne";
 import { useUpdateJob } from "../hooks/useUpdateJob";
 import { JobStepOnePayload } from "../types/job-steps.types";
 import { JobDetails } from "../types/jobs.types";
@@ -91,7 +92,7 @@ function toOptionalNumber(value: string | number | null | undefined) {
 
 function getJobStatus(job: JobDetails) {
   console.log("job status:", job.current_status?.status, job.status, job);
-  return job.status;
+  return job.status?.toLowerCase() ?? "";
 }
 
 
@@ -164,10 +165,11 @@ export default function PostJobForm() {
   // ─── State ─────────────────────────────────────────────
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [createdJobId, setCreatedJobId] = useState<number | null>(null);
   const [reviewJob, setReviewJob] = useState<JobDetails | null>(null);
   const [formHydrated, setFormHydrated] = useState(false);
+  const [hasReturnedToStepOneFromStepTwo, setHasReturnedToStepOneFromStepTwo] =
+    useState(false);
   const [stepOneDisplayOptions, setStepOneDisplayOptions] =
     useState<StepOneDisplayOptions>({});
 
@@ -180,6 +182,7 @@ export default function PostJobForm() {
   const { mutateAsync: postStepOne, isPending: isPostingStepOne } = usePostStepOne({ token });
   const { mutateAsync: postStepTwo, isPending: isPostingStepTwo } = usePostStepTwo({ token });
   const { mutateAsync: postStepThree, isPending: isPostingStepThree } = usePostStepThree({ token });
+  const { mutateAsync: updateStepOne, isPending: isUpdatingStepOne } = useUpdateStepOne({ token });
   const { mutateAsync: updateJob, isPending: isUpdatingJob } = useUpdateJob({ token });
 
   // ─── Modals ────────────────────────────────────────────
@@ -228,7 +231,10 @@ export default function PostJobForm() {
       // In complete mode, set the createdJobId so step-by-step flow works
       if (mode === "complete") {
         setCreatedJobId(existingJob.id);
-        setCurrentStep(getJobStatus(existingJob) === "Draft" ? 1 : 0);
+        const existingJobStatus = getJobStatus(existingJob);
+        setCurrentStep(
+          existingJobStatus === "draft" || existingJobStatus === "open" ? 1 : 0,
+        );
       }
 
       setFormHydrated(true);
@@ -396,13 +402,23 @@ export default function PostJobForm() {
     }
 
     if (currentStep === 0) {
-      // In complete mode, use the existing job id (no new step-one API call needed
-      // if the job already exists from a previous draft)
+      if (mode === "complete" && createdJobId && hasReturnedToStepOneFromStepTwo) {
+        const data = getValues();
+        await updateStepOne({
+          jobId: createdJobId,
+          payload: buildStepOnePayload(data),
+        });
+        setHasReturnedToStepOneFromStepTwo(false);
+        setCurrentStep((s) => s + 1);
+        return;
+      }
+
+      // In complete mode without returning from step 2, keep using the existing step-one flow.
       if (mode === "complete" && createdJobId) {
-        // For complete mode, we still call step-one to save the updated data
         const data = getValues();
 
         await postStepOne(buildStepOnePayload(data));
+        setHasReturnedToStepOneFromStepTwo(false);
         setCurrentStep((s) => s + 1);
         return;
       }
@@ -419,6 +435,7 @@ export default function PostJobForm() {
       }
 
       setCreatedJobId(nextCreatedJobId);
+      setHasReturnedToStepOneFromStepTwo(false);
       setCurrentStep((s) => s + 1);
       return;
     }
@@ -445,14 +462,19 @@ export default function PostJobForm() {
     setCurrentStep((s) => s + 1);
   };
 
-  const handleBack = () => setCurrentStep((s) => s - 1);
+  const handleBack = () => {
+    if (mode === "complete" && currentStep === 1) {
+      setHasReturnedToStepOneFromStepTwo(true);
+    }
+
+    setCurrentStep((s) => s - 1);
+  };
 
   // ─── Final submit for create/complete mode ────────────
   const onSubmitCreateOrComplete: SubmitHandler<JobFormData> = async () => {
     setIsSubmitting(true);
     try {
       await submitStepThreeStatus("open");
-      setSubmitted(true);
       setPostSuccess(true);
       setTimeout(() => {
         router.push("/company/job-management");
@@ -520,7 +542,12 @@ export default function PostJobForm() {
   const onSubmit = isEditMode ? onSubmitEdit : onSubmitCreateOrComplete;
 
   // Are we loading from any step API?
-  const isBusy = isPostingStepOne || isPostingStepTwo || isPostingStepThree || isUpdatingJob;
+  const isBusy =
+    isPostingStepOne ||
+    isPostingStepTwo ||
+    isPostingStepThree ||
+    isUpdatingStepOne ||
+    isUpdatingJob;
   const isStepOneEditLoading = isEditMode && currentStep === 0 && (isLoadingJob || !formHydrated);
 
   // ═══════════════════════════════════════════════════════
