@@ -79,7 +79,9 @@ function toOptionalNumber(value: string | number | null | undefined) {
     return undefined;
   }
 
-  const parsedValue = Number(value);
+  const normalizedValue =
+    typeof value === "string" ? value.replace(/,/g, "").trim() : value;
+  const parsedValue = Number(normalizedValue);
   return Number.isFinite(parsedValue) ? parsedValue : undefined;
 }
 
@@ -102,8 +104,8 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
     addSalary: hasSalary,
     salary: hasSalary
       ? {
-        min: job.min_salary ? Number(job.min_salary) : undefined,
-        max: job.max_salary ? Number(job.max_salary) : undefined,
+        min: toOptionalNumber(job.min_salary),
+        max: toOptionalNumber(job.max_salary),
         type: String(job.salary_type_id ?? ""),
         currency: String(job.currency_id ?? ""),
       }

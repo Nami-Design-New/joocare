@@ -23,7 +23,7 @@ const HeaderLayout = ({
 
   const filteredNavLinks =
     companyProfileData?.status !== "Approved"
-      ? navLinks.slice(0, 2)
+      ? navLinks.slice(2, 3)
       : navLinks;
   return (
     <header className="w-full rounded-full p-2 shadow sm:w-fit sm:pe-0 bg-white

@@ -1,81 +1,3 @@
-// "use client";
-
-// import { LucideIcon } from "lucide-react";
-// import Link from "next/link";
-// import { usePathname } from "next/navigation";
-
-// interface ILinkItem {
-//   label: string;
-//   href: string;
-//   icon?: LucideIcon;
-//   image?: string;
-// }
-
-// interface ILinksProps {
-//   links: ILinkItem[];
-// }
-
-// const SidebarLinks = ({ links }: ILinksProps) => {
-//   const pathname = usePathname();
-//   const normalizedPathname = pathname.replace(/^\/[a-z]{2}/, "");
-
-//   return (
-//     <nav aria-label="Company navigation">
-//       <ul className="flex flex-col gap-5">
-//         {links.map(({ label, href, image, icon: Icon }) => {
-//           const isActive = normalizedPathname === href;
-
-//           const iconBgClass = isActive
-//             ? "bg-primary"
-//             : "bg-black group-hover:bg-primary";
-
-//           return (
-//             <li key={href}>
-//               <Link
-//                 href={href}
-//                 className={`group flex items-center gap-3 rounded-full border-l-2 px-4 py-2 text-lg font-semibold transition-all ${
-//                   isActive
-//                     ? "border-primary bg-primary-bg text-primary"
-//                     : "text-muted-foreground hover:border-primary hover:bg-primary-bg hover:text-primary border-transparent"
-//                 } `}
-//               >
-//                 {image && (
-//                   <div
-//                     className={`h-5 w-5 transition-colors ${iconBgClass}`}
-//                     style={{
-//                       WebkitMaskImage: `url(${image})`,
-//                       WebkitMaskRepeat: "no-repeat",
-//                       WebkitMaskPosition: "center",
-//                       WebkitMaskSize: "contain",
-//                       maskImage: `url(${image})`,
-//                       maskRepeat: "no-repeat",
-//                       maskPosition: "center",
-//                       maskSize: "contain",
-//                     }}
-//                   />
-//                 )}
-
-//                 {Icon && (
-//                   <Icon
-//                     className={`size-5 shrink-0 transition-colors ${
-//                       isActive
-//                         ? "text-primary"
-//                         : "text-muted-foreground group-hover:text-primary"
-//                     } `}
-//                   />
-//                 )}
-
-//                 <span>{label}</span>
-//               </Link>
-//             </li>
-//           );
-//         })}
-//       </ul>
-//     </nav>
-//   );
-// };
-
-// export default SidebarLinks;
 "use client";
 
 import { LucideIcon } from "lucide-react";
@@ -84,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
 import "swiper/css";
+import { TCompanyProfile } from "@/features/company-profile/types";
 
 interface ILinkItem {
   label: string;
@@ -94,11 +17,27 @@ interface ILinkItem {
 
 interface ILinksProps {
   links: ILinkItem[];
+  companyProfileData: TCompanyProfile | undefined
+
 }
 
-const SidebarLinks = ({ links }: ILinksProps) => {
+const SidebarLinks = ({ links, companyProfileData }: ILinksProps) => {
   const pathname = usePathname();
   const normalizedPathname = pathname.replace(/^\/[a-z]{2}/, "");
+
+  // Conditionally modify Account Settings link based on company profile status
+  const modifiedLinks = links.map((link) => {
+    if (
+      link.label === "Account Settings" &&
+      companyProfileData?.status !== "Approved"
+    ) {
+      return {
+        ...link,
+        href: "/company/account-settings/change-password",
+      };
+    }
+    return link;
+  });
 
   return (
     <>
@@ -111,7 +50,7 @@ const SidebarLinks = ({ links }: ILinksProps) => {
           freeMode={true}
           className="pb-1"
         >
-          {links.map(({ label, href, image, icon: Icon }) => {
+          {modifiedLinks.map(({ label, href, image, icon: Icon }) => {
             const isActive = normalizedPathname === href;
 
             const iconBgClass = isActive
@@ -167,7 +106,7 @@ const SidebarLinks = ({ links }: ILinksProps) => {
         className="hidden lg:block "
       >
         <ul className="flex flex-col gap-5">
-          {links.map(({ label, href, image, icon: Icon }) => {
+          {modifiedLinks.map(({ label, href, image, icon: Icon }) => {
             const isActive = normalizedPathname === href;
 
             const iconBgClass = isActive
