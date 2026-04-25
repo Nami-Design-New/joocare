@@ -204,6 +204,7 @@ const FormCandidateRegister = () => {
             control={control}
             render={({ field }) => (
               <SelectInputField
+                withSearchInput
                 id="country"
                 placeholder="country"
                 {...field}
@@ -223,6 +224,7 @@ const FormCandidateRegister = () => {
             control={control}
             render={({ field }) => (
               <SelectInputField
+                withSearchInput
                 id="city"
                 placeholder="city"
                 {...field}

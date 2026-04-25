@@ -4,16 +4,8 @@ import { SelectInputField } from "@/shared/components/SelectInputField";
 import React, { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
-import "ckeditor5/ckeditor5.css";
-// import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
 import dynamic from "next/dynamic";
-const CKEditor = dynamic(
-  () => import("@ckeditor/ckeditor5-react").then((mod) => mod.CKEditor),
-  { ssr: false }
-);
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
 
 
 import { MultiSelectInputField } from "@/shared/components/MultiSelectInputField";
@@ -47,15 +39,9 @@ export default function JobPostStepTwo() {
                 <label className="mb-2 block font-medium">
                   Job Description
                 </label>
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={field.value || ""}
-                  onChange={(_, editor) => {
-                    field.onChange(editor.getData());
-                  }}
-                  config={{
-                    licenseKey: "GPL",
-                  }}
+                <CustomEditor
+                  value={field.value || ""}
+                  onChange={(val) => field.onChange(val)}
                 />
                 {errors.description && (
                   <p className="text-sm text-red-500">

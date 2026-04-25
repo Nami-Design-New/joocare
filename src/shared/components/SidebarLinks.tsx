@@ -29,7 +29,7 @@ const SidebarLinks = ({ links, companyProfileData }: ILinksProps) => {
   const modifiedLinks = links.map((link) => {
     if (
       link.label === "Account Settings" &&
-      companyProfileData?.status !== "Approved"
+      companyProfileData?.status === "Draft"
     ) {
       return {
         ...link,

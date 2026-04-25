@@ -20,6 +20,7 @@ const JobCard = ({ title, company, location, type, timeLabel, id, image, updated
         width={57}
         height={50}
         alt={`${company} logo`}
+        className="rounded-2xl w-14 h-12"
       />
       <div className="flex-1">
         <h3 className="text-secondary group-hover:text-primary text-xl font-bold transition-all">

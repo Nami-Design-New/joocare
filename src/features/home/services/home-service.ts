@@ -61,7 +61,10 @@ type HomeApiResponse = {
         id?: number | string;
         title?: string | null;
         updated_at?: string | null;
-        company?: { name?: string | null } | string | null;
+        company?: {
+          name?: string | null
+          image: string | null
+        } | string | null;
         job_title?: { title?: string | null } | null;
         country?: { name?: string | null } | null;
         city?: { name?: string | null } | null;
@@ -230,7 +233,9 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
             location: locationParts.join(", ") || "Location not specified",
             type: job.employment_type?.title ?? "Not specified",
             timeLabel: buildJobTimeLabel(job.updated_at),
-            image: job.image ?? "/assets/recent-job-image.svg",
+            image: typeof job.company === "string"
+              ? job.company
+              : job.company?.image ?? "/assets/recent-job-image.svg",
             updated_at: job.updated_at ?? "",
           };
         }) ?? [],

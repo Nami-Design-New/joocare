@@ -102,7 +102,7 @@ export default function JobCard({ resumeMatch,
   const salary = getJobSalary(job);
   const experience = job?.experience?.title || "Experience not specified";
   const specialty = job?.specialty?.title || "Healthcare";
-  const excerpt = job?.description || "Explore the job details to learn more about the role and employer.";
+  const excerpt = job?.description?.slice(0, 150) || "Explore the job details to learn more about the role and employer.";
   const statusLabel = (() => {
     const rawStatus = job.status?.status ?? "draft";
     return rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1).toLowerCase();

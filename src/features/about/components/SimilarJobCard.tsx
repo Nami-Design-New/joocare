@@ -67,12 +67,17 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
               {job?.specialty?.title}
             </li>
           </ul>
-          <div className="text-muted-foreground line-clamp-1">
-            {job?.description}
-          </div>
+          <div
+            className="text-muted-foreground line-clamp-1"
+            dangerouslySetInnerHTML={{
+              __html:
+                job?.description ||
+                "<p>No description available.</p>",
+            }}
+          />
         </div>
       </CardContent>
-      <CardFooter className="mt-auto">
+      <CardFooter className="">
         <p className="text-foreground flex items-center gap-1 text-sm">
           <Timer size={16} /> {job?.created_at}
         </p>

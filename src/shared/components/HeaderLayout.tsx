@@ -24,7 +24,7 @@ const HeaderLayout = ({
   });
 
   const filteredNavLinks =
-    shouldLoadCompanyProfile && companyProfileData?.status !== "Approved"
+    shouldLoadCompanyProfile && companyProfileData?.status === "Draft"
       ? navLinks.slice(2, 3)
       : navLinks;
   return (

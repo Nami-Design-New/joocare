@@ -29,6 +29,7 @@ import JobPostStepTwo from "./JobPostStepTwo";
 import JobReviewPanel from "./JobReviewPanel";
 import { useRouter } from "@/i18n/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import type { Option } from "@/shared/components/SelectInputField";
 
 // ─── Form mode ──────────────────────────────────────────
 // create  → fresh form, step-by-step, saves each step
@@ -36,6 +37,8 @@ import { useQueryClient } from "@tanstack/react-query";
 // edit    → prefilled published job, single-step, saves all at once
 // ─────────────────────────────────────────────────────────
 type FormMode = "create" | "complete" | "edit";
+type StepOneOptionKey = "title" | "country" | "city";
+type StepOneDisplayOptions = Partial<Record<StepOneOptionKey, Option>>;
 
 const STEPS = ["Job Details", "Job Description & Requirements", "Job Preview"];
 const LAST_STEP = STEPS.length - 1;
@@ -165,6 +168,8 @@ export default function PostJobForm() {
   const [createdJobId, setCreatedJobId] = useState<number | null>(null);
   const [reviewJob, setReviewJob] = useState<JobDetails | null>(null);
   const [formHydrated, setFormHydrated] = useState(false);
+  const [stepOneDisplayOptions, setStepOneDisplayOptions] =
+    useState<StepOneDisplayOptions>({});
 
   const { data: session } = useSession();
   const token = session?.accessToken || "";
@@ -197,6 +202,28 @@ export default function PostJobForm() {
       const mappedData = mapJobToFormData(existingJob);
       reset({ ...jobFormDefaults, ...mappedData } as JobFormData);
       setReviewJob(existingJob);
+      setStepOneDisplayOptions({
+        title: existingJob.title
+          ? { label: existingJob.title, value: "__other__" }
+          : existingJob.job_title
+            ? {
+              label: existingJob.job_title.title,
+              value: String(existingJob.job_title_id ?? ""),
+            }
+            : undefined,
+        country: existingJob.country
+          ? {
+            label: existingJob.country.name,
+            value: String(existingJob.country_id ?? ""),
+          }
+          : undefined,
+        city: existingJob.city
+          ? {
+            label: existingJob.city.name,
+            value: String(existingJob.city_id ?? ""),
+          }
+          : undefined,
+      });
 
       // In complete mode, set the createdJobId so step-by-step flow works
       if (mode === "complete") {
@@ -207,6 +234,13 @@ export default function PostJobForm() {
       setFormHydrated(true);
     }
   }, [existingJob, formHydrated, mode, reset]);
+
+  const handleStepOneOptionChange = (key: StepOneOptionKey, option?: Option) => {
+    setStepOneDisplayOptions((current) => ({
+      ...current,
+      [key]: option,
+    }));
+  };
 
   // ─── Helpers ───────────────────────────────────────────
   const resolveJobId = () => createdJobId ?? reviewJob?.id ?? null;
@@ -514,7 +548,13 @@ export default function PostJobForm() {
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="min-h-80">
-              {currentStep === 0 && <JobPostStepOne isLoading={isStepOneEditLoading} />}
+              {currentStep === 0 && (
+                <JobPostStepOne
+                  isLoading={isStepOneEditLoading}
+                  persistedOptions={stepOneDisplayOptions}
+                  onPersistOption={handleStepOneOptionChange}
+                />
+              )}
               {currentStep === 1 && <JobPostStepTwo />}
               {currentStep === 2 && <JobReviewPanel data={getValues()} job={reviewJob} />}
             </div>

@@ -23,7 +23,7 @@ export const TestimonialCard = ({
   date?: string | null | undefined;
   text?: string | null | undefined;
 }) => (
-  <div className="bg-card flex flex-col justify-between gap-3 rounded-tl-4xl rounded-br-4xl p-6 h-full w-full">
+  <div className="bg-card flex flex-col  gap-3 rounded-tl-4xl rounded-br-4xl p-6 h-full w-full">
     <div className="flex justify-between">
       <div>
         <h5 className="text-secondary text-xl font-normal">{name}</h5>
@@ -42,7 +42,7 @@ export const TestimonialCard = ({
         })}
       </div>
     </div>
-    <p className="text-muted-foreground leading-tight">{text}</p>
+    <p className="text-muted-foreground leading-tight">{text} dddddd</p>
   </div>
 );
 

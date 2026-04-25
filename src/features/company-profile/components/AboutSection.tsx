@@ -12,7 +12,7 @@ const AboutSection = ({ companyProfileData, isPending }: { companyProfileData: T
         <div className="rounded-2xl bg-white flex flex-col gap-4 p-4 border">
             <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold ">About</h2>
-                <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />
+                {companyProfileData?.status !== "Draft" && <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />}
             </div>
             {isPending ? (
                 <div className="w-full flex flex-col gap-2">
