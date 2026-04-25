@@ -422,7 +422,6 @@ export default function PostJobForm() {
       setCurrentStep((s) => s + 1);
       return;
     }
-
     if (currentStep === 1) {
       const data = getValues();
       const effectiveJobId = createdJobId;
