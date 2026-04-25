@@ -17,7 +17,7 @@ export default function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
         <Carousel
           opts={{
             align: "start",
-            loop: true,
+            loop: false,
           }}
         >
           {/* Header */}
@@ -35,10 +35,12 @@ export default function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
           </div>
 
           {/* Cards */}
-          <CarouselContent className="-ml-6">
+          <CarouselContent className="-ml-6 items-stretch">
             {jobs.map((job, i) => (
-              <CarouselItem key={i} className="pl-6 md:basis-1/2 lg:basis-1/3">
-                <SimilarJobCard  job={job} />
+              <CarouselItem key={i} className="pl-6 md:basis-1/2 lg:basis-1/3 flex">
+                <div className="w-full h-full">
+                  <SimilarJobCard job={job} />
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>

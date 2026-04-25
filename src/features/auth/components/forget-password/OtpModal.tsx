@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
@@ -24,8 +25,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
+import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
+import { apiFetch } from "@/shared/lib/fetch-manager";
 import { useLocale } from "next-intl";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { verifyUpdatedEmail } from "@/features/accout-settings/lib/update-email-verification";
 import {
   PasswordResetRole,
   requestPasswordReset,
@@ -43,7 +48,7 @@ interface OTPModalProps {
   onOpenChange: (open: boolean) => void;
   email?: string;
   role?: PasswordResetRole;
-  purpose?: "password-reset" | "email-confirm" | "generic";
+  purpose?: "password-reset" | "email-confirm" | "update-email" | "generic";
   successRedirectPath?: string;
   onSuccess?: () => void | Promise<void>;
 }
@@ -59,8 +64,11 @@ export function OTPModal({
 }: OTPModalProps) {
   const [countdown, setCountdown] = useState(60);
   const router = useRouter();
+  const queryClient = useQueryClient();
   const path = usePathname();
   const locale = useLocale();
+  const { data: session } = useSession();
+  const token = session?.accessToken ?? "";
   const forgetPasswordPage = path.includes("forget-password");
   const registerCandidatePage = path.includes("auth/candidate/register")
   const registerEmployerPage = path.includes("auth/employer/register");
@@ -154,6 +162,21 @@ export function OTPModal({
         return;
       }
 
+      if (purpose === "update-email" && email) {
+        const { message } = await verifyUpdatedEmail({
+          email,
+          otp: data.otp,
+          token,
+        });
+
+        toast.success(message);
+        await queryClient.invalidateQueries({ queryKey: ["company-profile"] });
+        reset();
+        onOpenChange(false);
+        await handleGenericSuccess();
+        return;
+      }
+
       reset();
       await handleGenericSuccess();
     } catch (error) {
@@ -195,6 +218,26 @@ export function OTPModal({
         });
 
         toast.success(message);
+      }
+
+      if (purpose === "update-email" && email && token) {
+        const { ok, message } = await apiFetch(
+          `${getCompanyApiUrl()}/auth/update-email`,
+          {
+            method: "POST",
+            token,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+          },
+        );
+
+        if (!ok) {
+          throw new Error(message || "Failed to resend code.");
+        }
+
+        toast.success(message || "Verification code sent successfully.");
       }
 
       setCountdown(60);

@@ -142,8 +142,9 @@ export default function JobCard({ resumeMatch,
               <DropdownMenuTrigger asChild>
                 <CircleEllipsis color="var(--muted-foreground)" className="cursor-pointer" />
               </DropdownMenuTrigger>
+
               <DropdownMenuContent align="end">
-                {normalizedStatus !== "draft" && normalizedStatus !== 'closed' && job.status?.status !== undefined && job.status?.status !== null && (
+                {(normalizedStatus === "open") && (<>
                   <DropdownMenuItem className="flex gap-2">
                     <Link
                       href={`/company/post-job?editId=${job.id}`}
@@ -151,8 +152,24 @@ export default function JobCard({ resumeMatch,
                       <Edit /> <span>Edit</span>
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="flex gap-2 cursor-pointer"
+                    disabled={isPending}
+                    onClick={() => setPauseJob(true)}
+                  >
+                    <EyeOff /> <span>Pause</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="flex gap-2 cursor-pointer"
+                    disabled={isPending}
+                    onClick={() => setCloseJob(true)}
+                  >
+                    <CheckCheck /> <span>closed</span>
+                  </DropdownMenuItem>
+                </>
                 )}
-                {(normalizedStatus === "draft" || job.status?.status === undefined || job.status?.status === null) && (
+
+                {(normalizedStatus === "draft" || job.status?.status === undefined || job.status?.status === null) &&
                   <DropdownMenuItem className="flex gap-2">
                     <Link
                       href={`/company/post-job?jobId=${job.id}`}
@@ -160,32 +177,16 @@ export default function JobCard({ resumeMatch,
                       <Edit2 /> <span>Complete</span>
                     </Link>
                   </DropdownMenuItem>
-                )}
-                {normalizedStatus !== "open" ? (
+                }
+                {(normalizedStatus === "paused") &&
                   <DropdownMenuItem
                     className="flex gap-2 cursor-pointer"
                     disabled={isPending}
                     onClick={handleOpenJob}
                   >
-                    <Play /> <span>Open</span>
+                    <EyeOff /> <span>Reactive</span>
                   </DropdownMenuItem>
-                ) : null}
-                <DropdownMenuItem
-                  className="flex gap-2 cursor-pointer"
-                  disabled={isPending}
-                  hidden={normalizedStatus === "closed"}
-                  onClick={() => setCloseJob(true)}
-                >
-                  <CheckCheck /> <span>closed</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="flex gap-2 cursor-pointer"
-                  disabled={isPending}
-                  hidden={normalizedStatus === "paused"}
-                  onClick={() => setPauseJob(true)}
-                >
-                  <EyeOff /> <span>Pause</span>
-                </DropdownMenuItem>
+                }
                 <DropdownMenuItem
                   className="text-destructive flex gap-2 cursor-pointer"
                   disabled={isDeleting}

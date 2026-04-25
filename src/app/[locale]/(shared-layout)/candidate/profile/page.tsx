@@ -7,6 +7,7 @@ import { getCandidateProfile } from "@/features/candidate-profile/services/profi
 
 const CandidateProfilePage = async () => {
   const profile = await getCandidateProfile();
+
   return (
     <main className="grid w-full grid-cols-12 items-start gap-4">
       <section className="col-span-12 flex flex-col gap-4 lg:col-span-8">

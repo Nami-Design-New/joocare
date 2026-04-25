@@ -32,6 +32,7 @@ import {
   type TSettingBasicInfoSchema,
 } from "../../validation/basic-info-schema";
 import ProfileImage from "./ProfileImage";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface BasicInfoFormProps {
   profile: CandidateSettingsProfile;
@@ -50,8 +51,10 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const [citySearch, setCitySearch] = useState("");
   const [uploadedImagePath, setUploadedImagePath] = useState<string | null>(null);
   const [uploadedCvPath, setUploadedCvPath] = useState<string | null>(null);
+  const [isImageUploading, setIsImageUploading] = useState(false);
   const [showExistingProfileImage, setShowExistingProfileImage] = useState(Boolean(profile.image));
   const [showExistingCv, setShowExistingCv] = useState(Boolean(profile.cv));
+  const imageUploadRequestIdRef = useRef(0);
   const defaultValues = useMemo<TSettingBasicInfoSchema>(
     () => ({
       fullName: profile.name,
@@ -79,7 +82,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       }),
     [profile.cv, showExistingCv],
   );
-
+  const queryClient = useQueryClient()
   const {
     register,
     control,
@@ -158,6 +161,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   useEffect(() => {
     setUploadedImagePath(null);
     setUploadedCvPath(null);
+    setIsImageUploading(false);
     setShowExistingProfileImage(Boolean(profile.image));
     setShowExistingCv(Boolean(profile.cv));
   }, [profile.image, profile.cv]);
@@ -238,6 +242,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       const response = await updateCandidateBasicInfoAction(formData, locale);
       toast.success(response.message ?? "Profile updated successfully.");
+      queryClient.invalidateQueries({ queryKey: ['candidate-profile'] })
       router.push("/candidate/profile");
     } catch (error) {
       const message =
@@ -274,19 +279,33 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
                 const imageFile = files[0];
                 if (!(imageFile instanceof File)) {
+                  imageUploadRequestIdRef.current += 1;
+                  setIsImageUploading(false);
                   setUploadedImagePath(null);
                   return;
                 }
 
+                const requestId = imageUploadRequestIdRef.current + 1;
+                imageUploadRequestIdRef.current = requestId;
                 setShowExistingProfileImage(false);
                 clearErrors("profileImage");
+                setIsImageUploading(true);
 
                 try {
                   const uploadFormData = new FormData();
                   uploadFormData.append("image", imageFile);
                   const result = await storeUploadedFileAction(uploadFormData, locale);
+
+                  if (imageUploadRequestIdRef.current !== requestId) {
+                    return;
+                  }
+
                   setUploadedImagePath(result.path);
                 } catch (error) {
+                  if (imageUploadRequestIdRef.current !== requestId) {
+                    return;
+                  }
+
                   const message =
                     error instanceof Error ? error.message : "Failed to upload profile image.";
                   setUploadedImagePath(null);
@@ -294,15 +313,22 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                     type: "server",
                     message,
                   });
+                } finally {
+                  if (imageUploadRequestIdRef.current === requestId) {
+                    setIsImageUploading(false);
+                  }
                 }
               }}
               onRemove={() => {
+                imageUploadRequestIdRef.current += 1;
+                setIsImageUploading(false);
                 setShowExistingProfileImage(false);
                 setUploadedImagePath("");
                 field.onChange([]);
                 clearErrors("profileImage");
               }}
               error={errors.profileImage?.message}
+              isUploading={isImageUploading}
             />
           )}
         />
@@ -582,9 +608,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           size={"pill"}
           className="w-1/3 md:w-56"
           type="submit"
-          disabled={isSaving}
+          disabled={isSaving || isImageUploading}
         >
-          {isSaving ? "Saving..." : "Save"}
+          {isSaving ? "Saving..." : isImageUploading ? "Uploading image..." : "Save"}
         </Button>
       </div>
     </form>

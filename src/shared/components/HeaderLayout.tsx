@@ -1,14 +1,12 @@
 "use client";
 
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/shared/components/ui/button";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
-
 import "swiper/css";
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { useSession } from "next-auth/react";
 
 const HeaderLayout = ({
@@ -17,12 +15,16 @@ const HeaderLayout = ({
   navLinks: { href: string; label: string }[];
 }) => {
   const pathname = usePathname();
-  const session = useSession();
-  const token = session?.data?.accessToken || "";
-  const { data: companyProfileData } = useGetCompanyProfile({ token });
+  const { data: session } = useSession();
+  const token = session?.accessToken || "";
+  const role = session?.authRole;
+  const shouldLoadCompanyProfile = role === "employer";
+  const { data: companyProfileData } = useGetCompanyProfile({
+    token: shouldLoadCompanyProfile ? token : "",
+  });
 
   const filteredNavLinks =
-    companyProfileData?.status !== "Approved"
+    shouldLoadCompanyProfile && companyProfileData?.status !== "Approved"
       ? navLinks.slice(2, 3)
       : navLinks;
   return (

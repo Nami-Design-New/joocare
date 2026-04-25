@@ -1,5 +1,7 @@
 "use client";
 
+import useGetCandidateProfile from "@/features/candidate-profile/hooks/useGetCandidateProfile";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import {
   Bookmark,
   ChevronDown,
@@ -24,6 +26,10 @@ import { useState } from "react";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useSession } from "next-auth/react";
 
+function getSafeImageSrc(value: unknown, fallback = "/avatar.jpg") {
+  return typeof value === "string" && value.trim() ? value : fallback;
+}
+
 export default function UserDropDown({
   companyHeader,
 }: {
@@ -35,6 +41,15 @@ export default function UserDropDown({
   const toggleOpen = () => setOpen((prev) => !prev);
 
   const isEmployer = session?.authRole === "employer" || companyHeader;
+  const token = session?.accessToken || "";
+
+  const { data: companyProfileData } = useGetCompanyProfile({
+    token: isEmployer ? token : "",
+  });
+  const { data: candidateProfileData } = useGetCandidateProfile({
+    token: !isEmployer ? token : "",
+  });
+
   const profileHref = isEmployer
     ? "/company/company-profile"
     : "/candidate/profile";
@@ -42,7 +57,10 @@ export default function UserDropDown({
   const subtitle = isEmployer
     ? "Company account"
     : "Candidate account";
-  const imageSrc = session?.user?.image || "/avatar.jpg";
+  const imageSrc = getSafeImageSrc(
+    (isEmployer ? companyProfileData?.image : candidateProfileData?.image) ??
+    session?.user?.image,
+  );
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
     "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +

@@ -214,7 +214,7 @@ export function getJobSalary(
   const hasMaxSalary = maxSalary !== null;
 
   if (hasMinSalary && hasMaxSalary) {
-    return `${minSalary} - ${maxSalary}`;
+    return `${minSalary}${job.currency?.code ? job.currency?.code : ''} - ${maxSalary}${job.currency?.code ? job.currency?.code : ''}`;
   }
 
   if (hasMinSalary || hasMaxSalary) {

@@ -35,6 +35,7 @@ interface EducationModalProps {
 const EMPTY_FORM: EducationModalFormData = {
   degree: "",
   university: "",
+  gpa: "",
   countryId: "",
   startDate: "",
   endDate: "",
@@ -50,6 +51,7 @@ function toFormState(
   return {
     degree: education.degree ?? "",
     university: education.university,
+    gpa: education.gpa ?? "",
     countryId: education.countryId ?? "",
     startDate: education.startDate ?? "",
     endDate: education.endDate ?? "",
@@ -116,6 +118,7 @@ export function EducationModal({
       const payload = {
         degree: form.degree.trim(),
         university: form.university.trim(),
+        gpa: form.gpa.trim(),
         countryId: form.countryId,
         startDate: form.startDate,
         endDate: form.endDate?.trim() || undefined,
@@ -129,9 +132,9 @@ export function EducationModal({
 
       toast.success(
         response?.message ??
-          (education?.id
-            ? "Education updated successfully."
-            : "Education added successfully."),
+        (education?.id
+          ? "Education updated successfully."
+          : "Education added successfully."),
       );
       reset(EMPTY_FORM);
       onOpenChange(false);
@@ -171,6 +174,16 @@ export function EducationModal({
             error={errors.university?.message}
           />
 
+          <InputField
+            id="gpa"
+            label="GPA"
+            type="text"
+            inputMode="decimal"
+            placeholder="ex: 3.75"
+            {...register("gpa")}
+            error={errors.gpa?.message}
+          />
+
           <Controller
             name="countryId"
             control={control}
@@ -208,7 +221,7 @@ export function EducationModal({
               id="endDate"
               label="End Date"
               type="date"
-            
+
               {...register("endDate")}
               error={errors.endDate?.message}
             />

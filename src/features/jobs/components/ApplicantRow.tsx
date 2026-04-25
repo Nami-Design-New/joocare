@@ -10,15 +10,17 @@ export default function ApplicantRow({
   applicant,
   onDownload,
   onView,
+  index
 }: {
   applicant: Applicant;
   onDownload?: (a: Applicant) => void;
   onView?: (a: Applicant) => void;
+  index: number
 }) {
   return (
     <TableRow className="odd:bg-muted border-border border-b bg-white transition-colors">
       <TableCell className="text-muted-foreground w-12 px-4 py-5 font-medium">
-        #{applicant.id}
+        {index + 1}
       </TableCell>
       <TableCell className="text-foreground text-md px-4 py-5 font-normal">
         {applicant.name}

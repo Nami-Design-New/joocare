@@ -8,7 +8,6 @@ import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
 import { useState, useEffect } from "react";
 
-import { EnterEmailModal } from "@/features/auth/components/forget-password/EnterEmailModal";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { YearPicker } from "@/shared/components/YearPicker";
 import { BasicInfoSchema, TBasicInfoSchema } from "../../validation/basic-info-schema";
@@ -21,6 +20,7 @@ import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 import useGetDomains from "@/shared/hooks/useGetDomains";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { TCompanyProfileViewModel } from "@/features/company-profile/types";
+import { UpdateEmailModal } from "./UpdateEmailModal";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -191,6 +191,7 @@ const BasicInfoForm = () => {
             error={errors.officialEmail?.message}
           />
           <Button
+            type="button"
             onClick={() => setIsModalOpen(true)}
             variant="outline"
             size="pill"
@@ -378,7 +379,7 @@ const BasicInfoForm = () => {
       </form>
 
       {/* enter email modal */}
-      <EnterEmailModal
+      <UpdateEmailModal
         setUserEmail={setUserEmail}
         email={officialEmail}
         open={isModalOpen}
@@ -392,7 +393,7 @@ const BasicInfoForm = () => {
         open={isModalOtpOpen}
         onOpenChange={setIsModalOtpOpen}
         role="employer"
-        purpose="email-confirm"
+        purpose="update-email"
       />
     </>
   );
