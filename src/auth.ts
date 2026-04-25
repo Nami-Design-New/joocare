@@ -11,7 +11,6 @@ type SocialProvider = "google" | "linkedin";
 
 function extractToken(payload: ApiFetchResponse | null) {
   const data = payload?.data as Record<string, unknown> | undefined;
-
   return (
     (typeof payload?.token === "string" && payload.token) ||
     (typeof payload?.access_token === "string" && payload.access_token) ||
