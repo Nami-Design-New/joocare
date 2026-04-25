@@ -31,7 +31,7 @@ const CompanySidebarContent = () => {
         )}
       </div>
       <div className="order-1 lg:order-2">
-        <SidebarLinks links={links} />
+        <SidebarLinks links={links} companyProfileData={companyProfileData} />
       </div>
 
       <div className="relative group mt-auto order-3 ">

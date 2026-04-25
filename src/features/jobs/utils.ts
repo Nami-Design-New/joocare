@@ -182,18 +182,43 @@ export function getJobLocation(job: Pick<JobListItem | JobDetails, "city" | "cou
   return [job.city?.name, job.country?.name].filter(Boolean).join(", ") || "Location not specified";
 }
 
+function parseSalaryAmount(value: string | number | null | undefined) {
+  if (typeof value === "number") {
+    return Number.isFinite(value) && value > 0 ? value : null;
+  }
+
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const normalizedValue = value.replace(/,/g, "").trim();
+  if (!normalizedValue) {
+    return null;
+  }
+
+  const parsedValue = Number(normalizedValue);
+  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null;
+}
+
+function formatSalaryAmount(value: string | number | null | undefined) {
+  const parsedValue = parseSalaryAmount(value);
+  return parsedValue == null ? null : parsedValue.toLocaleString("en-US");
+}
+
 export function getJobSalary(
   job: Pick<JobListItem | JobDetails, "min_salary" | "max_salary" | "currency">,
 ) {
-  const hasMinSalary = typeof job.min_salary === "number" && job.min_salary > 0;
-  const hasMaxSalary = typeof job.max_salary === "number" && job.max_salary > 0;
+  const minSalary = formatSalaryAmount(job.min_salary);
+  const maxSalary = formatSalaryAmount(job.max_salary);
+  const hasMinSalary = minSalary !== null;
+  const hasMaxSalary = maxSalary !== null;
 
   if (hasMinSalary && hasMaxSalary) {
-    return `${job.min_salary} - ${job.max_salary} `;
+    return `${minSalary} - ${maxSalary}`;
   }
 
   if (hasMinSalary || hasMaxSalary) {
-    return `${job.min_salary || job.max_salary} `;
+    return minSalary ?? maxSalary ?? "Not specified";
   }
 
   return "Not specified";
