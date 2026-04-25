@@ -29,6 +29,7 @@ import { useState } from "react";
 import { JobPostStepOneSkeleton } from "./JobPostStepOneSkeleton";
 import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import useGetEmploymentTypes from "@/shared/hooks/useGetEmploymentTypes";
+import type { Option } from "@/shared/components/SelectInputField";
 
 const CUSTOM_CERTIFICATION_PREFIX = "__custom__:";
 
@@ -37,6 +38,17 @@ type LookupOptionItem = {
   title?: string;
   name?: string;
 };
+
+type PersistedOptions = Partial<Record<"title" | "country" | "city", Option>>;
+
+function mergePersistedOption(options: Option[], persisted?: Option) {
+  if (!persisted) return options;
+  if (options.some((option) => option.value === persisted.value)) {
+    return options;
+  }
+
+  return [persisted, ...options];
+}
 
 // ─── tiny helper: surface zod error message under a field ───────────────────
 function FieldError({ name }: { name: string }) {
@@ -58,7 +70,13 @@ function FieldError({ name }: { name: string }) {
 
 
 
-function JobPostStepOneContent() {
+function JobPostStepOneContent({
+  persistedOptions,
+  onPersistOption,
+}: {
+  persistedOptions?: PersistedOptions;
+  onPersistOption?: (key: keyof PersistedOptions, option?: Option) => void;
+}) {
   // hooks land and token
   const locale = useLocale();
   const { data: session } = useSession();
@@ -257,6 +275,30 @@ function JobPostStepOneContent() {
         value: item,
       })),
   ];
+  const jobTitleOptions = mergePersistedOption(
+    [
+      ...jobTitles.map((type) => ({
+        label: type.title,
+        value: String(type.id),
+      })),
+      { label: "Other", value: "__other__" },
+    ],
+    persistedOptions?.title,
+  );
+  const countryOptions = mergePersistedOption(
+    countries.map((country) => ({
+      label: country.name,
+      value: String(country.id),
+    })),
+    persistedOptions?.country,
+  );
+  const cityOptions = mergePersistedOption(
+    cities.map((city) => ({
+      label: city.name,
+      value: String(city.id),
+    })),
+    persistedOptions?.city,
+  );
 
   const addCustomMandatoryCertification = () => {
     const trimmedValue = newMandatoryCertification.trim();
@@ -299,17 +341,15 @@ function JobPostStepOneContent() {
                 }
                 onChange={(value) => {
                   field.onChange(value);
+                  onPersistOption?.(
+                    "title",
+                    jobTitleOptions.find((option) => option.value === value),
+                  );
                   if (value !== "__other__") {
                     setValue("otherJobTitle", "");
                   }
                 }}
-                options={[
-                  ...jobTitles.map((type) => ({
-                    label: type.title,
-                    value: String(type.id),
-                  })),
-                  { label: "Other", value: "__other__" },
-                ]}
+                options={jobTitleOptions}
                 disabled={isJobTitlesLoading}
                 onReachEnd={() => fetchMoreJobTitles()}
                 hasNextPage={Boolean(hasMoreJobTitles)}
@@ -677,12 +717,14 @@ function JobPostStepOneContent() {
                   }
                   onChange={(value) => {
                     field.onChange(value);
+                    onPersistOption?.(
+                      "country",
+                      countryOptions.find((option) => option.value === value),
+                    );
+                    onPersistOption?.("city", undefined);
                     setValue("city", "");
                   }}
-                  options={countries.map((country) => ({
-                    label: country.name,
-                    value: String(country.id),
-                  }))}
+                  options={countryOptions}
                   disabled={isCountriesLoading}
                   onReachEnd={() => fetchMoreCountries()}
                   hasNextPage={Boolean(hasMoreCountries)}
@@ -708,10 +750,14 @@ function JobPostStepOneContent() {
                     errors.city?.message ??
                     (citiesError instanceof Error ? citiesError.message : undefined)
                   }
-                  options={cities.map((city) => ({
-                    label: city.name,
-                    value: String(city.id),
-                  }))}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPersistOption?.(
+                      "city",
+                      cityOptions.find((option) => option.value === value),
+                    );
+                  }}
+                  options={cityOptions}
                   disabled={citiesLoading || !selectedCountryId}
                   onReachEnd={() => citiesFetchNextPage()}
                   hasNextPage={Boolean(citiesHasNextPage)}
@@ -886,12 +932,21 @@ function JobPostStepOneContent() {
 
 export default function JobPostStepOne({
   isLoading = false,
+  persistedOptions,
+  onPersistOption,
 }: {
   isLoading?: boolean;
+  persistedOptions?: PersistedOptions;
+  onPersistOption?: (key: keyof PersistedOptions, option?: Option) => void;
 }) {
   if (isLoading) {
     return <JobPostStepOneSkeleton />;
   }
 
-  return <JobPostStepOneContent />;
+  return (
+    <JobPostStepOneContent
+      persistedOptions={persistedOptions}
+      onPersistOption={onPersistOption}
+    />
+  );
 }
