@@ -42,7 +42,7 @@ export const TestimonialCard = ({
         })}
       </div>
     </div>
-    <p className="text-muted-foreground leading-tight">{text} dddddd</p>
+    <p className="text-muted-foreground leading-tight">{text}</p>
   </div>
 );
 
