@@ -29,7 +29,7 @@ export default function NotificationCard({
         }`}
     >
       <Image
-        src="/assets/recent-job-image.svg"
+        src="/assets/logo_1.svg"
         width={52}
         height={46}
         alt="company Logo"

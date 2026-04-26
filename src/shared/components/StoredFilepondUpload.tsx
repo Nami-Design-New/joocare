@@ -228,12 +228,11 @@ export function StoredFilepondUpload({
           }
         }}
         onremovefile={(_error, fileItem) => {
-          // if (fileItem?.origin === FileOrigin.LOCAL) {
-          //   return;
-          // }
-          onExistingFileRemove?.();
+          if (fileItem?.origin !== FileOrigin.LOCAL) {
+            return;
+          }
 
-          // onStoredPathChange?.(null);
+          onExistingFileRemove?.();
         }}
         labelIdle={`
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">

@@ -17,6 +17,8 @@ export default function ApplicantRow({
   onView?: (a: Applicant) => void;
   index: number
 }) {
+  console.log("applic", applicant);
+
   return (
     <TableRow className="odd:bg-muted border-border border-b bg-white transition-colors">
       <TableCell className="text-muted-foreground w-12 px-4 py-5 font-medium">

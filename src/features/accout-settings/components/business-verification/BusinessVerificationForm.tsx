@@ -127,11 +127,6 @@ export default function BusinessVerificationForm() {
 
     // submit handler
     const onSubmit: SubmitHandler<TBusinessVerificationSchema> = (data) => {
-        const shouldUseExistingMedicalLicenseImage =
-            showExistingMedicalLicenseImage ?? Boolean(companyProfileData?.medical_license_image);
-        const shouldUseExistingCommercialRegistrationImage =
-            showExistingCommercialRegistrationImage ?? Boolean(companyProfileData?.commercial_registration_image);
-
         const payload: UpdateBusinessVerificationPayload = {
             commercial_registration_number: data.commercial_registration_number,
             commercial_registration_issue_date: data.commercial_registration_issue_date,
@@ -144,9 +139,20 @@ export default function BusinessVerificationForm() {
             specialty_id: Number(data.specialty_id),
             medical_license_issue_date: data.medical_license_issue_date,
             medical_license_expiry_date: data.medical_license_expiry_date,
-            medical_license_image: medicalLicenseImage || (shouldUseExistingMedicalLicenseImage ? companyProfileData?.medical_license_image : "") || "",
-            commercial_registration_image: commercialRegistrationImage || (shouldUseExistingCommercialRegistrationImage ? companyProfileData?.commercial_registration_image : "") || "",
         };
+
+        if (commercialRegistrationImage) {
+            payload.commercial_registration_image = commercialRegistrationImage;
+        } else if (showExistingCommercialRegistrationImage === false) {
+            payload.commercial_registration_image = "";
+        }
+
+        if (medicalLicenseImage) {
+            payload.medical_license_image = medicalLicenseImage;
+        } else if (showExistingMedicalLicenseImage === false) {
+            payload.medical_license_image = "";
+        }
+
         updateBusinessVerification(payload);
     }
 

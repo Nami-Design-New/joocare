@@ -3,7 +3,8 @@
 import { InputField } from "@/shared/components/InputField";
 import { Option, SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
-import { FormEvent } from "react";
+import useGetCountries from "@/shared/hooks/useGetCountries";
+import { FormEvent, useState } from "react";
 
 export type CandidatesFilterValues = {
   search: string;
@@ -36,6 +37,15 @@ export default function CandidatesFilter({
   onSubmit,
   isSubmitting = false,
 }: CandidatesFilterProps) {
+  const [countrySearch, setCountrySearch] = useState("");
+  const {
+    countries,
+    isLoading: countriesLoading,
+    hasNextPage: countriesHasNextPage,
+    fetchNextPage: fetchCountriesNextPage,
+    isFetchingNextPage: countriesFetchingNextPage,
+  } = useGetCountries(countrySearch);
+
   const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSubmit(values);
@@ -73,12 +83,18 @@ export default function CandidatesFilter({
         />
 
         <SelectInputField
-          withSearchInput
           id="location"
           options={countryOptions}
           placeholder="Country"
           value={values.country}
           onChange={(country) => onFilterChange({ ...values, country })}
+          disabled={countriesLoading}
+          withSearchInput
+          searchPlaceholder="Search countries..."
+          onSearchChange={setCountrySearch}
+          onReachEnd={() => void fetchCountriesNextPage()}
+          hasNextPage={countriesHasNextPage}
+          isFetchingNextPage={countriesFetchingNextPage}
           className="bg-white"
           containerStyles="w-full"
         />

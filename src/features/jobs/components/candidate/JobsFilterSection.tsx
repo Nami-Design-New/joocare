@@ -5,7 +5,8 @@ import PopularSearchesInteractive from "@/features/home/components/PopularSearch
 import { InputField } from "@/shared/components/InputField";
 import { Option, SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
-import { useState } from "react";
+import useGetCountries from "@/shared/hooks/useGetCountries";
+import { useMemo, useState } from "react";
 
 type JobsFilterSectionProps = {
   locale: string;
@@ -32,6 +33,15 @@ export default function JobsFilterSection({
   hiddenInputs,
 }: JobsFilterSectionProps) {
   const [location, setLocation] = useState<string>(country);
+  const [countrySearch, setCountrySearch] = useState("");
+  const {
+    countries: apiCountries,
+    isLoading: countriesLoading,
+    hasNextPage: countriesHasNextPage,
+    fetchNextPage: fetchCountriesNextPage,
+    isFetchingNextPage: countriesFetchingNextPage,
+  } = useGetCountries(countrySearch);
+
 
   return (
     <section className="layout-shell">
@@ -68,10 +78,19 @@ export default function JobsFilterSection({
             <SelectInputField
               withSearchInput
               id="location"
-              options={countries}
+              options={apiCountries.map((apiCountry: { id: number; name: string }) => ({
+                label: apiCountry.name,
+                value: String(apiCountry.id),
+              }))}
               placeholder="By country"
               value={location}
               onChange={setLocation}
+              disabled={countriesLoading}
+              searchPlaceholder="Search countries..."
+              onSearchChange={setCountrySearch}
+              onReachEnd={() => void fetchCountriesNextPage()}
+              hasNextPage={countriesHasNextPage}
+              isFetchingNextPage={countriesFetchingNextPage}
               className="bg-white"
               containerStyles="w-auto grow"
             />
