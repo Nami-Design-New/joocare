@@ -1,9 +1,11 @@
 "use client";
 
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { TextareaField } from "@/shared/components/TextareaField";
-import { parsePhoneNumber } from "react-phone-number-input";
+import { useSession } from "next-auth/react";
+import { getCountryCodeByPhoneCode, parsePhoneWithCode } from "@/shared/lib/phone";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import CoverUploadImage from "../components/cover-upload-image";
 import Image from "next/image";
@@ -14,6 +16,9 @@ import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 
 export default function StepThree() {
+  const { data: session } = useSession();
+  const token = session?.accessToken || "";
+  const { data: profileData } = useGetCompanyProfile({ token });
   const { register, control, setValue, formState: { errors } } = useFormContext();
 
   const [countrySearch, setCountrySearch] = useState("");
@@ -39,10 +44,11 @@ export default function StepThree() {
   const organizationPhoneCountry = (() => {
     try {
       return organizationPhoneNumber
-        ? parsePhoneNumber(organizationPhoneNumber)?.country || "AE"
-        : "AE";
+        ? parsePhoneWithCode(organizationPhoneNumber, profileData?.phone_code)?.country ||
+            getCountryCodeByPhoneCode(profileData?.phone_code)
+        : getCountryCodeByPhoneCode(profileData?.phone_code);
     } catch {
-      return "AE";
+      return getCountryCodeByPhoneCode(profileData?.phone_code);
     }
   })();
 

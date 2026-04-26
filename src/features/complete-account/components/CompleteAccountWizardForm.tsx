@@ -7,7 +7,7 @@ import SuccessModal from "@/shared/components/modals/SuccessModal";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { parsePhoneNumber } from "react-phone-number-input";
+import { getNationalPhoneValue, parsePhoneWithCode } from "@/shared/lib/phone";
 import { steps } from "../constants/wizard.constants";
 import { useWizard } from "../hooks/use-wizard";
 import { usePostStepOne } from "../hooks/usePostStepOne";
@@ -25,7 +25,6 @@ const COMPLETE_ACCOUNT_FORM_STEPS = [
   "Company Profile",
 ];
 
-const cleanPhone = (phone?: string | null) => phone?.replace(/[^\d]/g, "") || "";
 const formatDateForInput = (value?: string | Date | null) => {
   if (!value) return "";
 
@@ -81,9 +80,10 @@ export default function CompleteAccountWizardForm() {
         email: profileData.email || "",
         domain_id: profileData.domain_id?.toString() || "",
         person_name: profileData.person_name || "",
-        person_phone: profileData.person_phone_code && profileData.person_phone
-          ? `${profileData.person_phone_code}${cleanPhone(profileData.person_phone)}`
-          : "",
+        person_phone: getNationalPhoneValue(
+          profileData.person_phone,
+          profileData.person_phone_code,
+        ),
         commercialRegister: profileData.commercial_registration_number?.toString() || "",
         issuingCountryLicense: profileData.license_issue_country_id?.toString() || "",
         organizationSize: profileData.organization_size_id?.toString() || "",
@@ -97,9 +97,10 @@ export default function CompleteAccountWizardForm() {
         medicalRegistrationIssueDate: formatDateForInput(profileData.medical_license_issue_date),
         medicalRegistrationExpiryDate: formatDateForInput(profileData.medical_license_expiry_date),
         medicalLicenseImagePath: profileData.medical_license_image || "",
-        organizationPhoneNumber: profileData.phone_code && profileData.phone
-          ? `${profileData.phone_code}${cleanPhone(profileData.phone)}`
-          : "",
+        organizationPhoneNumber: getNationalPhoneValue(
+          profileData.phone,
+          profileData.phone_code,
+        ),
         organizationCountry: profileData.country_id?.toString() || "",
         organizationCity: profileData.city_id?.toString() || "",
         dateOfEstablishment: profileData.established_date || "",
@@ -127,7 +128,9 @@ export default function CompleteAccountWizardForm() {
     try {
       const data = methods.getValues();
       if (wizard.step === 0) {
-        const phoneParsed = data.person_phone ? parsePhoneNumber(data.person_phone) : null;
+        const phoneParsed = data.person_phone
+          ? parsePhoneWithCode(data.person_phone, profileData?.person_phone_code)
+          : null;
         await postStepOne({
           name: data.name || "",
           email: data.email || "",
@@ -164,7 +167,10 @@ export default function CompleteAccountWizardForm() {
     try {
       const organizationPhoneValue = data.organizationPhoneNumber?.trim();
       const phoneParsed = organizationPhoneValue
-        ? parsePhoneNumber(organizationPhoneValue)
+        ? parsePhoneWithCode(
+            organizationPhoneValue,
+            profileData?.phone_code,
+          )
         : null;
 
       const payload: Parameters<typeof postStepThree>[0] = {

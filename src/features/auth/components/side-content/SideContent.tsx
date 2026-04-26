@@ -35,11 +35,7 @@ const SideContent = () => {
 
         <p className="text-justify text-[clamp(.8rem,4vw,1.2rem)] [word-spacing:0.1rem]">
           {(isEmployerLogin || isCandidateLogin) &&
-            `
-          With smart tools and AI-powered insights, joocare helps you find the
-          right opportunity and land the job you deserve with confidence.
-          With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.
-            `}
+            `With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
           {isEmployerRegister &&
             `
             With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}

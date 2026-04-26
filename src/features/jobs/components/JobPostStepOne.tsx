@@ -40,6 +40,21 @@ type LookupOptionItem = {
 };
 
 type PersistedOptions = Partial<Record<"title" | "country" | "city", Option>>;
+type PreviewLabelKey =
+  | "title"
+  | "employmentType"
+  | "salaryType"
+  | "currency"
+  | "category"
+  | "specialty"
+  | "roleCategory"
+  | "seniorityLevel"
+  | "country"
+  | "city"
+  | "yearsOfExperience"
+  | "educationLevel"
+  | "mandatoryCertifications"
+  | "availability";
 
 function mergePersistedOption(options: Option[], persisted?: Option) {
   if (!persisted) return options;
@@ -48,6 +63,14 @@ function mergePersistedOption(options: Option[], persisted?: Option) {
   }
 
   return [persisted, ...options];
+}
+
+function getOptionLabel(options: Option[], value: string) {
+  return options.find((option) => option.value === value)?.label ?? value;
+}
+
+function getOptionLabels(options: Option[], values: string[]) {
+  return values.map((value) => getOptionLabel(options, value));
 }
 
 // ─── tiny helper: surface zod error message under a field ───────────────────
@@ -73,9 +96,11 @@ function FieldError({ name }: { name: string }) {
 function JobPostStepOneContent({
   persistedOptions,
   onPersistOption,
+  onPreviewLabelChange,
 }: {
   persistedOptions?: PersistedOptions;
   onPersistOption?: (key: keyof PersistedOptions, option?: Option) => void;
+  onPreviewLabelChange?: (key: PreviewLabelKey, value: string | string[]) => void;
 }) {
   // hooks land and token
   const locale = useLocale();
@@ -310,10 +335,21 @@ function JobPostStepOneContent({
       return;
     }
 
+    const nextSelectedMandatoryCertifications = [
+      ...selectedMandatoryCertifications,
+      nextValue,
+    ];
     setValue(
       "mandatoryCertifications",
-      [...selectedMandatoryCertifications, nextValue],
+      nextSelectedMandatoryCertifications,
       { shouldDirty: true, shouldTouch: true, shouldValidate: true },
+    );
+    onPreviewLabelChange?.(
+      "mandatoryCertifications",
+      getOptionLabels(
+        mandatoryCertificationOptions,
+        nextSelectedMandatoryCertifications,
+      ),
     );
     setNewMandatoryCertification("");
   };
@@ -341,6 +377,7 @@ function JobPostStepOneContent({
                 }
                 onChange={(value) => {
                   field.onChange(value);
+                  onPreviewLabelChange?.("title", getOptionLabel(jobTitleOptions, value));
                   onPersistOption?.(
                     "title",
                     jobTitleOptions.find((option) => option.value === value),
@@ -497,8 +534,15 @@ function JobPostStepOneContent({
                         ? salaryTypesError.message
                         : undefined)
                     }
-                    options={toSelectOptions(salaryTypes)}
-                    disabled={isSalaryTypesLoading}
+                  options={toSelectOptions(salaryTypes)}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPreviewLabelChange?.(
+                      "salaryType",
+                      getOptionLabel(toSelectOptions(salaryTypes), value),
+                    );
+                  }}
+                  disabled={isSalaryTypesLoading}
                     onReachEnd={() => fetchMoreSalaryTypes()}
                     hasNextPage={Boolean(hasMoreSalaryTypes)}
                     isFetchingNextPage={isFetchingMoreSalaryTypes}
@@ -527,8 +571,15 @@ function JobPostStepOneContent({
                         ? currenciesError.message
                         : undefined)
                     }
-                    options={toSelectOptions(currencies)}
-                    disabled={isCurrenciesLoading}
+                  options={toSelectOptions(currencies)}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPreviewLabelChange?.(
+                      "currency",
+                      getOptionLabel(toSelectOptions(currencies), value),
+                    );
+                  }}
+                  disabled={isCurrenciesLoading}
                     onReachEnd={() => fetchMoreCurrencies()}
                     hasNextPage={Boolean(hasMoreCurrencies)}
                     isFetchingNextPage={isFetchingMoreCurrencies}
@@ -561,6 +612,8 @@ function JobPostStepOneContent({
                 options={toSelectOptions(categories)}
                 onChange={(value) => {
                   field.onChange(value);
+                  onPreviewLabelChange?.("category", getOptionLabel(toSelectOptions(categories), value));
+                  onPreviewLabelChange?.("specialty", "");
                   setValue("specialty", "");
                 }}
                 disabled={categoriesLoading}
@@ -588,6 +641,13 @@ function JobPostStepOneContent({
                     : undefined)
                 }
                 options={toSelectOptions(specialties)}
+                onChange={(value) => {
+                  field.onChange(value);
+                  onPreviewLabelChange?.(
+                    "specialty",
+                    getOptionLabel(toSelectOptions(specialties), value),
+                  );
+                }}
                 disabled={isSpecialtiesLoading || !selectedCategoryId}
                 onReachEnd={() => fetchMoreSpecialties()}
                 hasNextPage={Boolean(hasMoreSpecialties)}
@@ -623,6 +683,13 @@ function JobPostStepOneContent({
                       : undefined)
                   }
                   options={toSelectOptions(employmentTypes)}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPreviewLabelChange?.(
+                      "employmentType",
+                      getOptionLabel(toSelectOptions(employmentTypes), value),
+                    );
+                  }}
                   disabled={isEmploymentTypesLoading}
                   onReachEnd={() => fetchMoreEmploymentTypes()}
                   hasNextPage={Boolean(hasMoreEmploymentTypes)}
@@ -652,6 +719,11 @@ function JobPostStepOneContent({
                 options={toSelectOptions(roleCategories)}
                 onChange={(value) => {
                   field.onChange(value);
+                  onPreviewLabelChange?.(
+                    "roleCategory",
+                    getOptionLabel(toSelectOptions(roleCategories), value),
+                  );
+                  onPreviewLabelChange?.("seniorityLevel", "");
                   setValue("seniorityLevel", "");
                 }}
                 disabled={roleCategoriesLoading}
@@ -681,6 +753,13 @@ function JobPostStepOneContent({
                       : undefined)
                   }
                   options={toSelectOptions(seniorityLevels)}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPreviewLabelChange?.(
+                      "seniorityLevel",
+                      getOptionLabel(toSelectOptions(seniorityLevels), value),
+                    );
+                  }}
                   disabled={seniorityLevelsLoading || !selectedRoleCategoryId}
                   onReachEnd={() => fetchSeniorityLevelsNextPage()}
                   hasNextPage={Boolean(seniorityLevelsHasNextPage)}
@@ -717,10 +796,15 @@ function JobPostStepOneContent({
                   }
                   onChange={(value) => {
                     field.onChange(value);
+                    onPreviewLabelChange?.(
+                      "country",
+                      getOptionLabel(countryOptions, value),
+                    );
                     onPersistOption?.(
                       "country",
                       countryOptions.find((option) => option.value === value),
                     );
+                    onPreviewLabelChange?.("city", "");
                     onPersistOption?.("city", undefined);
                     setValue("city", "");
                   }}
@@ -752,6 +836,7 @@ function JobPostStepOneContent({
                   }
                   onChange={(value) => {
                     field.onChange(value);
+                    onPreviewLabelChange?.("city", getOptionLabel(cityOptions, value));
                     onPersistOption?.(
                       "city",
                       cityOptions.find((option) => option.value === value),
@@ -788,6 +873,13 @@ function JobPostStepOneContent({
                   : undefined)
               }
               options={toSelectOptions(experiences)}
+              onChange={(value) => {
+                field.onChange(value);
+                onPreviewLabelChange?.(
+                  "yearsOfExperience",
+                  getOptionLabel(toSelectOptions(experiences), value),
+                );
+              }}
               disabled={isExperiencesLoading}
               onReachEnd={() => fetchMoreExperiences()}
               hasNextPage={Boolean(hasMoreExperiences)}
@@ -822,6 +914,13 @@ function JobPostStepOneContent({
                       : undefined)
                   }
                   options={toSelectOptions(educationLevels)}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPreviewLabelChange?.(
+                      "educationLevel",
+                      getOptionLabels(toSelectOptions(educationLevels), value),
+                    );
+                  }}
                   disabled={isEducationLevelsLoading}
                   onReachEnd={() => fetchMoreEducationLevels()}
                   hasNextPage={Boolean(hasMoreEducationLevels)}
@@ -851,6 +950,13 @@ function JobPostStepOneContent({
                         : undefined)
                     }
                     options={mandatoryCertificationOptions}
+                    onChange={(value) => {
+                      field.onChange(value);
+                      onPreviewLabelChange?.(
+                        "mandatoryCertifications",
+                        getOptionLabels(mandatoryCertificationOptions, value),
+                      );
+                    }}
                     disabled={isMandatoryCertificationsLoading}
                     onReachEnd={() => fetchMoreMandatoryCertifications()}
                     hasNextPage={Boolean(hasMoreMandatoryCertifications)}
@@ -915,6 +1021,13 @@ function JobPostStepOneContent({
                       : undefined)
                   }
                   options={toSelectOptions(availabilities)}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPreviewLabelChange?.(
+                      "availability",
+                      getOptionLabel(toSelectOptions(availabilities), value),
+                    );
+                  }}
                   disabled={isAvailabilitiesLoading}
                   onReachEnd={() => fetchMoreAvailabilities()}
                   hasNextPage={Boolean(hasMoreAvailabilities)}
@@ -934,10 +1047,12 @@ export default function JobPostStepOne({
   isLoading = false,
   persistedOptions,
   onPersistOption,
+  onPreviewLabelChange,
 }: {
   isLoading?: boolean;
   persistedOptions?: PersistedOptions;
   onPersistOption?: (key: keyof PersistedOptions, option?: Option) => void;
+  onPreviewLabelChange?: (key: PreviewLabelKey, value: string | string[]) => void;
 }) {
   if (isLoading) {
     return <JobPostStepOneSkeleton />;
@@ -947,6 +1062,7 @@ export default function JobPostStepOne({
     <JobPostStepOneContent
       persistedOptions={persistedOptions}
       onPersistOption={onPersistOption}
+      onPreviewLabelChange={onPreviewLabelChange}
     />
   );
 }

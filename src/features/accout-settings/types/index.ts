@@ -10,8 +10,8 @@ export type UpdateBasicInfoPayload = {
     person_name: string;
     person_phone: string;
     person_phone_code: string;
-    phone: string;
-    phone_code: string
+    phone?: string | null;
+    phone_code?: string | null;
     country_id: number;
     city_id: number;
     established_date: string;

@@ -1,6 +1,5 @@
 "use client";
 
-import { SelectInputField } from "@/shared/components/SelectInputField";
 import React, { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
@@ -11,22 +10,34 @@ const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
 import { MultiSelectInputField } from "@/shared/components/MultiSelectInputField";
 import useGetSkills from "@/shared/hooks/useGetSkills";
 
-export default function JobPostStepTwo() {
+function getOptionLabels(
+  values: string[],
+  options: { label: string; value: string }[],
+) {
+  return values.map(
+    (value) => options.find((option) => option.value === value)?.label ?? value,
+  );
+}
+
+export default function JobPostStepTwo({
+  onPreviewLabelChange,
+}: {
+  onPreviewLabelChange?: (key: "skills", value: string[]) => void;
+}) {
   const {
     control,
-    watch,
     formState: { errors },
   } = useFormContext<JobFormData>();
-  console.log(watch());
-  const [skillsSearch, setSkillsSearch] = useState("");
+  const [skillsSearch] = useState("");
   const {
     skills,
     isLoading: isSkillsLoading,
     error: skillsError,
-    hasNextPage: hasMoreSkills,
-    fetchNextPage: fetchMoreSkills,
-    isFetchingNextPage: isFetchingMoreSkills,
   } = useGetSkills(skillsSearch);
+  const skillOptions = skills.map((item) => ({
+    label: item.title,
+    value: String(item.id),
+  }));
   return (
     <div>
       <div className="grid grid-cols-1 gap-4">
@@ -70,10 +81,11 @@ export default function JobPostStepTwo() {
                       ? skillsError.message
                       : undefined)
                   }
-                  options={skills.map((item) => ({
-                    label: item.title,
-                    value: String(item.id),
-                  }))}
+                  options={skillOptions}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPreviewLabelChange?.("skills", getOptionLabels(value, skillOptions));
+                  }}
                   disabled={isSkillsLoading}
                 // onReachEnd={() => fetchMoreSkills()}
                 // hasNextPage={Boolean(hasMoreSkills)}

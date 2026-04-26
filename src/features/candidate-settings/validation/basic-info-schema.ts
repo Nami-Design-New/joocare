@@ -1,3 +1,4 @@
+import { MIN_PHONE_NUMBER_LENGTH } from "@/shared/lib/phone";
 import { z } from "zod";
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
@@ -83,7 +84,8 @@ export const createSettingBasicInfoSchema = ({
         .string({
           error: "phone number is required",
         })
-        .min(10, { message: "Phone number is required" }),
+        .trim()
+        .min(MIN_PHONE_NUMBER_LENGTH, { message: "Phone number is required" }),
       jobTitle: z
         .string({
           error: "job title is required",

@@ -1,22 +1,30 @@
 "use client";
 
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { InputField } from "@/shared/components/InputField";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import useGetDomains from "@/shared/hooks/useGetDomains";
-import { parsePhoneNumber } from "react-phone-number-input";
+import { useSession } from "next-auth/react";
+import { getCountryCodeByPhoneCode, parsePhoneWithCode } from "@/shared/lib/phone";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 export default function StepOne() {
+  const { data: session } = useSession();
+  const token = session?.accessToken || "";
+  const { data: profileData } = useGetCompanyProfile({ token });
   const { register, control, formState: { errors }, } = useFormContext();
   const personPhone = useWatch({ control, name: "person_phone" });
   // console.log("person phone", parsePhoneNumber(personPhone)?.country);
 
   const defaultCountry = (() => {
     try {
-      return personPhone ? parsePhoneNumber(personPhone)?.country : "AE";
+      return personPhone
+        ? parsePhoneWithCode(personPhone, profileData?.person_phone_code)?.country ||
+            getCountryCodeByPhoneCode(profileData?.person_phone_code)
+        : getCountryCodeByPhoneCode(profileData?.person_phone_code);
     } catch {
-      return "AE";
+      return getCountryCodeByPhoneCode(profileData?.person_phone_code);
     }
   })();
   const {

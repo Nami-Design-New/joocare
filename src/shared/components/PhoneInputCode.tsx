@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CheckIcon, ChevronDown, ChevronsUpDown } from "lucide-react";
+import { CheckIcon, ChevronDown } from "lucide-react";
 import * as RPNInput from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 
@@ -32,15 +32,20 @@ type PhoneInputCodeProps = Omit<
 
 const PhoneInputCode: React.ForwardRefExoticComponent<PhoneInputCodeProps> =
   React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputCodeProps>(
-    ({ className, onChange, value, error, ...props }, ref) => {
+    ({ className, onChange, value, error, countrySelectProps, defaultCountry, ...props }, ref) => {
       return (
         <RPNInput.default
           ref={ref}
           className={cn("flex gap-3 items-center justify-center", className)}
           flagComponent={FlagComponent}
           countrySelectComponent={CountrySelect}
+          countrySelectProps={{
+            ...countrySelectProps,
+            fallbackCountry: defaultCountry,
+          }}
           inputComponent={InputComponent}
           smartCaret={false}
+          useNationalFormatForDefaultCountryValue
           value={value || undefined}
           /**
            * Handles the onChange event.
@@ -53,6 +58,7 @@ const PhoneInputCode: React.ForwardRefExoticComponent<PhoneInputCodeProps> =
            */
           onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
           numberInputProps={{ error }}
+          defaultCountry={defaultCountry}
           {...props}
         />
       );
@@ -80,9 +86,10 @@ type CountryEntry = { label: string; value: RPNInput.Country | undefined };
 
 type CountrySelectProps = {
   disabled?: boolean;
-  value: RPNInput.Country;
+  value?: RPNInput.Country;
   options: CountryEntry[];
   onChange: (country: RPNInput.Country) => void;
+  fallbackCountry?: RPNInput.Country;
 };
 
 const CountrySelect = ({
@@ -90,10 +97,12 @@ const CountrySelect = ({
   value: selectedCountry,
   options: countryList,
   onChange,
+  fallbackCountry,
 }: CountrySelectProps) => {
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = React.useState("");
   const [isOpen, setIsOpen] = React.useState(false);
+  const activeCountry = selectedCountry || fallbackCountry;
 
   return (
     <Popover
@@ -101,7 +110,9 @@ const CountrySelect = ({
       modal
       onOpenChange={(open) => {
         setIsOpen(open);
-        open && setSearchValue("");
+        if (open) {
+          setSearchValue("");
+        }
       }}
     >
       <PopoverTrigger asChild>
@@ -117,12 +128,12 @@ const CountrySelect = ({
           )} disabled={disabled}
         >
           <FlagComponent
-            country={selectedCountry}
-            countryName={selectedCountry}
+            country={activeCountry as RPNInput.Country}
+            countryName={activeCountry as string}
           />
           <PhoneCode
-            country={selectedCountry}
-            countryName={selectedCountry}
+            country={activeCountry as RPNInput.Country}
+            countryName={activeCountry as string}
 
           />
 
@@ -163,7 +174,7 @@ const CountrySelect = ({
                       key={value}
                       country={value}
                       countryName={label}
-                      selectedCountry={selectedCountry}
+                      selectedCountry={activeCountry}
                       onChange={onChange}
                       onSelectComplete={() => setIsOpen(false)}
                     />
@@ -179,7 +190,7 @@ const CountrySelect = ({
 };
 
 interface CountrySelectOptionProps extends RPNInput.FlagProps {
-  selectedCountry: RPNInput.Country;
+  selectedCountry?: RPNInput.Country;
   onChange: (country: RPNInput.Country) => void;
   onSelectComplete: () => void;
 }
@@ -217,8 +228,8 @@ const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
     </span>
   );
 };
-const PhoneCode = ({ country, countryName }: RPNInput.FlagProps) => {
-  const code = country ? RPNInput.getCountryCallingCode(country) : '';
+const PhoneCode = ({ country }: RPNInput.FlagProps) => {
+  const code = country ? RPNInput.getCountryCallingCode(country) : "";
 
   return (
     <span className="">

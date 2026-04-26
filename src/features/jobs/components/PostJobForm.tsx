@@ -40,6 +40,23 @@ import type { Option } from "@/shared/components/SelectInputField";
 type FormMode = "create" | "complete" | "edit";
 type StepOneOptionKey = "title" | "country" | "city";
 type StepOneDisplayOptions = Partial<Record<StepOneOptionKey, Option>>;
+type JobPreviewLabels = Partial<{
+  title: string;
+  employmentType: string;
+  salaryType: string;
+  currency: string;
+  category: string;
+  specialty: string;
+  roleCategory: string;
+  seniorityLevel: string;
+  country: string;
+  city: string;
+  yearsOfExperience: string;
+  educationLevel: string[];
+  mandatoryCertifications: string[];
+  availability: string;
+  skills: string[];
+}>;
 
 const STEPS = ["Job Details", "Job Description & Requirements", "Job Preview"];
 const LAST_STEP = STEPS.length - 1;
@@ -172,6 +189,7 @@ export default function PostJobForm() {
     useState(false);
   const [stepOneDisplayOptions, setStepOneDisplayOptions] =
     useState<StepOneDisplayOptions>({});
+  const [previewLabels, setPreviewLabels] = useState<JobPreviewLabels>({});
 
   const { data: session } = useSession();
   const token = session?.accessToken || "";
@@ -197,7 +215,8 @@ export default function PostJobForm() {
     mode: "onChange",
   });
 
-  const { handleSubmit, trigger, getValues, reset, setError } = methods;
+  const { handleSubmit, trigger, getValues, reset, setError, watch } = methods;
+  const previewFormData = watch();
 
   // ─── Hydrate form when existing job arrives ───────────
   useEffect(() => {
@@ -225,7 +244,27 @@ export default function PostJobForm() {
             label: existingJob.city.name,
             value: String(existingJob.city_id ?? ""),
           }
-          : undefined,
+            : undefined,
+      });
+      setPreviewLabels({
+        title: existingJob.title ?? existingJob.job_title?.title ?? "",
+        employmentType: existingJob.employment_type?.title ?? "",
+        salaryType: existingJob.salary_type?.title ?? "",
+        currency: existingJob.currency?.code ?? "",
+        category: existingJob.category?.title ?? "",
+        specialty: existingJob.specialty?.title ?? "",
+        roleCategory: existingJob.role_category?.title ?? "",
+        seniorityLevel: existingJob.seniority_level?.title ?? "",
+        country: existingJob.country?.name ?? "",
+        city: existingJob.city?.name ?? "",
+        yearsOfExperience: existingJob.experience?.title ?? "",
+        educationLevel: existingJob.education_levels?.map((item) => item.title) ?? [],
+        mandatoryCertifications:
+          existingJob.mandatory_certifications?.map(
+            (item) => item.title ?? item.mandatory_certification?.title ?? "-",
+          ) ?? [],
+        availability: existingJob.availability?.title ?? "",
+        skills: existingJob.skills?.map((item) => item.title) ?? [],
       });
 
       // In complete mode, set the createdJobId so step-by-step flow works
@@ -245,6 +284,16 @@ export default function PostJobForm() {
     setStepOneDisplayOptions((current) => ({
       ...current,
       [key]: option,
+    }));
+  };
+
+  const handlePreviewLabelChange = (
+    key: keyof JobPreviewLabels,
+    value: string | string[],
+  ) => {
+    setPreviewLabels((current) => ({
+      ...current,
+      [key]: value,
     }));
   };
 
@@ -579,10 +628,20 @@ export default function PostJobForm() {
                   isLoading={isStepOneEditLoading}
                   persistedOptions={stepOneDisplayOptions}
                   onPersistOption={handleStepOneOptionChange}
+                  onPreviewLabelChange={handlePreviewLabelChange}
                 />
               )}
-              {currentStep === 1 && <JobPostStepTwo />}
-              {currentStep === 2 && <JobReviewPanel data={getValues()} job={reviewJob} />}
+              {currentStep === 1 && (
+                <JobPostStepTwo onPreviewLabelChange={handlePreviewLabelChange} />
+              )}
+              {currentStep === 2 && (
+                <JobReviewPanel
+                  data={previewFormData as JobFormData}
+                  job={reviewJob}
+                  isEditMode={isEditMode}
+                  previewLabels={previewLabels}
+                />
+              )}
             </div>
 
             <div className="mt-5 flex w-full items-center justify-center gap-6">

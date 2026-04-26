@@ -10,6 +10,11 @@ import useGetExperiences from "@/shared/hooks/useGetExperiences";
 import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
 import { Button } from "@/shared/components/ui/button";
+import {
+  getCountryCodeByPhoneCode,
+  getNationalPhoneValue,
+  parsePhoneWithCode,
+} from "@/shared/lib/phone";
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -20,7 +25,6 @@ import {
   useForm,
   useWatch,
 } from "react-hook-form";
-import { parsePhoneNumber } from "react-phone-number-input";
 import { toast } from "sonner";
 import {
   storeUploadedFileAction,
@@ -59,10 +63,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     () => ({
       fullName: profile.name,
       email: profile.email,
-      phoneNumber:
-        profile.phoneCode && profile.phone
-          ? `${profile.phoneCode}${profile.phone}`
-          : profile.phone,
+      phoneNumber: getNationalPhoneValue(profile.phone, profile.phoneCode),
       jobTitle: profile.jobTitleId || (profile.jobTitle ? OTHER_JOB_TITLE_VALUE : ""),
       otherJobTitle: profile.jobTitleId ? "" : profile.jobTitle,
       specialty: profile.specialtyId,
@@ -208,7 +209,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   }, [selectedCountryId, setValue]);
 
   const onSubmit: SubmitHandler<TSettingBasicInfoSchema> = async (data) => {
-    const parsedPhone = parsePhoneNumber(data.phoneNumber);
+    const parsedPhone = parsePhoneWithCode(data.phoneNumber, profile.phoneCode);
 
     if (!parsedPhone) {
       toast.error("Please enter a valid phone number.");
@@ -362,7 +363,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           control={control}
           render={({ field }) => (
             <PhoneInputCode
-              defaultCountry="AE"
+              defaultCountry={getCountryCodeByPhoneCode(profile.phoneCode)}
               id="phoneNumber"
               className="w-full"
               placeholder="ex:52 987 6543"
