@@ -21,6 +21,7 @@ import useGetDomains from "@/shared/hooks/useGetDomains";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { TCompanyProfileViewModel } from "@/features/company-profile/types";
 import { UpdateEmailModal } from "./UpdateEmailModal";
+import { UpdateBasicInfoPayload } from "../../types";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -147,21 +148,24 @@ const BasicInfoForm = () => {
     const personPhone = parsePhoneData(data.phoneNumber);
     const orgPhone = parsePhoneData(data.orgOfficialPhoneNumber);
 
-    // console.log("data :::", data.phoneNumber, personPhone)
-
-    updateBasicInfo({
+    const payload: UpdateBasicInfoPayload = {
       name: data.companyName,
       email: data.officialEmail,
       domain_id: parseInt(data.domain) || 0,
       person_name: data.personFullName,
       person_phone: personPhone.phone,
       person_phone_code: personPhone.phone_code,
-      phone: orgPhone.phone,
-      phone_code: orgPhone.phone_code,
       country_id: parseInt(data.country) || 0,
       city_id: parseInt(data.city) || 0,
       established_date: data.dateOfEstablishment,
-    });
+    };
+
+    if (orgPhone.phone && orgPhone.phone_code) {
+      payload.phone = orgPhone.phone;
+      payload.phone_code = orgPhone.phone_code;
+    }
+
+    updateBasicInfo(payload);
   };
   // console.log("phone :: ", personPhone, orgPhone, data.phoneNumber, data.orgOfficialPhoneNumber);
 

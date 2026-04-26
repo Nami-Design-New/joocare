@@ -20,10 +20,8 @@ export const BasicInfoSchema = z.object({
     })
     .min(10, { message: "Phone number is required" }),
   orgOfficialPhoneNumber: z
-    .string({
-      error: "organization official phone number is required",
-    })
-    .min(10, { message: "organization official phone number is required" }),
+    .string()
+    .optional(),
   country: z
     .string({
       error: "Country is required",
