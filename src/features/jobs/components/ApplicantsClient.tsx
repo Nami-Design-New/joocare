@@ -48,17 +48,28 @@ export default function ApplicantsClient({ applicants, token }: Props) {
     try {
       setDownloadingApplicantId(applicant.id);
       await incrementDownloads({ id: applicant.id });
-      const link = document.createElement("a");
       const params = new URLSearchParams({
         url: applicant.cvUrl,
         filename: getDownloadFileName(applicant),
       });
+      const response = await fetch(`/api/download-cv?${params.toString()}`);
 
-      link.href = `/api/download-cv?${params.toString()}`;
+      if (!response.ok) {
+        throw new Error("Failed to download CV");
+      }
+
+      const blob = await response.blob();
+      const objectUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = objectUrl;
       link.download = getDownloadFileName(applicant);
       document.body.appendChild(link);
       link.click();
       link.remove();
+      window.setTimeout(() => {
+        window.URL.revokeObjectURL(objectUrl);
+      }, 1000);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to download CV",
