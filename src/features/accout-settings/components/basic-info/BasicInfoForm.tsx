@@ -67,7 +67,7 @@ const parsePhoneData = (phoneNumber: string) => {
 
 /** Get default ISO country code based on calling code. */
 const getCountryCodeByPhoneCode = (phoneCode?: string | null): Country => {
-  if (!phoneCode) return "EG";
+  if (!phoneCode) return "AE";
   const numericCode = phoneCode.replace(/\D/g, "");
   const match = getCountries().find(
     (country) => getCountryCallingCode(country) === numericCode

@@ -162,23 +162,32 @@ export default function CompleteAccountWizardForm() {
   // handle submit
   const onSubmit = async (data: WizardFormData) => {
     try {
-      const phoneParsed = data.organizationPhoneNumber ? parsePhoneNumber(data.organizationPhoneNumber) : null;
-      await postStepThree({
+      const organizationPhoneValue = data.organizationPhoneNumber?.trim();
+      const phoneParsed = organizationPhoneValue
+        ? parsePhoneNumber(organizationPhoneValue)
+        : null;
+
+      const payload: Parameters<typeof postStepThree>[0] = {
         facebook: data.facebook || "",
         twitter: data.XTwitter || "",
         linkedin: data.linkedIn || "",
         instagram: data.instagram || "",
         snapchat: data.snapchat || "",
         website: data.website || "",
-        phone: phoneParsed?.nationalNumber || data.organizationPhoneNumber || "",
-        phone_code: phoneParsed ? `+${phoneParsed.countryCallingCode}` : "",
         country_id: Number(data.organizationCountry),
         city_id: Number(data.organizationCity),
         established_date: data.dateOfEstablishment || "",
         bio: data.aboutOrganization || "",
         cover: data.uploadCoverImage || "",
         image: data.uploadLogoImage || "",
-      });
+      };
+
+      if (organizationPhoneValue) {
+        payload.phone = phoneParsed?.nationalNumber || organizationPhoneValue;
+        payload.phone_code = phoneParsed ? `+${phoneParsed.countryCallingCode}` : "";
+      }
+
+      await postStepThree(payload);
       setIsOpenSuccessModal(true);
       // console.log("All steps submitted successfully!");
     } catch (e) {

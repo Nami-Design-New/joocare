@@ -14,8 +14,8 @@ export const usePostStepThree = ({ token }: { token: string }) => {
             instagram?: string;
             snapchat?: string;
             website?: string;
-            phone: string;
-            phone_code: string;
+            phone?: string;
+            phone_code?: string;
             country_id: number;
             city_id: number;
             established_date: string;
