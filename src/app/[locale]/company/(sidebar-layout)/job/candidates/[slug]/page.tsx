@@ -101,7 +101,7 @@ export default function Page() {
         onSubmit={handleFiltersSubmit}
         isSubmitting={isFetching}
       />
-      {status === "loading" ? null : applicants.length > 0 ? <ApplicantsClient applicants={applicants} /> : null}
+      {status === "loading" ? null : applicants.length > 0 ? <ApplicantsClient applicants={applicants} token={token} /> : null}
       {!isFetching && applicants.length === 0 ? (
         <div className="border-border text-muted-foreground mt-4 rounded-2xl border border-dashed p-8 text-center">
           <EmptyDataState />

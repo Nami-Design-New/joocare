@@ -11,14 +11,16 @@ import ApplicantRow from "./ApplicantRow";
 // ─── Types ────────────────────────────────────────────────────────────────────
 type applicantsTableProps = {
   applicants: Applicant[];
-  onDownload?: (applicant: Applicant) => void;
+  onDownload?: (applicant: Applicant) => void | Promise<void>;
   onView?: (applicant: Applicant) => void;
+  downloadingApplicantId?: number | null;
 };
 
 export default function ApplicantsTable({
   applicants,
   onDownload,
   onView,
+  downloadingApplicantId,
 }: applicantsTableProps) {
   return (
     <section>
@@ -45,6 +47,7 @@ export default function ApplicantsTable({
                 onDownload={onDownload}
                 onView={onView}
                 index={index}
+                isDownloading={downloadingApplicantId === applicant.id}
               />
             ))}
           </TableBody>

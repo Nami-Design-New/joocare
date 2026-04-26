@@ -2,7 +2,7 @@
 
 import { Button } from "@/shared/components/ui/button";
 import { TableCell, TableRow } from "@/shared/components/ui/table";
-import { Eye } from "lucide-react";
+import { Eye, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Applicant } from "../types/index.types";
 
@@ -10,12 +10,14 @@ export default function ApplicantRow({
   applicant,
   onDownload,
   onView,
-  index
+  index,
+  isDownloading = false,
 }: {
   applicant: Applicant;
-  onDownload?: (a: Applicant) => void;
+  onDownload?: (a: Applicant) => void | Promise<void>;
   onView?: (a: Applicant) => void;
-  index: number
+  index: number;
+  isDownloading?: boolean;
 }) {
   console.log("applic", applicant);
 
@@ -42,15 +44,20 @@ export default function ApplicantRow({
             size="sm"
             variant="secondary"
             className="flex items-center gap-1.5 rounded-full px-2 md:px-4"
+            disabled={isDownloading || !applicant.cvUrl}
             onClick={() => onDownload?.(applicant)}
           >
-            <Image
-              src="/assets/icons/pdf-icon.svg"
-              width={14}
-              height={14}
-              alt="pdf icon"
-            />
-            Download
+            {isDownloading ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Image
+                src="/assets/icons/pdf-icon.svg"
+                width={14}
+                height={14}
+                alt="pdf icon"
+              />
+            )}
+            {isDownloading ? "Downloading..." : "Download"}
           </Button>
           <Button
             size="sm"
