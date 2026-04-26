@@ -146,7 +146,7 @@ const BasicInfoForm = () => {
   // ── submit handler ───────────────────────────────────────────────────
   const onSubmit: SubmitHandler<TBasicInfoSchema> = (data) => {
     const personPhone = parsePhoneData(data.phoneNumber);
-    const orgPhone = parsePhoneData(data.orgOfficialPhoneNumber);
+    const orgPhone = parsePhoneData(data.orgOfficialPhoneNumber || "");
 
     const payload: UpdateBasicInfoPayload = {
       name: data.companyName,
@@ -163,6 +163,9 @@ const BasicInfoForm = () => {
     if (orgPhone.phone && orgPhone.phone_code) {
       payload.phone = orgPhone.phone;
       payload.phone_code = orgPhone.phone_code;
+    } else {
+      payload.phone = null;
+      payload.phone_code = null;
     }
 
     updateBasicInfo(payload);

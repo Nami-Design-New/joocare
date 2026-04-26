@@ -42,8 +42,8 @@ export default function ActiveJobRow({
         ) : (
           <div className="flex items-center gap-2">
             <Link
-              // href={`/company/job/${activeJob?.id}/candidates`}
-              href={`/company/job/candidates`}
+              href={`/company/job/candidates/${activeJob?.id}`}
+              // href={`/company/job/candidates`}
               className={` ${buttonVariants({
                 variant: "default",
                 size: "sm",
