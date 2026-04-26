@@ -163,9 +163,6 @@ const BasicInfoForm = () => {
     if (orgPhone.phone && orgPhone.phone_code) {
       payload.phone = orgPhone.phone;
       payload.phone_code = orgPhone.phone_code;
-    } else {
-      payload.phone = null;
-      payload.phone_code = null;
     }
 
     updateBasicInfo(payload);
