@@ -32,9 +32,9 @@ declare module "next-auth" {
   }
 
   interface User {
-    user: AuthSessionUser;
-    accessToken: string;
-    authRole: AuthRole;
+    user?: AuthSessionUser;
+    accessToken?: string;
+    authRole?: AuthRole;
     authMessage?: string;
     id: string;
   }

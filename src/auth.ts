@@ -9,6 +9,25 @@ import { apiFetch, ApiFetchResponse } from "./shared/lib/fetch-manager";
 type AuthRole = "candidate" | "employer";
 type SocialProvider = "google" | "linkedin";
 
+function mapLinkedInOidcProfile(profile: Record<string, unknown>) {
+  const sub = typeof profile.sub === "string" ? profile.sub : "";
+  const name = typeof profile.name === "string" ? profile.name : undefined;
+  const givenName =
+    typeof profile.given_name === "string" ? profile.given_name : undefined;
+  const familyName =
+    typeof profile.family_name === "string" ? profile.family_name : undefined;
+  const email = typeof profile.email === "string" ? profile.email : undefined;
+  const picture =
+    typeof profile.picture === "string" ? profile.picture : undefined;
+
+  return {
+    id: sub,
+    name: name ?? ([givenName, familyName].filter(Boolean).join(" ") || sub),
+    email,
+    image: picture,
+  };
+}
+
 function extractToken(payload: ApiFetchResponse | null) {
   const data = payload?.data as Record<string, unknown> | undefined;
   return (
@@ -180,12 +199,22 @@ export const authOptions: NextAuthOptions = {
           name: "Google Candidate",
           clientId: process.env.GOOGLE_CLIENT_ID,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          authorization: {
+            params: {
+              prompt: "select_account",
+            },
+          },
         }),
         GoogleProvider({
           id: "google-employer",
           name: "Google Employer",
           clientId: process.env.GOOGLE_CLIENT_ID,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          authorization: {
+            params: {
+              prompt: "select_account",
+            },
+          },
         }),
       ]
       : []),
@@ -196,11 +225,17 @@ export const authOptions: NextAuthOptions = {
           name: "LinkedIn Candidate",
           clientId: process.env.LINKEDIN_CLIENT_ID,
           clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-          issuer: "https://www.linkedin.com",
+          wellKnown: "https://www.linkedin.com/oauth/.well-known/openid-configuration",
+          idToken: true,
           authorization: {
             params: {
+              prompt: "login",
               scope: "openid profile email",
             },
+          },
+          userinfo: "https://api.linkedin.com/v2/userinfo",
+          profile(profile) {
+            return mapLinkedInOidcProfile(profile as Record<string, unknown>);
           },
         }),
         LinkedInProvider({
@@ -208,11 +243,17 @@ export const authOptions: NextAuthOptions = {
           name: "LinkedIn Employer",
           clientId: process.env.LINKEDIN_CLIENT_ID,
           clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-          issuer: "https://www.linkedin.com",
+          wellKnown: "https://www.linkedin.com/oauth/.well-known/openid-configuration",
+          idToken: true,
           authorization: {
             params: {
+              prompt: "login",
               scope: "openid profile email",
             },
+          },
+          userinfo: "https://api.linkedin.com/v2/userinfo",
+          profile(profile) {
+            return mapLinkedInOidcProfile(profile as Record<string, unknown>);
           },
         }),
       ]
