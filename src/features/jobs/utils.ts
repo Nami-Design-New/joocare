@@ -205,9 +205,14 @@ function formatSalaryAmount(value: string | number | null | undefined) {
   return parsedValue == null ? null : parsedValue.toLocaleString("en-US");
 }
 
-export function getJobSalary(
-  job: Pick<JobListItem | JobDetails, "min_salary" | "max_salary" | "currency">,
-) {
+type SalaryLike = {
+  min_salary: string | number | null | undefined;
+  max_salary: string | number | null | undefined;
+  currency?: JobListItem["currency"] | JobDetails["currency"] | null;
+  hasSalary?: boolean
+};
+
+export function getJobSalary(job: SalaryLike) {
   const minSalary = formatSalaryAmount(job.min_salary);
   const maxSalary = formatSalaryAmount(job.max_salary);
   const hasMinSalary = minSalary !== null;
@@ -220,12 +225,10 @@ export function getJobSalary(
   if (hasMinSalary || hasMaxSalary) {
     return minSalary ?? maxSalary ?? "Not specified";
   }
-
+  if (!job.hasSalary) return "Not specified";
   return "Not specified";
 }
-export function getJobSalaryWithCurrency(
-  job: Pick<JobListItem | JobDetails, "min_salary" | "max_salary" | "currency">,
-) {
+export function getJobSalaryWithCurrency(job: SalaryLike) {
   const minSalary = formatSalaryAmount(job.min_salary);
   const maxSalary = formatSalaryAmount(job.max_salary);
   const hasMinSalary = minSalary !== null;
