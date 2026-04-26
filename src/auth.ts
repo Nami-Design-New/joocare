@@ -196,12 +196,24 @@ export const authOptions: NextAuthOptions = {
           name: "LinkedIn Candidate",
           clientId: process.env.LINKEDIN_CLIENT_ID,
           clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+          issuer: "https://www.linkedin.com",
+          authorization: {
+            params: {
+              scope: "openid profile email",
+            },
+          },
         }),
         LinkedInProvider({
           id: "linkedin-employer",
           name: "LinkedIn Employer",
           clientId: process.env.LINKEDIN_CLIENT_ID,
           clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+          issuer: "https://www.linkedin.com",
+          authorization: {
+            params: {
+              scope: "openid profile email",
+            },
+          },
         }),
       ]
       : []),
@@ -267,14 +279,17 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider) {
         const socialProvider = parseSocialProvider(account.provider);
 
-        if (socialProvider && user?.email) {
+        if (socialProvider && account.providerAccountId) {
+          const email = user?.email ?? `${account.providerAccountId}@linkedin.com`;
+          const name = user?.name ?? user?.email ?? account.providerAccountId;
+
           const socialSession = await authorizeWithSocialEndpoint({
             role: socialProvider.role,
             provider: socialProvider.provider,
             providerId: account.providerAccountId,
-            name: user.name ?? user.email,
-            email: user.email,
-            image: user.image,
+            name,
+            email,
+            image: user?.image,
           });
 
           token.user = socialSession.user;
@@ -314,4 +329,5 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: true,
 };
