@@ -24,6 +24,7 @@ interface AddSkillsModalProps {
   onOpenChange: (open: boolean) => void;
   skills: CandidateSkillViewModel[];
   onSave: (skills: CandidateSkillViewModel[]) => void;
+  jobTitleId: string;
 }
 
 export function AddSkillsModal({
@@ -31,6 +32,7 @@ export function AddSkillsModal({
   onOpenChange,
   skills,
   onSave,
+  jobTitleId
 }: AddSkillsModalProps) {
   const locale = useLocale();
   const { data: session } = useSession();
@@ -56,6 +58,7 @@ export function AddSkillsModal({
         const skillsResponse = await getUserSkills({
           locale,
           token: session.accessToken,
+          jobTitleId
         });
 
         if (!ignore) {
@@ -178,11 +181,10 @@ export function AddSkillsModal({
                   key={skill.id}
                   type="button"
                   onClick={() => toggle(skill.id)}
-                  className={`border-border rounded-full border px-4 py-2 text-sm transition-all ${
-                    isSelected
-                      ? "border-primary bg-primary text-white"
-                      : "border-muted hover:border-primary hover:text-primary bg-white text-black"
-                  }`}
+                  className={`border-border rounded-full border px-4 py-2 text-sm transition-all ${isSelected
+                    ? "border-primary bg-primary text-white"
+                    : "border-muted hover:border-primary hover:text-primary bg-white text-black"
+                    }`}
                 >
                   {skill.label}
                 </button>

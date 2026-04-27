@@ -4,6 +4,7 @@ import AboutVisionSection from "@/features/about/components/AboutVisionSection";
 import CorePillarsSection from "@/features/about/components/CorePillarsSection";
 import { getAboutPageData } from "@/features/about/services/about-service";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
+import { settingService } from "@/shared/services/settings-services";
 
 export default async function AboutPage({
   params,
@@ -12,7 +13,7 @@ export default async function AboutPage({
 }) {
   const { locale } = await params;
   const aboutData = await getAboutPageData(locale);
-  console.log(aboutData);
+
 
   return (
     <>

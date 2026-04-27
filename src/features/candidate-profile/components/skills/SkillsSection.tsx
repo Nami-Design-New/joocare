@@ -55,6 +55,7 @@ const SkillsSection = ({
         onOpenChange={setAddOpen}
         skills={skills}
         onSave={(newSkills) => setSkills(newSkills)}
+        jobTitleId={profile?.jobTitleId as string}
       />
 
       <EditSkillsModal

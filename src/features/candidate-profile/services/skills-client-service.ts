@@ -80,12 +80,14 @@ function getArrayAtPath(value: unknown, path: string[]) {
 export async function getUserSkills({
   locale = "en",
   token,
+  jobTitleId,
 }: {
   locale?: string;
   token: string;
+  jobTitleId?: string;
 }) {
   const { ok, data, message } = await apiFetch(
-    `${getUserApiUrl()}/user-skills?pagination=on&limit_per_page=100&page=1`,
+    `${getUserApiUrl()}/user-skills?pagination=on&limit_per_page=100&page=1&job_title_id=${jobTitleId}`,
     {
       method: "GET",
       locale,
