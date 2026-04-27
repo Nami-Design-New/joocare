@@ -11,14 +11,29 @@ interface MultiSelectInputSkillsProps {
     id: string;
     label: string;
   }[];
+  onReachEnd?: () => void;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
+  isLoading?: boolean;
 }
 
-export function MultiSelectInputSkills({ selected, onSelect, onRemove, options }: MultiSelectInputSkillsProps) {
+export function MultiSelectInputSkills({
+  selected,
+  onSelect,
+  onRemove,
+  options,
+  onReachEnd,
+  hasNextPage,
+  isFetchingNextPage,
+  isLoading,
+}: MultiSelectInputSkillsProps) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [hasWrappedContent, setHasWrappedContent] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const selectedLabels = selected
     .map((selectedId) => options.find((option) => option.id === selectedId)?.label ?? selectedId);
@@ -57,6 +72,40 @@ export function MultiSelectInputSkills({ selected, onSelect, onRemove, options }
 
     return () => observer.disconnect();
   }, [selected, query]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [open]);
+
+  const handleObserver = (node: HTMLLIElement | null) => {
+    if (isFetchingNextPage) return;
+
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          onReachEnd?.();
+        }
+      },
+      {
+        root: listRef.current,
+        rootMargin: "100px",
+      },
+    );
+
+    if (node) observerRef.current.observe(node);
+  };
 
   const handleSelect = (skillId: string) => {
     onSelect(skillId);
@@ -106,8 +155,11 @@ export function MultiSelectInputSkills({ selected, onSelect, onRemove, options }
         />
       </div>
 
-      {open && filtered.length > 0 && (
-        <ul className="absolute z-50 mt-1 max-h-44 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
+      {open && (
+        <ul
+          ref={listRef}
+          className="absolute z-50 mt-1 max-h-44 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white py-1 shadow-lg"
+        >
           {filtered.map((skill) => (
             <li
               key={skill.id}
@@ -120,6 +172,20 @@ export function MultiSelectInputSkills({ selected, onSelect, onRemove, options }
               {skill.label}
             </li>
           ))}
+
+          {(hasNextPage || isFetchingNextPage) && (
+            <li ref={handleObserver} className="h-1" />
+          )}
+
+          {(isLoading || isFetchingNextPage) && (
+            <li className="text-muted-foreground px-4 py-2 text-xs">Loading...</li>
+          )}
+
+          {!isLoading && filtered.length === 0 && !isFetchingNextPage && (
+            <li className="text-muted-foreground px-4 py-2 text-xs">
+              No results found.
+            </li>
+          )}
         </ul>
       )}
     </div>

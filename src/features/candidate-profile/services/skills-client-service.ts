@@ -10,6 +10,7 @@ export type SkillOption = {
 export type UserSkillsCatalog = {
   suggested: SkillOption[];
   skills: SkillOption[];
+  next_page_url?: string;
 };
 
 function parseSkillOption(entry: unknown): SkillOption | null {
@@ -77,17 +78,62 @@ function getArrayAtPath(value: unknown, path: string[]) {
   return Array.isArray(current) ? current : [];
 }
 
+function getStringAtPath(value: unknown, path: string[]) {
+  let current: unknown = value;
+
+  for (const key of path) {
+    if (!current || typeof current !== "object") {
+      return undefined;
+    }
+
+    current = (current as Record<string, unknown>)[key];
+  }
+
+  return typeof current === "string" ? current : undefined;
+}
+
+function findNextPageUrl(value: unknown) {
+  return (
+    getStringAtPath(value, ["next_page_url"]) ??
+    getStringAtPath(value, ["data", "next_page_url"]) ??
+    getStringAtPath(value, ["data", "data", "next_page_url"]) ??
+    getStringAtPath(value, ["skills", "next_page_url"]) ??
+    getStringAtPath(value, ["data", "skills", "next_page_url"]) ??
+    getStringAtPath(value, ["data", "data", "skills", "next_page_url"]) ??
+    getStringAtPath(value, ["skills", "original", "next_page_url"]) ??
+    getStringAtPath(value, ["data", "skills", "original", "next_page_url"]) ??
+    getStringAtPath(value, ["data", "data", "skills", "original", "next_page_url"])
+  );
+}
+
 export async function getUserSkills({
   locale = "en",
   token,
   jobTitleId,
+  page = 1,
+  search = "",
 }: {
   locale?: string;
   token: string;
   jobTitleId?: string;
+  page?: number;
+  search?: string;
 }) {
+  const params = new URLSearchParams();
+  params.set("pagination", "on");
+  params.set("limit_per_page", "10");
+  params.set("page", String(page));
+
+  if (jobTitleId) {
+    params.set("job_title_id", jobTitleId);
+  }
+
+  if (search.trim()) {
+    params.set("search", search.trim());
+  }
+
   const { ok, data, message } = await apiFetch(
-    `${getUserApiUrl()}/user-skills?pagination=on&limit_per_page=100&page=1&job_title_id=${jobTitleId}`,
+    `${getUserApiUrl()}/user-skills?${params.toString()}`,
     {
       method: "GET",
       locale,
@@ -100,6 +146,7 @@ export async function getUserSkills({
   }
 
   return {
+    next_page_url: findNextPageUrl(data),
     suggested: mergeSkillOptions(
       getArrayAtPath(data, ["suggested"]),
       getArrayAtPath(data, ["data", "suggested"]),

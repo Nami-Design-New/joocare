@@ -20,7 +20,7 @@ export default function ActiveJobRow({
   return (
     <TableRow className="border-border border-b bg-white text-center transition-colors">
       <TableCell className="text-muted-foreground w-12 px-4 py-5 font-medium text-ellipsis">
-        {isLoading ? <TextSkeleton /> : activeJob?.job_title?.title}
+        {isLoading ? <TextSkeleton /> : activeJob?.job_title?.title ?? activeJob?.title}
       </TableCell>
       <TableCell className="text-foreground text-md px-4 py-5 font-normal">
         {isLoading ? <TextSkeleton /> : activeJob?.views_num}

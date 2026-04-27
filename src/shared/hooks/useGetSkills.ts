@@ -1,20 +1,23 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getBaseApiUrl } from "../lib/api-endpoints";
 
-export default function useGetSkills(search = "", job_title_id = '') {
+export default function useGetSkills(search = "", job_title_id = "") {
+  const trimmedSearch = search.trim();
   const query = useInfiniteQuery({
-    queryKey: ["skills", search],
+    queryKey: ["skills", trimmedSearch, job_title_id],
     initialPageParam: 1,
     queryFn: async ({ pageParam }) => {
-      const params = new URLSearchParams({
-        page: String(pageParam),
-        pagination: "on",
-        limit_per_page: "10",
-        job_title_id: job_title_id
-      });
+      const params = new URLSearchParams();
+      params.set("page", String(pageParam));
+      params.set("pagination", "on");
+      params.set("limit_per_page", "10");
 
-      if (search.trim()) {
-        params.set("search", search.trim());
+      if (job_title_id) {
+        params.set("job_title_id", job_title_id);
+      }
+
+      if (trimmedSearch) {
+        params.set("search", trimmedSearch);
       }
 
       const res = await fetch(`${getBaseApiUrl()}/skills?${params.toString()}`);

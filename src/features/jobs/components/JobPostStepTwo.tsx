@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
-import dynamic from "next/dynamic";
 const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
 
 
@@ -29,7 +29,7 @@ export default function JobPostStepTwo({
     control,
     formState: { errors },
   } = useFormContext<JobFormData>();
-  const [skillsSearch] = useState("");
+  const [skillsSearch, setSkillsSearch] = useState("");
   const searchParams = useSearchParams();
 
   const jobId = searchParams.get("jobId");
@@ -41,7 +41,10 @@ export default function JobPostStepTwo({
     skills,
     isLoading: isSkillsLoading,
     error: skillsError,
-  } = useGetSkills(skillsSearch, String(id));
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetSkills(skillsSearch, id ?? "");
   const skillOptions = skills.map((item) => ({
     label: item.title,
     value: String(item.id),
@@ -92,13 +95,16 @@ export default function JobPostStepTwo({
                   options={skillOptions}
                   onChange={(value) => {
                     field.onChange(value);
-                    onPreviewLabelChange?.("skills", getOptionLabels(value, skillOptions));
+                    onPreviewLabelChange?.(
+                      "skills",
+                      getOptionLabels(value, skillOptions),
+                    );
                   }}
                   disabled={isSkillsLoading}
-                // onReachEnd={() => fetchMoreSkills()}
-                // hasNextPage={Boolean(hasMoreSkills)}
-                // isFetchingNextPage={isFetchingMoreSkills}
-                // onSearchChange={setSkillsSearch}
+                  onReachEnd={() => fetchNextPage()}
+                  hasNextPage={Boolean(hasNextPage)}
+                  isFetchingNextPage={isFetchingNextPage}
+                  onSearchChange={setSkillsSearch}
                 />
               );
             }}

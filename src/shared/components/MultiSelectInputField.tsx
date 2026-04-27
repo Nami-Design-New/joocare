@@ -5,6 +5,7 @@ import { cn } from "../lib/utils";
 import Image from "next/image";
 import {
   Combobox,
+  ComboboxCollection,
   ComboboxContent,
   ComboboxEmpty,
   ComboboxInput,
@@ -172,9 +173,9 @@ export const MultiSelectInputField = React.forwardRef<
             )}
             <ComboboxEmpty>No results found.</ComboboxEmpty>
             <ComboboxList ref={listRef} className="max-h-60 overflow-y-auto">
-              {(item) => (
-                <React.Fragment key={item.value}>
-                  <ComboboxItem value={item}>
+              <ComboboxCollection>
+                {(item) => (
+                  <ComboboxItem key={item.value} value={item}>
                     {item.image && (
                       <Image
                         src={item.image}
@@ -185,12 +186,9 @@ export const MultiSelectInputField = React.forwardRef<
                     )}
                     {item.label}
                   </ComboboxItem>
-
-                  {item === options[options.length - 1] && (
-                    <div ref={handleObserver} className="h-1" />
-                  )}
-                </React.Fragment>
-              )}
+                )}
+              </ComboboxCollection>
+              <div ref={handleObserver} className="h-1" />
             </ComboboxList>
             {isFetchingNextPage && (
               <div className="text-muted-foreground px-2 pb-2 text-center text-xs">
