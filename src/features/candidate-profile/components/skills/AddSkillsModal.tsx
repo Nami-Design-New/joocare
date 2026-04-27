@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
@@ -37,65 +38,74 @@ export function AddSkillsModal({
   const locale = useLocale();
   const { data: session } = useSession();
   const [selected, setSelected] = useState<string[]>([]);
-  const [options, setOptions] = useState<SkillOption[]>([]);
-  const [suggestedSkills, setSuggestedSkills] = useState<SkillOption[]>([]);
-  const [currentSkills, setCurrentSkills] = useState<CandidateSkillViewModel[]>(
-    [],
-  );
-  const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  useEffect(() => {
-    let ignore = false;
-
-    if (!open || !session?.accessToken) {
-      return;
-    }
-
-    const loadSkills = async () => {
-      try {
-        setIsLoading(true);
-        const skillsResponse = await getUserSkills({
-          locale,
-          token: session.accessToken,
-          jobTitleId
-        });
-
-        if (!ignore) {
-          setOptions(skillsResponse.skills);
-          setSuggestedSkills(skillsResponse.suggested);
-          setCurrentSkills(skills);
-          setSelected([]);
-        }
-      } catch (error) {
-        if (!ignore) {
-          const message =
-            error instanceof Error ? error.message : "Failed to load skills.";
-          toast.error(message);
-        }
-      } finally {
-        if (!ignore) {
-          setIsLoading(false);
-        }
+  const {
+    data: skillsPages,
+    isLoading,
+    error: skillsError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["user-skills", locale, jobTitleId],
+    enabled: open && Boolean(session?.accessToken),
+    initialPageParam: 1,
+    queryFn: async ({ pageParam }) => {
+      if (!session?.accessToken) {
+        throw new Error("Missing access token.");
       }
-    };
 
-    void loadSkills();
+      return getUserSkills({
+        locale,
+        token: session.accessToken,
+        jobTitleId,
+        page: Number(pageParam),
+      });
+    },
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.next_page_url) return undefined;
 
-    return () => {
-      ignore = true;
-    };
-  }, [locale, open, session?.accessToken, skills]);
+      const url = new URL(lastPage.next_page_url, window.location.origin);
+      const page = Number(url.searchParams.get("page"));
+      return Number.isNaN(page) ? undefined : page;
+    },
+  });
+
+  useEffect(() => {
+    if (!open) return;
+
+    const message =
+      skillsError instanceof Error ? skillsError.message : undefined;
+
+    if (message) {
+      toast.error(message);
+    }
+  }, [open, skillsError]);
+
+  useEffect(() => {
+    if (open) {
+      setSelected([]);
+    }
+  }, [open]);
 
   const allSkillOptions = useMemo(() => {
     const merged = new Map<string, SkillOption>();
 
-    [...options, ...suggestedSkills].forEach((skill) => {
+    const options = skillsPages?.pages.flatMap((page) => page.skills) ?? [];
+    const suggested = skillsPages?.pages[0]?.suggested ?? [];
+
+    [...options, ...suggested].forEach((skill) => {
       merged.set(skill.id, skill);
     });
 
     return Array.from(merged.values());
-  }, [options, suggestedSkills]);
+  }, [skillsPages]);
+
+  const suggestedSkills = useMemo(
+    () => skillsPages?.pages[0]?.suggested ?? [],
+    [skillsPages],
+  );
 
   const optionsById = useMemo(
     () => new Map(allSkillOptions.map((skill) => [skill.id, skill])),
@@ -115,7 +125,7 @@ export function AddSkillsModal({
   const handleAdd = async () => {
     try {
       setIsSaving(true);
-      const existingSkillIdSet = new Set(currentSkills.map((skill) => skill.id));
+      const existingSkillIdSet = new Set(skills.map((skill) => skill.id));
       const newlySelectedOptions = selected
         .map((skillId) => optionsById.get(skillId))
         .filter((skill): skill is SkillOption => Boolean(skill))
@@ -134,7 +144,7 @@ export function AddSkillsModal({
       });
 
       toast.success(result.message);
-      onSave([...currentSkills, ...newSkills]);
+      onSave([...skills, ...newSkills]);
       handleClose(false);
     } catch (error) {
       const message =
@@ -168,6 +178,10 @@ export function AddSkillsModal({
             onSelect={toggle}
             onRemove={remove}
             options={allSkillOptions}
+            onReachEnd={() => fetchNextPage()}
+            hasNextPage={Boolean(hasNextPage)}
+            isFetchingNextPage={isFetchingNextPage}
+            isLoading={isLoading}
           />
         </div>
 
