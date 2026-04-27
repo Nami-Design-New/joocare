@@ -17,8 +17,8 @@ export default function BannerSection({
   };
 
   return (
-    <section className="relative overflow-hidden bg-white py-12 sm:py-20 lg:py-24">
-      <div className="relative mx-auto flex  flex-col items-center gap-6 rounded-[50px] bg-primary-gradient px-4 sm:px-6 md:flex-row md:gap-10 lg:gap-16 lg:px-0">
+    <section className="relative bg-white ">
+      <div className="mx-auto flex flex-col items-center gap-6 rounded-[50px] bg-primary-gradient px-4 sm:px-6 lg:flex-row md:gap-10 lg:py-4 lg:gap-16 lg:px-0">
         {/* <div className="absolute top-1/2 -left-20 h-11.5 w-75 -translate-y-1/2 rotate-22 rounded-full bg-primary-bg opacity-80 blur-[200px] sm:-left-40 sm:w-[503px]" /> */}
         <div className="absolute top-1/2 -right-20 h-11.5 w-75 -translate-y-1/2 rotate-22 rounded-full  opacity-80 blur-[200px] sm:-right-40 sm:w-[503px]" />
 
@@ -46,12 +46,12 @@ export default function BannerSection({
           </Link>
         </div>
 
-        <div className="relative mt-6 h-75 w-full overflow-hidden rounded-2xl sm:h-95 md:mt-0 lg:h-105">
+        <div className="mt-6 w-full rounded-2xl md:mt-0">
           <Image
             src={bannerImage.image}
             alt={bannerImage.alt}
             fill
-            className="object-cover"
+            className="lg:absolute object-cover bottom-0 md:right-0 h-75 sm:h-95 lg:[600px]"
           />
         </div>
       </div>

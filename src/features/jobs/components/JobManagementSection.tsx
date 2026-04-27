@@ -47,10 +47,6 @@ export default function JobManagementSection() {
     const displayedTotal = data?.total ?? total;
     const displayedPerPage = data?.per_page ?? perPage;
 
-    console.log("companydata ", companyProfileData);
-
-
-
     return (
         <div className="flex flex-col gap-2">
             <header className="flex w-full items-center justify-between gap-2">
@@ -88,7 +84,7 @@ export default function JobManagementSection() {
                         <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
                             whitespace-nowrap rounded bg-black text-white text-xs px-3 py-1 
                             opacity-0 group-hover:opacity-100 transition">
-                            You can't post a job until <br /> your account is approved
+                            You can&apos;t post a job until <br /> your account is approved
                         </span>
                     )}
                 </div>

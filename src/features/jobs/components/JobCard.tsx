@@ -92,7 +92,9 @@ export default function JobCard({ resumeMatch,
   };
 
 
-  const title = job?.job_title?.title || "Healthcare Opportunity3";
+  console.log(job);
+
+  const title = job?.job_title?.title || job?.title || "Untitled job";
   const company = job?.company?.name || "Joocare Employer";
   const companyLogo = job?.company?.image;
   const postedAtLabel = job?.created_at;

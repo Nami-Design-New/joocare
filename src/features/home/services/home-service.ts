@@ -241,13 +241,12 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
       title: whyJoocare?.title ?? "",
       legacyModelTitle: whyJoocare?.legacy_model_title ?? "",
       legacyModelDescription: whyJoocare?.legacy_model_description ?? "",
-      legacyModels:
-        whyJoocare?.legacy_models?.map((model) => ({
-          id: String(model.id ?? ""),
-          title: model.title ?? "",
-          description: model.description ?? "",
-          icon: model.icon ?? null,
-        })) ?? [],
+      legacyModels: whyJoocare?.legacy_models?.map((model) => ({
+        id: String(model.id ?? ""),
+        title: model.title ?? "",
+        description: model.description ?? "",
+        icon: model.icon ?? "",
+      })) ?? [],
       joocareModelTitle: whyJoocare?.joocare_model_title ?? "",
       joocareModelDescription: whyJoocare?.joocare_model_description ?? "",
       joocareModels:

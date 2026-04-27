@@ -48,11 +48,11 @@ export default function Why() {
               />
             </div>
 
-            <h2 className="mb-6 text-4xl font-bold text-[#0B3765] sm:text-5xl">
+            <h2 className="mb-6 text-4xl font-bold text-primary sm:text-5xl">
               Why joocare?
             </h2>
 
-            <p className="mb-8 text-base text-justify leading-relaxed text-[#16304A]">
+            <p className="mb-8 text-base text-justify leading-relaxed text-primary">
               Joocare provides a domain-oriented, business-focused ecosystem
               designed to align elite medical talent with your facility’s
               specific operational demands. By leveraging AI-automated smart

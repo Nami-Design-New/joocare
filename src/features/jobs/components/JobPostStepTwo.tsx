@@ -9,6 +9,7 @@ const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
 
 import { MultiSelectInputField } from "@/shared/components/MultiSelectInputField";
 import useGetSkills from "@/shared/hooks/useGetSkills";
+import { useSearchParams } from "next/navigation";
 
 function getOptionLabels(
   values: string[],
@@ -29,11 +30,18 @@ export default function JobPostStepTwo({
     formState: { errors },
   } = useFormContext<JobFormData>();
   const [skillsSearch] = useState("");
+  const searchParams = useSearchParams();
+
+  const jobId = searchParams.get("jobId");
+  const editId = searchParams.get("editId");
+
+  const id = jobId ?? editId;
+
   const {
     skills,
     isLoading: isSkillsLoading,
     error: skillsError,
-  } = useGetSkills(skillsSearch);
+  } = useGetSkills(skillsSearch, String(id));
   const skillOptions = skills.map((item) => ({
     label: item.title,
     value: String(item.id),

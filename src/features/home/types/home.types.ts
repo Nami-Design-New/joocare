@@ -28,7 +28,7 @@ export type HomeWhyModel = {
   id: string;
   title: string;
   description: string;
-  icon?: string | null;
+  icon?: string;
 };
 
 export type HomeEmployer = {

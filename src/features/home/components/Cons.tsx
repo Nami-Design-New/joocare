@@ -1,7 +1,6 @@
-import { Search } from "lucide-react";
-import React from "react";
-import SectionTitle from "./SectionTitle";
+import Image from "next/image";
 import type { HomeWhyModel } from "../types/home.types";
+import SectionTitle from "./SectionTitle";
 
 export default function Cons({
   title,
@@ -21,7 +20,7 @@ export default function Cons({
         {items.map((item) => (
           <li key={item.id} className="flex gap-7">
             <div className="bg-primary flex h-12 w-12 shrink-0 items-center justify-center rounded-full">
-              <Search className="text-white" />
+              <Image src={item.icon as string} alt="icon" width={20} height={20} />
             </div>
             <div>
               <h4 className="mb-2 text-xl font-semibold">{item.title}</h4>

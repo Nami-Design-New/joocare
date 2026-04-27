@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getBaseApiUrl } from "../lib/api-endpoints";
 
-export default function useGetSkills(search = "") {
+export default function useGetSkills(search = "", job_title_id = '') {
   const query = useInfiniteQuery({
     queryKey: ["skills", search],
     initialPageParam: 1,
@@ -10,6 +10,7 @@ export default function useGetSkills(search = "") {
         page: String(pageParam),
         pagination: "on",
         limit_per_page: "10",
+        job_title_id: job_title_id
       });
 
       if (search.trim()) {
