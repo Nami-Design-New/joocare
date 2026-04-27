@@ -69,7 +69,7 @@ const Header = () => {
                     }`}
                   href={homeHref}
                 >
-                  Home
+                  Home ٢
                 </Link>
               </li>
               <li>
