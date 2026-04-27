@@ -15,11 +15,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "joocare.com",
+        hostname: "admin.joocare.com",
       },
       {
         protocol: "http",
-        hostname: "joocare.com",
+        hostname: "admin.joocare.com",
       },
       {
         protocol: "https",
