@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "joocare.com",
+      },
+      {
+        protocol: "http",
+        hostname: "joocare.com",
+      },
+      {
+        protocol: "https",
         hostname: "media.licdn.com",
       },
       {
