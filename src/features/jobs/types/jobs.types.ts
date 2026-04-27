@@ -135,7 +135,7 @@ export type JobListItem = {
 
   salary_type_id: number | null;
   salary_type: NamedEntity | null;
-
+  has_salary: number;
   min_salary: string | null;
   max_salary: string | null;
 

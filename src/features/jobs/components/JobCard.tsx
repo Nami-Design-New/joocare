@@ -1,8 +1,8 @@
 "use client";
 
-import { Link } from "@/i18n/navigation";
 import { useDeleteCompanyJob } from "@/features/jobs/hooks/useDeleteCompanyJob";
 import { useUpdateCompanyJobStatus } from "@/features/jobs/hooks/useUpdateCompanyJobStatus";
+import { Link } from "@/i18n/navigation";
 import AlertModal from "@/shared/components/modals/AlertModal";
 import DeleteModal from "@/shared/components/modals/DeleteModal";
 import { Badge } from "@/shared/components/ui/badge";
@@ -19,26 +19,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   ArrowRight,
   Briefcase,
   CheckCheck,
   CircleDollarSign,
   CircleEllipsis,
-  DollarSign,
   Dot,
   Edit,
   Edit2,
   EyeOff,
   MapPin,
-  Play,
   Trash2
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { JobListItem } from "../types/jobs.types";
 import { getJobLocation, getJobSalaryWithCurrency, normalizeJobStatus } from "../utils";
-import { useQueryClient } from "@tanstack/react-query";
 
 type JobCardProps = {
   job: Omit<JobListItem, 'status'> & {
@@ -217,7 +215,7 @@ export default function JobCard({ resumeMatch,
               </li>
               <li className="text-secondary flex items-center gap-1 text-sm font-normal">
                 <CircleDollarSign size={14} color="var(--muted-foreground)" />
-                {salary}
+                {job.has_salary ? salary : "not specified"}
               </li>
             </ul>
             <ul className="items-cente flex gap-2">
