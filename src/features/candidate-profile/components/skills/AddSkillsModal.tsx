@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocale } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
@@ -13,12 +13,11 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { saveSkillsAction } from "../../actions/skills-actions";
-import {
-  getUserSkills,
-  type SkillOption,
-} from "../../services/skills-client-service";
+import type { SkillOption } from "../../services/skills-client-service";
 import type { CandidateSkillViewModel } from "../../types/profile.types";
 import { MultiSelectInputSkills } from "./MultiSelectInputSkills";
+import useGetUserSkills from "../../hooks/useGetUserSkills";
+import useGetUserSkillsSuggestions from "../../hooks/useGetUserSkillsSuggestions";
 
 interface AddSkillsModalProps {
   open: boolean;
@@ -33,59 +32,49 @@ export function AddSkillsModal({
   onOpenChange,
   skills,
   onSave,
-  jobTitleId
+  jobTitleId,
 }: AddSkillsModalProps) {
   const locale = useLocale();
   const { data: session } = useSession();
+  const token = session?.accessToken ?? "";
   const queryClient = useQueryClient();
   const [selected, setSelected] = useState<string[]>([]);
+  const [selectedSkillsCache, setSelectedSkillsCache] = useState<Map<string, SkillOption>>(new Map());
   const [skillsSearch, setSkillsSearch] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const trimmedSkillsSearch = skillsSearch.trim();
 
   const {
-    data: skillsPages,
-    isLoading,
-    error: skillsError,
+    data: rawSkills,
+    isLoading: isSkillsLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["user-skills", locale, jobTitleId, trimmedSkillsSearch],
-    enabled: open && Boolean(session?.accessToken),
-    initialPageParam: 1,
-    queryFn: async ({ pageParam }) => {
-      if (!session?.accessToken) {
-        throw new Error("Missing access token.");
-      }
+  } = useGetUserSkills(skillsSearch, jobTitleId, token);
 
-      return getUserSkills({
-        locale,
-        token: session.accessToken,
-        jobTitleId,
-        page: Number(pageParam),
-        search: trimmedSkillsSearch,
-      });
-    },
-    getNextPageParam: (lastPage) => {
-      if (!lastPage?.next_page_url) return undefined;
+  const { data: rawSuggestions, isLoading: isSuggestionLoading } =
+    useGetUserSkillsSuggestions({ token });
 
-      const url = new URL(lastPage.next_page_url, window.location.origin);
-      const page = Number(url.searchParams.get("page"));
-      return Number.isNaN(page) ? undefined : page;
-    },
-  });
+  const skillOptions: SkillOption[] = useMemo(
+    () => rawSkills.map((s) => ({ id: String(s.id), label: s.title, deleteId: String(s.id) })),
+    [rawSkills],
+  );
 
-  useEffect(() => {
-    if (!open) return;
+  const suggestionSkills: SkillOption[] = useMemo(
+    () =>
+      Array.isArray(rawSuggestions)
+        ? rawSuggestions.map((s) => ({ id: String(s.id), label: s.title, deleteId: String(s.id) }))
+        : [],
+    [rawSuggestions],
+  );
 
-    const message =
-      skillsError instanceof Error ? skillsError.message : undefined;
-
-    if (message) {
-      toast.error(message);
-    }
-  }, [open, skillsError]);
+  // Merge current options + cached selected skills so labels never go missing
+  const skillOptionsById = useMemo(() => {
+    const map = new Map(skillOptions.map((s) => [s.id, s]));
+    selectedSkillsCache.forEach((skill, id) => {
+      if (!map.has(id)) map.set(id, skill);
+    });
+    return map;
+  }, [skillOptions, selectedSkillsCache]);
 
   useEffect(() => {
     if (open) {
@@ -95,36 +84,24 @@ export function AddSkillsModal({
       });
       setSelected([]);
       setSkillsSearch("");
+      setSelectedSkillsCache(new Map());
     }
   }, [open, jobTitleId, locale, queryClient]);
 
-  const allSkillOptions = useMemo(() => {
-    const merged = new Map<string, SkillOption>();
-
-    const options = skillsPages?.pages.flatMap((page) => page.skills) ?? [];
-    const suggested = skillsPages?.pages[0]?.suggested ?? [];
-
-    [...options, ...suggested].forEach((skill) => {
-      merged.set(skill.id, skill);
-    });
-
-    return Array.from(merged.values());
-  }, [skillsPages]);
-
-  const suggestedSkills = useMemo(
-    () => skillsPages?.pages[0]?.suggested ?? [],
-    [skillsPages],
-  );
-
-  const optionsById = useMemo(
-    () => new Map(allSkillOptions.map((skill) => [skill.id, skill])),
-    [allSkillOptions],
-  );
-
   const toggle = (skillId: string) => {
-    setSelected((prev) =>
-      prev.includes(skillId) ? prev.filter((id) => id !== skillId) : [...prev, skillId],
-    );
+    setSelected((prev) => {
+      if (prev.includes(skillId)) return prev.filter((id) => id !== skillId);
+
+      // Cache skill data at selection time so label survives search changes
+      const skill =
+        skillOptionsById.get(skillId) ??
+        suggestionSkills.find((s) => s.id === skillId);
+      if (skill) {
+        setSelectedSkillsCache((cache) => new Map(cache).set(skillId, skill));
+      }
+
+      return [...prev, skillId];
+    });
   };
 
   const remove = (skillId: string) => {
@@ -135,29 +112,28 @@ export function AddSkillsModal({
     try {
       setIsSaving(true);
       const existingSkillIdSet = new Set(skills.map((skill) => skill.id));
+
       const newlySelectedOptions = selected
-        .map((skillId) => optionsById.get(skillId))
+        .map((skillId) => skillOptionsById.get(skillId))
         .filter((skill): skill is SkillOption => Boolean(skill))
         .filter((skill) => !existingSkillIdSet.has(skill.id));
+
       const newSkillIds = newlySelectedOptions.map((skill) => skill.id);
-      const newSkills = newlySelectedOptions
-        .map((skill) => ({
-          id: skill.id,
-          label: skill.label,
-          deleteId: skill.deleteId ?? skill.id,
-        }));
+      const newSkills = newlySelectedOptions.map((skill) => ({
+        id: skill.id,
+        label: skill.label,
+        deleteId: skill.deleteId ?? skill.id,
+      }));
 
-      const result = await saveSkillsAction({
-        skillIds: newSkillIds,
-        locale,
-      });
-
+      const result = await saveSkillsAction({ skillIds: newSkillIds, locale });
+      queryClient.invalidateQueries({
+        queryKey: ["user-skills-suggestions"]
+      })
       toast.success(result.message);
       onSave([...skills, ...newSkills]);
       handleClose(false);
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to add skills.";
+      const message = error instanceof Error ? error.message : "Failed to add skills.";
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -168,6 +144,7 @@ export function AddSkillsModal({
     if (!value) {
       setSelected([]);
       setSkillsSearch("");
+      setSelectedSkillsCache(new Map());
     }
     onOpenChange(value);
   };
@@ -187,20 +164,22 @@ export function AddSkillsModal({
             selected={selected}
             onSelect={toggle}
             onRemove={remove}
-            options={allSkillOptions}
+            options={skillOptions}
+            // Pass the full map so selected tags always resolve to labels
+            optionsById={skillOptionsById}
             searchValue={skillsSearch}
             onSearchChange={setSkillsSearch}
             onReachEnd={() => fetchNextPage()}
             hasNextPage={Boolean(hasNextPage)}
             isFetchingNextPage={isFetchingNextPage}
-            isLoading={isLoading}
+            isLoading={isSkillsLoading}
           />
         </div>
 
         <div className="space-y-2">
           <p className="text-sm">Suggested based on your profile</p>
           <div className="flex flex-wrap gap-2 rounded-xl bg-[#09760A05] p-3">
-            {suggestedSkills.map((skill) => {
+            {suggestionSkills.map((skill) => {
               const isSelected = selected.includes(skill.id);
               return (
                 <button
@@ -216,18 +195,16 @@ export function AddSkillsModal({
                 </button>
               );
             })}
-            {suggestedSkills.length === 0 ? (
-              <p className="text-muted-foreground text-sm">
-                No suggested skills available.
-              </p>
-            ) : null}
+            {suggestionSkills.length === 0 && (
+              <p className="text-muted-foreground text-sm">No suggested skills available.</p>
+            )}
           </div>
         </div>
 
         <div className="flex justify-center pt-1">
           <Button
             onClick={handleAdd}
-            disabled={selected.length === 0 || isLoading || isSaving}
+            disabled={selected.length === 0 || isSuggestionLoading || isSaving}
             className="rounded-full px-10"
           >
             {isSaving ? "Saving..." : "Add"}
