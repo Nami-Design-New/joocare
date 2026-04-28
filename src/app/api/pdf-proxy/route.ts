@@ -1,6 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const ALLOWED_HOSTS = new Set(["joocare.nami-tec.com"]);
+function getAllowedHosts() {
+  const values = [
+    process.env.NEXT_PUBLIC_BASE_URL,
+    process.env.NEXT_PUBLIC_BASE_USER_URL,
+    process.env.NEXT_PUBLIC_BASE_COMPANY_URL,
+    process.env.NEXT_PUBLIC_BASE_API_URL,
+    "joocare.nami-tec.com",
+    "www.joocare.nami-tec.com",
+    "admin.joocare.com",
+    "joocare.com",
+  ].filter(Boolean) as string[];
+
+  const hosts = new Set<string>();
+
+  for (const value of values) {
+    try {
+      const normalized = value.startsWith("http") ? value : `https://${value}`;
+      const url = new URL(normalized);
+      if (url.host) hosts.add(url.host);
+      if (url.hostname) hosts.add(url.hostname);
+    } catch {
+      // ignore invalid values
+    }
+  }
+
+  return hosts;
+}
 
 export async function GET(request: NextRequest) {
   const targetUrl = request.nextUrl.searchParams.get("url");
@@ -21,7 +47,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ message: "Unsupported protocol." }, { status: 400 });
   }
 
-  if (!ALLOWED_HOSTS.has(parsedUrl.hostname)) {
+  const allowedHosts = getAllowedHosts();
+  if (allowedHosts.size > 0 && !allowedHosts.has(parsedUrl.host) && !allowedHosts.has(parsedUrl.hostname)) {
     return NextResponse.json({ message: "Host is not allowed." }, { status: 403 });
   }
 
@@ -40,15 +67,21 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const fileBuffer = await response.arrayBuffer();
     const contentType = response.headers.get("content-type") ?? "application/pdf";
+    const contentLength = response.headers.get("content-length");
 
-    return new NextResponse(fileBuffer, {
+    if (!response.body) {
+      return NextResponse.json({ message: "Failed to fetch PDF." }, { status: 502 });
+    }
+
+    const headers = new Headers();
+    headers.set("Content-Type", contentType);
+    headers.set("Cache-Control", "no-store");
+    if (contentLength) headers.set("Content-Length", contentLength);
+
+    return new NextResponse(response.body, {
       status: 200,
-      headers: {
-        "Content-Type": contentType,
-        "Cache-Control": "no-store",
-      },
+      headers,
     });
   } catch {
     return NextResponse.json({ message: "Failed to fetch PDF." }, { status: 500 });
