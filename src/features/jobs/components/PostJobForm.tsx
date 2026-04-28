@@ -244,7 +244,7 @@ export default function PostJobForm() {
             label: existingJob.city.name,
             value: String(existingJob.city_id ?? ""),
           }
-            : undefined,
+          : undefined,
       });
       setPreviewLabels({
         title: existingJob.title ?? existingJob.job_title?.title ?? "",
@@ -390,7 +390,10 @@ export default function PostJobForm() {
       education_levels: (data.educationLevel ?? []).map((item) => Number(item)),
       availability_id: Number(data.availability),
       description: data.description,
-      skills: (data.skills ?? []).map((s) => Number(s)),
+      skills: (data.skills ?? []).map((s) => {
+        console.log(s)
+        return Number(s)
+      }),
       status: "open",
     };
 

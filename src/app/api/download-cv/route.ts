@@ -7,13 +7,19 @@ function getAllowedHosts() {
     process.env.NEXT_PUBLIC_BASE_URL,
     process.env.NEXT_PUBLIC_BASE_USER_URL,
     process.env.NEXT_PUBLIC_BASE_COMPANY_URL,
+    "admin.joocare.com",
+    "joocare.com",
   ].filter(Boolean) as string[];
 
   return new Set(
     values
       .map((value) => {
         try {
-          return new URL(value).host;
+          const normalized = value.startsWith("http")
+            ? value
+            : `https://${value}`;
+
+          return new URL(normalized).host;
         } catch {
           return null;
         }
@@ -49,7 +55,6 @@ export async function GET(request: NextRequest) {
   }
 
   const allowedHosts = getAllowedHosts();
-
   if (allowedHosts.size > 0 && !allowedHosts.has(parsedUrl.host)) {
     return NextResponse.json({ message: "File host is not allowed" }, { status: 403 });
   }
