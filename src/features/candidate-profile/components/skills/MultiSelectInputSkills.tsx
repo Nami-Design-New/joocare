@@ -17,6 +17,7 @@ interface MultiSelectInputSkillsProps {
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
   isLoading?: boolean;
+  optionsById?: Map<string, { id: string; label: string }>;
 }
 
 export function MultiSelectInputSkills({
@@ -30,6 +31,7 @@ export function MultiSelectInputSkills({
   hasNextPage,
   isFetchingNextPage,
   isLoading,
+  optionsById,
 }: MultiSelectInputSkillsProps) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -51,6 +53,10 @@ export function MultiSelectInputSkills({
       option.label.toLowerCase().includes(effectiveQuery.toLowerCase()) &&
       !selected.includes(option.id),
   );
+
+  // get label in multi select input
+  const getLabel = (id: string) =>
+    optionsById?.get(id)?.label ?? options.find((o) => o.id === id)?.label ?? id;
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -171,7 +177,7 @@ export function MultiSelectInputSkills({
             key={skillId}
             className="flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 text-xs text-white"
           >
-            {options.find((option) => option.id === skillId)?.label ?? skillId}
+            {getLabel(skillId)}
             <X
               size={12}
               className="cursor-pointer hover:opacity-70"

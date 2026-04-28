@@ -144,6 +144,7 @@ export async function getUserSkills({
   if (!ok) {
     throw new Error(message || "Failed to load skills.");
   }
+  // console.log("skills response :::", data);
 
   return {
     next_page_url: findNextPageUrl(data),
