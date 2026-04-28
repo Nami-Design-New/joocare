@@ -104,7 +104,7 @@ export const MultiSelectInputField = React.forwardRef<
       });
     }, [options, preloadOptions]);
 
-    const selectedOptions = value
+    const cachedSelectedOptions = value
       .map((v) => optionsCache.get(v))
       .filter((o): o is Option => o !== undefined);
 
@@ -112,11 +112,18 @@ export const MultiSelectInputField = React.forwardRef<
     // never loses track of already-selected items when search filters change.
     const mergedItems = React.useMemo(() => {
       const currentValues = new Set(options.map((o) => o.value));
-      const missingSelected = selectedOptions.filter(
+      const missingSelected = cachedSelectedOptions.filter(
         (o) => !currentValues.has(o.value),
       );
       return [...missingSelected, ...options];
-    }, [options, selectedOptions]);
+    }, [cachedSelectedOptions, options]);
+
+    const selectedOptions = React.useMemo(() => {
+      const mergedMap = new Map(mergedItems.map((item) => [item.value, item]));
+      return value
+        .map((selectedValue) => mergedMap.get(selectedValue))
+        .filter((option): option is Option => option !== undefined);
+    }, [mergedItems, value]);
 
     const handleObserver = React.useCallback(
       (node: HTMLDivElement | null) => {
@@ -170,6 +177,9 @@ export const MultiSelectInputField = React.forwardRef<
           items={mergedItems}
           multiple
           value={selectedOptions}
+          isItemEqualToValue={(item, selectedItem) =>
+            item?.value === selectedItem?.value
+          }
           onValueChange={(raw) => {
             const selected = (raw as Option[]).map((o) => o.value ?? "");
             onChange?.(selected);

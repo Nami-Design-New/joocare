@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
 const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
@@ -59,6 +59,12 @@ export default function JobPostStepTwo({
   const allOptionsMapRef = useRef(new Map<string, string>());
   const allOptionsMap = allOptionsMapRef.current;
 
+  useEffect(() => {
+    [...existingSkillOptions, ...skillOptions].forEach((option) => {
+      allOptionsMap.set(option.value, option.label);
+    });
+  }, [allOptionsMap, existingSkillOptions, skillOptions]);
+
   function getOptionLabels(values: string[]) {
     return values.map((v) => allOptionsMap.get(v) ?? v);
   }
@@ -115,7 +121,11 @@ export default function JobPostStepTwo({
                     );
                   }}
                   disabled={isSkillsLoading}
-                  preloadOptions={existingSkillOptions.length > 0 ? existingSkillOptions : skillOptions}
+                  preloadOptions={
+                    existingSkillOptions.length > 0
+                      ? existingSkillOptions
+                      : skillOptions
+                  }
                   onReachEnd={() => fetchNextPage()}
                   hasNextPage={Boolean(hasNextPage)}
                   isFetchingNextPage={isFetchingNextPage}

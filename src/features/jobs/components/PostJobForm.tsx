@@ -635,7 +635,10 @@ export default function PostJobForm() {
                 />
               )}
               {currentStep === 1 && (
-                <JobPostStepTwo onPreviewLabelChange={handlePreviewLabelChange} />
+                <JobPostStepTwo
+                  onPreviewLabelChange={handlePreviewLabelChange}
+                  existingJob={existingJob}
+                />
               )}
               {currentStep === 2 && (
                 <JobReviewPanel
