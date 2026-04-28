@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "admin.joocare.com",
+      },
+      {
+        protocol: "http",
+        hostname: "admin.joocare.com",
+      },
+      {
+        protocol: "https",
         hostname: "media.licdn.com",
       },
       {
@@ -29,6 +37,7 @@ const nextConfig: NextConfig = {
     return config;
   },
 };
+
 
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);

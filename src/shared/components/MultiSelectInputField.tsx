@@ -35,6 +35,7 @@ type MultiSelectInputFieldProps = {
   searchPlaceholder?: string;
   onSearchChange?: (value: string) => void;
   portalContainer?: HTMLElement | null;
+  preloadOptions?: Option[]
 };
 
 export const MultiSelectInputField = React.forwardRef<
@@ -61,12 +62,61 @@ export const MultiSelectInputField = React.forwardRef<
       searchPlaceholder = "Search...",
       onSearchChange,
       portalContainer,
+      preloadOptions = [],
       ...props
     },
     ref,
   ) => {
     const listRef = React.useRef<HTMLDivElement | null>(null);
     const observerRef = React.useRef<IntersectionObserver | null>(null);
+    // ✅ KEEP only this:
+    const [optionsCache, setOptionsCache] = React.useState<Map<string, Option>>(
+      () => {
+        const map = new Map<string, Option>();
+        // Seed with preloaded options on first mount
+        preloadOptions?.forEach((o) => {
+          if (o.value != null) map.set(o.value, o);
+        });
+        return map;
+      },
+    );
+
+    React.useEffect(() => {
+      setOptionsCache((prev) => {
+        const next = new Map(prev);
+        let changed = false;
+
+        options.forEach((o) => {
+          if (o.value != null && !next.has(o.value)) {
+            next.set(o.value, o);
+            changed = true;
+          }
+        });
+
+        preloadOptions?.forEach((o) => {
+          if (o.value != null && !next.has(o.value)) {
+            next.set(o.value, o);
+            changed = true;
+          }
+        });
+
+        return changed ? next : prev;
+      });
+    }, [options, preloadOptions]);
+
+    const selectedOptions = value
+      .map((v) => optionsCache.get(v))
+      .filter((o): o is Option => o !== undefined);
+
+    // Merge cached selected options into the items list so the Combobox
+    // never loses track of already-selected items when search filters change.
+    const mergedItems = React.useMemo(() => {
+      const currentValues = new Set(options.map((o) => o.value));
+      const missingSelected = selectedOptions.filter(
+        (o) => !currentValues.has(o.value),
+      );
+      return [...missingSelected, ...options];
+    }, [options, selectedOptions]);
 
     const handleObserver = React.useCallback(
       (node: HTMLDivElement | null) => {
@@ -97,9 +147,10 @@ export const MultiSelectInputField = React.forwardRef<
       [hasNextPage, isFetchingNextPage, onReachEnd],
     );
 
-    const selectedOptions = options.filter((o) =>
-      value.includes(o.value ?? ""),
-    );
+
+    // const selectedOptions = options.filter((o) =>
+    //   value.includes(o.value ?? ""),
+    // );
 
     return (
       <div className={cn("flex w-full flex-col", containerStyles)}>
@@ -116,7 +167,7 @@ export const MultiSelectInputField = React.forwardRef<
 
         <Combobox
           id={id}
-          items={options}
+          items={mergedItems}
           multiple
           value={selectedOptions}
           onValueChange={(raw) => {

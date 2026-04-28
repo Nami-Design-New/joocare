@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
 const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
@@ -10,20 +10,14 @@ const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
 import { MultiSelectInputField } from "@/shared/components/MultiSelectInputField";
 import useGetSkills from "@/shared/hooks/useGetSkills";
 import { useSearchParams } from "next/navigation";
-
-function getOptionLabels(
-  values: string[],
-  options: { label: string; value: string }[],
-) {
-  return values.map(
-    (value) => options.find((option) => option.value === value)?.label ?? value,
-  );
-}
+import { JobDetails } from "../types/jobs.types";
 
 export default function JobPostStepTwo({
   onPreviewLabelChange,
+  existingJob,
 }: {
   onPreviewLabelChange?: (key: "skills", value: string[]) => void;
+  existingJob?: JobDetails | null;
 }) {
   const {
     control,
@@ -49,6 +43,26 @@ export default function JobPostStepTwo({
     label: item.title,
     value: String(item.id),
   }));
+
+  // Build preload options from existing job skills so they show labels in edit mode
+  const existingSkillOptions = useMemo(
+    () =>
+      (existingJob?.skills ?? []).map((s) => ({
+        label: s.title,
+        value: String(s.id),
+      })),
+    [existingJob],
+  );
+
+  // Stable lookup map that includes both API options and existing job skills.
+  // This ensures getOptionLabels always resolves labels, even during search.
+  const allOptionsMapRef = useRef(new Map<string, string>());
+  const allOptionsMap = allOptionsMapRef.current;
+
+  function getOptionLabels(values: string[]) {
+    return values.map((v) => allOptionsMap.get(v) ?? v);
+  }
+
   return (
     <div>
       <div className="grid grid-cols-1 gap-4">
@@ -97,10 +111,11 @@ export default function JobPostStepTwo({
                     field.onChange(value);
                     onPreviewLabelChange?.(
                       "skills",
-                      getOptionLabels(value, skillOptions),
+                      getOptionLabels(value),
                     );
                   }}
                   disabled={isSkillsLoading}
+                  preloadOptions={existingSkillOptions.length > 0 ? existingSkillOptions : skillOptions}
                   onReachEnd={() => fetchNextPage()}
                   hasNextPage={Boolean(hasNextPage)}
                   isFetchingNextPage={isFetchingNextPage}
