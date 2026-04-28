@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
 const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
@@ -54,16 +54,13 @@ export default function JobPostStepTwo({
     [existingJob],
   );
 
-  // Stable lookup map that includes both API options and existing job skills.
-  // This ensures getOptionLabels always resolves labels, even during search.
-  const allOptionsMapRef = useRef(new Map<string, string>());
-  const allOptionsMap = allOptionsMapRef.current;
-
-  useEffect(() => {
+  const allOptionsMap = useMemo(() => {
+    const map = new Map<string, string>();
     [...existingSkillOptions, ...skillOptions].forEach((option) => {
-      allOptionsMap.set(option.value, option.label);
+      map.set(option.value, option.label);
     });
-  }, [allOptionsMap, existingSkillOptions, skillOptions]);
+    return map;
+  }, [existingSkillOptions, skillOptions]);
 
   function getOptionLabels(values: string[]) {
     return values.map((v) => allOptionsMap.get(v) ?? v);
