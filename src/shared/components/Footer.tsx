@@ -21,11 +21,11 @@ const Footer = async () => {
   const copyrightText =
     settings?.copyright || `All rights reserved - JooCare © ${currentYear}`;
   const socialLinks = [
-    { href: settings?.linkedin, icon: Linkedin, label: "LinkedIn" },
-    { href: settings?.facebook, icon: Facebook, label: "Facebook" },
-    { href: settings?.instagram, icon: Instagram, label: "Instagram" },
-    { href: settings?.twitter, icon: Twitter, label: "Twitter" },
-    { href: settings?.snapchat, icon: Ghost, label: "Snapchat" },
+    { href: settings?.linkedin, srcImg: "/assets/icons/social-icons/linkedin-footer.svg", label: "LinkedIn" },
+    { href: settings?.facebook, srcImg: "/assets/icons/social-icons/facebook-footer.svg", label: "Facebook" },
+    { href: settings?.instagram, srcImg: "/assets/icons/social-icons/instagram-footer.svg", label: "Instagram" },
+    { href: settings?.twitter, srcImg: "/assets/icons/social-icons/twitter-footer.svg", label: "Twitter" },
+    { href: settings?.snapchat, srcImg: "/assets/icons/social-icons/snap-footer.svg", label: "Snapchat" },
   ].filter((item) => Boolean(item.href));
 
   const candidateLinks = isEmployer
@@ -141,16 +141,16 @@ const Footer = async () => {
         <div className="relative grid grid-cols-1 gap-4 pb-12 lg:grid-cols-5 lg:gap-12">
           {/* Social Icons */}
           <div className="order-last col-span-1 flex items-center gap-2 lg:order-first lg:gap-4">
-            {socialLinks.map(({ href, icon: Icon, label }) => (
+            {socialLinks.map(({ href, srcImg, label }) => (
               <Link
                 key={label}
                 href={href!}
                 target="_blank"
                 rel="noreferrer"
                 aria-label={label}
-                className="flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-white transition hover:bg-white/50"
+                className="flex h-7 w-7 hover:scale-105 rounded-full"
               >
-                <Icon size={14} color="var(--secondary)" />
+                <Image src={srcImg} alt={label} width={27} height={27} />
               </Link>
             ))}
           </div>

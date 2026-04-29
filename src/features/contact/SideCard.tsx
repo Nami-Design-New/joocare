@@ -38,11 +38,11 @@ type SideCardProps = {
 };
 
 const socialItems = {
-  linkedin: { icon: Linkedin, label: "LinkedIn" },
-  facebook: { icon: Facebook, label: "Facebook" },
-  instagram: { icon: Instagram, label: "Instagram" },
-  twitter: { icon: Twitter, label: "X" },
-  snapchat: { icon: Ghost, label: "Snapchat" },
+  linkedin: { src: "/assets/icons/social-icons/linkedin-contact.svg", label: "LinkedIn" },
+  facebook: { src: "/assets/icons/social-icons/facebook-contact.svg", label: "Facebook" },
+  instagram: { src: "/assets/icons/social-icons/instagram-contact.svg", label: "Instagram" },
+  twitter: { src: "/assets/icons/social-icons/twitter-contact.svg", label: "X" },
+  snapchat: { src: "/assets/icons/social-icons/snapchat-contact.svg", label: "Snapchat" },
 };
 
 export default function SideCard({
@@ -92,7 +92,7 @@ export default function SideCard({
           </p>
           <div className="flex items-center gap-2.5">
             {socialLinks.map(({ href, platform }) => {
-              const { icon: Icon, label } = socialItems[platform];
+              const { src: srcImg, label } = socialItems[platform];
 
               return (
                 <a
@@ -100,10 +100,15 @@ export default function SideCard({
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="bg-secondary text-secondary-foreground hover:bg-primary inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors"
+                  className="hover:scale-105  h-10 w-10"
                   aria-label={label}
                 >
-                  <Icon size={18} />
+                  <Image
+                    src={srcImg}
+                    alt={label}
+                    width={40}
+                    height={40}
+                  />
                 </a>
               );
             })}

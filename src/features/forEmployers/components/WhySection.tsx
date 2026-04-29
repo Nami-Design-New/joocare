@@ -23,11 +23,11 @@ export default function WhySection({
               />
             </div>
 
-            <h2 className="mb-6 text-4xl font-bold text-[#0B3765] sm:text-5xl">
+            <h2 className="mb-6 text-4xl font-bold text-[#1C2628] sm:text-5xl">
               {title}
             </h2>
 
-            <p className="mb-8 text-base leading-relaxed text-[#16304A] lg:text-justify">
+            <p className="mb-8 text-base leading-relaxed text-[#1C2628] lg:text-justify">
               {description}
             </p>
 
