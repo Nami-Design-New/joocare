@@ -45,7 +45,6 @@ export default function AlertModal({
     onCancel?.();
     onOpenChange(false);
   };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-150 rounded-2xl p-8 text-center">
