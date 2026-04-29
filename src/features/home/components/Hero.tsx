@@ -20,7 +20,7 @@ export default function Hero({
   popularSearchesLastPage,
 }: HeroProps) {
   return (
-    <section className="layout-shell   pt-10 pb-10 text-center md:gap-16 md:pt-30 md:pb-20">
+    <section className="layout-shell pt-10 pb-10 text-center md:gap-16 md:pt-30 md:pb-20 bg-body-bg">
       <section className="layout-content flex flex-col items-center justify-center gap-y-8">
 
         <div className="mx-auto max-w-3xl">

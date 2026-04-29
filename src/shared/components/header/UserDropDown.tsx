@@ -135,6 +135,43 @@ export default function UserDropDown({
 
         {/* Menu Items */}
         <DropdownMenuGroup>
+
+          {isEmployer ? (
+            <>
+              <DropdownMenuItem className={itemClass}>
+                <UserRoundCogIcon
+                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
+                  strokeWidth={2.5}
+                />
+                <Link
+                  href={"/company/job-management"}
+                  onClick={() => toggleOpen()}
+                >
+                  Job Management
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className={itemClass}>
+                <Gauge
+                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
+                  strokeWidth={2.5}
+                />
+                <Link href={"/company/dashboard"} onClick={() => toggleOpen()}>
+                  Dashboard
+                </Link>{" "}
+              </DropdownMenuItem>
+
+            </>
+          ) : (
+            <DropdownMenuItem className={itemClass}>
+              <Bookmark
+                className="text-muted-foreground group-hover:text-primary"
+                strokeWidth={2.5}
+              />
+              <Link href={"/jobs/saved"} onClick={() => toggleOpen()}>
+                Saved
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem className={itemClass}>
             <Settings
               className="text-muted-foreground group-hover:text-primary h-5 w-5"
@@ -148,45 +185,9 @@ export default function UserDropDown({
               }
               onClick={() => toggleOpen()}
             >
-              Account settings
+              Account Management
             </Link>
           </DropdownMenuItem>
-
-          {isEmployer ? (
-            <>
-              <DropdownMenuItem className={itemClass}>
-                <Gauge
-                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
-                  strokeWidth={2.5}
-                />
-                <Link href={"/company/dashboard"} onClick={() => toggleOpen()}>
-                  Dashboard
-                </Link>{" "}
-              </DropdownMenuItem>
-              <DropdownMenuItem className={itemClass}>
-                <UserRoundCogIcon
-                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
-                  strokeWidth={2.5}
-                />
-                <Link
-                  href={"/company/job-management"}
-                  onClick={() => toggleOpen()}
-                >
-                  Job Management
-                </Link>
-              </DropdownMenuItem>
-            </>
-          ) : (
-            <DropdownMenuItem className={itemClass}>
-              <Bookmark
-                className="text-muted-foreground group-hover:text-primary"
-                strokeWidth={2.5}
-              />
-              <Link href={"/jobs/saved"} onClick={() => toggleOpen()}>
-                Saved
-              </Link>
-            </DropdownMenuItem>
-          )}
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />

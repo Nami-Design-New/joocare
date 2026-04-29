@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
 const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
@@ -54,13 +54,32 @@ export default function JobPostStepTwo({
     [existingJob],
   );
 
-  // Stable lookup map that includes both API options and existing job skills.
-  // This ensures getOptionLabels always resolves labels, even during search.
-  const allOptionsMapRef = useRef(new Map<string, string>());
-  const allOptionsMap = allOptionsMapRef.current;
+  const [skillsOptionsCache, setSkillsOptionsCache] = useState<Map<string, string>>(
+    () => {
+      const map = new Map<string, string>();
+      existingSkillOptions.forEach((option) => map.set(option.value, option.label));
+      return map;
+    },
+  );
+
+  useEffect(() => {
+    setSkillsOptionsCache((prev) => {
+      const next = new Map(prev);
+      let changed = false;
+
+      [...existingSkillOptions, ...skillOptions].forEach((option) => {
+        if (!next.has(option.value)) {
+          next.set(option.value, option.label);
+          changed = true;
+        }
+      });
+
+      return changed ? next : prev;
+    });
+  }, [existingSkillOptions, skillOptions]);
 
   function getOptionLabels(values: string[]) {
-    return values.map((v) => allOptionsMap.get(v) ?? v);
+    return values.map((v) => skillsOptionsCache.get(v) ?? v);
   }
 
   return (
@@ -115,7 +134,11 @@ export default function JobPostStepTwo({
                     );
                   }}
                   disabled={isSkillsLoading}
-                  preloadOptions={existingSkillOptions.length > 0 ? existingSkillOptions : skillOptions}
+                  preloadOptions={
+                    existingSkillOptions.length > 0
+                      ? existingSkillOptions
+                      : skillOptions
+                  }
                   onReachEnd={() => fetchNextPage()}
                   hasNextPage={Boolean(hasNextPage)}
                   isFetchingNextPage={isFetchingNextPage}

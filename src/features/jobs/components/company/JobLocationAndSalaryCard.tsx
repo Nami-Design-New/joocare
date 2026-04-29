@@ -6,12 +6,14 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
   return (
     <div className="card border-border shadow-card flex min-h-36 items-center justify-around lg:justify-between rounded-2xl border-2 bg-white py-8 px-6">
       <div className="flex flex-1  flex-col items-center justify-center gap-2">
-        <Image
-          src={"/assets/icons/dollar.svg"}
-          width={38}
-          height={38}
-          alt="currancy icon"
-        />
+        <div className="flex items-center justify-center p-1 rounded-full border-2 border-primary">
+          <Image
+            src={"/assets/icons/dollar.svg"}
+            width={20}
+            height={20}
+            alt="currancy icon"
+          />
+        </div>
         <h4 className="text-foreground text-lg font-semibold">
           Salary {job?.salary_type ? `(${job?.currency?.code})` : ""}
         </h4>
@@ -23,12 +25,14 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
       </div>
       <div className="bg-muted h-full w-0.5"></div>
       <div className="flex flex-1  flex-col items-center justify-center gap-1">
-        <Image
-          src={"/assets/icons/map-pin.svg"}
-          width={38}
-          height={38}
-          alt="Location icon"
-        />
+        <div className="flex items-center justify-center p-1">
+          <Image
+            src={"/assets/icons/map-pin.svg"}
+            width={30}
+            height={30}
+            alt="Location icon"
+          />
+        </div>
         <h4 className="text-foreground text-lg font-semibold">Job Location</h4>
         <p className="text-muted-foreground text-md text-center font-semibold">
           {job?.city?.name ?? "-"}

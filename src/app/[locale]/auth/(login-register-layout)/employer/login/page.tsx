@@ -14,7 +14,7 @@ const LoginEmployerPage = () => {
           Welcome back,
           <br /> business.
         </h1>
-        <p className="text-[clamp(.8rem,4vw,1rem)]">
+        <p className="text-[clamp(.8rem,4vw,1rem)] mt-1">
           Manage your job posts and candidates
         </p>
 
@@ -33,7 +33,7 @@ const LoginEmployerPage = () => {
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">
-            New to JooCore?{" "}
+            Not a member yet?{" "}
             <Link
               href="/auth/employer/register"
               className="text-primary hover:text-primary/60 underline font-medium transition-colors"

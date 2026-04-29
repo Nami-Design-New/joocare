@@ -15,7 +15,7 @@ const RegisterEmployerPage = () => {
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">
-            Already on JooCare?{" "}
+            Already have an account?{" "}
             <Link
               href="/auth/employer/login"
               className="text-primary hover:text-primary/60 underline font-medium transition-colors"

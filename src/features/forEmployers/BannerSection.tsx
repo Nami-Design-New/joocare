@@ -16,22 +16,21 @@ export default function BannerSection({
 }: BannerSectionProps) {
   const bannerImage = image ?? {
     id: "fallback-banner",
-    image: "/assets/employers/bannerImg.png",
+    image: "/assets/employers/bannerImag.png",
     alt: "Medical hiring",
   };
 
   return (
     <section className="relative overflow-hidden bg-white py-12 sm:py-20 lg:py-24">
-      <div className="relative mx-auto flex  flex-col items-center gap-6 rounded-[50px] bg-[#09760A] px-4 sm:px-6 md:flex-row md:gap-10 lg:gap-16 lg:px-0">
+      <div className="relative mx-auto flex  flex-col items-center gap-6 rounded-[50px] bg-[#09760A] px-4 sm:px-6 xl:flex-row md:gap-10 lg:gap-16 lg:px-0">
         <div className="absolute top-1/2 -left-20 h-11.5 w-75 -translate-y-1/2 rotate-22 rounded-full bg-[#DEFFDE] opacity-80 blur-[200px] sm:-left-40 sm:w-[503px]" />
         <div className="absolute top-1/2 -right-20 h-11.5 w-75 -translate-y-1/2 rotate-22 rounded-full bg-[#DEFFDE] opacity-80 blur-[200px] sm:-right-40 sm:w-[503px]" />
 
         <div className="px-4 pt-8 text-center text-white sm:px-6 md:px-16">
-          <h2 className="mb-4 text-2xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mb-4 font-bold leading-tight text-white text-[clamp(1.8rem,3.5vw,3rem)]">
             {title}
           </h2>
-
-          <p className="text-sm leading-relaxed opacity-90 sm:text-base">
+          <p className="text-sm leading-relaxed opacity-90 sm:text-base text-[clamp(1.25rem,3.5vw,2rem)]">
             {description}
           </p>
 
@@ -39,7 +38,7 @@ export default function BannerSection({
             variant="default"
             size="pill"
             hoverStyle="slideSecondary"
-            className="mx-auto mt-6 flex w-full items-center justify-center gap-2 bg-black sm:mt-8 sm:w-fit"
+            className="mx-auto mt-6 flex w-full items-center justify-center gap-2 text-[clamp(1.25rem,3.5vw,2rem)] bg-black sm:mt-8 sm:w-fit"
           >
             Get Started Now
             <MoveRight className="mt-0.75" size={16} />

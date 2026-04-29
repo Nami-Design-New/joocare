@@ -78,7 +78,7 @@ export default function ApplicantsClient({ applicants, token }: Props) {
       setDownloadingApplicantId(null);
     }
   };
-  console.log("application", applicants);
+  // console.log("application", applicants);
 
   return (
     <>

@@ -18,8 +18,8 @@ export default function LoginAlertModal({
     <AlertModal
       open={open}
       onOpenChange={onOpenChange}
-      title="Please login"
-      description="Please login first to take full advantage of the platform's features."
+      title="Unlock your opportunities"
+      description="Sign in to explore relevant roles, manage applications, and stay updated on opportunities tailored to your profile."
       confirmLabel="Login"
       hasCancelButton={false}
       onConfirm={() => {

@@ -7,7 +7,6 @@ import {
   Combobox,
   ComboboxCollection,
   ComboboxContent,
-  ComboboxEmpty,
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
@@ -35,7 +34,7 @@ type MultiSelectInputFieldProps = {
   searchPlaceholder?: string;
   onSearchChange?: (value: string) => void;
   portalContainer?: HTMLElement | null;
-  preloadOptions?: Option[]
+  preloadOptions?: Option[];
 };
 
 export const MultiSelectInputField = React.forwardRef<
@@ -69,6 +68,7 @@ export const MultiSelectInputField = React.forwardRef<
   ) => {
     const listRef = React.useRef<HTMLDivElement | null>(null);
     const observerRef = React.useRef<IntersectionObserver | null>(null);
+    const [searchQuery, setSearchQuery] = React.useState("");
     // ✅ KEEP only this:
     const [optionsCache, setOptionsCache] = React.useState<Map<string, Option>>(
       () => {
@@ -104,7 +104,7 @@ export const MultiSelectInputField = React.forwardRef<
       });
     }, [options, preloadOptions]);
 
-    const selectedOptions = value
+    const cachedSelectedOptions = value
       .map((v) => optionsCache.get(v))
       .filter((o): o is Option => o !== undefined);
 
@@ -112,11 +112,37 @@ export const MultiSelectInputField = React.forwardRef<
     // never loses track of already-selected items when search filters change.
     const mergedItems = React.useMemo(() => {
       const currentValues = new Set(options.map((o) => o.value));
-      const missingSelected = selectedOptions.filter(
+      const missingSelected = cachedSelectedOptions.filter(
         (o) => !currentValues.has(o.value),
       );
-      return [...missingSelected, ...options];
-    }, [options, selectedOptions]);
+      // Keep the server-provided options ordering stable; append missing selected
+      // items so they remain selectable/checked without being forced to the top.
+      return [...options, ...missingSelected];
+    }, [cachedSelectedOptions, options]);
+
+    const selectedValuesSet = React.useMemo(() => new Set(value), [value]);
+
+    // Items shown in the dropdown:
+    // - follow current (server) `options` order
+    // - filtered by the search input
+    // - hide already-selected items (so they don't keep appearing in results)
+    const displayItems = React.useMemo(() => {
+      const query = searchQuery.trim().toLowerCase();
+      const filtered = query
+        ? options.filter((item) =>
+          (item.label ?? "").toLowerCase().includes(query),
+        )
+        : options;
+
+      return filtered.filter((item) => !selectedValuesSet.has(item.value));
+    }, [options, searchQuery, selectedValuesSet]);
+
+    const selectedOptions = React.useMemo(() => {
+      const mergedMap = new Map(mergedItems.map((item) => [item.value, item]));
+      return value
+        .map((selectedValue) => mergedMap.get(selectedValue))
+        .filter((option): option is Option => option !== undefined);
+    }, [mergedItems, value]);
 
     const handleObserver = React.useCallback(
       (node: HTMLDivElement | null) => {
@@ -167,11 +193,22 @@ export const MultiSelectInputField = React.forwardRef<
 
         <Combobox
           id={id}
+          // Keep selected items in the combobox collection so checked state
+          // doesn't break when options are paginated/searched.
           items={mergedItems}
           multiple
           value={selectedOptions}
+          isItemEqualToValue={(item, selectedItem) =>
+            item?.value === selectedItem?.value
+          }
           onValueChange={(raw) => {
-            const selected = (raw as Option[]).map((o) => o.value ?? "");
+            const selected = Array.from(
+              new Set(
+                (raw as Option[])
+                  .map((o) => o.value)
+                  .filter((v): v is string => Boolean(v)),
+              ),
+            );
             onChange?.(selected);
           }}
           disabled={disabled}
@@ -219,26 +256,35 @@ export const MultiSelectInputField = React.forwardRef<
               <ComboboxInput
                 showTrigger={false}
                 placeholder={searchPlaceholder}
-                onChange={(event) => onSearchChange?.(event.currentTarget.value)}
+                onChange={(event) => {
+                  const nextValue = event.currentTarget.value;
+                  setSearchQuery(nextValue);
+                  onSearchChange?.(nextValue);
+                }}
               />
             )}
-            <ComboboxEmpty>No results found.</ComboboxEmpty>
             <ComboboxList ref={listRef} className="max-h-60 overflow-y-auto">
-              <ComboboxCollection>
-                {(item) => (
-                  <ComboboxItem key={item.value} value={item}>
-                    {item.image && (
-                      <Image
-                        src={item.image}
-                        alt={item.label}
-                        width={30}
-                        height={15}
-                      />
-                    )}
-                    {item.label}
-                  </ComboboxItem>
-                )}
-              </ComboboxCollection>
+              {displayItems.length === 0 ? (
+                <div className="text-muted-foreground px-2 py-2 text-center text-sm">
+                  No results found.
+                </div>
+              ) : (
+                <ComboboxCollection>
+                  {(item: Option, index: number) => (
+                    <ComboboxItem key={item.value} value={item}>
+                      {item.image && (
+                        <Image
+                          src={item.image}
+                          alt={item.label}
+                          width={30}
+                          height={15}
+                        />
+                      )}
+                      {item.label}
+                    </ComboboxItem>
+                  )}
+                </ComboboxCollection>
+              )}
               <div ref={handleObserver} className="h-1" />
             </ComboboxList>
             {isFetchingNextPage && (

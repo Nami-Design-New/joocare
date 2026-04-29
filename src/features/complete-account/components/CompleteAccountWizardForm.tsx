@@ -168,9 +168,9 @@ export default function CompleteAccountWizardForm() {
       const organizationPhoneValue = data.organizationPhoneNumber?.trim();
       const phoneParsed = organizationPhoneValue
         ? parsePhoneWithCode(
-            organizationPhoneValue,
-            profileData?.phone_code,
-          )
+          organizationPhoneValue,
+          profileData?.phone_code,
+        )
         : null;
 
       const payload: Parameters<typeof postStepThree>[0] = {
@@ -223,8 +223,8 @@ export default function CompleteAccountWizardForm() {
       <SuccessModal
         open={isOpenSuccessModal}
         onOpenChange={setIsOpenSuccessModal}
-        title="Saved successfully"
-        description="You can return to complete the job details and publish them at any time from the 'Job Management' list."
+        title="Welcome to the Joocare platform"
+        description="Your business verification documents have been successfully submitted and are currently under review. You will be notified once the review process is complete."
       />
     </FormProvider>
   );
