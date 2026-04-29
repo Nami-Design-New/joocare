@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
 const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
@@ -54,16 +54,32 @@ export default function JobPostStepTwo({
     [existingJob],
   );
 
-  const allOptionsMap = useMemo(() => {
-    const map = new Map<string, string>();
-    [...existingSkillOptions, ...skillOptions].forEach((option) => {
-      map.set(option.value, option.label);
+  const [skillsOptionsCache, setSkillsOptionsCache] = useState<Map<string, string>>(
+    () => {
+      const map = new Map<string, string>();
+      existingSkillOptions.forEach((option) => map.set(option.value, option.label));
+      return map;
+    },
+  );
+
+  useEffect(() => {
+    setSkillsOptionsCache((prev) => {
+      const next = new Map(prev);
+      let changed = false;
+
+      [...existingSkillOptions, ...skillOptions].forEach((option) => {
+        if (!next.has(option.value)) {
+          next.set(option.value, option.label);
+          changed = true;
+        }
+      });
+
+      return changed ? next : prev;
     });
-    return map;
   }, [existingSkillOptions, skillOptions]);
 
   function getOptionLabels(values: string[]) {
-    return values.map((v) => allOptionsMap.get(v) ?? v);
+    return values.map((v) => skillsOptionsCache.get(v) ?? v);
   }
 
   return (

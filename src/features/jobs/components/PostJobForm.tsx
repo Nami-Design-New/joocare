@@ -632,6 +632,7 @@ export default function PostJobForm() {
                   persistedOptions={stepOneDisplayOptions}
                   onPersistOption={handleStepOneOptionChange}
                   onPreviewLabelChange={handlePreviewLabelChange}
+                  existingJob={existingJob}
                 />
               )}
               {currentStep === 1 && (

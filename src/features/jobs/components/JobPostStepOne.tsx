@@ -25,11 +25,12 @@ import useGetSeniorityLevels from "@/shared/hooks/useGetSeniorityLevels";
 import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
 import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { JobPostStepOneSkeleton } from "./JobPostStepOneSkeleton";
 import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import useGetEmploymentTypes from "@/shared/hooks/useGetEmploymentTypes";
 import type { Option } from "@/shared/components/SelectInputField";
+import { JobDetails } from "../types/jobs.types";
 
 const CUSTOM_CERTIFICATION_PREFIX = "__custom__:";
 
@@ -65,6 +66,13 @@ function mergePersistedOption(options: Option[], persisted?: Option) {
   return [persisted, ...options];
 }
 
+function toSelectOptions(items: LookupOptionItem[]) {
+  return items.map((item) => ({
+    label: item.title ?? item.name ?? "",
+    value: String(item.id ?? ""),
+  }));
+}
+
 function getOptionLabel(options: Option[], value: string) {
   return options.find((option) => option.value === value)?.label ?? value;
 }
@@ -97,10 +105,12 @@ function JobPostStepOneContent({
   persistedOptions,
   onPersistOption,
   onPreviewLabelChange,
+  existingJob,
 }: {
   persistedOptions?: PersistedOptions;
   onPersistOption?: (key: keyof PersistedOptions, option?: Option) => void;
   onPreviewLabelChange?: (key: PreviewLabelKey, value: string | string[]) => void;
+  existingJob?: JobDetails | null;
 }) {
   // hooks land and token
   const locale = useLocale();
@@ -285,21 +295,82 @@ function JobPostStepOneContent({
   const isOtherJobTitle = selectedJobTitle === "__other__";
   const selectedMandatoryCertifications = watch("mandatoryCertifications") ?? [];
 
-  const toSelectOptions = (items: LookupOptionItem[]) =>
-    items.map((item) => ({
-      label: item.title ?? item.name ?? "",
-      value: String(item.id ?? ""),
-    }));
-
-  const mandatoryCertificationOptions = [
-    ...toSelectOptions(mandatoryCertifications),
-    ...selectedMandatoryCertifications
-      .filter((item) => item.startsWith(CUSTOM_CERTIFICATION_PREFIX))
-      .map((item) => ({
-        label: item.slice(CUSTOM_CERTIFICATION_PREFIX.length),
-        value: item,
+  const existingEducationLevelOptions = useMemo(
+    () =>
+      (existingJob?.education_levels ?? []).map((item) => ({
+        label: item.title ?? "",
+        value: String(item.id),
       })),
-  ];
+    [existingJob],
+  );
+
+  const existingMandatoryCertificationOptions = useMemo(
+    () =>
+      (existingJob?.mandatory_certifications ?? [])
+        .map((item) => {
+          if (item.mandatory_certification_id != null) {
+            return {
+              label:
+                item.title ?? item.mandatory_certification?.title ?? "",
+              value: String(item.mandatory_certification_id),
+            };
+          }
+
+          const title = item.title?.trim();
+          if (title) {
+            return {
+              label: title,
+              value: `${CUSTOM_CERTIFICATION_PREFIX}${title}`,
+            };
+          }
+
+          return null;
+        })
+        .filter((item): item is Option => Boolean(item)),
+    [existingJob],
+  );
+
+  const mandatoryCertificationOptions = useMemo(
+    () => [
+      ...toSelectOptions(mandatoryCertifications),
+      ...selectedMandatoryCertifications
+        .filter((item) => item.startsWith(CUSTOM_CERTIFICATION_PREFIX))
+        .map((item) => ({
+          label: item.slice(CUSTOM_CERTIFICATION_PREFIX.length),
+          value: item,
+        })),
+    ],
+    [mandatoryCertifications, selectedMandatoryCertifications],
+  );
+
+  const educationLevelsOptions = useMemo(
+    () => toSelectOptions(educationLevels),
+    [educationLevels],
+  );
+
+  const educationLevelLabelsMap = useMemo(() => {
+    const map = new Map<string, string>();
+    [...existingEducationLevelOptions, ...educationLevelsOptions].forEach(
+      (option) => {
+        map.set(option.value, option.label);
+      },
+    );
+    return map;
+  }, [existingEducationLevelOptions, educationLevelsOptions]);
+
+  const mandatoryCertificationLabelsMap = useMemo(() => {
+    const map = new Map<string, string>();
+    [...existingMandatoryCertificationOptions, ...mandatoryCertificationOptions].forEach(
+      (option) => {
+        map.set(option.value, option.label);
+      },
+    );
+    return map;
+  }, [existingMandatoryCertificationOptions, mandatoryCertificationOptions]);
+
+  function resolveLabelsFromMap(values: string[], map: Map<string, string>) {
+    return values.map((value) => map.get(value) ?? value);
+  }
   const jobTitleOptions = mergePersistedOption(
     [
       ...jobTitles.map((type) => ({
@@ -913,15 +984,16 @@ function JobPostStepOneContent({
                       ? educationLevelsError.message
                       : undefined)
                   }
-                  options={toSelectOptions(educationLevels)}
+                  options={educationLevelsOptions}
                   onChange={(value) => {
                     field.onChange(value);
                     onPreviewLabelChange?.(
                       "educationLevel",
-                      getOptionLabels(toSelectOptions(educationLevels), value),
+                      resolveLabelsFromMap(value, educationLevelLabelsMap),
                     );
                   }}
                   disabled={isEducationLevelsLoading}
+                  preloadOptions={existingEducationLevelOptions}
                   onReachEnd={() => fetchMoreEducationLevels()}
                   hasNextPage={Boolean(hasMoreEducationLevels)}
                   isFetchingNextPage={isFetchingMoreEducationLevels}
@@ -954,10 +1026,11 @@ function JobPostStepOneContent({
                       field.onChange(value);
                       onPreviewLabelChange?.(
                         "mandatoryCertifications",
-                        getOptionLabels(mandatoryCertificationOptions, value),
+                        resolveLabelsFromMap(value, mandatoryCertificationLabelsMap),
                       );
                     }}
                     disabled={isMandatoryCertificationsLoading}
+                    preloadOptions={existingMandatoryCertificationOptions}
                     onReachEnd={() => fetchMoreMandatoryCertifications()}
                     hasNextPage={Boolean(hasMoreMandatoryCertifications)}
                     isFetchingNextPage={isFetchingMoreMandatoryCertifications}
@@ -1048,11 +1121,13 @@ export default function JobPostStepOne({
   persistedOptions,
   onPersistOption,
   onPreviewLabelChange,
+  existingJob,
 }: {
   isLoading?: boolean;
   persistedOptions?: PersistedOptions;
   onPersistOption?: (key: keyof PersistedOptions, option?: Option) => void;
   onPreviewLabelChange?: (key: PreviewLabelKey, value: string | string[]) => void;
+  existingJob?: JobDetails | null;
 }) {
   if (isLoading) {
     return <JobPostStepOneSkeleton />;
@@ -1063,6 +1138,7 @@ export default function JobPostStepOne({
       persistedOptions={persistedOptions}
       onPersistOption={onPersistOption}
       onPreviewLabelChange={onPreviewLabelChange}
+      existingJob={existingJob}
     />
   );
 }
