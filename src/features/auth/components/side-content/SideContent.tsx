@@ -19,7 +19,7 @@ const SideContent = () => {
         {isEmployerRegister ? (
           <>
             <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
-              Let’s setup your operating Agreement
+              Let’s Create Your Organization’s Account
             </h2>
           </>
         ) : (
@@ -38,7 +38,7 @@ const SideContent = () => {
             `With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
           {isEmployerRegister &&
             `
-            With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
+            Set the foundation for your hiring success. By finalizing your account details, you unlock Joocare’s smart matching tools and predictive insights to streamline your entire recruitment lifecycle`}
           {isCandidateRegister &&
             `With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
         </p>

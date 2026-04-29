@@ -85,7 +85,7 @@ const FormEmployerRegister = () => {
         <InputField
           id="officialEmail"
           type="email"
-          label="Official Email"
+          label="Business Email"
           placeholder="ex: mail@mail.com"
           {...register("officialEmail")}
           error={errors.officialEmail?.message}

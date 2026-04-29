@@ -92,30 +92,30 @@ function buildEditPreviewData(
   const resolvedTitle = resolveTitle(data, job);
   const salary = data.addSalary
     ? getJobSalary({
-        min_salary: data.salary?.min ?? null,
-        max_salary: data.salary?.max ?? null,
-        currency: null,
-      })
+      min_salary: data.salary?.min ?? null,
+      max_salary: data.salary?.max ?? null,
+      currency: null,
+    })
     : "Not specified";
   const salaryType = data.addSalary
     ? resolvePreviewString(
-        previewLabels.salaryType,
-        resolveNamedValue(
-          data.salary?.type,
-          job?.salary_type_id,
-          job?.salary_type?.title,
-        ),
-      )
+      previewLabels.salaryType,
+      resolveNamedValue(
+        data.salary?.type,
+        job?.salary_type_id,
+        job?.salary_type?.title,
+      ),
+    )
     : "-";
   const currencyCode = data.addSalary
     ? resolvePreviewString(
-        previewLabels.currency,
-        resolveNamedValue(
-          data.salary?.currency,
-          job?.currency_id,
-          job?.currency?.code,
-        ),
-      )
+      previewLabels.currency,
+      resolveNamedValue(
+        data.salary?.currency,
+        job?.currency_id,
+        job?.currency?.code,
+      ),
+    )
     : "";
 
   return {
@@ -228,12 +228,14 @@ function EditModeReviewCards({ preview }: { preview: ReviewPreviewData }) {
     <>
       <div className="card border-border shadow-card flex min-h-36 items-center justify-around rounded-2xl border-2 bg-white px-6 py-8 lg:justify-between">
         <div className="flex flex-1 flex-col items-center justify-center gap-2">
-          <Image
-            src={"/assets/icons/dollar.svg"}
-            width={38}
-            height={38}
-            alt="currancy icon"
-          />
+          <div className="flex items-center justify-center p-1 rounded-full border-2 border-primary">
+            <Image
+              src={"/assets/icons/dollar.svg"}
+              width={20}
+              height={20}
+              alt="currancy icon"
+            />
+          </div>
           <h4 className="text-foreground text-lg font-semibold">
             Salary {preview.salaryType !== "-" ? `(${preview.currencyCode})` : ""}
           </h4>
@@ -244,12 +246,14 @@ function EditModeReviewCards({ preview }: { preview: ReviewPreviewData }) {
         </div>
         <div className="bg-muted h-full w-0.5"></div>
         <div className="flex flex-1 flex-col items-center justify-center gap-1">
-          <Image
-            src={"/assets/icons/map-pin.svg"}
-            width={38}
-            height={38}
-            alt="Location icon"
-          />
+          <div className="flex items-center justify-center p-1">
+            <Image
+              src={"/assets/icons/map-pin.svg"}
+              width={30}
+              height={30}
+              alt="Location icon"
+            />
+          </div>
           <h4 className="text-foreground text-lg font-semibold">Job Location</h4>
           <p className="text-muted-foreground text-md text-center font-semibold">
             {preview.city}

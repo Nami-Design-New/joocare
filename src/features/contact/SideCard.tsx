@@ -60,8 +60,8 @@ export default function SideCard({
   const resolvedImageSrc =
     imageSrc ??
     (role === "employer"
-      ? "/assets/contact/employer.svg"
-      : "/assets/contact/candidate.svg");
+      ? "/assets/contact/employer.png"
+      : "/assets/contact/candidate.png");
 
   const resolvedButtonText =
     buttonText ?? (role === "employer" ? "For Candidate" : "For Employer");
@@ -75,7 +75,7 @@ export default function SideCard({
         </h2>
       </div>
       <section className="flex w-full grow flex-col items-center justify-center gap-2">
-        <div className="relative h-48 w-full xl:h-95">
+        <div className="relative h-75 w-full">
           <Image src={resolvedImageSrc} alt={imageAlt} fill />
         </div>
         {canSwitchRole ? (

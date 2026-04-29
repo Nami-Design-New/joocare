@@ -62,13 +62,15 @@ export default function JobCard({ resumeMatch,
   onSavedChange
 
 }: JobCardProps) {
-  const [closeJob, setCloseJob] = useState(false);
+  const [closedJob, setClosedJob] = useState(false);
+  const [reactivateJob, setReactivateJob] = useState(false);
   const [pauseJob, setPauseJob] = useState(false);
   const [deleteJob, setDeleteJob] = useState(false);
   const queryClient = useQueryClient();
   const { updateStatus, isPending } = useUpdateCompanyJobStatus(job.id, {
     onSuccess: () => {
-      setCloseJob(false);
+      setClosedJob(false);
+      setReactivateJob(false);
       setPauseJob(false);
     },
   });
@@ -79,8 +81,11 @@ export default function JobCard({ resumeMatch,
     },
   });
 
-  const handleCloseJob = () => {
+  const handleClosedJob = () => {
     updateStatus("closed");
+  };
+  const handleReactivateJob = () => {
+    updateStatus("open");
   };
   const handlePauseJob = () => {
     updateStatus("paused");
@@ -109,11 +114,8 @@ export default function JobCard({ resumeMatch,
   })();
   const statusDate = job.status?.created_at ?? job.updated_at ?? "";
   const normalizedStatus = normalizeJobStatus(job.status?.status ?? "draft");
-  const handleOpenJob = () => {
-    updateStatus("open");
-  };
 
-  { console.log(normalizedStatus, job) }
+  // { console.log(normalizedStatus, job) }
 
   return (
     <>
@@ -141,9 +143,11 @@ export default function JobCard({ resumeMatch,
 
           {!resumeMatch ? (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <CircleEllipsis color="var(--muted-foreground)" className="cursor-pointer" />
-              </DropdownMenuTrigger>
+              {(normalizedStatus !== "closed") &&
+                <DropdownMenuTrigger asChild>
+                  <CircleEllipsis color="var(--muted-foreground)" className="cursor-pointer" />
+                </DropdownMenuTrigger>
+              }
 
               <DropdownMenuContent align="end">
                 {(normalizedStatus === "open") && (<>
@@ -164,9 +168,9 @@ export default function JobCard({ resumeMatch,
                   <DropdownMenuItem
                     className="flex gap-2 cursor-pointer"
                     disabled={isPending}
-                    onClick={() => setCloseJob(true)}
+                    onClick={() => setClosedJob(true)}
                   >
-                    <CheckCheck /> <span>closed</span>
+                    <CheckCheck /> <span>closedd</span>
                   </DropdownMenuItem>
                 </>
                 )}
@@ -184,18 +188,20 @@ export default function JobCard({ resumeMatch,
                   <DropdownMenuItem
                     className="flex gap-2 cursor-pointer"
                     disabled={isPending}
-                    onClick={handleOpenJob}
+                    onClick={() => setReactivateJob(true)}
                   >
                     <EyeOff /> <span>Reactive</span>
                   </DropdownMenuItem>
                 }
-                <DropdownMenuItem
-                  className="text-destructive flex gap-2 cursor-pointer"
-                  disabled={isDeleting}
-                  onClick={() => setDeleteJob(true)}
-                >
-                  <Trash2 color="var(--destructive)" /> <span>Delete</span>
-                </DropdownMenuItem>
+                {(normalizedStatus === "draft") &&
+                  <DropdownMenuItem
+                    className="text-destructive flex gap-2 cursor-pointer"
+                    disabled={isDeleting}
+                    onClick={() => setDeleteJob(true)}
+                  >
+                    <Trash2 color="var(--destructive)" /> <span>Delete</span>
+                  </DropdownMenuItem>
+                }
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
@@ -279,21 +285,31 @@ export default function JobCard({ resumeMatch,
         </CardFooter>
       </Card>
       <AlertModal
-        open={closeJob}
-        onOpenChange={setCloseJob}
-        title="Was the recruitment process successful?"
-        description="By closing this advertisement, it will be moved to the archive and will not be visible to medical staff again. Please ensure that you have saved the details of the applicants you wish to contact later."
-        confirmLabel="Yes, close the advertisement."
+        open={closedJob}
+        onOpenChange={setClosedJob}
+        title="Has this position been successfully filled?"
+        description="Closing this job posting will archive the role and remove it from visibility to medical professionals. Please ensure all relevant applicant details have been saved before proceeding."
+        confirmLabel="Yes, closed the advertisement."
         cancelLabel="Back"
-        onConfirm={handleCloseJob}
+        onConfirm={handleClosedJob}
+        isLoading={isPending}
+      />
+      <AlertModal
+        open={reactivateJob}
+        onOpenChange={setReactivateJob}
+        title="Would you like to resume accepting applications?"
+        description="Reactivating this job posting will make it visible in search results and allow qualified medical professionals to apply immediately. All applicant activity will resume according to your previous posting settings."
+        confirmLabel="Yes, active now"
+        cancelLabel="Back"
+        onConfirm={handleReactivateJob}
         isLoading={isPending}
       />
       <AlertModal
         open={pauseJob}
         onOpenChange={setPauseJob}
         confirmButtonVariant="destructive"
-        title="Are you sure you want to stop your advertisement?"
-        description="Stopping the advertisement means halting the flow of new applicants. Are you sure you want to disable this post now"
+        title="Would you like to pause applications for this position?"
+        description="Pausing this job posting will stop new applications from being submitted. The role will no longer appear in search results until it is reactivated."
         confirmLabel="Yes, stop the advertisement"
         cancelLabel="Back"
         onConfirm={handlePauseJob}

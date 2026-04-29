@@ -14,8 +14,8 @@ const LoginCandidatePage = () => {
       >
         {/* header text */}
         <h1>Welcome Back</h1>
-        <p className="text-[clamp(.8rem,4vw,1rem)]">
-          Find your next opportunity faster
+        <p className="text-[clamp(.8rem,4vw,1rem)] mt-1">
+          Take the next step in your professional career
         </p>
 
         {/* Login form */}
@@ -34,7 +34,7 @@ const LoginCandidatePage = () => {
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">
-            New to JooCore?{" "}
+            Not a member yet?{" "}
             <Link
               href="/auth/candidate/register"
               className="text-primary hover:text-primary/60 underline font-medium transition-colors"

@@ -707,7 +707,7 @@ export default function PostJobForm() {
         open={saveDraftOpen}
         onOpenChange={setSaveDraftOpen}
         title="Save as draft"
-        description="All the data you have entered will be saved in the 'Drafts' list. The advertisement will not be published to the public until you complete it and click the publish button."
+        description="All entered information will be saved in the Drafts section. The job posting will not be published until you complete the details and choose to publish."
         confirmLabel="Save as draft"
         cancelLabel="Back"
         onConfirm={handleSaveDraft}
@@ -717,7 +717,7 @@ export default function PostJobForm() {
         open={saveSuccessOpen}
         onOpenChange={setSaveSuccessOpen}
         title="Saved successfully"
-        description="You can return to complete the job details and publish them at any time from the 'Job Management' list."
+        description="The job details have been saved. You can continue editing and publish the posting at any time from Job Management."
       />
       <SuccessModal
         open={postSuccess}
@@ -727,7 +727,7 @@ export default function PostJobForm() {
           : "Your advertisement has been successfully published!"}
         description={isEditMode
           ? "Your changes have been saved and the job listing has been updated."
-          : "Your advertisement is now available to thousands of medical professionals on the platform. We will notify you as soon as any suitable candidates apply. You can track statistics and applicant interactions through the dashboard."}
+          : "The job posting has been activated and is open to applicants. All applications, engagement activity, and performance insights are available in the dashboard."}
       />
     </section>
   );

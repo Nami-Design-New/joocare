@@ -26,12 +26,15 @@ export function JobActionButtons({
   deleteRedirectTo,
 }: JobActionButtonsProps) {
   const [closeJob, setCloseJob] = useState(false);
+  const [reactivateJob, setReactivateJob] = useState(false);
   const [pauseJob, setPauseJob] = useState(false);
   const [deleteJob, setDeleteJob] = useState(false);
   const { updateStatus, isPending } = useUpdateCompanyJobStatus(jobId, {
     onSuccess: () => {
       setCloseJob(false);
       setPauseJob(false);
+      setReactivateJob(false);
+      window.location.reload()
     },
   });
   const { deleteJob: deleteCompanyJob, isPending: isDeleting } = useDeleteCompanyJob(jobId, {
@@ -43,6 +46,9 @@ export function JobActionButtons({
 
   const handleCloseJob = () => {
     updateStatus("closed");
+  };
+  const handleReactivateJob = () => {
+    updateStatus("open");
   };
   const handlePauseJob = () => {
     updateStatus("paused");
@@ -68,7 +74,7 @@ export function JobActionButtons({
           <Link
             href={resolvedEditHref}
             className={`${buttonVariants({
-              variant: "secondary",
+              variant: "default",
               size: "pill",
             })} items-center gap-2`}
           >
@@ -77,19 +83,19 @@ export function JobActionButtons({
           <Button
             variant="default"
             size="pill"
-            className="flex items-center gap-2"
+            className="bg-destructive flex items-center gap-2"
             disabled={isPending}
             onClick={() => setCloseJob(true)}
           >
-            <CheckCheck className="h-4 w-4" /> Closed
+            <CheckCheck className="h-4 w-4" /> Close
           </Button>
           <Button
             size="pill"
-            className="bg-foreground flex items-center gap-2"
+            className="bg-warning flex items-center gap-2"
             disabled={isPending}
             onClick={() => setPauseJob(true)}
           >
-            <EyeOff className="h-4 w-4" /> Paused
+            <EyeOff className="h-4 w-4" /> Pause
           </Button>
         </>
         )}
@@ -111,38 +117,49 @@ export function JobActionButtons({
             size="pill"
             className="flex-1 items-center justify-center gap-2"
             disabled={isPending}
-            onClick={handleOpenJob}
+            onClick={() => setReactivateJob(true)}
           >
             <Play className="h-4 w-4" /> Resume
           </Button>
         ) : null}
-
-        <Button
-          variant="destructive"
-          size="pill"
-          className={`flex-1 items-center justify-center gap-2 `}
-          disabled={isDeleting}
-          onClick={() => setDeleteJob(true)}
-        >
-          <Trash2 className="h-4 w-4" /> Deleted
-        </Button>
+        {isDraft && (
+          <Button
+            variant="destructive"
+            size="pill"
+            className={`flex-1 items-center justify-center gap-2 `}
+            disabled={isDeleting}
+            onClick={() => setDeleteJob(true)}
+          >
+            <Trash2 className="h-4 w-4" /> Deleted
+          </Button>
+        )}
       </div>
       <AlertModal
         open={closeJob}
         onOpenChange={setCloseJob}
-        title="Was the recruitment process successful?"
-        description="By closing this advertisement, it will be moved to the archive and will not be visible to medical staff again. Please ensure that you have saved the details of the applicants you wish to contact later."
+        title="Has this position been successfully filled?"
+        description="Closing this job posting will archive the role and remove it from visibility to medical professionals. Please ensure all relevant applicant details have been saved before proceeding."
         confirmLabel="Yes, close the advertisement."
         cancelLabel="Back"
         onConfirm={handleCloseJob}
         isLoading={isPending}
       />
       <AlertModal
+        open={reactivateJob}
+        onOpenChange={setReactivateJob}
+        title="Would you like to resume accepting applications?"
+        description="Reactivating this job posting will make it visible in search results and allow qualified medical professionals to apply immediately. All applicant activity will resume according to your previous posting settings."
+        confirmLabel="Yes, active now"
+        cancelLabel="Back"
+        onConfirm={handleReactivateJob}
+        isLoading={isPending}
+      />
+      <AlertModal
         open={pauseJob}
         onOpenChange={setPauseJob}
         confirmButtonVariant="destructive"
-        title="Are you sure you want to stop your advertisement?"
-        description="Stopping the advertisement means halting the flow of new applicants. Are you sure you want to disable this post now"
+        title="Would you like to pause applications for this position?"
+        description="Pausing this job posting will stop new applications from being submitted. The role will no longer appear in search results until it is reactivated."
         confirmLabel="Yes, stop the advertisement"
         cancelLabel="Back"
         onConfirm={handlePauseJob}

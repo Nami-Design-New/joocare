@@ -309,10 +309,10 @@ export function ApplyNowModal({
         open={isOpenSuccessModal}
         onOpenChange={setIsOpenSuccessModal}
         variant="submitted"
-        title="Your request has been successfully submitted!"
-        description="Congratulations! Your CV is now in the hands of the recruitment team. You can review your submitted applications or continue exploring more opportunities."
+        title="Application submitted successfully"
+        description="Thank you for submitting your application. Your profile has been shared with the recruitment team and is currently under review. You will be notified if you progress to the next stage."
         primaryAction={{
-          label: "Go to Applications",
+          label: "Go to Job Applications",
           href: "/candidate/applications",
         }}
         secondaryAction={{
