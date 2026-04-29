@@ -130,8 +130,8 @@ export const MultiSelectInputField = React.forwardRef<
       const query = searchQuery.trim().toLowerCase();
       const filtered = query
         ? options.filter((item) =>
-            (item.label ?? "").toLowerCase().includes(query),
-          )
+          (item.label ?? "").toLowerCase().includes(query),
+        )
         : options;
 
       return filtered.filter((item) => !selectedValuesSet.has(item.value));
@@ -269,8 +269,8 @@ export const MultiSelectInputField = React.forwardRef<
                   No results found.
                 </div>
               ) : (
-                <ComboboxCollection items={displayItems}>
-                  {(item) => (
+                <ComboboxCollection>
+                  {(item: Option, index: number) => (
                     <ComboboxItem key={item.value} value={item}>
                       {item.image && (
                         <Image
