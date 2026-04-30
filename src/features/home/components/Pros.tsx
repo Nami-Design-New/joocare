@@ -19,17 +19,16 @@ export default function Pros({
         icon="/assets/icons/section-title-white-icon.svg"
       />
       <h3 className="mt-2 text-xl font-semibold text-white">{title}</h3>
-      <p className="text-4 text-body-bg mt-6 mb-10">{description}</p>
+      <p className="text-4 text-[#F7FAF7] mt-6 mb-10">{description}</p>
       <ul className="flex flex-col items-start gap-8">
         {items.map((item, index) => (
           <li key={item.id} className="flex gap-7">
             <div className={index < items.length - 1 ? "relative" : undefined}>
               <div
-                className={`bg-primary flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${
-                  index < items.length - 1
-                    ? "after:absolute after:top-12 after:left-1/2 after:z-40 after:h-[calc(100%-16px)] after:w-0.5 after:bg-white after:content-['']"
-                    : ""
-                }`}
+                className={`bg-primary flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${index < items.length - 1
+                  ? "after:absolute after:top-12 after:left-1/2 after:z-40 after:h-[calc(100%-16px)] after:w-0.5 after:bg-white after:content-['']"
+                  : ""
+                  }`}
               >
                 <LiquidGlass
                   borderRadius={9999}
@@ -46,7 +45,7 @@ export default function Pros({
             </div>
             <div>
               <h4 className="mb-2 text-xl font-semibold">{item.title}</h4>
-              <p className="text-body-bg font-normal">{item.description}</p>
+              <p className="text-[#F7FAF7] font-normal">{item.description}</p>
             </div>
           </li>
         ))}

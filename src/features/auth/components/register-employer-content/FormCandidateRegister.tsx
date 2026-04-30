@@ -261,11 +261,12 @@ const FormCandidateRegister = () => {
 
           <FilepondUpload
             label="Upload CV"
-            value={field.value}                         // the stored path
-            onUploadSuccess={(imagePath) => field.onChange(imagePath)} // ✅ set path
-            onRemove={() => field.onChange("")}          // ✅ clear on remove
+            value={field.value}
+            onUploadSuccess={(imagePath) => field.onChange(imagePath)}
+            onRemove={() => field.onChange("")}
             allowMultiple={false}
             maxFiles={1}
+            maxSize={10 * 1024 * 1024}
             error={errors.uploadCV?.message}
           />
         )}

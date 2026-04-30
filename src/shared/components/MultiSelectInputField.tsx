@@ -271,7 +271,12 @@ export const MultiSelectInputField = React.forwardRef<
               ) : (
                 <ComboboxCollection>
                   {(item: Option, index: number) => (
-                    <ComboboxItem key={item.value} value={item}>
+                    <ComboboxItem key={item.value} value={item}
+                      className={cn(
+                        "flex items-center gap-2",
+                        value.includes(item.value ?? "") && "bg-accent text-accent-foreground"
+                      )}
+                    >
                       {item.image && (
                         <Image
                           src={item.image}

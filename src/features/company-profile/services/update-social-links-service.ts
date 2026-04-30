@@ -2,6 +2,7 @@ import { apiFetch } from "@/shared/lib/fetch-manager";
 
 export async function updateSocialLinksService(
     payload: {
+        website: string;
         facebook: string;
         twitter: string;
         linkedin: string;

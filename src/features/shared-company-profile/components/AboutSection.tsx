@@ -24,7 +24,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                     {company?.linkedin && (
                         <a href={company.linkedin} target="_blank" rel="noopener noreferrer">
                             <Image
-                                src="/assets/icons/linkedin-circle.svg"
+                                src="/assets/icons/social-icons/linkedin-about.svg"
                                 width={30}
                                 height={30}
                                 alt="LinkedIn"
@@ -35,7 +35,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                     {company?.facebook && (
                         <a href={company.facebook} target="_blank" rel="noopener noreferrer">
                             <Image
-                                src="/assets/icons/facebook-circle.svg"
+                                src="/assets/icons/social-icons/facebook-about.svg"
                                 width={30}
                                 height={30}
                                 alt="Facebook"
@@ -46,7 +46,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                     {company?.instagram && (
                         <a href={company.instagram} target="_blank" rel="noopener noreferrer">
                             <Image
-                                src="/assets/icons/instagram-circle.svg"
+                                src="/assets/icons/social-icons/instagram-about.svg"
                                 width={30}
                                 height={30}
                                 alt="Instagram"
@@ -57,7 +57,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                     {company?.twitter && (
                         <a href={company.twitter} target="_blank" rel="noopener noreferrer">
                             <Image
-                                src="/assets/icons/x-circle.svg"
+                                src="/assets/icons/social-icons/twitter-about.svg"
                                 width={30}
                                 height={30}
                                 alt="X (Twitter)"
@@ -68,7 +68,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                     {company?.snapchat && (
                         <a href={company.snapchat} target="_blank" rel="noopener noreferrer">
                             <Image
-                                src="/assets/icons/snap-circle.svg"
+                                src="/assets/icons/social-icons/snap-about.svg"
                                 width={30}
                                 height={30}
                                 alt="Snapchat"
