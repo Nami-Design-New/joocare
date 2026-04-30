@@ -20,33 +20,35 @@ export default async function AboutPage({
       <PlainBreadcrumb
         items={[{ label: "Home", href: "/" }, { label: "About" }]}
       />
-      <section className="pt-6 sm:pt-14 lg:pt-18">
-        <section className="layout-shell">
-          <section className="layout-content">
-            <AboutHeroSection
-              title={aboutData.aboutSection.title}
-              description={aboutData.aboutSection.description}
-              items={aboutData.aboutSection.items}
-              images={aboutData.aboutSection.images}
-            />
-            <CorePillarsSection
-              title={aboutData.chooseUs.title}
-              items={aboutData.chooseUs.items}
-              images={aboutData.chooseUs.images}
-            />
-            <AboutVisionSection
-              title={aboutData.vision.title}
-              description={aboutData.vision.description}
-              images={aboutData.vision.images}
-            />
-            <AboutMissionSection
-              title={aboutData.mission.title}
-              description={aboutData.mission.description}
-              images={aboutData.mission.images}
-            />
-          </section>
-        </section>
-      </section>
+      <AboutHeroSection
+        title={aboutData.aboutSection.title}
+        description={aboutData.aboutSection.description}
+        items={aboutData.aboutSection.items}
+        images={aboutData.aboutSection.images}
+      />
+      <div className="layout-shell">
+        <div className="layout-content">
+          <CorePillarsSection
+            title={aboutData.chooseUs.title}
+            items={aboutData.chooseUs.items}
+            images={aboutData.chooseUs.images}
+          />
+        </div>
+      </div>
+      <AboutVisionSection
+        title={aboutData.vision.title}
+        description={aboutData.vision.description}
+        images={aboutData.vision.images}
+      />
+      <div className="layout-shell">
+        <div className="layout-content">
+          <AboutMissionSection
+            title={aboutData.mission.title}
+            description={aboutData.mission.description}
+            images={aboutData.mission.images}
+          />
+        </div>
+      </div>
     </>
   );
 }
