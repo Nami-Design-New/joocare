@@ -4,6 +4,7 @@ import { useState } from "react"
 import { EditSocialMediaModal } from "./EditSocialMediaModal"
 import SocialMediaCard from "./SocialMediaCard"
 import { TCompanyProfileViewModel } from "../types"
+import DeleteModal from "@/shared/components/modals/DeleteModal"
 
 const SocialMediaSection = ({ companyProfileData, isPending }: { companyProfileData: TCompanyProfileViewModel, isPending: boolean }) => {
     const [open, setOpen] = useState(false)
@@ -13,6 +14,9 @@ const SocialMediaSection = ({ companyProfileData, isPending }: { companyProfileD
                 <h2 className="text-xl font-semibold ">Social Media</h2>
                 {companyProfileData?.status !== "Draft" && <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />}
             </div>
+            {companyProfileData?.website !== null &&
+                <SocialMediaCard title="website" link={companyProfileData?.website} src="/assets/icons/social-icons/globe.svg" isPending={isPending} />
+            }
             {companyProfileData?.linkedin !== null &&
                 <SocialMediaCard title="LinkedIn" link={companyProfileData?.linkedin} src="/assets/icons/social-icons/linkedin.svg" isPending={isPending} />
             }

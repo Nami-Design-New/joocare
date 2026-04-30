@@ -25,20 +25,21 @@ const SideContent = () => {
         ) : (
           <>
             <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
-              Match Faster
+              Match Faster ,
             </h2>
-            <h3 className="mb-4 text-[clamp(1.5rem,4vw,3rem)] font-bold">
-              work smarter
+            <h3 className="mb-12 text-[clamp(1.5rem,4vw,3rem)] font-bold">
+              Work Smarter
             </h3>
           </>
         )}
 
         <p className="text-justify text-[clamp(.8rem,4vw,1.2rem)] [word-spacing:0.1rem]">
-          {(isEmployerLogin || isCandidateLogin) &&
+          {isEmployerLogin &&
             `With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
+          {isCandidateLogin &&
+            `Joocare connects professionals with relevant opportunities through data‑driven insights, supporting informed career decisions and long‑term growth.`}
           {isEmployerRegister &&
-            `
-            Set the foundation for your hiring success. By finalizing your account details, you unlock Joocare’s smart matching tools and predictive insights to streamline your entire recruitment lifecycle`}
+            `Set the foundation for your hiring success. By finalizing your account details, you unlock Joocare’s smart matching tools and predictive insights to streamline your entire recruitment lifecycle`}
           {isCandidateRegister &&
             `With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
         </p>

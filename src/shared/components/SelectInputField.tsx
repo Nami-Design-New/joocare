@@ -185,7 +185,11 @@ export const SelectInputField = React.forwardRef<
             >
               {(item: Option) => (
                 <React.Fragment key={item.value}>
-                  <ComboboxItem key={item.value} value={item}>
+                  <ComboboxItem key={item.value} value={item}
+                    className={cn(
+                      value === item.value && "bg-accent text-accent-foreground"
+                    )}
+                  >
                     {item.image && (
                       <Image
                         src={item.image}

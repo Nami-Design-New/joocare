@@ -14,7 +14,7 @@ const LoginCandidatePage = () => {
       >
         {/* header text */}
         <h1>Welcome Back</h1>
-        <p className="text-[clamp(.8rem,4vw,1rem)] mt-1">
+        <p className="text-[clamp(.8rem,4vw,1rem)] mt-2">
           Take the next step in your professional career
         </p>
 

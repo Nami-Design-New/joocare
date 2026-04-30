@@ -24,6 +24,7 @@ interface FilepondUploadProps {
   value?: string;                          // stores data.image path
   onUploadSuccess: (imagePath: string) => void; // called after upload
   onRemove?: () => void;
+  maxSize?: number
 }
 
 export function FilepondUpload({
@@ -37,8 +38,11 @@ export function FilepondUpload({
   allowImagePreview = false,
   className,
   error,
-  hint
+  hint,
+  maxSize,
 }: FilepondUploadProps) {
+  const MAX_SIZE = maxSize || 10 * 1024 * 1024
+  // console.log(maxSize);
 
   return (
     <div className={`w-full space-y-2 ${className}`}>
@@ -63,6 +67,23 @@ export function FilepondUpload({
         name={name}
         server={{
           process: (fieldName, file, _metadata, load, error, progress) => {
+
+            if (file.size > MAX_SIZE) {
+              const message = "Max file size is 10MB";
+
+              error(message);        // FilePond UI
+              onRemove?.();          // reset
+              onUploadSuccess("");   // clear value
+              if (typeof window !== "undefined") {
+                setTimeout(() => {
+                  error?.(message);
+                }, 0);
+              }
+
+              return {
+                abort: () => { },
+              };
+            }
             const formData = new FormData();
             formData.append("image", file);
 
