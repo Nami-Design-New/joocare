@@ -19,7 +19,7 @@ export default function ApplicantRow({
   index: number;
   isDownloading?: boolean;
 }) {
-  console.log("applic", applicant);
+  // console.log("applic", applicant);
 
   return (
     <TableRow className="odd:bg-muted border-border border-b bg-white transition-colors">

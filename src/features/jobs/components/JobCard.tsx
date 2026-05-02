@@ -95,7 +95,7 @@ export default function JobCard({ resumeMatch,
   };
 
 
-  console.log(job);
+  // console.log(job);
 
   const title = job?.job_title?.title || job?.title || "Untitled job";
   const company = job?.company?.name || "Joocare Employer";
