@@ -56,7 +56,7 @@ function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationVi
 function mapExperience(entry: CandidateProfileApiExperience): CandidateExperienceViewModel {
   return {
     id: String(entry.id),
-    title: entry.job_title?.title || "Experience",
+    title: entry.job_title?.title || entry.title || "Experience",
     organization: entry.company,
     startDate: entry.start_date,
     endDate: entry.end_date,
@@ -137,6 +137,7 @@ export async function getCandidateProfile() {
   );
 
   const user = data?.data;
+  console.log(user);
 
   if (!ok || !user?.id) {
     return null;
@@ -144,7 +145,7 @@ export async function getCandidateProfile() {
 
   const country = user.country?.name ?? null;
   const city = user.city?.name ?? null;
-  const jobTitle = resolveJobTitle(user.title);
+  const jobTitle = user.job_title?.title || resolveJobTitle(user.title);
   const fullPhone =
     user.phone && user.phone_code ? `${user.phone_code}${user.phone}` : user.phone;
   const skills = (user.skills ?? []).map((skill) => ({

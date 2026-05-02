@@ -55,11 +55,11 @@ const FormCandidateRegister = () => {
   const confirmRegisterValue = useWatch({ control, name: "confirmRegister" });
   const isOtherJobTitle = selectedJobTitle === OTHER_JOB_TITLE_VALUE;
   const jobTitleOptions = [
+    { label: "Other", value: OTHER_JOB_TITLE_VALUE },
     ...jobTitles.map((jt) => ({
       label: jt.title,
       value: String(jt.id),
     })),
-    { label: "Other", value: OTHER_JOB_TITLE_VALUE },
   ];
   const { mutate: submitRegister, isPending } = useRegisterCandidate(() =>
     setIsModalOpen(true)

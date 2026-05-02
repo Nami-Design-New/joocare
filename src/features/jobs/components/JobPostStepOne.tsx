@@ -373,11 +373,11 @@ function JobPostStepOneContent({
   }
   const jobTitleOptions = mergePersistedOption(
     [
+      { label: "Other", value: "__other__" },
       ...jobTitles.map((type) => ({
         label: type.title,
         value: String(type.id),
       })),
-      { label: "Other", value: "__other__" },
     ],
     persistedOptions?.title,
   );
@@ -605,15 +605,15 @@ function JobPostStepOneContent({
                         ? salaryTypesError.message
                         : undefined)
                     }
-                  options={toSelectOptions(salaryTypes)}
-                  onChange={(value) => {
-                    field.onChange(value);
-                    onPreviewLabelChange?.(
-                      "salaryType",
-                      getOptionLabel(toSelectOptions(salaryTypes), value),
-                    );
-                  }}
-                  disabled={isSalaryTypesLoading}
+                    options={toSelectOptions(salaryTypes)}
+                    onChange={(value) => {
+                      field.onChange(value);
+                      onPreviewLabelChange?.(
+                        "salaryType",
+                        getOptionLabel(toSelectOptions(salaryTypes), value),
+                      );
+                    }}
+                    disabled={isSalaryTypesLoading}
                     onReachEnd={() => fetchMoreSalaryTypes()}
                     hasNextPage={Boolean(hasMoreSalaryTypes)}
                     isFetchingNextPage={isFetchingMoreSalaryTypes}
@@ -642,15 +642,15 @@ function JobPostStepOneContent({
                         ? currenciesError.message
                         : undefined)
                     }
-                  options={toSelectOptions(currencies)}
-                  onChange={(value) => {
-                    field.onChange(value);
-                    onPreviewLabelChange?.(
-                      "currency",
-                      getOptionLabel(toSelectOptions(currencies), value),
-                    );
-                  }}
-                  disabled={isCurrenciesLoading}
+                    options={toSelectOptions(currencies)}
+                    onChange={(value) => {
+                      field.onChange(value);
+                      onPreviewLabelChange?.(
+                        "currency",
+                        getOptionLabel(toSelectOptions(currencies), value),
+                      );
+                    }}
+                    disabled={isCurrenciesLoading}
                     onReachEnd={() => fetchMoreCurrencies()}
                     hasNextPage={Boolean(hasMoreCurrencies)}
                     isFetchingNextPage={isFetchingMoreCurrencies}
@@ -787,19 +787,19 @@ function JobPostStepOneContent({
                       ? roleCategoriesError.message
                       : undefined)
                   }
-                options={toSelectOptions(roleCategories)}
-                onChange={(value) => {
-                  field.onChange(value);
-                  onPreviewLabelChange?.(
-                    "roleCategory",
-                    getOptionLabel(toSelectOptions(roleCategories), value),
-                  );
-                  onPreviewLabelChange?.("seniorityLevel", "");
-                  setValue("seniorityLevel", "");
-                }}
-                disabled={roleCategoriesLoading}
-                onReachEnd={() => fetchRoleCategoriesNextPage()}
-                hasNextPage={Boolean(roleCategoriesHasNextPage)}
+                  options={toSelectOptions(roleCategories)}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPreviewLabelChange?.(
+                      "roleCategory",
+                      getOptionLabel(toSelectOptions(roleCategories), value),
+                    );
+                    onPreviewLabelChange?.("seniorityLevel", "");
+                    setValue("seniorityLevel", "");
+                  }}
+                  disabled={roleCategoriesLoading}
+                  onReachEnd={() => fetchRoleCategoriesNextPage()}
+                  hasNextPage={Boolean(roleCategoriesHasNextPage)}
                   isFetchingNextPage={roleCategoriesFetchingNextPage}
                   onSearchChange={setRoleCategorySearch}
                 />

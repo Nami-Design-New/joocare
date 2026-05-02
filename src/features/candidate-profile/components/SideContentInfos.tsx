@@ -21,6 +21,8 @@ const SideContentInfos = ({
   const displayExp = profile?.experience || "-";
   const hiringReadiness = profile?.hiring_readiness_score;
 
+  console.log("profile::::", profile);
+
   return (
     <aside className="no-scrollbar flex flex-col gap-5  overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow">
       {/* image */}

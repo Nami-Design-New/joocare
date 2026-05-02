@@ -182,13 +182,13 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
   const jobTitleOptions = useMemo(
     () => [
+      { label: "Other", value: OTHER_JOB_TITLE_VALUE },
       ...jobTitles
         .map((jobTitle) => ({
           label: String(jobTitle.title ?? ""),
           value: String(jobTitle.id),
         }))
         .filter((jobTitle) => jobTitle.label),
-      { label: "Other", value: OTHER_JOB_TITLE_VALUE },
     ],
     [jobTitles],
   );
