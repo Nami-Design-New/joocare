@@ -31,12 +31,33 @@ function normalizeDateLabel(value: string | null) {
     month: "short",
   });
 }
+function normalizeDateLabelEduction(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    // month: "short",
+  });
+}
 
 function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationViewModel {
   const startYear = normalizeDateLabel(entry.start_date);
   const endYear = entry.end_date ? normalizeDateLabel(entry.end_date) : "Present";
   const period =
     startYear && endYear ? `${startYear} - ${endYear}` : startYear ?? endYear ?? null;
+
+  const startEductionPeriod = normalizeDateLabelEduction(entry.start_date);
+  const endEductionPeriod = entry.end_date ? normalizeDateLabelEduction(entry.end_date) : "Present";
+  const educationPeriod =
+    startEductionPeriod && endEductionPeriod ? `${startEductionPeriod} - ${endEductionPeriod}` : startEductionPeriod ?? endEductionPeriod ?? null;
 
   return {
     id: String(entry.id),
@@ -47,6 +68,7 @@ function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationVi
         ? null
         : String(entry.gpa),
     period,
+    educationPeriod,
     countryId: entry.country_id ? String(entry.country_id) : null,
     startDate: entry.start_date,
     endDate: entry.end_date,
