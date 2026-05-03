@@ -19,18 +19,16 @@ export default function Breadcrumb({
 }: BreadcrumbProps) {
   return (
     <div
-      className={`layout-shell py-4 lg:pt-12 lg:pb-38 ${
-        gradient ? "bg-primary-gradient text-white" : "bg-transparent text-secondary"
-      }`}
+      className={`layout-shell py-4 lg:pt-12 lg:pb-38 ${gradient ? "bg-primary-gradient text-white" : "bg-transparent text-secondary"
+        }`}
     >
       <div className="layout-content flex items-center justify-between">
         <h6 className="text-lg font-semibold">{title}</h6>
 
         <nav aria-label="Breadcrumb">
           <ol
-            className={`flex items-center space-x-2 text-sm ${
-              gradient ? "text-white/90" : "text-muted-foreground"
-            }`}
+            className={`flex items-center space-x-2 text-sm ${gradient ? "text-white/90" : "text-muted-foreground"
+              }`}
           >
             {items.map((item, index) => {
               const isLast = index === items.length - 1;
@@ -46,15 +44,14 @@ export default function Breadcrumb({
                     </Link>
                   ) : (
                     <span
-                      className={`${
-                        isLast
+                      className={`${isLast
                           ? gradient
                             ? "font-semibold text-white"
                             : "font-semibold text-secondary"
                           : gradient
                             ? "text-white/70"
                             : "text-muted-foreground"
-                      }`}
+                        }`}
                       aria-current={isLast ? "page" : undefined}
                     >
                       {item.label}

@@ -22,10 +22,10 @@ export default function WhyUs({
   joocareModels: HomeWhyModel[];
 }) {
   return (
-    <section className="bg-white px-0 py-10 md:py-20">
-      <div className="layout-container mb-8 flex flex-col items-center space-y-4">
+    <section className="bg-white px-0 py-10">
+      <div className="layout-container mb-16 flex flex-col items-center space-y-4">
         <SectionTitle sectionTitle="Why Joocare?" />
-        <h2 className="text-center">{title}</h2>
+        {/* <h2 className="text-center">{title}</h2> */}
       </div>
       <div className="bg-container-gray-2 flex flex-col lg:flex-row max-w-[2800px] mx-auto">
         <div className=" layout-container flex flex-col py-10 md:py-20 lg:flex-row lg:pl-22 max-lg:order-1">
