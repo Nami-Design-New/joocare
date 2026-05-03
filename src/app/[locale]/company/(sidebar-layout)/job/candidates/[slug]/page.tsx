@@ -60,7 +60,7 @@ export default function Page() {
     setPage(1);
   };
 
-  console.log("candidates", candidates);
+  // console.log("candidates", candidates);
 
   const applicants = useMemo<Applicant[]>(
     () =>

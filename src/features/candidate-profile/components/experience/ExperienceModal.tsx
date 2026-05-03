@@ -90,7 +90,7 @@ export function ExperienceModal({
     reset,
     setValue,
     formState: { errors },
-} = useForm<FormData>({
+  } = useForm<FormData>({
     resolver: typedZodResolver(experienceModalSchema),
     defaultValues,
   });
@@ -126,8 +126,8 @@ export function ExperienceModal({
       .filter((jobTitle) => jobTitle.label);
 
     return [
-      ...mappedOptions,
       { label: "Other", value: "__other__" },
+      ...mappedOptions,
     ];
   }, [jobTitles]);
 
@@ -186,9 +186,9 @@ export function ExperienceModal({
 
       toast.success(
         response?.message ??
-          (experience?.id
-            ? "Experience updated successfully."
-            : "Experience added successfully."),
+        (experience?.id
+          ? "Experience updated successfully."
+          : "Experience added successfully."),
       );
       reset(EMPTY_FORM);
       onOpenChange(false);

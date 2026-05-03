@@ -22,7 +22,7 @@ export default function CVModal({
   title,
   pdfUrl,
 }: ConfirmDialogProps) {
-  console.log("pdfUrl", pdfUrl);
+  // console.log("pdfUrl", pdfUrl);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="mb-25 max-w-150 rounded-2xl p-8 text-center">

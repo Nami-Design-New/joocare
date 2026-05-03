@@ -79,8 +79,7 @@ export default function SuccessModal({
         showCloseButton={!isSubmittedVariant}
         className="max-w-150 rounded-2xl p-8 text-center"
       >
-
-        <div className="relative overflow-hidden rounded-[24px] bg-white px-6 pb-7 pt-12 text-center sm:px-8">
+        {/* <div className="relative overflow-hidden rounded-[24px] bg-white px-6 pb-7 pt-12 text-center sm:px-8">
           <DialogClose asChild>
             <button
               type="button"
@@ -90,14 +89,7 @@ export default function SuccessModal({
               <span className="sr-only">Close</span>
             </button>
           </DialogClose>
-
-
-
-
-
-
-
-        </div>
+        </div> */}
 
         <div className="mt-15 mb-12 flex w-full items-center justify-center">
           <div className="h-50 w-50">

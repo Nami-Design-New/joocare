@@ -57,8 +57,8 @@ export const RegisterCandidateSchema = z
 
     // Sends undefined (omitted) if no files uploaded
     uploadCV: z
-      .string("cv is required")
-      .min(1, { message: "cv is required" })
+      .string("cv is required and max size is (10MB)")
+      .min(1, { message: "cv is required and max size is (10MB)" })
       .transform((val) => (val?.trim() === "" ? undefined : val)),
 
     confirmRegister: z.boolean().default(false),

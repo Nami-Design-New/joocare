@@ -72,7 +72,7 @@ export function useMarkAsRead(
       };
     },
     onError: (error, _notificationId, context) => {
-      console.log("error:::::", error);
+      // console.log("error:::::", error);
 
       queryClient.setQueryData(
         notificationsQueryKey(role),

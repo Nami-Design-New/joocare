@@ -15,7 +15,7 @@ export const uploadImageService = async (file: File) => {
         body: formData,
     });
 
-    console.log("res upload image", res);
+    // console.log("res upload image", res);
     if (!res.ok) {
         throw new Error("Upload failed");
     }

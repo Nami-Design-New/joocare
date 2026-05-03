@@ -391,7 +391,7 @@ export default function PostJobForm() {
       availability_id: Number(data.availability),
       description: data.description,
       skills: (data.skills ?? []).map((s) => {
-        console.log(s)
+        // console.log(s)
         return Number(s)
       }),
       status: "open",
