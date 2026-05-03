@@ -571,6 +571,14 @@ function JobPostStepOneContent({
                     type="number"
                     placeholder="Min"
                     className="bg-white"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "" || /^[0-9]+$/.test(value)) {
+                        e.target.value = value;
+                      } else {
+                        e.target.value = Math.floor(Number(value)).toString();
+                      }
+                    }}
                   />
                   <FieldError name="salary.min" />
                 </div>
@@ -581,6 +589,14 @@ function JobPostStepOneContent({
                     type="number"
                     placeholder="Max"
                     className="bg-white"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "" || /^[0-9]+$/.test(value)) {
+                        e.target.value = value;
+                      } else {
+                        e.target.value = Math.floor(Number(value)).toString();
+                      }
+                    }}
                   />
                   <FieldError name="salary.max" />
                 </div>

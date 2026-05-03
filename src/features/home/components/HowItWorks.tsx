@@ -17,7 +17,7 @@ export default function HowItWorks({
             <SectionTitle sectionTitle="How it works" />
             <h2>{title}</h2>
           </section>
-          <section className="flex flex-col mx-auto min-w-full gap-y-6  md:flex-row">
+          <section className="flex flex-col mx-auto min-w-full gap-y-6  md:flex-row gap-4">
             {steps.map((step) => (
               <HowItWorksCard
                 key={step.id}

@@ -7,10 +7,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { Globe } from "lucide-react";
+import { ChevronDown, Globe } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { buttonVariants } from "./ui/button";
+import { useState } from "react";
 
 type LanguageToggleProps = {
   "aria-label"?: string;
@@ -21,7 +22,7 @@ export function LanguageToggle(props: LanguageToggleProps) {
   const pathname = usePathname();
   const locale = useLocale();
   const searchParams = useSearchParams();
-
+  const [open, setOpen] = useState(false);
   const handleLocaleChange = (value: string) => {
     const nextLocale = value.toLowerCase() as "en" | "ar";
     const query = searchParams.toString();
@@ -32,13 +33,20 @@ export function LanguageToggle(props: LanguageToggleProps) {
   };
 
   return (
-    <Select value={locale.toUpperCase()} onValueChange={handleLocaleChange}>
+    <Select value={locale.toUpperCase()} onValueChange={handleLocaleChange}
+      open={open}
+      onOpenChange={setOpen}
+    >
       <SelectTrigger
         aria-label={props["aria-label"] ?? "Language toggle"}
-        className={`${buttonVariants({ variant: "ghost", hoverStyle: "slidePrimary" })} text-secondary m-0 flex min-h-13 items-center gap-2 rounded-full border-0 bg-transparent shadow-none`}
+        className={`${buttonVariants({ variant: "ghost", hoverStyle: "slidePrimary" })} text-secondary m-0 flex min-h-13 items-center gap-2 rounded-full border-0 bg-transparent shadow-none [&>svg:last-child]:hidden`}
       >
         <Globe color="var(--secondary)" />
         <SelectValue placeholder="EN" />
+        <ChevronDown
+          className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-180" : ""
+            }`}
+        />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

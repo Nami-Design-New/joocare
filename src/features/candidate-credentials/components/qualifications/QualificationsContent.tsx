@@ -19,6 +19,7 @@ export default function QualificationsContent() {
     refetch,
   } = useGetQualifications();
 
+
   if (isInitialLoading) {
     return <CredentialCardSkeletonList />;
   }

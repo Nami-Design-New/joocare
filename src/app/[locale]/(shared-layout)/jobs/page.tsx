@@ -223,7 +223,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       },
     ],
   };
-  // console.log(jobsData);
+  console.log(jobsData);
   // console.log(filtersData);
 
   return (

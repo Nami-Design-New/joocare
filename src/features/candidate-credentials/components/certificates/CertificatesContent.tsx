@@ -19,6 +19,7 @@ export default function CertificatesContent() {
     refetch,
   } = useGetCertificates();
 
+
   if (isInitialLoading) {
     return <CredentialCardSkeletonList />;
   }

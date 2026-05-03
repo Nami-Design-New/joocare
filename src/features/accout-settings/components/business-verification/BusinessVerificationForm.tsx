@@ -40,7 +40,7 @@ export default function BusinessVerificationForm() {
     const { data: companyProfileData, isPending: isCompanyProfilePending } = useGetCompanyProfile({ token });
 
     // search states
-    const [specialtySearch, setSpecialtySearch] = useState("");
+    // const [specialtySearch, setSpecialtySearch] = useState("");
     const [countrySearch, setCountrySearch] = useState("");
     const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
     const [employerTypesSearch, setEmployerTypesSearch] = useState("");
@@ -73,15 +73,15 @@ export default function BusinessVerificationForm() {
         isFetchingNextPage: isFetchingMoreEmployerTypes,
     } = useGetEmployerTypes(employerTypesSearch);
 
-    //specialties
-    const {
-        specialties,
-        isLoading: isSpecialtiesLoading,
-        error: specialtiesError,
-        hasNextPage: hasMoreSpecialties,
-        fetchNextPage: fetchMoreSpecialties,
-        isFetchingNextPage: isFetchingMoreSpecialties,
-    } = useGetSpecialties(specialtySearch);
+    // //specialties
+    // const {
+    //     specialties,
+    //     isLoading: isSpecialtiesLoading,
+    //     error: specialtiesError,
+    //     hasNextPage: hasMoreSpecialties,
+    //     fetchNextPage: fetchMoreSpecialties,
+    //     isFetchingNextPage: isFetchingMoreSpecialties,
+    // } = useGetSpecialties(specialtySearch);
 
 
     // file states
@@ -118,7 +118,7 @@ export default function BusinessVerificationForm() {
                 employer_type_id: companyProfileData.employer_type_id?.toString() || "",
                 medical_facility_license_number: companyProfileData.medical_facility_license_number?.toString() || "",
                 license_issuing_authority: companyProfileData.license_issuing_authority || "",
-                specialty_id: companyProfileData.specialty_id?.toString() || "",
+                specialty_id: companyProfileData.specialty?.title.toString() || "",
                 medical_license_issue_date: formatDateForInput(companyProfileData.medical_license_issue_date),
                 medical_license_expiry_date: formatDateForInput(companyProfileData.medical_license_expiry_date),
             });
@@ -136,7 +136,7 @@ export default function BusinessVerificationForm() {
             employer_type_id: Number(data.employer_type_id),
             medical_facility_license_number: data.medical_facility_license_number,
             license_issuing_authority: data.license_issuing_authority,
-            specialty_id: Number(data.specialty_id),
+            specialty: data.specialty_id,
             medical_license_issue_date: data.medical_license_issue_date,
             medical_license_expiry_date: data.medical_license_expiry_date,
         };
@@ -359,7 +359,16 @@ export default function BusinessVerificationForm() {
                     error={errors.license_issuing_authority?.message?.toString()}
                 />
 
-                <Controller
+                <InputField
+                    id="specialty_id"
+                    label="Specialty / Scope of Practice"
+                    type={"text"}
+                    placeholder="ex: Cardiology"
+                    className="bg-white"
+                    {...register("specialty_id")}
+                    error={errors.specialty_id?.message?.toString()}
+                />
+                {/* <Controller
                     name="specialty_id"
                     control={control}
                     render={({ field }) => (
@@ -387,7 +396,7 @@ export default function BusinessVerificationForm() {
                             onSearchChange={setSpecialtySearch}
                         />
                     )}
-                />
+                /> */}
                 <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
                     <InputField
                         id="medical_license_issue_date"

@@ -73,7 +73,7 @@ const OneEducationSection = ({
               </p>
             </div>
             <span className="text-muted-foreground text-sm font-normal">
-              {education.period ?? "No period added yet."}
+              {education.educationPeriod ?? "No period added yet."}
             </span>
           </div>
         </div>

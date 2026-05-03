@@ -24,7 +24,7 @@ export default function PlainBreadcrumb({ items }: { items: Crumb[] }) {
                   {!isLast && it.href ? (
                     <Link
                       href={it.href}
-                      className="hover:text-secondary text-sm text-gray-600"
+                      className="hover:text-gray-600 text-secondary text-sm font-semibold"
                     >
                       {it.label}
                     </Link>

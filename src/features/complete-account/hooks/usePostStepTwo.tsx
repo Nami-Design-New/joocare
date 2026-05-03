@@ -15,7 +15,7 @@ export const usePostStepTwo = ({ token }: { token: string }) => {
             employer_type_id: string
             medical_facility_license_number: string
             license_issuing_authority: string
-            specialty_id: string
+            specialty: string
             medical_license_issue_date: string
             medical_license_expiry_date: string
             commercial_registration_image: string

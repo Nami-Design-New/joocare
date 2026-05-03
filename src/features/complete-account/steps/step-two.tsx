@@ -6,7 +6,7 @@ import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Controller, useFormContext } from "react-hook-form";
 import useGetCountries from "@/shared/hooks/useGetCountries";
-import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
+// import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
 import useGetOrganizationSizes from "@/shared/hooks/useGetOrganizationSizes";
 import useGetEmployerTypes from "@/shared/hooks/useGetEmployerTypes";
 import { useState } from "react";
@@ -21,7 +21,7 @@ export default function StepTwo() {
   const { data: profileData } = useGetCompanyProfile({ token });
   const { register, control, setError, clearErrors, setValue, watch, formState: { errors }, } = useFormContext();
 
-  const [specialtySearch, setSpecialtySearch] = useState("");
+  // const [specialtySearch, setSpecialtySearch] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
   const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
   const [employerTypesSearch, setEmployerTypesSearch] = useState("");
@@ -63,14 +63,14 @@ export default function StepTwo() {
     isFetchingNextPage: isFetchingMoreEmployerTypes,
   } = useGetEmployerTypes(employerTypesSearch);
 
-  const {
-    specialties,
-    isLoading: isSpecialtiesLoading,
-    error: specialtiesError,
-    hasNextPage: hasMoreSpecialties,
-    fetchNextPage: fetchMoreSpecialties,
-    isFetchingNextPage: isFetchingMoreSpecialties,
-  } = useGetSpecialties(specialtySearch);
+  // const {
+  //   specialties,
+  //   isLoading: isSpecialtiesLoading,
+  //   error: specialtiesError,
+  //   hasNextPage: hasMoreSpecialties,
+  //   fetchNextPage: fetchMoreSpecialties,
+  //   isFetchingNextPage: isFetchingMoreSpecialties,
+  // } = useGetSpecialties(specialtySearch);
 
   return (
     <div className="flex flex-col gap-y-5">
@@ -281,7 +281,16 @@ export default function StepTwo() {
           {...register("licenseIssuingAuthority")}
           error={errors.licenseIssuingAuthority?.message?.toString()}
         />
-        <Controller
+        <InputField
+          id="specialtyScopePractice"
+          label="Specialty / Scope of Practice"
+          type={"text"}
+          placeholder="ex: Cardiology"
+          className="bg-white"
+          {...register("specialtyScopePractice")}
+          error={errors.specialtyScopePractice?.message?.toString()}
+        />
+        {/* <Controller
           name="specialtyScopePractice"
           control={control}
           render={({ field }) => (
@@ -310,7 +319,7 @@ export default function StepTwo() {
               onSearchChange={setSpecialtySearch}
             />
           )}
-        />
+        /> */}
 
         <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
           <InputField
