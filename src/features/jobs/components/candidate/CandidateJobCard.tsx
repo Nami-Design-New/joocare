@@ -47,7 +47,7 @@ export default function CandidateJobCard({
   const title = job.title || job.job_title?.title || "Healthcare Opportunity";
   const company = job.company?.name || "Joocare Employer";
   const companyLogo = job.company?.image;
-  const postedAtLabel = job.created_at;
+  const postedAtLabel = job.updated_at;
   const location = getJobLocation(job);
   const category = job?.category?.title || "Not specified";
   const employmentType = job?.employment_type?.title || "Not specified";

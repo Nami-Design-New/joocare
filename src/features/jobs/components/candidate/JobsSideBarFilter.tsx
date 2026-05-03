@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AccordionSection, FilterState } from "../../types/index.types";
 import FilterAccordion from "./FilterAccordion";
 
@@ -82,6 +82,10 @@ export default function JobFilterSidebar({
       };
     });
   }
+
+  useEffect(() => {
+    setFilters(initialFilters);
+  }, [initialFilters]);
 
   return (
     <aside className="bg-card shadow-card hidden h-fit w-full flex-col rounded-2xl px-4 py-2 lg:flex">
