@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 
 import { authOptions } from "@/auth";
 import { getBaseApiUrl, getUserApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { apiFetch, getTimeZone } from "@/shared/lib/fetch-manager";
 import { JobsFiltersData, JobsFilterOption, JobsSearchFilters } from "../types/index.types";
 import { JobsListingResponse } from "../types/jobs.types";
 import { buildJobsQueryString } from "../utils";
@@ -73,6 +73,7 @@ async function fetchLookupOptions(
     headers: {
       Accept: "application/json",
       "Accept-Language": locale,
+      "X-Timezone": getTimeZone(),
     },
     next: {
       revalidate: 300,

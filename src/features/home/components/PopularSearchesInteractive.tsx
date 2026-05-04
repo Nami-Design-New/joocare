@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import PopularSearches, { type PopularSearchesItem } from "./PopularSearches";
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 
 interface Props {
   items: PopularSearchesItem[];
@@ -75,6 +76,7 @@ export default function PopularSearchesInteractive({
             method: "GET",
             headers: {
               Accept: "application/json",
+              "X-Timezone": getTimeZone(),
             },
           });
 

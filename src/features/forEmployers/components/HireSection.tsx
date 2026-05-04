@@ -17,7 +17,7 @@ export default function HireSection({
             {title}
           </h2>
 
-          <p className="text-secondary mt-2 text-sm opacity-90 sm:text-base">
+          <p className="text-secondary mt-2 text-sm opacity-90 sm:text-base font-semibold">
             {description}
           </p>
         </div>

@@ -73,7 +73,9 @@ function resolveMessage<T>(
     null
   );
 }
-
+export function getTimeZone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
 export async function apiFetch<T = Record<string, unknown>>(
   url: string,
   options: ApiFetchOptions = {},
@@ -90,6 +92,7 @@ export async function apiFetch<T = Record<string, unknown>>(
 
   const requestHeaders = new Headers(headers);
 
+  requestHeaders.set('X-Timezone', getTimeZone());
   if (!requestHeaders.has("Accept")) {
     requestHeaders.set("Accept", "application/json");
   }

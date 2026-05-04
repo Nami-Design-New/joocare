@@ -1,6 +1,7 @@
 import { formatDistanceToNowStrict } from "date-fns";
 import { getBaseApiUrl } from "@/shared/lib/api-endpoints";
 import type { HomePageData, HomePopularSearchesPage } from "../types/home.types";
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 
 type LocaleString = {
   ar?: string | null;
@@ -152,6 +153,7 @@ export async function getPopularSearchesPage({
     headers: {
       Accept: "application/json",
       "Accept-Language": locale,
+      "X-Timezone": getTimeZone(),
     },
     next: {
       revalidate: 300,
@@ -183,6 +185,7 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
     headers: {
       Accept: "application/json",
       "Accept-Language": locale,
+      "X-Timezone": getTimeZone(),
     },
     next: {
       revalidate: 300,

@@ -6,6 +6,8 @@ import CVModal from "@/features/jobs/components/CVModal";
 import { toast } from "sonner";
 import { useIncrementCvDownloads } from "../hooks/useIncrementCvDownloads";
 import { Applicant } from "../types/index.types";
+import { headers } from "next/headers";
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 
 type Props = {
   applicants: Applicant[];
@@ -52,7 +54,11 @@ export default function ApplicantsClient({ applicants, token }: Props) {
         url: applicant.cvUrl,
         filename: getDownloadFileName(applicant),
       });
-      const response = await fetch(`/api/download-cv?${params.toString()}`);
+      const response = await fetch(`/api/download-cv?${params.toString()}`, {
+        headers: {
+          "X-Timezone": getTimeZone(),
+        }
+      });
 
       if (!response.ok) {
         throw new Error("Failed to download CV");

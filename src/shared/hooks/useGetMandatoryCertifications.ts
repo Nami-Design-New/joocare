@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getBaseApiUrl } from "../lib/api-endpoints";
+import { getTimeZone } from "../lib/fetch-manager";
 
 export default function useGetMandatoryCertifications(search = "") {
   const query = useInfiniteQuery({
@@ -16,7 +17,11 @@ export default function useGetMandatoryCertifications(search = "") {
         params.set("search", search.trim());
       }
 
-      const res = await fetch(`${getBaseApiUrl()}/mandatory-certifications?${params.toString()}`);
+      const res = await fetch(`${getBaseApiUrl()}/mandatory-certifications?${params.toString()}`, {
+        headers: {
+          "X-Timezone": getTimeZone(),
+        }
+      });
 
       if (!res.ok) {
         throw new Error("Network error");

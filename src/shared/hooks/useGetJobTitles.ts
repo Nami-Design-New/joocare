@@ -1,5 +1,6 @@
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { getTimeZone } from "../lib/fetch-manager";
 
 export default function useGetJobTitles(search = "") {
     const query = useInfiniteQuery({
@@ -16,7 +17,11 @@ export default function useGetJobTitles(search = "") {
                 params.set("search", search.trim());
             }
 
-            const res = await fetch(`${getBaseApiUrl()}/job-titles?${params.toString()}`);
+            const res = await fetch(`${getBaseApiUrl()}/job-titles?${params.toString()}`, {
+                headers: {
+                    "X-Timezone": getTimeZone(),
+                }
+            });
 
             if (!res.ok) {
                 throw new Error("Network error");
