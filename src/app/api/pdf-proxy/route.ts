@@ -1,3 +1,4 @@
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 import { NextRequest, NextResponse } from "next/server";
 
 function getAllowedHosts() {
@@ -57,6 +58,8 @@ export async function GET(request: NextRequest) {
       cache: "no-store",
       headers: {
         Accept: "application/pdf,*/*",
+        "X-Timezone": getTimeZone(),
+
       },
     });
 

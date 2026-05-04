@@ -52,7 +52,7 @@ export default function BannerSection({
             alt={bannerImage.alt}
             width={500}
             height={600}
-            className="relative xl:absolute object-contain bottom-0 xl:right-0 h-75 sm:h-98 "
+            className="relative xl:absolute object-contain bottom-0 xl:-right-12 h-75 sm:h-98"
           />
         </div>
       </div>

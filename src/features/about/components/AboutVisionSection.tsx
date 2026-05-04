@@ -18,17 +18,17 @@ export default function AboutVisionSection({
     <section className="sm:my-14 sm:py-16 bg-background">
       <div className="layout-shell">
         <div className="layout-content">
-          <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
+          <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 items-center justify-center lg:gap-16 lg:px-0">
             <div>
               <div className="mb-2">
                 <SectionTitle sectionTitle="Our Vision" textColor="text-dark" />
               </div>
 
-              <h2 className="text-secondary mb-3 text-3xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">
+              <h2 className="text-secondary my-4 text-3xl leading-tight font-bold sm:text-4xl lg:text-5xl">
                 {title}
               </h2>
 
-              <p className="text-muted-foreground mb-8 max-w-xl text-left text-sm leading-relaxed whitespace-pre-line sm:text-base lg:text-justify">
+              <p className="text-muted-foreground mb-8 max-w-xl text-left text-sm whitespace-pre-line sm:text-xl lg:text-justify">
                 {description}
               </p>
             </div>

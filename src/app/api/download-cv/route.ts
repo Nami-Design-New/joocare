@@ -1,3 +1,4 @@
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 import { NextRequest, NextResponse } from "next/server";
 
 const DEFAULT_FILE_NAME = "candidate-cv.pdf";
@@ -61,6 +62,9 @@ export async function GET(request: NextRequest) {
 
   const response = await fetch(parsedUrl.toString(), {
     cache: "no-store",
+    headers: {
+      "X-Timezone": getTimeZone(),
+    },
   });
 
   if (!response.ok) {

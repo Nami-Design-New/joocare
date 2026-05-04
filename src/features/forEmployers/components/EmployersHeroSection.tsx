@@ -31,11 +31,11 @@ export default function EmployersHeroSection({
           </p>
         </div>
 
-        <div className="mx-auto flex w-full max-w-[520px] items-end justify-center gap-6 lg:max-w-none">
+        <div className="mx-auto flex w-full max-w-[520px] items-end justify-center gap-4 lg:max-w-none">
           {heroImages.map((image) => (
             <div
               key={image.id}
-              className="relative h-100 w-[220px] overflow-hidden rounded-[28px] sm:w-[260px]"
+              className="relative h-100 w-[220px] overflow-hidden rounded-3xl sm:w-[260px]"
             >
               <Image
                 src={image.image}

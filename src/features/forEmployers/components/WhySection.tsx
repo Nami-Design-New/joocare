@@ -23,11 +23,11 @@ export default function WhySection({
               />
             </div>
 
-            <h2 className="mb-6 text-4xl font-bold text-[#1C2628] sm:text-5xl">
+            <h2 className="my-5 text-4xl font-bold text-[#1C2628] sm:text-5xl ">
               {title}
             </h2>
 
-            <p className="mb-8 text-base leading-relaxed text-[#1C2628] lg:text-justify">
+            <p className="mb-8 text-xl text-[#1C2628] lg:text-justify">
               {description}
             </p>
 
@@ -37,7 +37,7 @@ export default function WhySection({
                 variant: "default"
                 , size: "pill"
                 , hoverStyle: "slideSecondary"
-              }), "mx-auto mt-6 flex w-full items-center justify-center gap-2 sm:mt-8 sm:w-fit")}
+              }), "mt-5 flex w-full items-center justify-center gap-2 sm:mt-5 sm:w-fit")}
             >
 
               Get Started For Free

@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getBaseApiUrl } from "../lib/api-endpoints";
+import { getTimeZone } from "../lib/fetch-manager";
 
 type InfiniteLookupOptions = {
   endpoint: string;
@@ -38,7 +39,11 @@ export function useInfiniteLookup({
         }
       });
 
-      const res = await fetch(`${getBaseApiUrl()}/${endpoint}?${params.toString()}`);
+      const res = await fetch(`${getBaseApiUrl()}/${endpoint}?${params.toString()}`, {
+        headers: {
+          "X-Timezone": getTimeZone(),
+        }
+      });
 
       if (!res.ok) {
         throw new Error("Network error");

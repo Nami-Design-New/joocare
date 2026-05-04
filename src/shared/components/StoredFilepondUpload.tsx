@@ -129,15 +129,16 @@ export function StoredFilepondUpload({
         source: resolvedExistingFileUrl,
         options: {
           type: "local" as const,
-          file: {
-            name: fileName,
-            size: 0,
-            type: getFileTypeFromName(fileName),
-          },
+          // file: {
+          //   name: fileName,
+          //   size: 0,
+          //   type: getFileTypeFromName(fileName),
+          // },
         },
       },
     ];
   }, [existingFileLabel, files, hasLocalFiles, resolvedExistingFileUrl]);
+  console.log("resolved :: ", resolvedExistingFileUrl, pondFiles);
 
   return (
     <div className={`w-full space-y-2 ${className ?? ""}`}>
@@ -193,6 +194,8 @@ export function StoredFilepondUpload({
           load: shouldShowExistingFile
             ? async (_source, load, serverError) => {
               try {
+                console.log("_source", _source);
+
                 const response = await fetch(resolvedExistingFileUrl!);
 
 

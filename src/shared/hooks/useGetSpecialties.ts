@@ -1,5 +1,6 @@
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { getTimeZone } from "../lib/fetch-manager";
 
 export default function useGetSpecialties(search = "", categoryId?: number) {
     const query = useInfiniteQuery({
@@ -20,7 +21,11 @@ export default function useGetSpecialties(search = "", categoryId?: number) {
                 params.set("category_id", String(categoryId));
             }
 
-            const res = await fetch(`${getBaseApiUrl()}/specialties?${params.toString()}`);
+            const res = await fetch(`${getBaseApiUrl()}/specialties?${params.toString()}`, {
+                headers: {
+                    "X-Timezone": getTimeZone(),
+                }
+            });
 
             if (!res.ok) {
                 throw new Error("Network error");

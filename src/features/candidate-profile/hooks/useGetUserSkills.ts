@@ -1,4 +1,5 @@
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 export default function useGetUserSkills(search = "", job_title_id = "", token = "") {
@@ -17,7 +18,9 @@ export default function useGetUserSkills(search = "", job_title_id = "", token =
       if (trimmedSearch) params.set("search", trimmedSearch);
 
       const res = await fetch(`${getUserApiUrl()}/user-skills?${params.toString()}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`, "X-Timezone": getTimeZone(),
+        },
       });
 
       if (!res.ok) throw new Error("Network error");

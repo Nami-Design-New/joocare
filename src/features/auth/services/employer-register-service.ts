@@ -1,4 +1,5 @@
 import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 
 type RegisterEmployerPayload = {
     name: string;
@@ -15,6 +16,7 @@ export const registerEmployerService = async (data: RegisterEmployerPayload) => 
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "X-Timezone": getTimeZone(),
         },
         body: JSON.stringify(data),
     });
