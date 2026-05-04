@@ -17,6 +17,7 @@ import {
 } from "@/shared/lib/phone";
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { useLocale } from "next-intl";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -37,6 +38,7 @@ import {
 } from "../../validation/basic-info-schema";
 import ProfileImage from "./ProfileImage";
 import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteImageUser } from "../../hooks/useDeleteImageUser";
 
 interface BasicInfoFormProps {
   profile: CandidateSettingsProfile;
@@ -47,6 +49,8 @@ const OTHER_JOB_TITLE_VALUE = "__other__";
 const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const locale = useLocale();
   const router = useRouter();
+  const { data: session } = useSession();
+  const token = session?.accessToken ?? "";
   const [isSaving, setIsSaving] = useState(false);
   const [jobTitleSearch, setJobTitleSearch] = useState("");
   const [specialtySearch, setSpecialtySearch] = useState("");
@@ -84,6 +88,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     [profile.cv, showExistingCv],
   );
   const queryClient = useQueryClient()
+  const { mutateAsync: deleteImageUser, isPending: isDeletingImage } = useDeleteImageUser({ token });
   const {
     register,
     control,
@@ -323,13 +328,32 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
               onRemove={() => {
                 imageUploadRequestIdRef.current += 1;
                 setIsImageUploading(false);
+                const shouldDeleteExistingImage =
+                  showExistingProfileImage && Boolean(profile.image) && !field.value?.length;
+
+                if (shouldDeleteExistingImage) {
+                  deleteImageUser()
+                    .then(() => {
+                      setShowExistingProfileImage(false);
+                      setUploadedImagePath("");
+                      field.onChange([]);
+                      clearErrors("profileImage");
+                      queryClient.invalidateQueries({ queryKey: ["candidate-profile"] });
+                    })
+                    .catch(() => {
+                      // The mutation hook already shows the error toast.
+                    });
+
+                  return;
+                }
+
                 setShowExistingProfileImage(false);
                 setUploadedImagePath("");
                 field.onChange([]);
                 clearErrors("profileImage");
               }}
               error={errors.profileImage?.message}
-              isUploading={isImageUploading}
+              isUploading={isImageUploading || isDeletingImage}
             />
           )}
         />
@@ -609,9 +633,15 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           size={"pill"}
           className="w-1/3 md:w-56"
           type="submit"
-          disabled={isSaving || isImageUploading}
+          disabled={isSaving || isImageUploading || isDeletingImage}
         >
-          {isSaving ? "Saving..." : isImageUploading ? "Uploading image..." : "Save"}
+          {isSaving
+            ? "Saving..."
+            : isImageUploading
+              ? "Uploading image..."
+              : isDeletingImage
+                ? "Deleting image..."
+                : "Save"}
         </Button>
       </div>
     </form>
