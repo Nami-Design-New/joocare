@@ -6,7 +6,6 @@ import CVModal from "@/features/jobs/components/CVModal";
 import { toast } from "sonner";
 import { useIncrementCvDownloads } from "../hooks/useIncrementCvDownloads";
 import { Applicant } from "../types/index.types";
-import { headers } from "next/headers";
 import { getTimeZone } from "@/shared/lib/fetch-manager";
 
 type Props = {
