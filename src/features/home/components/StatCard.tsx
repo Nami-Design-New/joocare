@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 
 const StatCard = ({ value, label, percentage = "", plus = true }: { value: number | undefined; label: string; percentage?: string, plus?: boolean }) => (
-  <div className="bg-muted border-border flex flex-col items-center justify-center rounded-2xl border p-8 text-center transition-all hover:shadow-md">
+  <div className="bg-muted border-border flex flex-col items-center justify-start rounded-2xl border p-8 text-center transition-all hover:shadow-md">
     <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
       {plus && <Plus
         color="var(--primary)"

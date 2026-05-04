@@ -44,7 +44,7 @@ export default function Pros({
               </div>
             </div>
             <div>
-              <h4 className="mb-2 text-xl font-semibold">{item.title}</h4>
+              <h4 className="my-2 text-xl font-semibold">{item.title}</h4>
               <p className="text-[#F7FAF7] font-normal">{item.description}</p>
             </div>
           </li>

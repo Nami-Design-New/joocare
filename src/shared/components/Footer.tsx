@@ -4,6 +4,7 @@ import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { settingService } from "../services/settings-services";
+import BackToTopButton from "./BackToTopButton";
 
 const Footer = async () => {
   const currentYear = new Date().getFullYear();
@@ -51,7 +52,7 @@ const Footer = async () => {
     ];
 
   return (
-    <footer className="layout-shell bg-secondary py-12 text-white">
+    <footer className="layout-shell bg-secondary py-12 text-white relative">
       <div className="layout-content relative">
         {/* Top Section: Links & Info */}
         <div className="relative grid grid-cols-1 gap-4 pb-12 md:grid-cols-2 lg:grid-cols-5 lg:gap-12">
@@ -168,6 +169,9 @@ const Footer = async () => {
       <p className="relative border-t border-[#0D0D0D73] pt-4 text-center text-lg text-white">
         {copyrightText}
       </p>
+      <section className="absolute right-4 bottom-4 z-50 md:right-6 md:bottom-6">
+        <BackToTopButton />
+      </section>
     </footer>
   );
 };
