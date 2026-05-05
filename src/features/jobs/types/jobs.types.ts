@@ -168,6 +168,7 @@ export type JobDetails = {
 
   specialty_id: number | null;
   specialty: WithCategory | null;
+  specialty_title: string | null;
 
   employment_type_id: number | null;
   employment_type: NamedEntity | null;

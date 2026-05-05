@@ -16,7 +16,7 @@ export async function jobStepOneService(
     if (payload.currency_id !== undefined) formData.append("currency_id", String(payload.currency_id));
     if (payload.salary_type_id !== undefined) formData.append("salary_type_id", String(payload.salary_type_id));
     formData.append("category_id", String(payload.category_id));
-    formData.append("specialty_id", String(payload.specialty_id));
+    formData.append("specialty_title", String(payload.specialty_title));
     formData.append("employment_type_id", String(payload.employment_type_id));
     formData.append("role_category_id", String(payload.role_category_id));
     formData.append("seniority_level_id", String(payload.seniority_level_id));

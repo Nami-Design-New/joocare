@@ -118,11 +118,11 @@ function JobPostStepOneContent({
   const token = session?.accessToken as string
 
   // search states
-  const [specialtySearch, setSpecialtySearch] = useState("");
+  // const [specialtySearch, setSpecialtySearch] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
   const [citySearch, setCitySearch] = useState("");
-  const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
-  const [employerTypesSearch, setEmployerTypesSearch] = useState("");
+  // const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
+  // const [employerTypesSearch, setEmployerTypesSearch] = useState("");
   const [employmentTypesSearch, setEmploymentTypesSearch] = useState("");
   const [jobTitlesSearch, setJobTitlesSearch] = useState("");
   const [licensesSearch, setLicensesSearch] = useState("");
@@ -170,22 +170,22 @@ function JobPostStepOneContent({
     fetchNextPage: citiesFetchNextPage,
     isFetchingNextPage: citiesIsFetchingNextPage,
   } = useGetCitiesByCountryId(selectedCountryId ?? 0, citySearch);
-  const {
-    organizationSizes,
-    isLoading: isOrganizationSizesLoading,
-    error: organizationSizesError,
-    hasNextPage: hasMoreOrganizationSizes,
-    fetchNextPage: fetchMoreOrganizationSizes,
-    isFetchingNextPage: isFetchingMoreOrganizationSizes,
-  } = useGetOrganizationSizes(organizationSizesSearch);
-  const {
-    employerTypes,
-    isLoading: isEmployerTypesLoading,
-    error: employerTypesError,
-    hasNextPage: hasMoreEmployerTypes,
-    fetchNextPage: fetchMoreEmployerTypes,
-    isFetchingNextPage: isFetchingMoreEmployerTypes,
-  } = useGetEmployerTypes(employerTypesSearch);
+  // const {
+  //   organizationSizes,
+  //   isLoading: isOrganizationSizesLoading,
+  //   error: organizationSizesError,
+  //   hasNextPage: hasMoreOrganizationSizes,
+  //   fetchNextPage: fetchMoreOrganizationSizes,
+  //   isFetchingNextPage: isFetchingMoreOrganizationSizes,
+  // } = useGetOrganizationSizes(organizationSizesSearch);
+  // const {
+  //   employerTypes,
+  //   isLoading: isEmployerTypesLoading,
+  //   error: employerTypesError,
+  //   hasNextPage: hasMoreEmployerTypes,
+  //   fetchNextPage: fetchMoreEmployerTypes,
+  //   isFetchingNextPage: isFetchingMoreEmployerTypes,
+  // } = useGetEmployerTypes(employerTypesSearch);
   const {
     employmentTypes,
     isLoading: isEmploymentTypesLoading,
@@ -203,14 +203,14 @@ function JobPostStepOneContent({
     isFetchingNextPage: isFetchingMoreJobTitles,
   } = useGetJobTitles(jobTitlesSearch);
 
-  const {
-    specialties,
-    isLoading: isSpecialtiesLoading,
-    error: specialtiesError,
-    hasNextPage: hasMoreSpecialties,
-    fetchNextPage: fetchMoreSpecialties,
-    isFetchingNextPage: isFetchingMoreSpecialties,
-  } = useGetSpecialties(specialtySearch, selectedCategoryId ?? undefined);
+  // const {
+  //   specialties,
+  //   isLoading: isSpecialtiesLoading,
+  //   error: specialtiesError,
+  //   hasNextPage: hasMoreSpecialties,
+  //   fetchNextPage: fetchMoreSpecialties,
+  //   isFetchingNextPage: isFetchingMoreSpecialties,
+  // } = useGetSpecialties(specialtySearch, selectedCategoryId ?? undefined);
 
   const {
     categories,
@@ -700,8 +700,8 @@ function JobPostStepOneContent({
                 onChange={(value) => {
                   field.onChange(value);
                   onPreviewLabelChange?.("category", getOptionLabel(toSelectOptions(categories), value));
-                  onPreviewLabelChange?.("specialty", "");
-                  setValue("specialty", "");
+                  // onPreviewLabelChange?.("specialty", "");
+                  // setValue("specialty", "");
                 }}
                 disabled={categoriesLoading}
                 onReachEnd={() => fetchCategoriesNextPage()}
@@ -712,7 +712,7 @@ function JobPostStepOneContent({
             )}
           />
         </div>
-        <div>
+        {/* <div>
           <Controller
             control={control}
             name="specialty"
@@ -743,7 +743,21 @@ function JobPostStepOneContent({
               />
             )}
           />
-        </div>
+        </div> */}
+
+        <InputField
+          id="specialty"
+          label="Specialty"
+          type={"text"}
+          placeholder="ex: specialty"
+          // className="bg-white"
+          {...register("specialty", {
+            onChange: (event) => {
+              onPreviewLabelChange?.("specialty", event.target.value);
+            },
+          })}
+          error={errors.specialty?.message?.toString()}
+        />
       </div>
 
       {/* ── Employment Type Section ── */}

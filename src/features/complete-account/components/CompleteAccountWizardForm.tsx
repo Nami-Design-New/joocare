@@ -150,7 +150,7 @@ export default function CompleteAccountWizardForm() {
           medical_facility_license_number: data.medicalFacilityLicenseNumber || "",
           license_issuing_authority: data.licenseIssuingAuthority || "",
           // specialty: data.specialtyScopePractice || "",
-          specialty: data.specialtyScopePractice || "",
+          specialty_title: data.specialtyScopePractice || "",
           medical_license_issue_date: formatDateForApi(data.medicalRegistrationIssueDate),
           medical_license_expiry_date: formatDateForApi(data.medicalRegistrationExpiryDate),
           commercial_registration_image: data.commercialRegistrationImagePath || profileData?.commercial_registration_image || "",

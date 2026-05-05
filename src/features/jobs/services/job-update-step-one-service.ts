@@ -36,7 +36,7 @@ export async function jobUpdateStepOneService(
   }
 
   formData.append("category_id", String(payload.category_id));
-  formData.append("specialty_id", String(payload.specialty_id));
+  formData.append("specialty_title", String(payload.specialty_title));
   formData.append("employment_type_id", String(payload.employment_type_id));
   formData.append("role_category_id", String(payload.role_category_id));
   formData.append("seniority_level_id", String(payload.seniority_level_id));

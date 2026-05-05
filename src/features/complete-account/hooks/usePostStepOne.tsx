@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { stepOneService } from "../services/step-one-service";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { stepOneService } from "../services/step-one-service";
 
 export const usePostStepOne = ({ token }: { token: string }) => {
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (payload: {
             name: string;

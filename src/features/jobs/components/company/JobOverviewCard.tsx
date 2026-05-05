@@ -3,6 +3,8 @@ import JobOverviewItem from "../JobOverviewItem";
 import { JobDetails } from "../../types/jobs.types";
 
 export default function JobOverviewCard({ job }: { job: JobDetails }) {
+  // console.log("job overivew card::", job);
+
   return (
     <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white py-8 px-6">
       <h2 className="text-foreground mb-4 text-lg font-semibold">
@@ -23,7 +25,7 @@ export default function JobOverviewCard({ job }: { job: JobDetails }) {
         />
         <JobOverviewItem
           label="Specialty"
-          value={job?.specialty?.title ?? "-"}
+          value={job?.specialty_title ?? "-"}
           icon="/assets/icons/specialty.svg"
         />
         <JobOverviewItem
