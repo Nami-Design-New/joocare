@@ -16,7 +16,7 @@ export type CandidateSettingsProfile = {
   phoneCode: string;
   jobTitleId: string;
   jobTitle: string;
-  specialtyId: string;
+  specialty_title: string;
   experienceId: string;
   countryId: string;
   cityId: string;
@@ -80,7 +80,7 @@ export function mapCandidateProfileToSettingsProfile(
     phoneCode: profile.phoneCode ?? "",
     jobTitleId: profile.jobTitleId ?? "",
     jobTitle: profile.jobTitle ?? "",
-    specialtyId: profile.specialtyId ?? "",
+    specialty_title: profile.specialty_title ?? "",
     experienceId: profile.experienceId ?? "",
     countryId: profile.countryId ?? "",
     cityId: profile.cityId ?? "",

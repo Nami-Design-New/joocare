@@ -47,7 +47,7 @@ export const LiveJobs = ({
           </header>
 
           <div className="grid gap-4 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4">
-            {jobs.map((job) => (
+            {jobs?.slice(0, 8).map((job) => (
               <JobCard key={job?.id} {...job} />
             ))}
           </div>

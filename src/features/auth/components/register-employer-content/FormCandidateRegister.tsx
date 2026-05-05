@@ -266,7 +266,7 @@ const FormCandidateRegister = () => {
             onRemove={() => field.onChange("")}
             allowMultiple={false}
             maxFiles={1}
-            maxSize={10 * 1024 * 1024}
+            maxSize={5 * 1024 * 1024}
             error={errors.uploadCV?.message}
           />
         )}
@@ -347,6 +347,7 @@ const FormCandidateRegister = () => {
                 allowMultiple={false}
                 maxFiles={1}
                 error={errors.uploadLicense?.message}
+                maxSize={5 * 1024 * 1024}
               />
             )}
           />

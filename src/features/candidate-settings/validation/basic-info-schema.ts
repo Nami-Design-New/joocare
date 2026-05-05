@@ -122,7 +122,7 @@ export const createSettingBasicInfoSchema = ({
         required: requireCv,
         maxSize: MAX_CV_SIZE,
         allowedTypes: ALLOWED_CV_TYPES,
-        requiredMessage: "CV is required and max size is (10MB).",
+        requiredMessage: "CV is required and max size is (5MB).",
         invalidTypeMessage: "CV must be a PDF or Word document.",
         invalidSizeMessage: "CV size must not exceed 10MB.",
       }),

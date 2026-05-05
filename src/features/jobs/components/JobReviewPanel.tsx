@@ -118,6 +118,7 @@ function buildEditPreviewData(
     )
     : "";
 
+
   return {
     title:
       data.title === "__other__"
@@ -240,7 +241,8 @@ function EditModeReviewCards({ preview }: { preview: ReviewPreviewData }) {
             Salary {preview.salaryType !== "-" ? `(${preview.currencyCode})` : ""}
           </h4>
           <p className="text-primary text-md font-semibold">
-            {preview.salary} {preview.salaryType !== "-" ? preview.currencyCode : ""}
+            {preview.salary}
+            {/* {preview.salaryType !== "-" ? preview.currencyCode : ""} */}
           </p>
           <span className="text-muted-foreground text-sm">{preview.salaryType}</span>
         </div>

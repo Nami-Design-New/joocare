@@ -23,7 +23,7 @@ export default function Cons({
               <Image src={item.icon as string} alt="icon" width={20} height={20} />
             </div>
             <div>
-              <h4 className="mb-2 text-xl font-semibold">{item.title}</h4>
+              <h4 className="my-2 text-xl font-semibold">{item.title}</h4>
               <p className="text-muted-foreground font-normal">{item.description}</p>
             </div>
           </li>

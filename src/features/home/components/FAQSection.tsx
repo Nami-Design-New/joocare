@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -6,6 +9,8 @@ import {
 } from "@/shared/components/ui/accordion";
 import SectionTitle from "./SectionTitle";
 import type { HomeFaq } from "../types/home.types";
+import { Button } from "@/shared/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 export default function FAQSection({
   title,
@@ -14,6 +19,15 @@ export default function FAQSection({
   title: string;
   items: HomeFaq[];
 }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const initialCount = 12;
+
+  const visibleItems = isExpanded ? items : items.slice(0, initialCount);
+
+  const handleToggle = () => {
+    setIsExpanded((prev) => !prev);
+  };
 
   return (
     <section className="bg-white pt-10 pb-10 md:pt-16 md:pb-48">
@@ -26,7 +40,7 @@ export default function FAQSection({
 
           <Accordion type="single" collapsible>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {items.map((item) => (
+              {visibleItems.map((item) => (
                 <AccordionItem
                   key={item.id}
                   value={item.id}
@@ -44,6 +58,27 @@ export default function FAQSection({
               ))}
             </div>
           </Accordion>
+
+          <div className="w-full flex justify-end">
+            {items.length > initialCount && (
+              <Button
+                variant="outline"
+                size="pill"
+                hoverStyle="slidehorizontalPrimary"
+                className="text-muted-foreground text-md group mt-6 items-center gap-2 border-none font-normal flex"
+                onClick={handleToggle}
+              >
+                {isExpanded ? "Show Less" : "Show More"}
+
+                <ArrowRight
+                  size={28}
+                  strokeWidth={1.5}
+                  className={`border-muted-foreground text-muted-foreground size-7 rounded-full border bg-white transition-transform 
+                ${isExpanded ? "rotate-270" : "rotate-90 group-hover:rotate-90"}`}
+                />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </section>

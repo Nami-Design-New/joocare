@@ -92,6 +92,7 @@ export type TCompanyProfileViewModel = {
     license_issuing_authority: string;
 
     specialty_id: number;
+    specialty_title: string;
     specialty: TSpecialty;
 
     medical_license_issue_date: string;

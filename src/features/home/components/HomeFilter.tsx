@@ -110,7 +110,7 @@ export default function HomeFilter() {
     >
       <InputField
         className="grow bg-white"
-        containerStyles="w-auto grow"
+        containerStyles="w-1/2 grow"
         id="search"
         placeholder="Job title or keyword"
         value={search}

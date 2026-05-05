@@ -263,8 +263,9 @@
   height: 100%;
   inset-inline-start: 0;
   background-image: url("../../public/assets/footer2.svg");
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   opacity: 1;
   z-index: 1;
 }

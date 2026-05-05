@@ -10,7 +10,7 @@ export async function stepTwoService(
         employer_type_id: string
         medical_facility_license_number: string
         license_issuing_authority: string
-        specialty: string
+        specialty_title: string
         medical_license_issue_date: string
         medical_license_expiry_date: string
         commercial_registration_image: string
@@ -29,8 +29,9 @@ export async function stepTwoService(
             token,
         }
     );
-    console.log("payload step two ", payload);
-    console.log("response step two ", response); if (!response.ok) {
+    // console.log("payload step two ", payload);
+    // console.log("response step two ", response);
+    if (!response.ok) {
         throw new Error(response.message ?? "Failed to update bio");
     }
 

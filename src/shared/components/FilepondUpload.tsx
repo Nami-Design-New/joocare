@@ -41,7 +41,7 @@ export function FilepondUpload({
   hint,
   maxSize,
 }: FilepondUploadProps) {
-  const MAX_SIZE = maxSize || 10 * 1024 * 1024
+  const MAX_SIZE = maxSize || 5 * 1024 * 1024
   // console.log(maxSize);
 
   return (
@@ -69,7 +69,7 @@ export function FilepondUpload({
           process: (fieldName, file, _metadata, load, error, progress) => {
 
             if (file.size > MAX_SIZE) {
-              const message = "Max file size is 10MB";
+              const message = "Max file size is 5MB";
 
               error(message);        // FilePond UI
               onRemove?.();          // reset

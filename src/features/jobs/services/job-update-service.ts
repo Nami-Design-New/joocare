@@ -8,7 +8,7 @@ export type UpdateJobPayload = {
   currency_id?: number;
   salary_type_id?: number;
   category_id?: number;
-  specialty_id?: number;
+  specialty_title?: string;
   employment_type_id?: number;
   role_category_id?: number;
   country_id?: number;
@@ -49,7 +49,7 @@ export async function updateJobService(
   if (payload.currency_id !== undefined) formData.append("currency_id", String(payload.currency_id));
   if (payload.salary_type_id !== undefined) formData.append("salary_type_id", String(payload.salary_type_id));
   if (payload.category_id !== undefined) formData.append("category_id", String(payload.category_id));
-  if (payload.specialty_id !== undefined) formData.append("specialty_id", String(payload.specialty_id));
+  if (payload.specialty_title !== undefined) formData.append("specialty_title", String(payload.specialty_title));
   if (payload.employment_type_id !== undefined) formData.append("employment_type_id", String(payload.employment_type_id));
   if (payload.role_category_id !== undefined) formData.append("role_category_id", String(payload.role_category_id));
   if (payload.seniority_level_id !== undefined) formData.append("seniority_level_id", String(payload.seniority_level_id));

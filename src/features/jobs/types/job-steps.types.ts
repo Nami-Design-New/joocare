@@ -6,7 +6,7 @@ export type JobStepOnePayload = {
     currency_id?: number,
     salary_type_id?: number,
     category_id: number,
-    specialty_id: number,
+    specialty_title: string,
     employment_type_id: number,
     role_category_id: number,
     seniority_level_id: number,

@@ -16,6 +16,7 @@ import { JobDetailsResponse } from "../types/jobs.types";
 function normalizeJobDetailsPayload(jobDetails: JobDetailsResponse["data"]) {
     const job = jobDetails.job;
     const normalizedEducationLevel = job.education_level ?? null;
+    // console.log("job in job details service ::::::::: .t s", job);
 
     return {
         job: {
@@ -23,7 +24,7 @@ function normalizeJobDetailsPayload(jobDetails: JobDetailsResponse["data"]) {
             company: job.company ?? null,
             job_title: job.job_title ?? null,
             license: job.license ?? null,
-            specialty: job.specialty ?? null,
+            specialty_title: job.specialty_title ?? null,
             employment_type: job.employment_type ?? null,
             role_category: job.role_category ?? null,
             category: job.category ?? null,

@@ -17,6 +17,7 @@ import {
 } from "@/shared/lib/phone";
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { useLocale } from "next-intl";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -37,6 +38,7 @@ import {
 } from "../../validation/basic-info-schema";
 import ProfileImage from "./ProfileImage";
 import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteImageUser } from "../../hooks/useDeleteImageUser";
 
 interface BasicInfoFormProps {
   profile: CandidateSettingsProfile;
@@ -47,9 +49,11 @@ const OTHER_JOB_TITLE_VALUE = "__other__";
 const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const locale = useLocale();
   const router = useRouter();
+  const { data: session } = useSession();
+  const token = session?.accessToken ?? "";
   const [isSaving, setIsSaving] = useState(false);
   const [jobTitleSearch, setJobTitleSearch] = useState("");
-  const [specialtySearch, setSpecialtySearch] = useState("");
+  // const [specialtySearch, setSpecialtySearch] = useState("");
   const [experienceSearch, setExperienceSearch] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
   const [citySearch, setCitySearch] = useState("");
@@ -66,7 +70,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       phoneNumber: getNationalPhoneValue(profile.phone, profile.phoneCode),
       jobTitle: profile.jobTitleId || (profile.jobTitle ? OTHER_JOB_TITLE_VALUE : ""),
       otherJobTitle: profile.jobTitleId ? "" : profile.jobTitle,
-      specialty: profile.specialtyId,
+      specialty: profile.specialty_title,
       yearsOfExperience: profile.experienceId,
       country: profile.countryId,
       city: profile.cityId,
@@ -84,6 +88,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     [profile.cv, showExistingCv],
   );
   const queryClient = useQueryClient()
+  const { mutateAsync: deleteImageUser, isPending: isDeletingImage } = useDeleteImageUser({ token });
   const {
     register,
     control,
@@ -110,14 +115,14 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     fetchNextPage: fetchMoreJobTitles,
     isFetchingNextPage: isFetchingMoreJobTitles,
   } = useGetJobTitles(jobTitleSearch);
-  const {
-    specialties,
-    isLoading: isSpecialtiesLoading,
-    error: specialtiesError,
-    hasNextPage: hasMoreSpecialties,
-    fetchNextPage: fetchMoreSpecialties,
-    isFetchingNextPage: isFetchingMoreSpecialties,
-  } = useGetSpecialties(specialtySearch);
+  // const {
+  //   specialties,
+  //   isLoading: isSpecialtiesLoading,
+  //   error: specialtiesError,
+  //   hasNextPage: hasMoreSpecialties,
+  //   fetchNextPage: fetchMoreSpecialties,
+  //   isFetchingNextPage: isFetchingMoreSpecialties,
+  // } = useGetSpecialties(specialtySearch);
   const {
     experiences,
     isLoading: isExperiencesLoading,
@@ -227,7 +232,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       } else {
         formData.append("job_title_id", data.jobTitle);
       }
-      formData.append("specialty_id", data.specialty);
+      formData.append("specialty_title", data.specialty);
       formData.append("country_id", data.country);
       formData.append("city_id", data.city);
       formData.append("experience_id", data.yearsOfExperience);
@@ -323,13 +328,32 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
               onRemove={() => {
                 imageUploadRequestIdRef.current += 1;
                 setIsImageUploading(false);
+                const shouldDeleteExistingImage =
+                  showExistingProfileImage && Boolean(profile.image) && !field.value?.length;
+
+                if (shouldDeleteExistingImage) {
+                  deleteImageUser()
+                    .then(() => {
+                      setShowExistingProfileImage(false);
+                      setUploadedImagePath("");
+                      field.onChange([]);
+                      clearErrors("profileImage");
+                      queryClient.invalidateQueries({ queryKey: ["candidate-profile"] });
+                    })
+                    .catch(() => {
+                      // The mutation hook already shows the error toast.
+                    });
+
+                  return;
+                }
+
                 setShowExistingProfileImage(false);
                 setUploadedImagePath("");
                 field.onChange([]);
                 clearErrors("profileImage");
               }}
               error={errors.profileImage?.message}
-              isUploading={isImageUploading}
+              isUploading={isImageUploading || isDeletingImage}
             />
           )}
         />
@@ -419,7 +443,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       )}
 
       <div className="flex flex-col items-center gap-2 lg:flex-row">
-        <Controller
+        {/* <Controller
           name="specialty"
           control={control}
           render={({ field }) => (
@@ -447,6 +471,15 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
               onSearchChange={setSpecialtySearch}
             />
           )}
+        /> */}
+        <InputField
+          id="specialty"
+          label="Specialty"
+          type={"text"}
+          placeholder="ex: Cardiology"
+          // className="bg-white"
+          {...register("specialty")}
+          error={errors.specialty?.message?.toString()}
         />
         <Controller
           name="yearsOfExperience"
@@ -609,9 +642,15 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           size={"pill"}
           className="w-1/3 md:w-56"
           type="submit"
-          disabled={isSaving || isImageUploading}
+          disabled={isSaving || isImageUploading || isDeletingImage}
         >
-          {isSaving ? "Saving..." : isImageUploading ? "Uploading image..." : "Save"}
+          {isSaving
+            ? "Saving..."
+            : isImageUploading
+              ? "Uploading image..."
+              : isDeletingImage
+                ? "Deleting image..."
+                : "Save"}
         </Button>
       </div>
     </form>

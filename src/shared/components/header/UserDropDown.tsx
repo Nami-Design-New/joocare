@@ -63,7 +63,7 @@ export default function UserDropDown({
     : "/assets/profile_image.svg";
 
   const imageSrc = getSafeImageSrc(
-    (isEmployer ? companyProfileData?.image : candidateProfileData?.image) ??
+    (isEmployer ? (companyProfileData?.image ? companyProfileData?.image : '/assets/logo_1.svg') : (candidateProfileData?.image ? candidateProfileData?.image : '/assets/profile_image.svg')) ??
     session?.user?.image,
     fallbackImage
   );
@@ -130,7 +130,6 @@ export default function UserDropDown({
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-
         <DropdownMenuSeparator />
 
         {/* Menu Items */}
