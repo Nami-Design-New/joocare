@@ -53,7 +53,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const token = session?.accessToken ?? "";
   const [isSaving, setIsSaving] = useState(false);
   const [jobTitleSearch, setJobTitleSearch] = useState("");
-  const [specialtySearch, setSpecialtySearch] = useState("");
+  // const [specialtySearch, setSpecialtySearch] = useState("");
   const [experienceSearch, setExperienceSearch] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
   const [citySearch, setCitySearch] = useState("");
@@ -70,7 +70,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       phoneNumber: getNationalPhoneValue(profile.phone, profile.phoneCode),
       jobTitle: profile.jobTitleId || (profile.jobTitle ? OTHER_JOB_TITLE_VALUE : ""),
       otherJobTitle: profile.jobTitleId ? "" : profile.jobTitle,
-      specialty: profile.specialtyId,
+      specialty: profile.specialty_title,
       yearsOfExperience: profile.experienceId,
       country: profile.countryId,
       city: profile.cityId,
@@ -115,14 +115,14 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     fetchNextPage: fetchMoreJobTitles,
     isFetchingNextPage: isFetchingMoreJobTitles,
   } = useGetJobTitles(jobTitleSearch);
-  const {
-    specialties,
-    isLoading: isSpecialtiesLoading,
-    error: specialtiesError,
-    hasNextPage: hasMoreSpecialties,
-    fetchNextPage: fetchMoreSpecialties,
-    isFetchingNextPage: isFetchingMoreSpecialties,
-  } = useGetSpecialties(specialtySearch);
+  // const {
+  //   specialties,
+  //   isLoading: isSpecialtiesLoading,
+  //   error: specialtiesError,
+  //   hasNextPage: hasMoreSpecialties,
+  //   fetchNextPage: fetchMoreSpecialties,
+  //   isFetchingNextPage: isFetchingMoreSpecialties,
+  // } = useGetSpecialties(specialtySearch);
   const {
     experiences,
     isLoading: isExperiencesLoading,
@@ -232,7 +232,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       } else {
         formData.append("job_title_id", data.jobTitle);
       }
-      formData.append("specialty_id", data.specialty);
+      formData.append("specialty_title", data.specialty);
       formData.append("country_id", data.country);
       formData.append("city_id", data.city);
       formData.append("experience_id", data.yearsOfExperience);
@@ -443,7 +443,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       )}
 
       <div className="flex flex-col items-center gap-2 lg:flex-row">
-        <Controller
+        {/* <Controller
           name="specialty"
           control={control}
           render={({ field }) => (
@@ -471,6 +471,15 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
               onSearchChange={setSpecialtySearch}
             />
           )}
+        /> */}
+        <InputField
+          id="specialty"
+          label="Specialty"
+          type={"text"}
+          placeholder="ex: Cardiology"
+          // className="bg-white"
+          {...register("specialty")}
+          error={errors.specialty?.message?.toString()}
         />
         <Controller
           name="yearsOfExperience"

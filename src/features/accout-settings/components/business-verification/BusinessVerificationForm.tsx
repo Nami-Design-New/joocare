@@ -118,7 +118,7 @@ export default function BusinessVerificationForm() {
                 employer_type_id: companyProfileData.employer_type_id?.toString() || "",
                 medical_facility_license_number: companyProfileData.medical_facility_license_number?.toString() || "",
                 license_issuing_authority: companyProfileData.license_issuing_authority || "",
-                specialty_id: companyProfileData.specialty?.title.toString() || "",
+                specialty_title: companyProfileData.specialty_title || "",
                 medical_license_issue_date: formatDateForInput(companyProfileData.medical_license_issue_date),
                 medical_license_expiry_date: formatDateForInput(companyProfileData.medical_license_expiry_date),
             });
@@ -136,7 +136,7 @@ export default function BusinessVerificationForm() {
             employer_type_id: Number(data.employer_type_id),
             medical_facility_license_number: data.medical_facility_license_number,
             license_issuing_authority: data.license_issuing_authority,
-            specialty: data.specialty_id,
+            specialty_title: data.specialty_title,
             medical_license_issue_date: data.medical_license_issue_date,
             medical_license_expiry_date: data.medical_license_expiry_date,
         };
@@ -360,13 +360,13 @@ export default function BusinessVerificationForm() {
                 />
 
                 <InputField
-                    id="specialty_id"
+                    id="specialty_title"
                     label="Specialty / Scope of Practice"
                     type={"text"}
                     placeholder="ex: Cardiology"
                     className="bg-white"
-                    {...register("specialty_id")}
-                    error={errors.specialty_id?.message?.toString()}
+                    {...register("specialty_title")}
+                    error={errors.specialty_title?.message?.toString()}
                 />
                 {/* <Controller
                     name="specialty_id"

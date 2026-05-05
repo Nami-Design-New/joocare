@@ -30,7 +30,7 @@ export type UpdateBusinessVerificationPayload = {
     employer_type_id: number;
     medical_facility_license_number: string;
     license_issuing_authority: string;
-    specialty: string;
+    specialty_title: string;
     medical_license_issue_date: string;
     medical_license_expiry_date: string;
     medical_license_image?: string;
