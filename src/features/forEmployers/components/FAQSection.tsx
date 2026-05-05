@@ -69,7 +69,7 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
                       size={28}
                       strokeWidth={1.5}
                       className={`border-muted-foreground text-muted-foreground size-7 rounded-full border bg-white transition-transform 
-                ${isExpanded ? "rotate-270" : "rotate-135 group-hover:rotate-90"}`}
+                ${isExpanded ? "rotate-270" : "rotate-90 group-hover:rotate-90"}`}
                     />
                   </Button>
                 )}

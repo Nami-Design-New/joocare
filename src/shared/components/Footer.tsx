@@ -1,6 +1,5 @@
 import { authOptions } from "@/auth";
 import { Link } from "@/i18n/navigation";
-import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { settingService } from "../services/settings-services";
@@ -66,7 +65,7 @@ const Footer = async () => {
                 height={60}
               />
             </div>
-            <p className="max-w-xs text-sm leading-relaxed text-gray-300">
+            <p className="max-w-xs text-base leading-relaxed text-gray-300">
               {footerText}
             </p>
           </div>
@@ -139,9 +138,9 @@ const Footer = async () => {
         </div>
 
         {/* Bottom Section: Socials & Copyright */}
-        <div className="relative grid grid-cols-1 gap-4 pb-12 lg:grid-cols-5 lg:gap-12">
+        <div className="relative grid grid-cols-1 gap-4 pb-10 lg:grid-cols-5 lg:gap-12 ">
           {/* Social Icons */}
-          <div className="order-last col-span-1 flex items-center gap-2 lg:order-first lg:gap-4">
+          <div className="order-last col-span-1 flex items-center justify-center lg:justify-start gap-4 lg:order-first">
             {socialLinks.map(({ href, srcImg, label }) => (
               <Link
                 key={label}
@@ -151,16 +150,16 @@ const Footer = async () => {
                 aria-label={label}
                 className="flex h-7 w-7 hover:scale-105 rounded-full"
               >
-                <Image src={srcImg} alt={label} width={27} height={27} />
+                <Image src={srcImg} alt={label} width={30} height={30} />
               </Link>
             ))}
           </div>
-          <div className="relative col-span-1 h-7 w-full lg:col-span-4">
+          <div className="relative col-span-1 h-7 w-full lg:w-[calc(100%+1rem)] lg:col-span-4 ">
             <Image
               src="/assets/footer1.svg"
               alt="Joo Care Logo"
               fill
-              className="ml-0"
+              className="object-cover w-full lg:left-4.5!"
             />
           </div>{" "}
         </div>
