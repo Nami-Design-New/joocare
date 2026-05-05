@@ -7,7 +7,7 @@ export default function BackToTopButton() {
   return (
     <button
       onClick={scrollToTop}
-      className="cursor-pointer p-2 transition-all text-white border border-white rounded-full"
+      className="absolute right-4 bottom-4 cursor-pointer p-2 transition-all text-white border border-white rounded-full"
       aria-label="Scroll to top"
     >
       <ArrowUp size={28} />

@@ -20,24 +20,24 @@ const Footer = () => {
     ? [{ href: "/jobs", label: tFooter("exploreJobs") }]
     : isCandidate
       ? [
-          { href: "/jobs", label: tFooter("exploreJobs") },
-          { href: "/faq", label: tCommon("faq") },
-        ]
+        { href: "/jobs", label: tFooter("exploreJobs") },
+        { href: "/faq", label: tCommon("faq") },
+      ]
       : [
-          { href: "/jobs", label: tFooter("exploreJobs") },
-          { href: "/auth/candidate/register", label: tFooter("createProfile") },
-          { href: "/faq", label: tCommon("faq") },
-        ];
+        { href: "/jobs", label: tFooter("exploreJobs") },
+        { href: "/auth/candidate/register", label: tFooter("createProfile") },
+        { href: "/faq", label: tCommon("faq") },
+      ];
 
   const employerLinks = isCandidate
     ? []
     : [
-        { href: "/for-employers", label: tFooter("forEmployers") },
-        { href: "/for-employers#how-it-works", label: tFooter("howItWorks") },
-      ];
+      { href: "/for-employers", label: tFooter("forEmployers") },
+      { href: "/for-employers#how-it-works", label: tFooter("howItWorks") },
+    ];
 
   return (
-    <footer className="bg-secondary px-3 py-12 text-white lg:px-25">
+    <footer className="relative bg-secondary px-3 py-12 text-white lg:px-25">
       <div className="relative container mx-auto max-w-7xl">
         <div className="relative grid grid-cols-1 gap-4 pb-12 md:grid-cols-2 lg:grid-cols-5 lg:gap-12">
           <div className="space-y-6">
@@ -138,8 +138,9 @@ const Footer = () => {
         </div>
       </div>
       <p className="relative border-t border-[#0D0D0D73] pt-4 text-center text-lg text-white">
-        {tFooter("allRightsReserved")} © {currentYear} <BackToTopButton />
+        {tFooter("allRightsReserved")} © {currentYear}
       </p>
+      <BackToTopButton />
     </footer>
   );
 };

@@ -282,6 +282,7 @@
   background-repeat: no-repeat;
   /* background-color: var(--color-gray); */
 }
+
 @media (max-width: 1024px) {
   .bg-container-gray-2 {
     background-image: url("../../public/assets/why-vertical.png");
@@ -413,7 +414,7 @@
   display: none;
 }
 
-html[dir='rtl'] {
+html[dir="rtl"] {
   .rtl-flip {
     transform: rotate(180deg);
   }
@@ -422,6 +423,6 @@ html[dir='rtl'] {
   }
 }
 
-html[dir='rtl'] .rtl-flip-diagonal {
+html[dir="rtl"] .rtl-flip-diagonal {
   transform: scaleX(-1);
 }

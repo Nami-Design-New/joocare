@@ -88,7 +88,7 @@ const Header = () => {
                     }`}
                   href="/jobs"
                 >
-                  Jobs
+                  {tCommon("jobs")}
                 </Link>
               </li>
               {/* )} */}
