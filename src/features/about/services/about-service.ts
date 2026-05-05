@@ -1,5 +1,6 @@
 import { getBaseApiUrl } from "@/shared/lib/api-endpoints";
 import type { AboutPageData } from "../types/about.types";
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 
 type AboutApiResponse = {
   message?: string;
@@ -56,10 +57,10 @@ type AboutApiResponse = {
 function mapImages(
   images:
     | Array<{
-        id?: number | string;
-        image?: string | null;
-        alt?: string | null;
-      }>
+      id?: number | string;
+      image?: string | null;
+      alt?: string | null;
+    }>
     | undefined,
 ) {
   return (
@@ -78,6 +79,7 @@ export async function getAboutPageData(locale: string): Promise<AboutPageData> {
     headers: {
       Accept: "application/json",
       "Accept-Language": locale,
+      "X-Timezone": getTimeZone(),
     },
     next: {
       revalidate: 300,

@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+const optionalSalaryNumber = z.preprocess((value) => {
+  if (value === "" || value == null) {
+    return undefined;
+  }
+
+  return value;
+}, z.coerce.number().min(0).max(9999999999, "Salary must not exceed 10 digits").optional());
+
 // ─────────────────────────────────────────────
 // STEP 1 — Job Post Schema
 // Matches: JobPostStepOne component
@@ -9,22 +17,33 @@ export const step1Schema = z
   .object({
     // ── Core Info ──────────────────────────────
     title: z.string().min(1, "Job title is required"),
+    otherJobTitle: z.string().optional(),
     license: z.string().min(1, "Professional license is required"),
 
     // ── Salary (conditionally required) ────────
+    // addSalary: z.boolean().default(false),
+    // salary: z
+    //   .object({
+    //     min: z.coerce.number().min(0).optional(),
+    //     max: z.coerce.number().min(0).optional(),
+    //     type: z.string().optional(), // e.g. "hourly", "annual"
+    //     currency: z.string().optional(), // e.g. "USD", "AED"
+    //   })
+    //   .optional()
+    //   .superRefine((salary, ctx) => {
+    //     // This is wired up in the refine below after merging addSalary
+    //   }),
+
     addSalary: z.boolean().default(false),
+
     salary: z
       .object({
-        min: z.coerce.number().min(0).optional(),
-        max: z.coerce.number().min(0).optional(),
-        type: z.string().optional(), // e.g. "hourly", "annual"
-        currency: z.string().optional(), // e.g. "USD", "AED"
+        min: optionalSalaryNumber,
+        max: optionalSalaryNumber,
+        type: z.string().optional(),
+        currency: z.string().optional(),
       })
-      .optional()
-      .superRefine((salary, ctx) => {
-        // This is wired up in the refine below after merging addSalary
-      }),
-
+      .optional(),
     // ── Classification ─────────────────────────
     category: z.string().min(1, "Category is required"),
     specialty: z.string().min(1, "Specialty is required"),
@@ -42,32 +61,53 @@ export const step1Schema = z
     yearsOfExperience: z.string().min(1, "Years of experience is required"),
 
     // ── Education & Certifications ─────────────
-    educationLevel: z.string().min(1, "Education level is required"),
+    educationLevel: z
+      .array(z.string())
+      .min(1, "Education level is required"),
     mandatoryCertifications: z
-      .string()
+      .array(z.string())
       .min(1, "Mandatory certifications is required"),
     availability: z.string().min(1, "Availability is required"),
-  })
-  // Salary fields are required only when the toggle is ON
-  .superRefine((data, ctx) => {
+  }).superRefine((data, ctx) => {
+    // ── Other job title ──
+    if (data.title === "__other__" && !data.otherJobTitle?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Other job title is required",
+        path: ["otherJobTitle"],
+      });
+    }
+
+    // ── Salary validation ──
     if (data.addSalary) {
-      if (!data.salary?.min && data.salary?.min !== 0) {
+      if (!data.salary) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Minimum salary is required",
+          message: "Salary is required",
+          path: ["salary"],
+        });
+        return;
+      }
+
+      if (data.salary.min == null) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Min salary is required",
           path: ["salary", "min"],
         });
       }
-      if (!data.salary?.max && data.salary?.max !== 0) {
+
+      if (data.salary.max == null) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Maximum salary is required",
+          message: "Max salary is required",
           path: ["salary", "max"],
         });
       }
+
       if (
-        data.salary?.min !== undefined &&
-        data.salary?.max !== undefined &&
+        data.salary.min != null &&
+        data.salary.max != null &&
         data.salary.max <= data.salary.min
       ) {
         ctx.addIssue({
@@ -76,14 +116,16 @@ export const step1Schema = z
           path: ["salary", "max"],
         });
       }
-      if (!data.salary?.type) {
+
+      if (!data.salary.type) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: "Salary type is required",
           path: ["salary", "type"],
         });
       }
-      if (!data.salary?.currency) {
+
+      if (!data.salary.currency) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: "Currency is required",
@@ -91,8 +133,7 @@ export const step1Schema = z
         });
       }
     }
-  });
-
+  })
 // ─────────────────────────────────────────────
 // STEP 2 SCHEMA
 // Fields: description (CKEditor HTML), skills (multi-select → string[])
@@ -135,6 +176,7 @@ export const STEPS = [
 
 export const jobFormDefaults: Partial<JobFormData> = {
   title: "",
+  otherJobTitle: "",
   license: "",
   addSalary: false,
   salary: { min: undefined, max: undefined, type: "", currency: "" },
@@ -146,8 +188,8 @@ export const jobFormDefaults: Partial<JobFormData> = {
   country: "",
   city: "",
   yearsOfExperience: "",
-  educationLevel: "",
-  mandatoryCertifications: "",
+  educationLevel: [],
+  mandatoryCertifications: [],
   availability: "",
   // step 2
   description: "",

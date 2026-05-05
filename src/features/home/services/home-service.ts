@@ -1,7 +1,7 @@
 import { formatDistanceToNowStrict } from "date-fns";
 import { getBaseApiUrl } from "@/shared/lib/api-endpoints";
-import { formatDate } from "@/shared/util/formateDate";
-import type { HomePageData } from "../types/home.types";
+import type { HomePageData, HomePopularSearchesPage } from "../types/home.types";
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 
 type LocaleString = {
   ar?: string | null;
@@ -18,7 +18,6 @@ type HomeApiResponse = {
       countries?: Array<{ id?: number | string; name?: LocaleString | string | null }>;
       categories?: Array<{ id?: number | string; title?: LocaleString | string | null }>;
       domains?: Array<{ id?: number | string; title?: LocaleString | string | null }>;
-      searches?: Array<{ id?: number | string; word?: string | null }>;
     };
     how_it_works_section?: {
       title?: string | null;
@@ -49,7 +48,7 @@ type HomeApiResponse = {
     };
     top_employers?: {
       title?: string | null;
-      companies?: Array<{ id?: number | string; image?: string | null }>;
+      top_employers?: Array<{ id?: number | string; image?: string | null }>;
     };
     proven_hiring_impact?: {
       title?: string | null;
@@ -60,12 +59,16 @@ type HomeApiResponse = {
       jobs?: Array<{
         id?: number | string;
         title?: string | null;
-        created_at?: string | null;
-        company?: { name?: string | null } | string | null;
+        updated_at?: string | null;
+        company?: {
+          name?: string | null
+          image: string | null
+        } | string | null;
         job_title?: { title?: string | null } | null;
         country?: { name?: string | null } | null;
         city?: { name?: string | null } | null;
         employment_type?: { title?: string | null } | null;
+        image?: string | null;
       }>;
     };
     rates?: {
@@ -75,7 +78,9 @@ type HomeApiResponse = {
         rate?: string | number | null;
         comment?: string | null;
         created_at?: string | null;
-        user?: { name?: string | null } | null;
+        name?: string | null;
+        date?: string | null;
+        text?: string | null;
       }>;
     };
     faqs?: {
@@ -87,6 +92,20 @@ type HomeApiResponse = {
       }>;
     };
   };
+};
+
+type SearchesApiResponse = {
+  message?: string;
+  code?: number;
+  data?: Array<{
+    id?: number | string;
+    word?: string | null;
+    count?: number | string | null;
+  }>;
+  current_page?: number;
+  last_page?: number;
+  per_page?: number;
+  total?: number;
 };
 
 function resolveLocalizedText(value: LocaleString | string | null | undefined, locale: string) {
@@ -115,11 +134,58 @@ function buildJobTimeLabel(value: string | null | undefined) {
   return formatDistanceToNowStrict(date, { addSuffix: true });
 }
 
+export async function getPopularSearchesPage({
+  page = 1,
+  limitPerPage = 10,
+  locale,
+}: {
+  page?: number;
+  limitPerPage?: number;
+  locale: string;
+}): Promise<HomePopularSearchesPage> {
+  const params = new URLSearchParams({
+    pagination: "on",
+    limit_per_page: String(limitPerPage),
+    page: String(page),
+  });
+
+  const response = await fetch(`${getBaseApiUrl()}/searches?${params.toString()}`, {
+    headers: {
+      Accept: "application/json",
+      "Accept-Language": locale,
+      "X-Timezone": getTimeZone(),
+    },
+    next: {
+      revalidate: 300,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to load popular searches.");
+  }
+
+  const payload = (await response.json()) as SearchesApiResponse;
+
+  return {
+    items:
+      payload.data?.map((search, index) => ({
+        id: String(search.id ?? `${page}-${index}`),
+        label: search.word?.trim() ?? "",
+        count: Number(search.count ?? 0),
+      })).filter((search) => Boolean(search.label)) ?? [],
+    currentPage: payload.current_page ?? page,
+    lastPage: payload.last_page ?? page,
+    perPage: payload.per_page ?? limitPerPage,
+    total: payload.total ?? 0,
+  };
+}
+
 export async function getHomePageData(locale: string): Promise<HomePageData> {
   const response = await fetch(`${getBaseApiUrl()}/home`, {
     headers: {
       Accept: "application/json",
       "Accept-Language": locale,
+      "X-Timezone": getTimeZone(),
     },
     next: {
       revalidate: 300,
@@ -163,11 +229,6 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
           id: String(domain.id ?? ""),
           label: resolveLocalizedText(domain.title, locale),
         })) ?? [],
-      searches:
-        homeSection?.searches?.map((search) => ({
-          id: String(search.id ?? ""),
-          label: search.word ?? "",
-        })) ?? [],
     },
     howItWorks: {
       title: data.how_it_works_section?.title ?? "",
@@ -183,13 +244,12 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
       title: whyJoocare?.title ?? "",
       legacyModelTitle: whyJoocare?.legacy_model_title ?? "",
       legacyModelDescription: whyJoocare?.legacy_model_description ?? "",
-      legacyModels:
-        whyJoocare?.legacy_models?.map((model) => ({
-          id: String(model.id ?? ""),
-          title: model.title ?? "",
-          description: model.description ?? "",
-          icon: model.icon ?? null,
-        })) ?? [],
+      legacyModels: whyJoocare?.legacy_models?.map((model) => ({
+        id: String(model.id ?? ""),
+        title: model.title ?? "",
+        description: model.description ?? "",
+        icon: model.icon ?? "",
+      })) ?? [],
       joocareModelTitle: whyJoocare?.joocare_model_title ?? "",
       joocareModelDescription: whyJoocare?.joocare_model_description ?? "",
       joocareModels:
@@ -202,7 +262,7 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
     topEmployers: {
       title: data.top_employers?.title ?? "",
       companies:
-        data.top_employers?.companies?.map((company) => ({
+        data.top_employers?.top_employers?.map((company) => ({
           id: String(company.id ?? ""),
           image: company.image ?? null,
         })) ?? [],
@@ -226,7 +286,11 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
                 : job.company?.name ?? "Joocare Employer",
             location: locationParts.join(", ") || "Location not specified",
             type: job.employment_type?.title ?? "Not specified",
-            timeLabel: buildJobTimeLabel(job.created_at),
+            timeLabel: buildJobTimeLabel(job.updated_at),
+            image: typeof job.company === "string"
+              ? job.company
+              : job.company?.image ?? "/assets/recent-job-image.svg",
+            updated_at: job.updated_at ?? "",
           };
         }) ?? [],
     },
@@ -235,8 +299,8 @@ export async function getHomePageData(locale: string): Promise<HomePageData> {
       items:
         rates?.rates?.map((rate) => ({
           id: String(rate.id ?? ""),
-          name: rate.user?.name ?? "Anonymous professional",
-          date: rate.created_at ? formatDate(rate.created_at) : "",
+          name: rate?.name ?? "Anonymous professional",
+          date: rate.date,
           text: rate.comment ?? "",
           rate: Number(rate.rate ?? 0),
         })) ?? [],

@@ -29,7 +29,7 @@ const ChangePasswordForm = () => {
             password: data.newPassword,
             password_confirmation: data.confirmNewPassword,
         });
-        reset()
+        // reset()
     }
 
     return (

@@ -1,9 +1,16 @@
 import { z } from "zod";
 
-const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
-export const qualificationSchema = z
+type CreateQualificationSchemaOptions = {
+  requireImage?: boolean;
+};
+
+export const createQualificationSchema = ({
+  requireImage = true,
+}: CreateQualificationSchemaOptions = {}) =>
+  z
   .object({
     degree: z
       .string()
@@ -20,15 +27,15 @@ export const qualificationSchema = z
     endDate: z.string().optional(),
     image: z
       .array(z.instanceof(File))
-      .max(1)
-      .default([])
+      .min(requireImage ? 1 : 0, "Qualification image is required.")
+      .max(1, "Only one image is allowed.")
       .refine(
         (files) => files.every((file) => ALLOWED_IMAGE_TYPES.includes(file.type)),
         "Qualification image must be JPG or PNG.",
       )
       .refine(
         (files) => files.every((file) => file.size <= MAX_IMAGE_SIZE),
-        "Qualification image size must not exceed 2MB.",
+        "Qualification image size must not exceed 5MB.",
       ),
   })
   .refine((data) => data.startDate <= new Date().toISOString().split("T")[0], {
@@ -39,6 +46,8 @@ export const qualificationSchema = z
     message: "End date must be after start date.",
     path: ["endDate"],
   });
+
+export const qualificationSchema = createQualificationSchema();
 
 export type QualificationSchemaValues = z.input<typeof qualificationSchema>;
 export type QualificationSchemaOutput = z.output<typeof qualificationSchema>;

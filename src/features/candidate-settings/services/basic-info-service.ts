@@ -15,6 +15,7 @@ export type CandidateSettingsProfile = {
   phone: string;
   phoneCode: string;
   jobTitleId: string;
+  jobTitle: string;
   specialtyId: string;
   experienceId: string;
   countryId: string;
@@ -40,12 +41,6 @@ type StoredImageResponse = {
 };
 
 const STORAGE_BASE_URL = "https://joocare.nami-tec.com/storage";
-
-
-
-
-
-
 
 function normalizeDate(value: unknown) {
   if (typeof value !== "string" || !value) {
@@ -84,6 +79,7 @@ export function mapCandidateProfileToSettingsProfile(
     phone: profile.phone ?? "",
     phoneCode: profile.phoneCode ?? "",
     jobTitleId: profile.jobTitleId ?? "",
+    jobTitle: profile.jobTitle ?? "",
     specialtyId: profile.specialtyId ?? "",
     experienceId: profile.experienceId ?? "",
     countryId: profile.countryId ?? "",

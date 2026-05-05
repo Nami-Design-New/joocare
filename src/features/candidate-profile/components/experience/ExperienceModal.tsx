@@ -1,6 +1,6 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { Minus, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -90,8 +90,8 @@ export function ExperienceModal({
     reset,
     setValue,
     formState: { errors },
-} = useForm<FormData>({
-    resolver: zodResolver(experienceModalSchema),
+  } = useForm<FormData>({
+    resolver: typedZodResolver(experienceModalSchema),
     defaultValues,
   });
   const [dialogContentElement, setDialogContentElement] = useState<HTMLDivElement | null>(null);
@@ -126,8 +126,8 @@ export function ExperienceModal({
       .filter((jobTitle) => jobTitle.label);
 
     return [
-      ...mappedOptions,
       { label: "Other", value: "__other__" },
+      ...mappedOptions,
     ];
   }, [jobTitles]);
 
@@ -186,9 +186,9 @@ export function ExperienceModal({
 
       toast.success(
         response?.message ??
-          (experience?.id
-            ? "Experience updated successfully."
-            : "Experience added successfully."),
+        (experience?.id
+          ? "Experience updated successfully."
+          : "Experience added successfully."),
       );
       reset(EMPTY_FORM);
       onOpenChange(false);

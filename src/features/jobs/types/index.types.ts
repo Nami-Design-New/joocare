@@ -1,11 +1,11 @@
-export type JobStatus = "open" | "closed" | "paused";
+export type JobStatus = "open" | "closed" | "paused" | "draft";
 export type Applicant = {
   id: number;
   name: string;
   email: string;
   phone: string;
   date: string;
-  cvUrl: string;
+  cvUrl: string | null;
 };
 
 // Candidate jobs
@@ -34,7 +34,7 @@ export interface FilterState {
   roleCategories: string[];
   seniorityLevels: string[];
   domains: string[];
-  specialties: string[];
+  // specialties: string[];
   experiences: string[];
   availabilities: string[];
   categories: string[];
@@ -63,7 +63,7 @@ export type JobsSearchFilters = {
   maxSalary: string;
   roleCategories: string[];
   seniorityLevels: string[];
-  specialties: string[];
+  // specialties: string[];
   experiences: string[];
   availabilities: string[];
   salaryTypes: string[];

@@ -92,7 +92,9 @@ export default function UserProfileCard({
         size="pill"
         variant="destructive"
         className="bg-destructive mt-4 w-full text-white"
-        onClick={logout}
+        onClick={() => {
+          logout();
+        }}
       >
         {tCommon("logout")}
       </Button>

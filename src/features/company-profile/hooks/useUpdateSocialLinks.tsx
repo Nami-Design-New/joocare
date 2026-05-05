@@ -5,7 +5,7 @@ import { updateSocialLinksService } from "../services/update-social-links-servic
 export const useUpdateSocialLinks = ({ token }: { token: string }) => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (payload: { facebook: string; twitter: string; linkedin: string; instagram: string; snapchat: string; }) => updateSocialLinksService(payload, { token }),
+        mutationFn: (payload: { website: string; facebook: string; twitter: string; linkedin: string; instagram: string; snapchat: string; }) => updateSocialLinksService(payload, { token }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["company-profile"] });
         },

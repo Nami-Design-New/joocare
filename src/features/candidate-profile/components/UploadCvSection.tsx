@@ -44,7 +44,12 @@ function resolveStoredFileUrl(path: string | null) {
     return path;
   }
 
-  return `https://joocare.nami-tec.com/storage/${path.replace(/^\/+/, "")}`;
+  const trimmedPath = path.trim().replace(/^\/+/, "");
+  const normalizedPath = trimmedPath.startsWith("storage/")
+    ? trimmedPath.slice("storage/".length)
+    : trimmedPath;
+
+  return `https://joocare.nami-tec.com/storage/${normalizedPath}`;
 }
 
 const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
@@ -187,6 +192,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
       setIsDeleting(false);
     }
   };
+  console.log("profile ", cvUrl);
 
   return (
     <>

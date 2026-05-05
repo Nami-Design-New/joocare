@@ -1,6 +1,6 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -63,7 +63,7 @@
   --radius: 0.75rem;
 
   /* Surfaces */
-  --background: oklch(0.46 0.18 142 / 0.02); /* #f7faf7 — body bg */
+  --background: rgba(0, 107, 77, 4%);
   --foreground: oklch(0.089 0 0); /* #0d0d0d — main text */
 
   --card: oklch(1 0 0); /* #ffffff */
@@ -78,7 +78,7 @@
   --secondary-foreground: oklch(1 0 0); /* white text on blue */
 
   /* Secondary — green #09760a */
-  --primary: #00694b;
+  --primary: rgb(0, 107, 77);
   --primary-bg: #09760a14;
   --primary-soft: #3790a81a;
   --primary-foreground: oklch(1 0 0); /* white text on green */
@@ -97,7 +97,7 @@
   --input: oklch(0.089 0 0 / 8%);
   --ring: #1c2628; /* focus ring = primary */
   --soft-overlay: oklch(0.18 0 0 / 0.02); /* #12121205 */
-  --body-bg: #f7faf7;
+  --body-bg: rgba(0, 107, 77, 2%);
   --bg-disabled: #a6a6a6;
 
   /* Semantic */
@@ -119,7 +119,7 @@
   --sidebar-ring: #1c2628;
 
   --shadow-soft: #0000000d;
-  --primary-gradient: linear-gradient(270deg, #00694b 0%, #1c2628 100.62%);
+  --primary-gradient: linear-gradient(270deg, #038661, #013a2a);
 }
 
 /* ════════════════════════════════════════
@@ -154,7 +154,7 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.55 0.1 252);
-  --body-bg: '#F7FAF7';
+  --body-bg: #f7faf7;
   --bg-disabled: #a6a6a6;
 
   --destructive: oklch(0.65 0.22 27);
@@ -196,6 +196,18 @@
 }
 
 @layer components {
+  .layout-shell {
+    @apply px-3 lg:px-25;
+  }
+
+  .layout-content {
+    @apply container mx-auto;
+  }
+
+  .layout-container {
+    @apply container mx-auto px-3 lg:px-25;
+  }
+
   .nav-link {
     @apply text-secondary border-b-2 border-transparent px-2 py-1 text-lg transition-colors;
   }
@@ -233,7 +245,7 @@
   .dashed-list {
     list-style: none;
     li::marker {
-      content: '-   ';
+      content: "-   ";
     }
   }
 }
@@ -244,26 +256,45 @@
 }
 
 .bg-before::before {
-  content: '';
+  content: "";
   position: absolute;
 
   min-width: 24px;
   height: 100%;
   inset-inline-start: 0;
-  background-image: url('../../public/assets/footer2.svg');
-  background-size: cover;
+  background-image: url("../../public/assets/footer2.svg");
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   opacity: 1;
   z-index: 1;
 }
 
 .bg-container {
-  background-image: url('../../public/assets/container.svg');
+  background-image: url("../../public/assets/container.svg");
   background-color: var(--color-primary);
 }
-.bg-container-gray {
-  background-image: url('../../public/assets/why.svg');
-  background-color: var(--color-gray);
+.bg-container-gray-2 {
+  /* background-image: url("../../public/assets/why.svg"); */
+  background-image: url("../../public/assets/why.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-color: var(--color-gray); */
+}
+@media (max-width: 1024px) {
+  .bg-container-gray-2 {
+    background-image: url("../../public/assets/why-vertical.png");
+  }
+}
+
+.bg-container-gray-3 {
+  /* background-image: url("../../public/assets/why.svg"); */
+  background-image: url("../../public/assets/why-vertical.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-color: var(--color-gray); */
 }
 /* file pond */
 .filepond--credits {

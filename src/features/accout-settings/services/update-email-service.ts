@@ -1,8 +1,8 @@
 import { apiFetch, type ApiResult } from "@/shared/lib/fetch-manager";
-import { UpdateBasicInfoPayload } from "../types";
+import { UpdateEmailPayload } from "../types";
 
 export async function updateEmailService(
-    payload: UpdateBasicInfoPayload,
+    payload: UpdateEmailPayload,
     { token }: { token: string },
 ): Promise<ApiResult> {
     const response = await apiFetch(

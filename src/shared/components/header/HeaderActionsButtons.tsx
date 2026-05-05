@@ -1,16 +1,23 @@
 "use client";
 
+import {
+  notificationsQueryKey,
+  useNotificationsInfinite,
+} from "@/features/notifications/hooks/useGetAllNotifications";
+import { Link } from "@/i18n/navigation";
+import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
+import { listenForMessages } from "@/shared/util/firebase-notifications";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import { LanguageToggle } from "../LanguageToggle";
 import { Button, buttonVariants } from "../ui/button";
-import UserDropDown from "./UserDropDown";
-import { Link } from "@/i18n/navigation";
-import { useState } from "react";
 import { DrawerScrollableContent } from "./DrawerScrollableContent";
+import UserDropDown from "./UserDropDown";
 
 function HeaderActionsButtons({
   companyHeader,
@@ -18,14 +25,55 @@ function HeaderActionsButtons({
   companyHeader: boolean;
 }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const tCommon = useTranslations("Common");
   const tHeader = useTranslations("Header");
 
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+  const role = session?.authRole;
+  const token = session?.accessToken;
 
   const isLoading = status === "loading";
   const isAuthed = status === "authenticated";
+  const { unreadCount } = useNotificationsInfinite(role, token, {
+    enabled: isAuthed,
+  });
+
+  useEffect(() => {
+    if (!isAuthed || !role) {
+      return;
+    }
+
+    console.info("[Notifications] Subscribing to foreground notifications.", {
+      role,
+    });
+
+    return listenForMessages(() => {
+      console.info("[Notifications] Invalidating notifications query after foreground message.");
+      void queryClient.invalidateQueries({
+        queryKey: notificationsQueryKey(role),
+      });
+    });
+  }, [isAuthed, queryClient, role]);
+
+  useEffect(() => {
+    if (!isAuthed) {
+      return;
+    }
+
+    console.info("[Notifications] Requesting permission after authenticated app load.");
+    void requestNotificationPermission();
+  }, [isAuthed]);
+
+  useEffect(() => {
+    if (!isAuthed || !open) {
+      return;
+    }
+
+    console.info("[Notifications] Requesting permission after opening notifications drawer.");
+    void requestNotificationPermission();
+  }, [isAuthed, open]);
 
   return (
     <>
@@ -84,9 +132,11 @@ function HeaderActionsButtons({
                 alt="Notification Icon"
               />
 
-              <span className="bg-primary absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white">
-                3
-              </span>
+              {unreadCount > 0 && (
+                <span className="bg-primary absolute top-0 right-0 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white">
+                  {unreadCount}
+                </span>
+              )}
             </Button>
 
             <UserDropDown companyHeader={companyHeader} />
@@ -103,6 +153,7 @@ function HeaderActionsButtons({
             className="border-border relative h-8 w-8 md:hidden"
             size="icon-circle"
             aria-label={tHeader("notifications")}
+            onClick={() => setOpen(true)}
           >
             <Image
               src="/assets/icons/notification.svg"
@@ -111,9 +162,11 @@ function HeaderActionsButtons({
               alt="Notification Icon"
             />
 
-            <span className="bg-primary absolute top-0 right-0 flex h-3 w-3 items-center justify-center rounded-full px-1 text-[8px] font-bold text-white">
-              3
-            </span>
+            {unreadCount > 0 && (
+              <span className="bg-primary absolute top-0 right-0 flex min-h-3 min-w-3 items-center justify-center rounded-full px-1 text-[8px] font-bold text-white">
+                {unreadCount}
+              </span>
+            )}
           </Button>
         )}
 

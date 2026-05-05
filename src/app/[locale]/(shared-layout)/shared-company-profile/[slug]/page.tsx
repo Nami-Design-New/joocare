@@ -19,17 +19,29 @@ export default async function SharedCompanyProfileDetails({
     const { locale, slug } = await params;
     const { company } = await getCompanyProfile(slug);
     const queryClient = getQueryClient();
+    let jobsError: unknown = null;
 
-    const companyJobsQuery = await queryClient.fetchInfiniteQuery(
+    try {
+        await queryClient.fetchInfiniteQuery(
+            getInfiniteCompanyJobsQueryOptions({
+                slug,
+                locale,
+                fetchPage: fetchCompanyJobsPageServer,
+            }),
+        );
+    } catch (error) {
+        jobsError = error;
+    }
+
+    const companyName = company.name ?? "this company";
+    const companyJobsQuery = queryClient.getQueryData(
         getInfiniteCompanyJobsQueryOptions({
             slug,
             locale,
             fetchPage: fetchCompanyJobsPageServer,
-        }),
+        }).queryKey,
     );
-
-    const companyName = company.name ?? "this company";
-    const initialJobs = companyJobsQuery.pages[0]?.data ?? [];
+    const initialJobs = companyJobsQuery?.pages[0]?.data ?? [];
 
     return (
 
@@ -50,6 +62,7 @@ export default async function SharedCompanyProfileDetails({
                         locale={locale}
                         companyName={companyName}
                         initialJobs={initialJobs}
+                        jobsError={jobsError}
                     />
                 </HydrationBoundary>
             </div>

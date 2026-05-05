@@ -10,18 +10,28 @@ type BreadcrumbItem = {
 type BreadcrumbProps = {
   title: string;
   items: BreadcrumbItem[];
+  gradient?: boolean;
 };
 
-export default function Breadcrumb({ title, items }: BreadcrumbProps) {
-  const t = useTranslations("Breadcrumb");
 
+export default function Breadcrumb({
+  title,
+  items,
+  gradient = true,
+}: BreadcrumbProps) {
   return (
-    <div className="` bg-primary-gradient px-3 py-4 text-white lg:px-25 lg:pt-12 lg:pb-38">
-      <div className="container mx-auto flex items-center justify-between">
+    <div
+      className={`layout-shell py-4 lg:pt-12 lg:pb-38 ${gradient ? "bg-primary-gradient text-white" : "bg-transparent text-secondary"
+        }`}
+    >
+      <div className="layout-content flex items-center justify-between">
         <h6 className="text-lg font-semibold">{title}</h6>
 
-        <nav aria-label={t("ariaLabel")}>
-          <ol className="flex items-center space-x-2 text-sm text-white/90">
+        <nav aria-label="Breadcrumb">
+          <ol
+            className={`flex items-center space-x-2 text-sm ${gradient ? "text-white/90" : "text-muted-foreground"
+              }`}
+          >
             {items.map((item, index) => {
               const isLast = index === items.length - 1;
 
@@ -30,15 +40,20 @@ export default function Breadcrumb({ title, items }: BreadcrumbProps) {
                   {item.href && !isLast ? (
                     <Link
                       href={item.href}
-                      className="text-white/90 hover:underline"
+                      className={gradient ? "text-white/90 hover:underline" : "hover:text-secondary hover:underline"}
                     >
                       {item.label}
                     </Link>
                   ) : (
                     <span
-                      className={`${
-                        isLast ? "font-semibold text-white" : "text-white/70"
-                      }`}
+                      className={`${isLast
+                        ? gradient
+                          ? "font-semibold text-white"
+                          : "font-semibold text-secondary"
+                        : gradient
+                          ? "text-white/70"
+                          : "text-muted-foreground"
+                        }`}
                       aria-current={isLast ? "page" : undefined}
                     >
                       {item.label}
@@ -47,7 +62,7 @@ export default function Breadcrumb({ title, items }: BreadcrumbProps) {
 
                   {!isLast && (
                     <ChevronRight
-                      className="text-white/70 rtl-flip"
+                      className={gradient ? "text-white/70" : "text-muted-foreground"}
                       size={20}
                     />
                   )}

@@ -6,20 +6,35 @@ import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Controller, useFormContext } from "react-hook-form";
 import useGetCountries from "@/shared/hooks/useGetCountries";
-import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
+// import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
 import useGetOrganizationSizes from "@/shared/hooks/useGetOrganizationSizes";
 import useGetEmployerTypes from "@/shared/hooks/useGetEmployerTypes";
 import { useState } from "react";
 import { useLocale } from "next-intl";
+import { useSession } from "next-auth/react";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 
 export default function StepTwo() {
   const locale = useLocale();
-  const { register, control, setError, clearErrors, setValue, formState: { errors }, } = useFormContext();
+  const { data: session } = useSession();
+  const token = session?.accessToken || "";
+  const { data: profileData } = useGetCompanyProfile({ token });
+  const { register, control, setError, clearErrors, setValue, watch, formState: { errors }, } = useFormContext();
 
-  const [specialtySearch, setSpecialtySearch] = useState("");
+  // const [specialtySearch, setSpecialtySearch] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
   const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
   const [employerTypesSearch, setEmployerTypesSearch] = useState("");
+  const [showExistingCommercialRegistrationImage, setShowExistingCommercialRegistrationImage] = useState<boolean | null>(null);
+  const [showExistingMedicalLicenseImage, setShowExistingMedicalLicenseImage] = useState<boolean | null>(null);
+
+  const commercialRegistrationImagePath = watch("commercialRegistrationImagePath");
+  const medicalLicenseImagePath = watch("medicalLicenseImagePath");
+
+  const shouldShowExistingCommercialRegistrationImage =
+    showExistingCommercialRegistrationImage ?? Boolean(profileData?.commercial_registration_image);
+  const shouldShowExistingMedicalLicenseImage =
+    showExistingMedicalLicenseImage ?? Boolean(profileData?.medical_license_image);
 
   const {
     countries,
@@ -48,14 +63,14 @@ export default function StepTwo() {
     isFetchingNextPage: isFetchingMoreEmployerTypes,
   } = useGetEmployerTypes(employerTypesSearch);
 
-  const {
-    specialties,
-    isLoading: isSpecialtiesLoading,
-    error: specialtiesError,
-    hasNextPage: hasMoreSpecialties,
-    fetchNextPage: fetchMoreSpecialties,
-    isFetchingNextPage: isFetchingMoreSpecialties,
-  } = useGetSpecialties(specialtySearch);
+  // const {
+  //   specialties,
+  //   isLoading: isSpecialtiesLoading,
+  //   error: specialtiesError,
+  //   hasNextPage: hasMoreSpecialties,
+  //   fetchNextPage: fetchMoreSpecialties,
+  //   isFetchingNextPage: isFetchingMoreSpecialties,
+  // } = useGetSpecialties(specialtySearch);
 
   return (
     <div className="flex flex-col gap-y-5">
@@ -176,6 +191,7 @@ export default function StepTwo() {
               onStoredPathChange={(path) => {
                 setValue("commercialRegistrationImagePath", path);
                 if (path) {
+                  setShowExistingCommercialRegistrationImage(false);
                   clearErrors("commercialRegistrationImage");
                 }
               }}
@@ -189,9 +205,26 @@ export default function StepTwo() {
                   message,
                 });
               }}
+              existingFileUrl={
+                commercialRegistrationImagePath ||
+                (shouldShowExistingCommercialRegistrationImage
+                  ? profileData?.commercial_registration_image
+                  : null)
+              }
+              existingFileLabel={
+                shouldShowExistingCommercialRegistrationImage ||
+                  Boolean(commercialRegistrationImagePath)
+                  ? "Existing Commercial Registration Image"
+                  : undefined
+              }
+              onExistingFileRemove={() => {
+                setShowExistingCommercialRegistrationImage(false);
+                setValue("commercialRegistrationImagePath", "");
+                field.onChange([]);
+              }}
               allowMultiple={false}
               maxFiles={1}
-              error={errors.commercialRegistrationImage?.message as string}
+              error={errors.commercialRegistrationImagePath?.message as string}
             />
           )}
         />
@@ -248,7 +281,16 @@ export default function StepTwo() {
           {...register("licenseIssuingAuthority")}
           error={errors.licenseIssuingAuthority?.message?.toString()}
         />
-        <Controller
+        <InputField
+          id="specialtyScopePractice"
+          label="Specialty / Scope of Practice"
+          type={"text"}
+          placeholder="ex: Cardiology"
+          className="bg-white"
+          {...register("specialtyScopePractice")}
+          error={errors.specialtyScopePractice?.message?.toString()}
+        />
+        {/* <Controller
           name="specialtyScopePractice"
           control={control}
           render={({ field }) => (
@@ -277,7 +319,7 @@ export default function StepTwo() {
               onSearchChange={setSpecialtySearch}
             />
           )}
-        />
+        /> */}
 
         <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
           <InputField
@@ -324,6 +366,7 @@ export default function StepTwo() {
               onStoredPathChange={(path) => {
                 setValue("medicalLicenseImagePath", path);
                 if (path) {
+                  setShowExistingMedicalLicenseImage(false);
                   clearErrors("medicalLicenseImage");
                 }
               }}
@@ -337,7 +380,24 @@ export default function StepTwo() {
                   message,
                 });
               }}
-              error={errors.medicalLicenseImage?.message?.toString()}
+              existingFileUrl={
+                medicalLicenseImagePath ||
+                (shouldShowExistingMedicalLicenseImage
+                  ? profileData?.medical_license_image
+                  : null)
+              }
+              existingFileLabel={
+                shouldShowExistingMedicalLicenseImage ||
+                  Boolean(medicalLicenseImagePath)
+                  ? "Existing Medical License Image"
+                  : undefined
+              }
+              onExistingFileRemove={() => {
+                setShowExistingMedicalLicenseImage(false);
+                setValue("medicalLicenseImagePath", "");
+                field.onChange([]);
+              }}
+              error={errors.medicalLicenseImagePath?.message?.toString()}
             />
           )}
         />

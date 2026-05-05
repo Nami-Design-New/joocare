@@ -1,9 +1,10 @@
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { getTimeZone } from "../lib/fetch-manager";
 
-export default function useGetSpecialties(search = "") {
+export default function useGetSpecialties(search = "", categoryId?: number) {
     const query = useInfiniteQuery({
-        queryKey: ["specialties", search],
+        queryKey: ["specialties", search, categoryId],
         initialPageParam: 1,
         queryFn: async ({ pageParam }) => {
             const params = new URLSearchParams({
@@ -16,7 +17,15 @@ export default function useGetSpecialties(search = "") {
                 params.set("search", search.trim());
             }
 
-            const res = await fetch(`${getBaseApiUrl()}/specialties?${params.toString()}`);
+            if (categoryId) {
+                params.set("category_id", String(categoryId));
+            }
+
+            const res = await fetch(`${getBaseApiUrl()}/specialties?${params.toString()}`, {
+                headers: {
+                    "X-Timezone": getTimeZone(),
+                }
+            });
 
             if (!res.ok) {
                 throw new Error("Network error");
@@ -24,12 +33,9 @@ export default function useGetSpecialties(search = "") {
 
             const data = await res.json();
 
-            if (data.code !== 200) {
-                throw new Error(data.message || "Something went wrong");
-            }
-
             return data;
         },
+        enabled: !categoryId || categoryId > 0,
         getNextPageParam: (lastPage) => {
             if (!lastPage?.next_page_url) return undefined;
 

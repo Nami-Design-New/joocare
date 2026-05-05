@@ -19,6 +19,9 @@ export type CandidateProfileApiResponsibility = {
 export type CandidateProfileApiExperience = {
   id: number;
   title: string;
+  job_title: {
+    title: string;
+  }
   job_title_id: number | null;
   company: string | null;
   start_date: string | null;
@@ -42,6 +45,7 @@ export type CandidateProfileApiEducation = {
   user_id: number;
   degree: string | null;
   university: string | null;
+  gpa?: number | string | null;
   country_id: number | null;
   start_date: string | null;
   end_date: string | null;
@@ -57,7 +61,10 @@ export type CandidateProfileApiUser = {
   phone: string | null;
   phone_code: string | null;
   job_title_id: number | null;
-  job_title: CandidateProfileApiLookup | null;
+  job_title: {
+    title: string
+  }
+  title: CandidateProfileApiLookup | string | null;
   country_id: number | null;
   country: CandidateProfileApiLookup | null;
   city_id: number | null;
@@ -81,6 +88,7 @@ export type CandidateProfileApiUser = {
   date_of_birth?: string | null;
   created_at: string;
   updated_at: string;
+  hiring_readiness_score?: number | null;
 };
 
 export type CandidateProfileApiResponse = {
@@ -112,6 +120,7 @@ export type CandidateProfileViewModel = {
   skills: CandidateSkillViewModel[];
   educations: CandidateEducationViewModel[];
   experiences: CandidateExperienceViewModel[];
+  hiring_readiness_score?: number | null;
 };
 
 export type CandidateSkillViewModel = {
@@ -124,10 +133,12 @@ export type CandidateEducationViewModel = {
   id: string;
   university: string;
   degree: string | null;
+  gpa: string | null;
   period: string | null;
   countryId: string | null;
   startDate: string | null;
   endDate: string | null;
+  educationPeriod: string | null;
 };
 
 export type CandidateExperienceViewModel = {

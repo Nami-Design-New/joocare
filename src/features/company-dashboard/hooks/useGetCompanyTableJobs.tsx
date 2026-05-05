@@ -12,14 +12,14 @@ interface JobsPage {
     total: number;
 }
 
-export default function useGetCompanyJobs({ token, page }: { token: string, page: number }) {
+export default function useGetCompanyTableJobs({ token, page }: { token: string, page: number }) {
     const query = useQuery({
         queryKey: ["company-jobs-table", page],
         queryFn: async (): Promise<JobsPage> => {
             const params = new URLSearchParams({
                 page: String(page),
                 pagination: "on",
-                limit_per_page: "2",
+                limit_per_page: "10",
             });
 
             const res = await apiFetch(
@@ -27,11 +27,11 @@ export default function useGetCompanyJobs({ token, page }: { token: string, page
                 { method: "GET", token }
             );
 
-            if (!res.ok) throw new Error("Network error");
+            if (!res.ok || !res.data) {
+                throw new Error(res.message || "Something went wrong");
+            }
 
-            if (res.data?.code !== 200) throw new Error(res.data?.message || "Something went wrong");
-
-            return res?.data;
+            return res.data as unknown as JobsPage;
         },
         enabled: !!token,
 

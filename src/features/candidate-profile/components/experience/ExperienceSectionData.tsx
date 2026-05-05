@@ -21,7 +21,7 @@ export function ExperienceSectionData({
   const [open, setOpen] = useState(false);
   const t = useTranslations("Candidate");
   const experiences = profile?.experiences ?? [];
-
+  // console.log("experiences"  , experiences);
   return (
     <>
       <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
@@ -75,7 +75,7 @@ export function ExperienceSectionData({
                       {exp.bullets.map((bullet, i) => (
                         <li
                           key={i}
-                          className="text-muted-foreground flex gap-2 text-[12px]"
+                          className="text-muted-foreground flex gap-2 text-[14px]"
                         >
                           <span className="text-muted-foreground">•</span>
                           {bullet}

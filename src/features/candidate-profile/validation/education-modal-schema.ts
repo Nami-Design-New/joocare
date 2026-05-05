@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+function isValidGpaFormat(value: string) {
+  return /^(?:[0-3](?:\.\d+)?|4(?:\.0+)?)$/.test(value);
+}
+
 export const educationModalSchema = z
   .object({
     degree: z
@@ -15,6 +19,13 @@ export const educationModalSchema = z
     countryId: z.string().trim().min(1, "Country is required"),
     startDate: z.string().min(1, "Start date is required"),
     endDate: z.string().optional(),
+    gpa: z
+      .string()
+      .trim()
+      .min(1, "GPA is required.")
+      .refine((value) => isValidGpaFormat(value), {
+        message: "GPA must be a number between 0 and 4.",
+      }),
   })
   .refine((data) => data.startDate <= new Date().toISOString().split("T")[0], {
     message: "Start date must be today or earlier.",

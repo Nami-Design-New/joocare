@@ -45,7 +45,7 @@ export async function confirmEmailVerification({
   otp: string;
   locale: string;
 }) {
-  const { ok, message } = await apiFetch(`${getAuthApiUrl(role)}/auth/email/confirm`, {
+  const { ok, message, data } = await apiFetch(`${getAuthApiUrl(role)}/auth/email/confirm`, {
     method: "POST",
     locale,
     body: createFormData({ email, otp }),
@@ -55,5 +55,8 @@ export async function confirmEmailVerification({
     throw new Error(message || "Failed to confirm verification code.");
   }
 
-  return message || "Email verified successfully.";
+  return {
+    message: message || "Email verified successfully.",
+    data,
+  };
 }

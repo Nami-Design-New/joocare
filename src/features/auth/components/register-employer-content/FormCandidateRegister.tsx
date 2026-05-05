@@ -1,17 +1,16 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
+import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 
 import { InputField } from "@/shared/components/InputField";
 import LabelCheckbox from "@/shared/components/LabelCheckbox";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
 
-import { FilepondUpload } from "@/shared/components/FilepondUpload";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { parsePhoneNumber } from "react-phone-number-input";
 import { useRegisterCandidate } from "../../hooks/useRegisterCandidate";
 import {
@@ -21,39 +20,70 @@ import {
 import { OTPModal } from "../forget-password/OtpModal";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
+import { FilepondUpload } from "@/shared/components/FilepondUpload";
+
+const OTHER_JOB_TITLE_VALUE = "__other__";
 
 const FormCandidateRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { jobTitles, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetJobTitles();
-  const { countries, isLoading: countryLoading, error: countryError, hasNextPage: countryHasNextPage, fetchNextPage: countryFetchNextPage, isFetchingNextPage: countryIsFetchingNextPage } = useGetCountries();
+  const { countries, hasNextPage: countryHasNextPage, fetchNextPage: countryFetchNextPage, isFetchingNextPage: countryIsFetchingNextPage } = useGetCountries();
 
   const {
     register,
     control,
     handleSubmit,
-    watch,
+    setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<TRegisterCandidateSchema>({
-    resolver: zodResolver(RegisterCandidateSchema),
+    resolver: typedZodResolver(RegisterCandidateSchema),
     defaultValues: {
       uploadCV: "",
       confirmRegister: false,
       uploadLicense: "",
     },
     mode: "onChange", // Validate on blur for better UX
+    shouldUnregister: true,
   });
 
-  const verificationEmail = watch("email");
-  const countryId = watch("country");
-  const { cities, isLoading: cityLoading, error: cityError, hasNextPage: cityHasNextPage, fetchNextPage: cityFetchNextPage, isFetchingNextPage: cityIsFetchingNextPage } = useGetCitiesByCountryId(Number(countryId));
+  const verificationEmail = useWatch({ control, name: "email" });
+  const countryId = useWatch({ control, name: "country" });
+  const selectedJobTitle = useWatch({ control, name: "jobTitle" });
+  const { cities, hasNextPage: cityHasNextPage, fetchNextPage: cityFetchNextPage, isFetchingNextPage: cityIsFetchingNextPage } = useGetCitiesByCountryId(Number(countryId));
 
-  const confirmRegisterValue = watch("confirmRegister");
+  const confirmRegisterValue = useWatch({ control, name: "confirmRegister" });
+  const isOtherJobTitle = selectedJobTitle === OTHER_JOB_TITLE_VALUE;
+  const jobTitleOptions = [
+    { label: "Other", value: OTHER_JOB_TITLE_VALUE },
+    ...jobTitles.map((jt) => ({
+      label: jt.title,
+      value: String(jt.id),
+    })),
+  ];
   const { mutate: submitRegister, isPending } = useRegisterCandidate(() =>
     setIsModalOpen(true)
   );
 
+  useEffect(() => {
+    if (confirmRegisterValue) {
+      return;
+    }
+
+    setValue("specificCountry", "");
+    setValue("licenseTitle", "");
+    setValue("licenseNumber", "");
+    setValue("uploadLicense", "");
+    clearErrors([
+      "specificCountry",
+      "licenseTitle",
+      "licenseNumber",
+      "uploadLicense",
+    ]);
+  }, [clearErrors, confirmRegisterValue, setValue]);
+
   const onSubmit: SubmitHandler<TRegisterCandidateSchema> = (data) => {
-    console.log("data registdere", data);
+    // console.log("data registdere", data);
 
     const parsed = parsePhoneNumber(data.phoneNumber);
 
@@ -62,7 +92,11 @@ const FormCandidateRegister = () => {
       email: data.email,
       phone: parsed?.nationalNumber ?? "",
       phone_code: `+${parsed?.countryCallingCode ?? ""}`,
-      job_title_id: data.jobTitle,
+      job_title_id: data.jobTitle === OTHER_JOB_TITLE_VALUE ? undefined : data.jobTitle,
+      title:
+        data.jobTitle === OTHER_JOB_TITLE_VALUE
+          ? data.otherJobTitle.trim()
+          : undefined,
       country_id: data.country,
       city_id: data.city,
       password: data.createPassword,
@@ -109,7 +143,7 @@ const FormCandidateRegister = () => {
           render={({ field }) => (
             <PhoneInputCode
               {...field}
-              defaultCountry="EG"
+              defaultCountry="AE"
               id="phoneNumber"
               className="w-full"
               placeholder="Enter phone number"
@@ -138,10 +172,7 @@ const FormCandidateRegister = () => {
             placeholder="ex: Hospital"
             {...field}
             error={errors.jobTitle?.message ?? (error instanceof Error ? error.message : undefined)}
-            options={jobTitles.map((jt) => ({
-              label: jt.title,
-              value: String(jt.id),
-            }))}
+            options={jobTitleOptions}
 
             disabled={isLoading}
             onReachEnd={() => fetchNextPage()}
@@ -150,6 +181,17 @@ const FormCandidateRegister = () => {
           />
         )}
       />
+
+      {isOtherJobTitle && (
+        <InputField
+          id="otherJobTitle"
+          type="text"
+          label="Other Job Title"
+          placeholder="ex: Consultant Internist"
+          {...register("otherJobTitle")}
+          error={errors.otherJobTitle?.message}
+        />
+      )}
 
       {/* Current Location */}
       <div>
@@ -162,6 +204,7 @@ const FormCandidateRegister = () => {
             control={control}
             render={({ field }) => (
               <SelectInputField
+                withSearchInput
                 id="country"
                 placeholder="country"
                 {...field}
@@ -181,6 +224,7 @@ const FormCandidateRegister = () => {
             control={control}
             render={({ field }) => (
               <SelectInputField
+                withSearchInput
                 id="city"
                 placeholder="city"
                 {...field}
@@ -217,12 +261,12 @@ const FormCandidateRegister = () => {
 
           <FilepondUpload
             label="Upload CV"
-            hint='"Optional"'
-            value={field.value}                         // the stored path
-            onUploadSuccess={(imagePath) => field.onChange(imagePath)} // ✅ set path
-            onRemove={() => field.onChange("")}          // ✅ clear on remove
+            value={field.value}
+            onUploadSuccess={(imagePath) => field.onChange(imagePath)}
+            onRemove={() => field.onChange("")}
             allowMultiple={false}
             maxFiles={1}
+            maxSize={5 * 1024 * 1024}
             error={errors.uploadCV?.message}
           />
         )}
@@ -303,6 +347,7 @@ const FormCandidateRegister = () => {
                 allowMultiple={false}
                 maxFiles={1}
                 error={errors.uploadLicense?.message}
+                maxSize={5 * 1024 * 1024}
               />
             )}
           />

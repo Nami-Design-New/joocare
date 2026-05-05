@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
@@ -23,8 +24,13 @@ import {
 } from "../../validation/password-otp-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
+import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
+import { apiFetch } from "@/shared/lib/fetch-manager";
 import { useLocale } from "next-intl";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { verifyUpdatedEmail } from "@/features/accout-settings/lib/update-email-verification";
 import {
   PasswordResetRole,
   requestPasswordReset,
@@ -35,13 +41,14 @@ import {
   confirmEmailVerification,
   requestEmailVerification,
 } from "../../lib/email-verification";
+import { signIn } from "next-auth/react";
 
 interface OTPModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   email?: string;
   role?: PasswordResetRole;
-  purpose?: "password-reset" | "email-confirm" | "generic";
+  purpose?: "password-reset" | "email-confirm" | "update-email" | "generic";
   successRedirectPath?: string;
   onSuccess?: () => void | Promise<void>;
 }
@@ -55,11 +62,16 @@ export function OTPModal({
   successRedirectPath,
   onSuccess,
 }: OTPModalProps) {
-  const [countdown, setCountdown] = useState(48);
+  const [countdown, setCountdown] = useState(60);
   const router = useRouter();
+  const queryClient = useQueryClient();
   const path = usePathname();
   const locale = useLocale();
+  const { data: session } = useSession();
+  const token = session?.accessToken ?? "";
   const forgetPasswordPage = path.includes("forget-password");
+  const registerCandidatePage = path.includes("auth/candidate/register")
+  const registerEmployerPage = path.includes("auth/employer/register");
   const basicInfo = path.includes("basic-info");
 
   const handleGenericSuccess = async () => {
@@ -77,6 +89,10 @@ export function OTPModal({
       router.push("/auth/new-password");
     } else if (basicInfo) {
       onOpenChange(false);
+    } else if (registerEmployerPage) {
+      router.push('/company/company-profile')
+    } else if (registerCandidatePage) {
+      router.push('/')
     } else {
       router.push("/");
     }
@@ -114,14 +130,47 @@ export function OTPModal({
       }
 
       if (purpose === "email-confirm" && email && role) {
-        const message = await confirmEmailVerification({
+        const { data: otpData } = await confirmEmailVerification({
           role,
           email,
           otp: data.otp,
           locale,
         });
 
+        const accessToken = otpData?.data?.token
+        const user = otpData?.data?.company || otpData?.data?.user;
+
+        const providerByRole: Record<string, string> = {
+          candidate: "candidate-credentials",
+          employer: "employer-credentials",
+        };
+
+        // login after register
+        if (accessToken && role) {
+          await signIn(providerByRole[role], {
+            redirect: false,
+            accessToken,
+            user: JSON.stringify(user),
+          });
+          void requestNotificationPermission();
+        }
+
+        // toast.success(message);
+        reset();
+        onOpenChange(false);
+        await handleGenericSuccess();
+        return;
+      }
+
+      if (purpose === "update-email" && email) {
+        const { message } = await verifyUpdatedEmail({
+          email,
+          otp: data.otp,
+          token,
+        });
+
         toast.success(message);
+        await queryClient.invalidateQueries({ queryKey: ["company-profile"] });
         reset();
         onOpenChange(false);
         await handleGenericSuccess();
@@ -139,7 +188,7 @@ export function OTPModal({
 
   useEffect(() => {
     if (!open) return;
-    const timeout = setTimeout(() => setCountdown(48), 0);
+    const timeout = setTimeout(() => setCountdown(60), 0);
     const timer = setInterval(() => {
       setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
@@ -171,7 +220,27 @@ export function OTPModal({
         toast.success(message);
       }
 
-      setCountdown(48);
+      if (purpose === "update-email" && email && token) {
+        const { ok, message } = await apiFetch(
+          `${getCompanyApiUrl()}/auth/update-email`,
+          {
+            method: "POST",
+            token,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+          },
+        );
+
+        if (!ok) {
+          throw new Error(message || "Failed to resend code.");
+        }
+
+        toast.success(message || "Verification code sent successfully.");
+      }
+
+      setCountdown(60);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to resend code.",

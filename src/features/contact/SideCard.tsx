@@ -1,14 +1,27 @@
 // components/contact/SideCard.tsx
 
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import {
+  Facebook,
+  Ghost,
+  Instagram,
+  Linkedin,
+  Twitter,
+} from "lucide-react";
 import SectionTitle from "../home/components/SectionTitle";
 import Image from "next/image";
 import { Button } from "@/shared/components/ui/button";
 import type { ContactRole } from "./types";
 
-type SocialItem = {
-  icon: React.ComponentType<{ size?: number }>;
-  label: string;
+type SocialPlatform =
+  | "linkedin"
+  | "facebook"
+  | "instagram"
+  | "twitter"
+  | "snapchat";
+
+type SocialLink = {
+  href: string;
+  platform: SocialPlatform;
 };
 
 type SideCardProps = {
@@ -21,15 +34,16 @@ type SideCardProps = {
   imageAlt?: string;
   buttonText?: string;
   showSocial?: boolean;
-  socialItems?: SocialItem[];
+  socialLinks?: SocialLink[];
 };
 
-const defaultSocialItems: SocialItem[] = [
-  { icon: Linkedin, label: "LinkedIn" },
-  { icon: Facebook, label: "Facebook" },
-  { icon: Instagram, label: "Instagram" },
-  { icon: Twitter, label: "X" },
-];
+const socialItems = {
+  linkedin: { src: "/assets/icons/social-icons/linkedin-contact.svg", label: "LinkedIn" },
+  facebook: { src: "/assets/icons/social-icons/facebook-contact.svg", label: "Facebook" },
+  instagram: { src: "/assets/icons/social-icons/instagram-contact.svg", label: "Instagram" },
+  twitter: { src: "/assets/icons/social-icons/twitter-contact.svg", label: "X" },
+  snapchat: { src: "/assets/icons/social-icons/snapchat-contact.svg", label: "Snapchat" },
+};
 
 export default function SideCard({
   role = "candidate",
@@ -41,13 +55,13 @@ export default function SideCard({
   imageAlt = "illustration",
   buttonText,
   showSocial = true,
-  socialItems = defaultSocialItems,
+  socialLinks = [],
 }: SideCardProps) {
   const resolvedImageSrc =
     imageSrc ??
     (role === "employer"
-      ? "/assets/contact/employer.svg"
-      : "/assets/contact/candidate.svg");
+      ? "/assets/contact/employer.png"
+      : "/assets/contact/candidate.png");
 
   const resolvedButtonText =
     buttonText ?? (role === "employer" ? "For Candidate" : "For Employer");
@@ -61,7 +75,7 @@ export default function SideCard({
         </h2>
       </div>
       <section className="flex w-full grow flex-col items-center justify-center gap-2">
-        <div className="relative h-48 w-full xl:h-95">
+        <div className="relative h-75 w-full">
           <Image src={resolvedImageSrc} alt={imageAlt} fill />
         </div>
         {canSwitchRole ? (
@@ -71,25 +85,36 @@ export default function SideCard({
         ) : null}
       </section>
 
-      {showSocial && (
+      {showSocial && socialLinks.length > 0 ? (
         <div className="mt-auto pt-10">
           <p className="text-foreground mb-3 text-sm font-semibold">
             Follow us
           </p>
           <div className="flex items-center gap-2.5">
-            {socialItems.map(({ icon: Icon, label }, index) => (
-              <button
-                key={index}
-                type="button"
-                className="bg-secondary text-secondary-foreground hover:bg-primary inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors"
-                aria-label={label}
-              >
-                <Icon size={18} />
-              </button>
-            ))}
+            {socialLinks.map(({ href, platform }) => {
+              const { src: srcImg, label } = socialItems[platform];
+
+              return (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:scale-105  h-10 w-10"
+                  aria-label={label}
+                >
+                  <Image
+                    src={srcImg}
+                    alt={label}
+                    width={40}
+                    height={40}
+                  />
+                </a>
+              );
+            })}
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

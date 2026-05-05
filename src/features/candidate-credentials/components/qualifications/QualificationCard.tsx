@@ -63,6 +63,8 @@ export default function QualificationCard({
     });
   };
 
+  console.log("qualification s", qualification);
+
   return (
     <>
       <section className="flex flex-col justify-start gap-2 rounded-2xl border bg-white p-2 shadow sm:flex-row sm:items-center">

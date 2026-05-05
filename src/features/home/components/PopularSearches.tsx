@@ -86,6 +86,7 @@ interface PopularSearchesProps {
   onShowMore?: () => void;
   onShowLess?: () => void;
   isExpanded?: boolean;
+  isLoadingMore?: boolean;
   showMoreLabel?: string;
   showLessLabel?: string;
 }
@@ -98,11 +99,13 @@ export default function PopularSearches({
   onShowMore,
   onShowLess,
   isExpanded = false,
+  isLoadingMore = false,
   showMoreLabel = "Show more",
   showLessLabel = "Show less",
 }: PopularSearchesProps) {
   const visibleItems = maxVisible ? items.slice(0, maxVisible) : items;
-  const hasHidden = maxVisible !== undefined && items.length > maxVisible;
+  const hasItems = items.length > 0;
+  const shouldShowToggleButton = hasItems && (Boolean(onShowMore) || Boolean(onShowLess));
 
   return (
     <section className="flex w-full  flex-col items-center gap-2 lg:flex-row lg:items-start lg:justify-between">
@@ -112,15 +115,20 @@ export default function PopularSearches({
           {title}
         </h4>
 
-        {(hasHidden || isExpanded) && (
+        {shouldShowToggleButton && (
           <Button
             variant="outline"
             size="pill"
             hoverStyle="slidehorizontalPrimary"
             className="text-muted-foreground text-md group flex items-center gap-2 border-none font-normal lg:hidden"
             onClick={isExpanded ? onShowLess : onShowMore}
+            disabled={isLoadingMore}
           >
-            {isExpanded ? showLessLabel : showMoreLabel}
+            {isLoadingMore
+              ? "Loading..."
+              : isExpanded
+                ? showLessLabel
+                : showMoreLabel}
             <ArrowRight
               size={28}
               strokeWidth={1.5}
@@ -143,15 +151,20 @@ export default function PopularSearches({
       </ul>
 
       {/* Desktop Button */}
-      {(hasHidden || isExpanded) && (
+      {shouldShowToggleButton && (
         <Button
           variant="outline"
           size="pill"
           hoverStyle="slidehorizontalPrimary"
           className="text-muted-foreground text-md group hidden items-center gap-2 border-none font-normal lg:flex"
           onClick={isExpanded ? onShowLess : onShowMore}
+          disabled={isLoadingMore}
         >
-          {isExpanded ? showLessLabel : showMoreLabel}
+          {isLoadingMore
+            ? "Loading..."
+            : isExpanded
+              ? showLessLabel
+              : showMoreLabel}
           <ArrowRight
             size={28}
             strokeWidth={1.5}

@@ -9,9 +9,27 @@ import { apiFetch, ApiFetchResponse } from "./shared/lib/fetch-manager";
 type AuthRole = "candidate" | "employer";
 type SocialProvider = "google" | "linkedin";
 
+function mapLinkedInOidcProfile(profile: Record<string, unknown>) {
+  const sub = typeof profile.sub === "string" ? profile.sub : "";
+  const name = typeof profile.name === "string" ? profile.name : undefined;
+  const givenName =
+    typeof profile.given_name === "string" ? profile.given_name : undefined;
+  const familyName =
+    typeof profile.family_name === "string" ? profile.family_name : undefined;
+  const email = typeof profile.email === "string" ? profile.email : undefined;
+  const picture =
+    typeof profile.picture === "string" ? profile.picture : undefined;
+
+  return {
+    id: sub,
+    name: name ?? ([givenName, familyName].filter(Boolean).join(" ") || sub),
+    email,
+    image: picture,
+  };
+}
+
 function extractToken(payload: ApiFetchResponse | null) {
   const data = payload?.data as Record<string, unknown> | undefined;
-
   return (
     (typeof payload?.token === "string" && payload.token) ||
     (typeof payload?.access_token === "string" && payload.access_token) ||
@@ -171,40 +189,74 @@ async function authorizeWithSocialEndpoint({
 
 export const authOptions: NextAuthOptions = {
   pages: {
-    signIn: "/en/auth/candidate/login",
+    signIn: "/auth/candidate/login",
   },
   providers: [
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
       ? [
-          GoogleProvider({
-            id: "google-candidate",
-            name: "Google Candidate",
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          }),
-          GoogleProvider({
-            id: "google-employer",
-            name: "Google Employer",
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          }),
-        ]
+        GoogleProvider({
+          id: "google-candidate",
+          name: "Google Candidate",
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          authorization: {
+            params: {
+              prompt: "select_account",
+            },
+          },
+        }),
+        GoogleProvider({
+          id: "google-employer",
+          name: "Google Employer",
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          authorization: {
+            params: {
+              prompt: "select_account",
+            },
+          },
+        }),
+      ]
       : []),
     ...(process.env.LINKEDIN_CLIENT_ID && process.env.LINKEDIN_CLIENT_SECRET
       ? [
-          LinkedInProvider({
-            id: "linkedin-candidate",
-            name: "LinkedIn Candidate",
-            clientId: process.env.LINKEDIN_CLIENT_ID,
-            clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-          }),
-          LinkedInProvider({
-            id: "linkedin-employer",
-            name: "LinkedIn Employer",
-            clientId: process.env.LINKEDIN_CLIENT_ID,
-            clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-          }),
-        ]
+        LinkedInProvider({
+          id: "linkedin-candidate",
+          name: "LinkedIn Candidate",
+          clientId: process.env.LINKEDIN_CLIENT_ID,
+          clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+          wellKnown: "https://www.linkedin.com/oauth/.well-known/openid-configuration",
+          idToken: true,
+          authorization: {
+            params: {
+              prompt: "login",
+              scope: "openid profile email",
+            },
+          },
+          userinfo: "https://api.linkedin.com/v2/userinfo",
+          profile(profile) {
+            return mapLinkedInOidcProfile(profile as Record<string, unknown>);
+          },
+        }),
+        LinkedInProvider({
+          id: "linkedin-employer",
+          name: "LinkedIn Employer",
+          clientId: process.env.LINKEDIN_CLIENT_ID,
+          clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+          wellKnown: "https://www.linkedin.com/oauth/.well-known/openid-configuration",
+          idToken: true,
+          authorization: {
+            params: {
+              prompt: "login",
+              scope: "openid profile email",
+            },
+          },
+          userinfo: "https://api.linkedin.com/v2/userinfo",
+          profile(profile) {
+            return mapLinkedInOidcProfile(profile as Record<string, unknown>);
+          },
+        }),
+      ]
       : []),
     Credentials({
       id: "candidate-credentials",
@@ -213,8 +265,20 @@ export const authOptions: NextAuthOptions = {
         email: {},
         password: {},
         locale: {},
+        accessToken: {},
+        user: {},
       },
       async authorize(credentials) {
+        // token from register
+        if (credentials?.accessToken) {
+          return {
+            id: "temp-id",
+            user: JSON.parse(credentials.user || "{}"),
+            accessToken: credentials.accessToken,
+            authRole: "candidate",
+            authMessage: "Registered successfully",
+          };
+        }
         return authorizeWithEndpoint({
           credentials,
           baseUrl: getUserApiUrl(),
@@ -229,8 +293,20 @@ export const authOptions: NextAuthOptions = {
         email: {},
         password: {},
         locale: {},
+        accessToken: {},
+        user: {},
       },
       async authorize(credentials) {
+        // token from register
+        if (credentials?.accessToken) {
+          return {
+            id: "temp-id",
+            user: JSON.parse(credentials.user || "{}"),
+            accessToken: credentials.accessToken,
+            authRole: "employer",
+            authMessage: "Registered successfully",
+          };
+        }
         return authorizeWithEndpoint({
           credentials,
           baseUrl: getCompanyApiUrl(),
@@ -244,14 +320,17 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider) {
         const socialProvider = parseSocialProvider(account.provider);
 
-        if (socialProvider && user?.email) {
+        if (socialProvider && account.providerAccountId) {
+          const email = user?.email ?? `${account.providerAccountId}@linkedin.com`;
+          const name = user?.name ?? user?.email ?? account.providerAccountId;
+
           const socialSession = await authorizeWithSocialEndpoint({
             role: socialProvider.role,
             provider: socialProvider.provider,
             providerId: account.providerAccountId,
-            name: user.name ?? user.email,
-            email: user.email,
-            image: user.image,
+            name,
+            email,
+            image: user?.image,
           });
 
           token.user = socialSession.user;
@@ -291,4 +370,5 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: true,
 };

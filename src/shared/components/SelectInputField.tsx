@@ -184,8 +184,12 @@ export const SelectInputField = React.forwardRef<
               className="max-h-60 overflow-y-auto"
             >
               {(item: Option) => (
-                <>
-                  <ComboboxItem key={item.value} value={item}>
+                <React.Fragment key={item.value}>
+                  <ComboboxItem key={item.value} value={item}
+                    className={cn(
+                      value === item.value && "bg-accent text-accent-foreground"
+                    )}
+                  >
                     {item.image && (
                       <Image
                         src={item.image}
@@ -197,11 +201,10 @@ export const SelectInputField = React.forwardRef<
                     {item.label}
                   </ComboboxItem>
 
-                  {/* ❗ مهم: sentinel يكون مرتبط بآخر item */}
                   {item === options[options.length - 1] && (
                     <div ref={handleObserver} className="h-1" />
                   )}
-                </>
+                </React.Fragment>
               )}
             </ComboboxList>
             {isFetchingNextPage && (

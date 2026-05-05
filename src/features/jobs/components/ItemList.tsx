@@ -1,7 +1,7 @@
-import { Skill } from "../services/job-details-service";
+import { NamedEntity } from "../types/jobs.types";
 
 interface ListProps {
-  items: Skill[];
+  items: NamedEntity[];
   variant?: "disc" | "decimal" | "dashed";
 }
 
@@ -16,8 +16,8 @@ export default function ItemList({ items, variant = "disc" }: ListProps) {
 
   return (
     <Tag className={`${listClass} flex flex-col gap-1.5 ps-7 text-sm`}>
-      {items.map((item) => (
-        <li key={item.id}>{item.title}</li>
+      {items?.map((item) => (
+        <li key={item?.id}>{item?.title}</li>
       ))}
     </Tag>
   );

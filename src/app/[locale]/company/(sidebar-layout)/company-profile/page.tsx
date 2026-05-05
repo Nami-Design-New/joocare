@@ -17,7 +17,7 @@ const MyProfilePage = () => {
 
     return (
         <div className="space-y-6">
-            <ProfileHeader companyProfileData={companyProfileData as TCompanyProfileViewModel} />
+            <ProfileHeader companyProfileData={companyProfileData as TCompanyProfileViewModel} isPending={isPending} />
             <AboutSection companyProfileData={companyProfileData as TCompanyProfileViewModel} isPending={isPending} />
             <div className="grid grid-cols-9 gap-6">
                 <div className="col-span-9 lg:col-span-5">

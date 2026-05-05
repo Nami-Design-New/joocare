@@ -9,7 +9,7 @@ const CompanySidebarClient = () => {
     <>
       {/* sidebar */}
       <div
-        className={`sticky top-21.75 left-0 z-40 lg:h-[calc(100vh-87px)] transition-transform duration-300 `}
+        className={`sticky top-19 left-0 z-40 lg:h-[calc(100vh-76px)] transition-transform duration-300 `}
 
       >
         <CompanySidebarContent />

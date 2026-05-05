@@ -23,8 +23,59 @@ type ApiFetchOptions = {
   headers?: HeadersInit;
   body?: BodyInit | null;
   cache?: RequestCache;
+  skipUnauthorizedHandler?: boolean;
 };
 
+export const UNAUTHORIZED_EVENT = "app:unauthorized";
+
+function getHeaderValue(headers: Headers, names: string[]) {
+  for (const name of names) {
+    const value = headers.get(name);
+
+    if (value) {
+      return value;
+    }
+  }
+
+  return null;
+}
+
+function resolveStatusCode(response: Response) {
+  const headerStatusCode = getHeaderValue(response.headers, [
+    "x-status-code",
+    "status-code",
+    "code",
+  ]);
+  const parsedHeaderStatusCode = headerStatusCode
+    ? Number.parseInt(headerStatusCode, 10)
+    : Number.NaN;
+
+  if (!Number.isNaN(parsedHeaderStatusCode) && parsedHeaderStatusCode > 0) {
+    return parsedHeaderStatusCode;
+  }
+
+  return response.status;
+}
+
+function resolveMessage<T>(
+  response: Response,
+  data: ApiFetchResponse<T> | null,
+) {
+  return (
+    getHeaderValue(response.headers, [
+      "x-message",
+      "message",
+      "x-error-message",
+      "x-status-message",
+      "status-message",
+    ]) ??
+    data?.message ??
+    null
+  );
+}
+export function getTimeZone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
 export async function apiFetch<T = Record<string, unknown>>(
   url: string,
   options: ApiFetchOptions = {},
@@ -36,10 +87,12 @@ export async function apiFetch<T = Record<string, unknown>>(
     headers,
     body,
     cache = "no-store",
+    skipUnauthorizedHandler = false,
   } = options;
 
   const requestHeaders = new Headers(headers);
 
+  requestHeaders.set('X-Timezone', getTimeZone());
   if (!requestHeaders.has("Accept")) {
     requestHeaders.set("Accept", "application/json");
   }
@@ -65,16 +118,31 @@ export async function apiFetch<T = Record<string, unknown>>(
   const data =
     ((await response.json().catch(() => null)) as ApiFetchResponse<T> | null) ?? null;
 
-  // console.log("from Fetch Api", data);
-  const statusCode =
-    response.status === 401 ? 401 : (data?.code ?? response.status);
+  const statusCode = resolveStatusCode(response);
   const ok = statusCode >= 200 && statusCode < 300;
+  const message = resolveMessage(response, data);
+
+  if (
+    statusCode === 401 &&
+    token &&
+    !skipUnauthorizedHandler &&
+    typeof window !== "undefined"
+  ) {
+    window.dispatchEvent(
+      new CustomEvent(UNAUTHORIZED_EVENT, {
+        detail: {
+          message,
+          statusCode,
+        },
+      }),
+    );
+  }
 
   return {
     response,
     data,
     statusCode,
     ok,
-    message: data?.message ?? null,
+    message,
   };
 }

@@ -1,11 +1,22 @@
 import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
-import { TRegisterEmployerSchema } from "../validation/employer-register-schema";
+import { getTimeZone } from "@/shared/lib/fetch-manager";
 
-export const registerEmployerService = async (data: TRegisterEmployerSchema) => {
+type RegisterEmployerPayload = {
+    name: string;
+    email: string;
+    domain_id: number;
+    password: string;
+    person_name: string;
+    person_phone: string;
+    person_phone_code: string;
+};
+
+export const registerEmployerService = async (data: RegisterEmployerPayload) => {
     const response = await fetch(`${getCompanyApiUrl()}/auth/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "X-Timezone": getTimeZone(),
         },
         body: JSON.stringify(data),
     });

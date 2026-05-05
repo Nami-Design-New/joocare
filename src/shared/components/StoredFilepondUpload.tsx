@@ -28,6 +28,32 @@ type StoredFilepondUploadProps = {
   onExistingFileRemove?: () => void;
 };
 
+function resolveExistingFileUrl(url?: string | null) {
+  if (!url) {
+    return null;
+  }
+
+  const normalizedUrl = url.trim().replace(/\\/g, "/");
+
+  if (
+    normalizedUrl.startsWith("blob:") ||
+    normalizedUrl.startsWith("data:") ||
+    normalizedUrl.startsWith("http://") ||
+    normalizedUrl.startsWith("https://")
+  ) {
+    return normalizedUrl;
+  }
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/+$/, "");
+  const relativePath = normalizedUrl.replace(/^\/+/, "");
+
+  if (!baseUrl) {
+    return `/${relativePath}`;
+  }
+
+  return `${baseUrl}/${relativePath}`;
+}
+
 function getFileName(url: string, fallback = "Uploaded file") {
   try {
     const pathname = new URL(url).pathname;
@@ -84,38 +110,40 @@ export function StoredFilepondUpload({
   onExistingFileRemove,
 }: StoredFilepondUploadProps) {
   const hasLocalFiles = files.length > 0;
-  const shouldShowExistingFile = !hasLocalFiles && Boolean(existingFileUrl);
+  const resolvedExistingFileUrl = resolveExistingFileUrl(existingFileUrl);
+  const shouldShowExistingFile = !hasLocalFiles && Boolean(resolvedExistingFileUrl);
 
   const pondFiles = useMemo(() => {
     if (hasLocalFiles) {
       return files;
     }
 
-    if (!existingFileUrl) {
+    if (!resolvedExistingFileUrl) {
       return [];
     }
 
-    const fileName = existingFileLabel || getFileName(existingFileUrl);
+    const fileName = existingFileLabel || getFileName(resolvedExistingFileUrl);
 
     return [
       {
-        source: existingFileUrl,
+        source: resolvedExistingFileUrl,
         options: {
           type: "local" as const,
-          file: {
-            name: fileName,
-            size: 0,
-            type: getFileTypeFromName(fileName),
-          },
+          // file: {
+          //   name: fileName,
+          //   size: 0,
+          //   type: getFileTypeFromName(fileName),
+          // },
         },
       },
     ];
-  }, [existingFileLabel, existingFileUrl, files, hasLocalFiles]);
+  }, [existingFileLabel, files, hasLocalFiles, resolvedExistingFileUrl]);
+  console.log("resolved :: ", resolvedExistingFileUrl, pondFiles);
 
   return (
     <div className={`w-full space-y-2 ${className ?? ""}`}>
       {label ? (
-        <label className="block text-sm font-medium">
+        <label className="block text-base font-semibold">
           {label}
           {required ? <span className="ml-1 text-red-500">*</span> : null}
           {hint ? (
@@ -166,7 +194,10 @@ export function StoredFilepondUpload({
           load: shouldShowExistingFile
             ? async (_source, load, serverError) => {
               try {
-                const response = await fetch(existingFileUrl!);
+                console.log("_source", _source);
+
+                const response = await fetch(resolvedExistingFileUrl!);
+
 
                 if (!response.ok) {
                   throw new Error("Failed to load file.");
@@ -200,12 +231,11 @@ export function StoredFilepondUpload({
           }
         }}
         onremovefile={(_error, fileItem) => {
-          if (fileItem?.origin === FileOrigin.LOCAL) {
-            onExistingFileRemove?.();
+          if (fileItem?.origin !== FileOrigin.LOCAL) {
             return;
           }
 
-          onStoredPathChange?.(null);
+          onExistingFileRemove?.();
         }}
         labelIdle={`
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">

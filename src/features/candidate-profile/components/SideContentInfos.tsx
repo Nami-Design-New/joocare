@@ -21,6 +21,9 @@ const SideContentInfos = ({
   const displayPhone = profile?.fullPhone || "-";
   const displayAge = profile?.age ? String(profile.age) : "-";
   const displayExp = profile?.experience || "-";
+  const hiringReadiness = profile?.hiring_readiness_score;
+
+  console.log("profile::::", profile);
 
   return (
     <aside className="no-scrollbar flex flex-col gap-5  overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow">
@@ -31,9 +34,9 @@ const SideContentInfos = ({
           alt="profile image"
           width={150}
           height={150}
-          className="rounded-full"
+          className="rounded-full h-37.5 w-37.5"
         />
-        <h2 className="mt-1 text-xl font-semibold text-black">
+        <h2 className="mt-1 text-[21px] font-semibold text-black">
           {displayName}
         </h2>
         <span className="text-primary text-sm font-semibold">
@@ -48,9 +51,9 @@ const SideContentInfos = ({
             <Sparkles className="text-primary h-4 w-4" />
             <span className="text-sm font-semibold">{t("hiringReadiness")}</span>
           </div>
-          <span className="text-primary">85%</span>
+          <span className="text-primary">{hiringReadiness}%</span>
         </div>
-        <Progress value={60} />
+        <Progress value={hiringReadiness} />
         <div className="flex items-center gap-2">
           <CircleAlert className="text-primary h-4 w-4" />
           <span className="text-muted-foreground max-w-62 text-[12px]">

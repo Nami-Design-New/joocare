@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import type { PopularSearchesItem } from "@/features/home/components/PopularSearches";
+import { getPopularSearchesPage } from "@/features/home/services/home-service";
 import type { AccordionSection, FilterState } from "@/features/jobs/types/index.types";
 import JobsFilterSection from "@/features/jobs/components/candidate/JobsFilterSection";
 import JobsList from "@/features/jobs/components/candidate/JobsList";
@@ -71,9 +72,10 @@ export default async function Page({ params, searchParams }: PageProps) {
   const normalizedParams = normalizeJobsSearchParams(await searchParams);
   const actionPath = `/jobs`;
   const copy = getPageCopy(locale, normalizedParams.search);
-  const [filtersData, jobsData] = await Promise.all([
+  const [filtersData, jobsData, popularSearchesPage] = await Promise.all([
     getJobsFiltersData(locale),
     getJobsListing(locale, normalizedParams),
+    getPopularSearchesPage({ locale }),
   ]);
 
   const filterState: FilterState = {
@@ -81,7 +83,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     roleCategories: normalizedParams.roleCategories,
     seniorityLevels: normalizedParams.seniorityLevels,
     domains: normalizedParams.domain ? [normalizedParams.domain] : [],
-    specialties: normalizedParams.specialties,
+    // specialties: normalizedParams.specialties,
     experiences: normalizedParams.experiences,
     availabilities: normalizedParams.availabilities,
     categories: normalizedParams.categories,
@@ -121,12 +123,12 @@ export default async function Page({ params, searchParams }: PageProps) {
       type: "radio",
       options: filtersData.domains,
     },
-    {
-      key: "specialties",
-      label: "Specialty",
-      name: "specialties[]",
-      options: filtersData.specialties,
-    },
+    // {
+    //   key: "specialties",
+    //   label: "Specialty",
+    //   name: "specialties[]",
+    //   options: filtersData.specialties,
+    // },
     {
       key: "experiences",
       label: "Experience",
@@ -159,7 +161,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       name: "seniority_levels[]",
       value,
     })),
-    ...normalizedParams.specialties.map((value) => ({ name: "specialties[]", value })),
+    // ...normalizedParams.specialties.map((value) => ({ name: "specialties[]", value })),
     ...normalizedParams.experiences.map((value) => ({ name: "experiences[]", value })),
     ...normalizedParams.availabilities.map((value) => ({
       name: "availabilities[]",
@@ -179,8 +181,8 @@ export default async function Page({ params, searchParams }: PageProps) {
     ...(normalizedParams.maxSalary ? [{ name: "max_salary", value: normalizedParams.maxSalary }] : []),
   ];
 
-  const popularSearches: PopularSearchesItem[] = filtersData.jobTitles.slice(0, 12).map((item) => ({
-    id: item.value,
+  const popularSearches: PopularSearchesItem[] = popularSearchesPage.items.map((item) => ({
+    id: item.id,
     label: item.label,
   }));
 
@@ -222,7 +224,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     ],
   };
   console.log(jobsData);
-  console.log(filtersData);
+  // console.log(filtersData);
 
   return (
     <section className="bg-body-bg">
@@ -246,12 +248,14 @@ export default async function Page({ params, searchParams }: PageProps) {
         country={normalizedParams.country}
         countries={filtersData.countries}
         popularSearches={popularSearches}
+        popularSearchesCurrentPage={popularSearchesPage.currentPage}
+        popularSearchesLastPage={popularSearchesPage.lastPage}
         hiddenInputs={hiddenInputs}
       />
 
 
-      <section className="px-3 lg:px-25">
-        <section className="container mx-auto">
+      <section className="layout-shell">
+        <section className="layout-content">
           <div className="mt-4 flex items-center justify-between lg:mt-6 lg:hidden">
             <MobileFilterDrawer
               actionPath={actionPath}

@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog";
-import { RefreshCw, Trash } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import Image from "next/image";
 import { isPdfFileName } from "../validation/cv-schema";
 
@@ -32,7 +32,6 @@ export default function CVModal({
   fileName,
   handleDownload,
   handleUploadClick,
-  handleDelete,
   isDeleting = false,
   isUploading = false,
 }: ConfirmDialogProps) {
@@ -70,7 +69,7 @@ export default function CVModal({
         )}
 
         <div className="flex justify-center items-center gap-2">
-          <Button
+          {/* <Button
             size="sm"
             variant="destructive"
             className="flex items-center gap-1.5 rounded-full px-4 h-10"
@@ -79,7 +78,7 @@ export default function CVModal({
           >
             <Trash className="h-4 w-4" />
             {isDeleting ? "Deleting..." : "Delete"}
-          </Button>
+          </Button> */}
           <Button
             size="sm"
             variant="default"

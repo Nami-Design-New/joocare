@@ -1,9 +1,10 @@
 import { MoveRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { Button } from "@/shared/components/ui/button";
+import { Button, buttonVariants } from "@/shared/components/ui/button";
 import SectionTitle from "../../home/components/SectionTitle";
 import { FeatureItem } from "./FeatureItem";
 import type { WhySectionProps } from "../types";
+import { cn } from "@/shared/lib/utils";
 
 export default function WhySection({
   title,
@@ -23,26 +24,27 @@ export default function WhySection({
               />
             </div>
 
-            <h2 className="mb-6 text-4xl font-bold text-[#0B3765] sm:text-5xl">
+            <h2 className="my-5 text-4xl font-bold text-[#1C2628] sm:text-5xl ">
               {title}
             </h2>
 
-            <p className="mb-8 text-base leading-relaxed text-[#16304A] lg:text-justify">
+            <p className="mb-8 text-xl text-[#1C2628] lg:text-justify">
               {description}
             </p>
 
-            <Button
-              asChild
-              variant="default"
-              size="pill"
-              hoverStyle="slideSecondary"
-              className="flex w-full items-center justify-center gap-2 sm:mt-8 sm:w-fit"
+            <Link
+              href="/auth/employer/register"
+              className={cn(buttonVariants({
+                variant: "default"
+                , size: "pill"
+                , hoverStyle: "slideSecondary"
+              }), "mt-5 flex w-full items-center justify-center gap-2 sm:mt-5 sm:w-fit")}
             >
-              <Link href="/auth/employer/register">
-                Get Started For Free
-                <MoveRight className="mt-[3px]" size={16} />
-              </Link>
-            </Button>
+
+              Get Started For Free
+              <MoveRight className="mt-0.75" size={16} />
+
+            </Link>
           </div>
 
           <div className="lg:col-span-7">

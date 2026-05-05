@@ -1,5 +1,6 @@
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { getTimeZone } from "../lib/fetch-manager";
 
 export default function useGetCitiesByCountryId(countryId: number, search = "") {
     const query = useInfiniteQuery({
@@ -17,17 +18,17 @@ export default function useGetCitiesByCountryId(countryId: number, search = "") 
                 params.set("search", search.trim());
             }
 
-            const res = await fetch(`${getBaseApiUrl()}/cities?${params.toString()}`);
+            const res = await fetch(`${getBaseApiUrl()}/cities?${params.toString()}`, {
+                headers: {
+                    "X-Timezone": getTimeZone(),
+                }
+            });
 
             if (!res.ok) {
                 throw new Error("Network error");
             }
 
             const data = await res.json();
-
-            if (data.code !== 200) {
-                throw new Error(data.message || "Something went wrong");
-            }
 
             return data;
         },

@@ -10,7 +10,7 @@ import ActiveJobRow from "./ActiveJobRow";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import useGetCompanyJobs from "../hooks/useGetCompanyJobs";
+import useGetCompanyTableJobs from "../hooks/useGetCompanyTableJobs";
 
 const tabelHeaderTitles = [
   "Job Title",
@@ -31,7 +31,7 @@ export default function ActiveJobsTable() {
     perPage,
     lastPage,
     isLoading,
-  } = useGetCompanyJobs({ token, page });
+  } = useGetCompanyTableJobs({ token, page });
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > lastPage) return;

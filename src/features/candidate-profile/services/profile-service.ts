@@ -12,6 +12,7 @@ import type {
   CandidateExperienceViewModel,
   CandidateProfileViewModel,
   CandidateSkillViewModel,
+  CandidateProfileApiLookup,
 } from "../types/profile.types";
 
 function normalizeDateLabel(value: string | null) {
@@ -30,6 +31,22 @@ function normalizeDateLabel(value: string | null) {
     month: "short",
   });
 }
+function normalizeDateLabelEduction(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    // month: "short",
+  });
+}
 
 function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationViewModel {
   const startYear = normalizeDateLabel(entry.start_date);
@@ -37,11 +54,21 @@ function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationVi
   const period =
     startYear && endYear ? `${startYear} - ${endYear}` : startYear ?? endYear ?? null;
 
+  const startEductionPeriod = normalizeDateLabelEduction(entry.start_date);
+  const endEductionPeriod = entry.end_date ? normalizeDateLabelEduction(entry.end_date) : "Present";
+  const educationPeriod =
+    startEductionPeriod && endEductionPeriod ? `${startEductionPeriod} - ${endEductionPeriod}` : startEductionPeriod ?? endEductionPeriod ?? null;
+
   return {
     id: String(entry.id),
     university: entry.university ?? "Education",
     degree: entry.degree,
+    gpa:
+      entry.gpa === null || entry.gpa === undefined || entry.gpa === ""
+        ? null
+        : String(entry.gpa),
     period,
+    educationPeriod,
     countryId: entry.country_id ? String(entry.country_id) : null,
     startDate: entry.start_date,
     endDate: entry.end_date,
@@ -51,7 +78,7 @@ function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationVi
 function mapExperience(entry: CandidateProfileApiExperience): CandidateExperienceViewModel {
   return {
     id: String(entry.id),
-    title: entry.title || "Experience",
+    title: entry.job_title?.title || entry.title || "Experience",
     organization: entry.company,
     startDate: entry.start_date,
     endDate: entry.end_date,
@@ -60,7 +87,7 @@ function mapExperience(entry: CandidateProfileApiExperience): CandidateExperienc
       ? "Present"
       : normalizeDateLabel(entry.end_date) ?? "Present",
     isCurrent: entry.is_current,
-    bullets: entry.responsibilities
+    bullets: (entry.responsibilities ?? [])
       .map((responsibility) => responsibility.description)
       .filter(Boolean),
   };
@@ -87,6 +114,33 @@ function normalizeAge(age: number | string | null | undefined) {
   return null;
 }
 
+function resolveJobTitle(
+  title: CandidateProfileApiLookup | string | null | undefined,
+) {
+  if (typeof title === "string") {
+    return title.trim() || null;
+  }
+
+  return title?.title ?? title?.name ?? null;
+}
+
+function resolveStoredFileUrl(path: string | null | undefined) {
+  if (!path) {
+    return null;
+  }
+
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  const trimmedPath = path.trim().replace(/^\/+/, "");
+  const normalizedPath = trimmedPath.startsWith("storage/")
+    ? trimmedPath.slice("storage/".length)
+    : trimmedPath;
+
+  return `https://joocare.nami-tec.com/storage/${normalizedPath}`;
+}
+
 export async function getCandidateProfile() {
   const session = await getServerSession(authOptions);
 
@@ -105,6 +159,7 @@ export async function getCandidateProfile() {
   );
 
   const user = data?.data;
+  console.log(user);
 
   if (!ok || !user?.id) {
     return null;
@@ -112,16 +167,20 @@ export async function getCandidateProfile() {
 
   const country = user.country?.name ?? null;
   const city = user.city?.name ?? null;
-  const jobTitle = user.job_title?.title ?? null;
+  const jobTitle = user.job_title?.title || resolveJobTitle(user.title);
   const fullPhone =
     user.phone && user.phone_code ? `${user.phone_code}${user.phone}` : user.phone;
-  const skills = user.skills.map((skill) => ({
+  const skills = (user.skills ?? []).map((skill) => ({
     id: String(skill.id),
     label: skill.title,
     deleteId: String(skill.id),
   })) satisfies CandidateSkillViewModel[];
-  const educations = user.educations.map(mapEducation);
-  const experiences = user.experiences.map(mapExperience);
+  const educations = (user.educations ?? []).map(mapEducation);
+  const experiences = (user.experiences ?? []).map(mapExperience);
+  const experienceLabel =
+    typeof user.experience === "string"
+      ? user.experience
+      : user.experience?.title ?? user.experience?.name ?? null;
 
   return {
     id: user.id,
@@ -136,16 +195,17 @@ export async function getCandidateProfile() {
     countryId: user.country_id ? String(user.country_id) : null,
     cityId: user.city_id ? String(user.city_id) : null,
     birthDate: user.birth_date ?? user.date_of_birth ?? null,
-    image: user.image ?? null,
-    cv: user.cv ?? null,
+    image: resolveStoredFileUrl(user.image),
+    cv: resolveStoredFileUrl(user.cv),
     bio: user.bio ?? null,
     isProfileComplete: user.is_profile_complete ?? null,
     age: normalizeAge(user.age),
-    experience: user.experience?.title ?? null,
+    experience: experienceLabel,
     location: buildLocation(country, city),
     jobTitle,
     skills,
     educations,
     experiences,
+    hiring_readiness_score: user.hiring_readiness_score ?? null,
   } satisfies CandidateProfileViewModel;
 }

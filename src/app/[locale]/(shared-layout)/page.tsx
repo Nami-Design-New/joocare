@@ -3,10 +3,15 @@ import Hero from "@/features/home/components/Hero";
 import HowItWorks from "@/features/home/components/HowItWorks";
 import { ImpactSection } from "@/features/home/components/ImpactSection";
 import { LiveJobs } from "@/features/home/components/LiveJobs";
-import { getHomePageData } from "@/features/home/services/home-service";
+import {
+  getHomePageData,
+  getPopularSearchesPage,
+} from "@/features/home/services/home-service";
 import { Testimonials } from "@/features/home/components/Testimonials";
 import TopEmployers from "@/features/home/components/TopEmployers";
 import WhyUs from "@/features/home/components/WhyUs";
+import HttpStatusState from "@/shared/components/HttpStatusState";
+import { getHttpStatusCode } from "@/shared/lib/http-error";
 
 export default async function Home({
   params,
@@ -14,7 +19,32 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const homeData = await getHomePageData(locale);
+  let homeData;
+  let popularSearches;
+
+  try {
+    [homeData, popularSearches] = await Promise.all([
+      getHomePageData(locale),
+      getPopularSearchesPage({ locale }),
+    ]);
+  } catch (error) {
+    const statusCode = getHttpStatusCode(error);
+
+    if (statusCode && [401, 403, 404, 422, 429, 503].includes(statusCode)) {
+      return (
+        <HttpStatusState
+          statusCode={statusCode}
+          error={error}
+          primaryHref="/jobs"
+          primaryLabel="Browse jobs"
+          secondaryHref="/for-employers"
+          secondaryLabel="For employers"
+        />
+      );
+    }
+
+    throw error;
+  }
 
   return (
     <section className="">
@@ -22,7 +52,9 @@ export default async function Home({
         title={homeData.hero.title}
         subtitle={homeData.hero.subtitle}
         description={homeData.hero.description}
-        searches={homeData.hero.searches}
+        searches={popularSearches.items}
+        popularSearchesCurrentPage={popularSearches.currentPage}
+        popularSearchesLastPage={popularSearches.lastPage}
       />
       <HowItWorks title={homeData.howItWorks.title} steps={homeData.howItWorks.steps} />
       <WhyUs

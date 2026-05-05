@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import SectionTitle from "@/features/home/components/SectionTitle";
-import { Button } from "@/shared/components/ui/button";
-import CorePillarsAccordionItem from "./CorePillarsAccordionItem";
+import { Link } from "@/i18n/navigation";
+import { buttonVariants } from "@/shared/components/ui/button";
+import { cn } from "@/shared/lib/utils";
+import { useState } from "react";
 import type { AboutPillar } from "../types/about.types";
+import CorePillarsAccordionItem from "./CorePillarsAccordionItem";
 
 export default function CorePillarsContent({
   title,
@@ -36,14 +38,17 @@ export default function CorePillarsContent({
         ))}
       </div>
 
-      <Button
-        variant="default"
-        size="pill"
-        hoverStyle="slideSecondary"
-        className="mt-8 w-full justify-center gap-2 sm:w-fit"
+      <Link
+
+        href={"/auth/candidate/login"}
+        className={cn(buttonVariants({
+          variant: "default"
+          , size: "pill",
+          hoverStyle: "slideSecondary"
+        }), "mt-8 w-full justify-center gap-2 sm:w-fit")}
       >
         Get Started For Free
-      </Button>
+      </Link>
     </div>
   );
 }

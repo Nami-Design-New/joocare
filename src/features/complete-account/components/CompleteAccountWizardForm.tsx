@@ -1,27 +1,49 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { FormProvider, useForm } from "react-hook-form";
+import SuccessModal from "@/shared/components/modals/SuccessModal";
 
-import { defaultValuesWizard, steps } from "../constants/wizard.constants";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { getNationalPhoneValue, parsePhoneWithCode } from "@/shared/lib/phone";
+import { steps } from "../constants/wizard.constants";
 import { useWizard } from "../hooks/use-wizard";
+import { usePostStepOne } from "../hooks/usePostStepOne";
+import { usePostStepThree } from "../hooks/usePostStepThree";
+import { usePostStepTwo } from "../hooks/usePostStepTwo";
+import { defaultValuesWizard } from "../constants/wizard.constants";
 import { WizardSchema } from "../schema/wizard.schema";
 import { WizardFormData } from "../types/wizard.types";
 import WizardNavigation from "./wizard-navigation";
 import WizardProgress from "./wizard-progress";
-import { useSession } from "next-auth/react";
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
-import { usePostStepOne } from "../hooks/usePostStepOne";
-import { usePostStepTwo } from "../hooks/usePostStepTwo";
-import { usePostStepThree } from "../hooks/usePostStepThree";
-import { useEffect, useState } from "react";
-import { parsePhoneNumber } from "react-phone-number-input";
 
 const COMPLETE_ACCOUNT_FORM_STEPS = [
   "Account Setup",
   "Business Verification",
   "Company Profile",
 ];
+
+const formatDateForInput = (value?: string | Date | null) => {
+  if (!value) return "";
+
+  if (typeof value === "string") {
+    return value.slice(0, 10);
+  }
+
+  return value.toISOString().slice(0, 10);
+};
+
+const formatDateForApi = (value?: string | Date | null) => {
+  if (!value) return "";
+
+  if (typeof value === "string") {
+    return value;
+  }
+
+  return value.toISOString().slice(0, 10);
+};
 
 export default function CompleteAccountWizardForm() {
 
@@ -31,42 +53,54 @@ export default function CompleteAccountWizardForm() {
 
   // get profile data
   const { data: profileData } = useGetCompanyProfile({ token });
-  console.log(profileData);
   // hooks
   const { mutateAsync: postStepOne, isPending: isPendingStepOne } = usePostStepOne({ token });
   const { mutateAsync: postStepTwo, isPending: isPendingStepTwo } = usePostStepTwo({ token });
   const { mutateAsync: postStepThree, isPending: isPendingStepThree } = usePostStepThree({ token });
 
   const wizard = useWizard(steps.length);
+  const [isOpenSuccessModal, setIsOpenSuccessModal] = useState(false);
 
   const methods = useForm<WizardFormData>({
-    resolver: zodResolver(WizardSchema),
+    resolver: typedZodResolver(WizardSchema),
+    defaultValues: defaultValuesWizard,
     mode: "onChange",
   });
 
   // hydrate form
   useEffect(() => {
     if (profileData) {
+      const profileImages = profileData as typeof profileData & {
+        cover?: string | null;
+        image?: string | null;
+      };
+
       methods.reset({
         name: profileData.name || "",
         email: profileData.email || "",
         domain_id: profileData.domain_id?.toString() || "",
         person_name: profileData.person_name || "",
-        person_phone: profileData.person_phone_code && profileData.person_phone
-          ? `${profileData.person_phone_code}${profileData.person_phone}`
-          : "",
+        person_phone: getNationalPhoneValue(
+          profileData.person_phone,
+          profileData.person_phone_code,
+        ),
         commercialRegister: profileData.commercial_registration_number?.toString() || "",
         issuingCountryLicense: profileData.license_issue_country_id?.toString() || "",
         organizationSize: profileData.organization_size_id?.toString() || "",
-        commercialRegistrationIssueDate: profileData.commercial_registration_issue_date,
-        commercialRegistrationExpiryDate: profileData.commercial_registration_expiry_date || "",
+        commercialRegistrationIssueDate: formatDateForInput(profileData.commercial_registration_issue_date),
+        commercialRegistrationExpiryDate: formatDateForInput(profileData.commercial_registration_expiry_date),
+        commercialRegistrationImagePath: profileData.commercial_registration_image || "",
         employerType: profileData.employer_type_id?.toString() || "",
         medicalFacilityLicenseNumber: profileData.medical_facility_license_number?.toString() || "",
         licenseIssuingAuthority: profileData.license_issuing_authority || "",
-        specialtyScopePractice: profileData.specialty_id?.toString() || "",
-        medicalRegistrationIssueDate: profileData.medical_license_issue_date || "",
-        medicalRegistrationExpiryDate: profileData.medical_license_expiry_date || "",
-        organizationPhoneNumber: profileData.phone_code && profileData.phone ? `${profileData.phone_code}${profileData.phone}` : "",
+        specialtyScopePractice: profileData.specialty?.toString() || "",
+        medicalRegistrationIssueDate: formatDateForInput(profileData.medical_license_issue_date),
+        medicalRegistrationExpiryDate: formatDateForInput(profileData.medical_license_expiry_date),
+        medicalLicenseImagePath: profileData.medical_license_image || "",
+        organizationPhoneNumber: getNationalPhoneValue(
+          profileData.phone,
+          profileData.phone_code,
+        ),
         organizationCountry: profileData.country_id?.toString() || "",
         organizationCity: profileData.city_id?.toString() || "",
         dateOfEstablishment: profileData.established_date || "",
@@ -77,8 +111,8 @@ export default function CompleteAccountWizardForm() {
         instagram: profileData.instagram || "",
         snapchat: profileData.snapchat || "",
         website: profileData.website || "",
-        uploadCoverImage: (profileData as any).cover_image || "",
-        uploadLogoImage: (profileData as any).logo_image || "",
+        uploadCoverImage: profileImages.cover || "",
+        uploadLogoImage: profileImages.image || "",
       });
     }
   }, [profileData, methods]);
@@ -94,7 +128,9 @@ export default function CompleteAccountWizardForm() {
     try {
       const data = methods.getValues();
       if (wizard.step === 0) {
-        const phoneParsed = data.person_phone ? parsePhoneNumber(data.person_phone) : null;
+        const phoneParsed = data.person_phone
+          ? parsePhoneWithCode(data.person_phone, profileData?.person_phone_code)
+          : null;
         await postStepOne({
           name: data.name || "",
           email: data.email || "",
@@ -106,16 +142,17 @@ export default function CompleteAccountWizardForm() {
       } else if (wizard.step === 1) {
         await postStepTwo({
           commercial_registration_number: data.commercialRegister || "",
-          commercial_registration_issue_date: data.commercialRegistrationIssueDate || "",
-          commercial_registration_expiry_date: data.commercialRegistrationExpiryDate || "",
+          commercial_registration_issue_date: formatDateForApi(data.commercialRegistrationIssueDate),
+          commercial_registration_expiry_date: formatDateForApi(data.commercialRegistrationExpiryDate),
           license_issue_country_id: data.issuingCountryLicense || "",
           organization_size_id: data.organizationSize || "",
           employer_type_id: data.employerType || "",
           medical_facility_license_number: data.medicalFacilityLicenseNumber || "",
           license_issuing_authority: data.licenseIssuingAuthority || "",
-          specialty_id: data.specialtyScopePractice || "",
-          medical_license_issue_date: data.medicalRegistrationIssueDate || "",
-          medical_license_expiry_date: data.medicalRegistrationExpiryDate || "",
+          // specialty: data.specialtyScopePractice || "",
+          specialty: data.specialtyScopePractice || "",
+          medical_license_issue_date: formatDateForApi(data.medicalRegistrationIssueDate),
+          medical_license_expiry_date: formatDateForApi(data.medicalRegistrationExpiryDate),
           commercial_registration_image: data.commercialRegistrationImagePath || profileData?.commercial_registration_image || "",
           medical_license_image: data.medicalLicenseImagePath || profileData?.medical_license_image || "",
         });
@@ -129,24 +166,37 @@ export default function CompleteAccountWizardForm() {
   // handle submit
   const onSubmit = async (data: WizardFormData) => {
     try {
-      const phoneParsed = data.organizationPhoneNumber ? parsePhoneNumber(data.organizationPhoneNumber) : null;
-      await postStepThree({
+      const organizationPhoneValue = data.organizationPhoneNumber?.trim();
+      const phoneParsed = organizationPhoneValue
+        ? parsePhoneWithCode(
+          organizationPhoneValue,
+          profileData?.phone_code,
+        )
+        : null;
+
+      const payload: Parameters<typeof postStepThree>[0] = {
         facebook: data.facebook || "",
         twitter: data.XTwitter || "",
         linkedin: data.linkedIn || "",
         instagram: data.instagram || "",
         snapchat: data.snapchat || "",
         website: data.website || "",
-        phone: phoneParsed?.nationalNumber || data.organizationPhoneNumber || "",
-        phone_code: phoneParsed ? `+${phoneParsed.countryCallingCode}` : "",
         country_id: Number(data.organizationCountry),
         city_id: Number(data.organizationCity),
         established_date: data.dateOfEstablishment || "",
         bio: data.aboutOrganization || "",
-        cover_image: typeof data.uploadCoverImage === "string" ? data.uploadCoverImage : "",
-        logo_image: typeof data.uploadLogoImage === "string" ? data.uploadLogoImage : "",
-      });
-      console.log("All steps submitted successfully!");
+        cover: data.uploadCoverImage || "",
+        image: data.uploadLogoImage || "",
+      };
+
+      if (organizationPhoneValue) {
+        payload.phone = phoneParsed?.nationalNumber || organizationPhoneValue;
+        payload.phone_code = phoneParsed ? `+${phoneParsed.countryCallingCode}` : "";
+      }
+
+      await postStepThree(payload);
+      setIsOpenSuccessModal(true);
+      // console.log("All steps submitted successfully!");
     } catch (e) {
       console.error(e);
     }
@@ -170,6 +220,13 @@ export default function CompleteAccountWizardForm() {
           isPending={isPendingStepOne || isPendingStepTwo || isPendingStepThree}
         />
       </form>
+
+      <SuccessModal
+        open={isOpenSuccessModal}
+        onOpenChange={setIsOpenSuccessModal}
+        title="Welcome to the Joocare platform"
+        description="Your business verification documents have been successfully submitted and are currently under review. You will be notified once the review process is complete."
+      />
     </FormProvider>
   );
 }

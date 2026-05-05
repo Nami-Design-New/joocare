@@ -1,64 +1,58 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 
 import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
-import { EnterEmailModal } from "@/features/auth/components/forget-password/EnterEmailModal";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
+import {
+  getCountryCodeByPhoneCode,
+  getNationalPhoneValue,
+  parsePhoneWithCode,
+} from "@/shared/lib/phone";
 import { YearPicker } from "@/shared/components/YearPicker";
 import { BasicInfoSchema, TBasicInfoSchema } from "../../validation/basic-info-schema";
 import { OTPModal } from "@/features/auth/components/forget-password/OtpModal";
 import { useSession } from "next-auth/react";
 import { useUpdateBasicInfo } from "../../hooks/useUpdateBasicInfo";
-import { parsePhoneNumber, getCountries, getCountryCallingCode, Country } from "react-phone-number-input";
-import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
-import { ICompanyUser } from "@/shared/types";
+import useGetDomains from "@/shared/hooks/useGetDomains";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import { TCompanyProfileViewModel } from "@/features/company-profile/types";
+import { UpdateEmailModal } from "./UpdateEmailModal";
+import { UpdateBasicInfoPayload } from "../../types";
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Safely cast the session user to `ICompanyUser` (returns undefined when N/A). */
-const asCompanyUser = (user: unknown): ICompanyUser | undefined => {
-  if (user && typeof user === "object" && "person_name" in user) {
-    return user as ICompanyUser;
-  }
-  return undefined;
-};
-
 /** Build react-hook-form default values from user data. */
-const buildDefaults = (user?: ICompanyUser): TBasicInfoSchema => {
-  const cleanPhone = (phone?: string | null) => phone?.replace(/[^\d]/g, "") || "";
-
+const buildDefaults = (
+  user?: TCompanyProfileViewModel
+): TBasicInfoSchema => {
   return {
     companyName: user?.name ?? "",
     officialEmail: user?.email ?? "",
     domain: user?.domain_id?.toString() ?? "",
     personFullName: user?.person_name ?? "",
-    phoneNumber: user?.person_phone
-      ? `${user.person_phone_code ?? ""}${cleanPhone(user.person_phone)}`
-      : "",
-    orgOfficialPhoneNumber: user?.phone
-      ? `${user.phone_code ?? ""}${cleanPhone(user.phone)}`
-      : "",
+    phoneNumber: getNationalPhoneValue(user?.person_phone, user?.person_phone_code),
+    orgOfficialPhoneNumber: getNationalPhoneValue(user?.phone, user?.phone_code),
     country: user?.country_id?.toString() ?? "",
     city: user?.city_id?.toString() ?? "",
     dateOfEstablishment: user?.established_date ?? "",
   };
 };
 
-/** Parse an international phone string into code + national number. */
-const parsePhoneData = (phoneNumber: string) => {
+/** Parse an international or national phone string into code + national number. */
+const parsePhoneData = (phoneNumber: string, phoneCode?: string | null) => {
   if (!phoneNumber) return { phone: "", phone_code: "" };
   try {
-    const parsed = parsePhoneNumber(phoneNumber);
+    const parsed = parsePhoneWithCode(phoneNumber, phoneCode);
     return {
       phone: parsed?.nationalNumber ?? "",
       phone_code: parsed?.countryCallingCode
@@ -70,16 +64,6 @@ const parsePhoneData = (phoneNumber: string) => {
   }
 };
 
-/** Get default ISO country code based on calling code. */
-const getCountryCodeByPhoneCode = (phoneCode?: string | null): Country => {
-  if (!phoneCode) return "EG";
-  const numericCode = phoneCode.replace(/\D/g, "");
-  const match = getCountries().find(
-    (country) => getCountryCallingCode(country) === numericCode
-  );
-  return match || "EG";
-};
-
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
@@ -88,8 +72,7 @@ const BasicInfoForm = () => {
   // ── session & user data ──────────────────────────────────────────────
   const { data: session } = useSession();
   const token = session?.accessToken ?? "";
-  const userData = useMemo(() => asCompanyUser(session?.user), [session?.user]);
-  // console.log('user data', userData);
+  const { data: userData } = useGetCompanyProfile({ token });
 
   // ── modals ──────────────────── ───────────────────────────────────────
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,12 +81,12 @@ const BasicInfoForm = () => {
 
   // ── lookups ──────────────────────────────────────────────────────────
   const {
-    jobTitles,
-    isLoading: jobTitlesLoading,
-    hasNextPage: jobTitlesHasNextPage,
-    fetchNextPage: jobTitlesFetchNextPage,
-    isFetchingNextPage: jobTitlesIsFetchingNextPage,
-  } = useGetJobTitles();
+    domains,
+    isLoading: domainsLoading,
+    hasNextPage: domainsHasNextPage,
+    fetchNextPage: domainsFetchNextPage,
+    isFetchingNextPage: domainsIsFetchingNextPage,
+  } = useGetDomains();
 
   const {
     countries,
@@ -112,18 +95,6 @@ const BasicInfoForm = () => {
     fetchNextPage: countriesFetchNextPage,
     isFetchingNextPage: countriesIsFetchingNextPage,
   } = useGetCountries();
-
-  const [selectedCountryId, setSelectedCountryId] = useState<number | null>(
-    userData?.country_id ?? null
-  );
-
-  const {
-    cities,
-    isLoading: citiesLoading,
-    hasNextPage: citiesHasNextPage,
-    fetchNextPage: citiesFetchNextPage,
-    isFetchingNextPage: citiesIsFetchingNextPage,
-  } = useGetCitiesByCountryId(selectedCountryId ?? 0);
 
   // ── mutation ─────────────────────────────────────────────────────────
   const { mutate: updateBasicInfo, isPending } = useUpdateBasicInfo({ token });
@@ -134,43 +105,55 @@ const BasicInfoForm = () => {
     control,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm<TBasicInfoSchema>({
     resolver: zodResolver(BasicInfoSchema),
     mode: "onChange",
     defaultValues: buildDefaults(userData),
   });
+  const officialEmail = useWatch({ control, name: "officialEmail" });
+  const selectedCountryValue = useWatch({ control, name: "country" });
+  const selectedCountryId = selectedCountryValue
+    ? parseInt(selectedCountryValue, 10) || null
+    : null;
+
+  const {
+    cities,
+    isLoading: citiesLoading,
+    hasNextPage: citiesHasNextPage,
+    fetchNextPage: citiesFetchNextPage,
+    isFetchingNextPage: citiesIsFetchingNextPage,
+  } = useGetCitiesByCountryId(selectedCountryId ?? 0);
 
   // Sync form values when session data arrives (async).
   useEffect(() => {
     if (!userData) return;
     reset(buildDefaults(userData));
-    if (userData.country_id) {
-      setSelectedCountryId(userData.country_id);
-    }
   }, [userData, reset]);
 
   // ── submit handler ───────────────────────────────────────────────────
   const onSubmit: SubmitHandler<TBasicInfoSchema> = (data) => {
-    const personPhone = parsePhoneData(data.phoneNumber);
-    const orgPhone = parsePhoneData(data.orgOfficialPhoneNumber);
+    const personPhone = parsePhoneData(data.phoneNumber, userData?.person_phone_code);
+    const orgPhone = parsePhoneData(data.orgOfficialPhoneNumber || "", userData?.phone_code);
 
-    // console.log("data :::", data.phoneNumber, personPhone)
-
-    updateBasicInfo({
+    const payload: UpdateBasicInfoPayload = {
       name: data.companyName,
       email: data.officialEmail,
       domain_id: parseInt(data.domain) || 0,
       person_name: data.personFullName,
       person_phone: personPhone.phone,
       person_phone_code: personPhone.phone_code,
-      phone: orgPhone.phone,
-      phone_code: orgPhone.phone_code,
       country_id: parseInt(data.country) || 0,
       city_id: parseInt(data.city) || 0,
       established_date: data.dateOfEstablishment,
-    });
+    };
+
+    if (orgPhone.phone && orgPhone.phone_code) {
+      payload.phone = orgPhone.phone;
+      payload.phone_code = orgPhone.phone_code;
+    }
+
+    updateBasicInfo(payload);
   };
   // console.log("phone :: ", personPhone, orgPhone, data.phoneNumber, data.orgOfficialPhoneNumber);
 
@@ -200,6 +183,7 @@ const BasicInfoForm = () => {
             error={errors.officialEmail?.message}
           />
           <Button
+            type="button"
             onClick={() => setIsModalOpen(true)}
             variant="outline"
             size="pill"
@@ -219,14 +203,14 @@ const BasicInfoForm = () => {
               placeholder="ex: Hospital"
               {...field}
               error={errors.domain?.message}
-              options={jobTitles.map((jt) => ({
+              options={domains.map((jt) => ({
                 label: jt.name ?? jt.title ?? String(jt.id),
                 value: String(jt.id),
               }))}
-              disabled={jobTitlesLoading}
-              onReachEnd={() => jobTitlesFetchNextPage()}
-              hasNextPage={!!jobTitlesHasNextPage}
-              isFetchingNextPage={jobTitlesIsFetchingNextPage}
+              disabled={domainsLoading}
+              onReachEnd={() => domainsFetchNextPage()}
+              hasNextPage={!!domainsHasNextPage}
+              isFetchingNextPage={domainsIsFetchingNextPage}
             />
           )}
         />
@@ -314,6 +298,7 @@ const BasicInfoForm = () => {
               control={control}
               render={({ field }) => (
                 <SelectInputField
+                  withSearchInput
                   id="country"
                   placeholder="country"
                   {...field}
@@ -326,10 +311,7 @@ const BasicInfoForm = () => {
                   onReachEnd={() => countriesFetchNextPage()}
                   hasNextPage={!!countriesHasNextPage}
                   isFetchingNextPage={countriesIsFetchingNextPage}
-                  onChange={(value) => {
-                    field.onChange(value);
-                    setSelectedCountryId(parseInt(value) || null);
-                  }}
+                  onChange={field.onChange}
                 />
               )}
             />
@@ -338,6 +320,7 @@ const BasicInfoForm = () => {
               control={control}
               render={({ field }) => (
                 <SelectInputField
+                  withSearchInput
                   id="city"
                   placeholder="city"
                   {...field}
@@ -388,9 +371,9 @@ const BasicInfoForm = () => {
       </form>
 
       {/* enter email modal */}
-      <EnterEmailModal
+      <UpdateEmailModal
         setUserEmail={setUserEmail}
-        email={watch("officialEmail")}
+        email={officialEmail}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         setIsModalOtpOpen={setIsModalOtpOpen}
@@ -402,7 +385,7 @@ const BasicInfoForm = () => {
         open={isModalOtpOpen}
         onOpenChange={setIsModalOtpOpen}
         role="employer"
-        purpose="email-confirm"
+        purpose="update-email"
       />
     </>
   );

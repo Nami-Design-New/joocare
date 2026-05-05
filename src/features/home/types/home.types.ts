@@ -6,6 +6,15 @@ export type HomeSelectOption = {
 export type HomePopularSearch = {
   id: string;
   label: string;
+  count: number;
+};
+
+export type HomePopularSearchesPage = {
+  items: HomePopularSearch[];
+  currentPage: number;
+  lastPage: number;
+  perPage: number;
+  total: number;
 };
 
 export type HomeStep = {
@@ -19,7 +28,7 @@ export type HomeWhyModel = {
   id: string;
   title: string;
   description: string;
-  icon?: string | null;
+  icon?: string;
 };
 
 export type HomeEmployer = {
@@ -34,14 +43,18 @@ export type HomeRecentJob = {
   location: string;
   type: string;
   timeLabel: string;
+  image: string;
+  updated_at: string;
 };
 
 export type HomeRate = {
-  id: string;
-  name: string;
-  date: string;
-  text: string;
-  rate: number;
+  id?: number | string;
+  rate?: string | number | null;
+  comment?: string | null;
+  created_at?: string | null;
+  name?: string | null;
+  date?: string | null;
+  text?: string | null;
 };
 
 export type HomeFaq = {
@@ -58,7 +71,6 @@ export type HomePageData = {
     countries: HomeSelectOption[];
     categories: HomeSelectOption[];
     domains: HomeSelectOption[];
-    searches: HomePopularSearch[];
   };
   howItWorks: {
     title: string;

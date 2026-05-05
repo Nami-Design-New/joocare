@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "@/i18n/navigation";
+import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
 import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { getSession, signIn } from "next-auth/react";
@@ -42,6 +43,7 @@ export const useLogin = (role: LoginRole) => {
     }
 
     const session = await getSession();
+    void requestNotificationPermission();
     toast.success(session?.authMessage || "Logged in successfully.");
     router.push(callbackUrl);
     router.refresh();

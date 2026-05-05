@@ -1,3 +1,4 @@
+import { MIN_PHONE_NUMBER_LENGTH } from "@/shared/lib/phone";
 import { z } from "zod";
 
 export const stepOneSchema = z.object({
@@ -10,5 +11,8 @@ export const stepOneSchema = z.object({
   person_name: z
     .string()
     .min(1, { message: "Person full name is required" }),
-  person_phone: z.string().min(10, { message: "Phone number is required" }),
+  person_phone: z
+    .string()
+    .trim()
+    .min(MIN_PHONE_NUMBER_LENGTH, { message: "Phone number is required" }),
 });

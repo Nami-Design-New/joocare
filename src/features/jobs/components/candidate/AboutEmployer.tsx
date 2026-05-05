@@ -4,7 +4,7 @@ import { cn } from "@/shared/lib/utils";
 import Image from "next/image";
 import { CompanyDetails } from "../../types/jobs.types";
 
-export default function AboutEmployer({ employer }: { employer: CompanyDetails }) {
+export default function AboutEmployer({ employer }: { employer: CompanyDetails | null }) {
   return (
     <div className="card font-noto-sans col-span-2 rounded-2xl bg-white p-7 text-[#212529]">
       <h3 className="text-foreground mb-4 text-xl font-bold">
@@ -16,10 +16,11 @@ export default function AboutEmployer({ employer }: { employer: CompanyDetails }
           alt="Empoyer provile card"
           width={60}
           height={60}
+          className="rounded-2xl w-15 h-13"
         />
         <div>
           <h3 className="text-lg font-semibold">{employer?.name}</h3>
-          <p className="text-muted-foreground text-base">{employer.domain.title}</p>
+          <p className="text-muted-foreground text-base">{employer?.domain?.title}</p>
         </div>
       </div>
       <p className="text-muted-foreground py-3 text-justify text-sm">

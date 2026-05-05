@@ -1,9 +1,13 @@
 import Image from "next/image";
 import React from "react";
 
+type valueProps = {
+  id: number | string;
+  title: string;
+};
 type JobOverviewItemProps = {
   label: string;
-  value: string;
+  value: valueProps[] | string | undefined;
   icon?: string;
 };
 
@@ -12,6 +16,7 @@ const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
   value,
   icon,
 }) => {
+
   return (
     <div>
       <div className="flex items-center gap-2">
@@ -19,7 +24,17 @@ const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
         <p className="text-muted-foreground text-md">{label}</p>
       </div>
       <div>
-        <p className="text-foreground font-semibold">{value}</p>
+        {Array.isArray(value) ? (
+          value.map((item) => (
+            <p className="text-foreground font-semibold" key={item.id}>
+              {item.title}
+            </p>
+          ))
+        ) : value ? (
+          <p className="text-foreground font-semibold">{value}</p>
+        ) : (
+          <p className="text-foreground font-semibold">Not specified</p>
+        )}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const SideContent = () => {
   return (
     <aside
       aria-labelledby="auth-heading"
-      className="sticky top-21.5 hidden h-[calc(100vh-86px)] items-center gap-4 bg-[linear-gradient(42.95deg,#1C2628,#00694B)] md:flex"
+      className="sticky top-19 hidden h-[calc(100vh-76px)] items-center gap-4 bg-[linear-gradient(42.95deg,#1C2628,#00694B)] md:flex"
     >
       <div className="mx-auto w-5/6 p-4 text-white">
         {isEmployerRegister ? (
@@ -28,14 +28,21 @@ const SideContent = () => {
             </h2>
             <h3 className="mb-4 text-[clamp(1.5rem,4vw,3rem)] font-bold">
               {t("candidateTitleSecondary")}
+
             </h3>
           </>
         )}
 
         <p className="text-justify text-[clamp(.8rem,4vw,1.2rem)] [word-spacing:0.1rem]">
-          {(isEmployerLogin || isCandidateLogin) && t("candidateLoginDescription")}
-          {isEmployerRegister && t("employerDescription")}
-          {isCandidateRegister && t("candidateRegisterDescription")}
+
+          {isEmployerLogin &&
+            `With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
+          {isCandidateLogin &&
+            `Joocare connects professionals with relevant opportunities through data‑driven insights, supporting informed career decisions and long‑term growth.`}
+          {isEmployerRegister &&
+            `Set the foundation for your hiring success. By finalizing your account details, you unlock Joocare’s smart matching tools and predictive insights to streamline your entire recruitment lifecycle`}
+          {isCandidateRegister &&
+            `With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
         </p>
       </div>
     </aside>

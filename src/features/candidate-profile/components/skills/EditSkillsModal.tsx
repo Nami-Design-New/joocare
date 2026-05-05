@@ -12,6 +12,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { updateSkillsAction } from "../../actions/skills-actions";
 import type { CandidateSkillViewModel } from "../../types/profile.types";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface EditSkillsModalProps {
   open: boolean;
@@ -31,6 +32,7 @@ export function EditSkillsModal({
   const [profileSkills, setProfileSkills] =
     useState<CandidateSkillViewModel[]>(skills);
   const [isSaving, setIsSaving] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!open) {
@@ -61,7 +63,9 @@ export function EditSkillsModal({
         deletedSkillIds,
         locale,
       });
-
+      queryClient.invalidateQueries({
+        queryKey: ["user-skills-suggestions"]
+      })
       toast.success(result.message);
       onSave(current);
       onOpenChange(false);
@@ -92,11 +96,10 @@ export function EditSkillsModal({
                   key={skill.id}
                   type="button"
                   onClick={() => toggle(skill)}
-                  className={`border-border rounded-full border px-4 py-2 text-sm transition-all ${
-                    isSelected
-                      ? "border-primary bg-primary text-white"
-                      : "border-muted hover:border-primary hover:text-primary bg-white text-black"
-                  }`}
+                  className={`border-border rounded-full border px-4 py-2 text-sm transition-all ${isSelected
+                    ? "border-primary bg-primary text-white"
+                    : "border-muted hover:border-primary hover:text-primary bg-white text-black"
+                    }`}
                 >
                   {skill.label}
                 </button>

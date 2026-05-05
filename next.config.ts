@@ -13,6 +13,22 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "joocare.nami-tec.com",
       },
+      {
+        protocol: "https",
+        hostname: "admin.joocare.com",
+      },
+      {
+        protocol: "http",
+        hostname: "admin.joocare.com",
+      },
+      {
+        protocol: "https",
+        hostname: "media.licdn.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
   webpack: (config) => {
@@ -21,6 +37,7 @@ const nextConfig: NextConfig = {
     return config;
   },
 };
+
 
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);

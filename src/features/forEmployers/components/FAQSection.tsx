@@ -1,15 +1,22 @@
 "use client";
 
-import { CircleQuestionMark } from "lucide-react";
+import { useState } from "react";
+import { CircleQuestionMark, ArrowRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/shared/components/ui/accordion";
+import { Button } from "@/shared/components/ui/button";
 import type { FAQSectionProps } from "../types";
 
 export default function FAQSection({ title, items }: FAQSectionProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const initialCount = 6;
+  const visibleItems = isExpanded ? items : items.slice(0, initialCount);
+
   return (
     <section className="bg-white py-20">
       <div className="mx-auto px-4 sm:px-6">
@@ -28,7 +35,7 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
             <div className="space-y-4">
               <Accordion type="single" collapsible>
                 <div className="grid grid-cols-1 gap-4">
-                  {items.map((item) => (
+                  {visibleItems.map((item) => (
                     <AccordionItem
                       key={item.id}
                       value={item.id}
@@ -46,6 +53,27 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
                   ))}
                 </div>
               </Accordion>
+
+              <div className="w-full flex justify-end">
+                {items.length > initialCount && (
+                  <Button
+                    variant="outline"
+                    size="pill"
+                    hoverStyle="slidehorizontalPrimary"
+                    className="text-muted-foreground text-md group mt-6 items-center gap-2 border-none font-normal flex"
+                    onClick={() => setIsExpanded((prev) => !prev)}
+                  >
+                    {isExpanded ? "Show Less" : "Show More"}
+
+                    <ArrowRight
+                      size={28}
+                      strokeWidth={1.5}
+                      className={`border-muted-foreground text-muted-foreground size-7 rounded-full border bg-white transition-transform 
+                ${isExpanded ? "rotate-270" : "rotate-90 group-hover:rotate-90"}`}
+                    />
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>

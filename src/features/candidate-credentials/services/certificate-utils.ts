@@ -51,9 +51,10 @@ function normalizeDateLabel(value: string | null) {
     return value;
   }
 
-  return date.toLocaleDateString("en-US", {
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
     year: "numeric",
-    month: "short",
   });
 }
 
@@ -78,6 +79,7 @@ export function mapCertificate(item: CertificateApiItem): CertificateViewModel |
   const endLabel = item.end_date ? normalizeDateLabel(item.end_date) : "Present";
   const period =
     startLabel && endLabel ? `${startLabel} - ${endLabel}` : startLabel ?? endLabel ?? null;
+
 
   return {
     id: String(item.id),

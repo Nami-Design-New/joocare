@@ -1,23 +1,86 @@
 "use client";
 
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import React from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
-import "ckeditor5/ckeditor5.css";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { MultiSelectInputField } from "@/shared/components/MultiSelectInputField";
+const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
 
-export default function JobPostStepTwo() {
+
+import { MultiSelectInputField } from "@/shared/components/MultiSelectInputField";
+import useGetSkills from "@/shared/hooks/useGetSkills";
+import { useSearchParams } from "next/navigation";
+import { JobDetails } from "../types/jobs.types";
+
+export default function JobPostStepTwo({
+  onPreviewLabelChange,
+  existingJob,
+}: {
+  onPreviewLabelChange?: (key: "skills", value: string[]) => void;
+  existingJob?: JobDetails | null;
+}) {
   const {
     control,
-    watch,
     formState: { errors },
   } = useFormContext<JobFormData>();
-  console.log(watch());
+  const [skillsSearch, setSkillsSearch] = useState("");
+  const searchParams = useSearchParams();
 
-  console.log(errors);
+  const jobId = searchParams.get("jobId");
+  const editId = searchParams.get("editId");
+
+  const id = jobId ?? editId;
+
+  const {
+    skills,
+    isLoading: isSkillsLoading,
+    error: skillsError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetSkills(skillsSearch, id ?? "");
+  const skillOptions = skills.map((item) => ({
+    label: item.title,
+    value: String(item.id),
+  }));
+
+  // Build preload options from existing job skills so they show labels in edit mode
+  const existingSkillOptions = useMemo(
+    () =>
+      (existingJob?.skills ?? []).map((s) => ({
+        label: s.title,
+        value: String(s.id),
+      })),
+    [existingJob],
+  );
+
+  const [skillsOptionsCache, setSkillsOptionsCache] = useState<Map<string, string>>(
+    () => {
+      const map = new Map<string, string>();
+      existingSkillOptions.forEach((option) => map.set(option.value, option.label));
+      return map;
+    },
+  );
+
+  useEffect(() => {
+    setSkillsOptionsCache((prev) => {
+      const next = new Map(prev);
+      let changed = false;
+
+      [...existingSkillOptions, ...skillOptions].forEach((option) => {
+        if (!next.has(option.value)) {
+          next.set(option.value, option.label);
+          changed = true;
+        }
+      });
+
+      return changed ? next : prev;
+    });
+  }, [existingSkillOptions, skillOptions]);
+
+  function getOptionLabels(values: string[]) {
+    return values.map((v) => skillsOptionsCache.get(v) ?? v);
+  }
 
   return (
     <div>
@@ -31,12 +94,9 @@ export default function JobPostStepTwo() {
                 <label className="mb-2 block font-medium">
                   Job Description
                 </label>
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={field.value || ""}
-                  onChange={(_, editor) => {
-                    field.onChange(editor.getData());
-                  }}
+                <CustomEditor
+                  value={field.value || ""}
+                  onChange={(val) => field.onChange(val)}
                 />
                 {errors.description && (
                   <p className="text-sm text-red-500">
@@ -58,17 +118,36 @@ export default function JobPostStepTwo() {
                   id="skills"
                   label="Skills"
                   placeholder="ex: Improvement"
-                  error={errors.skills?.message}
-                  options={[
-                    { label: "Critical Thinking", value: "critical-thinking" },
-                    { label: "Patient Care", value: "patient-care" },
-                    { label: "Surgical Skills", value: "surgical-skills" },
-                    { label: "Diagnosis", value: "diagnosis" },
-                  ]}
+                  withSearchInput
+                  error={
+                    errors.skills?.message ??
+                    (skillsError instanceof Error
+                      ? skillsError.message
+                      : undefined)
+                  }
+                  options={skillOptions}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onPreviewLabelChange?.(
+                      "skills",
+                      getOptionLabels(value),
+                    );
+                  }}
+                  disabled={isSkillsLoading}
+                  preloadOptions={
+                    existingSkillOptions.length > 0
+                      ? existingSkillOptions
+                      : skillOptions
+                  }
+                  onReachEnd={() => fetchNextPage()}
+                  hasNextPage={Boolean(hasNextPage)}
+                  isFetchingNextPage={isFetchingNextPage}
+                  onSearchChange={setSkillsSearch}
                 />
               );
             }}
           />
+
         </div>
       </div>
     </div>

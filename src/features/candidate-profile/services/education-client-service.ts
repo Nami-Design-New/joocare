@@ -56,6 +56,7 @@ export async function getCountryOptions(locale = "en") {
 type EducationPayload = {
   degree: string;
   university: string;
+  gpa: string;
   startDate: string;
   endDate?: string;
   countryId: string;
@@ -67,6 +68,7 @@ function buildEducationFormData(payload: EducationPayload, includeMethodOverride
   const formData = new FormData();
   formData.append("degree", payload.degree);
   formData.append("university", payload.university);
+  formData.append("gpa", payload.gpa);
   formData.append("start_date", payload.startDate);
   if (payload.endDate) {
     formData.append("end_date", payload.endDate);

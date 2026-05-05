@@ -1,10 +1,9 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { storeUploadedFileAction } from "@/features/candidate-settings/actions/basic-info-actions";
-import useGetBusinessVerification from "@/features/candidate-settings/hooks/useGetBusinessVerification";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
@@ -21,6 +20,16 @@ import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
 import useGetOrganizationSizes from "@/shared/hooks/useGetOrganizationSizes";
 import useGetEmployerTypes from "@/shared/hooks/useGetEmployerTypes";
 
+const formatDateForInput = (value?: string | Date | null) => {
+    if (!value) return "";
+
+    if (typeof value === "string") {
+        return value.slice(0, 10);
+    }
+
+    return value.toISOString().slice(0, 10);
+};
+
 export default function BusinessVerificationForm() {
     // hooks land and token
     const locale = useLocale();
@@ -31,7 +40,7 @@ export default function BusinessVerificationForm() {
     const { data: companyProfileData, isPending: isCompanyProfilePending } = useGetCompanyProfile({ token });
 
     // search states
-    const [specialtySearch, setSpecialtySearch] = useState("");
+    // const [specialtySearch, setSpecialtySearch] = useState("");
     const [countrySearch, setCountrySearch] = useState("");
     const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
     const [employerTypesSearch, setEmployerTypesSearch] = useState("");
@@ -64,22 +73,22 @@ export default function BusinessVerificationForm() {
         isFetchingNextPage: isFetchingMoreEmployerTypes,
     } = useGetEmployerTypes(employerTypesSearch);
 
-    //specialties
-    const {
-        specialties,
-        isLoading: isSpecialtiesLoading,
-        error: specialtiesError,
-        hasNextPage: hasMoreSpecialties,
-        fetchNextPage: fetchMoreSpecialties,
-        isFetchingNextPage: isFetchingMoreSpecialties,
-    } = useGetSpecialties(specialtySearch);
+    // //specialties
+    // const {
+    //     specialties,
+    //     isLoading: isSpecialtiesLoading,
+    //     error: specialtiesError,
+    //     hasNextPage: hasMoreSpecialties,
+    //     fetchNextPage: fetchMoreSpecialties,
+    //     isFetchingNextPage: isFetchingMoreSpecialties,
+    // } = useGetSpecialties(specialtySearch);
 
 
     // file states
     const [commercialRegistrationImage, setCommercialRegistrationImage] = useState<string | null>(null);
-    const [showExistingCommercialRegistrationImage, setShowExistingCommercialRegistrationImage] = useState(false);
+    const [showExistingCommercialRegistrationImage, setShowExistingCommercialRegistrationImage] = useState<boolean | null>(null);
     const [medicalLicenseImage, setMedicalLicenseImage] = useState<string | null>(null);
-    const [showExistingMedicalLicenseImage, setShowExistingMedicalLicenseImage] = useState(false);
+    const [showExistingMedicalLicenseImage, setShowExistingMedicalLicenseImage] = useState<boolean | null>(null);
 
     // form states
     const {
@@ -91,7 +100,7 @@ export default function BusinessVerificationForm() {
         clearErrors,
         formState: { errors },
     } = useForm<TBusinessVerificationSchema>({
-        resolver: zodResolver(BusinessVerificationSchema),
+        resolver: typedZodResolver(BusinessVerificationSchema),
     });
 
     // update business verification
@@ -104,22 +113,15 @@ export default function BusinessVerificationForm() {
                 commercial_registration_number: companyProfileData.commercial_registration_number?.toString() || "",
                 license_issue_country_id: companyProfileData.license_issue_country_id?.toString() || "",
                 organization_size_id: companyProfileData.organization_size_id?.toString() || "",
-                commercial_registration_issue_date: companyProfileData.commercial_registration_issue_date || "",
-                commercial_registration_expiry_date: companyProfileData.commercial_registration_expiry_date || "",
+                commercial_registration_issue_date: formatDateForInput(companyProfileData.commercial_registration_issue_date),
+                commercial_registration_expiry_date: formatDateForInput(companyProfileData.commercial_registration_expiry_date),
                 employer_type_id: companyProfileData.employer_type_id?.toString() || "",
                 medical_facility_license_number: companyProfileData.medical_facility_license_number?.toString() || "",
                 license_issuing_authority: companyProfileData.license_issuing_authority || "",
-                specialty_id: companyProfileData.specialty_id?.toString() || "",
-                medical_license_issue_date: companyProfileData.medical_license_issue_date || "",
-                medical_license_expiry_date: companyProfileData.medical_license_expiry_date || "",
+                specialty_id: companyProfileData.specialty?.title.toString() || "",
+                medical_license_issue_date: formatDateForInput(companyProfileData.medical_license_issue_date),
+                medical_license_expiry_date: formatDateForInput(companyProfileData.medical_license_expiry_date),
             });
-
-            if (companyProfileData.commercial_registration_image) {
-                setShowExistingCommercialRegistrationImage(true);
-            }
-            if (companyProfileData.medical_license_image) {
-                setShowExistingMedicalLicenseImage(true);
-            }
         }
     }, [companyProfileData, reset]);
 
@@ -134,12 +136,23 @@ export default function BusinessVerificationForm() {
             employer_type_id: Number(data.employer_type_id),
             medical_facility_license_number: data.medical_facility_license_number,
             license_issuing_authority: data.license_issuing_authority,
-            specialty_id: Number(data.specialty_id),
+            specialty: data.specialty_id,
             medical_license_issue_date: data.medical_license_issue_date,
             medical_license_expiry_date: data.medical_license_expiry_date,
-            medical_license_image: medicalLicenseImage || (showExistingMedicalLicenseImage ? companyProfileData?.medical_license_image : "") || "",
-            commercial_registration_image: commercialRegistrationImage || (showExistingCommercialRegistrationImage ? companyProfileData?.commercial_registration_image : "") || "",
         };
+
+        if (commercialRegistrationImage) {
+            payload.commercial_registration_image = commercialRegistrationImage;
+        } else if (showExistingCommercialRegistrationImage === false) {
+            payload.commercial_registration_image = "";
+        }
+
+        if (medicalLicenseImage) {
+            payload.medical_license_image = medicalLicenseImage;
+        } else if (showExistingMedicalLicenseImage === false) {
+            payload.medical_license_image = "";
+        }
+
         updateBusinessVerification(payload);
     }
 
@@ -279,8 +292,8 @@ export default function BusinessVerificationForm() {
                                     message,
                                 });
                             }}
-                            existingFileUrl={showExistingCommercialRegistrationImage ? companyProfileData?.commercial_registration_image : null}
-                            existingFileLabel={showExistingCommercialRegistrationImage ? "Existing Commercial Registration Image" : undefined}
+                            existingFileUrl={(showExistingCommercialRegistrationImage ?? Boolean(companyProfileData?.commercial_registration_image)) ? companyProfileData?.commercial_registration_image : null}
+                            existingFileLabel={(showExistingCommercialRegistrationImage ?? Boolean(companyProfileData?.commercial_registration_image)) ? "Existing Commercial Registration Image" : undefined}
                             onExistingFileRemove={() => {
                                 setShowExistingCommercialRegistrationImage(false);
                                 setCommercialRegistrationImage(null);
@@ -346,7 +359,16 @@ export default function BusinessVerificationForm() {
                     error={errors.license_issuing_authority?.message?.toString()}
                 />
 
-                <Controller
+                <InputField
+                    id="specialty_id"
+                    label="Specialty / Scope of Practice"
+                    type={"text"}
+                    placeholder="ex: Cardiology"
+                    className="bg-white"
+                    {...register("specialty_id")}
+                    error={errors.specialty_id?.message?.toString()}
+                />
+                {/* <Controller
                     name="specialty_id"
                     control={control}
                     render={({ field }) => (
@@ -374,7 +396,7 @@ export default function BusinessVerificationForm() {
                             onSearchChange={setSpecialtySearch}
                         />
                     )}
-                />
+                /> */}
                 <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
                     <InputField
                         id="medical_license_issue_date"
@@ -434,8 +456,8 @@ export default function BusinessVerificationForm() {
                                     message,
                                 });
                             }}
-                            existingFileUrl={showExistingMedicalLicenseImage ? companyProfileData?.medical_license_image : null}
-                            existingFileLabel={showExistingMedicalLicenseImage ? "Existing Medical License Image" : undefined}
+                            existingFileUrl={(showExistingMedicalLicenseImage ?? Boolean(companyProfileData?.medical_license_image)) ? companyProfileData?.medical_license_image : null}
+                            existingFileLabel={(showExistingMedicalLicenseImage ?? Boolean(companyProfileData?.medical_license_image)) ? "Existing Medical License Image" : undefined}
                             onExistingFileRemove={() => {
                                 setShowExistingMedicalLicenseImage(false);
                                 setMedicalLicenseImage(null);

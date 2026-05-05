@@ -13,8 +13,8 @@ export default function PlainBreadcrumb({ items }: { items: Crumb[] }) {
   const title = items[last]?.label || "";
 
   return (
-    <div className="border-b border-[#e6e6e6] bg-[#0D0D0D0D] px-3 lg:px-25 py-2">
-      <div className="container mx-auto flex items-center justify-between py-3">
+    <div className="layout-shell border-b border-[#e6e6e6] bg-[#0D0D0D0D] py-2">
+      <div className="layout-content flex items-center justify-between py-3">
         <h1 className="text-lg font-semibold text-black">{title}</h1>
 
         <nav aria-label={t("ariaLabel")}>
@@ -26,7 +26,7 @@ export default function PlainBreadcrumb({ items }: { items: Crumb[] }) {
                   {!isLast && it.href ? (
                     <Link
                       href={it.href}
-                      className="hover:text-secondary text-sm text-gray-600"
+                      className="hover:text-gray-600 text-secondary text-sm font-semibold"
                     >
                       {it.label}
                     </Link>

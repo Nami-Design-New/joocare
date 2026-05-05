@@ -1,8 +1,10 @@
 import Image from "next/image";
-import { JobDetails, NamedEntity } from "../types/jobs.types";
+import { JobDetails } from "../types/jobs.types";
 import JobOverviewItem from "./JobOverviewItem";
 
 export default function JobEducationAndCertificationsCard({ job }: { job: JobDetails }) {
+  const availability = job.availability?.title ?? "Not specified";
+
   return (
     <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-8">
       <h2 className="text-foreground mb-4 text-lg font-semibold">
@@ -11,7 +13,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
       <div className="flex flex-col gap-6">
         <JobOverviewItem
           label="Education Level"
-          value={job.eduction_level.title}
+          value={job.education_levels}
           icon="/assets/icons/exp.svg"
         />
         <div>
@@ -30,8 +32,10 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
             <div>
               <ul className="mt-2 flex flex-col gap-2">
                 {
-                  job.mandatory_certifications.map((item: NamedEntity) =>
-                    <li className="edu-certificate" key={item.id}>{item.title}</li>
+                  job.mandatory_certifications.map((item) =>
+                    <li className="edu-certificate" key={item?.id}>
+                      {item.title ?? item.mandatory_certification?.title ?? "-"}
+                    </li>
                   )
                 }
               </ul>
@@ -40,7 +44,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
         </div>
         <JobOverviewItem
           label="Availability"
-          value={job.availability.title}
+          value={availability}
           icon="/assets/icons/case.svg"
         />
       </div>{" "}

@@ -16,8 +16,10 @@ type FormValues = {
 
 const ProfileHeader = ({
     companyProfileData,
+    isPending,
 }: {
     companyProfileData: TCompanyProfileViewModel;
+    isPending: boolean;
 }) => {
     const { data: session } = useSession();
     const token = session?.accessToken || "";
@@ -52,19 +54,18 @@ const ProfileHeader = ({
                     control={control}
                     render={({ field: { onChange } }) => (
                         <div className="relative w-full h-93.75 rounded-[40px] overflow-hidden border">
-                            {coverPreview ? (
+                            {isPending ? (
+                                <div className="w-full h-full flex items-center justify-center">
+                                    Loading...
+                                </div>
+                            ) : (
                                 <Image
-                                    src={coverPreview}
+                                    src={coverPreview || "/image.png"}
                                     alt="cover"
                                     fill
                                     className="object-cover"
                                 />
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                    uploading...
-                                </div>
                             )}
-
                             {loadingField === "cover" && (
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white">
                                     Uploading...
@@ -111,19 +112,19 @@ const ProfileHeader = ({
                             "flex items-center justify-center cursor-pointer",
                             "ring-4 ring-white",
                         )}>
-
-                            {logoPreview ? (
+                            {isPending ? (
+                                <div className="w-full h-full flex items-center justify-center">
+                                    uploading...
+                                </div>
+                            ) : (
                                 <Image
-                                    src={logoPreview}
+                                    src={logoPreview || "/image.png"}
                                     alt="logo"
                                     fill
                                     className="object-cover rounded-full"
                                 />
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                    uploading...
-                                </div>
                             )}
+
                             {loadingField === "logo" && (
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-xs rounded-full">
                                     Uploading...

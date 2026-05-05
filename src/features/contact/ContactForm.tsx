@@ -153,7 +153,7 @@ export default function ContactForm({
                 render={({ field }) => (
                   <PhoneInputCode
                     {...field}
-                    defaultCountry="EG"
+                    defaultCountry="AE"
                     id="phone"
                     className="w-full"
                     placeholder="Enter phone number"

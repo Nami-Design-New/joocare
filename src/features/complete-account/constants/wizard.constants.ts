@@ -23,6 +23,7 @@ export const steps: StepConfig[] = [
       "commercialRegistrationIssueDate",
       "commercialRegistrationExpiryDate",
       "commercialRegistrationImage",
+      "commercialRegistrationImagePath",
       "employerType",
       "medicalFacilityLicenseNumber",
       "licenseIssuingAuthority",
@@ -30,6 +31,7 @@ export const steps: StepConfig[] = [
       "medicalRegistrationIssueDate",
       "medicalRegistrationExpiryDate",
       "medicalLicenseImage",
+      "medicalLicenseImagePath",
     ],
   },
   {
@@ -53,7 +55,6 @@ export const defaultValuesWizard: WizardFormData = {
   domain_id: "",
   person_name: "",
   person_phone: "",
-  person_phone_code: "",
 
   // default data step two
   commercialRegister: "",
@@ -61,19 +62,20 @@ export const defaultValuesWizard: WizardFormData = {
   organizationSize: "",
   commercialRegistrationIssueDate: "",
   commercialRegistrationExpiryDate: "",
-  commercialRegistrationImage: [],
+  commercialRegistrationImage: "",
+  commercialRegistrationImagePath: "",
   employerType: "",
   medicalFacilityLicenseNumber: "",
   licenseIssuingAuthority: "",
   specialtyScopePractice: "",
   medicalRegistrationIssueDate: "",
   medicalRegistrationExpiryDate: "",
-  medicalLicenseImage: [],
+  medicalLicenseImage: "",
+  medicalLicenseImagePath: "",
 
   // default data step three
   uploadCoverImage: "",
   uploadLogoImage: "",
-  organizationPhoneCode: "",
   organizationPhoneNumber: "",
   organizationCountry: "",
   organizationCity: "",

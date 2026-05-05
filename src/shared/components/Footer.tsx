@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Link } from "@/i18n/navigation";
 import { Facebook, Ghost, Instagram, Linkedin, Twitter } from "lucide-react";

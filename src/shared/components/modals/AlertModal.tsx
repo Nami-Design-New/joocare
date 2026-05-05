@@ -45,10 +45,9 @@ export default function AlertModal({
     onCancel?.();
     onOpenChange(false);
   };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-175 rounded-2xl p-8 text-center">
+      <DialogContent className="max-w-150 rounded-2xl p-8 text-center">
         <div className="mt-15 mb-12 flex w-full items-center justify-center">
           <div className="h-50 w-50">
             <Lottie
@@ -65,7 +64,7 @@ export default function AlertModal({
           <DialogTitle className="text-foreground text-center text-3xl font-bold">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-foreground text-center text-lg leading-tight">
+          <DialogDescription className="text-foreground text-center text-lg leading-tight mt-2">
             {description}
           </DialogDescription>
         </DialogHeader>

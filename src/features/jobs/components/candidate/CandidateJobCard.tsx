@@ -1,10 +1,12 @@
 "use client"
-import { Link } from "@/i18n/navigation";
 import { JobListItem } from "@/features/jobs/types/jobs.types";
 import {
   getJobLocation,
-  getJobSalary,
+  getJobSalaryWithCurrency,
+  stripHtml,
+  truncateText
 } from "@/features/jobs/utils";
+import { Link } from "@/i18n/navigation";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -16,14 +18,14 @@ import {
 import {
   ArrowRight,
   Briefcase,
-  DollarSign,
+  CircleDollarSign,
   Dot,
   MapPin,
-  Share,
+  Share
 } from "lucide-react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useJobShare } from "../../hooks/useJobShare";
 import ToggleSavedJobButton from "./ToggleSavedJobButton";
 
@@ -47,13 +49,13 @@ export default function CandidateJobCard({
   const title = job.title || job.job_title?.title || t("healthcareOpportunity");
   const company = job.company?.name || t("joocareEmployer");
   const companyLogo = job.company?.image;
-  const postedAtLabel = job.created_at;
+  const postedAtLabel = job.updated_at;
   const location = getJobLocation(job);
-  const category = job?.category?.title || t("notSpecified");
-  const employmentType = job?.employment_type?.title || t("notSpecified");
-  const salary = getJobSalary(job);
-  const experience = job.experience?.title || t("experienceNotSpecified");
-  const specialty = job.specialty?.title || t("healthcare");
+  const category = job?.category?.title || "Not specified";
+  const employmentType = job?.employment_type?.title || "Not specified";
+  const salary = getJobSalaryWithCurrency(job);
+  const experience = job?.experience?.title || "Experience not specified";
+  const specialty = job?.specialty?.title || "Healthcare";
   const excerpt =
     job.description || t("jobExcerptFallback");
   const shouldShowAppliedBadge = appliedBadge || job.is_applied;
@@ -61,6 +63,8 @@ export default function CandidateJobCard({
   const { shareJob } = useJobShare({ title, path: href });
   const isEmployer = session?.authRole === "employer";
 
+  const plainText = stripHtml(excerpt || "");
+  const shortText = truncateText(plainText, 70);
   return (
     <Card>
       <CardHeader className="flex gap-2 max-lg:px-2">
@@ -69,6 +73,8 @@ export default function CandidateJobCard({
           height={46}
           src={companyLogo || "/assets/comp-logo.svg"}
           alt={`${company} logo`}
+          className="rounded-2xl w-14 h-12"
+
         />
         <div className="flex grow flex-col gap-1">
           <h6 className="text-secondary text-lg font-semibold">
@@ -93,7 +99,7 @@ export default function CandidateJobCard({
               {category}
             </li>
             <li className="text-secondary flex items-center gap-1 text-sm font-normal">
-              <DollarSign size={14} color="var(--muted-foreground)" />
+              <CircleDollarSign size={14} color="var(--muted-foreground)" />
               {salary}
             </li>
           </ul>
@@ -108,7 +114,18 @@ export default function CandidateJobCard({
               {specialty}
             </li>
           </ul>
-          <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p>
+          {/* <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p> */}
+          {/* <div
+            className="prose prose-sm max-w-none border-b pb-5"
+            dangerouslySetInnerHTML={{
+              __html:
+                excerpt ||
+                "<p>No description available.</p>",
+            }}
+          /> */}
+          <p className="text-sm text-gray-600 line-clamp-3">
+            {shortText || "No description available."}
+          </p>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4  max-lg:px-2">

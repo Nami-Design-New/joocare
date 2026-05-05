@@ -12,7 +12,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { Check, Sparkles, X } from "lucide-react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import animationData from "../../../../public/assets/lottie/successfully.json";
 
 type SuccessModalAction = {
@@ -77,10 +77,9 @@ export default function SuccessModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={!isSubmittedVariant}
-       className="max-w-175 rounded-2xl p-8 text-center"
+        className="max-w-150 rounded-2xl p-8 text-center"
       >
-
-        <div className="relative overflow-hidden rounded-[24px] bg-white px-6 pb-7 pt-12 text-center sm:px-8">
+        {/* <div className="relative overflow-hidden rounded-[24px] bg-white px-6 pb-7 pt-12 text-center sm:px-8">
           <DialogClose asChild>
             <button
               type="button"
@@ -90,14 +89,7 @@ export default function SuccessModal({
               <span className="sr-only">Close</span>
             </button>
           </DialogClose>
-
-
-
-
-
-
-
-        </div>
+        </div> */}
 
         <div className="mt-15 mb-12 flex w-full items-center justify-center">
           <div className="h-50 w-50">
@@ -115,16 +107,16 @@ export default function SuccessModal({
           <DialogTitle className="text-foreground text-center text-3xl font-bold">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-foreground text-center text-lg leading-tight">
+          <DialogDescription className="text-foreground text-center text-lg leading-tight mt-2">
             {description}
           </DialogDescription>
         </DialogHeader>   {
-    primaryAction || secondaryAction ? (
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        {primaryAction ? renderAction(primaryAction, "default") : null}
-        {secondaryAction ? renderAction(secondaryAction, "outline") : null}
-      </div>) : null
-  }
+          primaryAction || secondaryAction ? (
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              {primaryAction ? renderAction(primaryAction, "default") : null}
+              {secondaryAction ? renderAction(secondaryAction, "outline") : null}
+            </div>) : null
+        }
 
 
       </DialogContent >

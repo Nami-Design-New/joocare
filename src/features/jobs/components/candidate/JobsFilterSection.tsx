@@ -2,11 +2,11 @@
 
 import { PopularSearchesItem } from "@/features/home/components/PopularSearches";
 import PopularSearchesInteractive from "@/features/home/components/PopularSearchesInteractive";
-import { buildJobsPagePath } from "@/features/jobs/utils";
 import { InputField } from "@/shared/components/InputField";
 import { Option, SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
-import { useState } from "react";
+import useGetCountries from "@/shared/hooks/useGetCountries";
+import { useMemo, useState } from "react";
 
 type JobsFilterSectionProps = {
   locale: string;
@@ -17,34 +17,44 @@ type JobsFilterSectionProps = {
   country: string;
   countries: Option[];
   popularSearches: PopularSearchesItem[];
+  popularSearchesCurrentPage?: number;
+  popularSearchesLastPage?: number;
   hiddenInputs: Array<{ name: string; value: string }>;
 };
 
 export default function JobsFilterSection({
-  locale,
   actionPath,
-  heading,
-  description,
   search,
   country,
   countries,
   popularSearches,
+  popularSearchesCurrentPage = 1,
+  popularSearchesLastPage = 1,
   hiddenInputs,
 }: JobsFilterSectionProps) {
   const [location, setLocation] = useState<string>(country);
+  const [countrySearch, setCountrySearch] = useState("");
+  const {
+    countries: apiCountries,
+    isLoading: countriesLoading,
+    hasNextPage: countriesHasNextPage,
+    fetchNextPage: fetchCountriesNextPage,
+    isFetchingNextPage: countriesFetchingNextPage,
+  } = useGetCountries(countrySearch);
+
 
   return (
-    <section className="px-3 lg:px-25">
-      <section className="container mx-auto mt-4 lg:-mt-24">
+    <section className="layout-shell">
+      <section className="layout-content mt-4 lg:-mt-24">
         <section className="rounded-2xl bg-white p-4">
-          <div className="mx-auto mb-6 max-w-5xl text-center">
+          {/* <div className="mx-auto mb-6 max-w-5xl text-center">
             <h1 className="text-secondary text-3xl font-semibold lg:text-4xl">
               {heading}
             </h1>
             <p className="text-muted-foreground mt-3 text-sm leading-6 lg:text-base">
               {description}
             </p>
-          </div>
+          </div> */}
 
           <form
             action={actionPath}
@@ -66,11 +76,21 @@ export default function JobsFilterSection({
 
             <input type="hidden" name="country" value={location} />
             <SelectInputField
+              withSearchInput
               id="location"
-              options={countries}
+              options={apiCountries.map((apiCountry: { id: number; name: string }) => ({
+                label: apiCountry.name,
+                value: String(apiCountry.id),
+              }))}
               placeholder="By country"
               value={location}
               onChange={setLocation}
+              disabled={countriesLoading}
+              searchPlaceholder="Search countries..."
+              onSearchChange={setCountrySearch}
+              onReachEnd={() => void fetchCountriesNextPage()}
+              hasNextPage={countriesHasNextPage}
+              isFetchingNextPage={countriesFetchingNextPage}
               className="bg-white"
               containerStyles="w-auto grow"
             />
@@ -80,28 +100,11 @@ export default function JobsFilterSection({
             </Button>
           </form>
           <PopularSearchesInteractive
-            items={popularSearches.map((item) => ({
-              ...item,
-              href: buildJobsPagePath(locale, {
-                page: 1,
-                search: item.label,
-                country: "",
-                professionalLicense: "",
-                domain: "",
-                minSalary: "",
-                maxSalary: "",
-                roleCategories: [],
-                seniorityLevels: [],
-                specialties: [],
-                experiences: [],
-                availabilities: [],
-                salaryTypes: [],
-                categories: [],
-                employmentTypes: [],
-              }),
-            }))}
-            variant="hero"
-            maxVisible={10}
+            items={popularSearches}
+            variant="jobs"
+            maxVisible={5}
+            currentPage={popularSearchesCurrentPage}
+            lastPage={popularSearchesLastPage}
           />
         </section>
       </section>

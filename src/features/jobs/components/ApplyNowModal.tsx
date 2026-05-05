@@ -309,10 +309,11 @@ export function ApplyNowModal({
         open={isOpenSuccessModal}
         onOpenChange={setIsOpenSuccessModal}
         variant="submitted"
-        title={t("applicationSubmittedTitle")}
-        description={t("applicationSubmittedDescription")}
+
+        title="Application submitted successfully"
+        description="Thank you for submitting your application. Your profile has been shared with the recruitment team and is currently under review. You will be notified if you progress to the next stage."
         primaryAction={{
-          label: t("goToApplications"),
+          label: "Go to Job Applications",
           href: "/candidate/applications",
         }}
         secondaryAction={{

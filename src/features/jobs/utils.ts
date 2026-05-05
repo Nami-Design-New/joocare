@@ -1,8 +1,8 @@
 import { formatDistanceToNowStrict } from "date-fns";
 
 import { getBaseApiUrl } from "@/shared/lib/api-endpoints";
-import { JobListItem } from "./types/jobs.types";
-import { JobsSearchFilters } from "./types/index.types";
+import { JobDetails, JobListItem } from "./types/jobs.types";
+import { JobsSearchFilters, JobStatus } from "./types/index.types";
 
 function getSingleParam(
   searchParams: Record<string, string | string[] | undefined>,
@@ -63,7 +63,7 @@ export function normalizeJobsSearchParams(
       "seniority_levels[]",
       "seniority_levels",
     ),
-    specialties: getArrayParam(searchParams, "specialties[]", "specialties"),
+    // specialties: getArrayParam(searchParams, "specialties[]", "specialties"),
     experiences: getArrayParam(searchParams, "experiences[]", "experiences"),
     availabilities: getArrayParam(searchParams, "availabilities[]", "availabilities"),
     salaryTypes: getArrayParam(searchParams, "salary_types[]", "salary_types"),
@@ -81,7 +81,7 @@ export function buildJobsQueryString(filters: JobsSearchFilters) {
   const arrayFilters: Array<[string, string[]]> = [
     ["role_categories[]", filters.roleCategories],
     ["seniority_levels[]", filters.seniorityLevels],
-    ["specialties[]", filters.specialties],
+    // ["specialties[]", filters.specialties],
     ["experiences[]", filters.experiences],
     ["availabilities[]", filters.availabilities],
     ["salary_types[]", filters.salaryTypes],
@@ -178,18 +178,92 @@ export function getJobPostedAtLabel(date: string | null) {
   return formatDistanceToNowStrict(parsedDate, { addSuffix: true });
 }
 
-export function getJobLocation(job: JobListItem) {
+export function getJobLocation(job: Pick<JobListItem | JobDetails, "city" | "country">) {
   return [job.city?.name, job.country?.name].filter(Boolean).join(", ") || "Location not specified";
 }
 
-export function getJobSalary(job: JobListItem) {
-  if (job.min_salary && job.max_salary) {
-    return `${job.min_salary} - ${job.max_salary}${job.currency?.code ? ` ${job.currency.code}` : ""}`;
+function parseSalaryAmount(value: string | number | null | undefined) {
+  if (typeof value === "number") {
+    return Number.isFinite(value) && value > 0 ? value : null;
   }
 
-  if (job.min_salary || job.max_salary) {
-    return `${job.min_salary || job.max_salary}${job.currency?.code ? ` ${job.currency.code}` : ""}`;
+  if (typeof value !== "string") {
+    return null;
   }
 
-  return "Salary not specified";
+  const normalizedValue = value.replace(/,/g, "").trim();
+  if (!normalizedValue) {
+    return null;
+  }
+
+  const parsedValue = Number(normalizedValue);
+  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null;
+}
+
+function formatSalaryAmount(value: string | number | null | undefined) {
+  const parsedValue = parseSalaryAmount(value);
+  return parsedValue == null ? null : parsedValue.toLocaleString("en-US");
+}
+
+type SalaryLike = {
+  min_salary: string | number | null | undefined;
+  max_salary: string | number | null | undefined;
+  currency?: JobListItem["currency"] | JobDetails["currency"] | null;
+  hasSalary?: boolean
+};
+
+export function getJobSalary(job: SalaryLike) {
+  const minSalary = formatSalaryAmount(job.min_salary);
+  const maxSalary = formatSalaryAmount(job.max_salary);
+  const hasMinSalary = minSalary !== null;
+  const hasMaxSalary = maxSalary !== null;
+
+  if (hasMinSalary && hasMaxSalary) {
+    return `${minSalary} - ${maxSalary}`;
+  }
+
+  if (hasMinSalary || hasMaxSalary) {
+    return minSalary ?? maxSalary ?? "Not specified";
+  }
+  if (!job.hasSalary) return "Not specified";
+  return "Not specified";
+}
+export function getJobSalaryWithCurrency(job: SalaryLike) {
+  const minSalary = formatSalaryAmount(job.min_salary);
+  const maxSalary = formatSalaryAmount(job.max_salary);
+  const hasMinSalary = minSalary !== null;
+  const hasMaxSalary = maxSalary !== null;
+
+  if (hasMinSalary && hasMaxSalary) {
+    return `${minSalary}${job.currency?.code ? job.currency?.code : ''} - ${maxSalary}${job.currency?.code ? job.currency?.code : ''}`;
+  }
+
+  if (hasMinSalary || hasMaxSalary) {
+    return minSalary ?? maxSalary ?? "Not specified";
+  }
+
+  return "Not specified";
+}
+
+export function normalizeJobStatus(status: string | null | undefined): JobStatus {
+  switch (status?.toLowerCase()) {
+    case "closed":
+      return "closed";
+    case "paused":
+    case "pause":
+      return "paused";
+    case "draft":
+      return "draft";
+    default:
+      return "open";
+  }
+}
+
+export function truncateText(text: string, maxLength = 150) {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + "...";
+}
+export function stripHtml(html: string) {
+  if (!html) return "";
+  return html.replace(/<[^>]*>/g, "");
 }

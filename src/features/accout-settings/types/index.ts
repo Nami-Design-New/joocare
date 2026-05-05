@@ -10,8 +10,8 @@ export type UpdateBasicInfoPayload = {
     person_name: string;
     person_phone: string;
     person_phone_code: string;
-    phone: string;
-    phone_code: string
+    phone?: string | null;
+    phone_code?: string | null;
     country_id: number;
     city_id: number;
     established_date: string;
@@ -30,10 +30,10 @@ export type UpdateBusinessVerificationPayload = {
     employer_type_id: number;
     medical_facility_license_number: string;
     license_issuing_authority: string;
-    specialty_id: number;
+    specialty: string;
     medical_license_issue_date: string;
     medical_license_expiry_date: string;
-    medical_license_image: string;
-    commercial_registration_image: string;
+    medical_license_image?: string;
+    commercial_registration_image?: string;
 }
 

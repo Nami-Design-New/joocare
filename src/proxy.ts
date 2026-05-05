@@ -6,10 +6,11 @@ import { NextRequest, NextResponse } from "next/server";
 const handleI18nRouting = createMiddleware(routing);
 const candidateProtectedRoute = "/candidate";
 const employerProtectedRoute = "/company";
+const employerLandingRoute = "/for-employers";
 
 function getDefaultPath(locale: string, authRole?: "candidate" | "employer") {
   if (authRole === "employer") {
-    return `/${locale}${employerProtectedRoute}/company-profile`;
+    return `/${locale}${employerLandingRoute}`;
   }
 
   if (authRole === "candidate") {
@@ -47,6 +48,8 @@ export default async function proxy(request: NextRequest) {
   );
   const isEmployerRoute = pathWithoutLocale.startsWith(employerProtectedRoute);
   const isCandidateRoute = pathWithoutLocale.startsWith(candidateProtectedRoute);
+  const isHomeRoute = pathWithoutLocale === "/";
+  const isEmployerLandingPage = pathWithoutLocale === employerLandingRoute;
   const authRole = isAuth?.authRole as "candidate" | "employer" | undefined;
 
   // 3. Redirect: Unauthenticated user trying to access a protected route
@@ -58,6 +61,14 @@ export default async function proxy(request: NextRequest) {
     const loginUrl = new URL(loginPath, request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
+  }
+
+  if (isAuth && authRole === "employer" && isHomeRoute) {
+    return NextResponse.redirect(new URL(getDefaultPath(locale, authRole), request.url));
+  }
+
+  if (isAuth && authRole === "candidate" && isEmployerLandingPage) {
+    return NextResponse.redirect(new URL(getDefaultPath(locale, authRole), request.url));
   }
 
   if (

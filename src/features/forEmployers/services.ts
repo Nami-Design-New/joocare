@@ -1,5 +1,6 @@
 import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
+import { createHttpStatusError } from "@/shared/lib/http-error";
 import type {
   ForEmployersApiResponse,
   ForEmployersPageData,
@@ -9,7 +10,7 @@ import { mapFaqs, mapImage, mapImages, mapItems } from "./utils";
 export async function getForEmployersPageData(
   locale: string,
 ): Promise<ForEmployersPageData> {
-  const { ok, data, message } = await apiFetch<ForEmployersApiResponse>(
+  const { ok, data, message, statusCode } = await apiFetch<ForEmployersApiResponse>(
     `${getCompanyApiUrl()}/home`,
     {
       method: "GET",
@@ -19,7 +20,10 @@ export async function getForEmployersPageData(
   );
 
   if (!ok || !data?.data) {
-    throw new Error(message || "Failed to load employer home page.");
+    throw createHttpStatusError(
+      statusCode,
+      message || "Failed to load employer home page.",
+    );
   }
 
   const payload = data.data;

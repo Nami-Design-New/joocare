@@ -22,6 +22,7 @@ interface EditSocialMediaModalProps {
 }
 
 type FormValues = {
+    website: string;
     linkedIn: string;
     facebook: string;
     twitter: string;
@@ -41,6 +42,7 @@ export function EditSocialMediaModal({ open, onOpenChange, companyProfileData }:
         reset,
     } = useForm<FormValues>({
         defaultValues: {
+            website: companyProfileData?.website,
             linkedIn: companyProfileData?.linkedin,
             facebook: companyProfileData?.facebook,
             twitter: companyProfileData?.twitter,
@@ -52,6 +54,7 @@ export function EditSocialMediaModal({ open, onOpenChange, companyProfileData }:
     useEffect(() => {
         if (open) {
             reset({
+                website: companyProfileData?.website,
                 linkedIn: companyProfileData?.linkedin,
                 facebook: companyProfileData?.facebook,
                 twitter: companyProfileData?.twitter,
@@ -64,6 +67,7 @@ export function EditSocialMediaModal({ open, onOpenChange, companyProfileData }:
     const onSubmit = (data: FormValues) => {
         updateSocialLinks(
             {
+                website: data.website,
                 linkedin: data.linkedIn,
                 facebook: data.facebook,
                 twitter: data.twitter,
@@ -75,7 +79,7 @@ export function EditSocialMediaModal({ open, onOpenChange, companyProfileData }:
                     toast.success("Social links updated successfully");
                     onOpenChange(false);
                 },
-                onError: (error: any) => {
+                onError: (error: Error) => {
                     toast.error(error?.message || "Something went wrong");
                 },
             }
@@ -91,6 +95,14 @@ export function EditSocialMediaModal({ open, onOpenChange, companyProfileData }:
                         <DialogTitle className="text-[28px] text-black">Edit Online profile</DialogTitle>
                     </DialogHeader>
 
+                    <InputField
+                        id="website"
+                        type="text"
+                        label="Website"
+                        placeholder="ex: www.example.com"
+                        icon={<Image src='/assets/icons/social-icons/globe.svg' alt="website icon" width={20} height={20} />}
+                        {...register("website")}
+                    />
                     <InputField
                         id="linkedIn"
                         type="text"

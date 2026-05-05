@@ -1,5 +1,7 @@
 "use client";
 
+import useGetCandidateProfile from "@/features/candidate-profile/hooks/useGetCandidateProfile";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import {
   Bookmark,
   ChevronDown,
@@ -25,6 +27,10 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
+function getSafeImageSrc(value: unknown, fallback: string) {
+  return typeof value === "string" && value.trim() ? value : fallback;
+}
+
 export default function UserDropDown({
   companyHeader,
 }: {
@@ -35,15 +41,35 @@ export default function UserDropDown({
   const { data: session } = useSession();
   const tCommon = useTranslations("Common");
   const toggleOpen = () => setOpen((prev) => !prev);
+
   const isEmployer = session?.authRole === "employer" || companyHeader;
+  const token = session?.accessToken || "";
+
+  const { data: companyProfileData } = useGetCompanyProfile({
+    token: isEmployer ? token : "",
+  });
+  const { data: candidateProfileData } = useGetCandidateProfile({
+    token: !isEmployer ? token : "",
+  });
+
   const profileHref = isEmployer
     ? "/company/company-profile"
     : "/candidate/profile";
   const displayName = session?.user?.name || "User";
   const subtitle = isEmployer
-    ? tCommon("companyAccount")
-    : tCommon("candidateAccount");
-  const imageSrc = session?.user?.image || "/profile-placeholder.svg";
+
+    ? "Company account"
+    : "Candidate account";
+
+  const fallbackImage = isEmployer
+    ? "/assets/logo_1.svg"
+    : "/assets/profile_image.svg";
+
+  const imageSrc = getSafeImageSrc(
+    (isEmployer ? companyProfileData?.image : candidateProfileData?.image) ??
+    session?.user?.image,
+    fallbackImage
+  );
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
     "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +
@@ -54,13 +80,13 @@ export default function UserDropDown({
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="border-border group relative h-[55px] w-[55px] rounded-full"
+          className="border-border group relative h-13.75 w-13.75 rounded-full"
         >
           <Image
             src={imageSrc}
             alt="User Avatar"
             fill
-            className="rounded-full object-cover"
+            className="rounded-full "
           />{" "}
           <span className="border-border absolute -right-3 -bottom-2 flex h-6 w-6 items-center justify-center rounded-full border bg-white">
             <ChevronDown
@@ -81,7 +107,7 @@ export default function UserDropDown({
                 alt="Profile"
                 width={60}
                 height={60}
-                className="rounded-full"
+                className="rounded-full h-13.75 w-13.75"
               />
               <div>
                 <p className="text-lg font-semibold text-black">{displayName}</p>
@@ -112,6 +138,43 @@ export default function UserDropDown({
 
         {/* Menu Items */}
         <DropdownMenuGroup>
+
+          {isEmployer ? (
+            <>
+              <DropdownMenuItem className={itemClass}>
+                <UserRoundCogIcon
+                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
+                  strokeWidth={2.5}
+                />
+                <Link
+                  href={"/company/job-management"}
+                  onClick={() => toggleOpen()}
+                >
+                  Job Management
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className={itemClass}>
+                <Gauge
+                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
+                  strokeWidth={2.5}
+                />
+                <Link href={"/company/dashboard"} onClick={() => toggleOpen()}>
+                  Dashboard
+                </Link>{" "}
+              </DropdownMenuItem>
+
+            </>
+          ) : (
+            <DropdownMenuItem className={itemClass}>
+              <Bookmark
+                className="text-muted-foreground group-hover:text-primary"
+                strokeWidth={2.5}
+              />
+              <Link href={"/jobs/saved"} onClick={() => toggleOpen()}>
+                Saved
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem className={itemClass}>
             <Settings
               className="text-muted-foreground group-hover:text-primary h-5 w-5"
@@ -125,45 +188,9 @@ export default function UserDropDown({
               }
               onClick={() => toggleOpen()}
             >
-              {tCommon("accountSettings")}
+              Account Management
             </Link>
           </DropdownMenuItem>
-
-          {isEmployer ? (
-            <>
-              <DropdownMenuItem className={itemClass}>
-                <Gauge
-                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
-                  strokeWidth={2.5}
-                />
-                <Link href={"/company/dashboard"} onClick={() => toggleOpen()}>
-                  {tCommon("dashboard")}
-                </Link>{" "}
-              </DropdownMenuItem>
-              <DropdownMenuItem className={itemClass}>
-                <UserRoundCogIcon
-                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
-                  strokeWidth={2.5}
-                />
-                <Link
-                  href={"/company/job-management"}
-                  onClick={() => toggleOpen()}
-                >
-                  {tCommon("jobManagement")}
-                </Link>
-              </DropdownMenuItem>
-            </>
-          ) : (
-            <DropdownMenuItem className={itemClass}>
-              <Bookmark
-                className="text-muted-foreground group-hover:text-primary"
-                strokeWidth={2.5}
-              />
-              <Link href={"/jobs/saved"} onClick={() => toggleOpen()}>
-                {tCommon("saved")}
-              </Link>
-            </DropdownMenuItem>
-          )}
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />

@@ -17,6 +17,20 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
+function getFaqAudienceByRole(
+  authRole?: "candidate" | "employer",
+): "employees" | "companies" | undefined {
+  if (authRole === "candidate") {
+    return "employees";
+  }
+
+  if (authRole === "employer") {
+    return "companies";
+  }
+
+  return undefined;
+}
+
 export async function generateMetadata({
   params,
   searchParams,
@@ -51,9 +65,10 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
   const { locale } = await params;
   const resolvedSearchParams = await searchParams;
   const currentPage = normalizeFaqPageParam(resolvedSearchParams.page);
-  const faqsData = await getFaqsPageData(locale, currentPage);
-  const copy = getFaqPageCopy(locale, faqsData.currentPage);
   const authSession = await getNextAuthToken();
+  const faqAudience = getFaqAudienceByRole(authSession?.authRole);
+  const faqsData = await getFaqsPageData(locale, currentPage, faqAudience);
+  const copy = getFaqPageCopy(locale, faqsData.currentPage);
   const canonicalPath = buildFaqPagePath(locale, faqsData.currentPage);
   const siteOrigin = getSiteOrigin();
 
@@ -94,6 +109,7 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
     ],
   };
 
+  console.log("DATA", faqsData)
   return (
     <>
       <PlainBreadcrumb items={[{ label: "Home", href: "/" }, { label: "FAQ" }]} />

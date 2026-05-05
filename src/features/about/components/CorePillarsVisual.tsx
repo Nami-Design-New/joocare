@@ -76,7 +76,7 @@ export default function CorePillarsVisual({ images }: { images: AboutImage[] }) 
         </div>
       </div>
 
-      <div className="absolute bottom-4 left-4 rounded-2xl bg-white p-4 shadow-xl sm:bottom-12.5 sm:left-20 sm:p-6">
+      <div className="absolute bottom-4 left-4 rounded-2xl bg-white p-4 shadow-xl sm:-bottom-12.5 sm:left-20 sm:p-6">
         <p className="text-foreground text-sm font-semibold sm:text-base">
           12k+ Verified Doctors
         </p>

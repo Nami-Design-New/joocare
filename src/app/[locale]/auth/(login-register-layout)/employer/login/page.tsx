@@ -8,33 +8,32 @@ import Link from "next/link";
 const LoginEmployerPage = () => {
   return (
     <div className="h-[calc(100vh-75px)] flex items-center justify-center gap-4 ">
-      <div className="md:w-3/4 mx-auto p-4">
+      <div className="w-full md:w-3/4  mx-auto p-4">
         {/* header text */}
         <h1>
           Welcome back,
           <br /> business.
         </h1>
-        <p className="text-[clamp(.8rem,4vw,1rem)]">
+        <p className="text-[clamp(.8rem,4vw,1rem)] mt-1">
           Manage your job posts and candidates
         </p>
 
         {/* Login form */}
         <FormEmployerLogin />
 
-        <div
+        {/* <div
           className="flex items-center gap-3 my-4 text-sm text-gray-500 font-medium 
           before:content-[''] before:flex-1 before:h-px before:bg-gray-200
           after:content-[''] after:flex-1 after:h-px after:bg-gray-200"
         >
           or
         </div>
+        <SocialLoginButtons role="employer" /> */}
 
-        {/* social buttons */}
-        <SocialLoginButtons role="employer" />
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">
-            New to JooCore?{" "}
+            Not a member yet?{" "}
             <Link
               href="/auth/employer/register"
               className="text-primary hover:text-primary/60 underline font-medium transition-colors"

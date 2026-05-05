@@ -2,21 +2,24 @@ import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
 
 export async function getBusinessVerificationService({
-    token,
-    locale,
+  token,
+  locale,
 }: {
-    token: string;
-    locale: string;
+  token: string;
+  locale: string;
 }) {
-    const res = await fetch(`${getCompanyApiUrl()}/data/update-profile`, {
-        method: "GET",
-        headers: {
-            "Accept-Language": locale,
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    const payload = await res.json();
-    console.log("bussiness verification", payload);
+  const { data, ok, message } = await apiFetch(
+    `${getCompanyApiUrl()}/data/update-profile`,
+    {
+      method: "GET",
+      locale,
+      token,
+    },
+  );
 
-    return payload?.data;
+  if (!ok) {
+    throw new Error(message || "Failed to load business verification.");
+  }
+
+  return data?.data;
 }

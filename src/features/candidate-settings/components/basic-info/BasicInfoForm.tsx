@@ -12,6 +12,13 @@ import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
 import { Button } from "@/shared/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale, useTranslations } from "next-intl";
+import {
+  getCountryCodeByPhoneCode,
+  getNationalPhoneValue,
+  parsePhoneWithCode,
+} from "@/shared/lib/phone";
+import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -20,7 +27,6 @@ import {
   useForm,
   useWatch,
 } from "react-hook-form";
-import { parsePhoneNumber } from "react-phone-number-input";
 import { toast } from "sonner";
 import {
   storeUploadedFileAction,
@@ -28,19 +34,25 @@ import {
 } from "../../actions/basic-info-actions";
 import type { CandidateSettingsProfile } from "../../services/basic-info-service";
 import {
-  SettingBasicInfoSchema,
+  createSettingBasicInfoSchema,
   type TSettingBasicInfoSchema,
 } from "../../validation/basic-info-schema";
 import ProfileImage from "./ProfileImage";
+import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteImageUser } from "../../hooks/useDeleteImageUser";
 
 interface BasicInfoFormProps {
   profile: CandidateSettingsProfile;
 }
 
+const OTHER_JOB_TITLE_VALUE = "__other__";
+
 const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const locale = useLocale();
   const t = useTranslations("CandidateSettings");
   const router = useRouter();
+  const { data: session } = useSession();
+  const token = session?.accessToken ?? "";
   const [isSaving, setIsSaving] = useState(false);
   const [jobTitleSearch, setJobTitleSearch] = useState("");
   const [specialtySearch, setSpecialtySearch] = useState("");
@@ -49,16 +61,17 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const [citySearch, setCitySearch] = useState("");
   const [uploadedImagePath, setUploadedImagePath] = useState<string | null>(null);
   const [uploadedCvPath, setUploadedCvPath] = useState<string | null>(null);
+  const [isImageUploading, setIsImageUploading] = useState(false);
+  const [showExistingProfileImage, setShowExistingProfileImage] = useState(Boolean(profile.image));
   const [showExistingCv, setShowExistingCv] = useState(Boolean(profile.cv));
+  const imageUploadRequestIdRef = useRef(0);
   const defaultValues = useMemo<TSettingBasicInfoSchema>(
     () => ({
       fullName: profile.name,
       email: profile.email,
-      phoneNumber:
-        profile.phoneCode && profile.phone
-          ? `${profile.phoneCode}${profile.phone}`
-          : profile.phone,
-      jobTitle: profile.jobTitleId,
+      phoneNumber: getNationalPhoneValue(profile.phone, profile.phoneCode),
+      jobTitle: profile.jobTitleId || (profile.jobTitle ? OTHER_JOB_TITLE_VALUE : ""),
+      otherJobTitle: profile.jobTitleId ? "" : profile.jobTitle,
       specialty: profile.specialtyId,
       yearsOfExperience: profile.experienceId,
       country: profile.countryId,
@@ -69,7 +82,15 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     }),
     [profile],
   );
-
+  const basicInfoSchema = useMemo(
+    () =>
+      createSettingBasicInfoSchema({
+        requireCv: !(profile.cv && showExistingCv),
+      }),
+    [profile.cv, showExistingCv],
+  );
+  const queryClient = useQueryClient()
+  const { mutateAsync: deleteImageUser, isPending: isDeletingImage } = useDeleteImageUser({ token });
   const {
     register,
     control,
@@ -80,12 +101,13 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     clearErrors,
     formState: { errors },
   } = useForm<TSettingBasicInfoSchema>({
-    resolver: zodResolver(SettingBasicInfoSchema),
+    resolver: typedZodResolver(basicInfoSchema),
     mode: "onChange",
     defaultValues,
   });
 
   const selectedCountryId = useWatch({ control, name: "country" });
+  const selectedJobTitle = useWatch({ control, name: "jobTitle" });
   const previousCountryId = useRef<string | undefined>(profile.countryId);
   const {
     jobTitles,
@@ -139,8 +161,16 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   }, [selectedCountryId, setValue]);
 
   useEffect(() => {
+    if (selectedJobTitle !== OTHER_JOB_TITLE_VALUE) {
+      setValue("otherJobTitle", "");
+    }
+  }, [selectedJobTitle, setValue]);
+
+  useEffect(() => {
     setUploadedImagePath(null);
     setUploadedCvPath(null);
+    setIsImageUploading(false);
+    setShowExistingProfileImage(Boolean(profile.image));
     setShowExistingCv(Boolean(profile.cv));
   }, [profile.image, profile.cv]);
 
@@ -157,6 +187,21 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     }
   }, [profile.cv, t]);
 
+  const jobTitleOptions = useMemo(
+    () => [
+      { label: "Other", value: OTHER_JOB_TITLE_VALUE },
+      ...jobTitles
+        .map((jobTitle) => ({
+          label: String(jobTitle.title ?? ""),
+          value: String(jobTitle.id),
+        }))
+        .filter((jobTitle) => jobTitle.label),
+    ],
+    [jobTitles],
+  );
+
+  const isOtherJobTitle = selectedJobTitle === OTHER_JOB_TITLE_VALUE;
+
   useEffect(() => {
     if (
       previousCountryId.current &&
@@ -171,7 +216,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   }, [selectedCountryId, setValue]);
 
   const onSubmit: SubmitHandler<TSettingBasicInfoSchema> = async (data) => {
-    const parsedPhone = parsePhoneNumber(data.phoneNumber);
+    const parsedPhone = parsePhoneWithCode(data.phoneNumber, profile.phoneCode);
 
     if (!parsedPhone) {
       toast.error(t("validPhoneError"));
@@ -184,14 +229,18 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       formData.append("name", data.fullName.trim());
       formData.append("phone", parsedPhone.nationalNumber ?? "");
       formData.append("phone_code", `+${parsedPhone.countryCallingCode ?? ""}`);
-      formData.append("job_title_id", data.jobTitle);
+      if (data.jobTitle === OTHER_JOB_TITLE_VALUE) {
+        formData.append("title", data.otherJobTitle.trim());
+      } else {
+        formData.append("job_title_id", data.jobTitle);
+      }
       formData.append("specialty_id", data.specialty);
       formData.append("country_id", data.country);
       formData.append("city_id", data.city);
       formData.append("experience_id", data.yearsOfExperience);
       formData.append("birth_date", data.dateOfBirth);
 
-      if (uploadedImagePath) {
+      if (uploadedImagePath !== null) {
         formData.append("image", uploadedImagePath);
       }
 
@@ -201,7 +250,8 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       const response = await updateCandidateBasicInfoAction(formData, locale);
       toast.success(response.message ?? t("updateSuccess"));
-      router.refresh();
+      queryClient.invalidateQueries({ queryKey: ['candidate-profile'] })
+      router.push("/candidate/profile");
     } catch (error) {
       const message =
         error instanceof Error
@@ -225,24 +275,45 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           control={control}
           render={({ field }) => (
             <ProfileImage
-              value={field.value?.length ? field.value : profile.image}
+              value={
+                field.value?.length
+                  ? field.value
+                  : showExistingProfileImage
+                    ? profile.image
+                    : null
+              }
               onChange={async (files) => {
                 field.onChange(files);
 
                 const imageFile = files[0];
                 if (!(imageFile instanceof File)) {
+                  imageUploadRequestIdRef.current += 1;
+                  setIsImageUploading(false);
                   setUploadedImagePath(null);
                   return;
                 }
 
+                const requestId = imageUploadRequestIdRef.current + 1;
+                imageUploadRequestIdRef.current = requestId;
+                setShowExistingProfileImage(false);
                 clearErrors("profileImage");
+                setIsImageUploading(true);
 
                 try {
                   const uploadFormData = new FormData();
                   uploadFormData.append("image", imageFile);
                   const result = await storeUploadedFileAction(uploadFormData, locale);
+
+                  if (imageUploadRequestIdRef.current !== requestId) {
+                    return;
+                  }
+
                   setUploadedImagePath(result.path);
                 } catch (error) {
+                  if (imageUploadRequestIdRef.current !== requestId) {
+                    return;
+                  }
+
                   const message =
                     error instanceof Error ? error.message : t("uploadProfileImageFailure");
                   setUploadedImagePath(null);
@@ -250,9 +321,41 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                     type: "server",
                     message,
                   });
+                } finally {
+                  if (imageUploadRequestIdRef.current === requestId) {
+                    setIsImageUploading(false);
+                  }
                 }
               }}
+              onRemove={() => {
+                imageUploadRequestIdRef.current += 1;
+                setIsImageUploading(false);
+                const shouldDeleteExistingImage =
+                  showExistingProfileImage && Boolean(profile.image) && !field.value?.length;
+
+                if (shouldDeleteExistingImage) {
+                  deleteImageUser()
+                    .then(() => {
+                      setShowExistingProfileImage(false);
+                      setUploadedImagePath("");
+                      field.onChange([]);
+                      clearErrors("profileImage");
+                      queryClient.invalidateQueries({ queryKey: ["candidate-profile"] });
+                    })
+                    .catch(() => {
+                      // The mutation hook already shows the error toast.
+                    });
+
+                  return;
+                }
+
+                setShowExistingProfileImage(false);
+                setUploadedImagePath("");
+                field.onChange([]);
+                clearErrors("profileImage");
+              }}
               error={errors.profileImage?.message}
+              isUploading={isImageUploading || isDeletingImage}
             />
           )}
         />
@@ -286,7 +389,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           control={control}
           render={({ field }) => (
             <PhoneInputCode
-              defaultCountry="EG"
+              defaultCountry={getCountryCodeByPhoneCode(profile.phoneCode)}
               id="phoneNumber"
               className="w-full"
               placeholder={t("phonePlaceholder")}
@@ -320,10 +423,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                 ? jobTitlesError.message
                 : undefined)
             }
-            options={jobTitles.map((jobTitle) => ({
-              label: jobTitle.title,
-              value: String(jobTitle.id),
-            }))}
+            options={jobTitleOptions}
             disabled={isJobTitlesLoading}
             onReachEnd={() => fetchMoreJobTitles()}
             hasNextPage={Boolean(hasMoreJobTitles)}
@@ -332,6 +432,17 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           />
         )}
       />
+
+      {isOtherJobTitle && (
+        <InputField
+          id="otherJobTitle"
+          type="text"
+          label="Other Job Title"
+          placeholder="ex: Consultant Internist"
+          {...register("otherJobTitle")}
+          error={errors.otherJobTitle?.message}
+        />
+      )}
 
       <div className="flex flex-col items-center gap-2 lg:flex-row">
         <Controller
@@ -472,9 +583,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         render={({ field }) => (
           <StoredFilepondUpload
             label={t("uploadCv")}
-            hint={`"${t("optional")}"`}
             files={field.value}
             onChange={field.onChange}
+            required={!(profile.cv && showExistingCv)}
             allowImagePreview={false}
             acceptedFileTypes={[
               "application/pdf",
@@ -524,9 +635,16 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           size={"pill"}
           className="w-1/3 md:w-56"
           type="submit"
-          disabled={isSaving}
+          disabled={isSaving || isImageUploading || isDeletingImage}
         >
-          {isSaving ? t("saving") : t("save")}
+
+          {isSaving
+            ? t("saving")
+            : isImageUploading
+              ? "Uploading image..."
+              : isDeletingImage
+                ? "Deleting image..."
+                : t("save")}
         </Button>
       </div>
     </form>

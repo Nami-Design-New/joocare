@@ -25,8 +25,8 @@ const Header = () => {
 
   return (
     <>
-      <header className="shadow-header sticky top-0 z-30 flex min-h-21.75 w-full items-center justify-between bg-white px-3 py-4 lg:px-25">
-        <div className="container mx-auto flex items-center justify-between">
+      <header className="layout-shell shadow-header sticky top-0 z-30 flex h-19 w-full items-center justify-between bg-white py-4">
+        <div className="layout-content flex items-center justify-between">
           {/* Logo */}
           <div className="flex gap-1">
             <button
@@ -51,7 +51,7 @@ const Header = () => {
               <Image
                 src="/assets/logo_1.svg"
                 alt="Joo Care Logo"
-                width={100}
+                width={125}
                 height={100}
                 priority
                 className="hidden lg:block"
@@ -64,9 +64,8 @@ const Header = () => {
             <ul className="flex justify-center space-x-4">
               <li>
                 <Link
-                  className={`nav-link ${
-                    isActive(homeHref) ? "text-primary border-primary" : ""
-                  }`}
+                  className={`nav-link ${isActive(homeHref) ? "text-primary border-primary" : ""
+                    }`}
                   href={homeHref}
                 >
                   {tCommon("home")}
@@ -74,31 +73,29 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  className={`nav-link ${
-                    isActive("/about") ? "text-primary border-primary" : ""
-                  }`}
+                  className={`nav-link ${isActive("/about") ? "text-primary border-primary" : ""
+                    }`}
                   href="/about"
                 >
                   {tCommon("about")}
                 </Link>
               </li>
-              {!companyHeader && (
-                <li>
-                  <Link
-                    className={`nav-link ${
-                      isActive("/jobs") ? "text-primary border-primary" : ""
-                    }`}
-                    href="/jobs"
-                  >
-                    {tCommon("jobs")}
-                  </Link>
-                </li>
-              )}
+
+              {/* {!companyHeader && ( */}
               <li>
                 <Link
-                  className={`nav-link ${
-                    isActive("/contact") ? "text-primary border-primary" : ""
-                  }`}
+                  className={`nav-link ${isActive("/jobs") ? "text-primary border-primary" : ""
+                    }`}
+                  href="/jobs"
+                >
+                  Jobs
+                </Link>
+              </li>
+              {/* )} */}
+              <li>
+                <Link
+                  className={`nav-link ${isActive("/contact") ? "text-primary border-primary" : ""
+                    }`}
                   href="/contact"
                 >
                   {tCommon("contact")}

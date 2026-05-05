@@ -1,8 +1,11 @@
 "use client";
 
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { TextareaField } from "@/shared/components/TextareaField";
+import { useSession } from "next-auth/react";
+import { getCountryCodeByPhoneCode, parsePhoneWithCode } from "@/shared/lib/phone";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import CoverUploadImage from "../components/cover-upload-image";
 import Image from "next/image";
@@ -13,6 +16,9 @@ import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 
 export default function StepThree() {
+  const { data: session } = useSession();
+  const token = session?.accessToken || "";
+  const { data: profileData } = useGetCompanyProfile({ token });
   const { register, control, setValue, formState: { errors } } = useFormContext();
 
   const [countrySearch, setCountrySearch] = useState("");
@@ -31,6 +37,20 @@ export default function StepThree() {
     control,
     name: "organizationCountry",
   });
+  const organizationPhoneNumber = useWatch({
+    control,
+    name: "organizationPhoneNumber",
+  });
+  const organizationPhoneCountry = (() => {
+    try {
+      return organizationPhoneNumber
+        ? parsePhoneWithCode(organizationPhoneNumber, profileData?.phone_code)?.country ||
+            getCountryCodeByPhoneCode(profileData?.phone_code)
+        : getCountryCodeByPhoneCode(profileData?.phone_code);
+    } catch {
+      return getCountryCodeByPhoneCode(profileData?.phone_code);
+    }
+  })();
 
   const {
     cities,
@@ -41,7 +61,7 @@ export default function StepThree() {
     isFetchingNextPage: isFetchingMoreCities,
   } = useGetCitiesByCountryId(Number(selectedCountry), citySearch);
 
-  return (
+  return (<>
     <div className="space-y-4 flex flex-col">
       <CoverUploadImage />
 
@@ -58,7 +78,7 @@ export default function StepThree() {
           render={({ field }) => (
             <PhoneInputCode
               {...field}
-              defaultCountry="EG"
+              defaultCountry={organizationPhoneCountry}
               id="organizationPhoneNumber"
               className="w-full"
               placeholder="Enter phone number"
@@ -237,5 +257,7 @@ export default function StepThree() {
 
       </div>
     </div>
+  </>
+
   );
 }
