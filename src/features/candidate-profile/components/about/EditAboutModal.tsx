@@ -95,9 +95,7 @@ export function EditAboutModal({
             </DialogTitle>
           </DialogHeader>
           <DialogDescription className="text-muted-foreground -mt-2 text-sm">
-            You can write about your years of experience, industry, or skills.
-            People also talk about their achievements or previous job
-            experiences
+            Share a brief professional summary highlighting your experience, areas of expertise, key skills, and notable achievements. This helps employers understand your background at a glance.
           </DialogDescription>
 
           <Textarea

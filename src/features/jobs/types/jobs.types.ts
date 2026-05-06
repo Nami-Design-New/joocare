@@ -178,6 +178,7 @@ export type JobDetails = {
 
   category_id: number | null;
   category: NamedEntity | null;
+  category_title?: string | null;
   education_level_id: number | null;
   education_level: NamedEntity | null;
 
@@ -192,11 +193,13 @@ export type JobDetails = {
 
   experience_id: number | null;
   experience: NamedEntity | null;
+  experience_title?: string | null;
 
   education_levels: NamedEntity[];
 
   availability_id: number | null;
   availability: NamedEntity | null;
+  availability_title?: string | null;
 
   description: string | null;
 

@@ -8,15 +8,18 @@ export type UpdateJobPayload = {
   currency_id?: number;
   salary_type_id?: number;
   category_id?: number;
+  category_title?: string;
   specialty_title?: string;
   employment_type_id?: number;
   role_category_id?: number;
   country_id?: number;
   city_id?: number;
   experience_id?: number;
+  experience_title?: string;
   mandatory_certifications?: Array<number | string>;
   education_levels?: number[];
   availability_id?: number;
+  availability_title?: string;
   has_salary?: number;
   skills?: number[];
   description?: string;
@@ -49,6 +52,7 @@ export async function updateJobService(
   if (payload.currency_id !== undefined) formData.append("currency_id", String(payload.currency_id));
   if (payload.salary_type_id !== undefined) formData.append("salary_type_id", String(payload.salary_type_id));
   if (payload.category_id !== undefined) formData.append("category_id", String(payload.category_id));
+  if (payload.category_title !== undefined) formData.append("category_title", payload.category_title);
   if (payload.specialty_title !== undefined) formData.append("specialty_title", String(payload.specialty_title));
   if (payload.employment_type_id !== undefined) formData.append("employment_type_id", String(payload.employment_type_id));
   if (payload.role_category_id !== undefined) formData.append("role_category_id", String(payload.role_category_id));
@@ -56,12 +60,14 @@ export async function updateJobService(
   if (payload.country_id !== undefined) formData.append("country_id", String(payload.country_id));
   if (payload.city_id !== undefined) formData.append("city_id", String(payload.city_id));
   if (payload.experience_id !== undefined) formData.append("experience_id", String(payload.experience_id));
+  if (payload.experience_title !== undefined) formData.append("experience_title", payload.experience_title);
   if (payload.education_levels) {
     payload.education_levels.forEach((educationLevelId, index) => {
       formData.append(`education_levels[${index}]`, String(educationLevelId));
     });
   }
   if (payload.availability_id !== undefined) formData.append("availability_id", String(payload.availability_id));
+  if (payload.availability_title !== undefined) formData.append("availability_title", payload.availability_title);
   if (payload.description !== undefined) formData.append("description", payload.description);
   if (payload.status !== undefined) formData.append("status", payload.status);
 

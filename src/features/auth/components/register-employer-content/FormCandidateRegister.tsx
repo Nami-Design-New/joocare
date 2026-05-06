@@ -26,8 +26,12 @@ const OTHER_JOB_TITLE_VALUE = "__other__";
 
 const FormCandidateRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [countrySearchCurrent, setCountrySearchCurrent] = useState("");
+  const [countrySearch, setCountrySearch] = useState("");
+
   const { jobTitles, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetJobTitles();
-  const { countries, hasNextPage: countryHasNextPage, fetchNextPage: countryFetchNextPage, isFetchingNextPage: countryIsFetchingNextPage } = useGetCountries();
+  const { countries: currentCountries, hasNextPage: currentCountryHasNextPage, fetchNextPage: currentCountryFetchNextPage, isFetchingNextPage: currentCountryIsFetchingNextPage } = useGetCountries(countrySearchCurrent);
+  const { countries, hasNextPage: countryHasNextPage, fetchNextPage: countryFetchNextPage, isFetchingNextPage: countryIsFetchingNextPage } = useGetCountries(countrySearch);
 
   const {
     register,
@@ -169,6 +173,7 @@ const FormCandidateRegister = () => {
             id="jobTitle"
             label="Job Title"
             withSearchInput={true}
+            onSearchChange={setCountrySearch}
             placeholder="ex: Hospital"
             {...field}
             error={errors.jobTitle?.message ?? (error instanceof Error ? error.message : undefined)}
@@ -205,17 +210,18 @@ const FormCandidateRegister = () => {
             render={({ field }) => (
               <SelectInputField
                 withSearchInput
+                onSearchChange={setCountrySearchCurrent}
                 id="country"
                 placeholder="country"
                 {...field}
-                options={countries.map((c) => ({
+                options={currentCountries.map((c) => ({
                   label: c.name,
                   value: String(c.id),
                 }))}
                 error={errors.country?.message}
-                onReachEnd={() => countryFetchNextPage()}
-                hasNextPage={!!countryHasNextPage}
-                isFetchingNextPage={countryIsFetchingNextPage}
+                onReachEnd={() => currentCountryFetchNextPage()}
+                hasNextPage={!!currentCountryHasNextPage}
+                isFetchingNextPage={currentCountryIsFetchingNextPage}
               />
             )}
           />
@@ -297,6 +303,8 @@ const FormCandidateRegister = () => {
               control={control}
               render={({ field }) => (
                 <SelectInputField
+                  withSearchInput
+                  onSearchChange={setCountrySearch}
                   label="Country"
                   id="specificCountry"
                   placeholder="ex: United Arab Emirates (UAE)"

@@ -32,7 +32,7 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
               {job?.employment_type?.title}
             </Badge>
           </div>
-          <p className="text-muted-foreground text-sm">{job?.created_at}</p>
+          <p className="text-muted-foreground text-sm">{job?.current_status?.updated_at}</p>
         </div>
       </div>
 

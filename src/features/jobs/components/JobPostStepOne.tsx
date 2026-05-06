@@ -15,16 +15,11 @@ import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCurrencies from "@/shared/hooks/useGetCurrencies";
 import useGetEducationLevels from "@/shared/hooks/useGetEducationLevels";
-import useGetEmployerTypes from "@/shared/hooks/useGetEmployerTypes";
 import useGetExperiences from "@/shared/hooks/useGetExperiences";
 import useGetMandatoryCertifications from "@/shared/hooks/useGetMandatoryCertifications";
-import useGetOrganizationSizes from "@/shared/hooks/useGetOrganizationSizes";
 import useGetRoleCategories from "@/shared/hooks/useGetRoleCategories";
 import useGetSalaryTypes from "@/shared/hooks/useGetSalaryTypes";
 import useGetSeniorityLevels from "@/shared/hooks/useGetSeniorityLevels";
-import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
-import { useSession } from "next-auth/react";
-import { useLocale } from "next-intl";
 import { useMemo, useState } from "react";
 import { JobPostStepOneSkeleton } from "./JobPostStepOneSkeleton";
 import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
@@ -33,6 +28,7 @@ import type { Option } from "@/shared/components/SelectInputField";
 import { JobDetails } from "../types/jobs.types";
 
 const CUSTOM_CERTIFICATION_PREFIX = "__custom__:";
+const OTHER_OPTION_VALUE = "__other__";
 
 type LookupOptionItem = {
   id?: number | string;
@@ -112,11 +108,6 @@ function JobPostStepOneContent({
   onPreviewLabelChange?: (key: PreviewLabelKey, value: string | string[]) => void;
   existingJob?: JobDetails | null;
 }) {
-  // hooks land and token
-  const locale = useLocale();
-  const { data: session } = useSession();
-  const token = session?.accessToken as string
-
   // search states
   // const [specialtySearch, setSpecialtySearch] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
@@ -125,7 +116,6 @@ function JobPostStepOneContent({
   // const [employerTypesSearch, setEmployerTypesSearch] = useState("");
   const [employmentTypesSearch, setEmploymentTypesSearch] = useState("");
   const [jobTitlesSearch, setJobTitlesSearch] = useState("");
-  const [licensesSearch, setLicensesSearch] = useState("");
   const [categorySearch, setCategorySearch] = useState("");
   const [roleCategorySearch, setRoleCategorySearch] = useState("");
   const [seniorityLevelsSearch, setSeniorityLevelsSearch] = useState("");
@@ -155,10 +145,8 @@ function JobPostStepOneContent({
     isFetchingNextPage: isFetchingMoreCountries,
   } = useGetCountries(countrySearch);
   const selectedCountry = watch("country");
-  const selectedCategory = watch("category");
   const selectedRoleCategory = watch("roleCategory");
   const selectedCountryId = selectedCountry ? Number(selectedCountry) : null;
-  const selectedCategoryId = selectedCategory ? Number(selectedCategory) : null;
   const selectedRoleCategoryId = selectedRoleCategory
     ? Number(selectedRoleCategory)
     : null;
@@ -292,8 +280,18 @@ function JobPostStepOneContent({
 
   const addSalary = watch("addSalary");
   const selectedJobTitle = watch("title");
-  const isOtherJobTitle = selectedJobTitle === "__other__";
-  const selectedMandatoryCertifications = watch("mandatoryCertifications") ?? [];
+  const selectedCategoryValue = watch("category");
+  const selectedExperienceValue = watch("yearsOfExperience");
+  const selectedAvailabilityValue = watch("availability");
+  const isOtherJobTitle = selectedJobTitle === OTHER_OPTION_VALUE;
+  const isOtherCategory = selectedCategoryValue === OTHER_OPTION_VALUE;
+  const isOtherExperience = selectedExperienceValue === OTHER_OPTION_VALUE;
+  const isOtherAvailability = selectedAvailabilityValue === OTHER_OPTION_VALUE;
+  const selectedMandatoryCertifications = watch("mandatoryCertifications");
+  const normalizedMandatoryCertifications = useMemo(
+    () => selectedMandatoryCertifications ?? [],
+    [selectedMandatoryCertifications],
+  );
 
   const existingEducationLevelOptions = useMemo(
     () =>
@@ -333,14 +331,14 @@ function JobPostStepOneContent({
   const mandatoryCertificationOptions = useMemo(
     () => [
       ...toSelectOptions(mandatoryCertifications),
-      ...selectedMandatoryCertifications
+      ...normalizedMandatoryCertifications
         .filter((item) => item.startsWith(CUSTOM_CERTIFICATION_PREFIX))
         .map((item) => ({
           label: item.slice(CUSTOM_CERTIFICATION_PREFIX.length),
           value: item,
         })),
     ],
-    [mandatoryCertifications, selectedMandatoryCertifications],
+    [mandatoryCertifications, normalizedMandatoryCertifications],
   );
 
   const educationLevelsOptions = useMemo(
@@ -373,7 +371,7 @@ function JobPostStepOneContent({
   }
   const jobTitleOptions = mergePersistedOption(
     [
-      { label: "Other", value: "__other__" },
+      { label: "Other", value: OTHER_OPTION_VALUE },
       ...jobTitles.map((type) => ({
         label: type.title,
         value: String(type.id),
@@ -381,6 +379,18 @@ function JobPostStepOneContent({
     ],
     persistedOptions?.title,
   );
+  const categoryOptions = [
+    { label: "Other", value: OTHER_OPTION_VALUE },
+    ...toSelectOptions(categories),
+  ];
+  const experienceOptions = [
+    { label: "Other", value: OTHER_OPTION_VALUE },
+    ...toSelectOptions(experiences),
+  ];
+  const availabilityOptions = [
+    { label: "Other", value: OTHER_OPTION_VALUE },
+    ...toSelectOptions(availabilities),
+  ];
   const countryOptions = mergePersistedOption(
     countries.map((country) => ({
       label: country.name,
@@ -401,13 +411,13 @@ function JobPostStepOneContent({
     if (!trimmedValue) return;
 
     const nextValue = `${CUSTOM_CERTIFICATION_PREFIX}${trimmedValue}`;
-    if (selectedMandatoryCertifications.includes(nextValue)) {
+    if (normalizedMandatoryCertifications.includes(nextValue)) {
       setNewMandatoryCertification("");
       return;
     }
 
     const nextSelectedMandatoryCertifications = [
-      ...selectedMandatoryCertifications,
+      ...normalizedMandatoryCertifications,
       nextValue,
     ];
     setValue(
@@ -453,7 +463,7 @@ function JobPostStepOneContent({
                     "title",
                     jobTitleOptions.find((option) => option.value === value),
                   );
-                  if (value !== "__other__") {
+                  if (value !== OTHER_OPTION_VALUE) {
                     setValue("otherJobTitle", "");
                   }
                 }}
@@ -498,11 +508,10 @@ function JobPostStepOneContent({
                   label: item.title,
                   value: item.value,
                 }))}
-                // disabled={isLicensesLoading}
-                // onReachEnd={() => fetchMoreLicenses()}
-                // hasNextPage={Boolean(hasMoreLicenses)}
-                // isFetchingNextPage={isFetchingMoreLicenses}
-                onSearchChange={setLicensesSearch}
+              // disabled={isLicensesLoading}
+              // onReachEnd={() => fetchMoreLicenses()}
+              // hasNextPage={Boolean(hasMoreLicenses)}
+              // isFetchingNextPage={isFetchingMoreLicenses}
               />
             )}
           />
@@ -514,7 +523,11 @@ function JobPostStepOneContent({
             id="otherJobTitle"
             label="Other job title"
             placeholder="Enter job title"
-            {...register("otherJobTitle")}
+            {...register("otherJobTitle", {
+              onChange: (event) => {
+                onPreviewLabelChange?.("title", event.target.value);
+              },
+            })}
             error={errors.otherJobTitle?.message}
           />
         )}</div>
@@ -696,10 +709,13 @@ function JobPostStepOneContent({
                     ? categoriesError.message
                     : undefined)
                 }
-                options={toSelectOptions(categories)}
+                options={categoryOptions}
                 onChange={(value) => {
                   field.onChange(value);
-                  onPreviewLabelChange?.("category", getOptionLabel(toSelectOptions(categories), value));
+                  onPreviewLabelChange?.("category", getOptionLabel(categoryOptions, value));
+                  if (value !== OTHER_OPTION_VALUE) {
+                    setValue("otherCategoryTitle", "");
+                  }
                   // onPreviewLabelChange?.("specialty", "");
                   // setValue("specialty", "");
                 }}
@@ -759,6 +775,19 @@ function JobPostStepOneContent({
           error={errors.specialty?.message?.toString()}
         />
       </div>
+      {isOtherCategory && (
+        <InputField
+          id="otherCategoryTitle"
+          label="Other category"
+          placeholder="Enter category"
+          {...register("otherCategoryTitle", {
+            onChange: (event) => {
+              onPreviewLabelChange?.("category", event.target.value);
+            },
+          })}
+          error={errors.otherCategoryTitle?.message}
+        />
+      )}
 
       {/* ── Employment Type Section ── */}
       <div className="bg-muted rounded-[12px] p-3">
@@ -973,13 +1002,16 @@ function JobPostStepOneContent({
                   ? experiencesError.message
                   : undefined)
               }
-              options={toSelectOptions(experiences)}
+              options={experienceOptions}
               onChange={(value) => {
                 field.onChange(value);
                 onPreviewLabelChange?.(
                   "yearsOfExperience",
-                  getOptionLabel(toSelectOptions(experiences), value),
+                  getOptionLabel(experienceOptions, value),
                 );
+                if (value !== OTHER_OPTION_VALUE) {
+                  setValue("otherExperienceTitle", "");
+                }
               }}
               disabled={isExperiencesLoading}
               onReachEnd={() => fetchMoreExperiences()}
@@ -990,6 +1022,19 @@ function JobPostStepOneContent({
           )}
         />
       </div>
+      {isOtherExperience && (
+        <InputField
+          id="otherExperienceTitle"
+          label="Other years of experience"
+          placeholder="Enter years of experience"
+          {...register("otherExperienceTitle", {
+            onChange: (event) => {
+              onPreviewLabelChange?.("yearsOfExperience", event.target.value);
+            },
+          })}
+          error={errors.otherExperienceTitle?.message}
+        />
+      )}
 
       {/* ── Education & Certifications ── */}
       <div className="bg-muted rounded-[12px] p-3">
@@ -1123,13 +1168,16 @@ function JobPostStepOneContent({
                       ? availabilitiesError.message
                       : undefined)
                   }
-                  options={toSelectOptions(availabilities)}
+                  options={availabilityOptions}
                   onChange={(value) => {
                     field.onChange(value);
                     onPreviewLabelChange?.(
                       "availability",
-                      getOptionLabel(toSelectOptions(availabilities), value),
+                      getOptionLabel(availabilityOptions, value),
                     );
+                    if (value !== OTHER_OPTION_VALUE) {
+                      setValue("otherAvailabilityTitle", "");
+                    }
                   }}
                   disabled={isAvailabilitiesLoading}
                   onReachEnd={() => fetchMoreAvailabilities()}
@@ -1139,6 +1187,19 @@ function JobPostStepOneContent({
                 />
               )}
             />
+            {isOtherAvailability && (
+              <InputField
+                id="otherAvailabilityTitle"
+                label="Other availability"
+                placeholder="Enter availability"
+                {...register("otherAvailabilityTitle", {
+                  onChange: (event) => {
+                    onPreviewLabelChange?.("availability", event.target.value);
+                  },
+                })}
+                error={errors.otherAvailabilityTitle?.message}
+              />
+            )}
           </div>
         </div>
       </div>
