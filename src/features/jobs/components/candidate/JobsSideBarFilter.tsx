@@ -1,19 +1,20 @@
-"use client";
+'use client';
 
-import { Link } from "@/i18n/navigation";
-import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
+import { Link } from '@/i18n/navigation';
+import useGetSeniorityLevels from '@/shared/hooks/useGetSeniorityLevels';
+import { Button } from '@/shared/components/ui/button';
+import { Input } from '@/shared/components/ui/input';
+import { Label } from '@/shared/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/components/ui/select";
-import { useEffect, useState } from "react";
-import { AccordionSection, FilterState } from "../../types/index.types";
-import FilterAccordion from "./FilterAccordion";
+} from '@/shared/components/ui/select';
+import { useEffect, useMemo, useState } from 'react';
+import { AccordionSection, FilterState } from '../../types/index.types';
+import FilterAccordion from './FilterAccordion';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -25,7 +26,13 @@ type JobsSidebarFilterProps = {
   country: string;
   filters: FilterState;
   sections: AccordionSection[];
-  salaryTypeOptions: AccordionSection["options"];
+  salaryTypeOptions: AccordionSection['options'];
+};
+
+type LookupOptionItem = {
+  id?: number | string | null;
+  title?: string | null;
+  name?: string | null;
 };
 
 export default function JobFilterSidebar({
@@ -38,6 +45,29 @@ export default function JobFilterSidebar({
 }: JobsSidebarFilterProps) {
   const [filters, setFilters] = useState<FilterState>(initialFilters);
   const [openSections, setOpenSections] = useState<Set<string>>(DEFAULT_OPEN);
+  const selectedRoleCategory = filters.roleCategories[0] ?? '';
+  const selectedRoleCategoryId = selectedRoleCategory
+    ? Number(selectedRoleCategory)
+    : undefined;
+  const hasSelectedRoleCategory =
+    typeof selectedRoleCategoryId === 'number' &&
+    Number.isFinite(selectedRoleCategoryId) &&
+    selectedRoleCategoryId > 0;
+  const { seniorityLevels, isLoading: seniorityLevelsLoading } =
+    useGetSeniorityLevels(
+      '',
+      hasSelectedRoleCategory ? selectedRoleCategoryId : undefined,
+    );
+  const normalizedSeniorityOptions = useMemo(
+    () =>
+      (seniorityLevels as LookupOptionItem[])
+        .map((item) => ({
+          value: item.id != null ? String(item.id) : '',
+          label: item.title ?? item.name ?? '',
+        }))
+        .filter((item) => item.value && item.label),
+    [seniorityLevels],
+  );
 
   // ── Handlers ────────────────────────────────────────────────────────────────
 
@@ -54,22 +84,30 @@ export default function JobFilterSidebar({
   }
 
   function handleCheck(
-    key: keyof Omit<FilterState, "salaryMin" | "salaryMax">,
+    key: keyof Omit<FilterState, 'salaryMin' | 'salaryMax'>,
     value: string,
     checked: boolean,
   ) {
     setFilters((prev) => {
-      if (key === "professionalLicense") {
+      if (key === 'professionalLicense') {
         return {
           ...prev,
-          professionalLicense: checked ? value : "",
+          professionalLicense: checked ? value : '',
         };
       }
 
-      if (key === "domains") {
+      if (key === 'domains') {
         return {
           ...prev,
           domains: checked ? [value] : [],
+        };
+      }
+
+      if (key === 'roleCategories') {
+        return {
+          ...prev,
+          roleCategories: checked ? [value] : [],
+          seniorityLevels: [],
         };
       }
 
@@ -87,27 +125,69 @@ export default function JobFilterSidebar({
     setFilters(initialFilters);
   }, [initialFilters]);
 
+  const sectionsWithDependencies = useMemo(
+    () =>
+      sections.map((section) => {
+        if (section.key !== 'seniorityLevels') {
+          return section;
+        }
+
+        return {
+          ...section,
+          options: hasSelectedRoleCategory ? normalizedSeniorityOptions : [],
+          disabled: !hasSelectedRoleCategory || seniorityLevelsLoading,
+          helperText: !hasSelectedRoleCategory
+            ? 'Choose a role category first'
+            : seniorityLevelsLoading
+              ? 'Loading seniority levels...'
+              : undefined,
+        };
+      }),
+    [
+      sections,
+      hasSelectedRoleCategory,
+      normalizedSeniorityOptions,
+      seniorityLevelsLoading,
+    ],
+  );
+
   return (
     <aside className="bg-card shadow-card hidden h-fit w-full flex-col rounded-2xl px-4 py-2 lg:flex">
       <form action={actionPath} method="get" className="flex flex-col">
         <input type="hidden" name="search" value={search} />
         <input type="hidden" name="country" value={country} />
+        {hasSelectedRoleCategory ? (
+          <input
+            type="hidden"
+            name="role_category_id"
+            value={selectedRoleCategory}
+          />
+        ) : null}
         {filters.salaryTypes.map((salaryType) => (
-          <input key={salaryType} type="hidden" name="salary_types[]" value={salaryType} />
+          <input
+            key={salaryType}
+            type="hidden"
+            name="salary_types[]"
+            value={salaryType}
+          />
         ))}
         {/* Accordion sections */}
-        {sections.map((section) => (
+        {sectionsWithDependencies.map((section) => (
           <FilterAccordion
             key={section.key}
             section={section}
             isOpen={openSections.has(section.key)}
             selected={
-              section.key === "professionalLicense"
-                ? (filters.professionalLicense ? [filters.professionalLicense] : [])
+              section.key === 'professionalLicense'
+                ? filters.professionalLicense
+                  ? [filters.professionalLicense]
+                  : []
                 : ((filters[section.key] as string[]) ?? [])
             }
             onToggle={() => toggleSection(section.key)}
-            onCheck={(value, checked) => handleCheck(section.key, value, checked)}
+            onCheck={(value, checked) =>
+              handleCheck(section.key, value, checked)
+            }
           />
         ))}
 
@@ -119,11 +199,11 @@ export default function JobFilterSidebar({
               Salary range
             </span>
             <Select
-              value={filters.salaryTypes[0] ?? "__all__"}
+              value={filters.salaryTypes[0] ?? '__all__'}
               onValueChange={(value) =>
                 setFilters((prev) => ({
                   ...prev,
-                  salaryTypes: value === "__all__" ? [] : [value],
+                  salaryTypes: value === '__all__' ? [] : [value],
                 }))
               }
             >
@@ -144,7 +224,10 @@ export default function JobFilterSidebar({
           {/* Min / Max inputs */}
           <div className="flex gap-3">
             <div className="flex flex-1 flex-col gap-1">
-              <Label className="text-muted-foreground text-xs" htmlFor="min-salary">
+              <Label
+                className="text-muted-foreground text-xs"
+                htmlFor="min-salary"
+              >
                 Min
               </Label>
               <Input
@@ -153,13 +236,19 @@ export default function JobFilterSidebar({
                 name="min_salary"
                 value={filters.salaryMin}
                 onChange={(event) =>
-                  setFilters((prev) => ({ ...prev, salaryMin: event.target.value }))
+                  setFilters((prev) => ({
+                    ...prev,
+                    salaryMin: event.target.value,
+                  }))
                 }
                 className="border-border bg-muted focus-visible:ring-primary h-9 rounded-lg text-sm"
               />
             </div>
             <div className="flex flex-1 flex-col gap-1">
-              <Label className="text-muted-foreground text-xs" htmlFor="max-salary">
+              <Label
+                className="text-muted-foreground text-xs"
+                htmlFor="max-salary"
+              >
                 Max
               </Label>
               <Input
@@ -168,7 +257,10 @@ export default function JobFilterSidebar({
                 name="max_salary"
                 value={filters.salaryMax}
                 onChange={(event) =>
-                  setFilters((prev) => ({ ...prev, salaryMax: event.target.value }))
+                  setFilters((prev) => ({
+                    ...prev,
+                    salaryMax: event.target.value,
+                  }))
                 }
                 className="border-border bg-muted focus-visible:ring-primary h-9 rounded-lg text-sm"
               />
@@ -178,7 +270,12 @@ export default function JobFilterSidebar({
 
         {/* ── Reset Button ───────────────────────────────────────────────────── */}
         <div className="flex gap-3 pt-4 pb-2">
-          <Button type="submit" variant="default" size="pill" className="bg-success flex-1">
+          <Button
+            type="submit"
+            variant="default"
+            size="pill"
+            className="bg-success flex-1"
+          >
             Apply Filters
           </Button>
           <Link
