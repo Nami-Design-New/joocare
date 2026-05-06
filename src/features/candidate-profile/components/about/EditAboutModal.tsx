@@ -100,7 +100,7 @@ export function EditAboutModal({
 
           <Textarea
             className="bg-muted min-h-40 rounded-2xl p-4"
-            placeholder="Write a short summary about your experience, skills, and achievements."
+            placeholder="Write a brief professional summary (minimum 50 words) highlighting your experience, skills, and achievements."
             {...register("bio")}
           />
           {errors.bio?.message && (

@@ -248,7 +248,7 @@ export function ExperienceModal({
 
           <InputField
             id="organizationOrHospitalName"
-            label="Organization/Hospital Name"
+            label="Organization Name"
             placeholder="ex: health care"
             {...register("organizationOrHospitalName")}
             error={errors.organizationOrHospitalName?.message}

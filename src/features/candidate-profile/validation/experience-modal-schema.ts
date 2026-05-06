@@ -7,8 +7,8 @@ export const experienceModalSchema = z
     organizationOrHospitalName: z
       .string()
       .trim()
-      .min(3, "Organization/Hospital Name must be at least 3 characters.")
-      .max(100, "Organization/Hospital Name must be at most 100 characters."),
+      .min(3, "Organization Name must be at least 3 characters.")
+      .max(100, "Organization Name must be at most 100 characters."),
     startDate: z.string().min(1, "Start date is required"),
     endDate: z.string().optional(),
     workHere: z.boolean().default(false),
