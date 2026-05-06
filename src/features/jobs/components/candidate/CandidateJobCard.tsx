@@ -6,7 +6,7 @@ import {
   stripHtml,
   truncateText
 } from "@/features/jobs/utils";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -60,6 +60,7 @@ export default function CandidateJobCard({
   const appliedLabel = appliedAtLabel || postedAtLabel;
   const { shareJob } = useJobShare({ title, path: href });
   const isEmployer = session?.authRole === "employer";
+  const router = useRouter();
 
   const plainText = stripHtml(excerpt || "");
   const shortText = truncateText(plainText, 70);
@@ -75,7 +76,7 @@ export default function CandidateJobCard({
 
         />
         <div className="flex grow flex-col gap-1">
-          <h6 className="text-secondary text-lg font-semibold group-hover:text-primary">
+          <h6 onClick={() => router.push(href)} className="text-secondary text-lg font-semibold group-hover:text-primary cursor-pointer">
             {title}
           </h6>
           <p className="text-foreground text-md font-normal">{company}</p>
@@ -146,15 +147,27 @@ export default function CandidateJobCard({
               <Share /> Share
             </Button>
           </div>
-          <Link
-            className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white`}
-            href={href}
-          >
-            View Job
-            <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
-          </Link>
+
+          {shouldShowAppliedBadge ? (
+            <Button
+              className={`border-border bg-primary/10 flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white cursor-default`}
+
+            >
+              <span className="text-primary font-semibold">Applied</span>
+              <span className="grow text-end text-xs text-muted-foreground">{appliedLabel}</span>
+            </Button>
+
+          ) :
+            <Link
+              className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white`}
+              href={href}
+            >
+              View Job
+              <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+            </Link>
+          }
         </div>
-        {shouldShowAppliedBadge && (
+        {/* {shouldShowAppliedBadge && (
           <Badge
             variant="open"
             size="pill"
@@ -163,8 +176,8 @@ export default function CandidateJobCard({
             <Dot className="h-4 w-4" strokeWidth={12} /> <span>Applied</span>
             <span className="grow text-end text-xs text-muted-foreground">{appliedLabel}</span>
           </Badge>
-        )}
+        )} */}
       </CardFooter>
-    </Card>
+    </Card >
   );
 }
