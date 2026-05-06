@@ -23,7 +23,7 @@ export async function updateSocialLinksService(
         }
     );
 
-    if (!response.ok) {
+    if (Number(response.data?.code) >= 400) {
         throw new Error(response.message ?? "Failed to update bio");
     }
 

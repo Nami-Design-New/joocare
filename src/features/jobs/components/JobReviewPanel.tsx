@@ -411,11 +411,11 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
         </div>
         <div className="bg-muted h-full w-0.5"></div>
         <div className="flex flex-1 flex-col items-center justify-center gap-1">
-          <div className="flex items-center justify-center p-1">
+          <div className="flex items-center justify-center -mt-3">
             <Image
               src={"/assets/icons/map-pin.svg"}
-              width={30}
-              height={30}
+              width={38}
+              height={38}
               alt="Location icon"
             />
           </div>

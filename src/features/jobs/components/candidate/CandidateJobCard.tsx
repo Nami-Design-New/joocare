@@ -133,7 +133,7 @@ export default function CandidateJobCard({
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4  max-lg:px-2">
-        <div className="flex w-full items-center justify-between gap-2 border-b-border border-t pt-4">
+        <div className="flex w-full items-center justify-between gap-2 border-b-border border-t pt-4 flex-wrap">
           <div className="flex gap-2">
             {!isEmployer ? (
               <ToggleSavedJobButton

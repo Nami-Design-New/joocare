@@ -28,7 +28,7 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
             <div className="text-muted-foreground text-lg font-normal">
               <span> at {job?.company?.domain?.title} </span>
             </div>
-            <Badge size="md" className="rounded-sm bg-[#0BA02C]">
+            <Badge size="md" className="rounded-[3px] bg-[#0BA02C] font-semibold">
               {job?.employment_type?.title}
             </Badge>
           </div>
