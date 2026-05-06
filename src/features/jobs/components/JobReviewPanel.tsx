@@ -2,9 +2,6 @@ import React from "react";
 import { JobFormData } from "../validation/job-post-schema";
 import Image from "next/image";
 import { Badge } from "@/shared/components/ui/badge";
-import JobOverviewCard from "./company/JobOverviewCard";
-import JobLocationAndSalaryCard from "./company/JobLocationAndSalaryCard";
-import JobEducationAndCertificationsCard from "./company/JobEducationAndCertificationsCard";
 import { JobDetails } from "../types/jobs.types";
 import { getJobSalary } from "../utils";
 
@@ -46,6 +43,22 @@ type ReviewPreviewData = {
   availability: string;
 };
 
+type ReviewSidebarData = {
+  salary: string;
+  currencyCode: string;
+  salaryType: string;
+  city: string;
+  country: string;
+  experience: string;
+  category: string;
+  specialty: string;
+  roleCategory: string;
+  seniorityLevel: string;
+  educationLevels: string[];
+  mandatoryCertifications: string[];
+  availability: string;
+};
+
 function toIdString(value: number | string | null | undefined) {
   return value == null ? "" : String(value);
 }
@@ -57,6 +70,19 @@ function resolveNamedValue(
 ) {
   if (!selectedValue) return entityTitle ?? "-";
   return selectedValue === toIdString(entityId) ? (entityTitle ?? "-") : selectedValue;
+}
+
+function resolveDisplayValue(
+  previewValue: string | undefined,
+  selectedValue: string | undefined,
+  entityId: number | null | undefined,
+  entityTitle?: string | null,
+) {
+  if (previewValue !== undefined) {
+    return previewValue || "-";
+  }
+
+  return resolveNamedValue(selectedValue, entityId, entityTitle);
 }
 
 function resolveTitle(data: JobFormData, job: JobDetails | null) {
@@ -71,6 +97,19 @@ function resolveTitle(data: JobFormData, job: JobDetails | null) {
   }
 
   return job?.title ?? job?.job_title?.title ?? "Untitled job";
+}
+
+function resolveCustomOrNamedValue(
+  selectedValue: string | undefined,
+  customValue: string | undefined,
+  entityId: number | null | undefined,
+  entityTitle?: string | null,
+) {
+  if (selectedValue === "__other__") {
+    return customValue?.trim() || entityTitle || "-";
+  }
+
+  return resolveNamedValue(selectedValue, entityId, entityTitle);
 }
 
 function resolvePreviewString(
@@ -153,15 +192,21 @@ function buildEditPreviewData(
     ),
     experience: resolvePreviewString(
       previewLabels.yearsOfExperience,
-      resolveNamedValue(
+      resolveCustomOrNamedValue(
         data.yearsOfExperience,
+        data.otherExperienceTitle,
         job?.experience_id,
-        job?.experience?.title,
+        job?.experience_title ?? job?.experience?.title,
       ),
     ),
     category: resolvePreviewString(
       previewLabels.category,
-      resolveNamedValue(data.category, job?.category_id, job?.category?.title),
+      resolveCustomOrNamedValue(
+        data.category,
+        data.otherCategoryTitle,
+        job?.category_id,
+        job?.category_title ?? job?.category?.title,
+      ),
     ),
     specialty: resolvePreviewString(
       previewLabels.specialty,
@@ -215,16 +260,134 @@ function buildEditPreviewData(
       [],
     availability: resolvePreviewString(
       previewLabels.availability,
-      resolveNamedValue(
+      resolveCustomOrNamedValue(
         data.availability,
+        data.otherAvailabilityTitle,
         job?.availability_id,
-        job?.availability?.title,
+        job?.availability_title ?? job?.availability?.title,
       ),
     ),
   };
 }
 
-function EditModeReviewCards({ preview }: { preview: ReviewPreviewData }) {
+function buildSidebarData(
+  data: JobFormData,
+  job: JobDetails | null,
+  previewLabels: JobPreviewLabels,
+): ReviewSidebarData {
+  const addSalary = Boolean(data.addSalary || job?.has_salary);
+  const salary = addSalary
+    ? getJobSalary({
+      min_salary: data.salary?.min ?? job?.min_salary ?? null,
+      max_salary: data.salary?.max ?? job?.max_salary ?? null,
+      currency: null,
+    })
+    : "Not specified";
+
+  const salaryType = addSalary
+    ? resolveDisplayValue(
+      previewLabels.salaryType,
+      data.salary?.type,
+      job?.salary_type_id,
+      job?.salary_type?.title,
+    )
+    : "-";
+
+  const currencyCode = addSalary
+    ? resolveDisplayValue(
+      previewLabels.currency,
+      data.salary?.currency,
+      job?.currency_id,
+      job?.currency?.code,
+    )
+    : "";
+
+  return {
+    salary,
+    currencyCode,
+    salaryType,
+    city: resolveDisplayValue(
+      previewLabels.city,
+      data.city,
+      job?.city_id,
+      job?.city?.name,
+    ),
+    country: resolveDisplayValue(
+      previewLabels.country,
+      data.country,
+      job?.country_id,
+      job?.country?.name,
+    ),
+    experience: resolveDisplayValue(
+      previewLabels.yearsOfExperience,
+      data.yearsOfExperience === "__other__"
+        ? data.otherExperienceTitle
+        : data.yearsOfExperience,
+      job?.experience_id,
+      job?.experience_title ?? job?.experience?.title,
+    ),
+    category: resolveDisplayValue(
+      previewLabels.category,
+      data.category === "__other__" ? data.otherCategoryTitle : data.category,
+      job?.category_id,
+      job?.category_title ?? job?.category?.title,
+    ),
+    specialty: resolveDisplayValue(
+      previewLabels.specialty,
+      data.specialty,
+      job?.specialty_id,
+      job?.specialty_title ?? job?.specialty?.title,
+    ),
+    roleCategory: resolveDisplayValue(
+      previewLabels.roleCategory,
+      data.roleCategory,
+      job?.role_category_id,
+      job?.role_category?.title,
+    ),
+    seniorityLevel: resolveDisplayValue(
+      previewLabels.seniorityLevel,
+      data.seniorityLevel,
+      job?.seniority_level_id,
+      job?.seniority_level?.title,
+    ),
+    educationLevels:
+      previewLabels.educationLevel ??
+      data.educationLevel?.map(
+        (levelId) =>
+          job?.education_levels?.find((level) => String(level.id) === levelId)?.title ??
+          levelId,
+      ) ??
+      [],
+    mandatoryCertifications:
+      previewLabels.mandatoryCertifications ??
+      data.mandatoryCertifications?.map((certificationId) => {
+        if (certificationId.startsWith("__custom__:")) {
+          return certificationId.replace("__custom__:", "");
+        }
+
+        return (
+          job?.mandatory_certifications?.find(
+            (item) => String(item.mandatory_certification_id) === certificationId,
+          )?.mandatory_certification?.title ??
+          job?.mandatory_certifications?.find(
+            (item) => String(item.id) === certificationId,
+          )?.title ??
+          certificationId
+        );
+      }) ??
+      [],
+    availability: resolveDisplayValue(
+      previewLabels.availability,
+      data.availability === "__other__"
+        ? data.otherAvailabilityTitle
+        : data.availability,
+      job?.availability_id,
+      job?.availability_title ?? job?.availability?.title,
+    ),
+  };
+}
+
+function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
   return (
     <>
       <div className="card border-border shadow-card flex min-h-36 items-center justify-around rounded-2xl border-2 bg-white px-6 py-8 lg:justify-between">
@@ -353,6 +516,7 @@ export default function JobReviewPanel({
   }
 
   const preview = isEditMode ? buildEditPreviewData(data, job, previewLabels) : null;
+  const sidebarPreview = buildSidebarData(data, job, previewLabels);
   const skills = preview?.skills ?? job?.skills?.map((skill) => skill.title) ?? [];
 
   return (
@@ -410,15 +574,7 @@ export default function JobReviewPanel({
         </div>
 
         <div className="col-span-1 flex flex-col gap-8">
-          {isEditMode && preview ? (
-            <EditModeReviewCards preview={preview} />
-          ) : (
-            <>
-              <JobLocationAndSalaryCard job={job!} />
-              <JobOverviewCard job={job!} />
-              <JobEducationAndCertificationsCard job={job!} />
-            </>
-          )}
+          <ReviewSidebarCards preview={sidebarPreview} />
         </div>
       </div>
     </section>
