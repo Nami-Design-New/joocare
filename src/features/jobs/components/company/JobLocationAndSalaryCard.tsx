@@ -25,7 +25,7 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
       </div>
       <div className="bg-muted h-full w-0.5"></div>
       <div className="flex flex-1  flex-col items-center justify-center gap-1">
-        <div className="flex items-center justify-center -mt-3">
+        <div className="flex items-center justify-center -mt-2.5">
           <Image
             src={"/assets/icons/map-pin.svg"}
             width={38}
