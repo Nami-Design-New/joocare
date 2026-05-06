@@ -23,25 +23,25 @@ const AccountUnderReview = ({ companyProfileData }: { companyProfileData: TCompa
                 </div>
             </div>
             {companyProfileData.status === "Pending" && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-wrap">
                     {companyProfileData.bio.slice(0, 100)}
                 </p>
             )}
             {companyProfileData.status === "Rejected" && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-wrap">
                     {companyProfileData.rejection_reason}
                 </p>
             )}
             {
                 companyProfileData.status === "Pending" && (
-                    <Badge className="bg-warning-bg text-warning justify-start text-base  py-1 px-4 mt-2 w-full font-normal">
+                    <Badge className="bg-warning-bg text-warning justify-start text-base  py-1 px-4 mt-2 w-full font-normal whitespace-normal">
                         Account under review.
                     </Badge>
                 )
             }
             {
                 companyProfileData.status === "Rejected" && (
-                    <Badge className="bg-red-50 text-red-500 justify-start text-base  py-1 px-4 mt-2 w-full font-normal">
+                    <Badge className="bg-red-50 text-red-500 justify-start text-base  py-1 px-4 mt-2 w-full font-normal whitespace-normal">
                         Account Review Rejected
                     </Badge>
                 )

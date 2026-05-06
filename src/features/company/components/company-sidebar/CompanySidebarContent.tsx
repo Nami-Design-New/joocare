@@ -48,7 +48,7 @@ const CompanySidebarContent = () => {
           <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
       whitespace-nowrap rounded bg-black text-white text-xs px-3 py-1 
       opacity-0 group-hover:opacity-100 transition">
-            You can't post a job until <br /> your  account is Approved
+            You can&apos;t post a job until <br /> your  account is Approved
           </span>
         )}
       </div>

@@ -19,7 +19,12 @@ export async function submitContactService({
     endpoint = `${getBaseApiUrl()}/demo-requests`;
     formData.append("company_name", data.name);
     formData.append("email", data.email);
-    formData.append("inquiry_type_id", data.inquiryTypeId);
+    if (data.inquiryTypeId !== "__other__") {
+      formData.append("inquiry_type_id", data.inquiryTypeId);
+    }
+    if (data.inquiryTypeTitle.trim()) {
+      formData.append("inquiry_type_title", data.inquiryTypeTitle.trim());
+    }
     formData.append("message", data.message);
     formData.append("phone", parsedPhone?.nationalNumber ?? "");
     formData.append(
@@ -31,7 +36,12 @@ export async function submitContactService({
   } else {
     formData.append("name", data.name);
     formData.append("email", data.email);
-    formData.append("inquiry_type_id", data.inquiryTypeId);
+    if (data.inquiryTypeId !== "__other__") {
+      formData.append("inquiry_type_id", data.inquiryTypeId);
+    }
+    if (data.inquiryTypeTitle.trim()) {
+      formData.append("inquiry_type_title", data.inquiryTypeTitle.trim());
+    }
     formData.append("message", data.message);
   }
 

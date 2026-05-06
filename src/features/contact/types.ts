@@ -14,5 +14,6 @@ export type ContactFormValues =
     countryId: string;
     cityId: string;
     inquiryTypeId: string;
+    inquiryTypeTitle: string;
     message: string;
   };
