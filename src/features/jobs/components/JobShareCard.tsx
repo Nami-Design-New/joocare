@@ -23,7 +23,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
         <Button
           type="button"
           variant="ghost"
-          className="text-primary bg-accent hover:bg-accent flex h-auto items-center gap-2 rounded-lg px-4 py-2"
+          className="text-primary bg-accent hover:bg-accent flex h-auto items-center gap-2 rounded-sm px-4 py-2"
           onClick={() => void copyLink()}
         >
           <Image
@@ -39,7 +39,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
             href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedShareUrl}`}
             target="_blank"
             rel="noreferrer"
-            className="bg-accent flex items-center justify-center rounded-lg p-2.5"
+            className="bg-accent flex items-center justify-center rounded-sm p-2.5"
             aria-label="Share on LinkedIn"
           >
             <Image
@@ -53,7 +53,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
             href={`https://www.facebook.com/sharer/sharer.php?u=${encodedShareUrl}`}
             target="_blank"
             rel="noreferrer"
-            className="bg-accent flex items-center justify-center rounded-lg p-2.5"
+            className="bg-accent flex items-center justify-center rounded-sm p-2.5"
             aria-label="Share on Facebook"
           >
             <Image
@@ -67,7 +67,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
             href={`https://twitter.com/intent/tweet?url=${encodedShareUrl}&text=${encodedTitle}`}
             target="_blank"
             rel="noreferrer"
-            className="bg-accent flex items-center justify-center rounded-lg p-2.5"
+            className="bg-accent flex items-center justify-center rounded-sm p-2.5"
             aria-label="Share on X"
           >
             <Image
@@ -80,7 +80,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
 
           <a
             href={`mailto:?subject=${encodedTitle}&body=${encodedShareUrl}`}
-            className="bg-accent flex items-center justify-center rounded-lg p-2.5"
+            className="bg-accent flex items-center justify-center rounded-sm p-2.5"
             aria-label="Share by email"
           >
             <Image

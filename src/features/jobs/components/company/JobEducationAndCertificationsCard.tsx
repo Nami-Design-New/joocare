@@ -43,7 +43,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
         </div>
         <JobOverviewItem
           label="Availability"
-          value={job.availability?.title ?? "-"}
+          value={job.availability?.title ?? job.availability_title ?? "-"}
           icon="/assets/icons/case.svg"
         />
       </div>{" "}

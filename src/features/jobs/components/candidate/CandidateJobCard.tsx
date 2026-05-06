@@ -34,6 +34,7 @@ type CandidateJobCardProps = {
   appliedBadge?: boolean;
   appliedAtLabel?: string;
   onSavedChange?: (nextSavedState: boolean) => void;
+  companyImage?: string;
 };
 
 export default function CandidateJobCard({
@@ -42,6 +43,7 @@ export default function CandidateJobCard({
   appliedBadge,
   appliedAtLabel,
   onSavedChange,
+  companyImage
 }: CandidateJobCardProps) {
   const { data: session } = useSession();
   const title = job.title || job.job_title?.title || "Healthcare Opportunity";
@@ -64,13 +66,16 @@ export default function CandidateJobCard({
 
   const plainText = stripHtml(excerpt || "");
   const shortText = truncateText(plainText, 70);
+
+  // console.log(job, companyImage);
+
   return (
     <Card className="group hover:border-primary">
       <CardHeader className="flex gap-2 max-lg:px-2">
         <Image
           width={52}
           height={46}
-          src={companyLogo || "/assets/comp-logo.svg"}
+          src={companyImage || "/assets/comp-logo.svg"}
           alt={`${company} logo`}
           className="rounded-2xl w-14 h-12"
 

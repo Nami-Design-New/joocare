@@ -61,6 +61,7 @@ export default async function SharedCompanyProfileDetails({
                         slug={slug}
                         locale={locale}
                         companyName={companyName}
+                        companyImage={company.image}
                         initialJobs={initialJobs}
                         jobsError={jobsError}
                     />
