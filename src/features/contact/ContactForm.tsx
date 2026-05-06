@@ -127,10 +127,10 @@ export default function ContactForm({
 
   return (
     <div className="h-full">
-      <SectionTitle sectionTitle="REQUEST FOR DEMO" />
+      <SectionTitle sectionTitle="Share Your Thoughts" />
 
       <h2 className="text-secondary my-4 text-2xl font-bold">
-        Send your message
+        Tell us how we can help
       </h2>
 
       <form

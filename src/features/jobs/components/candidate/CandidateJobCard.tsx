@@ -64,7 +64,7 @@ export default function CandidateJobCard({
   const plainText = stripHtml(excerpt || "");
   const shortText = truncateText(plainText, 70);
   return (
-    <Card>
+    <Card className="group hover:border-primary">
       <CardHeader className="flex gap-2 max-lg:px-2">
         <Image
           width={52}
@@ -75,7 +75,7 @@ export default function CandidateJobCard({
 
         />
         <div className="flex grow flex-col gap-1">
-          <h6 className="text-secondary text-lg font-semibold">
+          <h6 className="text-secondary text-lg font-semibold group-hover:text-primary">
             {title}
           </h6>
           <p className="text-foreground text-md font-normal">{company}</p>
@@ -134,12 +134,13 @@ export default function CandidateJobCard({
                 jobId={job.id}
                 initialIsSaved={job.is_saved}
                 onSavedChange={onSavedChange}
+                className="bg-muted"
               />
             ) : null}
             <Button
               variant="outline"
               size="pill"
-              className="border-border text-muted-foreground h-9 px-4 py-2 text-sm"
+              className="border-border text-muted-foreground h-9 px-4 py-2 text-sm bg-muted"
               onClick={() => void shareJob()}
             >
               <Share /> Share

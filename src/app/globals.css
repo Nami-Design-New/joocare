@@ -54,6 +54,7 @@
   --color-soft-overlay: var(--soft-overlay);
   --color-body-bg: var(--body-bg);
   --bg-primary-gradient: var(--primary-gradient);
+  --color-card-hover: var(--card-hover);
 }
 
 /* ════════════════════════════════════════
@@ -120,6 +121,7 @@
 
   --shadow-soft: #0000000d;
   --primary-gradient: linear-gradient(270deg, #038661, #013a2a);
+  --card-hover: rgb(199, 225, 200);
 }
 
 /* ════════════════════════════════════════

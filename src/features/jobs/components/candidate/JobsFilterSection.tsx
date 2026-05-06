@@ -69,7 +69,7 @@ export default function JobsFilterSection({
               name="search"
               defaultValue={search}
               className="grow bg-white"
-              containerStyles="w-auto grow"
+              containerStyles="w-3/5 grow"
               id="search"
               placeholder="Job title or keyword"
             />

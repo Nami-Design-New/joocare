@@ -27,7 +27,7 @@ export default function JobsSections({
   return (
     <div className="mt-4 flex flex-col gap-4 rounded-2xl border bg-white p-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold">Jobs from {companyName}</h3>
+        <h3 className="text-xl font-semibold">More Jobs</h3>
       </div>
 
       {jobsError ? (

@@ -22,33 +22,33 @@ export default function AboutMissionSection({
             <SectionTitle sectionTitle="Our Mission" textColor="text-dark" />
           </div>
 
-          <h2 className="text-secondary my-4 text-3xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">
+          <h2 className="text-secondary my-7 text-3xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">
             {title}
           </h2>
 
-          <p className="text-muted-foreground mb-8 text-left text-sm  sm:text-xl lg:text-justify">
+          <p className="text-muted-foreground my-7 text-left text-sm  sm:text-xl lg:text-justify">
             {description}
           </p>
         </div>
 
-        <div className="flex w-full max-w-[340px] justify-end sm:max-w-[520px] lg:max-w-none lg:col-span-1">
-          <div className="relative h-[380px] w-[300px]  rounded-[30px] sm:h-[460px] sm:w-[380px] sm:rounded-[40px] bg-red-200">
+        <div className="relative mx-auto flex w-full max-w-[340px] justify-end sm:max-w-[520px] lg:max-w-none lg:col-span-1">
+          <div className="relative h-[380px] w-[300px] overflow-hidden rounded-[30px] sm:h-[486px] sm:w-[380px] sm:rounded-[40px]">
             <Image
-              src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
-              alt={primaryImage?.alt ?? "Mission image"}
+              src={secondaryImage?.image ?? "/assets/about/doctor2.jpg"}
+              alt={secondaryImage?.alt ?? "Mission image"}
               fill
-              className="object-cover rounded-[30px]"
+              className="object-cover"
             />
-            <div className="absolute top-24 -left-1/2 lg:-left-2/3 translate-x-1/2 h-[210px] w-[170px] overflow-hidden  rounded-[22px] border-8 border-white shadow-xl sm:top-40 sm:h-[260px] sm:w-[220px] sm:rounded-[30px] sm:border-16">
-              <Image
-                src={secondaryImage?.image ?? "/assets/about/doctor1.jpg"}
-                alt={secondaryImage?.alt ?? "Mission image"}
-                fill
-                className="object-cover"
-              />
-            </div>
           </div>
 
+          <div className="absolute top-28 left-0 h-[210px] w-[170px] overflow-hidden rounded-[22px] border-8 border-white shadow-xl sm:top-40 sm:h-[260px] sm:w-[220px] sm:rounded-[30px] sm:border-16">
+            <Image
+              src={secondaryImage?.image ?? "/assets/about/doctor1.jpg"}
+              alt={secondaryImage?.alt ?? "Mission image"}
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>

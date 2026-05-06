@@ -27,17 +27,17 @@ export default async function AboutHeroSection({
       <div className="layout-shell ">
         <div className="layout-content">
 
-          <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2">
-            <div>
+          <div className="grid grid-cols-1 gap-10  sm:gap-12  lg:grid-cols-3">
+            <div className="lg:col-span-2">
               <div className="mb-2">
                 <SectionTitle sectionTitle="About JooCare" textColor="text-dark" />
               </div>
 
-              <h2 className="text-secondary mb-3 text-3xl leading-tight font-bold sm:text-3xl lg:mb-2 lg:text-4xl">
+              <h2 className="text-secondary max-w-lg mb-3 text-3xl leading-tight font-bold sm:text-3xl lg:mb-2 lg:text-4xl">
                 {title}
               </h2>
 
-              <p className="mb-8 max-w-xl text-left text-sm leading-relaxed whitespace-pre-line text-gray-600 sm:text-base lg:text-justify">
+              <p className="mb-8 max-w-4xl text-left text-sm leading-relaxed whitespace-pre-line text-gray-600 sm:text-base lg:text-justify">
                 {description}
               </p>
 
@@ -53,8 +53,8 @@ export default async function AboutHeroSection({
               </div>
             </div>
 
-            <div className="relative mx-auto flex w-full max-w-[340px] justify-center sm:max-w-[520px] lg:max-w-none">
-              <div className="relative h-[380px] w-[300px] overflow-hidden rounded-[30px] sm:h-[460px] sm:w-[380px] sm:rounded-[40px]">
+            <div className="relative mx-auto flex w-full max-w-[340px] justify-end sm:max-w-[520px] lg:max-w-none lg:col-span-1">
+              <div className="relative h-[380px] w-[300px] overflow-hidden rounded-[30px] sm:h-[500px] sm:w-[380px] sm:rounded-[40px]">
                 <Image
                   src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
                   alt={primaryImage?.alt ?? "About image"}
@@ -79,7 +79,7 @@ export default async function AboutHeroSection({
           </div>
 
           {/* setting impact */}
-          <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
             <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
                 <Plus

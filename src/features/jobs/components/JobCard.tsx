@@ -119,7 +119,7 @@ export default function JobCard({ resumeMatch,
 
   return (
     <>
-      <Card className="max-lg:py-2">
+      <Card className="max-lg:py-2 group hover:border-primary">
         <CardHeader className="flex gap-2 max-lg:px-2">
           <Image
             width={52}
@@ -129,7 +129,7 @@ export default function JobCard({ resumeMatch,
             className="rounded-2xl w-14 h-12"
           />
           <div className="flex grow flex-col gap-1">
-            <h6 className="text-secondary text-lg font-semibold">
+            <h6 className="text-secondary text-lg font-semibold group-hover:text-primary">
               {title}
             </h6>
             <p className="text-foreground text-md font-normal">{company}</p>
