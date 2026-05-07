@@ -16,7 +16,7 @@ const AuthHeader = () => {
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" aria-label="Homepage">
           <Image
-            src="/assets/logo_1.svg"
+            src="/assets/new-logo-dot.svg"
             alt="Joocare Logo"
             width={120}
             height={100}

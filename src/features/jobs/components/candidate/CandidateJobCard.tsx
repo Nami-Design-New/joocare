@@ -75,7 +75,7 @@ export default function CandidateJobCard({
         <Image
           width={52}
           height={46}
-          src={companyLogo || companyImage || "/assets/comp-logo.svg"}
+          src={companyLogo || companyImage || "/assets/new-logo-dot.svg"}
           alt={`${company} logo`}
           className="rounded-2xl w-14 h-12"
 

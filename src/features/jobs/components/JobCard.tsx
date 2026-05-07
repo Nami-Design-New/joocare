@@ -124,7 +124,7 @@ export default function JobCard({ resumeMatch,
           <Image
             width={52}
             height={52}
-            src={companyLogo || "/assets/comp-logo.svg"}
+            src={companyLogo || "/assets/new-logo-dot.svg"}
             alt={`${company} logo`}
             className="rounded-2xl w-14 h-12"
           />

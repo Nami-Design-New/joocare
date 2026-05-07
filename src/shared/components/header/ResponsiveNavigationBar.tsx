@@ -24,7 +24,7 @@ export default function ResponsiveNavigationBar({
   return createPortal(
     <section className="fixed inset-0 z-50 flex h-dvh flex-col gap-6 bg-white px-4 py-6 lg:hidden">
       <header className="flex w-full items-center justify-between">
-        <Image src="/assets/logo_1.svg" width={70} height={30} alt="Logo" />
+        <Image src="/assets/new-logo-dot.svg" width={70} height={30} alt="Logo" />
         <button
           className="cursor-pointer"
           onClick={() => setToggleSideMenu(false)}

@@ -9,7 +9,7 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
     <section className="flex flex-col lg:items-center justify-between rounded-2xl bg-white p-4 lg:flex-row">
       <div className="flex items-center gap-2 lg:gap-6">
         <Image
-          src={job?.company?.image ?? "/assets/comp-logo.svg"}
+          src={job?.company?.image ?? "/assets/new-logo-dot.svg"}
           alt={`company logo`}
           width={96}
           height={86}

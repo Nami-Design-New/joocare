@@ -26,7 +26,7 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
         <Image
           width={52}
           height={46}
-          src={job?.company?.image ?? "/assets/comp-logo.svg"}
+          src={job?.company?.image ?? "/assets/new-logo-dot.svg"}
           alt="company logo"
           className="rounded-2xl w-14 h-12"
         />

@@ -14,7 +14,7 @@ const Footer = async () => {
   const authRole = session?.authRole;
   const isCandidate = authRole === "candidate";
   const isEmployer = authRole === "employer";
-  const footerLogo = settings?.footer_logo || "/assets/logo-light.svg";
+  const footerLogo = settings?.footer_logo || "/assets/new-logo-light-dot.svg";
   const footerText =
     settings?.footer_text ||
     "An AI-powered healthcare recruitment platform supporting compliant, data-driven hiring across medical and life sciences sectors.";
@@ -59,7 +59,7 @@ const Footer = async () => {
           <div className="space-y-6">
             <div className="flex items-center gap-2">
               <Image
-                src={"/assets/logo-light.svg"}
+                src={footerLogo}
                 alt="Joo Care Logo"
                 width={140}
                 height={60}

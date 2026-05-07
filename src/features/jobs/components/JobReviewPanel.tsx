@@ -550,7 +550,7 @@ export default function JobReviewPanel({
     <section>
       <div className="mt-5 flex items-center gap-6 p-4">
         <Image
-          src="/assets/comp-logo.svg"
+          src="/assets/new-logo-dot.svg"
           alt="Company logo"
           width={96}
           height={86}
