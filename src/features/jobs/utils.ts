@@ -51,9 +51,9 @@ export function normalizeJobsSearchParams(
   const normalizedRoleCategories = selectedRoleCategory
     ? [selectedRoleCategory]
     : getArrayParam(searchParams, 'role_categories[]', 'role_categories').slice(
-        0,
-        1,
-      );
+      0,
+      1,
+    );
   const normalizedSeniorityLevels = normalizedRoleCategories.length
     ? getArrayParam(searchParams, 'seniority_levels[]', 'seniority_levels')
     : [];

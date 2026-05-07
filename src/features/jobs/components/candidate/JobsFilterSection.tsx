@@ -6,7 +6,7 @@ import { InputField } from "@/shared/components/InputField";
 import { Option, SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
 import useGetCountries from "@/shared/hooks/useGetCountries";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 type JobsFilterSectionProps = {
   locale: string;
@@ -93,6 +93,7 @@ export default function JobsFilterSection({
               isFetchingNextPage={countriesFetchingNextPage}
               className="bg-white"
               containerStyles="w-auto grow"
+              allowDeselect
             />
 
             <Button type="submit" variant="default" size="pill" className="shrink-0">

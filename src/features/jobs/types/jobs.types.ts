@@ -129,6 +129,7 @@ export type JobListItem = {
   experience: NamedEntity | null;
   employment_type: NamedEntity | null;
   specialty: WithCategory | null;
+  specialty_title: string | null;
 
   currency_id: number | null;
   currency: Currency | null;
@@ -141,6 +142,8 @@ export type JobListItem = {
 
   description: string | null;
   category: NamedEntity | null;
+  category_title: string | null;
+  experience_title: string | null;
 
   is_applied: boolean;
   is_saved: boolean;
