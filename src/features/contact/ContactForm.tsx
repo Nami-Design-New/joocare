@@ -127,10 +127,11 @@ export default function ContactForm({
 
   return (
     <div className="h-full">
-      <SectionTitle sectionTitle="Share Your Thoughts" />
+      <SectionTitle sectionTitle={role === "candidate" ? "SHARED YOUR THOUGHTS" : "REQUEST FOR DEMO"} />
 
       <h2 className="text-secondary my-4 text-2xl font-bold">
-        Tell us how we can help
+        {role === "candidate" ? "Tell us how we can help" : "Send Your Message"}
+
       </h2>
 
       <form

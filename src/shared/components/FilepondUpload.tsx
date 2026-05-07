@@ -80,7 +80,7 @@ export function FilepondUpload({
 
       if (
         normalizedType ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
         fileName.endsWith(".docx")
       ) {
         return true;
@@ -127,7 +127,7 @@ export function FilepondUpload({
         name={name}
         server={{
           process: (fieldName, file, _metadata, load, error, progress) => {
-            const validationMessage = validateFile(file);
+            const validationMessage = validateFile(file as File);
 
             if (validationMessage) {
               error(validationMessage);
@@ -181,7 +181,7 @@ export function FilepondUpload({
         onaddfile={(addFileError, fileItem) => {
           if (addFileError) {
             const file = fileItem?.file;
-            const validationMessage = file ? validateFile(file) : invalidTypeMessage;
+            const validationMessage = file ? validateFile(file as File) : invalidTypeMessage;
             onUploadError?.(validationMessage ?? "Upload failed");
             return;
           }
@@ -191,7 +191,7 @@ export function FilepondUpload({
             return;
           }
 
-          const validationMessage = validateFile(file);
+          const validationMessage = validateFile(file as File);
           onUploadError?.(validationMessage);
         }}
         onremovefile={() => {

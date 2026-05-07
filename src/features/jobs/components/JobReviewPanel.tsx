@@ -393,7 +393,7 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
     <>
       <div className="card border-border shadow-card flex min-h-36 items-center justify-around rounded-2xl border-2 bg-white px-6 py-8 lg:justify-between">
         <div className="flex flex-1 flex-col items-center justify-center gap-2">
-          <div className="flex items-center justify-center p-1 rounded-full border-2 border-primary">
+          <div className="flex items-center justify-center p-1 rounded-full border-3 border-primary">
             <Image
               src={"/assets/icons/dollar.svg"}
               width={20}
@@ -412,7 +412,7 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
         </div>
         <div className="bg-muted h-full w-0.5"></div>
         <div className="flex flex-1 flex-col items-center justify-center gap-1">
-          <div className="flex items-center justify-center -mt-2.5">
+          <div className="flex items-center justify-center -mt-3">
             <Image
               src={"/assets/icons/map-pin.svg"}
               width={38}

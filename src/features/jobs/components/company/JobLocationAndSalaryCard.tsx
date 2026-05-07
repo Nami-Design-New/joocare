@@ -6,7 +6,7 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
   return (
     <div className="card border-border shadow-card flex min-h-36 items-center justify-around rounded-2xl border-2 bg-white  py-8 px-4 xl:p-8">
       <div className="flex flex-1  flex-col items-center justify-center gap-2">
-        <div className="flex items-center justify-center p-1 rounded-full border-2 border-primary">
+        <div className="flex items-center justify-center p-1 rounded-full border-3 border-primary">
           <Image
             src={"/assets/icons/dollar.svg"}
             width={20}
@@ -25,7 +25,7 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
       </div>
       <div className="bg-muted h-full w-0.5"></div>
       <div className="flex flex-1  flex-col items-center justify-center gap-1">
-        <div className="flex items-center justify-center -mt-2.5">
+        <div className="flex items-center justify-center -mt-3">
           <Image
             src={"/assets/icons/map-pin.svg"}
             width={38}
