@@ -49,7 +49,7 @@ export default function CandidateJobCard({
   const title = job.title || job.job_title?.title || "Healthcare Opportunity";
   const company = job.company?.name || "Joocare Employer";
   const companyLogo = job.company?.image;
-  const postedAtLabel = job.updated_at;
+  const postedAtLabel = job?.current_status?.updated_at;
   const location = getJobLocation(job);
   const category = job?.category?.title || job?.category_title || "Not specified";
   const employmentType = job?.employment_type?.title || "Not specified";
@@ -94,15 +94,15 @@ export default function CandidateJobCard({
       <CardContent className="max-lg:px-2 grow">
         <div className=" flex flex-col gap-4  ">
           <ul className="items-center flex gap-2">
-            <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <MapPin size={14} color="var(--muted-foreground)" />
               {location}
             </li>
-            <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <Briefcase size={14} color="var(--muted-foreground)" />
               {category}
             </li>
-            <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <CircleDollarSign size={14} color="var(--muted-foreground)" />
               {salary}
             </li>

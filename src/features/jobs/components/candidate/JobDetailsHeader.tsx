@@ -5,6 +5,8 @@ import { JobDetails } from "../../types/jobs.types";
 import CandidateJobDetailsCardActions from "./CandidateJobDetailsCardActions";
 
 export default function JobDetailsHeader({ job }: { job: JobDetails }) {
+  console.log(job);
+
   return (
     <section className="flex flex-col lg:items-center justify-between rounded-2xl bg-white p-4 lg:flex-row">
       <div className="flex items-center gap-2 lg:gap-6">
