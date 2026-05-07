@@ -44,16 +44,14 @@ export function normalizeJobsSearchParams(
   searchParams: Record<string, string | string[] | undefined>,
 ): JobsSearchFilters {
   const pageValue = Number.parseInt(getSingleParam(searchParams, 'page'), 10);
-  const selectedRoleCategory = getSingleParam(
+  const normalizedRoleCategories = getArrayParam(
     searchParams,
+    'role_categories[]',
+    'role_categories',
+    'role_category_ids[]',
+    'role_category_ids',
     'role_category_id',
-  ).trim();
-  const normalizedRoleCategories = selectedRoleCategory
-    ? [selectedRoleCategory]
-    : getArrayParam(searchParams, 'role_categories[]', 'role_categories').slice(
-      0,
-      1,
-    );
+  );
   const normalizedSeniorityLevels = normalizedRoleCategories.length
     ? getArrayParam(searchParams, 'seniority_levels[]', 'seniority_levels')
     : [];
@@ -62,8 +60,13 @@ export function normalizeJobsSearchParams(
     page: Number.isNaN(pageValue) || pageValue < 1 ? 1 : pageValue,
     search: getSingleParam(searchParams, 'search').trim(),
     country: getSingleParam(searchParams, 'country'),
-    professionalLicense: getSingleParam(searchParams, 'professional_license'),
-    domain: getSingleParam(searchParams, 'domain'),
+    professionalLicenses: getArrayParam(
+      searchParams,
+      'professional_licenses[]',
+      'professional_licenses',
+      'professional_license',
+    ),
+    domains: getArrayParam(searchParams, 'domains[]', 'domains', 'domain'),
     minSalary: getSingleParam(searchParams, 'min_salary'),
     maxSalary: getSingleParam(searchParams, 'max_salary'),
     roleCategories: normalizedRoleCategories,
@@ -87,9 +90,10 @@ export function normalizeJobsSearchParams(
 
 export function buildJobsQueryString(filters: JobsSearchFilters) {
   const params = new URLSearchParams();
-  const selectedRoleCategory = filters.roleCategories[0]?.trim() ?? '';
   const arrayFilters: Array<[string, string[]]> = [
-    ['role_categories[]', selectedRoleCategory ? [selectedRoleCategory] : []],
+    ['professional_licenses[]', filters.professionalLicenses],
+    ['role_categories[]', filters.roleCategories],
+    ['domains[]', filters.domains],
     ['seniority_levels[]', filters.seniorityLevels],
     // ["specialties[]", filters.specialties],
     ['experiences[]', filters.experiences],
@@ -111,24 +115,12 @@ export function buildJobsQueryString(filters: JobsSearchFilters) {
     params.set('country', filters.country);
   }
 
-  if (filters.professionalLicense) {
-    params.set('professional_license', filters.professionalLicense);
-  }
-
-  if (filters.domain) {
-    params.set('domain', filters.domain);
-  }
-
   if (filters.minSalary) {
     params.set('min_salary', filters.minSalary);
   }
 
   if (filters.maxSalary) {
     params.set('max_salary', filters.maxSalary);
-  }
-
-  if (selectedRoleCategory) {
-    params.set('role_category_id', selectedRoleCategory);
   }
 
   arrayFilters.forEach(([key, values]) => {

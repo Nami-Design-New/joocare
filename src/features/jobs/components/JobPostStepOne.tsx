@@ -225,7 +225,7 @@ function JobPostStepOneContent({
     isFetchingNextPage: seniorityLevelsFetchingNextPage,
   } = useGetSeniorityLevels(
     seniorityLevelsSearch,
-    selectedRoleCategoryId ?? undefined,
+    selectedRoleCategoryId ? [selectedRoleCategoryId] : [],
   );
   const {
     experiences,

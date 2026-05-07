@@ -64,7 +64,7 @@ function normalizeLookupItem(
 async function fetchLookupOptions(
   endpoint: string,
   locale: string,
-  extraParams?: Record<string, string>,
+  extraParams?: Record<string, string | string[]>,
 ) {
   const params = new URLSearchParams({
     pagination: 'on',
@@ -73,6 +73,15 @@ async function fetchLookupOptions(
   });
 
   Object.entries(extraParams ?? {}).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((item) => {
+        if (item.trim()) {
+          params.append(key, item);
+        }
+      });
+      return;
+    }
+
     if (value.trim()) {
       params.set(key, value);
     }
@@ -151,7 +160,7 @@ export async function getJobsListing(
 
 export async function getJobsFiltersData(
   locale: string,
-  roleCategoryId?: string,
+  roleCategoryIds: string[] = [],
 ) {
   const [
     countries,
@@ -178,7 +187,9 @@ export async function getJobsFiltersData(
     fetchLookupOptions(
       'seniority-levels',
       locale,
-      roleCategoryId ? { role_category_id: roleCategoryId } : undefined,
+      roleCategoryIds.length > 0
+        ? { 'role_category_ids[]': roleCategoryIds }
+        : undefined,
     ),
     fetchLookupOptions('job-titles', locale),
   ]);

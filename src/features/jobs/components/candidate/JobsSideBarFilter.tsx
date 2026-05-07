@@ -45,19 +45,16 @@ export default function JobFilterSidebar({
 }: JobsSidebarFilterProps) {
   const [filters, setFilters] = useState<FilterState>(initialFilters);
   const [openSections, setOpenSections] = useState<Set<string>>(DEFAULT_OPEN);
-  const selectedRoleCategory = filters.roleCategories[0] ?? '';
-  const selectedRoleCategoryId = selectedRoleCategory
-    ? Number(selectedRoleCategory)
-    : undefined;
-  const hasSelectedRoleCategory =
-    typeof selectedRoleCategoryId === 'number' &&
-    Number.isFinite(selectedRoleCategoryId) &&
-    selectedRoleCategoryId > 0;
+  const selectedRoleCategoryIds = useMemo(
+    () =>
+      filters.roleCategories
+        .map((value) => Number(value))
+        .filter((value) => Number.isFinite(value) && value > 0),
+    [filters.roleCategories],
+  );
+  const hasSelectedRoleCategory = selectedRoleCategoryIds.length > 0;
   const { seniorityLevels, isLoading: seniorityLevelsLoading } =
-    useGetSeniorityLevels(
-      '',
-      hasSelectedRoleCategory ? selectedRoleCategoryId : undefined,
-    );
+    useGetSeniorityLevels('', selectedRoleCategoryIds);
   const normalizedSeniorityOptions = useMemo(
     () =>
       (seniorityLevels as LookupOptionItem[])
@@ -89,24 +86,18 @@ export default function JobFilterSidebar({
     checked: boolean,
   ) {
     setFilters((prev) => {
-      if (key === 'professionalLicense') {
-        return {
-          ...prev,
-          professionalLicense: checked ? value : '',
-        };
-      }
-
-      if (key === 'domains') {
-        return {
-          ...prev,
-          domains: checked ? [value] : [],
-        };
-      }
-
       if (key === 'roleCategories') {
+        const nextRoleCategories = checked
+          ? prev.roleCategories.includes(value)
+            ? prev.roleCategories
+            : [...prev.roleCategories, value]
+          : prev.roleCategories.filter(
+              (currentValue) => currentValue !== value,
+            );
+
         return {
           ...prev,
-          roleCategories: checked ? [value] : [],
+          roleCategories: nextRoleCategories,
           seniorityLevels: [],
         };
       }
@@ -115,7 +106,9 @@ export default function JobFilterSidebar({
       return {
         ...prev,
         [key]: checked
-          ? [...current, value]
+          ? current.includes(value)
+            ? current
+            : [...current, value]
           : current.filter((currentValue) => currentValue !== value),
       };
     });
@@ -156,13 +149,6 @@ export default function JobFilterSidebar({
       <form action={actionPath} method="get" className="flex flex-col">
         <input type="hidden" name="search" value={search} />
         <input type="hidden" name="country" value={country} />
-        {hasSelectedRoleCategory ? (
-          <input
-            type="hidden"
-            name="role_category_id"
-            value={selectedRoleCategory}
-          />
-        ) : null}
         {filters.salaryTypes.map((salaryType) => (
           <input
             key={salaryType}
@@ -177,13 +163,7 @@ export default function JobFilterSidebar({
             key={section.key}
             section={section}
             isOpen={openSections.has(section.key)}
-            selected={
-              section.key === 'professionalLicense'
-                ? filters.professionalLicense
-                  ? [filters.professionalLicense]
-                  : []
-                : ((filters[section.key] as string[]) ?? [])
-            }
+            selected={(filters[section.key] as string[]) ?? []}
             onToggle={() => toggleSection(section.key)}
             onCheck={(value, checked) =>
               handleCheck(section.key, value, checked)

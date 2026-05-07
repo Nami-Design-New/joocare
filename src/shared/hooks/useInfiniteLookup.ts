@@ -7,7 +7,11 @@ type InfiniteLookupOptions = {
   endpoint: string;
   queryKey: string;
   search?: string;
-  extraParams?: Record<string, string | number | undefined | null>;
+  limitPerPage?: number;
+  extraParams?: Record<
+    string,
+    string | number | Array<string | number> | undefined | null
+  >;
   enabled?: boolean;
 };
 
@@ -15,18 +19,19 @@ export function useInfiniteLookup({
   endpoint,
   queryKey,
   search = "",
+  limitPerPage = 10,
   extraParams,
   enabled = true,
 }: InfiniteLookupOptions) {
   return useInfiniteQuery({
-    queryKey: [queryKey, search, extraParams],
+    queryKey: [queryKey, search, limitPerPage, extraParams],
     initialPageParam: 1,
     enabled,
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams({
         page: String(pageParam),
         pagination: "on",
-        limit_per_page: "10",
+        limit_per_page: String(limitPerPage),
       });
 
       if (search.trim()) {
@@ -34,6 +39,16 @@ export function useInfiniteLookup({
       }
 
       Object.entries(extraParams ?? {}).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            const normalizedItem = String(item).trim();
+            if (normalizedItem) {
+              params.append(key, normalizedItem);
+            }
+          });
+          return;
+        }
+
         if (value !== undefined && value !== null && String(value).trim()) {
           params.set(key, String(value));
         }
