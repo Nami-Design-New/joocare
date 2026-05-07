@@ -160,9 +160,9 @@ export function StoredFilepondUpload({
       return "Max file size is 5MB";
     }
 
-    if (!matchesAcceptedType(file)) {
-      return invalidTypeMessage ?? "Invalid file type";
-    }
+    // if (!matchesAcceptedType(file)) {
+    //   return invalidTypeMessage ?? "Invalid file type";
+    // }
 
     return null;
   };

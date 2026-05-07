@@ -127,7 +127,7 @@ export default function ContactForm({
 
   return (
     <div className="h-full">
-      <SectionTitle sectionTitle={role === "candidate" ? "SHARED YOUR THOUGHTS" : "REQUEST FOR DEMO"} />
+      <SectionTitle sectionTitle={role === "candidate" ? "Share Your Thoughts" : "REQUEST FOR DEMO"} />
 
       <h2 className="text-secondary my-4 text-2xl font-bold">
         {role === "candidate" ? "Tell us how we can help" : "Send Your Message"}
