@@ -78,16 +78,16 @@ export default async function Page({ params, searchParams }: PageProps) {
   const actionPath = `/jobs`;
   const copy = getPageCopy(locale, normalizedParams.search);
   const [filtersData, jobsData, popularSearchesPage] = await Promise.all([
-    getJobsFiltersData(locale, normalizedParams.roleCategories[0]),
+    getJobsFiltersData(locale, normalizedParams.roleCategories),
     getJobsListing(locale, normalizedParams),
     getPopularSearchesPage({ locale }),
   ]);
 
   const filterState: FilterState = {
-    professionalLicense: normalizedParams.professionalLicense,
+    professionalLicense: normalizedParams.professionalLicenses,
     roleCategories: normalizedParams.roleCategories,
     seniorityLevels: normalizedParams.seniorityLevels,
-    domains: normalizedParams.domain ? [normalizedParams.domain] : [],
+    domains: normalizedParams.domains,
     // specialties: normalizedParams.specialties,
     experiences: normalizedParams.experiences,
     availabilities: normalizedParams.availabilities,
@@ -102,8 +102,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     {
       key: 'professionalLicense',
       label: 'Professional License',
-      name: 'professional_license',
-      type: 'radio',
+      name: 'professional_licenses[]',
       options: [
         { value: 'with_medical_license', label: 'With medical license' },
         { value: 'without_medical_license', label: 'Without medical license' },
@@ -113,7 +112,6 @@ export default async function Page({ params, searchParams }: PageProps) {
       key: 'roleCategories',
       label: 'Role category',
       name: 'role_categories[]',
-      type: 'radio',
       options: filtersData.roleCategories,
     },
     {
@@ -125,8 +123,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     {
       key: 'domains',
       label: 'Domain',
-      name: 'domain',
-      type: 'radio',
+      name: 'domains[]',
       options: filtersData.domains,
     },
     // {
@@ -162,14 +159,6 @@ export default async function Page({ params, searchParams }: PageProps) {
   ];
 
   const hiddenInputs = [
-    ...(normalizedParams.roleCategories[0]
-      ? [
-          {
-            name: 'role_category_id',
-            value: normalizedParams.roleCategories[0],
-          },
-        ]
-      : []),
     ...normalizedParams.roleCategories.map((value) => ({
       name: 'role_categories[]',
       value,
@@ -199,17 +188,14 @@ export default async function Page({ params, searchParams }: PageProps) {
       name: 'employment_types[]',
       value,
     })),
-    ...(normalizedParams.professionalLicense
-      ? [
-          {
-            name: 'professional_license',
-            value: normalizedParams.professionalLicense,
-          },
-        ]
-      : []),
-    ...(normalizedParams.domain
-      ? [{ name: 'domain', value: normalizedParams.domain }]
-      : []),
+    ...normalizedParams.professionalLicenses.map((value) => ({
+      name: 'professional_licenses[]',
+      value,
+    })),
+    ...normalizedParams.domains.map((value) => ({
+      name: 'domains[]',
+      value,
+    })),
     ...(normalizedParams.minSalary
       ? [{ name: 'min_salary', value: normalizedParams.minSalary }]
       : []),

@@ -24,7 +24,10 @@ interface FilepondUploadProps {
   value?: string;                          // stores data.image path
   onUploadSuccess: (imagePath: string) => void; // called after upload
   onRemove?: () => void;
-  maxSize?: number
+  maxSize?: number;
+  acceptedFileTypes?: string[];
+  invalidTypeMessage?: string;
+  onUploadError?: (message: string | null) => void;
 }
 
 export function FilepondUpload({
@@ -40,9 +43,64 @@ export function FilepondUpload({
   error,
   hint,
   maxSize,
+  acceptedFileTypes,
+  invalidTypeMessage,
+  onUploadError,
 }: FilepondUploadProps) {
-  const MAX_SIZE = maxSize || 5 * 1024 * 1024
-  // console.log(maxSize);
+  const MAX_SIZE = maxSize || 5 * 1024 * 1024;
+
+  const matchesAcceptedType = (file: File) => {
+    if (!acceptedFileTypes?.length) {
+      return true;
+    }
+
+    const fileType = file.type?.toLowerCase();
+    const fileName = file.name.toLowerCase();
+
+    return acceptedFileTypes.some((acceptedType) => {
+      const normalizedType = acceptedType.toLowerCase();
+
+      if (fileType === normalizedType) {
+        return true;
+      }
+
+      if (
+        normalizedType === "application/pdf" &&
+        fileName.endsWith(".pdf")
+      ) {
+        return true;
+      }
+
+      if (
+        normalizedType === "application/msword" &&
+        fileName.endsWith(".doc")
+      ) {
+        return true;
+      }
+
+      if (
+        normalizedType ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
+        fileName.endsWith(".docx")
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+  };
+
+  const validateFile = (file: File) => {
+    if (file.size > MAX_SIZE) {
+      return "Max file size is 5MB";
+    }
+
+    if (!matchesAcceptedType(file)) {
+      return invalidTypeMessage ?? "Invalid file type";
+    }
+
+    return null;
+  };
 
   return (
     <div className={`w-full space-y-2 ${className}`}>
@@ -64,21 +122,16 @@ export function FilepondUpload({
         allowImagePreview={allowImagePreview}
         allowMultiple={allowMultiple}
         maxFiles={maxFiles}
+        acceptedFileTypes={acceptedFileTypes}
+        allowFileTypeValidation={Boolean(acceptedFileTypes?.length)}
         name={name}
         server={{
           process: (fieldName, file, _metadata, load, error, progress) => {
+            const validationMessage = validateFile(file as File);
 
-            if (file.size > MAX_SIZE) {
-              const message = "Max file size is 5MB";
-
-              error(message);        // FilePond UI
-              onRemove?.();          // reset
-              onUploadSuccess("");   // clear value
-              if (typeof window !== "undefined") {
-                setTimeout(() => {
-                  error?.(message);
-                }, 0);
-              }
+            if (validationMessage) {
+              error(validationMessage);
+              onUploadError?.(validationMessage);
 
               return {
                 abort: () => { },
@@ -98,14 +151,19 @@ export function FilepondUpload({
               if (xhr.status >= 200 && xhr.status < 300) {
                 const response = JSON.parse(xhr.responseText);
                 const imagePath = response.data.image;
+                onUploadError?.(null);
                 onUploadSuccess(imagePath);
                 load(String(response.data.id)); // ✅ must be a string
               } else {
+                onUploadError?.("Upload failed");
                 error("Upload failed");
               }
             };
 
-            xhr.onerror = () => error("Upload failed");
+            xhr.onerror = () => {
+              onUploadError?.("Upload failed");
+              error("Upload failed");
+            };
             xhr.send(formData);
 
             return {
@@ -114,12 +172,32 @@ export function FilepondUpload({
           },
 
           // ✅ correct signature: (uniqueFileId, load, error)
-          revert: (_uniqueFileId, load, _error) => {
+          revert: (_uniqueFileId, load) => {
+            onUploadError?.(null);
             onRemove?.();
             load(); // required to confirm revert to FilePond
           },
         }}
-        onremovefile={() => onRemove?.()}
+        onaddfile={(addFileError, fileItem) => {
+          if (addFileError) {
+            const file = fileItem?.file;
+            const validationMessage = file ? validateFile(file as File) : invalidTypeMessage;
+            onUploadError?.(validationMessage ?? "Upload failed");
+            return;
+          }
+
+          const file = fileItem?.file;
+          if (!file) {
+            return;
+          }
+
+          const validationMessage = validateFile(file as File);
+          onUploadError?.(validationMessage);
+        }}
+        onremovefile={() => {
+          onUploadError?.(null);
+          onRemove?.();
+        }}
         labelIdle={`
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
             <img src="/assets/icons/Group.svg" alt="icon image" width="20" height="20"/>

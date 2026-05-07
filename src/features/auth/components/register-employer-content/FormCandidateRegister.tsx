@@ -23,6 +23,13 @@ import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 import { FilepondUpload } from "@/shared/components/FilepondUpload";
 
 const OTHER_JOB_TITLE_VALUE = "__other__";
+const CV_ACCEPTED_FILE_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+const CV_INVALID_TYPE_MESSAGE =
+  "The uploaded file must be a document in PDF, DOC, or DOCX format.";
 
 const FormCandidateRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,6 +45,7 @@ const FormCandidateRegister = () => {
     control,
     handleSubmit,
     setValue,
+    setError,
     clearErrors,
     formState: { errors },
   } = useForm<TRegisterCandidateSchema>({
@@ -112,6 +120,31 @@ const FormCandidateRegister = () => {
       license: data.uploadLicense,
     });
   };
+
+  const handleCvUploadError = (message: string | null) => {
+    if (!message) {
+      clearErrors("uploadCV");
+      return;
+    }
+
+    setError("uploadCV", {
+      type: "manual",
+      message,
+    });
+  };
+
+  const handleLicenseUploadError = (message: string | null) => {
+    if (!message) {
+      clearErrors("uploadLicense");
+      return;
+    }
+
+    setError("uploadLicense", {
+      type: "manual",
+      message,
+    });
+  };
+
   return (<>
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -268,8 +301,17 @@ const FormCandidateRegister = () => {
           <FilepondUpload
             label="Upload CV"
             value={field.value}
-            onUploadSuccess={(imagePath) => field.onChange(imagePath)}
-            onRemove={() => field.onChange("")}
+            acceptedFileTypes={CV_ACCEPTED_FILE_TYPES}
+            invalidTypeMessage={CV_INVALID_TYPE_MESSAGE}
+            onUploadSuccess={(imagePath) => {
+              field.onChange(imagePath);
+              clearErrors("uploadCV");
+            }}
+            onUploadError={handleCvUploadError}
+            onRemove={() => {
+              field.onChange("");
+              clearErrors("uploadCV");
+            }}
             allowMultiple={false}
             maxFiles={1}
             maxSize={5 * 1024 * 1024}
@@ -350,8 +392,15 @@ const FormCandidateRegister = () => {
                 label="Upload the license image"
                 hint='"Optional"'
                 value={field.value}
-                onUploadSuccess={(imagePath) => field.onChange(imagePath)}
-                onRemove={() => field.onChange("")}
+                onUploadSuccess={(imagePath) => {
+                  field.onChange(imagePath);
+                  clearErrors("uploadLicense");
+                }}
+                onUploadError={handleLicenseUploadError}
+                onRemove={() => {
+                  field.onChange("");
+                  clearErrors("uploadLicense");
+                }}
                 allowMultiple={false}
                 maxFiles={1}
                 error={errors.uploadLicense?.message}

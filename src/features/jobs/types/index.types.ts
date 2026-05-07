@@ -30,7 +30,7 @@ export type JobsFiltersData = {
 };
 
 export interface FilterState {
-  professionalLicense: string;
+  professionalLicense: string[];
   roleCategories: string[];
   seniorityLevels: string[];
   domains: string[];
@@ -58,8 +58,8 @@ export type JobsSearchFilters = {
   page: number;
   search: string;
   country: string;
-  professionalLicense: string;
-  domain: string;
+  professionalLicenses: string[];
+  domains: string[];
   minSalary: string;
   maxSalary: string;
   roleCategories: string[];

@@ -43,29 +43,29 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
       </CardHeader>
       <CardContent>
         <Link href={`/jobs/${job.id}`} className="flex flex-col gap-2 cursor-pointer">
-          <ul className="items-cente flex gap-2">
-            <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+          <ul className="items-center flex gap-2">
+            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <LocationEdit size={14} color="var(--muted-foreground)" />
               {job?.city?.name ? `${job?.city?.name} ,` : ""}{job?.country?.name}
             </li>
-            <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <Briefcase size={14} color="var(--muted-foreground)" />
-              {job?.category?.title}{" "}
+              {job?.category?.title ?? job?.category_title ?? "Not specified"}{" "}
             </li>
-            <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <CircleDollarSign size={14} color="var(--muted-foreground)" />
               {getJobSalary(job)}
             </li>
           </ul>
           <ul className="items-cente flex gap-2">
             <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
-              {job?.experience?.title}
+              {job?.experience?.title ?? job?.experience_title ?? "Not specified"}
             </li>
             <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
               {job?.employment_type?.title}
             </li>
             <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
-              {job?.specialty?.title}
+              {job?.specialty?.title ?? job?.specialty_title ?? "Not specified"}
             </li>
           </ul>
           <div

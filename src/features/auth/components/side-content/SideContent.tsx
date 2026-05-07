@@ -18,7 +18,7 @@ const SideContent = () => {
       <div className="mx-auto w-5/6 p-4 text-white">
         {isEmployerRegister ? (
           <>
-            <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
+            <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white mb-12">
               Let’s Create Your Organization’s Account
             </h2>
           </>

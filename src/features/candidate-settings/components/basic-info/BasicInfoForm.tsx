@@ -45,6 +45,13 @@ interface BasicInfoFormProps {
 }
 
 const OTHER_JOB_TITLE_VALUE = "__other__";
+const CV_ACCEPTED_FILE_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+const CV_INVALID_TYPE_MESSAGE =
+  "The uploaded file must be a document in PDF, DOC, or DOCX format.";
 
 const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const locale = useLocale();
@@ -594,11 +601,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
             onChange={field.onChange}
             required={!(profile.cv && showExistingCv)}
             allowImagePreview={false}
-            acceptedFileTypes={[
-              "application/pdf",
-              "application/msword",
-              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            ]}
+            acceptedFileTypes={CV_ACCEPTED_FILE_TYPES}
+            invalidTypeMessage={CV_INVALID_TYPE_MESSAGE}
+            maxSize={5 * 1024 * 1024}
             processFile={async (file) => {
               const uploadFormData = new FormData();
               uploadFormData.append("image", file);
@@ -627,6 +632,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
               setShowExistingCv(false);
               setUploadedCvPath(null);
               field.onChange([]);
+              clearErrors("uploadCV");
             }}
             allowMultiple={false}
             maxFiles={1}

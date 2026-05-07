@@ -150,6 +150,13 @@ export type JobListItem = {
 
   created_at: string;
   updated_at: string;
+  current_status: {
+    job_id: number;
+    status: string;
+    created_at: string;
+    updated_at: string;
+  }
+
 };
 
 // ==============================

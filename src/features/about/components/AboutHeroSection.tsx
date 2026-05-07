@@ -55,7 +55,7 @@ export default async function AboutHeroSection({
 
             <div className="xl:col-span-2">
               <div className="relative mx-auto h-[420px] w-full max-w-[340px] sm:h-[520px] sm:max-w-[520px] xl:max-w-none">
-                <div className="absolute top-0 right-0 h-[100%] w-[88.25%] overflow-hidden rounded-[30px] xl:rounded-[40px]">
+                <div className="absolute top-0 right-0 h-[100%] w-[74%] overflow-hidden rounded-[30px] xl:rounded-[40px]">
                   <Image
                     src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
                     alt={primaryImage?.alt ?? "About image"}
@@ -73,7 +73,7 @@ export default async function AboutHeroSection({
                   />
                 </div>
 
-                <div className="bg-primary absolute top-[59.5%] left-[41.2%] flex aspect-square w-[23.5%] min-w-20 flex-col items-center justify-center rounded-full border-4 border-white text-white shadow-lg xl:min-w-28">
+                <div className="bg-primary absolute top-[65%] left-[38%] flex aspect-square w-[23.5%] min-w-20 flex-col items-center justify-center rounded-full border-4 border-white text-white shadow-lg xl:min-w-28">
                   <span className="text-lg font-bold xl:text-2xl">{settings?.hiring_success_rate}%</span>
                   <span className="text-[10px] xl:text-xs">Verified</span>
                 </div>
