@@ -59,11 +59,11 @@ export default function UserDropDown({
     : "Candidate account";
 
   const fallbackImage = isEmployer
-    ? "/assets/logo_1.svg"
+    ? "/assets/new-logo-dot.svg"
     : "/assets/profile_image.svg";
 
   const imageSrc = getSafeImageSrc(
-    (isEmployer ? (companyProfileData?.image ? companyProfileData?.image : '/assets/logo_1.svg') : (candidateProfileData?.image ? candidateProfileData?.image : '/assets/profile_image.svg')) ??
+    (isEmployer ? (companyProfileData?.image ? companyProfileData?.image : '/assets/new-logo-dot.svg') : (candidateProfileData?.image ? candidateProfileData?.image : '/assets/profile_image.svg')) ??
     session?.user?.image,
     fallbackImage
   );

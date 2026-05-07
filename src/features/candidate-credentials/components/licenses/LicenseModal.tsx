@@ -105,6 +105,8 @@ export function LicenseModal({
       }),
     [license?.image, showExistingImage],
   );
+  const [uploadingCount, setUploadingCount] = useState(0);
+  const isUploading = uploadingCount > 0;
   const {
     register,
     control,
@@ -158,29 +160,29 @@ export function LicenseModal({
     queryClient.setQueriesData({ queryKey: licensesQueryKeyPrefix(locale) }, (current) =>
       license?.id
         ? replaceInfiniteItem<LicenseViewModel>(
-            current,
-            ["user_licenses", "licenses"],
-            optimisticLicense,
-          )
+          current,
+          ["user_licenses", "licenses"],
+          optimisticLicense,
+        )
         : prependInfiniteItem<LicenseViewModel>(
-            current,
-            ["user_licenses", "licenses"],
-            optimisticLicense,
-          ),
+          current,
+          ["user_licenses", "licenses"],
+          optimisticLicense,
+        ),
     );
 
     startTransition(async () => {
       try {
         const response = license?.id
           ? await updateLicenseAction({
-              id: license.id,
-              ...payload,
-            })
+            id: license.id,
+            ...payload,
+          })
           : await createLicenseAction(payload);
 
         toast.success(
           response.message ??
-            (license?.id ? "License updated successfully." : "License added successfully."),
+          (license?.id ? "License updated successfully." : "License added successfully."),
         );
         onOpenChange(false);
         await queryClient.invalidateQueries({
@@ -291,12 +293,17 @@ export function LicenseModal({
                   field.onChange([]);
                 }}
                 error={errors.image?.message}
+                onUploadingChange={(isUploading) => {
+                  setUploadingCount((prev) =>
+                    isUploading ? prev + 1 : Math.max(0, prev - 1)
+                  );
+                }}
               />
             )}
           />
 
           <DialogFooter className="flex items-center justify-center!">
-            <Button className="w-1/3" size="pill" type="submit" disabled={isPending}>
+            <Button className="w-1/3" size="pill" type="submit" disabled={isPending || isLoading || isUploading}>
               {isPending ? "Saving..." : license?.id ? "Save" : "Add"}
             </Button>
           </DialogFooter>

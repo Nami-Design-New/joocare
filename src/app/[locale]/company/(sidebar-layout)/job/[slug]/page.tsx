@@ -50,7 +50,7 @@ export default async function JobDetailsPage({
       <section className="">
         <section className="layout-content mt-4">
           <JobHeader
-            logoSrc={job.company?.image ?? "/assets/comp-logo.svg"}
+            logoSrc={job.company?.image ?? "/assets/new-logo-dot.svg"}
             title={jobTitle}
             company={companyName}
             employmentType={job.employment_type?.title ?? "Not specified"}

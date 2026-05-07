@@ -95,19 +95,19 @@ export default function JobCard({ resumeMatch,
   };
 
 
-  // console.log(job);
+  console.log(job);
 
   const title = job?.job_title?.title || job?.title || "Untitled job";
   const company = job?.company?.name || "Joocare Employer";
   const companyLogo = job?.company?.image;
   const postedAtLabel = job?.created_at;
   const location = getJobLocation(job);
-  const category = job?.category?.title || "Not specified";
+  const category = job?.category?.title || job?.category_title || "Not specified";
   const employmentType = job?.employment_type?.title || "Not specified";
   const salary = getJobSalaryWithCurrency(job);
-  const experience = job?.experience?.title || "Experience not specified";
-  const specialty = job?.specialty?.title || "Healthcare";
-  const excerpt = job?.description?.slice(0, 150) || "Explore the job details to learn more about the role and employer.";
+  const experience = job?.experience?.title || job?.experience_title || "Experience not specified";
+  const specialty = job?.specialty?.title || job?.specialty_title || "Healthcare";
+  const excerpt = job?.description?.slice(0, 70) || "Explore the job details to learn more about the role and employer.";
   const statusLabel = (() => {
     const rawStatus = job.status?.status ?? "draft";
     return rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1).toLowerCase();
@@ -124,7 +124,7 @@ export default function JobCard({ resumeMatch,
           <Image
             width={52}
             height={52}
-            src={companyLogo || "/assets/comp-logo.svg"}
+            src={companyLogo || "/assets/new-logo-dot.svg"}
             alt={`${company} logo`}
             className="rounded-2xl w-14 h-12"
           />
@@ -237,7 +237,7 @@ export default function JobCard({ resumeMatch,
             </ul>
             {/* <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p> */}
             <div
-              className="prose prose-sm max-w-none border-b pb-5"
+              className="prose prose-sm max-w-none border-b pb-5 mt-3"
               dangerouslySetInnerHTML={{
                 __html:
                   excerpt ||

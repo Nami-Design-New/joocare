@@ -34,6 +34,7 @@ type CandidateJobCardProps = {
   appliedBadge?: boolean;
   appliedAtLabel?: string;
   onSavedChange?: (nextSavedState: boolean) => void;
+  companyImage?: string;
 };
 
 export default function CandidateJobCard({
@@ -42,6 +43,7 @@ export default function CandidateJobCard({
   appliedBadge,
   appliedAtLabel,
   onSavedChange,
+  companyImage
 }: CandidateJobCardProps) {
   const { data: session } = useSession();
   const title = job.title || job.job_title?.title || "Healthcare Opportunity";
@@ -49,13 +51,13 @@ export default function CandidateJobCard({
   const companyLogo = job.company?.image;
   const postedAtLabel = job.updated_at;
   const location = getJobLocation(job);
-  const category = job?.category?.title || "Not specified";
+  const category = job?.category?.title || job?.category_title || "Not specified";
   const employmentType = job?.employment_type?.title || "Not specified";
   const salary = getJobSalaryWithCurrency(job);
-  const experience = job?.experience?.title || "Experience not specified";
-  const specialty = job?.specialty?.title || "Healthcare";
+  const experience = job?.experience?.title || job?.experience_title || "Experience not specified";
+  const specialty = job?.specialty?.title || job?.specialty_title || "Healthcare";
   const excerpt =
-    job.description || "Explore the job details to learn more about the role and employer.";
+    job.description?.slice(0, 70) || "Explore the job details to learn more about the role and employer.";
   const shouldShowAppliedBadge = appliedBadge || job.is_applied;
   const appliedLabel = appliedAtLabel || postedAtLabel;
   const { shareJob } = useJobShare({ title, path: href });
@@ -64,13 +66,16 @@ export default function CandidateJobCard({
 
   const plainText = stripHtml(excerpt || "");
   const shortText = truncateText(plainText, 70);
+
+  // console.log(job, companyImage);
+
   return (
-    <Card className="group hover:border-primary">
+    <Card className="group hover:border-primary shadow-xl">
       <CardHeader className="flex gap-2 max-lg:px-2">
         <Image
           width={52}
           height={46}
-          src={companyLogo || "/assets/comp-logo.svg"}
+          src={companyLogo || companyImage || "/assets/new-logo-dot.svg"}
           alt={`${company} logo`}
           className="rounded-2xl w-14 h-12"
 
@@ -114,21 +119,21 @@ export default function CandidateJobCard({
             </li>
           </ul>
           {/* <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p> */}
-          {/* <div
-            className="prose prose-sm max-w-none border-b pb-5"
+          <div
+            className="prose prose-sm max-w-none mt-3"
             dangerouslySetInnerHTML={{
               __html:
                 excerpt ||
                 "<p>No description available.</p>",
             }}
-          /> */}
-          <p className="text-sm text-gray-600 line-clamp-3">
+          />
+          {/* <p className="text-sm text-gray-600 line-clamp-3">
             {shortText || "No description available."}
-          </p>
+          </p> */}
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4  max-lg:px-2">
-        <div className="flex w-full items-center justify-between gap-2 border-b-border border-t pt-4">
+        <div className="flex w-full items-center justify-between gap-2 border-b-border border-t pt-4 flex-wrap">
           <div className="flex gap-2">
             {!isEmployer ? (
               <ToggleSavedJobButton

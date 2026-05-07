@@ -28,8 +28,8 @@ const FormCandidateRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [countrySearchCurrent, setCountrySearchCurrent] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
-
-  const { jobTitles, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetJobTitles();
+  const [jobTitleSearch, setJobTitleSearch] = useState("");
+  const { jobTitles, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetJobTitles(jobTitleSearch);
   const { countries: currentCountries, hasNextPage: currentCountryHasNextPage, fetchNextPage: currentCountryFetchNextPage, isFetchingNextPage: currentCountryIsFetchingNextPage } = useGetCountries(countrySearchCurrent);
   const { countries, hasNextPage: countryHasNextPage, fetchNextPage: countryFetchNextPage, isFetchingNextPage: countryIsFetchingNextPage } = useGetCountries(countrySearch);
 
@@ -173,8 +173,8 @@ const FormCandidateRegister = () => {
             id="jobTitle"
             label="Job Title"
             withSearchInput={true}
-            onSearchChange={setCountrySearch}
-            placeholder="ex: Hospital"
+            onSearchChange={setJobTitleSearch}
+            placeholder="ex : Senior Consultant, Radiology"
             {...field}
             error={errors.jobTitle?.message ?? (error instanceof Error ? error.message : undefined)}
             options={jobTitleOptions}
@@ -192,7 +192,7 @@ const FormCandidateRegister = () => {
           id="otherJobTitle"
           type="text"
           label="Other Job Title"
-          placeholder="ex: Consultant Internist"
+          placeholder="ex : Senior Consultant, Radiology"
           {...register("otherJobTitle")}
           error={errors.otherJobTitle?.message}
         />

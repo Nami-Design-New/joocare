@@ -225,7 +225,7 @@ export const MultiSelectInputField = React.forwardRef<
                   "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
                   "disabled:bg-disabled",
                   // expand height when chips wrap
-                  selectedOptions.length > 0 && "h-auto min-h-13 py-2",
+                  selectedOptions.length > 0 && "h-auto min-h-13 py-2 rounded-4xl",
                   error && "border-destructive",
                   className,
                 )}

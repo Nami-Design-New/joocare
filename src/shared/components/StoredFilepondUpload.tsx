@@ -26,6 +26,7 @@ type StoredFilepondUploadProps = {
   existingFileUrl?: string | null;
   existingFileLabel?: string | null;
   onExistingFileRemove?: () => void;
+  onUploadingChange?: (isUploading: boolean) => void;
 };
 
 function resolveExistingFileUrl(url?: string | null) {
@@ -108,6 +109,7 @@ export function StoredFilepondUpload({
   existingFileUrl,
   existingFileLabel,
   onExistingFileRemove,
+  onUploadingChange,
 }: StoredFilepondUploadProps) {
   const hasLocalFiles = files.length > 0;
   const resolvedExistingFileUrl = resolveExistingFileUrl(existingFileUrl);
@@ -187,7 +189,10 @@ export function StoredFilepondUpload({
                     ? uploadError.message
                     : "Failed to upload file.";
                 onUploadError?.(message);
+                onUploadingChange?.(false);
+
                 serverError(message);
+
               }
             }
             : undefined,
@@ -237,6 +242,12 @@ export function StoredFilepondUpload({
 
           onExistingFileRemove?.();
         }}
+        onprocessfilestart={() => onUploadingChange?.(true)}
+        onprocessfile={() => onUploadingChange?.(false)}
+
+
+        onprocessfiles={() => onUploadingChange?.(false)}
+
         labelIdle={`
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
             <img src="/assets/icons/Group.svg" alt="upload icon" width="20" height="20"/>
