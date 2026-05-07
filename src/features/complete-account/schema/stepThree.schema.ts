@@ -75,8 +75,8 @@ export const stepThreeSchema = z.object({
     }),
   aboutOrganization: z
     .string()
-    .min(10, {
-      message: "Please write at least 10 characters about your organization",
+    .min(50, {
+      message: "Please write at least 50 characters about your organization",
     })
     .max(1500, { message: "Description must be under 1500 characters" }),
 

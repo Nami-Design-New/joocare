@@ -67,7 +67,7 @@ export default function CandidateJobCard({
   const plainText = stripHtml(excerpt || "");
   const shortText = truncateText(plainText, 70);
 
-  // console.log(job, companyImage);
+  console.log(job, companyImage);
 
   return (
     <Card className="group hover:border-primary shadow-xl">

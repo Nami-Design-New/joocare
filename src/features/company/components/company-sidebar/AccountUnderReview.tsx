@@ -11,7 +11,7 @@ const AccountUnderReview = ({ companyProfileData }: { companyProfileData: TCompa
                     alt="Profile"
                     width={60}
                     height={60}
-                    className="rounded-full"
+                    className="rounded-full w-15 h-15 object-cover"
                 />
                 <div>
                     <p className="text-black font-semibold text-md">
