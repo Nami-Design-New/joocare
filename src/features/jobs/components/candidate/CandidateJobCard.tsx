@@ -93,7 +93,7 @@ export default function CandidateJobCard({
       </CardHeader>
       <CardContent className="max-lg:px-2 grow">
         <div className=" flex flex-col gap-4  ">
-          <ul className="items-cente flex gap-2">
+          <ul className="items-center flex gap-2">
             <li className="text-secondary flex items-center gap-1 text-sm font-normal">
               <MapPin size={14} color="var(--muted-foreground)" />
               {location}

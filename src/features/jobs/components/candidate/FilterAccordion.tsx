@@ -1,6 +1,6 @@
 // ─── Sub-components ──────────────────────────────────────────────────────────
 import { cn } from '@/shared/lib/utils';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { AccordionSection } from '../../types/index.types';
 
 interface AccordionProps {
@@ -73,8 +73,19 @@ export default function FilterAccordion({
                   onChange={(event) =>
                     onCheck(option.value, event.target.checked)
                   }
-                  className="border-border text-primary focus:ring-primary h-4 w-4 rounded border"
+                  className="peer sr-only"
                 />
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    'flex h-5 w-5 items-center justify-center rounded-[2px] border transition-colors',
+                    checked
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'border-transparent bg-[#E5E7EB] text-white',
+                  )}
+                >
+                  <Check className="h-3.5 w-3.5 stroke-[5px]" />
+                </span>
                 <span className="text-foreground/75 text-sm font-normal select-none">
                   {option.label}
                 </span>
