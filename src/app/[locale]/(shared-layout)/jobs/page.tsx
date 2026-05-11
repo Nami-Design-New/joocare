@@ -68,6 +68,19 @@ export async function generateMetadata({
       description: copy.description,
       url: `${siteOrigin}${canonicalPath}`,
       type: 'website',
+      siteName: 'Joocare',
+      images: [
+        {
+          url: `${siteOrigin}/logo-icon.jfif`,
+          alt: 'Joocare logo',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: copy.title,
+      description: copy.description,
+      images: [`${siteOrigin}/logo-icon.jfif`],
     },
   };
 }

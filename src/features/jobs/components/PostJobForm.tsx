@@ -667,7 +667,7 @@ export default function PostJobForm() {
   // ═══════════════════════════════════════════════════════
   return (
     <section className="h-min-dvh mx-auto max-w-7xl py-12">
-      <div className="h-full rounded-2xl bg-white p-6">
+      <div className="h-full rounded-2xl bg-white shadow-lg p-6">
         <div className="flex gap-6">
           <WizardProgress step={currentStep} steps={STEPS} />
           {/* Save as Draft — hidden in edit mode */}
