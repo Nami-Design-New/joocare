@@ -5,7 +5,7 @@ import { JobPostStepOneSkeleton } from "@/features/jobs/components/JobPostStepOn
 
 export default function page() {
   return (
-    <>
+    <main className="bg-body-bg">
       <Header />
       <Suspense
         fallback={
@@ -16,6 +16,6 @@ export default function page() {
       >
         <PostJobForm />
       </Suspense>
-    </>
+    </main>
   );
 }

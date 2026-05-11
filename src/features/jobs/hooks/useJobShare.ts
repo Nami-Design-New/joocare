@@ -52,9 +52,10 @@ export function useJobShare({ title = "Check out this job", path }: UseJobShareO
   const copyLink = async () => {
     const fallbackUrl = buildAbsoluteUrl(resolvedPath);
     const urlToCopy = shareUrl || fallbackUrl;
+    const shareText = `${title}\n${urlToCopy}`;
 
     try {
-      await navigator.clipboard.writeText(urlToCopy);
+      await navigator.clipboard.writeText(shareText);
       toast.success("Job link copied successfully.");
     } catch {
       toast.error("Unable to copy the job link.");
