@@ -2,12 +2,9 @@
 import { JobListItem } from "@/features/jobs/types/jobs.types";
 import {
   getJobLocation,
-  getJobSalaryWithCurrency,
-  stripHtml,
-  truncateText
+  getJobSalaryWithCurrency
 } from "@/features/jobs/utils";
 import { Link, useRouter } from "@/i18n/navigation";
-import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -19,7 +16,6 @@ import {
   ArrowRight,
   Briefcase,
   CircleDollarSign,
-  Dot,
   MapPin,
   Share
 } from "lucide-react";
@@ -47,6 +43,7 @@ export default function CandidateJobCard({
 }: CandidateJobCardProps) {
   const { data: session } = useSession();
   const title = job.title || job.job_title?.title || "Healthcare Opportunity";
+  const sharePath = `/jobs/${job.id}`;
   const company = job.company?.name || "Joocare Employer";
   const companyLogo = job.company?.image;
   const postedAtLabel = job?.current_status?.updated_at;
@@ -60,14 +57,9 @@ export default function CandidateJobCard({
     job.description?.slice(0, 70) || "Explore the job details to learn more about the role and employer.";
   const shouldShowAppliedBadge = appliedBadge || job.is_applied;
   const appliedLabel = appliedAtLabel || postedAtLabel;
-  const { shareJob } = useJobShare({ title, path: href });
+  const { shareJob } = useJobShare({ title, path: sharePath });
   const isEmployer = session?.authRole === "employer";
   const router = useRouter();
-
-  const plainText = stripHtml(excerpt || "");
-  const shortText = truncateText(plainText, 70);
-
-  console.log(job, companyImage);
 
   return (
     <Card className="group hover:border-primary shadow-xl">
