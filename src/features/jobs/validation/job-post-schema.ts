@@ -173,11 +173,11 @@ export const step2Schema = z.object({
   // CKEditor emits an HTML string; strip tags to measure real content length
   description: z
     .string()
-    .min(1, "Description is required")
-    .refine(
-      (val) => val.replace(/<[^>]*>/g, "").trim().length >= 20,
-      "Description must be at least 20 characters",
-    ),
+    .min(1, "Description is required"),
+  // .refine(
+  //   (val) => val.replace(/<[^>]*>/g, "").trim().length >= 20,
+  //   "Description must be at least 20 characters",
+  // ),
 
   // SelectInputField stores a single string value per selection.
   // If you later switch to a multi-select, change to z.array(z.string())

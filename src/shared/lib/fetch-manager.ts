@@ -40,12 +40,38 @@ function getHeaderValue(headers: Headers, names: string[]) {
   return null;
 }
 
-function resolveStatusCode(response: Response) {
+// function resolveStatusCode(response: Response) {
+//   const headerStatusCode = getHeaderValue(response.headers, [
+//     "x-status-code",
+//     "status-code",
+//     "code",
+//   ]);
+//   const parsedHeaderStatusCode = headerStatusCode
+//     ? Number.parseInt(headerStatusCode, 10)
+//     : Number.NaN;
+
+//   if (!Number.isNaN(parsedHeaderStatusCode) && parsedHeaderStatusCode > 0) {
+//     return parsedHeaderStatusCode;
+//   }
+
+//   return response.status;
+// }
+function resolveStatusCode<T>(
+  response: Response,
+  data: ApiFetchResponse<T> | null,
+) {
+  // 1. code from body
+  if (typeof data?.code === "number" && data.code > 0) {
+    return data.code;
+  }
+
+  // 2. code from headers
   const headerStatusCode = getHeaderValue(response.headers, [
     "x-status-code",
     "status-code",
     "code",
   ]);
+
   const parsedHeaderStatusCode = headerStatusCode
     ? Number.parseInt(headerStatusCode, 10)
     : Number.NaN;
@@ -54,6 +80,7 @@ function resolveStatusCode(response: Response) {
     return parsedHeaderStatusCode;
   }
 
+  // 3. fallback to response.status
   return response.status;
 }
 
@@ -114,11 +141,12 @@ export async function apiFetch<T = Record<string, unknown>>(
 
 
 
-  // console.log("Jobs data:::" , data);
+  // console.log("Jobs data:::", response);
   const data =
     ((await response.json().catch(() => null)) as ApiFetchResponse<T> | null) ?? null;
 
-  const statusCode = resolveStatusCode(response);
+  const statusCode = resolveStatusCode(response, data);
+
   const ok = statusCode >= 200 && statusCode < 300;
   const message = resolveMessage(response, data);
 

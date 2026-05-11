@@ -20,7 +20,7 @@ export async function jobStepTwoService(
             token,
         }
     );
-
+    // console.log("response Jobs-step-two :::", response);
     if (!response.ok) {
         throw new Error(response.message ?? "Failed to submit step two");
     }
