@@ -40,18 +40,18 @@ export const ImpactSection = async ({
                 height={20}
                 alt=""
               />
-              Let&apos;s get started
+              {t('home.lets-get-started')}
             </Link>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <StatCard
               value={settings?.verified_healthcare_professionals}
-              label="Verified Healthcare Professionals"
+              label={t('home.verified-healthcare-professionals')}
             />
-            <StatCard value={settings?.active_job_opportunities} label="Active Job opportunities" />
-            <StatCard value={settings?.healthcare_specializations_covered} label="Healthcare Specializations Covered" />
-            <StatCard value={settings?.hiring_success_rate} label="Hiring Success Rate" percentage="%" plus={false} />
+            <StatCard value={settings?.active_job_opportunities} label={t('home.active-job-opportunities')} />
+            <StatCard value={settings?.healthcare_specializations_covered} label={t('home.healthcare-specializations-covered')} />
+            <StatCard value={settings?.hiring_success_rate} label={t('home.hiring-success-rate')} percentage="%" plus={false} />
           </div>
         </div>
       </div>
