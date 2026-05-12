@@ -41,7 +41,7 @@ const Header = () => {
               aria-label={tHeader("goHome")}
             >
               <Image
-                src="/assets/logo_1.svg"
+                src="/assets/new-logo-dot.svg"
                 alt="Joo Care Logo"
                 width={70}
                 height={30}
@@ -49,7 +49,7 @@ const Header = () => {
                 className="block lg:hidden"
               />
               <Image
-                src="/assets/logo_1.svg"
+                src="/assets/new-logo-dot.svg"
                 alt="Joo Care Logo"
                 width={125}
                 height={100}

@@ -46,11 +46,10 @@ export default function ToggleSavedJobButton({
           size="icon"
           disabled={isPending}
           onClick={toggleSaved}
-          className={`h-13 w-13 rounded-[4px] p-4 ${
-            isSaved
+          className={`h-13 w-13 rounded-[4px] p-4 ${isSaved
               ? "bg-primary text-white hover:bg-primary/90"
               : "bg-accent text-primary"
-          } ${className}`}
+            } ${className}`}
           aria-pressed={isSaved}
           aria-label={isSaved ? t("unsaveJob") : t("saveJob")}
         >
@@ -72,11 +71,10 @@ export default function ToggleSavedJobButton({
         size="pill"
         disabled={isPending}
         onClick={toggleSaved}
-        className={`border-border h-9 px-4 py-2 text-sm ${
-          isSaved
+        className={`border-border h-9 px-4 py-2 text-sm ${isSaved
             ? "bg-accent text-primary hover:bg-accent/90"
             : "text-muted-foreground"
-        } ${className}`}
+          } ${className}`}
         aria-pressed={isSaved}
       >
         <Bookmark fill={isSaved ? "currentColor" : "none"} />

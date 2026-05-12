@@ -7,6 +7,20 @@ import { Noto_Sans, Outfit } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
 
+function getMetadataBase() {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  if (!baseUrl) {
+    return undefined;
+  }
+
+  try {
+    return new URL(baseUrl.replace(/\/api\/?$/, ""));
+  } catch {
+    return undefined;
+  }
+}
+
 const outfit = Outfit({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
@@ -19,12 +33,33 @@ const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
 });
 export const metadata: Metadata = {
+  metadataBase: getMetadataBase(),
   title: "Joocare - Find the best healthcare jobs",
   description: "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
   icons: {
     icon: "/logo-icon.jfif",
     shortcut: "/logo-icon.jfif",
     apple: "/logo-icon.jfif",
+  },
+  openGraph: {
+    title: "Joocare - Find the best healthcare jobs",
+    description:
+      "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
+    siteName: "Joocare",
+    type: "website",
+    images: [
+      {
+        url: "/logo-icon.jfif",
+        alt: "Joocare logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Joocare - Find the best healthcare jobs",
+    description:
+      "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
+    images: ["/logo-icon.jfif"],
   },
 };
 

@@ -82,6 +82,7 @@ export function ExperienceModal({
   const { data: session } = useSession();
   const [isSaving, setIsSaving] = useState(false);
   const defaultValues = useMemo(() => toFormState(experience), [experience]);
+  const [jobTitleSearch, setJobTitleSearch] = useState("");
   const {
     control,
     register,
@@ -102,7 +103,7 @@ export function ExperienceModal({
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useGetJobTitles();
+  } = useGetJobTitles(jobTitleSearch);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -228,6 +229,7 @@ export function ExperienceModal({
                 onReachEnd={() => void fetchNextPage()}
                 hasNextPage={!!hasNextPage}
                 isFetchingNextPage={isFetchingNextPage}
+                onSearchChange={setJobTitleSearch}
                 error={
                   errors.jobTitle?.message ??
                   (jobTitlesError instanceof Error ? jobTitlesError.message : undefined)
@@ -248,7 +250,7 @@ export function ExperienceModal({
 
           <InputField
             id="organizationOrHospitalName"
-            label="Organization/Hospital Name"
+            label="Organization Name"
             placeholder="ex: health care"
             {...register("organizationOrHospitalName")}
             error={errors.organizationOrHospitalName?.message}

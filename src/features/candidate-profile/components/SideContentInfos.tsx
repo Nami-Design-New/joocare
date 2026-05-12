@@ -54,12 +54,14 @@ const SideContentInfos = ({
           <span className="text-primary">{hiringReadiness}%</span>
         </div>
         <Progress value={hiringReadiness} />
-        <div className="flex items-center gap-2">
-          <CircleAlert className="text-primary h-4 w-4" />
-          <span className="text-muted-foreground max-w-62 text-[12px]">
-            {t("readinessHint")}
-          </span>
-        </div>
+        {profile?.hiring_readiness_score != 100 && (
+          <div className="flex items-center gap-2">
+            <CircleAlert className="text-primary h-4 w-4" />
+            <span className="text-muted-foreground max-w-62 text-[12px]">
+              Add your ACLS certificate to unlock premium job matches.
+            </span>
+          </div>
+        )}
       </section>
 
       {/* progress */}

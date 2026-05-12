@@ -9,12 +9,24 @@ export const contactSchema = z
     countryId: z.string(),
     cityId: z.string(),
     inquiryTypeId: z.string().min(1, "Inquiry type is required"),
+    inquiryTypeTitle: z.string(),
     message: z
       .string()
       .trim()
       .min(10, "Message must be at least 10 characters"),
   })
   .superRefine((data, context) => {
+    if (
+      data.inquiryTypeId === "__other__" &&
+      data.inquiryTypeTitle.trim().length === 0
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["inquiryTypeTitle"],
+        message: "Other inquiry type is required",
+      });
+    }
+
     if (data.role !== "employer") {
       return;
     }

@@ -18,31 +18,30 @@ export default async function AboutHeroSection({
 }) {
   const primaryImage = images[0];
   const secondaryImage = images[1];
-  const settings = await settingService()
+  const settings = await settingService();
 
-  console.log("settings", settings);
+  // console.log("settings", settings);
 
   return (
-
-    <section className="pt-6 sm:pt-14 lg:pt-18 lg:gap-16 lg:px-0 bg-background">
+    <section className="pt-6 xl:pt-14 xl:pt-18 xl:gap-16 xl:px-0 bg-background">
       <div className="layout-shell ">
         <div className="layout-content">
 
-          <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2">
-            <div>
+          <div className="grid grid-cols-1 gap-10  xl:gap-12  xl:grid-cols-5">
+            <div className="xl:col-span-3">
               <div className="mb-2">
                 <SectionTitle sectionTitle="About JooCare" textColor="text-dark" />
               </div>
 
-              <h2 className="text-secondary mb-3 text-3xl leading-tight font-bold sm:text-3xl lg:mb-2 lg:text-4xl">
+              <h2 className="text-secondary max-w-lg mb-3 text-3xl leading-tight font-bold xl:text-3xl xl:mb-2 xl:text-4xl">
                 {title}
               </h2>
 
-              <p className="mb-8 max-w-xl text-left text-sm leading-relaxed whitespace-pre-line text-gray-600 sm:text-base lg:text-justify">
+              <p className="mb-8 max-w-4xl text-left text-xl:leading-relaxed whitespace-pre-line text-gray-600 xl:text-base xl:text-justify">
                 {description}
               </p>
 
-              <div className="space-y-5 sm:space-y-6">
+              <div className="space-y-5 xl:space-y-6">
                 {items.map((feature) => (
                   <AboutFeatureItem
                     key={feature.id}
@@ -54,33 +53,36 @@ export default async function AboutHeroSection({
               </div>
             </div>
 
-            <div className="relative mx-auto flex w-full max-w-[340px] justify-center sm:max-w-[520px] lg:max-w-none">
-              <div className="relative h-[380px] w-[300px] overflow-hidden rounded-[30px] sm:h-[460px] sm:w-[380px] sm:rounded-[40px]">
-                <Image
-                  src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
-                  alt={primaryImage?.alt ?? "About image"}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+            <div className="xl:col-span-2">
+              <div className="relative mx-auto h-[420px] w-full max-w-[340px] sm:h-[520px] sm:max-w-[520px] xl:max-w-none">
+                <div className="absolute top-0 right-0 h-[100%] w-[74%] overflow-hidden rounded-[30px] xl:rounded-[40px]">
+                  <Image
+                    src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
+                    alt={primaryImage?.alt ?? "About image"}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
-              <div className="absolute top-28 left-0 h-[210px] w-[170px] overflow-hidden rounded-[22px] border-8 border-white shadow-xl sm:top-40 sm:h-[260px] sm:w-[220px] sm:rounded-[30px] sm:border-16">
-                <Image
-                  src={secondaryImage?.image ?? "/assets/about/doctor1.jpg"}
-                  alt={secondaryImage?.alt ?? "About image"}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="bg-primary absolute top-[250px] left-[140px] flex h-20 w-20 flex-col items-center justify-center rounded-full border-4 border-white text-white shadow-lg sm:top-80 sm:left-[180px] sm:h-28 sm:w-28">
-                <span className="text-lg font-bold sm:text-2xl">{settings?.hiring_success_rate}%</span>
-                <span className="text-[10px] sm:text-xs">Verified</span>
+                <div className="absolute top-[29.5%] left-0 h-[50%] w-1/2 overflow-hidden rounded-[22px] border-8 border-white shadow-xl xl:rounded-[30px] xl:border-[12px]">
+                  <Image
+                    src={secondaryImage?.image ?? "/assets/about/doctor1.jpg"}
+                    alt={secondaryImage?.alt ?? "About image"}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="bg-primary absolute top-[65%] left-[38%] flex aspect-square w-[23.5%] min-w-20 flex-col items-center justify-center rounded-full border-4 border-white text-white shadow-lg xl:min-w-28">
+                  <span className="text-lg font-bold xl:text-2xl">{settings?.hiring_success_rate}%</span>
+                  <span className="text-[10px] xl:text-xs">Verified</span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* setting impact */}
-          <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="w-full grid grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
             <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
                 <Plus
@@ -91,7 +93,7 @@ export default async function AboutHeroSection({
                 />
                 {settings?.verified_healthcare_professionals}
               </span>
-              <p className="text-muted-foreground mt-2 text-sm font-medium">Verified Healthcare Professionals</p>
+              <p className="text-muted-foreground mt-2 text-xl:font-medium">Verified Healthcare Professionals</p>
             </div>
             <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
@@ -103,7 +105,7 @@ export default async function AboutHeroSection({
                 />
                 {settings?.active_job_opportunities}
               </span>
-              <p className="text-muted-foreground mt-2 text-sm font-medium">Active Job opportunities</p>
+              <p className="text-muted-foreground mt-2 text-xl:font-medium">Active Job opportunities</p>
             </div>
             <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
@@ -115,13 +117,13 @@ export default async function AboutHeroSection({
                 />
                 {settings?.healthcare_specializations_covered}
               </span>
-              <p className="text-muted-foreground mt-2 text-sm font-medium">Healthcare Specializations Covered</p>
+              <p className="text-muted-foreground mt-2 text-xl:font-medium">Healthcare Specializations Covered</p>
             </div>
             <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
                 {settings?.hiring_success_rate} <span className="text-primary">%</span>
               </span>
-              <p className="text-muted-foreground mt-2 text-sm font-medium">Hiring Success Rate</p>
+              <p className="text-muted-foreground mt-2 text-xl:font-medium">Hiring Success Rate</p>
             </div>
           </div>
         </div>

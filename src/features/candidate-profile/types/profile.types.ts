@@ -71,6 +71,7 @@ export type CandidateProfileApiUser = {
   city: CandidateProfileApiLookup | null;
   specialty_id: number | null;
   specialty: CandidateProfileApiLookup | null;
+  specialty_title: string | null;
   cv: string | null;
   image: string | null;
   experience_id: number | null;
@@ -104,7 +105,7 @@ export type CandidateProfileViewModel = {
   phoneCode: string | null;
   fullPhone: string | null;
   jobTitleId?: string | null;
-  specialtyId?: string | null;
+  specialty_title?: string | null;
   experienceId?: string | null;
   countryId?: string | null;
   cityId?: string | null;

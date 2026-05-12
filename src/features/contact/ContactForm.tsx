@@ -15,6 +15,8 @@ import { useSubmitContact } from "./hooks/useSubmitContact";
 import type { ContactFormValues, ContactInitialValues, ContactRole } from "./types";
 import { contactSchema } from "./validation/contact-schema";
 
+const OTHER_INQUIRY_TYPE_VALUE = "__other__";
+
 function getDefaultValues(
   role: ContactRole,
   initialValues?: ContactInitialValues,
@@ -28,6 +30,7 @@ function getDefaultValues(
       countryId: "",
       cityId: "",
       inquiryTypeId: "",
+      inquiryTypeTitle: "",
       message: "",
     };
   }
@@ -40,6 +43,7 @@ function getDefaultValues(
     countryId: "",
     cityId: "",
     inquiryTypeId: "",
+    inquiryTypeTitle: "",
     message: "",
   };
 }
@@ -82,6 +86,11 @@ export default function ContactForm({
     control,
     name: "countryId",
   });
+  const selectedInquiryTypeId = useWatch({
+    control,
+    name: "inquiryTypeId",
+  });
+  const isOtherInquiryType = selectedInquiryTypeId === OTHER_INQUIRY_TYPE_VALUE;
   const {
     countries,
     isLoading: isCountriesLoading,
@@ -111,13 +120,18 @@ export default function ContactForm({
     label: type.title ?? type.name ?? "Inquiry type",
     value: String(type.id ?? ""),
   }));
+  const inquiryOptionsWithOther = [
+    { label: "Other", value: OTHER_INQUIRY_TYPE_VALUE },
+    ...inquiryOptions,
+  ];
 
   return (
     <div className="h-full">
-      <SectionTitle sectionTitle="REQUEST FOR DEMO" translationKey="requestForDemo" />
+      <SectionTitle sectionTitle={role === "candidate" ? "Share Your Thoughts" : "REQUEST FOR DEMO"} />
 
       <h2 className="text-secondary my-4 text-2xl font-bold">
-        Send your message
+        {role === "candidate" ? "Tell us how we can help" : "Send Your Message"}
+
       </h2>
 
       <form
@@ -239,9 +253,14 @@ export default function ContactForm({
               id="inquiryTypeId"
               label="Type of inquiry"
               placeholder="Select inquiry type"
-              options={inquiryOptions}
+              options={inquiryOptionsWithOther}
               value={field.value}
-              onChange={field.onChange}
+              onChange={(value) => {
+                field.onChange(value);
+                if (value !== OTHER_INQUIRY_TYPE_VALUE) {
+                  setValue("inquiryTypeTitle", "");
+                }
+              }}
               error={errors.inquiryTypeId?.message}
               withSearchInput
               searchPlaceholder="Search inquiry type"
@@ -256,6 +275,16 @@ export default function ContactForm({
             />
           )}
         />
+
+        {isOtherInquiryType && (
+          <InputField
+            id="inquiryTypeTitle"
+            label="Other inquiry type"
+            placeholder="Enter inquiry type"
+            {...register("inquiryTypeTitle")}
+            error={errors.inquiryTypeTitle?.message}
+          />
+        )}
 
         <TextareaField
           label="Message"

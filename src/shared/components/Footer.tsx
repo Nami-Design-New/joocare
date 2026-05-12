@@ -15,6 +15,19 @@ const Footer = () => {
   const authRole = status === "authenticated" ? session?.authRole : undefined;
   const isCandidate = authRole === "candidate";
   const isEmployer = authRole === "employer";
+  const footerLogo = settings?.footer_logo || "/assets/logo-light.svg";
+  const footerText =
+    settings?.footer_text ||
+    "An AI-powered healthcare recruitment platform supporting compliant, data-driven hiring across medical and life sciences sectors.";
+  const copyrightText =
+    settings?.copyright || `All rights reserved - JooCare © ${currentYear}`;
+  const socialLinks = [
+    { href: settings?.linkedin, srcImg: "/assets/icons/social-icons/linkedin-footer.svg", label: "LinkedIn" },
+    { href: settings?.facebook, srcImg: "/assets/icons/social-icons/facebook-footer.svg", label: "Facebook" },
+    { href: settings?.instagram, srcImg: "/assets/icons/social-icons/instagram-footer.svg", label: "Instagram" },
+    { href: settings?.twitter, srcImg: "/assets/icons/social-icons/twitter-footer.svg", label: "Twitter" },
+    { href: settings?.snapchat, srcImg: "/assets/icons/social-icons/snap-footer.svg", label: "Snapchat" },
+  ].filter((item) => Boolean(item.href));
 
   const candidateLinks = isEmployer
     ? [{ href: "/jobs", label: tFooter("exploreJobs") }]
@@ -43,7 +56,7 @@ const Footer = () => {
           <div className="space-y-6">
             <div className="flex items-center gap-2">
               <Image
-                src="/assets/logo-light.svg"
+                src={"/assets/logo-light.svg"}
                 alt="Joo Care Logo"
                 width={140}
                 height={60}

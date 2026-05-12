@@ -181,6 +181,10 @@ export async function getCandidateProfile() {
     typeof user.experience === "string"
       ? user.experience
       : user.experience?.title ?? user.experience?.name ?? null;
+  const specialtyTitle =
+    typeof user.specialty_title === "string"
+      ? user.specialty_title
+      : user.specialty_title ?? user.specialty?.title ?? null;
 
   return {
     id: user.id,
@@ -190,7 +194,7 @@ export async function getCandidateProfile() {
     phoneCode: user.phone_code,
     fullPhone: fullPhone ?? null,
     jobTitleId: user.job_title_id ? String(user.job_title_id) : null,
-    specialtyId: user.specialty_id ? String(user.specialty_id) : null,
+    specialty_title: specialtyTitle,
     experienceId: user.experience_id ? String(user.experience_id) : null,
     countryId: user.country_id ? String(user.country_id) : null,
     cityId: user.city_id ? String(user.city_id) : null,

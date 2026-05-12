@@ -19,38 +19,40 @@ export default function AboutVisionSection({
     <section className="sm:my-14 sm:py-16 bg-background">
       <div className="layout-shell">
         <div className="layout-content">
-          <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 items-center justify-center lg:gap-16 lg:px-0">
-            <div>
+          <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 xl:grid-cols-5 xl:gap-16 xl:px-0 justify-center items-center">
+            <div className="xl:col-span-3">
               <div className="mb-2">
                 <SectionTitle sectionTitle="Our Vision" textColor="text-dark" />
               </div>
 
-              <h2 className="text-secondary my-4 text-3xl leading-tight font-bold sm:text-4xl lg:text-5xl">
+              <h2 className="text-secondary my-7 text-3xl leading-tight font-bold sm:text-4xl xl:text-5xl">
                 {title}
               </h2>
 
-              <p className="text-muted-foreground mb-8 max-w-xl text-left text-sm whitespace-pre-line sm:text-xl lg:text-justify">
+              <p className="text-muted-foreground my-7 max-w-4xl text-left text-sm whitespace-pre-line sm:text-xl xl:text-justify">
                 {description}
               </p>
             </div>
 
-            <div className="relative mx-auto flex w-full max-w-[340px] justify-center sm:max-w-[520px] lg:max-w-none">
-              <div className="relative h-[380px] w-[300px] overflow-hidden rounded-[30px] sm:h-[460px] sm:w-[380px] sm:rounded-[40px]">
-                <Image
-                  src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
-                  alt={primaryImage?.alt ?? "Vision image"}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+            <div className="xl:col-span-2">
+              <div className="relative mx-auto h-[420px] w-full max-w-[340px] sm:h-[520px] sm:max-w-[520px] xl:max-w-none">
+                <div className="absolute top-0 right-0 h-[100%] w-[80%] overflow-hidden rounded-[30px] sm:rounded-[40px]">
+                  <Image
+                    src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
+                    alt={primaryImage?.alt ?? "Vision image"}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
-              <div className="absolute top-28 left-0 h-[210px] w-[170px] overflow-hidden rounded-[22px] border-8 border-white shadow-xl sm:top-40 sm:h-[260px] sm:w-[220px] sm:rounded-[30px] sm:border-16">
-                <Image
-                  src={secondaryImage?.image ?? "/assets/about/doctor1.jpg"}
-                  alt={secondaryImage?.alt ?? "Vision image"}
-                  fill
-                  className="object-cover"
-                />
+                <div className="absolute top-[29.5%] left-0 h-[50%] w-1/2 overflow-hidden rounded-[22px] border-8 border-white shadow-xl sm:rounded-[30px] sm:border-[12px]">
+                  <Image
+                    src={secondaryImage?.image ?? "/assets/about/doctor1.jpg"}
+                    alt={secondaryImage?.alt ?? "Vision image"}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
               </div>
             </div>
           </div>

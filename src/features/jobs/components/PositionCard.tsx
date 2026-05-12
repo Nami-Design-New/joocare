@@ -23,7 +23,7 @@ export default function PositionCard({
           <span className="text-muted-foreground text-base font-normal">
             at {company}
           </span>
-          <Badge size="sm" className="rounded-sm bg-[#0BA02C]">
+          <Badge size="sm" className="bg-[#0BA02C] rounded-[3px]">
             {employmentType}
           </Badge>
         </p>

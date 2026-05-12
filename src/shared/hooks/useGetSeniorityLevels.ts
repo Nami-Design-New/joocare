@@ -1,17 +1,20 @@
-import { useInfiniteLookup } from "./useInfiniteLookup";
+import { useInfiniteLookup } from './useInfiniteLookup';
 
 export default function useGetSeniorityLevels(
-  search = "",
-  roleCategoryId?: number,
+  search = '',
+  roleCategoryIds: number[] = [],
 ) {
+  const normalizedRoleCategoryIds = roleCategoryIds.filter((id) => id > 0);
+
   const query = useInfiniteLookup({
-    endpoint: "seniority-levels",
-    queryKey: "seniority-levels",
+    endpoint: 'seniority-levels',
+    queryKey: 'seniority-levels',
     search,
+    limitPerPage: 100,
     extraParams: {
-      role_category_id: roleCategoryId,
+      'role_category_ids[]': normalizedRoleCategoryIds,
     },
-    enabled: !roleCategoryId || roleCategoryId > 0,
+    enabled: normalizedRoleCategoryIds.length > 0,
   });
 
   return {

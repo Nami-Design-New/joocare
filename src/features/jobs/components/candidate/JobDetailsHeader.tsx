@@ -5,11 +5,13 @@ import { JobDetails } from "../../types/jobs.types";
 import CandidateJobDetailsCardActions from "./CandidateJobDetailsCardActions";
 
 export default function JobDetailsHeader({ job }: { job: JobDetails }) {
+  console.log(job);
+
   return (
     <section className="flex flex-col lg:items-center justify-between rounded-2xl bg-white p-4 lg:flex-row">
       <div className="flex items-center gap-2 lg:gap-6">
         <Image
-          src={job?.company?.image ?? "/assets/comp-logo.svg"}
+          src={job?.company?.image ?? "/assets/new-logo-dot.svg"}
           alt={`company logo`}
           width={96}
           height={86}
@@ -28,11 +30,11 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
             <div className="text-muted-foreground text-lg font-normal">
               <span> at {job?.company?.domain?.title} </span>
             </div>
-            <Badge size="md" className="rounded-sm bg-[#0BA02C]">
+            <Badge size="md" className="rounded-[3px] bg-[#0BA02C] font-semibold">
               {job?.employment_type?.title}
             </Badge>
           </div>
-          <p className="text-muted-foreground text-sm">{job?.created_at}</p>
+          <p className="text-muted-foreground text-sm">{job?.current_status?.updated_at}</p>
         </div>
       </div>
 

@@ -10,7 +10,7 @@ export const useUpdateSocialLinks = ({ token }: { token: string }) => {
             queryClient.invalidateQueries({ queryKey: ["company-profile"] });
         },
         onError: (error) => {
-            toast.error(error.message);
+            // toast.error(error.message);
         },
     });
 };

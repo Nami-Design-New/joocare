@@ -46,6 +46,7 @@ export const step1Schema = z
       .optional(),
     // ── Classification ─────────────────────────
     category: z.string().min(1, "Category is required"),
+    otherCategoryTitle: z.string().optional(),
     specialty: z.string().min(1, "Specialty is required"),
 
     // ── Employment Type ────────────────────────
@@ -59,6 +60,7 @@ export const step1Schema = z
 
     // ── Experience ─────────────────────────────
     yearsOfExperience: z.string().min(1, "Years of experience is required"),
+    otherExperienceTitle: z.string().optional(),
 
     // ── Education & Certifications ─────────────
     educationLevel: z
@@ -68,6 +70,7 @@ export const step1Schema = z
       .array(z.string())
       .min(1, "Mandatory certifications is required"),
     availability: z.string().min(1, "Availability is required"),
+    otherAvailabilityTitle: z.string().optional(),
   }).superRefine((data, ctx) => {
     // ── Other job title ──
     if (data.title === "__other__" && !data.otherJobTitle?.trim()) {
@@ -75,6 +78,33 @@ export const step1Schema = z
         code: z.ZodIssueCode.custom,
         message: "Other job title is required",
         path: ["otherJobTitle"],
+      });
+    }
+
+    if (data.category === "__other__" && !data.otherCategoryTitle?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Other category is required",
+        path: ["otherCategoryTitle"],
+      });
+    }
+
+    if (
+      data.yearsOfExperience === "__other__" &&
+      !data.otherExperienceTitle?.trim()
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Other years of experience is required",
+        path: ["otherExperienceTitle"],
+      });
+    }
+
+    if (data.availability === "__other__" && !data.otherAvailabilityTitle?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Other availability is required",
+        path: ["otherAvailabilityTitle"],
       });
     }
 
@@ -143,11 +173,11 @@ export const step2Schema = z.object({
   // CKEditor emits an HTML string; strip tags to measure real content length
   description: z
     .string()
-    .min(1, "Description is required")
-    .refine(
-      (val) => val.replace(/<[^>]*>/g, "").trim().length >= 20,
-      "Description must be at least 20 characters",
-    ),
+    .min(1, "Description is required"),
+  // .refine(
+  //   (val) => val.replace(/<[^>]*>/g, "").trim().length >= 20,
+  //   "Description must be at least 20 characters",
+  // ),
 
   // SelectInputField stores a single string value per selection.
   // If you later switch to a multi-select, change to z.array(z.string())
@@ -181,6 +211,7 @@ export const jobFormDefaults: Partial<JobFormData> = {
   addSalary: false,
   salary: { min: undefined, max: undefined, type: "", currency: "" },
   category: "",
+  otherCategoryTitle: "",
   specialty: "",
   employmentType: "",
   roleCategory: "",
@@ -188,9 +219,11 @@ export const jobFormDefaults: Partial<JobFormData> = {
   country: "",
   city: "",
   yearsOfExperience: "",
+  otherExperienceTitle: "",
   educationLevel: [],
   mandatoryCertifications: [],
   availability: "",
+  otherAvailabilityTitle: "",
   // step 2
   description: "",
   skills: [],

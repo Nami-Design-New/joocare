@@ -2,12 +2,9 @@
 import { JobListItem } from "@/features/jobs/types/jobs.types";
 import {
   getJobLocation,
-  getJobSalaryWithCurrency,
-  stripHtml,
-  truncateText
+  getJobSalaryWithCurrency
 } from "@/features/jobs/utils";
-import { Link } from "@/i18n/navigation";
-import { Badge } from "@/shared/components/ui/badge";
+import { Link, useRouter } from "@/i18n/navigation";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -19,7 +16,6 @@ import {
   ArrowRight,
   Briefcase,
   CircleDollarSign,
-  Dot,
   MapPin,
   Share
 } from "lucide-react";
@@ -35,6 +31,7 @@ type CandidateJobCardProps = {
   appliedBadge?: boolean;
   appliedAtLabel?: string;
   onSavedChange?: (nextSavedState: boolean) => void;
+  companyImage?: string;
 };
 
 export default function CandidateJobCard({
@@ -43,41 +40,42 @@ export default function CandidateJobCard({
   appliedBadge,
   appliedAtLabel,
   onSavedChange,
+  companyImage
 }: CandidateJobCardProps) {
   const t = useTranslations("Job");
   const { data: session } = useSession();
-  const title = job.title || job.job_title?.title || t("healthcareOpportunity");
-  const company = job.company?.name || t("joocareEmployer");
+  const title = job.title || job.job_title?.title || "Healthcare Opportunity";
+  const sharePath = `/jobs/${job.id}`;
+  const company = job.company?.name || "Joocare Employer";
   const companyLogo = job.company?.image;
-  const postedAtLabel = job.updated_at;
+  const postedAtLabel = job?.current_status?.updated_at;
   const location = getJobLocation(job);
-  const category = job?.category?.title || "Not specified";
+  const category = job?.category?.title || job?.category_title || "Not specified";
   const employmentType = job?.employment_type?.title || "Not specified";
   const salary = getJobSalaryWithCurrency(job);
-  const experience = job?.experience?.title || "Experience not specified";
-  const specialty = job?.specialty?.title || "Healthcare";
+  const experience = job?.experience?.title || job?.experience_title || "Experience not specified";
+  const specialty = job?.specialty?.title || job?.specialty_title || "Healthcare";
   const excerpt =
-    job.description || t("jobExcerptFallback");
+    job.description?.slice(0, 70) || t("jobExcerptFallback") || "Explore the job details to learn more about the role and employer.";
   const shouldShowAppliedBadge = appliedBadge || job.is_applied;
   const appliedLabel = appliedAtLabel || postedAtLabel;
-  const { shareJob } = useJobShare({ title, path: href });
+  const { shareJob } = useJobShare({ title, path: sharePath });
   const isEmployer = session?.authRole === "employer";
+  const router = useRouter();
 
-  const plainText = stripHtml(excerpt || "");
-  const shortText = truncateText(plainText, 70);
   return (
-    <Card>
+    <Card className="group hover:border-primary shadow-xl">
       <CardHeader className="flex gap-2 max-lg:px-2">
         <Image
           width={52}
           height={46}
-          src={companyLogo || "/assets/comp-logo.svg"}
+          src={companyLogo || companyImage || "/assets/new-logo-dot.svg"}
           alt={`${company} logo`}
           className="rounded-2xl w-14 h-12"
 
         />
         <div className="flex grow flex-col gap-1">
-          <h6 className="text-secondary text-lg font-semibold">
+          <h6 onClick={() => router.push(href)} className="text-secondary text-lg font-semibold group-hover:text-primary cursor-pointer">
             {title}
           </h6>
           <p className="text-foreground text-md font-normal">{company}</p>
@@ -89,16 +87,16 @@ export default function CandidateJobCard({
       </CardHeader>
       <CardContent className="max-lg:px-2 grow">
         <div className=" flex flex-col gap-4  ">
-          <ul className="items-cente flex gap-2">
-            <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+          <ul className="items-center flex gap-2">
+            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <MapPin size={14} color="var(--muted-foreground)" />
               {location}
             </li>
-            <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <Briefcase size={14} color="var(--muted-foreground)" />
               {category}
             </li>
-            <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <CircleDollarSign size={14} color="var(--muted-foreground)" />
               {salary}
             </li>
@@ -115,47 +113,60 @@ export default function CandidateJobCard({
             </li>
           </ul>
           {/* <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p> */}
-          {/* <div
-            className="prose prose-sm max-w-none border-b pb-5"
+          <div
+            className="prose prose-sm max-w-none mt-3"
             dangerouslySetInnerHTML={{
               __html:
                 excerpt ||
                 "<p>No description available.</p>",
             }}
-          /> */}
-          <p className="text-sm text-gray-600 line-clamp-3">
+          />
+          {/* <p className="text-sm text-gray-600 line-clamp-3">
             {shortText || "No description available."}
-          </p>
+          </p> */}
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4  max-lg:px-2">
-        <div className="flex w-full items-center justify-between gap-2 border-b-border border-t pt-4">
+        <div className="flex w-full items-center justify-between gap-2 border-b-border border-t pt-4 flex-wrap">
           <div className="flex gap-2">
             {!isEmployer ? (
               <ToggleSavedJobButton
                 jobId={job.id}
                 initialIsSaved={job.is_saved}
                 onSavedChange={onSavedChange}
+                className="bg-muted"
               />
             ) : null}
             <Button
               variant="outline"
               size="pill"
-              className="border-border text-muted-foreground h-9 px-4 py-2 text-sm"
+              className="border-border text-muted-foreground h-9 px-4 py-2 text-sm bg-muted"
               onClick={() => void shareJob()}
             >
               <Share /> {t("share")}
             </Button>
           </div>
-          <Link
-            className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white`}
-            href={href}
-          >
-            {t("viewJob")}
-            <ArrowRight size={18} strokeWidth={1.5} className="size-5 rtl-flip" />
-          </Link>
+
+          {shouldShowAppliedBadge ? (
+            <Button
+              className={`border-border bg-primary/10 flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white cursor-default`}
+
+            >
+              <span className="text-primary font-semibold">Applied</span>
+              <span className="grow text-end text-xs text-muted-foreground">{appliedLabel}</span>
+            </Button>
+
+          ) :
+            <Link
+              className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white`}
+              href={href}
+            >
+              View Job
+              <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+            </Link>
+          }
         </div>
-        {shouldShowAppliedBadge && (
+        {/* {shouldShowAppliedBadge && (
           <Badge
             variant="open"
             size="pill"
@@ -164,8 +175,8 @@ export default function CandidateJobCard({
             <Dot className="h-4 w-4" strokeWidth={12} /> <span>{t("applied")}</span>
             <span className="grow text-end text-xs text-muted-foreground">{appliedLabel}</span>
           </Badge>
-        )}
+        )} */}
       </CardFooter>
-    </Card>
+    </Card >
   );
 }

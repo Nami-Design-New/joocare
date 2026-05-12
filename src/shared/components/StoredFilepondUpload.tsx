@@ -20,12 +20,15 @@ type StoredFilepondUploadProps = {
   className?: string;
   error?: string;
   acceptedFileTypes?: string[];
+  invalidTypeMessage?: string;
+  maxSize?: number;
   processFile?: (file: File) => Promise<{ path: string }>;
   onStoredPathChange?: (path: string | null) => void;
   onUploadError?: (message: string | null) => void;
   existingFileUrl?: string | null;
   existingFileLabel?: string | null;
   onExistingFileRemove?: () => void;
+  onUploadingChange?: (isUploading: boolean) => void;
 };
 
 function resolveExistingFileUrl(url?: string | null) {
@@ -102,16 +105,67 @@ export function StoredFilepondUpload({
   className,
   error,
   acceptedFileTypes,
+  invalidTypeMessage,
+  maxSize,
   processFile,
   onStoredPathChange,
   onUploadError,
   existingFileUrl,
   existingFileLabel,
   onExistingFileRemove,
+  onUploadingChange,
 }: StoredFilepondUploadProps) {
+  const MAX_SIZE = maxSize || 5 * 1024 * 1024;
   const hasLocalFiles = files.length > 0;
   const resolvedExistingFileUrl = resolveExistingFileUrl(existingFileUrl);
   const shouldShowExistingFile = !hasLocalFiles && Boolean(resolvedExistingFileUrl);
+
+  const matchesAcceptedType = (file: File) => {
+    if (!acceptedFileTypes?.length) {
+      return true;
+    }
+
+    const fileType = file.type?.toLowerCase();
+    const fileName = file.name.toLowerCase();
+
+    return acceptedFileTypes.some((acceptedType) => {
+      const normalizedType = acceptedType.toLowerCase();
+
+      if (fileType === normalizedType) {
+        return true;
+      }
+
+      if (normalizedType === "application/pdf" && fileName.endsWith(".pdf")) {
+        return true;
+      }
+
+      if (normalizedType === "application/msword" && fileName.endsWith(".doc")) {
+        return true;
+      }
+
+      if (
+        normalizedType ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
+        fileName.endsWith(".docx")
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+  };
+
+  const validateFile = (file: File) => {
+    if (file.size > MAX_SIZE) {
+      return "Max file size is 5MB";
+    }
+
+    // if (!matchesAcceptedType(file)) {
+    //   return invalidTypeMessage ?? "Invalid file type";
+    // }
+
+    return null;
+  };
 
   const pondFiles = useMemo(() => {
     if (hasLocalFiles) {
@@ -129,11 +183,11 @@ export function StoredFilepondUpload({
         source: resolvedExistingFileUrl,
         options: {
           type: "local" as const,
-          // file: {
-          //   name: fileName,
-          //   size: 0,
-          //   type: getFileTypeFromName(fileName),
-          // },
+          file: {
+            name: fileName,
+            size: 0,
+            type: getFileTypeFromName(fileName),
+          },
         },
       },
     ];
@@ -168,13 +222,21 @@ export function StoredFilepondUpload({
         server={{
           process: processFile
             ? async (_fieldName, file, _metadata, load, serverError, progress) => {
+              const selectedFile =
+                file instanceof File
+                  ? file
+                  : new File([file], file.name, { type: file.type });
+              const validationMessage = validateFile(selectedFile);
+
+              if (validationMessage) {
+                onUploadError?.(validationMessage);
+                onUploadingChange?.(false);
+                serverError(validationMessage);
+                return;
+              }
+
               try {
                 progress(true, 0, 1);
-
-                const selectedFile =
-                  file instanceof File
-                    ? file
-                    : new File([file], file.name, { type: file.type });
 
                 const result = await processFile(selectedFile);
                 onStoredPathChange?.(result.path);
@@ -187,7 +249,10 @@ export function StoredFilepondUpload({
                     ? uploadError.message
                     : "Failed to upload file.";
                 onUploadError?.(message);
+                onUploadingChange?.(false);
+
                 serverError(message);
+
               }
             }
             : undefined,
@@ -226,17 +291,43 @@ export function StoredFilepondUpload({
 
           onChange?.(nextFiles);
 
-          if (nextFiles.length > 0) {
+          const hasInvalidFile = nextFiles.some((file) => Boolean(validateFile(file)));
+
+          if (nextFiles.length > 0 && !hasInvalidFile) {
             onUploadError?.(null);
           }
         }}
+        onaddfile={(addFileError, fileItem) => {
+          if (addFileError) {
+            const file = fileItem?.file;
+            const validationMessage = file ? validateFile(file as File) : invalidTypeMessage;
+            onUploadError?.(validationMessage ?? "Upload failed");
+            return;
+          }
+
+          const file = fileItem?.file;
+          if (!file) {
+            return;
+          }
+
+          const validationMessage = validateFile(file as File);
+          onUploadError?.(validationMessage);
+        }}
         onremovefile={(_error, fileItem) => {
+          // onUploadError?.(null);
+
           if (fileItem?.origin !== FileOrigin.LOCAL) {
             return;
           }
 
           onExistingFileRemove?.();
         }}
+        onprocessfilestart={() => onUploadingChange?.(true)}
+        onprocessfile={() => onUploadingChange?.(false)}
+
+
+        onprocessfiles={() => onUploadingChange?.(false)}
+
         labelIdle={`
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
             <img src="/assets/icons/Group.svg" alt="upload icon" width="20" height="20"/>

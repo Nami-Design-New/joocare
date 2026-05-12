@@ -1,4 +1,4 @@
-export type JobStatus = "open" | "closed" | "paused" | "draft";
+export type JobStatus = 'open' | 'closed' | 'paused' | 'draft';
 export type Applicant = {
   id: number;
   name: string;
@@ -30,7 +30,7 @@ export type JobsFiltersData = {
 };
 
 export interface FilterState {
-  professionalLicense: string;
+  professionalLicense: string[];
   roleCategories: string[];
   seniorityLevels: string[];
   domains: string[];
@@ -45,20 +45,21 @@ export interface FilterState {
 }
 
 export interface AccordionSection {
-  key: keyof Omit<FilterState, "salaryMin" | "salaryMax">;
+  key: keyof Omit<FilterState, 'salaryMin' | 'salaryMax'>;
   label: string;
   name: string;
   options: JobsFilterOption[];
-  type?: "checkbox" | "radio";
+  type?: 'checkbox' | 'radio';
+  disabled?: boolean;
+  helperText?: string;
 }
-
 
 export type JobsSearchFilters = {
   page: number;
   search: string;
   country: string;
-  professionalLicense: string;
-  domain: string;
+  professionalLicenses: string[];
+  domains: string[];
   minSalary: string;
   maxSalary: string;
   roleCategories: string[];

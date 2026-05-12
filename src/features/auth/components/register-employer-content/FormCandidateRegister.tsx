@@ -23,17 +23,29 @@ import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
 import { FilepondUpload } from "@/shared/components/FilepondUpload";
 
 const OTHER_JOB_TITLE_VALUE = "__other__";
+const CV_ACCEPTED_FILE_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+const CV_INVALID_TYPE_MESSAGE =
+  "The uploaded file must be a document in PDF, DOC, or DOCX format.";
 
 const FormCandidateRegister = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { jobTitles, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetJobTitles();
-  const { countries, hasNextPage: countryHasNextPage, fetchNextPage: countryFetchNextPage, isFetchingNextPage: countryIsFetchingNextPage } = useGetCountries();
+  const [countrySearchCurrent, setCountrySearchCurrent] = useState("");
+  const [countrySearch, setCountrySearch] = useState("");
+  const [jobTitleSearch, setJobTitleSearch] = useState("");
+  const { jobTitles, isLoading, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetJobTitles(jobTitleSearch);
+  const { countries: currentCountries, hasNextPage: currentCountryHasNextPage, fetchNextPage: currentCountryFetchNextPage, isFetchingNextPage: currentCountryIsFetchingNextPage } = useGetCountries(countrySearchCurrent);
+  const { countries, hasNextPage: countryHasNextPage, fetchNextPage: countryFetchNextPage, isFetchingNextPage: countryIsFetchingNextPage } = useGetCountries(countrySearch);
 
   const {
     register,
     control,
     handleSubmit,
     setValue,
+    setError,
     clearErrors,
     formState: { errors },
   } = useForm<TRegisterCandidateSchema>({
@@ -108,6 +120,31 @@ const FormCandidateRegister = () => {
       license: data.uploadLicense,
     });
   };
+
+  const handleCvUploadError = (message: string | null) => {
+    if (!message) {
+      clearErrors("uploadCV");
+      return;
+    }
+
+    setError("uploadCV", {
+      type: "manual",
+      message,
+    });
+  };
+
+  const handleLicenseUploadError = (message: string | null) => {
+    if (!message) {
+      clearErrors("uploadLicense");
+      return;
+    }
+
+    setError("uploadLicense", {
+      type: "manual",
+      message,
+    });
+  };
+
   return (<>
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -169,7 +206,8 @@ const FormCandidateRegister = () => {
             id="jobTitle"
             label="Job Title"
             withSearchInput={true}
-            placeholder="ex: Hospital"
+            onSearchChange={setJobTitleSearch}
+            placeholder="ex : Senior Consultant, Radiology"
             {...field}
             error={errors.jobTitle?.message ?? (error instanceof Error ? error.message : undefined)}
             options={jobTitleOptions}
@@ -187,7 +225,7 @@ const FormCandidateRegister = () => {
           id="otherJobTitle"
           type="text"
           label="Other Job Title"
-          placeholder="ex: Consultant Internist"
+          placeholder="ex : Senior Consultant, Radiology"
           {...register("otherJobTitle")}
           error={errors.otherJobTitle?.message}
         />
@@ -205,17 +243,18 @@ const FormCandidateRegister = () => {
             render={({ field }) => (
               <SelectInputField
                 withSearchInput
+                onSearchChange={setCountrySearchCurrent}
                 id="country"
                 placeholder="country"
                 {...field}
-                options={countries.map((c) => ({
+                options={currentCountries.map((c) => ({
                   label: c.name,
                   value: String(c.id),
                 }))}
                 error={errors.country?.message}
-                onReachEnd={() => countryFetchNextPage()}
-                hasNextPage={!!countryHasNextPage}
-                isFetchingNextPage={countryIsFetchingNextPage}
+                onReachEnd={() => currentCountryFetchNextPage()}
+                hasNextPage={!!currentCountryHasNextPage}
+                isFetchingNextPage={currentCountryIsFetchingNextPage}
               />
             )}
           />
@@ -262,8 +301,17 @@ const FormCandidateRegister = () => {
           <FilepondUpload
             label="Upload CV"
             value={field.value}
-            onUploadSuccess={(imagePath) => field.onChange(imagePath)}
-            onRemove={() => field.onChange("")}
+            acceptedFileTypes={CV_ACCEPTED_FILE_TYPES}
+            invalidTypeMessage={CV_INVALID_TYPE_MESSAGE}
+            onUploadSuccess={(imagePath) => {
+              field.onChange(imagePath);
+              clearErrors("uploadCV");
+            }}
+            onUploadError={handleCvUploadError}
+            onRemove={() => {
+              field.onChange("");
+              clearErrors("uploadCV");
+            }}
             allowMultiple={false}
             maxFiles={1}
             maxSize={5 * 1024 * 1024}
@@ -297,6 +345,8 @@ const FormCandidateRegister = () => {
               control={control}
               render={({ field }) => (
                 <SelectInputField
+                  withSearchInput
+                  onSearchChange={setCountrySearch}
                   label="Country"
                   id="specificCountry"
                   placeholder="ex: United Arab Emirates (UAE)"
@@ -342,8 +392,15 @@ const FormCandidateRegister = () => {
                 label="Upload the license image"
                 hint='"Optional"'
                 value={field.value}
-                onUploadSuccess={(imagePath) => field.onChange(imagePath)}
-                onRemove={() => field.onChange("")}
+                onUploadSuccess={(imagePath) => {
+                  field.onChange(imagePath);
+                  clearErrors("uploadLicense");
+                }}
+                onUploadError={handleLicenseUploadError}
+                onRemove={() => {
+                  field.onChange("");
+                  clearErrors("uploadLicense");
+                }}
                 allowMultiple={false}
                 maxFiles={1}
                 error={errors.uploadLicense?.message}

@@ -61,6 +61,7 @@ type JobPreviewLabels = Partial<{
 const STEPS = ["Job Details", "Job Description & Requirements", "Job Preview"];
 const LAST_STEP = STEPS.length - 1;
 const CUSTOM_CERTIFICATION_PREFIX = "__custom__:";
+const OTHER_OPTION_VALUE = "__other__";
 
 function normalizeMandatoryCertificationValue(value: string) {
   return value.startsWith(CUSTOM_CERTIFICATION_PREFIX)
@@ -116,11 +117,21 @@ function getJobStatus(job: JobDetails) {
 // ─── Map API job → form defaults ────────────────────────
 function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
   const hasSalary = Boolean(job.has_salary);
+  const customCategoryTitle = job.category_title?.trim() || job.category?.title || "";
+  const customExperienceTitle =
+    job.experience_title?.trim() || job.experience?.title || "";
+  const customAvailabilityTitle =
+    job.availability_title?.trim() || job.availability?.title || "";
   console.log("job destias", job);
 
   return {
-    title: job.title ? "__other__" : String(job.job_title_id ?? ""),
+    title: job.title ? OTHER_OPTION_VALUE : String(job.job_title_id ?? ""),
     otherJobTitle: job.title ?? "",
+    category:
+      job.category_id == null && customCategoryTitle
+        ? OTHER_OPTION_VALUE
+        : String(job.category_id ?? ""),
+    otherCategoryTitle: job.category_id == null ? customCategoryTitle : "",
     license: job.professional_license ?? "",
     addSalary: hasSalary,
     salary: hasSalary
@@ -131,14 +142,17 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
         currency: String(job.currency_id ?? ""),
       }
       : { min: undefined, max: undefined, type: "", currency: "" },
-    category: String(job.category_id ?? ""),
-    specialty: String(job.specialty_id ?? ""),
+    specialty: String(job.specialty_title ?? ""),
     employmentType: String(job.employment_type_id ?? ""),
     roleCategory: String(job.role_category_id ?? ""),
     seniorityLevel: String(job.seniority_level_id ?? ""),
     country: String(job.country_id ?? ""),
     city: String(job.city_id ?? ""),
-    yearsOfExperience: String(job.experience_id ?? ""),
+    yearsOfExperience:
+      job.experience_id == null && customExperienceTitle
+        ? OTHER_OPTION_VALUE
+        : String(job.experience_id ?? ""),
+    otherExperienceTitle: job.experience_id == null ? customExperienceTitle : "",
     educationLevel: (job.education_levels ?? []).map((item) => String(item.id)),
     mandatoryCertifications: (job.mandatory_certifications ?? [])
       .map((item) => {
@@ -153,7 +167,12 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
         return null;
       })
       .filter((item): item is string => Boolean(item)),
-    availability: String(job.availability_id ?? ""),
+    availability:
+      job.availability_id == null && customAvailabilityTitle
+        ? OTHER_OPTION_VALUE
+        : String(job.availability_id ?? ""),
+    otherAvailabilityTitle:
+      job.availability_id == null ? customAvailabilityTitle : "",
     description: job.description ?? "",
     skills: (job.skills ?? []).map((s) => String(s.id)),
   };
@@ -226,7 +245,7 @@ export default function PostJobForm() {
       setReviewJob(existingJob);
       setStepOneDisplayOptions({
         title: existingJob.title
-          ? { label: existingJob.title, value: "__other__" }
+          ? { label: existingJob.title, value: OTHER_OPTION_VALUE }
           : existingJob.job_title
             ? {
               label: existingJob.job_title.title,
@@ -251,19 +270,22 @@ export default function PostJobForm() {
         employmentType: existingJob.employment_type?.title ?? "",
         salaryType: existingJob.salary_type?.title ?? "",
         currency: existingJob.currency?.code ?? "",
-        category: existingJob.category?.title ?? "",
-        specialty: existingJob.specialty?.title ?? "",
+        category: existingJob.category_title ?? existingJob.category?.title ?? "",
+        specialty:
+          existingJob.specialty_title ?? existingJob.specialty?.title ?? "",
         roleCategory: existingJob.role_category?.title ?? "",
         seniorityLevel: existingJob.seniority_level?.title ?? "",
         country: existingJob.country?.name ?? "",
         city: existingJob.city?.name ?? "",
-        yearsOfExperience: existingJob.experience?.title ?? "",
+        yearsOfExperience:
+          existingJob.experience_title ?? existingJob.experience?.title ?? "",
         educationLevel: existingJob.education_levels?.map((item) => item.title) ?? [],
         mandatoryCertifications:
           existingJob.mandatory_certifications?.map(
             (item) => item.title ?? item.mandatory_certification?.title ?? "-",
           ) ?? [],
-        availability: existingJob.availability?.title ?? "",
+        availability:
+          existingJob.availability_title ?? existingJob.availability?.title ?? "",
         skills: existingJob.skills?.map((item) => item.title) ?? [],
       });
 
@@ -337,23 +359,42 @@ export default function PostJobForm() {
     const hasSalary: JobStepOnePayload["has_salary"] = data.addSalary ? 1 : 0;
 
     const basePayload: JobStepOnePayload = {
-      job_title_id: data.title === "__other__" ? undefined : Number(data.title),
-      title: data.title === "__other__" ? data.otherJobTitle?.trim() ?? "" : undefined,
+      job_title_id: data.title === OTHER_OPTION_VALUE ? undefined : Number(data.title),
+      title: data.title === OTHER_OPTION_VALUE ? data.otherJobTitle?.trim() ?? "" : undefined,
       professional_license: data.license,
       has_salary: hasSalary,
-      category_id: Number(data.category),
-      specialty_id: Number(data.specialty),
+      category_id:
+        data.category === OTHER_OPTION_VALUE ? undefined : Number(data.category),
+      category_title:
+        data.category === OTHER_OPTION_VALUE
+          ? data.otherCategoryTitle?.trim() ?? ""
+          : undefined,
+      specialty_title: data.specialty,
       employment_type_id: Number(data.employmentType),
       role_category_id: Number(data.roleCategory),
       seniority_level_id: Number(data.seniorityLevel || 0),
       country_id: Number(data.country),
       city_id: Number(data.city),
-      experience_id: Number(data.yearsOfExperience),
+      experience_id:
+        data.yearsOfExperience === OTHER_OPTION_VALUE
+          ? undefined
+          : Number(data.yearsOfExperience),
+      experience_title:
+        data.yearsOfExperience === OTHER_OPTION_VALUE
+          ? data.otherExperienceTitle?.trim() ?? ""
+          : undefined,
       mandatory_certifications: (data.mandatoryCertifications ?? []).map(
         normalizeMandatoryCertificationValue,
       ),
       education_levels: (data.educationLevel ?? []).map((item) => Number(item)),
-      availability_id: Number(data.availability),
+      availability_id:
+        data.availability === OTHER_OPTION_VALUE
+          ? undefined
+          : Number(data.availability),
+      availability_title:
+        data.availability === OTHER_OPTION_VALUE
+          ? data.otherAvailabilityTitle?.trim() ?? ""
+          : undefined,
     };
 
     if (!data.addSalary) {
@@ -372,23 +413,42 @@ export default function PostJobForm() {
   const buildUpdatePayload = (data: JobFormData) => {
     const basePayload = {
       _method: "put" as const,
-      job_title_id: data.title === "__other__" ? undefined : Number(data.title),
-      title: data.title === "__other__" ? data.otherJobTitle?.trim() ?? "" : undefined,
+      job_title_id: data.title === OTHER_OPTION_VALUE ? undefined : Number(data.title),
+      title: data.title === OTHER_OPTION_VALUE ? data.otherJobTitle?.trim() ?? "" : undefined,
       professional_license: data.license,
       has_salary: data.addSalary ? 1 : 0,
-      category_id: Number(data.category),
-      specialty_id: Number(data.specialty),
+      category_id:
+        data.category === OTHER_OPTION_VALUE ? undefined : Number(data.category),
+      category_title:
+        data.category === OTHER_OPTION_VALUE
+          ? data.otherCategoryTitle?.trim() ?? ""
+          : undefined,
+      specialty_title: data.specialty,
       employment_type_id: Number(data.employmentType),
       role_category_id: Number(data.roleCategory),
       seniority_level_id: Number(data.seniorityLevel || 0),
       country_id: Number(data.country),
       city_id: Number(data.city),
-      experience_id: Number(data.yearsOfExperience),
+      experience_id:
+        data.yearsOfExperience === OTHER_OPTION_VALUE
+          ? undefined
+          : Number(data.yearsOfExperience),
+      experience_title:
+        data.yearsOfExperience === OTHER_OPTION_VALUE
+          ? data.otherExperienceTitle?.trim() ?? ""
+          : undefined,
       mandatory_certifications: (data.mandatoryCertifications ?? []).map(
         normalizeMandatoryCertificationValue,
       ),
       education_levels: (data.educationLevel ?? []).map((item) => Number(item)),
-      availability_id: Number(data.availability),
+      availability_id:
+        data.availability === OTHER_OPTION_VALUE
+          ? undefined
+          : Number(data.availability),
+      availability_title:
+        data.availability === OTHER_OPTION_VALUE
+          ? data.otherAvailabilityTitle?.trim() ?? ""
+          : undefined,
       description: data.description,
       skills: (data.skills ?? []).map((s) => {
         // console.log(s)
@@ -607,7 +667,7 @@ export default function PostJobForm() {
   // ═══════════════════════════════════════════════════════
   return (
     <section className="h-min-dvh mx-auto max-w-7xl py-12">
-      <div className="h-full rounded-2xl bg-white p-6">
+      <div className="h-full rounded-2xl bg-white shadow-lg p-6">
         <div className="flex gap-6">
           <WizardProgress step={currentStep} steps={STEPS} />
           {/* Save as Draft — hidden in edit mode */}

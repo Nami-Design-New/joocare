@@ -129,6 +129,7 @@ export type JobListItem = {
   experience: NamedEntity | null;
   employment_type: NamedEntity | null;
   specialty: WithCategory | null;
+  specialty_title: string | null;
 
   currency_id: number | null;
   currency: Currency | null;
@@ -141,12 +142,21 @@ export type JobListItem = {
 
   description: string | null;
   category: NamedEntity | null;
+  category_title: string | null;
+  experience_title: string | null;
 
   is_applied: boolean;
   is_saved: boolean;
 
   created_at: string;
   updated_at: string;
+  current_status: {
+    job_id: number;
+    status: string;
+    created_at: string;
+    updated_at: string;
+  }
+
 };
 
 // ==============================
@@ -168,6 +178,7 @@ export type JobDetails = {
 
   specialty_id: number | null;
   specialty: WithCategory | null;
+  specialty_title: string | null;
 
   employment_type_id: number | null;
   employment_type: NamedEntity | null;
@@ -177,6 +188,7 @@ export type JobDetails = {
 
   category_id: number | null;
   category: NamedEntity | null;
+  category_title?: string | null;
   education_level_id: number | null;
   education_level: NamedEntity | null;
 
@@ -191,11 +203,13 @@ export type JobDetails = {
 
   experience_id: number | null;
   experience: NamedEntity | null;
+  experience_title?: string | null;
 
   education_levels: NamedEntity[];
 
   availability_id: number | null;
   availability: NamedEntity | null;
+  availability_title?: string | null;
 
   description: string | null;
 

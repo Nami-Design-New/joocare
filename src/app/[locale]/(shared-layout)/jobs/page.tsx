@@ -1,40 +1,45 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import type { PopularSearchesItem } from "@/features/home/components/PopularSearches";
-import { getPopularSearchesPage } from "@/features/home/services/home-service";
-import type { AccordionSection, FilterState } from "@/features/jobs/types/index.types";
-import JobsFilterSection from "@/features/jobs/components/candidate/JobsFilterSection";
-import JobsList from "@/features/jobs/components/candidate/JobsList";
-import JobsSideBarFilter from "@/features/jobs/components/candidate/JobsSideBarFilter";
-import MobileFilterDrawer from "@/features/jobs/components/candidate/MobileFilterDrawer";
+import type { PopularSearchesItem } from '@/features/home/components/PopularSearches';
+import { getPopularSearchesPage } from '@/features/home/services/home-service';
+import type {
+  AccordionSection,
+  FilterState,
+} from '@/features/jobs/types/index.types';
+import JobsFilterSection from '@/features/jobs/components/candidate/JobsFilterSection';
+import JobsList from '@/features/jobs/components/candidate/JobsList';
+import JobsSideBarFilter from '@/features/jobs/components/candidate/JobsSideBarFilter';
+import MobileFilterDrawer from '@/features/jobs/components/candidate/MobileFilterDrawer';
 import {
   getJobsFiltersData,
   getJobsListing,
-} from "@/features/jobs/services/jobs-listing-service";
+} from '@/features/jobs/services/jobs-listing-service';
 import {
   buildJobsPagePath,
   getSiteOrigin,
   normalizeJobsSearchParams,
-} from "@/features/jobs/utils";
-import Breadcrumb from "@/shared/components/Breadcrumb";
+} from '@/features/jobs/utils';
+import Breadcrumb from '@/shared/components/Breadcrumb';
 type PageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 function getPageCopy(locale: string, search: string) {
-  if (locale === "ar") {
+  if (locale === 'ar') {
     return {
-      title: search ? `وظائف ${search} في القطاع الصحي` : "وظائف الرعاية الصحية",
+      title: search
+        ? `وظائف ${search} في القطاع الصحي`
+        : 'وظائف الرعاية الصحية',
       description:
-        "اكتشف فرص العمل الطبية والصحية على جـوكير مع تصفية حسب الدولة، المجال، الخبرة، ونوع التوظيف للوصول إلى الوظيفة المناسبة بسرعة.",
+        'اكتشف فرص العمل الطبية والصحية على جـوكير مع تصفية حسب الدولة، المجال، الخبرة، ونوع التوظيف للوصول إلى الوظيفة المناسبة بسرعة.',
     };
   }
 
   return {
-    title: search ? `${search} Jobs in Healthcare` : "Healthcare Jobs",
+    title: search ? `${search} Jobs in Healthcare` : 'Healthcare Jobs',
     description:
-      "Browse healthcare jobs on Joocare with country, salary, seniority, specialty, and employment filters designed for medical professionals.",
+      'Browse healthcare jobs on Joocare with country, salary, seniority, specialty, and employment filters designed for medical professionals.',
   };
 }
 
@@ -62,7 +67,20 @@ export async function generateMetadata({
       title: copy.title,
       description: copy.description,
       url: `${siteOrigin}${canonicalPath}`,
-      type: "website",
+      type: 'website',
+      siteName: 'Joocare',
+      images: [
+        {
+          url: `${siteOrigin}/logo-icon.jfif`,
+          alt: 'Joocare logo',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: copy.title,
+      description: copy.description,
+      images: [`${siteOrigin}/logo-icon.jfif`],
     },
   };
 }
@@ -73,16 +91,16 @@ export default async function Page({ params, searchParams }: PageProps) {
   const actionPath = `/jobs`;
   const copy = getPageCopy(locale, normalizedParams.search);
   const [filtersData, jobsData, popularSearchesPage] = await Promise.all([
-    getJobsFiltersData(locale),
+    getJobsFiltersData(locale, normalizedParams.roleCategories),
     getJobsListing(locale, normalizedParams),
     getPopularSearchesPage({ locale }),
   ]);
 
   const filterState: FilterState = {
-    professionalLicense: normalizedParams.professionalLicense,
+    professionalLicense: normalizedParams.professionalLicenses,
     roleCategories: normalizedParams.roleCategories,
     seniorityLevels: normalizedParams.seniorityLevels,
-    domains: normalizedParams.domain ? [normalizedParams.domain] : [],
+    domains: normalizedParams.domains,
     // specialties: normalizedParams.specialties,
     experiences: normalizedParams.experiences,
     availabilities: normalizedParams.availabilities,
@@ -95,32 +113,30 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   const filterSections: AccordionSection[] = [
     {
-      key: "professionalLicense",
-      label: "Professional License",
-      name: "professional_license",
-      type: "radio",
+      key: 'professionalLicense',
+      label: 'Professional License',
+      name: 'professional_licenses[]',
       options: [
-        { value: "with_medical_license", label: "With medical license" },
-        { value: "without_medical_license", label: "Without medical license" },
+        { value: 'with_medical_license', label: 'With medical license' },
+        { value: 'without_medical_license', label: 'Without medical license' },
       ],
     },
     {
-      key: "roleCategories",
-      label: "Role category",
-      name: "role_categories[]",
+      key: 'roleCategories',
+      label: 'Role category',
+      name: 'role_categories[]',
       options: filtersData.roleCategories,
     },
     {
-      key: "seniorityLevels",
-      label: "Seniority level",
-      name: "seniority_levels[]",
+      key: 'seniorityLevels',
+      label: 'Seniority level',
+      name: 'seniority_levels[]',
       options: filtersData.seniorityLevels,
     },
     {
-      key: "domains",
-      label: "Domain",
-      name: "domain",
-      type: "radio",
+      key: 'domains',
+      label: 'Domain',
+      name: 'domains[]',
       options: filtersData.domains,
     },
     // {
@@ -130,95 +146,117 @@ export default async function Page({ params, searchParams }: PageProps) {
     //   options: filtersData.specialties,
     // },
     {
-      key: "experiences",
-      label: "Experience",
-      name: "experiences[]",
+      key: 'experiences',
+      label: 'Experience',
+      name: 'experiences[]',
       options: filtersData.experiences,
     },
     {
-      key: "availabilities",
-      label: "Availability",
-      name: "availabilities[]",
+      key: 'availabilities',
+      label: 'Availability',
+      name: 'availabilities[]',
       options: filtersData.availabilities,
     },
     {
-      key: "categories",
-      label: "Category",
-      name: "categories[]",
+      key: 'categories',
+      label: 'Category',
+      name: 'categories[]',
       options: filtersData.categories,
     },
     {
-      key: "employmentTypes",
-      label: "Employment type",
-      name: "employment_types[]",
+      key: 'employmentTypes',
+      label: 'Employment type',
+      name: 'employment_types[]',
       options: filtersData.employmentTypes,
     },
   ];
 
   const hiddenInputs = [
-    ...normalizedParams.roleCategories.map((value) => ({ name: "role_categories[]", value })),
+    ...normalizedParams.roleCategories.map((value) => ({
+      name: 'role_categories[]',
+      value,
+    })),
     ...normalizedParams.seniorityLevels.map((value) => ({
-      name: "seniority_levels[]",
+      name: 'seniority_levels[]',
       value,
     })),
     // ...normalizedParams.specialties.map((value) => ({ name: "specialties[]", value })),
-    ...normalizedParams.experiences.map((value) => ({ name: "experiences[]", value })),
+    ...normalizedParams.experiences.map((value) => ({
+      name: 'experiences[]',
+      value,
+    })),
     ...normalizedParams.availabilities.map((value) => ({
-      name: "availabilities[]",
+      name: 'availabilities[]',
       value,
     })),
-    ...normalizedParams.salaryTypes.map((value) => ({ name: "salary_types[]", value })),
-    ...normalizedParams.categories.map((value) => ({ name: "categories[]", value })),
+    ...normalizedParams.salaryTypes.map((value) => ({
+      name: 'salary_types[]',
+      value,
+    })),
+    ...normalizedParams.categories.map((value) => ({
+      name: 'categories[]',
+      value,
+    })),
     ...normalizedParams.employmentTypes.map((value) => ({
-      name: "employment_types[]",
+      name: 'employment_types[]',
       value,
     })),
-    ...(normalizedParams.professionalLicense
-      ? [{ name: "professional_license", value: normalizedParams.professionalLicense }]
+    ...normalizedParams.professionalLicenses.map((value) => ({
+      name: 'professional_licenses[]',
+      value,
+    })),
+    ...normalizedParams.domains.map((value) => ({
+      name: 'domains[]',
+      value,
+    })),
+    ...(normalizedParams.minSalary
+      ? [{ name: 'min_salary', value: normalizedParams.minSalary }]
       : []),
-    ...(normalizedParams.domain ? [{ name: "domain", value: normalizedParams.domain }] : []),
-    ...(normalizedParams.minSalary ? [{ name: "min_salary", value: normalizedParams.minSalary }] : []),
-    ...(normalizedParams.maxSalary ? [{ name: "max_salary", value: normalizedParams.maxSalary }] : []),
+    ...(normalizedParams.maxSalary
+      ? [{ name: 'max_salary', value: normalizedParams.maxSalary }]
+      : []),
   ];
 
-  const popularSearches: PopularSearchesItem[] = popularSearchesPage.items.map((item) => ({
-    id: item.id,
-    label: item.label,
-  }));
+  const popularSearches: PopularSearchesItem[] = popularSearchesPage.items.map(
+    (item) => ({
+      id: item.id,
+      label: item.label,
+    }),
+  );
 
   const schema = {
-    "@context": "https://schema.org",
-    "@graph": [
+    '@context': 'https://schema.org',
+    '@graph': [
       {
-        "@type": "BreadcrumbList",
+        '@type': 'BreadcrumbList',
         itemListElement: [
           {
-            "@type": "ListItem",
+            '@type': 'ListItem',
             position: 1,
-            name: "Home",
+            name: 'Home',
             item: `${getSiteOrigin()}/${locale}`,
           },
           {
-            "@type": "ListItem",
+            '@type': 'ListItem',
             position: 2,
-            name: "Jobs",
+            name: 'Jobs',
             item: `${getSiteOrigin()}${buildJobsPagePath(locale, normalizedParams)}`,
           },
         ],
       },
       {
-        "@type": "CollectionPage",
+        '@type': 'CollectionPage',
         name: copy.title,
         description: copy.description,
         url: `${getSiteOrigin()}${buildJobsPagePath(locale, normalizedParams)}`,
       },
       {
-        "@type": "ItemList",
+        '@type': 'ItemList',
         itemListElement: jobsData.data.map((job, index) => ({
-          "@type": "ListItem",
+          '@type': 'ListItem',
           position: index + 1,
           url: `${getSiteOrigin()}/${locale}/jobs/${job.id}`,
-          name: job.title ?? "Job",
+          name: job.title ?? 'Job',
         })),
       },
     ],
@@ -231,8 +269,8 @@ export default async function Page({ params, searchParams }: PageProps) {
       <Breadcrumb
         title="Jobs"
         items={[
-          { label: "Home", href: "/" },
-          { label: "Jobs", href: "/jobs" },
+          { label: 'Home', href: '/' },
+          { label: 'Jobs', href: '/jobs' },
         ]}
       />
       <script
@@ -252,7 +290,6 @@ export default async function Page({ params, searchParams }: PageProps) {
         popularSearchesLastPage={popularSearchesPage.lastPage}
         hiddenInputs={hiddenInputs}
       />
-
 
       <section className="layout-shell">
         <section className="layout-content">

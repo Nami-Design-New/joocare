@@ -31,9 +31,9 @@ const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
             </p>
           ))
         ) : value ? (
-          <p className="text-foreground font-semibold">{value}</p>
+          <p className="text-foreground font-semibold text-[18px] mt-2">{value}</p>
         ) : (
-          <p className="text-foreground font-semibold">Not specified</p>
+          <p className="text-foreground font-semibold text-[18px] mt-2">Not specified</p>
         )}
       </div>
     </div>

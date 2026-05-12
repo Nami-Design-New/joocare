@@ -95,14 +95,12 @@ export function EditAboutModal({
             </DialogTitle>
           </DialogHeader>
           <DialogDescription className="text-muted-foreground -mt-2 text-sm">
-            You can write about your years of experience, industry, or skills.
-            People also talk about their achievements or previous job
-            experiences
+            Share a brief professional summary highlighting your experience, areas of expertise, key skills, and notable achievements. This helps employers understand your background at a glance.
           </DialogDescription>
 
           <Textarea
             className="bg-muted min-h-40 rounded-2xl p-4"
-            placeholder="Write a short summary about your experience, skills, and achievements."
+            placeholder="Write a brief professional summary (minimum 50 words) highlighting your experience, skills, and achievements."
             {...register("bio")}
           />
           {errors.bio?.message && (

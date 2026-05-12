@@ -35,7 +35,7 @@ export const BusinessVerificationSchema = z.object({
     .string()
     .min(3, { message: "license issuing authority is required" })
     .max(150, { message: "license issuing authority must be at most 150 characters" }),
-  specialty_id: z
+  specialty_title: z
     .string({
       error: "specialty scope practice is required",
     })

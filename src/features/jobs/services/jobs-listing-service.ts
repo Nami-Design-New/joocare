@@ -1,18 +1,22 @@
-import { getServerSession } from "next-auth";
+import { getServerSession } from 'next-auth';
 
-import { authOptions } from "@/auth";
-import { getBaseApiUrl, getUserApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch, getTimeZone } from "@/shared/lib/fetch-manager";
-import { JobsFiltersData, JobsFilterOption, JobsSearchFilters } from "../types/index.types";
-import { JobsListingResponse } from "../types/jobs.types";
-import { buildJobsQueryString } from "../utils";
+import { authOptions } from '@/auth';
+import { getBaseApiUrl, getUserApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch, getTimeZone } from '@/shared/lib/fetch-manager';
+import {
+  JobsFiltersData,
+  JobsFilterOption,
+  JobsSearchFilters,
+} from '../types/index.types';
+import { JobsListingResponse } from '../types/jobs.types';
+import { buildJobsQueryString } from '../utils';
 
 type LocalizedValue =
   | string
   | {
-    ar?: string | null;
-    en?: string | null;
-  }
+      ar?: string | null;
+      en?: string | null;
+    }
   | null
   | undefined;
 
@@ -27,23 +31,28 @@ const PAGE_SIZE = 10;
 
 function resolveLocalizedValue(value: LocalizedValue, locale: string) {
   if (!value) {
-    return "";
+    return '';
   }
 
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     return value;
   }
 
-  return locale === "ar" ? value.ar ?? value.en ?? "" : value.en ?? value.ar ?? "";
+  return locale === 'ar'
+    ? (value.ar ?? value.en ?? '')
+    : (value.en ?? value.ar ?? '');
 }
 
-function normalizeLookupItem(item: RawLookupItem, locale: string): JobsFilterOption | null {
-  const value = item.id ? String(item.id) : "";
+function normalizeLookupItem(
+  item: RawLookupItem,
+  locale: string,
+): JobsFilterOption | null {
+  const value = item.id ? String(item.id) : '';
   const label =
     resolveLocalizedValue(item.title, locale) ||
     resolveLocalizedValue(item.name, locale) ||
     item.word ||
-    "";
+    '';
 
   if (!value || !label) {
     return null;
@@ -55,30 +64,42 @@ function normalizeLookupItem(item: RawLookupItem, locale: string): JobsFilterOpt
 async function fetchLookupOptions(
   endpoint: string,
   locale: string,
-  extraParams?: Record<string, string>,
+  extraParams?: Record<string, string | string[]>,
 ) {
   const params = new URLSearchParams({
-    pagination: "on",
-    limit_per_page: "100",
-    page: "1",
+    pagination: 'on',
+    limit_per_page: '100',
+    page: '1',
   });
 
   Object.entries(extraParams ?? {}).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((item) => {
+        if (item.trim()) {
+          params.append(key, item);
+        }
+      });
+      return;
+    }
+
     if (value.trim()) {
       params.set(key, value);
     }
   });
 
-  const response = await fetch(`${getBaseApiUrl()}/${endpoint}?${params.toString()}`, {
-    headers: {
-      Accept: "application/json",
-      "Accept-Language": locale,
-      "X-Timezone": getTimeZone(),
+  const response = await fetch(
+    `${getBaseApiUrl()}/${endpoint}?${params.toString()}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Accept-Language': locale,
+        'X-Timezone': getTimeZone(),
+      },
+      next: {
+        revalidate: 300,
+      },
     },
-    next: {
-      revalidate: 300,
-    },
-  });
+  );
 
   if (!response.ok) {
     throw new Error(`Failed to fetch ${endpoint}.`);
@@ -93,10 +114,10 @@ async function fetchLookupOptions(
 
 export async function getJobsListing(
   locale: string,
-  filters: JobsSearchFilters
+  filters: JobsSearchFilters,
 ): Promise<JobsListingResponse> {
   const params = new URLSearchParams({
-    pagination: "on",
+    pagination: 'on',
     limit_per_page: String(PAGE_SIZE),
     page: String(filters.page),
   });
@@ -105,7 +126,7 @@ export async function getJobsListing(
   if (queryString) {
     const searchParams = new URLSearchParams(queryString);
     searchParams.forEach((value, key) => {
-      if (key !== "page") {
+      if (key !== 'page') {
         params.append(key, value);
       }
     });
@@ -115,29 +136,32 @@ export async function getJobsListing(
   const result = await apiFetch(
     `${getUserApiUrl()}/jobs?${params.toString()}`,
     {
-      method: "GET",
+      method: 'GET',
       locale,
-      cache: "no-store",
+      cache: 'no-store',
       token: session?.accessToken,
-    }
+    },
   );
 
   if (!result.ok || !result.data) {
     throw new Error(
-      result.message || `Failed to load jobs from ${getUserApiUrl()}/jobs.`
+      result.message || `Failed to load jobs from ${getUserApiUrl()}/jobs.`,
     );
   }
 
   const response = result.data as unknown as JobsListingResponse;
 
   if (!response?.data) {
-    throw new Error("Jobs listing payload is missing");
+    throw new Error('Jobs listing payload is missing');
   }
 
   return response;
 }
 
-export async function getJobsFiltersData(locale: string) {
+export async function getJobsFiltersData(
+  locale: string,
+  roleCategoryIds: string[] = [],
+) {
   const [
     countries,
     categories,
@@ -151,17 +175,23 @@ export async function getJobsFiltersData(locale: string) {
     seniorityLevels,
     jobTitles,
   ] = await Promise.all([
-    fetchLookupOptions("countries", locale),
-    fetchLookupOptions("categories", locale),
-    fetchLookupOptions("domains", locale),
-    fetchLookupOptions("specialties", locale),
-    fetchLookupOptions("experiences", locale),
-    fetchLookupOptions("availabilities", locale),
-    fetchLookupOptions("employment-types", locale),
-    fetchLookupOptions("role-categories", locale),
-    fetchLookupOptions("salary-types", locale),
-    fetchLookupOptions("seniority-levels", locale),
-    fetchLookupOptions("job-titles", locale),
+    fetchLookupOptions('countries', locale),
+    fetchLookupOptions('categories', locale),
+    fetchLookupOptions('domains', locale),
+    fetchLookupOptions('specialties', locale),
+    fetchLookupOptions('experiences', locale),
+    fetchLookupOptions('availabilities', locale),
+    fetchLookupOptions('employment-types', locale),
+    fetchLookupOptions('role-categories', locale),
+    fetchLookupOptions('salary-types', locale),
+    fetchLookupOptions(
+      'seniority-levels',
+      locale,
+      roleCategoryIds.length > 0
+        ? { 'role_category_ids[]': roleCategoryIds }
+        : undefined,
+    ),
+    fetchLookupOptions('job-titles', locale),
   ]);
 
   return {

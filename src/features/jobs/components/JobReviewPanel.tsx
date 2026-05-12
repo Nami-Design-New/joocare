@@ -2,11 +2,9 @@ import React from "react";
 import { JobFormData } from "../validation/job-post-schema";
 import Image from "next/image";
 import { Badge } from "@/shared/components/ui/badge";
-import JobOverviewCard from "./company/JobOverviewCard";
-import JobLocationAndSalaryCard from "./company/JobLocationAndSalaryCard";
-import JobEducationAndCertificationsCard from "./company/JobEducationAndCertificationsCard";
 import { JobDetails } from "../types/jobs.types";
 import { getJobSalary } from "../utils";
+import JobOverviewItem from "./JobOverviewItem";
 
 type JobPreviewLabels = Partial<{
   title: string;
@@ -46,6 +44,22 @@ type ReviewPreviewData = {
   availability: string;
 };
 
+type ReviewSidebarData = {
+  salary: string;
+  currencyCode: string;
+  salaryType: string;
+  city: string;
+  country: string;
+  experience: string;
+  category: string;
+  specialty: string;
+  roleCategory: string;
+  seniorityLevel: string;
+  educationLevels: string[];
+  mandatoryCertifications: string[];
+  availability: string;
+};
+
 function toIdString(value: number | string | null | undefined) {
   return value == null ? "" : String(value);
 }
@@ -57,6 +71,19 @@ function resolveNamedValue(
 ) {
   if (!selectedValue) return entityTitle ?? "-";
   return selectedValue === toIdString(entityId) ? (entityTitle ?? "-") : selectedValue;
+}
+
+function resolveDisplayValue(
+  previewValue: string | undefined,
+  selectedValue: string | undefined,
+  entityId: number | null | undefined,
+  entityTitle?: string | null,
+) {
+  if (previewValue !== undefined) {
+    return previewValue || "-";
+  }
+
+  return resolveNamedValue(selectedValue, entityId, entityTitle);
 }
 
 function resolveTitle(data: JobFormData, job: JobDetails | null) {
@@ -71,6 +98,19 @@ function resolveTitle(data: JobFormData, job: JobDetails | null) {
   }
 
   return job?.title ?? job?.job_title?.title ?? "Untitled job";
+}
+
+function resolveCustomOrNamedValue(
+  selectedValue: string | undefined,
+  customValue: string | undefined,
+  entityId: number | null | undefined,
+  entityTitle?: string | null,
+) {
+  if (selectedValue === "__other__") {
+    return customValue?.trim() || entityTitle || "-";
+  }
+
+  return resolveNamedValue(selectedValue, entityId, entityTitle);
 }
 
 function resolvePreviewString(
@@ -118,6 +158,7 @@ function buildEditPreviewData(
     )
     : "";
 
+
   return {
     title:
       data.title === "__other__"
@@ -152,15 +193,21 @@ function buildEditPreviewData(
     ),
     experience: resolvePreviewString(
       previewLabels.yearsOfExperience,
-      resolveNamedValue(
+      resolveCustomOrNamedValue(
         data.yearsOfExperience,
+        data.otherExperienceTitle,
         job?.experience_id,
-        job?.experience?.title,
+        job?.experience_title ?? job?.experience?.title,
       ),
     ),
     category: resolvePreviewString(
       previewLabels.category,
-      resolveNamedValue(data.category, job?.category_id, job?.category?.title),
+      resolveCustomOrNamedValue(
+        data.category,
+        data.otherCategoryTitle,
+        job?.category_id,
+        job?.category_title ?? job?.category?.title,
+      ),
     ),
     specialty: resolvePreviewString(
       previewLabels.specialty,
@@ -214,21 +261,139 @@ function buildEditPreviewData(
       [],
     availability: resolvePreviewString(
       previewLabels.availability,
-      resolveNamedValue(
+      resolveCustomOrNamedValue(
         data.availability,
+        data.otherAvailabilityTitle,
         job?.availability_id,
-        job?.availability?.title,
+        job?.availability_title ?? job?.availability?.title,
       ),
     ),
   };
 }
 
-function EditModeReviewCards({ preview }: { preview: ReviewPreviewData }) {
+function buildSidebarData(
+  data: JobFormData,
+  job: JobDetails | null,
+  previewLabels: JobPreviewLabels,
+): ReviewSidebarData {
+  const addSalary = Boolean(data.addSalary || job?.has_salary);
+  const salary = addSalary
+    ? getJobSalary({
+      min_salary: data.salary?.min ?? job?.min_salary ?? null,
+      max_salary: data.salary?.max ?? job?.max_salary ?? null,
+      currency: null,
+    })
+    : "Not specified";
+
+  const salaryType = addSalary
+    ? resolveDisplayValue(
+      previewLabels.salaryType,
+      data.salary?.type,
+      job?.salary_type_id,
+      job?.salary_type?.title,
+    )
+    : "-";
+
+  const currencyCode = addSalary
+    ? resolveDisplayValue(
+      previewLabels.currency,
+      data.salary?.currency,
+      job?.currency_id,
+      job?.currency?.code,
+    )
+    : "";
+
+  return {
+    salary,
+    currencyCode,
+    salaryType,
+    city: resolveDisplayValue(
+      previewLabels.city,
+      data.city,
+      job?.city_id,
+      job?.city?.name,
+    ),
+    country: resolveDisplayValue(
+      previewLabels.country,
+      data.country,
+      job?.country_id,
+      job?.country?.name,
+    ),
+    experience: resolveDisplayValue(
+      previewLabels.yearsOfExperience,
+      data.yearsOfExperience === "__other__"
+        ? data.otherExperienceTitle
+        : data.yearsOfExperience,
+      job?.experience_id,
+      job?.experience_title ?? job?.experience?.title,
+    ),
+    category: resolveDisplayValue(
+      previewLabels.category,
+      data.category === "__other__" ? data.otherCategoryTitle : data.category,
+      job?.category_id,
+      job?.category_title ?? job?.category?.title,
+    ),
+    specialty: resolveDisplayValue(
+      previewLabels.specialty,
+      data.specialty,
+      job?.specialty_id,
+      job?.specialty_title ?? job?.specialty?.title,
+    ),
+    roleCategory: resolveDisplayValue(
+      previewLabels.roleCategory,
+      data.roleCategory,
+      job?.role_category_id,
+      job?.role_category?.title,
+    ),
+    seniorityLevel: resolveDisplayValue(
+      previewLabels.seniorityLevel,
+      data.seniorityLevel,
+      job?.seniority_level_id,
+      job?.seniority_level?.title,
+    ),
+    educationLevels:
+      previewLabels.educationLevel ??
+      data.educationLevel?.map(
+        (levelId) =>
+          job?.education_levels?.find((level) => String(level.id) === levelId)?.title ??
+          levelId,
+      ) ??
+      [],
+    mandatoryCertifications:
+      previewLabels.mandatoryCertifications ??
+      data.mandatoryCertifications?.map((certificationId) => {
+        if (certificationId.startsWith("__custom__:")) {
+          return certificationId.replace("__custom__:", "");
+        }
+
+        return (
+          job?.mandatory_certifications?.find(
+            (item) => String(item.mandatory_certification_id) === certificationId,
+          )?.mandatory_certification?.title ??
+          job?.mandatory_certifications?.find(
+            (item) => String(item.id) === certificationId,
+          )?.title ??
+          certificationId
+        );
+      }) ??
+      [],
+    availability: resolveDisplayValue(
+      previewLabels.availability,
+      data.availability === "__other__"
+        ? data.otherAvailabilityTitle
+        : data.availability,
+      job?.availability_id,
+      job?.availability_title ?? job?.availability?.title,
+    ),
+  };
+}
+
+function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
   return (
     <>
       <div className="card border-border shadow-card flex min-h-36 items-center justify-around rounded-2xl border-2 bg-white px-6 py-8 lg:justify-between">
         <div className="flex flex-1 flex-col items-center justify-center gap-2">
-          <div className="flex items-center justify-center p-1 rounded-full border-2 border-primary">
+          <div className="flex items-center justify-center p-1 rounded-full border-3 border-primary">
             <Image
               src={"/assets/icons/dollar.svg"}
               width={20}
@@ -240,17 +405,18 @@ function EditModeReviewCards({ preview }: { preview: ReviewPreviewData }) {
             Salary {preview.salaryType !== "-" ? `(${preview.currencyCode})` : ""}
           </h4>
           <p className="text-primary text-md font-semibold">
-            {preview.salary} {preview.salaryType !== "-" ? preview.currencyCode : ""}
+            {preview.salary}
+            {/* {preview.salaryType !== "-" ? preview.currencyCode : ""} */}
           </p>
           <span className="text-muted-foreground text-sm">{preview.salaryType}</span>
         </div>
         <div className="bg-muted h-full w-0.5"></div>
         <div className="flex flex-1 flex-col items-center justify-center gap-1">
-          <div className="flex items-center justify-center p-1">
+          <div className="flex items-center justify-center -mt-3">
             <Image
               src={"/assets/icons/map-pin.svg"}
-              width={30}
-              height={30}
+              width={38}
+              height={38}
               alt="Location icon"
             />
           </div>
@@ -268,22 +434,34 @@ function EditModeReviewCards({ preview }: { preview: ReviewPreviewData }) {
         <h2 className="text-foreground mb-4 text-lg font-semibold">
           Job Overview
         </h2>
-        <div className="grid grid-cols-2 gap-4 px-4 text-sm">
-          <p className="col-span-2">
-            <strong>Experience:</strong> {preview.experience}
-          </p>
-          <p>
-            <strong>Job Category:</strong> {preview.category}
-          </p>
-          <p>
-            <strong>Specialty:</strong> {preview.specialty}
-          </p>
-          <p>
-            <strong>Role category:</strong> {preview.roleCategory}
-          </p>
-          <p>
-            <strong>Seniority Level:</strong> {preview.seniorityLevel}
-          </p>
+        <div className="grid grid-cols-2 gap-6 px-3 text-sm">
+          <div className="col-span-2">
+            <JobOverviewItem
+              label="Experience"
+              value={preview.experience}
+              icon="/assets/icons/exp.svg"
+            />
+          </div>
+          <JobOverviewItem
+            label="Job Category"
+            value={preview.category}
+            icon="/assets/icons/job-category.svg"
+          />
+          <JobOverviewItem
+            label="Specialty"
+            value={preview.specialty}
+            icon="/assets/icons/specialty.svg"
+          />
+          <JobOverviewItem
+            label="Role category"
+            value={preview.roleCategory}
+            icon="/assets/icons/role-category.svg"
+          />
+          <JobOverviewItem
+            label="Seniority Level"
+            value={preview.seniorityLevel}
+            icon="/assets/icons/seniority.svg"
+          />
         </div>
       </div>
 
@@ -293,22 +471,34 @@ function EditModeReviewCards({ preview }: { preview: ReviewPreviewData }) {
         </h2>
         <div className="flex flex-col gap-6">
           <div>
-            <p className="text-muted-foreground text-md mb-2">Education Level</p>
+            <div className="flex items-center gap-2">
+              <Image
+                src="/assets/icons/exp.svg"
+                width={20} height={20}
+                alt="icon"
+              />
+              <p className="text-muted-foreground text-md">Education Level</p>
+            </div>
             <ul className="mt-2 flex flex-col gap-2">
               {preview.educationLevels.map((level) => (
-                <li className="edu-certificate" key={level}>
+                <li className="text-foreground font-semibold" key={level}>
                   {level}
                 </li>
               ))}
               {preview.educationLevels.length === 0 && (
-                <li className="edu-certificate">-</li>
+                <li className="text-foreground font-semibold">-</li>
               )}
             </ul>
           </div>
           <div>
-            <p className="text-muted-foreground text-md mb-2">
-              Mandatory Certifications
-            </p>
+            <div className="flex items-center gap-2">
+              <Image
+                src="/assets/icons/case.svg"
+                width={20} height={20}
+                alt="icon"
+              />
+              <p className="text-muted-foreground text-md">Mandatory Certifications</p>
+            </div>
             <ul className="mt-2 flex flex-col gap-2">
               {preview.mandatoryCertifications.map((item) => (
                 <li className="edu-certificate" key={item}>
@@ -320,9 +510,11 @@ function EditModeReviewCards({ preview }: { preview: ReviewPreviewData }) {
               )}
             </ul>
           </div>
-          <p className="text-sm">
-            <strong>Availability:</strong> {preview.availability}
-          </p>
+          <JobOverviewItem
+            label="Availability"
+            value={preview.availability}
+            icon="/assets/icons/case.svg"
+          />
         </div>
       </div>
     </>
@@ -351,32 +543,33 @@ export default function JobReviewPanel({
   }
 
   const preview = isEditMode ? buildEditPreviewData(data, job, previewLabels) : null;
+  const sidebarPreview = buildSidebarData(data, job, previewLabels);
   const skills = preview?.skills ?? job?.skills?.map((skill) => skill.title) ?? [];
 
   return (
     <section>
       <div className="mt-5 flex items-center gap-6 p-4">
         <Image
-          src="/assets/comp-logo.svg"
+          src="/assets/new-logo-dot.svg"
           alt="Company logo"
           width={96}
           height={86}
         />
 
         <div>
-          <h6 className="text-foreground text-2xl font-semibold">
+          <h6 className="text-foreground text-2xl font-semibold mb-2">
             {preview?.title ?? job?.title ?? job?.job_title?.title ?? data.title}
           </h6>
-          <p>
+          <div className="flex items-center gap-2 ">
             <span className="text-muted-foreground text-lg font-normal">
               at {job?.company?.name ?? "Company"}
             </span>{" "}
-            <Badge size="md" className="rounded-sm bg-[#0BA02C]">
+            <Badge size="md" className="rounded-[3px] bg-[#0BA02C]">
               {preview?.employmentType?.toUpperCase() ??
                 job?.employment_type?.title?.toUpperCase() ??
                 "N/A"}
             </Badge>{" "}
-          </p>
+          </div>
         </div>
       </div>
 
@@ -408,15 +601,7 @@ export default function JobReviewPanel({
         </div>
 
         <div className="col-span-1 flex flex-col gap-8">
-          {isEditMode && preview ? (
-            <EditModeReviewCards preview={preview} />
-          ) : (
-            <>
-              <JobLocationAndSalaryCard job={job!} />
-              <JobOverviewCard job={job!} />
-              <JobEducationAndCertificationsCard job={job!} />
-            </>
-          )}
+          <ReviewSidebarCards preview={sidebarPreview} />
         </div>
       </div>
     </section>

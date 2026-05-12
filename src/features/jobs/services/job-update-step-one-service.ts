@@ -35,15 +35,30 @@ export async function jobUpdateStepOneService(
     formData.append("salary_type_id", String(payload.salary_type_id));
   }
 
-  formData.append("category_id", String(payload.category_id));
-  formData.append("specialty_id", String(payload.specialty_id));
+  if (payload.category_id !== undefined) {
+    formData.append("category_id", String(payload.category_id));
+  }
+  if (payload.category_title !== undefined) {
+    formData.append("category_title", payload.category_title);
+  }
+  formData.append("specialty_title", String(payload.specialty_title));
   formData.append("employment_type_id", String(payload.employment_type_id));
   formData.append("role_category_id", String(payload.role_category_id));
   formData.append("seniority_level_id", String(payload.seniority_level_id));
   formData.append("country_id", String(payload.country_id));
   formData.append("city_id", String(payload.city_id));
-  formData.append("experience_id", String(payload.experience_id));
-  formData.append("availability_id", String(payload.availability_id));
+  if (payload.experience_id !== undefined) {
+    formData.append("experience_id", String(payload.experience_id));
+  }
+  if (payload.experience_title !== undefined) {
+    formData.append("experience_title", payload.experience_title);
+  }
+  if (payload.availability_id !== undefined) {
+    formData.append("availability_id", String(payload.availability_id));
+  }
+  if (payload.availability_title !== undefined) {
+    formData.append("availability_title", payload.availability_title);
+  }
   formData.append("_method", "put");
 
   payload.mandatory_certifications.forEach((item, index) => {

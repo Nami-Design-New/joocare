@@ -100,14 +100,14 @@ export default function JobCard({ resumeMatch,
   const title = job?.job_title?.title || job?.title || "Untitled job";
   const company = job?.company?.name || "Joocare Employer";
   const companyLogo = job?.company?.image;
-  const postedAtLabel = job?.created_at;
+  const postedAtLabel = job?.current_status?.updated_at;
   const location = getJobLocation(job);
-  const category = job?.category?.title || "Not specified";
+  const category = job?.category?.title || job?.category_title || "Not specified";
   const employmentType = job?.employment_type?.title || "Not specified";
   const salary = getJobSalaryWithCurrency(job);
-  const experience = job?.experience?.title || "Experience not specified";
-  const specialty = job?.specialty?.title || "Healthcare";
-  const excerpt = job?.description?.slice(0, 150) || "Explore the job details to learn more about the role and employer.";
+  const experience = job?.experience?.title || job?.experience_title || "Experience not specified";
+  const specialty = job?.specialty?.title || job?.specialty_title || "Healthcare";
+  const excerpt = job?.description?.slice(0, 70) || "Explore the job details to learn more about the role and employer.";
   const statusLabel = (() => {
     const rawStatus = job.status?.status ?? "draft";
     return rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1).toLowerCase();
@@ -119,17 +119,17 @@ export default function JobCard({ resumeMatch,
 
   return (
     <>
-      <Card className="max-lg:py-2">
+      <Card className="max-lg:py-2 group hover:border-primary">
         <CardHeader className="flex gap-2 max-lg:px-2">
           <Image
             width={52}
             height={52}
-            src={companyLogo || "/assets/comp-logo.svg"}
+            src={companyLogo || "/assets/new-logo-dot.svg"}
             alt={`${company} logo`}
             className="rounded-2xl w-14 h-12"
           />
           <div className="flex grow flex-col gap-1">
-            <h6 className="text-secondary text-lg font-semibold">
+            <h6 className="text-secondary text-lg font-semibold group-hover:text-primary">
               {title}
             </h6>
             <p className="text-foreground text-md font-normal">{company}</p>
@@ -211,15 +211,15 @@ export default function JobCard({ resumeMatch,
         <CardContent className="max-lg:px-2">
           <div className=" flex flex-col gap-4  ">
             <ul className="items-cente flex gap-2">
-              <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+              <li className="text-secondary flex items-start gap-1 text-sm font-normal">
                 <MapPin size={14} color="var(--muted-foreground)" />
                 {location}
               </li>
-              <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+              <li className="text-secondary flex items-start gap-1 text-sm font-normal">
                 <Briefcase size={14} color="var(--muted-foreground)" />
                 {category}
               </li>
-              <li className="text-secondary flex items-center gap-1 text-sm font-normal">
+              <li className="text-secondary flex items-start gap-1 text-sm font-normal">
                 <CircleDollarSign size={14} color="var(--muted-foreground)" />
                 {job.has_salary ? salary : "not specified"}
               </li>
@@ -237,7 +237,7 @@ export default function JobCard({ resumeMatch,
             </ul>
             {/* <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p> */}
             <div
-              className="prose prose-sm max-w-none border-b pb-5"
+              className="prose prose-sm max-w-none border-b pb-5 mt-3"
               dangerouslySetInnerHTML={{
                 __html:
                   excerpt ||

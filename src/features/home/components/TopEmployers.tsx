@@ -22,17 +22,17 @@ export default function TopEmployers({
             <h2>{title}</h2>
           </div>
 
-          <div className="grid w-full grid-cols-2 items-center gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+          <div className="grid w-full grid-cols-2 items-center gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
             {companies.map((company) => (
               <div
                 key={company.id}
-                className="relative h-12 w-full rounded-lg"
+                className="relative h-16 lg:h-18 w-full rounded-lg"
               >
                 <Image
                   src={company.image ?? "/assets/icons/top-empoyers/kbc.svg"}
                   alt="Employer logo"
                   fill
-                  className="object-contain opacity-70 transition hover:opacity-100"
+                  className="object-contain transition "
                 />
               </div>
             ))}

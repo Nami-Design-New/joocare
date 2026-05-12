@@ -7,7 +7,7 @@ export const links = [
     image: "/assets/icons/profile.svg",
   },
   {
-    label: "Applications",
+    label: "Job Applications",
     href: "/candidate/applications",
     image: "/assets/icons/application.svg",
   },

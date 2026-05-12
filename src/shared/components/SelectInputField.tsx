@@ -43,6 +43,7 @@ type SelectInputFieldProps = {
   searchPlaceholder?: string;
   onSearchChange?: (value: string) => void;
   portalContainer?: HTMLElement | null;
+  allowDeselect?: boolean;
 };
 
 export const SelectInputField = React.forwardRef<
@@ -69,6 +70,7 @@ export const SelectInputField = React.forwardRef<
       searchPlaceholder = "Search...",
       onSearchChange,
       portalContainer,
+      allowDeselect = false,
       ...props
     },
     ref,
@@ -120,9 +122,16 @@ export const SelectInputField = React.forwardRef<
           id={id}
           items={options}
           value={selectedOption ?? null}
-          onValueChange={(option) =>
-            onChange?.((option as Option)?.value ?? "")
-          }
+          onValueChange={(option) => {
+            const nextValue = (option as Option | null)?.value ?? "";
+
+            if (allowDeselect && nextValue === value) {
+              onChange?.("");
+              return;
+            }
+
+            onChange?.(nextValue);
+          }}
           disabled={disabled}
         >
           <ComboboxTrigger
@@ -185,7 +194,9 @@ export const SelectInputField = React.forwardRef<
             >
               {(item: Option) => (
                 <React.Fragment key={item.value}>
-                  <ComboboxItem key={item.value} value={item}
+                  <ComboboxItem
+                    key={item.value}
+                    value={item}
                     className={cn(
                       value === item.value && "bg-accent text-accent-foreground"
                     )}
