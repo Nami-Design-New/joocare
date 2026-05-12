@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "@/shared/components/ui/button";
 import LoginAlertModal from "@/shared/components/modals/LoginAlertModal";
 import { useToggleSavedJob } from "../../hooks/useToggleSavedJob";
+import { useTranslations } from "next-intl";
 
 type ToggleSavedJobButtonProps = {
   jobId: number;
@@ -22,6 +23,7 @@ export default function ToggleSavedJobButton({
   className = "",
   onSavedChange,
 }: ToggleSavedJobButtonProps) {
+  const t = useTranslations()
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const { isSaved, toggleSaved, isPending } = useToggleSavedJob(
     jobId,
@@ -45,11 +47,11 @@ export default function ToggleSavedJobButton({
           disabled={isPending}
           onClick={toggleSaved}
           className={`h-13 w-13 rounded-[4px] p-4 ${isSaved
-              ? "bg-primary text-white hover:bg-primary/90"
-              : "bg-accent text-primary"
+            ? "bg-primary text-white hover:bg-primary/90"
+            : "bg-accent text-primary"
             } ${className}`}
           aria-pressed={isSaved}
-          aria-label={isSaved ? "Unsave job" : "Save job"}
+          aria-label={isSaved ? t('common.unSave-job') : t('common.save-job')}
         >
           <Bookmark size={24} fill={isSaved ? "currentColor" : "none"} />
         </Button>
@@ -70,13 +72,13 @@ export default function ToggleSavedJobButton({
         disabled={isPending}
         onClick={toggleSaved}
         className={`border-border h-9 px-4 py-2 text-sm ${isSaved
-            ? "bg-accent text-primary hover:bg-accent/90"
-            : "text-muted-foreground"
+          ? "bg-accent text-primary hover:bg-accent/90"
+          : "text-muted-foreground"
           } ${className}`}
         aria-pressed={isSaved}
       >
         <Bookmark fill={isSaved ? "currentColor" : "none"} />
-        {isSaved ? "Saved" : "Save"}
+        {isSaved ? t('common.saved') : t('common.save')}
       </Button>
     </>
   );

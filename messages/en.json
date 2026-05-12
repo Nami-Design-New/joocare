@@ -1,6 +1,10 @@
 {
   "common": {
-    "back-to-home": "Back to home"
+    "back-to-home": "Back to home",
+    "save": "Save",
+    "saved": "Saved",
+    "save-job": "save job",
+    "unSave-job": "Unsave job"
   },
   "aboutPage": {
     "section-title": "About JooCare",
@@ -16,6 +20,101 @@
   "faqPage": {
     "pagination-show": "Show",
     "pagination-from": "from"
+  },
+  "jobsPage": {
+    "job": "Job",
+    "browse-jobs": "Browse jobs",
+    "empty-title": "No Data",
+    "empty-description": "No jobs matched the current search and filters.",
+    "healthcare-opportunity": "Healthcare Opportunity",
+    "joocare-employer": "Joocare Employer",
+    "location-not-specified": "Location not specified",
+    "not-specified": "Not specified",
+    "experience-not-specified": "Experience not specified",
+    "healthcare": "Healthcare",
+    "card-description-fallback": "Explore the job details to learn more about the role and employer.",
+    "no-description-available": "No description available.",
+    "share": "Share",
+    "applied": "Applied",
+    "view-job": "View Job",
+    "filters": {
+      "title": "Filters",
+      "professional-license": "Professional License",
+      "with-medical-license": "With medical license",
+      "without-medical-license": "Without medical license",
+      "role-category": "Role category",
+      "seniority-level": "Seniority level",
+      "domain": "Domain",
+      "experience": "Experience",
+      "availability": "Availability",
+      "category": "Category",
+      "employment-type": "Employment type",
+      "choose-role-category-first": "Choose a role category first",
+      "loading-seniority-levels": "Loading seniority levels...",
+      "salary-range": "Salary range",
+      "any-salary-type": "Any salary type",
+      "min": "Min",
+      "max": "Max",
+      "apply-filters": "Apply Filters",
+      "reset": "Reset"
+    },
+    "toasts": {
+      "job-link-copied": "Job link copied successfully.",
+      "unable-copy-job-link": "Unable to copy the job link.",
+      "unable-share-job-link": "Unable to share the job link."
+    }
+  },
+  "jobDetailsPage": {
+    "breadcrumb-title": "Job Details",
+    "at": "at",
+    "already-applied": "Already Applied",
+    "apply-now": "Apply Now",
+    "applying": "Applying...",
+    "job-description": "Job description",
+    "qualifications": "Qualifications",
+    "skills": "Skills:",
+    "job-location": "Job Location",
+    "salary": "Salary",
+    "job-overview": "Job Overview",
+    "job-category": "Job Category",
+    "specialty": "Specialty",
+    "education-certifications": "Education & Certifications section",
+    "education-level": "Education Level",
+    "mandatory-certifications": "Mandatory Certifications",
+    "share-this-job": "Share this job:",
+    "copy-link": "Copy Link",
+    "check-out-this-job": "Check out this job",
+    "about-the-employer": "About the employer",
+    "view-profile": "View Profile",
+    "cv-submission-required": "CV submission required",
+    "cv-submission-description": "To complete your application for this position, the medical entity needs to review your CV. You can use your saved CV or upload a new one now in PDF or Word format.",
+    "loading-cv": "Loading your CV...",
+    "or": "OR",
+    "upload-new-cv": "Upload New CV",
+    "upload-cv": "Upload CV",
+    "go-to-profile": "Go to profile",
+    "success-title": "Application submitted successfully",
+    "success-description": "Thank you for submitting your application. Your profile has been shared with the recruitment team and is currently under review. You will be notified if you progress to the next stage.",
+    "go-to-job-applications": "Go to Job Applications",
+    "explore-more-jobs": "Explore more jobs",
+    "similar-jobs": "Similar Jobs",
+    "handpicked-for-your-profile": "Handpicked for your profile",
+    "company-logo": "company logo",
+    "currency-icon": "currency icon",
+    "location-icon": "Location icon",
+    "link-icon": "link icon",
+    "employer-profile-card": "Employer profile card",
+    "cv-file": "cv file",
+    "icon": "icon",
+    "no-description-available": "No description available.",
+    "toasts": {
+      "only-candidates": "Only candidate accounts can apply to jobs.",
+      "failed-load-cv": "Failed to load your CV.",
+      "please-wait": "Please wait a moment and try again.",
+      "upload-cv-first": "Please upload your CV first before applying.",
+      "application-submitted": "Application submitted successfully.",
+      "failed-submit-application": "Failed to submit your application."
+    }
   },
   "contactPage": {
     "contact-us": "Contact us",
@@ -96,7 +195,8 @@
     "find-job": "Find Job",
     "popular-searches": "Popular Searches",
     "show-more": "Show More",
-    "show-less": "Show Less"
+    "show-less": "Show Less",
+    "search": "Search"
   },
   "home": {
     "how-it-work": "How it work",

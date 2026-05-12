@@ -1,6 +1,10 @@
 {
   "common": {
-    "back-to-home": "العودة إلى الرئيسية"
+    "back-to-home": "العودة إلى الرئيسية",
+    "save": "حفظ",
+    "saved": "تم الحفظ",
+    "save-job": "حفظ الوظيفة",
+    "unSave-job": "إلغاء حفظ الوظيفة"
   },
   "aboutPage": {
     "section-title": "حول جُوكير",
@@ -16,6 +20,101 @@
   "faqPage": {
     "pagination-show": "عرض",
     "pagination-from": "من"
+  },
+  "jobsPage": {
+    "job": "وظيفة",
+    "browse-jobs": "تصفح الوظائف",
+    "empty-title": "لا توجد بيانات",
+    "empty-description": "لا توجد وظائف مطابقة لعملية البحث والفلاتر الحالية.",
+    "healthcare-opportunity": "فرصة في القطاع الصحي",
+    "joocare-employer": "جهة توظيف جُوكير",
+    "location-not-specified": "الموقع غير محدد",
+    "not-specified": "غير محدد",
+    "experience-not-specified": "الخبرة غير محددة",
+    "healthcare": "الرعاية الصحية",
+    "card-description-fallback": "استكشف تفاصيل الوظيفة لمعرفة المزيد عن الدور وجهة العمل.",
+    "no-description-available": "لا يوجد وصف متاح.",
+    "share": "مشاركة",
+    "applied": "تم التقديم",
+    "view-job": "عرض الوظيفة",
+    "filters": {
+      "title": "الفلاتر",
+      "professional-license": "الترخيص المهني",
+      "with-medical-license": "مع ترخيص طبي",
+      "without-medical-license": "بدون ترخيص طبي",
+      "role-category": "فئة الدور",
+      "seniority-level": "المستوى الوظيفي",
+      "domain": "المجال",
+      "experience": "الخبرة",
+      "availability": "التوفر",
+      "category": "التصنيف",
+      "employment-type": "نوع التوظيف",
+      "choose-role-category-first": "اختر فئة الدور أولاً",
+      "loading-seniority-levels": "جارٍ تحميل مستويات الأقدمية...",
+      "salary-range": "نطاق الراتب",
+      "any-salary-type": "أي نوع راتب",
+      "min": "الحد الأدنى",
+      "max": "الحد الأقصى",
+      "apply-filters": "تطبيق الفلاتر",
+      "reset": "إعادة تعيين"
+    },
+    "toasts": {
+      "job-link-copied": "تم نسخ رابط الوظيفة بنجاح.",
+      "unable-copy-job-link": "تعذر نسخ رابط الوظيفة.",
+      "unable-share-job-link": "تعذر مشاركة رابط الوظيفة."
+    }
+  },
+  "jobDetailsPage": {
+    "breadcrumb-title": "تفاصيل الوظيفة",
+    "at": "في",
+    "already-applied": "تم التقديم بالفعل",
+    "apply-now": "قدّم الآن",
+    "applying": "جارٍ التقديم...",
+    "job-description": "وصف الوظيفة",
+    "qualifications": "المؤهلات",
+    "skills": "المهارات:",
+    "job-location": "موقع الوظيفة",
+    "salary": "الراتب",
+    "job-overview": "نظرة عامة على الوظيفة",
+    "job-category": "فئة الوظيفة",
+    "specialty": "التخصص",
+    "education-certifications": "قسم التعليم والشهادات",
+    "education-level": "المستوى التعليمي",
+    "mandatory-certifications": "الشهادات الإلزامية",
+    "share-this-job": "شارك هذه الوظيفة:",
+    "copy-link": "نسخ الرابط",
+    "check-out-this-job": "اطلع على هذه الوظيفة",
+    "about-the-employer": "عن صاحب العمل",
+    "view-profile": "عرض الملف الشخصي",
+    "cv-submission-required": "مطلوب إرسال السيرة الذاتية",
+    "cv-submission-description": "لإكمال تقديمك على هذه الوظيفة، تحتاج الجهة الطبية إلى مراجعة سيرتك الذاتية. يمكنك استخدام سيرتك الذاتية المحفوظة أو رفع سيرة جديدة الآن بصيغة PDF أو Word.",
+    "loading-cv": "جارٍ تحميل سيرتك الذاتية...",
+    "or": "أو",
+    "upload-new-cv": "رفع سيرة ذاتية جديدة",
+    "upload-cv": "رفع السيرة الذاتية",
+    "go-to-profile": "الذهاب إلى الملف الشخصي",
+    "success-title": "تم إرسال الطلب بنجاح",
+    "success-description": "شكرًا لتقديم طلبك. تمت مشاركة ملفك الشخصي مع فريق التوظيف وهو الآن قيد المراجعة. سيتم إشعارك إذا انتقلت إلى المرحلة التالية.",
+    "go-to-job-applications": "الذهاب إلى طلبات الوظائف",
+    "explore-more-jobs": "استكشف المزيد من الوظائف",
+    "similar-jobs": "وظائف مشابهة",
+    "handpicked-for-your-profile": "مختارة لملفك الشخصي",
+    "company-logo": "شعار الشركة",
+    "currency-icon": "أيقونة العملة",
+    "location-icon": "أيقونة الموقع",
+    "link-icon": "أيقونة الرابط",
+    "employer-profile-card": "بطاقة ملف صاحب العمل",
+    "cv-file": "ملف السيرة الذاتية",
+    "icon": "أيقونة",
+    "no-description-available": "لا يوجد وصف متاح.",
+    "toasts": {
+      "only-candidates": "يمكن فقط لحسابات المرشحين التقديم على الوظائف.",
+      "failed-load-cv": "تعذر تحميل سيرتك الذاتية.",
+      "please-wait": "يرجى الانتظار قليلًا ثم المحاولة مرة أخرى.",
+      "upload-cv-first": "يرجى رفع سيرتك الذاتية أولاً قبل التقديم.",
+      "application-submitted": "تم إرسال طلب التقديم بنجاح.",
+      "failed-submit-application": "تعذر إرسال طلب التقديم."
+    }
   },
   "contactPage": {
     "contact-us": "تواصل معنا",
@@ -96,7 +195,8 @@
     "find-job": "ابحث عن وظيفة",
     "popular-searches": "البحث الشائع",
     "show-more": "عرض المزيد",
-    "show-less": "عرض أقل"
+    "show-less": "عرض أقل",
+    "search": "بحث"
   },
   "home": {
     "how-it-work": "كيف يعمل",

@@ -12,6 +12,7 @@ import { getSiteOrigin, stripHtml, truncateText } from "@/features/jobs/utils";
 import Breadcrumb from "@/shared/components/Breadcrumb";
 import HttpStatusState from "@/shared/components/HttpStatusState";
 import { getHttpStatusCode } from "@/shared/lib/http-error";
+import { getTranslations } from "next-intl/server";
 
 type PageProps = {
   params: Promise<{ locale: string, slug: string }>;
@@ -124,6 +125,7 @@ export default async function page({
 }: PageProps) {
 
   const { slug } = await params
+  const t = await getTranslations();
   let jobDetails;
 
   try {
@@ -137,9 +139,9 @@ export default async function page({
           statusCode={statusCode}
           error={error}
           primaryHref="/jobs"
-          primaryLabel="Browse jobs"
+          primaryLabel={t("jobsPage.browse-jobs")}
           secondaryHref="/"
-          secondaryLabel="Back to home"
+          secondaryLabel={t("common.back-to-home")}
         />
       );
     }
@@ -150,10 +152,11 @@ export default async function page({
   return (
     <section className="bg-body-bg">
       <Breadcrumb
-        title="Job Details"
+        title={t("jobDetailsPage.breadcrumb-title")}
         items={[
-          { label: "Title", href: "/" },
-          { label: "Job Details", href: "" },
+          { label: t("header.home"), href: "/" },
+          { label: t("header.jobs"), href: "/jobs" },
+          { label: t("jobDetailsPage.breadcrumb-title"), href: "" },
         ]}
       />
       <section className="layout-shell">

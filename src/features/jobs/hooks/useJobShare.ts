@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "@/i18n/navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -37,6 +37,7 @@ function buildAbsoluteUrl(path: string) {
 
 export function useJobShare({ title = "Check out this job", path }: UseJobShareOptions = {}) {
   const locale = useLocale();
+  const t = useTranslations();
   const pathname = usePathname();
   const [shareUrl, setShareUrl] = useState("");
 
@@ -56,9 +57,9 @@ export function useJobShare({ title = "Check out this job", path }: UseJobShareO
 
     try {
       await navigator.clipboard.writeText(shareText);
-      toast.success("Job link copied successfully.");
+      toast.success(t("jobsPage.toasts.job-link-copied"));
     } catch {
-      toast.error("Unable to copy the job link.");
+      toast.error(t("jobsPage.toasts.unable-copy-job-link"));
     }
   };
 
@@ -77,13 +78,13 @@ export function useJobShare({ title = "Check out this job", path }: UseJobShareO
       }
 
       await navigator.clipboard.writeText(urlToShare);
-      toast.success("Job link copied successfully.");
+      toast.success(t("jobsPage.toasts.job-link-copied"));
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") {
         return;
       }
 
-      toast.error("Unable to share the job link.");
+      toast.error(t("jobsPage.toasts.unable-share-job-link"));
     }
   };
 

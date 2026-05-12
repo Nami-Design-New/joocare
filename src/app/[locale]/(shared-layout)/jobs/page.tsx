@@ -20,6 +20,7 @@ import {
   normalizeJobsSearchParams,
 } from '@/features/jobs/utils';
 import Breadcrumb from '@/shared/components/Breadcrumb';
+import { getTranslations } from 'next-intl/server';
 type PageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -90,6 +91,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const normalizedParams = normalizeJobsSearchParams(await searchParams);
   const actionPath = `/jobs`;
   const copy = getPageCopy(locale, normalizedParams.search);
+  const t = await getTranslations();
   const [filtersData, jobsData, popularSearchesPage] = await Promise.all([
     getJobsFiltersData(locale, normalizedParams.roleCategories),
     getJobsListing(locale, normalizedParams),
@@ -114,28 +116,28 @@ export default async function Page({ params, searchParams }: PageProps) {
   const filterSections: AccordionSection[] = [
     {
       key: 'professionalLicense',
-      label: 'Professional License',
+      label: t('jobsPage.filters.professional-license'),
       name: 'professional_licenses[]',
       options: [
-        { value: 'with_medical_license', label: 'With medical license' },
-        { value: 'without_medical_license', label: 'Without medical license' },
+        { value: 'with_medical_license', label: t('jobsPage.filters.with-medical-license') },
+        { value: 'without_medical_license', label: t('jobsPage.filters.without-medical-license') },
       ],
     },
     {
       key: 'roleCategories',
-      label: 'Role category',
+      label: t('jobsPage.filters.role-category'),
       name: 'role_categories[]',
       options: filtersData.roleCategories,
     },
     {
       key: 'seniorityLevels',
-      label: 'Seniority level',
+      label: t('jobsPage.filters.seniority-level'),
       name: 'seniority_levels[]',
       options: filtersData.seniorityLevels,
     },
     {
       key: 'domains',
-      label: 'Domain',
+      label: t('jobsPage.filters.domain'),
       name: 'domains[]',
       options: filtersData.domains,
     },
@@ -147,25 +149,25 @@ export default async function Page({ params, searchParams }: PageProps) {
     // },
     {
       key: 'experiences',
-      label: 'Experience',
+      label: t('jobsPage.filters.experience'),
       name: 'experiences[]',
       options: filtersData.experiences,
     },
     {
       key: 'availabilities',
-      label: 'Availability',
+      label: t('jobsPage.filters.availability'),
       name: 'availabilities[]',
       options: filtersData.availabilities,
     },
     {
       key: 'categories',
-      label: 'Category',
+      label: t('jobsPage.filters.category'),
       name: 'categories[]',
       options: filtersData.categories,
     },
     {
       key: 'employmentTypes',
-      label: 'Employment type',
+      label: t('jobsPage.filters.employment-type'),
       name: 'employment_types[]',
       options: filtersData.employmentTypes,
     },
@@ -233,13 +235,13 @@ export default async function Page({ params, searchParams }: PageProps) {
           {
             '@type': 'ListItem',
             position: 1,
-            name: 'Home',
+            name: t('header.home'),
             item: `${getSiteOrigin()}/${locale}`,
           },
           {
             '@type': 'ListItem',
             position: 2,
-            name: 'Jobs',
+            name: t('header.jobs'),
             item: `${getSiteOrigin()}${buildJobsPagePath(locale, normalizedParams)}`,
           },
         ],
@@ -256,21 +258,19 @@ export default async function Page({ params, searchParams }: PageProps) {
           '@type': 'ListItem',
           position: index + 1,
           url: `${getSiteOrigin()}/${locale}/jobs/${job.id}`,
-          name: job.title ?? 'Job',
+          name: job.title ?? t('jobsPage.job'),
         })),
       },
     ],
   };
-  console.log(jobsData);
-  // console.log(filtersData);
 
   return (
     <section className="bg-body-bg">
       <Breadcrumb
-        title="Jobs"
+        title={t('header.jobs')}
         items={[
-          { label: 'Home', href: '/' },
-          { label: 'Jobs', href: '/jobs' },
+          { label: t('header.home'), href: '/' },
+          { label: t('header.jobs'), href: '/jobs' },
         ]}
       />
       <script
