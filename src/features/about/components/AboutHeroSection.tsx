@@ -4,6 +4,7 @@ import AboutFeatureItem from "./AboutFeatureItem";
 import type { AboutFeature, AboutImage } from "../types/about.types";
 import { settingService } from "@/shared/services/settings-services";
 import { Plus } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 export default async function AboutHeroSection({
   title,
@@ -19,8 +20,7 @@ export default async function AboutHeroSection({
   const primaryImage = images[0];
   const secondaryImage = images[1];
   const settings = await settingService();
-
-  // console.log("settings", settings);
+  const t = await getTranslations();
 
   return (
     <section className="pt-6 xl:pt-14 xl:pt-18 xl:gap-16 xl:px-0 bg-background">
@@ -30,7 +30,10 @@ export default async function AboutHeroSection({
           <div className="grid grid-cols-1 gap-10  xl:gap-12  xl:grid-cols-5">
             <div className="xl:col-span-3">
               <div className="mb-2">
-                <SectionTitle sectionTitle="About JooCare" textColor="text-dark" />
+                <SectionTitle
+                  sectionTitle={t("aboutPage.section-title")}
+                  textColor="text-dark"
+                />
               </div>
 
               <h2 className="text-secondary max-w-lg mb-3 text-3xl leading-tight font-bold xl:text-3xl xl:mb-2 xl:text-4xl">
@@ -58,7 +61,7 @@ export default async function AboutHeroSection({
                 <div className="absolute top-0 right-0 h-[100%] w-[74%] overflow-hidden rounded-[30px] xl:rounded-[40px]">
                   <Image
                     src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
-                    alt={primaryImage?.alt ?? "About image"}
+                    alt={primaryImage?.alt ?? t("aboutPage.about-image-alt")}
                     fill
                     className="object-cover"
                   />
@@ -67,7 +70,7 @@ export default async function AboutHeroSection({
                 <div className="absolute top-[29.5%] left-0 h-[50%] w-1/2 overflow-hidden rounded-[22px] border-8 border-white shadow-xl xl:rounded-[30px] xl:border-[12px]">
                   <Image
                     src={secondaryImage?.image ?? "/assets/about/doctor1.jpg"}
-                    alt={secondaryImage?.alt ?? "About image"}
+                    alt={secondaryImage?.alt ?? t("aboutPage.about-image-alt")}
                     fill
                     className="object-cover"
                   />
@@ -75,7 +78,7 @@ export default async function AboutHeroSection({
 
                 <div className="bg-primary absolute top-[65%] left-[38%] flex aspect-square w-[23.5%] min-w-20 flex-col items-center justify-center rounded-full border-4 border-white text-white shadow-lg xl:min-w-28">
                   <span className="text-lg font-bold xl:text-2xl">{settings?.hiring_success_rate}%</span>
-                  <span className="text-[10px] xl:text-xs">Verified</span>
+                  <span className="text-[10px] xl:text-xs">{t("aboutPage.verified")}</span>
                 </div>
               </div>
             </div>
@@ -93,7 +96,9 @@ export default async function AboutHeroSection({
                 />
                 {settings?.verified_healthcare_professionals}
               </span>
-              <p className="text-muted-foreground mt-2 text-xl:font-medium">Verified Healthcare Professionals</p>
+              <p className="text-muted-foreground mt-2 text-xl:font-medium">
+                {t("home.verified-healthcare-professionals")}
+              </p>
             </div>
             <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
@@ -105,7 +110,9 @@ export default async function AboutHeroSection({
                 />
                 {settings?.active_job_opportunities}
               </span>
-              <p className="text-muted-foreground mt-2 text-xl:font-medium">Active Job opportunities</p>
+              <p className="text-muted-foreground mt-2 text-xl:font-medium">
+                {t("home.active-job-opportunities")}
+              </p>
             </div>
             <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
@@ -117,13 +124,17 @@ export default async function AboutHeroSection({
                 />
                 {settings?.healthcare_specializations_covered}
               </span>
-              <p className="text-muted-foreground mt-2 text-xl:font-medium">Healthcare Specializations Covered</p>
+              <p className="text-muted-foreground mt-2 text-xl:font-medium">
+                {t("home.healthcare-specializations-covered")}
+              </p>
             </div>
             <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
                 {settings?.hiring_success_rate} <span className="text-primary">%</span>
               </span>
-              <p className="text-muted-foreground mt-2 text-xl:font-medium">Hiring Success Rate</p>
+              <p className="text-muted-foreground mt-2 text-xl:font-medium">
+                {t("home.hiring-success-rate")}
+              </p>
             </div>
           </div>
         </div>

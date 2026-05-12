@@ -2,12 +2,14 @@ import Image from "next/image";
 import SectionTitle from "../../home/components/SectionTitle";
 import type { EmployersHeroSectionProps } from "../types";
 import { employerHeroFallbackImages } from "../utils";
+import { getTranslations } from "next-intl/server";
 
-export default function EmployersHeroSection({
+export default async function EmployersHeroSection({
   title,
   description,
   images,
 }: EmployersHeroSectionProps) {
+  const t = await getTranslations();
   const heroImages =
     images.length > 0 ? images.slice(0, 3) : employerHeroFallbackImages;
 
@@ -17,7 +19,7 @@ export default function EmployersHeroSection({
         <div>
           <div className="mb-2">
             <SectionTitle
-              sectionTitle="Your Healthcare Recruitment, Simplified!"
+              sectionTitle={t("forEmployersPage.hero-section-title")}
               textColor="text-dark"
             />
           </div>

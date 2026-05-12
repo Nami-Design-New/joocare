@@ -1,5 +1,81 @@
 {
-  "common": {},
+  "common": {
+    "back-to-home": "Back to home"
+  },
+  "aboutPage": {
+    "section-title": "About JooCare",
+    "about-image-alt": "About image",
+    "verified": "Verified",
+    "why-choose-us": "Why choose us?",
+    "get-started-for-free": "Get Started For Free",
+    "our-mission": "Our Mission",
+    "mission-image-alt": "Mission image",
+    "our-vision": "Our Vision",
+    "vision-image-alt": "Vision image"
+  },
+  "faqPage": {
+    "pagination-show": "Show",
+    "pagination-from": "from"
+  },
+  "contactPage": {
+    "contact-us": "Contact us",
+    "get-in-touch-candidate": "Get in Touch with us",
+    "get-in-touch-employer": "Get in Touch with us",
+    "illustration-alt": "illustration",
+    "for-candidate": "For Candidate",
+    "for-employer": "For Employer",
+    "follow-us": "Follow us",
+    "share-your-thoughts": "Share Your Thoughts",
+    "request-for-demo": "REQUEST FOR DEMO",
+    "tell-us-how-we-can-help": "Tell us how we can help",
+    "send-your-message": "Send Your Message",
+    "full-name": "Full Name",
+    "company-name": "Company Name",
+    "full-name-placeholder": "ex: Ahmed eltawy",
+    "company-name-placeholder": "ex: JooCare",
+    "email": "Email",
+    "official-email": "Official Email",
+    "email-placeholder": "ex:mail@mail.com",
+    "phone-number": "Phone Number",
+    "phone-placeholder": "Enter phone number",
+    "current-location": "Current Location",
+    "country": "country",
+    "city": "City",
+    "city-lower": "city",
+    "type-of-inquiry": "Type of inquiry",
+    "select-inquiry-type": "Select inquiry type",
+    "search-inquiry-type": "Search inquiry type",
+    "inquiry-type": "Inquiry type",
+    "other": "Other",
+    "other-inquiry-type": "Other inquiry type",
+    "enter-inquiry-type": "Enter inquiry type",
+    "message": "Message",
+    "message-placeholder": "Message goes here...",
+    "sending": "Sending...",
+    "send": "Send",
+    "toast": {
+      "success": "Your message has been sent successfully.",
+      "error": "Something went wrong. Please try again."
+    },
+    "validation": {
+      "name-required": "Name is required",
+      "email-invalid": "Email is invalid",
+      "inquiry-type-required": "Inquiry type is required",
+      "message-min": "Message must be at least 10 characters",
+      "other-inquiry-type-required": "Other inquiry type is required",
+      "phone-required": "Phone number is required",
+      "current-location-required": "Current location is required",
+      "city-required": "City is required"
+    }
+  },
+  "forEmployersPage": {
+    "hero-section-title": "Your Healthcare Recruitment, Simplified!",
+    "banner-image-alt": "Medical hiring",
+    "get-started-now": "Get Started Now",
+    "step": "Step {number}",
+    "why-section-title": "Talent at the Right Time",
+    "get-started-for-free": "Get Started For Free"
+  },
   "header": {
     "home": "Home",
     "about": "About",

@@ -11,6 +11,7 @@ import {
 } from "@/features/faq/utils";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
 import { getNextAuthToken } from "@/shared/util/auth.util";
+import { getTranslations } from "next-intl/server";
 
 type PageProps = {
   params: Promise<{ locale: string }>;
@@ -66,6 +67,7 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams;
   const currentPage = normalizeFaqPageParam(resolvedSearchParams.page);
   const authSession = await getNextAuthToken();
+  const t = await getTranslations();
   const faqAudience = getFaqAudienceByRole(authSession?.authRole);
   const faqsData = await getFaqsPageData(locale, currentPage, faqAudience);
   const copy = getFaqPageCopy(locale, faqsData.currentPage);
@@ -81,13 +83,13 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
           {
             "@type": "ListItem",
             position: 1,
-            name: "Home",
+            name: t("header.home"),
             item: `${siteOrigin}/${locale}`,
           },
           {
             "@type": "ListItem",
             position: 2,
-            name: "FAQ",
+            name: t("home.faq"),
             item: `${siteOrigin}${canonicalPath}`,
           },
         ],
@@ -109,10 +111,14 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
     ],
   };
 
-  console.log("DATA", faqsData)
   return (
     <>
-      <PlainBreadcrumb items={[{ label: "Home", href: "/" }, { label: "FAQ" }]} />
+      <PlainBreadcrumb
+        items={[
+          { label: t("header.home"), href: "/" },
+          { label: t("home.faq") },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}

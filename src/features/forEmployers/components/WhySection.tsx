@@ -1,16 +1,18 @@
 import { MoveRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { Button, buttonVariants } from "@/shared/components/ui/button";
+import { buttonVariants } from "@/shared/components/ui/button";
 import SectionTitle from "../../home/components/SectionTitle";
 import { FeatureItem } from "./FeatureItem";
 import type { WhySectionProps } from "../types";
 import { cn } from "@/shared/lib/utils";
+import { getTranslations } from "next-intl/server";
 
-export default function WhySection({
+export default async function WhySection({
   title,
   description,
   items,
 }: WhySectionProps) {
+  const t = await getTranslations();
   return (
     <section className="bg-white py-20">
       <div className="mx-auto px-4 sm:px-6">
@@ -18,7 +20,7 @@ export default function WhySection({
           <div className="lg:col-span-5">
             <div className="mb-2">
               <SectionTitle
-                sectionTitle="Talent at the Right Time"
+                sectionTitle={t("forEmployersPage.why-section-title")}
                 textColor="text-dark"
               />
             </div>
@@ -39,10 +41,8 @@ export default function WhySection({
                 , hoverStyle: "slideSecondary"
               }), "mt-5 flex w-full items-center justify-center gap-2 sm:mt-5 sm:w-fit")}
             >
-
-              Get Started For Free
+              {t("forEmployersPage.get-started-for-free")}
               <MoveRight className="mt-0.75" size={16} />
-
             </Link>
           </div>
 

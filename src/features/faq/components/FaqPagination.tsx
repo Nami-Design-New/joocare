@@ -8,6 +8,7 @@ import {
   PaginationPrevious,
 } from "@/shared/components/ui/pagination";
 import { buildFaqPagePath, getVisiblePages } from "../utils";
+import { getTranslations } from "next-intl/server";
 
 type FaqPaginationProps = {
   locale: string;
@@ -17,7 +18,7 @@ type FaqPaginationProps = {
   totalItems: number;
 };
 
-export default function FaqPagination({
+export default async function FaqPagination({
   locale,
   currentPage,
   totalPages,
@@ -28,6 +29,7 @@ export default function FaqPagination({
     return null;
   }
 
+  const t = await getTranslations();
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, totalItems);
   const pages = getVisiblePages(currentPage, totalPages);
@@ -35,7 +37,9 @@ export default function FaqPagination({
   return (
     <div className="flex w-full flex-wrap items-center justify-center gap-2 px-3 pb-20 md:gap-8 lg:px-20">
       <div className="text-muted-foreground order-2 text-sm font-medium md:order-1">
-        Show <span className="font-semibold">{start} - {end}</span> from{" "}
+        {t("faqPage.pagination-show")}{" "}
+        <span className="font-semibold">{start} - {end}</span>{" "}
+        {t("faqPage.pagination-from")}{" "}
         <span className="font-semibold">{totalItems}</span>
       </div>
 

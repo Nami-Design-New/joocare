@@ -1,5 +1,81 @@
 {
-  "common": {},
+  "common": {
+    "back-to-home": "العودة إلى الرئيسية"
+  },
+  "aboutPage": {
+    "section-title": "حول جُوكير",
+    "about-image-alt": "صورة حول",
+    "verified": "موثّق",
+    "why-choose-us": "لماذا تختارنا؟",
+    "get-started-for-free": "ابدأ مجانًا",
+    "our-mission": "مهمتنا",
+    "mission-image-alt": "صورة المهمة",
+    "our-vision": "رؤيتنا",
+    "vision-image-alt": "صورة الرؤية"
+  },
+  "faqPage": {
+    "pagination-show": "عرض",
+    "pagination-from": "من"
+  },
+  "contactPage": {
+    "contact-us": "تواصل معنا",
+    "get-in-touch-candidate": "تواصل معنا",
+    "get-in-touch-employer": "تواصل معنا",
+    "illustration-alt": "صورة توضيحية",
+    "for-candidate": "للباحثين عن عمل",
+    "for-employer": "لأصحاب العمل",
+    "follow-us": "تابعنا",
+    "share-your-thoughts": "شاركنا أفكارك",
+    "request-for-demo": "طلب عرض توضيحي",
+    "tell-us-how-we-can-help": "أخبرنا كيف يمكننا مساعدتك",
+    "send-your-message": "أرسل رسالتك",
+    "full-name": "الاسم الكامل",
+    "company-name": "اسم الشركة",
+    "full-name-placeholder": "مثال: أحمد الطاوي",
+    "company-name-placeholder": "مثال: جُوكير",
+    "email": "البريد الإلكتروني",
+    "official-email": "البريد الإلكتروني الرسمي",
+    "email-placeholder": "مثال: mail@mail.com",
+    "phone-number": "رقم الهاتف",
+    "phone-placeholder": "أدخل رقم الهاتف",
+    "current-location": "الموقع الحالي",
+    "country": "الدولة",
+    "city": "المدينة",
+    "city-lower": "المدينة",
+    "type-of-inquiry": "نوع الاستفسار",
+    "select-inquiry-type": "اختر نوع الاستفسار",
+    "search-inquiry-type": "ابحث عن نوع الاستفسار",
+    "inquiry-type": "نوع الاستفسار",
+    "other": "أخرى",
+    "other-inquiry-type": "نوع استفسار آخر",
+    "enter-inquiry-type": "أدخل نوع الاستفسار",
+    "message": "الرسالة",
+    "message-placeholder": "اكتب رسالتك هنا...",
+    "sending": "جارٍ الإرسال...",
+    "send": "إرسال",
+    "toast": {
+      "success": "تم إرسال رسالتك بنجاح.",
+      "error": "حدث خطأ ما، يرجى المحاولة مرة أخرى."
+    },
+    "validation": {
+      "name-required": "الاسم مطلوب",
+      "email-invalid": "البريد الإلكتروني غير صالح",
+      "inquiry-type-required": "نوع الاستفسار مطلوب",
+      "message-min": "يجب أن تحتوي الرسالة على 10 أحرف على الأقل",
+      "other-inquiry-type-required": "نوع الاستفسار الآخر مطلوب",
+      "phone-required": "رقم الهاتف مطلوب",
+      "current-location-required": "الموقع الحالي مطلوب",
+      "city-required": "المدينة مطلوبة"
+    }
+  },
+  "forEmployersPage": {
+    "hero-section-title": "توظيف الرعاية الصحية أصبح أسهل!",
+    "banner-image-alt": "التوظيف الطبي",
+    "get-started-now": "ابدأ الآن",
+    "step": "الخطوة {number}",
+    "why-section-title": "المواهب في الوقت المناسب",
+    "get-started-for-free": "ابدأ مجانًا"
+  },
   "header": {
     "home": "الرئيسية",
     "about": "عنا",

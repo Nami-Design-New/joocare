@@ -4,16 +4,18 @@ import { cn } from "@/shared/lib/utils";
 import { MoveRight } from "lucide-react";
 import Image from "next/image";
 import type { BannerSectionProps } from "../types";
+import { getTranslations } from "next-intl/server";
 
-export default function BannerSection({
+export default async function BannerSection({
   title,
   description,
   image,
 }: BannerSectionProps) {
+  const t = await getTranslations();
   const bannerImage = image ?? {
     id: "fallback-banner",
     image: "/assets/employers/bannerImg.png",
-    alt: "Medical hiring",
+    alt: t("forEmployersPage.banner-image-alt"),
   };
 
   return (
@@ -39,10 +41,8 @@ export default function BannerSection({
               , hoverStyle: "slideSecondary"
             }), "mx-auto mt-6 flex w-full items-center justify-center gap-2 sm:mt-8 sm:w-fit")}
           >
-
-            Get Started Now
+            {t("forEmployersPage.get-started-now")}
             <MoveRight className="mt-0.75" size={16} />
-
           </Link>
         </div>
 
