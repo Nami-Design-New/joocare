@@ -8,6 +8,7 @@ import {
   CarouselPrevious,
 } from "@/shared/components/ui/carousel";
 import type { HomeRate } from "../types/home.types";
+import { useTranslations } from "next-intl";
 
 export const TestimonialCard = ({
   name,
@@ -53,6 +54,8 @@ export const Testimonials = ({
   title: string;
   reviews: HomeRate[];
 }) => {
+  const t = useTranslations();
+
   // console.log("review ::", reviews);
 
   return (
@@ -69,7 +72,7 @@ export const Testimonials = ({
             {/* Header */}
             <div className="mb-12 flex items-center justify-between">
               <div className="space-y-4">
-                <SectionTitle sectionTitle="What Professionals Say" />
+                <SectionTitle sectionTitle={t('home.what-professionals-say')} />
                 <h2>{title}</h2>
               </div>
 

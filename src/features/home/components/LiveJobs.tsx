@@ -4,6 +4,7 @@ import SectionTitle from "./SectionTitle";
 import JobCard from "./JobCard";
 import type { HomeRecentJob } from "../types/home.types";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export const LiveJobs = ({
   title,
@@ -12,7 +13,7 @@ export const LiveJobs = ({
   title: string;
   jobs: HomeRecentJob[];
 }) => {
-
+  const t = useTranslations();
   return (
     <section
       className="bg-white py-10 md:py-20"
@@ -23,7 +24,7 @@ export const LiveJobs = ({
 
           <header className="mb-10 flex items-end justify-between">
             <div className="space-y-4">
-              <SectionTitle sectionTitle="Recent Jobs" />
+              <SectionTitle sectionTitle={t('home.recent-jobs')} />
               <h2 id="recent-jobs-title">{title}</h2>
             </div>
             <Link
@@ -37,7 +38,7 @@ export const LiveJobs = ({
                 " text-muted-foreground text-md group flex items-center gap-2 border-none font-normal"
               }
             >
-              Explore More
+              {t('home.explore-more')}
               <ArrowRight
                 size={28}
                 strokeWidth={1.5}

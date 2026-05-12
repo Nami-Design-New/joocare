@@ -13,12 +13,14 @@ import NextTopLoader from "nextjs-toploader";
 export default function MainProviders({
   children,
   locale,
+  messages,
 }: {
   children: React.ReactNode;
   locale: string;
+  messages: Record<string, unknown>;
 }) {
   return (
-    <NextIntlClientProvider locale={locale}>
+    <NextIntlClientProvider locale={locale} messages={messages}>
       <TanstackQueryProvider>
         <NextAuthProvider>
           <Provider store={store}>

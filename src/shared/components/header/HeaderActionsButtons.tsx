@@ -17,12 +17,15 @@ import { LanguageToggle } from "../LanguageToggle";
 import { Button, buttonVariants } from "../ui/button";
 import { DrawerScrollableContent } from "./DrawerScrollableContent";
 import UserDropDown from "./UserDropDown";
+import { useTranslations } from "next-intl";
 
 function HeaderActionsButtons({
   companyHeader,
 }: {
   companyHeader: boolean;
 }) {
+  const t = useTranslations();
+
   const router = useRouter();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -97,7 +100,7 @@ function HeaderActionsButtons({
               size="pill"
               className="hidden lg:flex"
             >
-              Login
+              {t('header.login')}
             </Button>
 
             <Button
@@ -107,7 +110,7 @@ function HeaderActionsButtons({
               size="pill"
               className="hidden lg:flex"
             >
-              Join Now
+              {t('header.join-now')}
             </Button>
           </>
         )}
@@ -179,7 +182,7 @@ function HeaderActionsButtons({
               },
             )}`}
           >
-            For Employer <ChevronRight size={24} />
+            {t('header.for-employer')} <ChevronRight size={24} />
           </Link>
         )}
       </div>

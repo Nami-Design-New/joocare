@@ -1,5 +1,37 @@
 {
-  "HomePage": {
-    "title": "Hello world!"
+  "common": {},
+  "header": {
+    "home": "Home",
+    "about": "About",
+    "jobs": "Jobs",
+    "contact": "Contact",
+    "login": "Login",
+    "join-now": "Join Now",
+    "for-employer": "For Employer"
+  },
+  "search-filter": {
+    "search-job": "Job title or keyword",
+    "by-country": "By Country",
+    "by-domain": "By Domain",
+    "by-category": "By Category",
+    "country": "Search country...",
+    "domain": "Search domain...",
+    "category": "Search category...",
+    "find-job": "Find Job",
+    "popular-searches": "Popular Searches",
+    "show-more": "Show More",
+    "show-less": "Show Less"
+  },
+  "home": {
+    "how-it-work": "How it work",
+    "why-joocare": "Why Joocare",
+    "joocare-model": "The Joocare Model",
+    "legacy-model": "The Joocare Model",
+    "top-employers": "Top Employers",
+    "proven-hiring-impact": "Proven Hiring Impact",
+    "recent-jobs": "Recent Jobs",
+    "explore-more": "Explore More",
+    "what-professionals-say": "What Professionals Say",
+    "faq": "FAQ"
   }
 }

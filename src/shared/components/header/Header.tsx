@@ -8,8 +8,10 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import HeaderActionsButtons from "./HeaderActionsButtons";
 import ResponsiveNavigationBar from "./ResponsiveNavigationBar";
+import { useTranslations } from "next-intl";
 
 const Header = () => {
+  const t = useTranslations();
   const [toggleSideMenu, setToggleSideMenu] = useState(false);
   const path = usePathname();
   const { data: session } = useSession();
@@ -69,7 +71,7 @@ const Header = () => {
                     }`}
                   href={homeHref}
                 >
-                  Home
+                  {t('header.home')}
                 </Link>
               </li>
               <li>
@@ -78,7 +80,7 @@ const Header = () => {
                     }`}
                   href="/about"
                 >
-                  About
+                  {t('header.about')}
                 </Link>
               </li>
               {/* {!companyHeader && ( */}
@@ -88,7 +90,7 @@ const Header = () => {
                     }`}
                   href="/jobs"
                 >
-                  Jobs
+                  {t('header.jobs')}
                 </Link>
               </li>
               {/* )} */}
@@ -98,7 +100,7 @@ const Header = () => {
                     }`}
                   href="/contact"
                 >
-                  Contact
+                  {t('header.contact')}
                 </Link>
               </li>
             </ul>

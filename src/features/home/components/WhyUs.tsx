@@ -3,6 +3,7 @@ import Cons from "./Cons";
 import Pros from "./Pros";
 import SectionTitle from "./SectionTitle";
 import type { HomeWhyModel } from "../types/home.types";
+import { useTranslations } from "next-intl";
 
 export default function WhyUs({
   title,
@@ -21,10 +22,12 @@ export default function WhyUs({
   joocareModelDescription: string;
   joocareModels: HomeWhyModel[];
 }) {
+  const t = useTranslations();
+
   return (
     <section className="bg-white px-0 py-10">
       <div className="layout-container mb-16 flex flex-col items-center space-y-4">
-        <SectionTitle sectionTitle="Why Joocare?" />
+        <SectionTitle sectionTitle={t('home.why-joocare')} />
         {/* <h2 className="text-center">{title}</h2> */}
       </div>
       <div className="bg-container-gray-2 flex flex-col lg:flex-row max-w-[2800px] mx-auto">

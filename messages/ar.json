@@ -1,5 +1,37 @@
 {
-  "HomePage": {
-    "title": "اهلا بك"
+  "common": {},
+  "header": {
+    "home": "الرئيسية",
+    "about": "عنا",
+    "jobs": "الوظائف",
+    "contact": "تواصل معنا",
+    "login": "الدخول",
+    "join-now": "انضم الآن",
+    "for-employer": "لأصحاب العمل"
+  },
+  "search-filter": {
+    "search-job": "المسمى الوظيفي أو كلمة مفتاحية",
+    "by-country": "حسب الدولة",
+    "by-domain": "حسب المجال",
+    "by-category": "حسب التصنيف",
+    "country": "ابحث عن دولة...",
+    "domain": "ابحث عن مجال...",
+    "category": "ابحث عن تصنيف...",
+    "find-job": "ابحث عن وظيفة",
+    "popular-searches": "البحث الشائع",
+    "show-more": "عرض المزيد",
+    "show-less": "عرض أقل"
+  },
+  "home": {
+    "how-it-work": "كيف يعمل",
+    "why-joocare": "لماذا جُوكير",
+    "joocare-model": "نموذج جُوكير",
+    "legacy-model": "النموذج التقليدي",
+    "top-employers": "أفضل أصحاب العمل",
+    "proven-hiring-impact": "نتائج مثبتة في التوظيف",
+    "recent-jobs": "أحدث الوظائف",
+    "explore-more": "استكشف المزيد",
+    "what-professionals-say": "ماذا يقول المحترفون",
+    "faq": "الأسئلة الشائعة"
   }
 }

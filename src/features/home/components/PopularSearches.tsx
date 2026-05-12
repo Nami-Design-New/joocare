@@ -72,6 +72,7 @@
 import { Button } from "@/shared/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import PopularSearchItem from "./PopularSearchItem";
+import { useTranslations } from "next-intl";
 
 export interface PopularSearchesItem {
   id: string;
@@ -93,16 +94,17 @@ interface PopularSearchesProps {
 
 export default function PopularSearches({
   items,
-  title = "Popular Searches",
+  title = "search-filter.popular-searches",
   maxVisible,
   onItemClick,
   onShowMore,
   onShowLess,
   isExpanded = false,
   isLoadingMore = false,
-  showMoreLabel = "Show more",
-  showLessLabel = "Show less",
+  showMoreLabel = "search-filter.show-more",
+  showLessLabel = "search-filter.show-less",
 }: PopularSearchesProps) {
+  const t = useTranslations();
   const visibleItems = maxVisible ? items.slice(0, maxVisible) : items;
   const hasItems = items.length > 0;
   const shouldShowToggleButton = hasItems && (Boolean(onShowMore) || Boolean(onShowLess));
@@ -112,7 +114,7 @@ export default function PopularSearches({
       {/* Top Row (mobile/tablet) */}
       <div className="flex w-full items-center justify-between lg:w-auto lg:shrink-0">
         <h4 className="text-foreground text-xl font-semibold whitespace-nowrap">
-          {title}
+          {t(title)}
         </h4>
 
         {shouldShowToggleButton && (
@@ -127,8 +129,8 @@ export default function PopularSearches({
             {isLoadingMore
               ? "Loading..."
               : isExpanded
-                ? showLessLabel
-                : showMoreLabel}
+                ? t(showLessLabel)
+                : t(showMoreLabel)}
             <ArrowRight
               size={28}
               strokeWidth={1.5}
@@ -163,8 +165,8 @@ export default function PopularSearches({
           {isLoadingMore
             ? "Loading..."
             : isExpanded
-              ? showLessLabel
-              : showMoreLabel}
+              ? t(showLessLabel)
+              : t(showMoreLabel)}
           <ArrowRight
             size={28}
             strokeWidth={1.5}

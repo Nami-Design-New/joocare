@@ -2,6 +2,7 @@ import React from "react";
 import SectionTitle from "./SectionTitle";
 import Image from "next/image";
 import type { HomeEmployer } from "../types/home.types";
+import { useTranslations } from "next-intl";
 
 export default function TopEmployers({
   title,
@@ -10,13 +11,15 @@ export default function TopEmployers({
   title: string;
   companies: HomeEmployer[];
 }) {
+  const t = useTranslations();
+
   return (
     <section className="bg-white">
       <section className="layout-shell  py-10 text-center md:py-20">
         <section className="layout-content flex flex-col items-center gap-8">
 
           <div className="flex mx-auto max-w-103 flex-col items-center gap-4">
-            <SectionTitle sectionTitle="Top Employers" />
+            <SectionTitle sectionTitle={t('home.top-employers')} />
 
             <h2>{title}</h2>
           </div>
