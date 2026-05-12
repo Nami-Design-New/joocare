@@ -38,5 +38,22 @@
     "healthcare-specializations-covered": "Healthcare Specializations Covered",
     "hiring-success-rate": "Hiring Success Rate",
     "lets-get-started": "Let's get started"
+  },
+  "footer": {
+    "description": "An AI-powered healthcare recruitment platform supporting compliant, data-driven hiring across medical and life sciences sectors.",
+    "copyright": "All rights reserved - JooCare © {year}",
+    "logo-alt": "Joo Care Logo",
+    "for-candidates": "For Candidates",
+    "explore-jobs": "Explore Jobs",
+    "faq": "FAQ",
+    "create-profile": "Create Profile",
+    "for-employers": "For Employers",
+    "how-it-works": "How It Works",
+    "company-trust": "Company & Trust",
+    "about-joocare": "About Joocare",
+    "data-privacy-security": "Data Privacy & Security",
+    "terms-conditions": "Terms & Conditions",
+    "get-in-touch": "Get in Touch",
+    "contact-us": "Contact us"
   }
 }

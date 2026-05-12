@@ -38,5 +38,22 @@
     "healthcare-specializations-covered": "التخصصات الصحية المغطاة",
     "hiring-success-rate": "معدل نجاح التوظيف",
     "lets-get-started": "لنبدأ الآن"
+  },
+  "footer": {
+    "description": "منصة توظيف صحية مدعومة بالذكاء الاصطناعي تدعم التوظيف المتوافق والقائم على البيانات عبر قطاعات الطب وعلوم الحياة.",
+    "copyright": "جميع الحقوق محفوظة - جُوكير © {year}",
+    "logo-alt": "شعار جُوكير",
+    "for-candidates": "للمرشحين",
+    "explore-jobs": "استكشف الوظائف",
+    "faq": "الأسئلة الشائعة",
+    "create-profile": "إنشاء ملف شخصي",
+    "for-employers": "لأصحاب العمل",
+    "how-it-works": "كيف يعمل",
+    "company-trust": "الشركة والثقة",
+    "about-joocare": "عن جُوكير",
+    "data-privacy-security": "خصوصية البيانات والأمان",
+    "terms-conditions": "الشروط والأحكام",
+    "get-in-touch": "تواصل معنا",
+    "contact-us": "اتصل بنا"
   }
 }
