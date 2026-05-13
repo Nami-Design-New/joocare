@@ -90,6 +90,7 @@ export type CandidateProfileApiUser = {
   created_at: string;
   updated_at: string;
   hiring_readiness_score?: number | null;
+  missing_score_items: string[];
 };
 
 export type CandidateProfileApiResponse = {
@@ -122,6 +123,7 @@ export type CandidateProfileViewModel = {
   educations: CandidateEducationViewModel[];
   experiences: CandidateExperienceViewModel[];
   hiring_readiness_score?: number | null;
+  missing_score_items: string[];
 };
 
 export type CandidateSkillViewModel = {

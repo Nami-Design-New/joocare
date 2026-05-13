@@ -211,5 +211,6 @@ export async function getCandidateProfile() {
     educations,
     experiences,
     hiring_readiness_score: user.hiring_readiness_score ?? null,
+    missing_score_items: user.missing_score_items ?? [],
   } satisfies CandidateProfileViewModel;
 }

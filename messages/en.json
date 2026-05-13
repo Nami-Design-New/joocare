@@ -457,8 +457,7 @@
       "delete-license-title": "Do you want to delete this License?",
       "delete-qualification-description": "The Qualification will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone.",
       "delete-certificate-description": "The Certificate will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone.",
-      "delete-license-description": "The License will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
-      ,
+      "delete-license-description": "The License will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone.",
       "qualification-image": "Qualification image",
       "license-image": "License image",
       "certificate-image": "Certificate image",
@@ -518,8 +517,7 @@
       "pdf-icon": "pdf icon",
       "pdf-preview-only": "Preview is available for PDF files only. You can still download, update, or delete this CV.",
       "view-cv": "View Cv",
-      "cv-file-name": "cv"
-      ,
+      "cv-file-name": "cv",
       "upload-image": "Upload Image",
       "skills": "Skills",
       "no-skills": "No skills added yet.",
@@ -529,6 +527,7 @@
       "profile-image": "profile image",
       "hiring-readiness": "Hiring Readiness",
       "hiring-readiness-help": "Add your ACLS certificate to unlock premium job matches.",
+      "missing-score-items": "Complete missing score items",
       "location": "Location",
       "phone": "Phone",
       "age": "Age"

@@ -22,7 +22,7 @@ const SideContentInfos = ({
   const displayAge = profile?.age ? String(profile.age) : "-";
   const displayExp = profile?.experience || "-";
   const hiringReadiness = profile?.hiring_readiness_score;
-
+  const readinessScore = profile?.hiring_readiness_score ?? 0;
   console.log("profile::::", profile);
 
   return (
@@ -54,12 +54,19 @@ const SideContentInfos = ({
           <span className="text-primary">{hiringReadiness}%</span>
         </div>
         <Progress value={hiringReadiness} />
-        {profile?.hiring_readiness_score != 100 && (
+        {profile?.hiring_readiness_score === 0 && (
           <div className="flex items-center gap-2">
             <CircleAlert className="text-primary h-4 w-4" />
             <span className="text-muted-foreground max-w-62 text-[12px]">
               {t("candidatePage.profile.hiring-readiness-help")}
             </span>
+          </div>
+        )}
+        {(readinessScore > 0 && readinessScore < 100) && (
+          <div className="flex items-center gap-2">
+            <CircleAlert className="text-primary h-4 w-4" />
+            <span className="text-muted-foreground max-w-62 text-[12px]">
+              {t('candidatePage.profile.missing-score-items')}{profile?.missing_score_items.map((item, index) => <span className="mx-0.5" key={index}>{item}</span>)}            </span>
           </div>
         )}
       </section>
