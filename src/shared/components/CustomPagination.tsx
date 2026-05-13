@@ -49,6 +49,9 @@ export function CustomPagination({
 }: CustomPaginationProps) {
   const t = useTranslations();
   const locale = useLocale();
+  const isRtl = locale === "ar";
+  const PreviousComponent = isRtl ? PaginationNext : PaginationPrevious;
+  const NextComponent = isRtl ? PaginationPrevious : PaginationNext;
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, totalItems);
@@ -77,12 +80,13 @@ export function CustomPagination({
         <PaginationContent className="gap-1">
           {/* Previous */}
           <PaginationItem>
-            <PaginationPrevious
+            <PreviousComponent
               href={
                 !isPreviousDisabled && getHref
                   ? getHref(Math.max(1, currentPage - 1))
                   : undefined
               }
+              aria-label="Go to previous page"
               aria-disabled={isPreviousDisabled}
               tabIndex={isPreviousDisabled ? -1 : undefined}
               onClick={(event) => {
@@ -127,12 +131,13 @@ export function CustomPagination({
 
           {/* Next */}
           <PaginationItem>
-            <PaginationNext
+            <NextComponent
               href={
                 !isNextDisabled && getHref
                   ? getHref(Math.min(totalPages, currentPage + 1))
                   : undefined
               }
+              aria-label="Go to next page"
               aria-disabled={isNextDisabled}
               tabIndex={isNextDisabled ? -1 : undefined}
               onClick={(event) => {

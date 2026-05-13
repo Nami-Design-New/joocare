@@ -1086,6 +1086,26 @@
         "with-medical-license": "With Medical License",
         "without-medical-license": "Without Medical License",
         "medical-license-placeholder": "Medical License"
+      },
+      "table": {
+        "number": "#",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "date": "Date",
+        "cv": "CV"
+      },
+      "actions": {
+        "download": "Download",
+        "downloading": "Downloading..."
+      },
+      "cv-modal": {
+        "title": "View CV",
+        "no-cv": "No CV available."
+      },
+      "pdf-icon-alt": "PDF icon",
+      "toasts": {
+        "download-cv-failed": "Failed to download CV"
       }
     },
     "accountSettings": {

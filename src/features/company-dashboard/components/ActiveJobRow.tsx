@@ -7,7 +7,7 @@ import { Eye } from "lucide-react";
 import { CompanyJob } from "../index.type";
 import { formatDate } from "@/shared/util/formateDate";
 import TextSkeleton from "@/features/company-profile/components/TextSkeleton";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function ActiveJobRow({
   activeJob,
@@ -19,8 +19,13 @@ export default function ActiveJobRow({
   isLoading: boolean;
 }) {
   const t = useTranslations();
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   return (
-    <TableRow className="border-border border-b bg-white text-center transition-colors">
+    <TableRow
+      className={`border-border border-b bg-white transition-colors ${isRtl ? "text-right" : "text-center"
+        }`}
+    >
       <TableCell className="text-muted-foreground w-12 px-4 py-5 font-medium text-ellipsis">
         {isLoading ? <TextSkeleton /> : activeJob?.job_title?.title ?? activeJob?.title}
       </TableCell>
@@ -42,7 +47,7 @@ export default function ActiveJobRow({
         {isLoading ? (
           <TextSkeleton />
         ) : (
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center gap-2 ${isRtl ? "justify-end" : "justify-center"}`}>
             <Link
               href={`/company/job/candidates/${activeJob?.id}`}
               // href={`/company/job/candidates`}

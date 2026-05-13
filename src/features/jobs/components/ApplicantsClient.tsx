@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useIncrementCvDownloads } from "../hooks/useIncrementCvDownloads";
 import { Applicant } from "../types/index.types";
 import { getTimeZone } from "@/shared/lib/fetch-manager";
+import { useTranslations } from "next-intl";
 
 type Props = {
   applicants: Applicant[];
@@ -29,6 +30,7 @@ const getDownloadFileName = (applicant: Applicant) => {
 };
 
 export default function ApplicantsClient({ applicants, token }: Props) {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(
     null,
@@ -60,7 +62,7 @@ export default function ApplicantsClient({ applicants, token }: Props) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to download CV");
+        throw new Error(t("companyPage.candidates.toasts.download-cv-failed"));
       }
 
       const blob = await response.blob();
@@ -77,7 +79,9 @@ export default function ApplicantsClient({ applicants, token }: Props) {
       }, 1000);
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Failed to download CV",
+        error instanceof Error
+          ? error.message
+          : t("companyPage.candidates.toasts.download-cv-failed"),
       );
     } finally {
       setDownloadingApplicantId(null);
@@ -97,7 +101,7 @@ export default function ApplicantsClient({ applicants, token }: Props) {
       <CVModal
         open={open}
         onOpenChange={setOpen}
-        title={"View Cv"}
+        title={t("companyPage.candidates.cv-modal.title")}
         pdfUrl={selectedApplicant?.cvUrl}
       />
     </>

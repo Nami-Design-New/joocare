@@ -1086,6 +1086,26 @@
         "with-medical-license": "مع ترخيص طبي",
         "without-medical-license": "بدون ترخيص طبي",
         "medical-license-placeholder": "الترخيص الطبي"
+      },
+      "table": {
+        "number": "#",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "date": "التاريخ",
+        "cv": "السيرة الذاتية"
+      },
+      "actions": {
+        "download": "تحميل",
+        "downloading": "جارٍ التحميل..."
+      },
+      "cv-modal": {
+        "title": "عرض السيرة الذاتية",
+        "no-cv": "لا توجد سيرة ذاتية متاحة."
+      },
+      "pdf-icon-alt": "أيقونة PDF",
+      "toasts": {
+        "download-cv-failed": "فشل تحميل السيرة الذاتية"
       }
     },
     "accountSettings": {

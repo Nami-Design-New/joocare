@@ -7,6 +7,7 @@ import {
 } from "@/shared/components/ui/table";
 import { Applicant } from "../types/index.types";
 import ApplicantRow from "./ApplicantRow";
+import { useLocale, useTranslations } from "next-intl";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type applicantsTableProps = {
@@ -22,16 +23,29 @@ export default function ApplicantsTable({
   onView,
   downloadingApplicantId,
 }: applicantsTableProps) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+
   return (
     <section>
-      <div className="border-border mt-4 w-full overflow-x-auto rounded-2xl border bg-white">
+      <div
+        dir={isRtl ? "rtl" : "ltr"}
+        className="border-border mt-4 w-full overflow-x-auto rounded-2xl border bg-white">
         <Table>
           <TableHeader>
             <TableRow className="border-border border-b bg-white hover:bg-white">
-              {["#", "Name", "Email", "Phone", "Date", "Cv"].map((col) => (
+              {[
+                t("companyPage.candidates.table.number"),
+                t("companyPage.candidates.table.name"),
+                t("companyPage.candidates.table.email"),
+                t("companyPage.candidates.table.phone"),
+                t("companyPage.candidates.table.date"),
+                t("companyPage.candidates.table.cv"),
+              ].map((col) => (
                 <TableHead
                   key={col}
-                  className="text-foreground px-4 py-5 text-sm font-semibold"
+                  className={`text-foreground px-4 py-5 text-sm font-semibold ${isRtl ? "text-right" : ""}`}
                 >
                   {col}
                 </TableHead>
