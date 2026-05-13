@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
@@ -35,6 +35,7 @@ export function AddSkillsModal({
   jobTitleId,
 }: AddSkillsModalProps) {
   const locale = useLocale();
+  const t = useTranslations();
   const { data: session } = useSession();
   const token = session?.accessToken ?? "";
   const queryClient = useQueryClient();
@@ -133,7 +134,8 @@ export function AddSkillsModal({
       onSave([...skills, ...newSkills]);
       handleClose(false);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to add skills.";
+      const message =
+        error instanceof Error ? error.message : t("candidatePage.toasts.skills-add-failed");
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -154,12 +156,12 @@ export function AddSkillsModal({
       <DialogContent className="max-w-150 gap-4 rounded-2xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-black">
-            Add Skills
+            {t("candidatePage.profile.add-skills")}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-1.5">
-          <label className="font-semibold">Skill</label>
+          <label className="font-semibold">{t("candidatePage.profile.skill-label")}</label>
           <MultiSelectInputSkills
             selected={selected}
             onSelect={toggle}
@@ -177,7 +179,7 @@ export function AddSkillsModal({
         </div>
 
         <div className="space-y-2">
-          <p className="text-sm">Suggested based on your profile</p>
+          <p className="text-sm">{t("candidatePage.profile.suggested-skills-title")}</p>
           <div className="flex flex-wrap gap-2 rounded-xl bg-[#09760A05] p-3">
             {suggestionSkills.map((skill) => {
               const isSelected = selected.includes(skill.id);
@@ -196,7 +198,9 @@ export function AddSkillsModal({
               );
             })}
             {suggestionSkills.length === 0 && (
-              <p className="text-muted-foreground text-sm">No suggested skills available.</p>
+              <p className="text-muted-foreground text-sm">
+                {t("candidatePage.profile.no-suggested-skills")}
+              </p>
             )}
           </div>
         </div>
@@ -207,7 +211,7 @@ export function AddSkillsModal({
             disabled={selected.length === 0 || isSuggestionLoading || isSaving}
             className="rounded-full px-10"
           >
-            {isSaving ? "Saving..." : "Add"}
+            {isSaving ? t("candidatePage.common.saving") : t("candidatePage.common.add")}
           </Button>
         </div>
       </DialogContent>

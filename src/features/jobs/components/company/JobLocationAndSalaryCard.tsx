@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { JobDetails } from "../../types/jobs.types";
 import { getJobSalary } from "../../utils";
+import { useTranslations } from "next-intl";
 
 export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
+  const t = useTranslations();
   return (
     <div className="card border-border shadow-card flex min-h-36 items-center justify-around rounded-2xl border-2 bg-white  py-8 px-4 xl:p-8">
       <div className="flex flex-1  flex-col items-center justify-center gap-2">
@@ -11,15 +13,16 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
             src={"/assets/icons/dollar.svg"}
             width={20}
             height={20}
-            alt="currancy icon"
+            alt={t("jobDetailsPage.currency-icon")}
           />
         </div>
         <h4 className="text-foreground text-lg font-semibold">
-          Salary {job?.salary_type ? `(${job?.currency?.code})` : ""}
+          {t("jobDetailsPage.salary")}{" "}
+          {job?.salary_type ? `(${job?.currency?.code})` : ""}
         </h4>
         {job.has_salary ?
           <p className="text-primary text-md font-semibold">{getJobSalary(job)} </p>
-          : <p className="text-primary text-md font-semibold">Not specified</p>
+          : <p className="text-primary text-md font-semibold">{t("jobsPage.not-specified")}</p>
         }
         <span className="text-muted-foreground text-sm">{job?.salary_type?.title ?? ""}</span>
       </div>
@@ -30,10 +33,10 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
             src={"/assets/icons/map-pin.svg"}
             width={38}
             height={38}
-            alt="Location icon"
+            alt={t("jobDetailsPage.location-icon")}
           />
         </div>
-        <h4 className="text-foreground text-lg font-semibold">Job Location</h4>
+        <h4 className="text-foreground text-lg font-semibold">{t("jobDetailsPage.job-location")}</h4>
         <p className="text-muted-foreground text-md text-center font-semibold">
           {job?.city?.name ?? "-"}
           {job?.city_id === null ? "" : ","}

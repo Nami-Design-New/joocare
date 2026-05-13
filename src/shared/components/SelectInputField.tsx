@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../lib/utils";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import {
   Combobox,
   ComboboxContent,
@@ -67,7 +68,7 @@ export const SelectInputField = React.forwardRef<
       hasNextPage,
       isFetchingNextPage,
       withSearchInput = false,
-      searchPlaceholder = "Search...",
+      searchPlaceholder = "",
       onSearchChange,
       portalContainer,
       allowDeselect = false,
@@ -75,6 +76,8 @@ export const SelectInputField = React.forwardRef<
     },
     ref,
   ) => {
+    const t = useTranslations();
+    const resolvedSearchPlaceholder = searchPlaceholder || t("common.search");
     const listRef = React.useRef<HTMLDivElement | null>(null);
     const observerRef = React.useRef<IntersectionObserver | null>(null);
 
@@ -167,12 +170,12 @@ export const SelectInputField = React.forwardRef<
                 {showPlaceholderImage && (
                   <Image
                     src={showPlaceholderImage}
-                    alt="placeholder"
+                    alt={t("common.placeholder-image-alt")}
                     width={30}
                     height={15}
                   />
                 )}
-                {placeholder || "Select an option"}
+                {placeholder || t("common.select-an-option")}
               </span>
             )}
           </ComboboxTrigger>
@@ -181,12 +184,12 @@ export const SelectInputField = React.forwardRef<
             {withSearchInput && (
               <ComboboxInput
                 showTrigger={false}
-                placeholder={searchPlaceholder}
+                placeholder={resolvedSearchPlaceholder}
                 onChange={(event) => onSearchChange?.(event.currentTarget.value)}
               />
             )}
 
-            <ComboboxEmpty>No results found.</ComboboxEmpty>
+            <ComboboxEmpty>{t("common.no-results-found")}</ComboboxEmpty>
 
             <ComboboxList
               ref={listRef}
@@ -220,7 +223,7 @@ export const SelectInputField = React.forwardRef<
             </ComboboxList>
             {isFetchingNextPage && (
               <div className="text-muted-foreground px-2 pb-2 text-center text-xs">
-                Loading...
+                {t("common.loading")}
               </div>
             )}
           </ComboboxContent>

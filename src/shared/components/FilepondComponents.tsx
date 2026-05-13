@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslations } from "next-intl";
 
 // Import React FilePond
 import { FilePond, registerPlugin } from 'react-filepond'
@@ -16,6 +17,7 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export function FilepondComponent() {
   const [files, setFiles] = useState<any[]>([])
+  const t = useTranslations();
   return (
       <FilePond
         files={files}
@@ -24,7 +26,9 @@ export function FilepondComponent() {
         maxFiles={3}
         server="/api"
         name="files"
-        labelIdle='<div style="display:flex; flex-direction:column; align-items:center; gap:8px;"><span>Drag &amp; Drop your files or Browse</span></div>'
+        labelIdle={`<div style="display:flex; flex-direction:column; align-items:center; gap:8px;"><span>${t(
+          "authPage.file-upload.drag-drop-or-browse",
+        )}</span></div>`}
              />
   )
 }

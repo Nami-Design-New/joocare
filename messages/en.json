@@ -15,6 +15,12 @@
     "uploading": "Uploading...",
     "view": "View",
     "select": "Select",
+    "select-an-option": "Select an option",
+    "no-results-found": "No results found.",
+    "no-country-found": "No country found.",
+    "loading-pdf": "Loading PDF...",
+    "failed-load-pdf": "Failed to load PDF.",
+    "placeholder-image-alt": "Placeholder image",
     "sidebar-navigation": "Sidebar navigation"
   },
   "header": {
@@ -545,6 +551,13 @@
       "cv-file-name": "cv",
       "upload-image": "Upload Image",
       "skills": "Skills",
+      "add-skills": "Add Skills",
+      "edit-skills": "Edit Skills",
+      "skill-label": "Skill",
+      "suggested-skills-title": "Suggested based on your profile",
+      "no-suggested-skills": "No suggested skills available.",
+      "no-skills-to-edit": "No skills available to edit.",
+      "skills-placeholder": "ex: consultant cardiologist",
       "no-skills": "No skills added yet.",
       "no-experience": "No experience added yet.",
       "candidate": "Candidate",
@@ -561,6 +574,8 @@
       "session-expired": "Your session has expired. Please log in again.",
       "about-updated": "About updated successfully.",
       "about-update-failed": "Failed to update about information.",
+      "skills-add-failed": "Failed to add skills.",
+      "skills-update-failed": "Failed to update skills.",
       "education-added": "Education added successfully.",
       "education-updated": "Education updated successfully.",
       "education-save-failed": "Failed to save education.",
@@ -1282,5 +1297,36 @@
     "terms-conditions": "Terms & Conditions",
     "get-in-touch": "Get in Touch",
     "contact-us": "Contact us"
+  },
+  "completeAccount": {
+    "actions": {
+      "prev": "Prev",
+      "next": "Next",
+      "submit": "Submit"
+    },
+    "upload": {
+      "cover-alt": "Cover image",
+      "logo-alt": "Organization logo",
+      "upload-icon-alt": "Upload icon",
+      "cover-cta": "Upload a cover image",
+      "logo-cta": "Organization Logo",
+      "uploading-short": "Uploading",
+      "cover-and-logo-required": "Cover and logo are required"
+    },
+    "stepThree": {
+      "organization-official-phone": "Organization official phone number",
+      "about-organization": {
+        "label": "About the Organization",
+        "placeholder": "Write about the Organization..."
+      },
+      "online-profile": "Online profile",
+      "social": {
+        "linkedin": "LinkedIn",
+        "facebook": "Facebook",
+        "twitter": "X/Twitter",
+        "instagram": "Instagram",
+        "snapchat": "Snapchat"
+      }
+    }
   }
 }

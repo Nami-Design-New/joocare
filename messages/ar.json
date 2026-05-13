@@ -15,6 +15,12 @@
     "uploading": "جارٍ الرفع...",
     "view": "عرض",
     "select": "اختر",
+    "select-an-option": "اختر خيارًا",
+    "no-results-found": "لم يتم العثور على نتائج.",
+    "no-country-found": "لم يتم العثور على دولة.",
+    "loading-pdf": "جارٍ تحميل ملف PDF...",
+    "failed-load-pdf": "تعذر تحميل ملف PDF.",
+    "placeholder-image-alt": "صورة افتراضية",
     "sidebar-navigation": "التنقل في الشريط الجانبي"
   },
   "header": {
@@ -545,6 +551,13 @@
       "cv-file-name": "السيرة-الذاتية",
       "upload-image": "رفع صورة",
       "skills": "المهارات",
+      "add-skills": "إضافة مهارات",
+      "edit-skills": "تعديل المهارات",
+      "skill-label": "المهارة",
+      "suggested-skills-title": "مقترحة بناءً على ملفك الشخصي",
+      "no-suggested-skills": "لا توجد مهارات مقترحة متاحة.",
+      "no-skills-to-edit": "لا توجد مهارات متاحة للتعديل.",
+      "skills-placeholder": "مثال: استشاري أمراض القلب",
       "no-skills": "لا توجد مهارات مضافة بعد.",
       "no-experience": "لا توجد خبرات مضافة بعد.",
       "candidate": "مرشح",
@@ -561,6 +574,8 @@
       "session-expired": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
       "about-updated": "تم تحديث النبذة بنجاح.",
       "about-update-failed": "فشل تحديث النبذة.",
+      "skills-add-failed": "فشلت إضافة المهارات.",
+      "skills-update-failed": "فشل تحديث المهارات.",
       "education-added": "تمت إضافة التعليم بنجاح.",
       "education-updated": "تم تحديث التعليم بنجاح.",
       "education-save-failed": "فشل حفظ التعليم.",
@@ -1282,5 +1297,36 @@
     "terms-conditions": "الشروط والأحكام",
     "get-in-touch": "تواصل معنا",
     "contact-us": "اتصل بنا"
+  },
+  "completeAccount": {
+    "actions": {
+      "prev": "السابق",
+      "next": "التالي",
+      "submit": "إرسال"
+    },
+    "upload": {
+      "cover-alt": "صورة الغلاف",
+      "logo-alt": "شعار المؤسسة",
+      "upload-icon-alt": "أيقونة الرفع",
+      "cover-cta": "رفع صورة غلاف",
+      "logo-cta": "شعار المؤسسة",
+      "uploading-short": "جارٍ الرفع",
+      "cover-and-logo-required": "صورة الغلاف والشعار مطلوبة"
+    },
+    "stepThree": {
+      "organization-official-phone": "رقم هاتف المؤسسة الرسمي",
+      "about-organization": {
+        "label": "نبذة عن المؤسسة",
+        "placeholder": "اكتب نبذة عن المؤسسة..."
+      },
+      "online-profile": "الملف الإلكتروني",
+      "social": {
+        "linkedin": "لينكدإن",
+        "facebook": "فيسبوك",
+        "twitter": "إكس/تويتر",
+        "instagram": "إنستغرام",
+        "snapchat": "سناب شات"
+      }
+    }
   }
 }

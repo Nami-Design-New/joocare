@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { useFormContext, Controller, useWatch } from "react-hook-form";
 import { useUploadImage } from "@/shared/hooks/useUploadImage";
+import { useTranslations } from "next-intl";
 
 // ✅ Lives outside the component — survives step navigation
 const imagePreviewCache = {
@@ -13,6 +14,7 @@ const imagePreviewCache = {
 };
 
 export default function CoverUploadImage() {
+  const t = useTranslations();
   const {
     control,
     formState: { errors },
@@ -117,14 +119,14 @@ export default function CoverUploadImage() {
                 {coverLocalPreview ? (
                   <Image
                     src={coverLocalPreview}
-                    alt="Cover"
+                    alt={t("completeAccount.upload.cover-alt")}
                     fill
                     className="object-cover rounded-[50px]"
                   />
                 ) : (
                   <div className="flex flex-col items-center gap-2 text-foreground/50">
-                    <Image width={60} height={60} src="/assets/icons/upload-image-icon.svg" alt="upload" />
-                    <span className="text-sm">Upload a cover image</span>
+                    <Image width={60} height={60} src="/assets/icons/upload-image-icon.svg" alt={t("completeAccount.upload.upload-icon-alt")} />
+                    <span className="text-sm">{t("completeAccount.upload.cover-cta")}</span>
                   </div>
                 )}
 
@@ -133,7 +135,7 @@ export default function CoverUploadImage() {
                     <svg className="animate-spin text-white" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                       <path d="M12 2a10 10 0 0 1 10 10" />
                     </svg>
-                    <span className="text-white text-sm font-medium">Uploading...</span>
+                    <span className="text-white text-sm font-medium">{t("common.uploading")}</span>
                   </div>
                 )}
 
@@ -167,11 +169,11 @@ export default function CoverUploadImage() {
                 )}
               >
                 {logoLocalPreview ? (
-                  <Image src={logoLocalPreview} alt="Logo" fill className="object-cover rounded-full" />
+                  <Image src={logoLocalPreview} alt={t("completeAccount.upload.logo-alt")} fill className="object-cover rounded-full" />
                 ) : (
                   <div className="flex flex-col items-center gap-1 text-center text-foreground/50 px-1">
-                    <Image width={40} height={40} src="/assets/icons/upload-image-icon.svg" alt="upload" />
-                    <span className="text-[10px] leading-tight">Organization Logo</span>
+                    <Image width={40} height={40} src="/assets/icons/upload-image-icon.svg" alt={t("completeAccount.upload.upload-icon-alt")} />
+                    <span className="text-[10px] leading-tight">{t("completeAccount.upload.logo-cta")}</span>
                   </div>
                 )}
 
@@ -180,7 +182,7 @@ export default function CoverUploadImage() {
                     <svg className="animate-spin text-white" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                       <path d="M12 2a10 10 0 0 1 10 10" />
                     </svg>
-                    <span className="text-white text-[10px] font-medium">Uploading</span>
+                    <span className="text-white text-[10px] font-medium">{t("completeAccount.upload.uploading-short")}</span>
                   </div>
                 )}
 
@@ -201,7 +203,7 @@ export default function CoverUploadImage() {
       {(errors.uploadCoverImage || errors.uploadLogoImage) && (
         <span className="text-[12px] text-red-500 -mt-2">
           {errors.uploadCoverImage && errors.uploadLogoImage
-            ? "Cover and logo are required"
+            ? t("completeAccount.upload.cover-and-logo-required")
             : errors.uploadCoverImage?.message?.toString() ||
             errors.uploadLogoImage?.message?.toString()}
         </span>
