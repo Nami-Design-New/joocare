@@ -708,6 +708,204 @@
       "post-job-tooltip-line-1": "Please complete your account details first",
       "post-job-tooltip-line-2": "to post a job."
     },
+    "postJob": {
+      "common": {
+        "other": "Other"
+      },
+      "steps": {
+        "jobDetails": "Job Details",
+        "jobDescriptionRequirements": "Job Description & Requirements",
+        "jobPreview": "Job Preview"
+      },
+      "loadingJobData": "Loading job data...",
+      "actions": {
+        "saveAsDraft": "Save as Draft",
+        "prev": "Prev",
+        "next": "Next",
+        "posting": "Posting...",
+        "saveChanges": "Save Changes",
+        "confirmPostJob": "Confirm & Post Job",
+        "add": "Add",
+        "addNew": "Add new"
+      },
+      "modals": {
+        "saveDraft": {
+          "title": "Save as draft",
+          "description": "All entered information will be saved in the Drafts section. The job posting will not be published until you complete the details and choose to publish.",
+          "confirm": "Save as draft"
+        },
+        "savedSuccessfully": {
+          "title": "Saved successfully",
+          "description": "The job details have been saved. You can continue editing and publish the posting at any time from Job Management."
+        },
+        "postSuccess": {
+          "updatedTitle": "Job updated successfully!",
+          "publishedTitle": "Your advertisement has been successfully published!",
+          "updatedDescription": "Your changes have been saved and the job listing has been updated.",
+          "publishedDescription": "The job posting has been activated and is open to applicants. All applications, engagement activity, and performance insights are available in the dashboard."
+        }
+      },
+      "sections": {
+        "salary": {
+          "addSalaryQuestion": "Do you want to add salary?",
+          "rangeLabel": "Salary Range",
+          "minPlaceholder": "Min",
+          "maxPlaceholder": "Max"
+        },
+        "employment": {
+          "title": "Employment Type Section"
+        },
+        "location": {
+          "title": "Job Location"
+        },
+        "education": {
+          "title": "Education & Certifications section"
+        },
+        "availability": {
+          "title": "Availability"
+        }
+      },
+      "fields": {
+        "jobTitle": {
+          "label": "Job Title",
+          "placeholder": "ex: Cardiac surgeon"
+        },
+        "otherJobTitle": {
+          "label": "Other job title",
+          "placeholder": "Enter job title"
+        },
+        "professionalLicense": {
+          "label": "Professional License",
+          "placeholder": "ex: DHA License",
+          "options": {
+            "withMedicalLicense": "With medical license",
+            "withoutMedicalLicense": "Without medical license"
+          }
+        },
+        "salaryType": {
+          "label": "Salary Type",
+          "placeholder": "Hourly"
+        },
+        "currency": {
+          "label": "Currency",
+          "placeholder": "Choose"
+        },
+        "jobCategory": {
+          "label": "Job Category"
+        },
+        "specialty": {
+          "label": "Specialty",
+          "placeholder": "ex: specialty"
+        },
+        "otherCategory": {
+          "label": "Other category",
+          "placeholder": "Enter category"
+        },
+        "employmentType": {
+          "label": "Employment Type",
+          "placeholder": "ex: Full-time"
+        },
+        "roleCategory": {
+          "label": "Role Category",
+          "placeholder": "ex: Clinical"
+        },
+        "seniorityLevel": {
+          "label": "Seniority Level"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "ex: United Arab Emirates (UAE)"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "ex: Dubai"
+        },
+        "yearsOfExperience": {
+          "label": "Years of Experience"
+        },
+        "otherYearsOfExperience": {
+          "label": "Other years of experience",
+          "placeholder": "Enter years of experience"
+        },
+        "educationLevel": {
+          "label": "Education Level"
+        },
+        "mandatoryCertifications": {
+          "label": "Mandatory Certifications"
+        },
+        "addNewCertification": {
+          "label": "Add new certification",
+          "placeholder": "Type a certification title"
+        },
+        "availability": {
+          "label": "Availability"
+        },
+        "otherAvailability": {
+          "label": "Other availability",
+          "placeholder": "Enter availability"
+        },
+        "jobDescription": {
+          "label": "Job Description"
+        },
+        "skills": {
+          "label": "Skills",
+          "placeholder": "ex: Improvement"
+        }
+      },
+      "review": {
+        "untitledJob": "Untitled job",
+        "noDescriptionHtml": "<p>No description available.</p>",
+        "noPreviewData": "No preview data yet. Complete step 2 successfully to load job details.",
+        "companyLogoAlt": "Company logo",
+        "at": "at",
+        "companyFallback": "Company",
+        "na": "N/A",
+        "jobDescriptionTitle": "Job description",
+        "skillsTitle": "Skills",
+        "noSkillsSelected": "No skills selected.",
+        "salary": "Salary",
+        "jobLocation": "Job Location",
+        "jobOverview": "Job Overview",
+        "educationSectionTitle": "Education & Certifications section",
+        "fields": {
+          "experience": "Experience",
+          "jobCategory": "Job Category",
+          "specialty": "Specialty",
+          "roleCategory": "Role category",
+          "seniorityLevel": "Seniority Level",
+          "educationLevel": "Education Level",
+          "mandatoryCertifications": "Mandatory Certifications",
+          "availability": "Availability"
+        }
+      },
+      "validation": {
+        "salaryMaxDigits": "Salary must not exceed 10 digits",
+        "jobTitleRequired": "Job title is required",
+        "professionalLicenseRequired": "Professional license is required",
+        "categoryRequired": "Category is required",
+        "specialtyRequired": "Specialty is required",
+        "employmentTypeRequired": "Employment type is required",
+        "roleCategoryRequired": "Role category is required",
+        "countryRequired": "Country is required",
+        "cityRequired": "City is required",
+        "yearsOfExperienceRequired": "Years of experience is required",
+        "educationLevelRequired": "Education level is required",
+        "mandatoryCertificationsRequired": "Mandatory certifications is required",
+        "availabilityRequired": "Availability is required",
+        "otherJobTitleRequired": "Other job title is required",
+        "otherCategoryRequired": "Other category is required",
+        "otherYearsOfExperienceRequired": "Other years of experience is required",
+        "otherAvailabilityRequired": "Other availability is required",
+        "salaryRequired": "Salary is required",
+        "minSalaryRequired": "Min salary is required",
+        "maxSalaryRequired": "Max salary is required",
+        "maxSalaryGreaterThanMin": "Max salary must be greater than min",
+        "salaryTypeRequired": "Salary type is required",
+        "currencyRequired": "Currency is required",
+        "descriptionRequired": "Description is required",
+        "atLeastOneSkillRequired": "At least one skill is required"
+      }
+    },
     "dashboard": {
       "active-jobs-title": "Active Jobs",
       "category-breakdown": "Category Breakdown",

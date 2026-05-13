@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { JobFormData } from "../validation/job-post-schema";
 import Image from "next/image";
@@ -5,6 +7,7 @@ import { Badge } from "@/shared/components/ui/badge";
 import { JobDetails } from "../types/jobs.types";
 import { getJobSalary } from "../utils";
 import JobOverviewItem from "./JobOverviewItem";
+import { useTranslations } from "next-intl";
 
 type JobPreviewLabels = Partial<{
   title: string;
@@ -86,18 +89,22 @@ function resolveDisplayValue(
   return resolveNamedValue(selectedValue, entityId, entityTitle);
 }
 
-function resolveTitle(data: JobFormData, job: JobDetails | null) {
+function resolveTitle(
+  data: JobFormData,
+  job: JobDetails | null,
+  untitledJobLabel: string,
+) {
   if (data.title === "__other__") {
-    return data.otherJobTitle?.trim() || job?.title || "Untitled job";
+    return data.otherJobTitle?.trim() || job?.title || untitledJobLabel;
   }
 
   if (data.title) {
     return data.title === toIdString(job?.job_title_id)
-      ? (job?.job_title?.title ?? "Untitled job")
+      ? (job?.job_title?.title ?? untitledJobLabel)
       : data.title;
   }
 
-  return job?.title ?? job?.job_title?.title ?? "Untitled job";
+  return job?.title ?? job?.job_title?.title ?? untitledJobLabel;
 }
 
 function resolveCustomOrNamedValue(
@@ -128,15 +135,20 @@ function buildEditPreviewData(
   data: JobFormData,
   job: JobDetails | null,
   previewLabels: JobPreviewLabels,
+  labels: {
+    untitledJob: string;
+    notSpecified: string;
+    noDescriptionHtml: string;
+  },
 ): ReviewPreviewData {
-  const resolvedTitle = resolveTitle(data, job);
+  const resolvedTitle = resolveTitle(data, job, labels.untitledJob);
   const salary = data.addSalary
     ? getJobSalary({
       min_salary: data.salary?.min ?? null,
       max_salary: data.salary?.max ?? null,
       currency: null,
     })
-    : "Not specified";
+    : labels.notSpecified;
   const salaryType = data.addSalary
     ? resolvePreviewString(
       previewLabels.salaryType,
@@ -172,7 +184,7 @@ function buildEditPreviewData(
         job?.employment_type?.title,
       ),
     ),
-    description: data.description || "<p>No description available.</p>",
+    description: data.description || labels.noDescriptionHtml,
     skills:
       previewLabels.skills ??
       data.skills?.map(
@@ -275,6 +287,7 @@ function buildSidebarData(
   data: JobFormData,
   job: JobDetails | null,
   previewLabels: JobPreviewLabels,
+  labels: { notSpecified: string },
 ): ReviewSidebarData {
   const addSalary = Boolean(data.addSalary || job?.has_salary);
   const salary = addSalary
@@ -283,7 +296,7 @@ function buildSidebarData(
       max_salary: data.salary?.max ?? job?.max_salary ?? null,
       currency: null,
     })
-    : "Not specified";
+    : labels.notSpecified;
 
   const salaryType = addSalary
     ? resolveDisplayValue(
@@ -389,6 +402,9 @@ function buildSidebarData(
 }
 
 function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
+  const t = useTranslations();
+  const tPostJob = useTranslations("companyPage.postJob");
+
   return (
     <>
       <div className="card border-border shadow-card flex min-h-36 items-center justify-around rounded-2xl border-2 bg-white px-6 py-8 lg:justify-between">
@@ -398,11 +414,12 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
               src={"/assets/icons/dollar.svg"}
               width={20}
               height={20}
-              alt="currancy icon"
+              alt=""
             />
           </div>
           <h4 className="text-foreground text-lg font-semibold">
-            Salary {preview.salaryType !== "-" ? `(${preview.currencyCode})` : ""}
+            {tPostJob("review.salary")}
+            {preview.salaryType !== "-" ? ` (${preview.currencyCode})` : ""}
           </h4>
           <p className="text-primary text-md font-semibold">
             {preview.salary}
@@ -417,10 +434,10 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
               src={"/assets/icons/map-pin.svg"}
               width={38}
               height={38}
-              alt="Location icon"
+              alt=""
             />
           </div>
-          <h4 className="text-foreground text-lg font-semibold">Job Location</h4>
+          <h4 className="text-foreground text-lg font-semibold">{tPostJob("review.jobLocation")}</h4>
           <p className="text-muted-foreground text-md text-center font-semibold">
             {preview.city}
             {preview.city !== "-" ? "," : ""}
@@ -432,42 +449,47 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
 
       <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white px-6 py-8">
         <h2 className="text-foreground mb-4 text-lg font-semibold">
-          Job Overview
+          {tPostJob("review.jobOverview")}
         </h2>
         <div className="grid grid-cols-2 gap-6 px-3 text-sm">
           <div className="col-span-2">
             <JobOverviewItem
-              label="Experience"
+              label={tPostJob("review.fields.experience")}
               value={preview.experience}
               icon="/assets/icons/exp.svg"
+              emptyValueLabel={t("jobsPage.not-specified")}
             />
           </div>
           <JobOverviewItem
-            label="Job Category"
+            label={tPostJob("review.fields.jobCategory")}
             value={preview.category}
             icon="/assets/icons/job-category.svg"
+            emptyValueLabel={t("jobsPage.not-specified")}
           />
           <JobOverviewItem
-            label="Specialty"
+            label={tPostJob("review.fields.specialty")}
             value={preview.specialty}
             icon="/assets/icons/specialty.svg"
+            emptyValueLabel={t("jobsPage.not-specified")}
           />
           <JobOverviewItem
-            label="Role category"
+            label={tPostJob("review.fields.roleCategory")}
             value={preview.roleCategory}
             icon="/assets/icons/role-category.svg"
+            emptyValueLabel={t("jobsPage.not-specified")}
           />
           <JobOverviewItem
-            label="Seniority Level"
+            label={tPostJob("review.fields.seniorityLevel")}
             value={preview.seniorityLevel}
             icon="/assets/icons/seniority.svg"
+            emptyValueLabel={t("jobsPage.not-specified")}
           />
         </div>
       </div>
 
       <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white px-6 py-8">
         <h2 className="text-foreground mb-4 text-lg font-semibold">
-          Education & Certifications section
+          {tPostJob("review.educationSectionTitle")}
         </h2>
         <div className="flex flex-col gap-6">
           <div>
@@ -475,9 +497,9 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
               <Image
                 src="/assets/icons/exp.svg"
                 width={20} height={20}
-                alt="icon"
+                alt=""
               />
-              <p className="text-muted-foreground text-md">Education Level</p>
+              <p className="text-muted-foreground text-md">{tPostJob("review.fields.educationLevel")}</p>
             </div>
             <ul className="mt-2 flex flex-col gap-2">
               {preview.educationLevels.map((level) => (
@@ -495,9 +517,9 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
               <Image
                 src="/assets/icons/case.svg"
                 width={20} height={20}
-                alt="icon"
+                alt=""
               />
-              <p className="text-muted-foreground text-md">Mandatory Certifications</p>
+              <p className="text-muted-foreground text-md">{tPostJob("review.fields.mandatoryCertifications")}</p>
             </div>
             <ul className="mt-2 flex flex-col gap-2">
               {preview.mandatoryCertifications.map((item) => (
@@ -511,9 +533,10 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
             </ul>
           </div>
           <JobOverviewItem
-            label="Availability"
+            label={tPostJob("review.fields.availability")}
             value={preview.availability}
             icon="/assets/icons/case.svg"
+            emptyValueLabel={t("jobsPage.not-specified")}
           />
         </div>
       </div>
@@ -532,18 +555,27 @@ export default function JobReviewPanel({
   isEditMode?: boolean;
   previewLabels?: JobPreviewLabels;
 }) {
+  const t = useTranslations();
+  const tPostJob = useTranslations("companyPage.postJob");
+
+  const labels = {
+    untitledJob: tPostJob("review.untitledJob"),
+    notSpecified: t("jobsPage.not-specified"),
+    noDescriptionHtml: tPostJob("review.noDescriptionHtml"),
+  };
+
   if (!job && !isEditMode) {
     return (
       <section className="p-6">
         <p className="text-muted-foreground text-sm">
-          No preview data yet. Complete step 2 successfully to load job details.
+          {tPostJob("review.noPreviewData")}
         </p>
       </section>
     );
   }
 
-  const preview = isEditMode ? buildEditPreviewData(data, job, previewLabels) : null;
-  const sidebarPreview = buildSidebarData(data, job, previewLabels);
+  const preview = isEditMode ? buildEditPreviewData(data, job, previewLabels, labels) : null;
+  const sidebarPreview = buildSidebarData(data, job, previewLabels, labels);
   const skills = preview?.skills ?? job?.skills?.map((skill) => skill.title) ?? [];
 
   return (
@@ -551,7 +583,7 @@ export default function JobReviewPanel({
       <div className="mt-5 flex items-center gap-6 p-4">
         <Image
           src="/assets/new-logo-dot.svg"
-          alt="Company logo"
+          alt={tPostJob("review.companyLogoAlt")}
           width={96}
           height={86}
         />
@@ -562,12 +594,12 @@ export default function JobReviewPanel({
           </h6>
           <div className="flex items-center gap-2 ">
             <span className="text-muted-foreground text-lg font-normal">
-              at {job?.company?.name ?? "Company"}
+              {tPostJob("review.at")} {job?.company?.name ?? tPostJob("review.companyFallback")}
             </span>{" "}
             <Badge size="md" className="rounded-[3px] bg-[#0BA02C]">
               {preview?.employmentType?.toUpperCase() ??
                 job?.employment_type?.title?.toUpperCase() ??
-                "N/A"}
+                tPostJob("review.na")}
             </Badge>{" "}
           </div>
         </div>
@@ -576,7 +608,7 @@ export default function JobReviewPanel({
       <div className="grid grid-cols-1 gap-5 p-7 lg:grid-cols-3">
         <div className="font-noto-sans col-span-2 text-[#212529]">
           <h3 className="text-primary mb-4 text-xl font-bold">
-            Job description
+            {tPostJob("review.jobDescriptionTitle")}
           </h3>
           <div
             className="prose prose-sm max-w-none border-b pb-5"
@@ -584,18 +616,18 @@ export default function JobReviewPanel({
               __html:
                 preview?.description ||
                 job?.description ||
-                "<p>No description available.</p>",
+                labels.noDescriptionHtml,
             }}
           />
           <div>
             <h3 className="text-primary font-outfit mt-5 text-xl font-bold">
-              Skills:
+              {tPostJob("review.skillsTitle")}
             </h3>
             <ul className="dashed-list mt-5 flex flex-col gap-1.5 ps-7 text-sm">
               {skills.map((skill) => (
                 <li key={skill}>{skill}</li>
               ))}
-              {skills.length === 0 && <li>No skills selected.</li>}
+              {skills.length === 0 && <li>{tPostJob("review.noSkillsSelected")}</li>}
             </ul>
           </div>
         </div>

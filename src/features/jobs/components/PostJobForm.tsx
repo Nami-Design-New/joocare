@@ -31,6 +31,7 @@ import JobReviewPanel from "./JobReviewPanel";
 import { useRouter } from "@/i18n/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Option } from "@/shared/components/SelectInputField";
+import { useTranslations } from "next-intl";
 
 // ─── Form mode ──────────────────────────────────────────
 // create  → fresh form, step-by-step, saves each step
@@ -58,8 +59,7 @@ type JobPreviewLabels = Partial<{
   skills: string[];
 }>;
 
-const STEPS = ["Job Details", "Job Description & Requirements", "Job Preview"];
-const LAST_STEP = STEPS.length - 1;
+const LAST_STEP = 2;
 const CUSTOM_CERTIFICATION_PREFIX = "__custom__:";
 const OTHER_OPTION_VALUE = "__other__";
 
@@ -179,6 +179,7 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
 }
 
 export default function PostJobForm() {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const jobIdParam = searchParams.get("jobId"); // complete mode
   const editIdParam = searchParams.get("editId"); // edit mode
@@ -214,6 +215,15 @@ export default function PostJobForm() {
   const token = session?.accessToken || "";
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  const steps = useMemo(
+    () => [
+      t("companyPage.postJob.steps.jobDetails"),
+      t("companyPage.postJob.steps.jobDescriptionRequirements"),
+      t("companyPage.postJob.steps.jobPreview"),
+    ],
+    [t],
+  );
 
   // ─── Mutations ─────────────────────────────────────────
   const { mutateAsync: postStepOne, isPending: isPostingStepOne } = usePostStepOne({ token });
@@ -643,7 +653,7 @@ export default function PostJobForm() {
                 d="M4 12a8 8 0 018-8v8H4z"
               />
             </svg>
-            <p className="text-muted-foreground">Loading job data...</p>
+            <p className="text-muted-foreground">{t("companyPage.postJob.loadingJobData")}</p>
           </div>
         </div>
       </section>
@@ -669,7 +679,7 @@ export default function PostJobForm() {
     <section className="h-min-dvh mx-auto max-w-7xl py-12">
       <div className="h-full rounded-2xl bg-white shadow-lg p-6">
         <div className="flex gap-6">
-          <WizardProgress step={currentStep} steps={STEPS} />
+          <WizardProgress step={currentStep} steps={steps} />
           {/* Save as Draft — hidden in edit mode */}
           {!isEditMode && currentStep !== 0 && (
             <Button
@@ -678,7 +688,7 @@ export default function PostJobForm() {
               hoverStyle="slidePrimary"
               onClick={() => setSaveDraftOpen(true)}
             >
-              Save as Draft
+              {t("companyPage.postJob.actions.saveAsDraft")}
             </Button>
           )}
         </div>
@@ -721,7 +731,7 @@ export default function PostJobForm() {
                   size="pill"
                   className="w-1/6"
                 >
-                  Prev
+                  {t("companyPage.postJob.actions.prev")}
                 </Button>
               )}
 
@@ -735,7 +745,9 @@ export default function PostJobForm() {
                   size="pill"
                   className="w-1/6"
                 >
-                  {isBusy && !isEditMode ? "Saving..." : "Next"}
+                  {isBusy && !isEditMode
+                    ? t("common.saving")
+                    : t("companyPage.postJob.actions.next")}
                 </Button>
               ) : (
                 <Button
@@ -749,12 +761,12 @@ export default function PostJobForm() {
                 >
                   {isSubmitting ? (
                     <>
-                      {isEditMode ? "Saving..." : "Posting..."}
+                      {isEditMode ? t("common.saving") : t("companyPage.postJob.actions.posting")}
                     </>
                   ) : isEditMode ? (
-                    "Save Changes"
+                    t("companyPage.postJob.actions.saveChanges")
                   ) : (
-                    "Confirm & Post Job"
+                    t("companyPage.postJob.actions.confirmPostJob")
                   )}
                 </Button>
               )}
@@ -766,28 +778,32 @@ export default function PostJobForm() {
       <AlertModal
         open={saveDraftOpen}
         onOpenChange={setSaveDraftOpen}
-        title="Save as draft"
-        description="All entered information will be saved in the Drafts section. The job posting will not be published until you complete the details and choose to publish."
-        confirmLabel="Save as draft"
-        cancelLabel="Back"
+        title={t("companyPage.postJob.modals.saveDraft.title")}
+        description={t("companyPage.postJob.modals.saveDraft.description")}
+        confirmLabel={t("companyPage.postJob.modals.saveDraft.confirm")}
+        cancelLabel={t("common.back")}
         onConfirm={handleSaveDraft}
         isLoading={isPostingStepThree}
       />
       <SuccessModal
         open={saveSuccessOpen}
         onOpenChange={setSaveSuccessOpen}
-        title="Saved successfully"
-        description="The job details have been saved. You can continue editing and publish the posting at any time from Job Management."
+        title={t("companyPage.postJob.modals.savedSuccessfully.title")}
+        description={t("companyPage.postJob.modals.savedSuccessfully.description")}
       />
       <SuccessModal
         open={postSuccess}
         onOpenChange={setPostSuccess}
-        title={isEditMode
-          ? "Job updated successfully!"
-          : "Your advertisement has been successfully published!"}
-        description={isEditMode
-          ? "Your changes have been saved and the job listing has been updated."
-          : "The job posting has been activated and is open to applicants. All applications, engagement activity, and performance insights are available in the dashboard."}
+        title={
+          isEditMode
+            ? t("companyPage.postJob.modals.postSuccess.updatedTitle")
+            : t("companyPage.postJob.modals.postSuccess.publishedTitle")
+        }
+        description={
+          isEditMode
+            ? t("companyPage.postJob.modals.postSuccess.updatedDescription")
+            : t("companyPage.postJob.modals.postSuccess.publishedDescription")
+        }
       />
     </section>
   );

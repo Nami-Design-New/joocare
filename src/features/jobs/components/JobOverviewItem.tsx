@@ -9,18 +9,19 @@ type JobOverviewItemProps = {
   label: string;
   value: valueProps[] | string | undefined;
   icon?: string;
+  emptyValueLabel?: string;
 };
 
 const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
   label,
   value,
   icon,
+  emptyValueLabel = "Not specified",
 }) => {
-
   return (
     <div>
       <div className="flex items-center gap-2">
-        {icon && <Image src={icon} width={20} height={20} alt="icon"></Image>}
+        {icon && <Image src={icon} width={20} height={20} alt="" />}
         <p className="text-muted-foreground text-md">{label}</p>
       </div>
       <div>
@@ -33,7 +34,7 @@ const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
         ) : value ? (
           <p className="text-foreground font-semibold text-[18px] mt-2">{value}</p>
         ) : (
-          <p className="text-foreground font-semibold text-[18px] mt-2">Not specified</p>
+          <p className="text-foreground font-semibold text-[18px] mt-2">{emptyValueLabel}</p>
         )}
       </div>
     </div>

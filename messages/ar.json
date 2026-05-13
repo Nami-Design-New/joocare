@@ -708,6 +708,204 @@
       "post-job-tooltip-line-1": "يرجى استكمال بيانات حسابك أولاً",
       "post-job-tooltip-line-2": "لنشر وظيفة."
     },
+    "postJob": {
+      "common": {
+        "other": "أخرى"
+      },
+      "steps": {
+        "jobDetails": "تفاصيل الوظيفة",
+        "jobDescriptionRequirements": "وصف الوظيفة والمتطلبات",
+        "jobPreview": "معاينة الوظيفة"
+      },
+      "loadingJobData": "جارٍ تحميل بيانات الوظيفة...",
+      "actions": {
+        "saveAsDraft": "حفظ كمسودة",
+        "prev": "السابق",
+        "next": "التالي",
+        "posting": "جارٍ النشر...",
+        "saveChanges": "حفظ التغييرات",
+        "confirmPostJob": "تأكيد ونشر الوظيفة",
+        "add": "إضافة",
+        "addNew": "إضافة جديد"
+      },
+      "modals": {
+        "saveDraft": {
+          "title": "حفظ كمسودة",
+          "description": "سيتم حفظ جميع المعلومات المُدخلة في قسم المسودات. لن يتم نشر إعلان الوظيفة حتى تستكمل التفاصيل وتختار النشر.",
+          "confirm": "حفظ كمسودة"
+        },
+        "savedSuccessfully": {
+          "title": "تم الحفظ بنجاح",
+          "description": "تم حفظ تفاصيل الوظيفة. يمكنك المتابعة في التعديل ونشر الإعلان في أي وقت من إدارة الوظائف."
+        },
+        "postSuccess": {
+          "updatedTitle": "تم تحديث الوظيفة بنجاح!",
+          "publishedTitle": "تم نشر الإعلان بنجاح!",
+          "updatedDescription": "تم حفظ تغييراتك وتم تحديث إعلان الوظيفة.",
+          "publishedDescription": "تم تفعيل إعلان الوظيفة وأصبح متاحًا للمتقدمين. جميع الطلبات ونشاط التفاعل ومؤشرات الأداء متاحة في لوحة التحكم."
+        }
+      },
+      "sections": {
+        "salary": {
+          "addSalaryQuestion": "هل ترغب في إضافة راتب؟",
+          "rangeLabel": "نطاق الراتب",
+          "minPlaceholder": "الحد الأدنى",
+          "maxPlaceholder": "الحد الأقصى"
+        },
+        "employment": {
+          "title": "قسم نوع التوظيف"
+        },
+        "location": {
+          "title": "موقع الوظيفة"
+        },
+        "education": {
+          "title": "قسم التعليم والشهادات"
+        },
+        "availability": {
+          "title": "التوفر"
+        }
+      },
+      "fields": {
+        "jobTitle": {
+          "label": "المسمى الوظيفي",
+          "placeholder": "مثال: جرّاح قلب"
+        },
+        "otherJobTitle": {
+          "label": "مسمى وظيفي آخر",
+          "placeholder": "أدخل المسمى الوظيفي"
+        },
+        "professionalLicense": {
+          "label": "الترخيص المهني",
+          "placeholder": "مثال: ترخيص DHA",
+          "options": {
+            "withMedicalLicense": "مع ترخيص طبي",
+            "withoutMedicalLicense": "بدون ترخيص طبي"
+          }
+        },
+        "salaryType": {
+          "label": "نوع الراتب",
+          "placeholder": "بالساعة"
+        },
+        "currency": {
+          "label": "العملة",
+          "placeholder": "اختر"
+        },
+        "jobCategory": {
+          "label": "فئة الوظيفة"
+        },
+        "specialty": {
+          "label": "التخصص",
+          "placeholder": "مثال: تخصص"
+        },
+        "otherCategory": {
+          "label": "فئة أخرى",
+          "placeholder": "أدخل الفئة"
+        },
+        "employmentType": {
+          "label": "نوع التوظيف",
+          "placeholder": "مثال: دوام كامل"
+        },
+        "roleCategory": {
+          "label": "فئة الدور الوظيفي",
+          "placeholder": "مثال: سريري"
+        },
+        "seniorityLevel": {
+          "label": "المستوى الوظيفي"
+        },
+        "country": {
+          "label": "الدولة",
+          "placeholder": "مثال: الإمارات العربية المتحدة (UAE)"
+        },
+        "city": {
+          "label": "المدينة",
+          "placeholder": "مثال: دبي"
+        },
+        "yearsOfExperience": {
+          "label": "سنوات الخبرة"
+        },
+        "otherYearsOfExperience": {
+          "label": "سنوات خبرة أخرى",
+          "placeholder": "أدخل سنوات الخبرة"
+        },
+        "educationLevel": {
+          "label": "المستوى التعليمي"
+        },
+        "mandatoryCertifications": {
+          "label": "الشهادات الإلزامية"
+        },
+        "addNewCertification": {
+          "label": "إضافة شهادة جديدة",
+          "placeholder": "اكتب عنوان الشهادة"
+        },
+        "availability": {
+          "label": "التوفر"
+        },
+        "otherAvailability": {
+          "label": "توفر آخر",
+          "placeholder": "أدخل التوفر"
+        },
+        "jobDescription": {
+          "label": "وصف الوظيفة"
+        },
+        "skills": {
+          "label": "المهارات",
+          "placeholder": "مثال: تحسين الأداء"
+        }
+      },
+      "review": {
+        "untitledJob": "وظيفة بدون عنوان",
+        "noDescriptionHtml": "<p>لا يوجد وصف متاح.</p>",
+        "noPreviewData": "لا توجد بيانات معاينة بعد. أكمل الخطوة الثانية بنجاح لعرض تفاصيل الوظيفة.",
+        "companyLogoAlt": "شعار الشركة",
+        "at": "في",
+        "companyFallback": "الشركة",
+        "na": "غير متاح",
+        "jobDescriptionTitle": "وصف الوظيفة",
+        "skillsTitle": "المهارات",
+        "noSkillsSelected": "لم يتم اختيار مهارات.",
+        "salary": "الراتب",
+        "jobLocation": "موقع الوظيفة",
+        "jobOverview": "نظرة عامة على الوظيفة",
+        "educationSectionTitle": "قسم التعليم والشهادات",
+        "fields": {
+          "experience": "الخبرة",
+          "jobCategory": "فئة الوظيفة",
+          "specialty": "التخصص",
+          "roleCategory": "فئة الدور الوظيفي",
+          "seniorityLevel": "المستوى الوظيفي",
+          "educationLevel": "المستوى التعليمي",
+          "mandatoryCertifications": "الشهادات الإلزامية",
+          "availability": "التوفر"
+        }
+      },
+      "validation": {
+        "salaryMaxDigits": "يجب ألا يتجاوز الراتب 10 أرقام",
+        "jobTitleRequired": "المسمى الوظيفي مطلوب",
+        "professionalLicenseRequired": "الترخيص المهني مطلوب",
+        "categoryRequired": "الفئة مطلوبة",
+        "specialtyRequired": "التخصص مطلوب",
+        "employmentTypeRequired": "نوع التوظيف مطلوب",
+        "roleCategoryRequired": "فئة الدور الوظيفي مطلوبة",
+        "countryRequired": "الدولة مطلوبة",
+        "cityRequired": "المدينة مطلوبة",
+        "yearsOfExperienceRequired": "سنوات الخبرة مطلوبة",
+        "educationLevelRequired": "المستوى التعليمي مطلوب",
+        "mandatoryCertificationsRequired": "الشهادات الإلزامية مطلوبة",
+        "availabilityRequired": "التوفر مطلوب",
+        "otherJobTitleRequired": "يرجى إدخال المسمى الوظيفي الآخر",
+        "otherCategoryRequired": "يرجى إدخال الفئة الأخرى",
+        "otherYearsOfExperienceRequired": "يرجى إدخال سنوات الخبرة الأخرى",
+        "otherAvailabilityRequired": "يرجى إدخال التوفر الآخر",
+        "salaryRequired": "الراتب مطلوب",
+        "minSalaryRequired": "الحد الأدنى للراتب مطلوب",
+        "maxSalaryRequired": "الحد الأقصى للراتب مطلوب",
+        "maxSalaryGreaterThanMin": "يجب أن يكون الحد الأقصى أكبر من الحد الأدنى",
+        "salaryTypeRequired": "نوع الراتب مطلوب",
+        "currencyRequired": "العملة مطلوبة",
+        "descriptionRequired": "وصف الوظيفة مطلوب",
+        "atLeastOneSkillRequired": "يجب اختيار مهارة واحدة على الأقل"
+      }
+    },
     "dashboard": {
       "active-jobs-title": "الوظائف النشطة",
       "category-breakdown": "توزيع الفئات",

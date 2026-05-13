@@ -333,7 +333,7 @@ export const authOptions: NextAuthOptions = {
             image: user?.image,
           });
 
-          token.user = socialSession.user;
+          // token.user = socialSession.user;
           token.accessToken = socialSession.accessToken;
           token.id = socialSession.id;
           token.authRole = socialSession.authRole;
@@ -344,7 +344,7 @@ export const authOptions: NextAuthOptions = {
       }
 
       if (user) {
-        token.user = user.user;
+        // token.user = user.user;
         token.accessToken = user.accessToken;
         token.id = user.id;
         token.authRole = user.authRole;
@@ -354,7 +354,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.user = token.user ?? session.user;
+      // session.user = token.user ?? session.user;
       session.accessToken = token.accessToken ?? "";
       session.authRole = token.authRole;
       session.authMessage = token.authMessage;
