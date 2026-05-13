@@ -205,6 +205,7 @@ const FormEmployerRegister = () => {
               {t("authPage.forms.employer-register.i-agree-to")}{" "}
               <Link
                 href="/terms-conditions"
+                target="_blank"
                 className="underline-primary text-secondary underline"
               >
                 {t("footer.terms-conditions")}
@@ -212,6 +213,7 @@ const FormEmployerRegister = () => {
               {" "}{t("authPage.forms.employer-register.and")}{" "}
               <Link
                 href="/privacy-policy"
+                target="_blank"
                 className="underline-primary text-secondary underline"
               >
                 {t("footer.data-privacy-security")}
