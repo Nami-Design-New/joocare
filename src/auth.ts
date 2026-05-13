@@ -359,7 +359,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.user = token.user ?? session.user;
+      // session.user = token.user ?? session.user;
       session.accessToken = token.accessToken ?? "";
       session.authRole = token.authRole;
       session.authMessage = token.authMessage;
