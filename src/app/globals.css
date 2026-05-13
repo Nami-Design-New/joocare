@@ -195,6 +195,20 @@
     font-size: clamp(1.25rem, 2vw, 1.75rem);
     @apply text-secondary font-semibold;
   }
+
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
+
+  input[type="password"]::-webkit-credentials-auto-fill-button,
+  input[type="password"]::-webkit-textfield-decoration-container {
+    display: none !important;
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+  }
 }
 
 @layer components {
