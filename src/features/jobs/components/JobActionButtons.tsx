@@ -9,6 +9,7 @@ import { Button, buttonVariants } from "@/shared/components/ui/button";
 import { CheckCheck, Edit, EyeOff, Play, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { JobStatus } from "../types/index.types";
+import { useTranslations } from "next-intl";
 
 type JobActionButtonsProps = {
   jobId?: number | string;
@@ -25,6 +26,7 @@ export function JobActionButtons({
   currentStatus = "open",
   deleteRedirectTo,
 }: JobActionButtonsProps) {
+  const t = useTranslations();
   const [closeJob, setCloseJob] = useState(false);
   const [reactivateJob, setReactivateJob] = useState(false);
   const [pauseJob, setPauseJob] = useState(false);
@@ -78,7 +80,7 @@ export function JobActionButtons({
               size: "pill",
             })} items-center gap-2`}
           >
-            <Edit className="h-4 w-4" /> Edit
+            <Edit className="h-4 w-4" /> {t("common.edit")}
           </Link>
           <Button
             variant="default"
@@ -87,7 +89,7 @@ export function JobActionButtons({
             disabled={isPending}
             onClick={() => setCloseJob(true)}
           >
-            <CheckCheck className="h-4 w-4" /> Close
+            <CheckCheck className="h-4 w-4" /> {t("companyPage.jobs.actions.close")}
           </Button>
           <Button
             size="pill"
@@ -95,7 +97,7 @@ export function JobActionButtons({
             disabled={isPending}
             onClick={() => setPauseJob(true)}
           >
-            <EyeOff className="h-4 w-4" /> Pause
+            <EyeOff className="h-4 w-4" /> {t("companyPage.jobs.actions.pause")}
           </Button>
         </>
         )}
@@ -107,7 +109,7 @@ export function JobActionButtons({
               size: "pill",
             })} flex-1 items-center justify-center gap-2`}
           >
-            Complete Post
+            {t("companyPage.jobs.actions.complete-post")}
           </Link>
         ) : null}
 
@@ -119,7 +121,7 @@ export function JobActionButtons({
             disabled={isPending}
             onClick={() => setReactivateJob(true)}
           >
-            <Play className="h-4 w-4" /> Resume
+            <Play className="h-4 w-4" /> {t("companyPage.jobs.actions.resume")}
           </Button>
         ) : null}
         {isDraft && (
@@ -130,27 +132,27 @@ export function JobActionButtons({
             disabled={isDeleting}
             onClick={() => setDeleteJob(true)}
           >
-            <Trash2 className="h-4 w-4" /> Deleted
+            <Trash2 className="h-4 w-4" /> {t("companyPage.jobs.actions.delete")}
           </Button>
         )}
       </div>
       <AlertModal
         open={closeJob}
         onOpenChange={setCloseJob}
-        title="Has this position been successfully filled?"
-        description="Closing this job posting will archive the role and remove it from visibility to medical professionals. Please ensure all relevant applicant details have been saved before proceeding."
-        confirmLabel="Yes, close the advertisement."
-        cancelLabel="Back"
+        title={t("companyPage.jobs.modals.close.title")}
+        description={t("companyPage.jobs.modals.close.description")}
+        confirmLabel={t("companyPage.jobs.modals.close.confirm")}
+        cancelLabel={t("common.back")}
         onConfirm={handleCloseJob}
         isLoading={isPending}
       />
       <AlertModal
         open={reactivateJob}
         onOpenChange={setReactivateJob}
-        title="Would you like to resume accepting applications?"
-        description="Reactivating this job posting will make it visible in search results and allow qualified medical professionals to apply immediately. All applicant activity will resume according to your previous posting settings."
-        confirmLabel="Yes, active now"
-        cancelLabel="Back"
+        title={t("companyPage.jobs.modals.reactivate.title")}
+        description={t("companyPage.jobs.modals.reactivate.description")}
+        confirmLabel={t("companyPage.jobs.modals.reactivate.confirm")}
+        cancelLabel={t("common.back")}
         onConfirm={handleReactivateJob}
         isLoading={isPending}
       />
@@ -158,19 +160,20 @@ export function JobActionButtons({
         open={pauseJob}
         onOpenChange={setPauseJob}
         confirmButtonVariant="destructive"
-        title="Would you like to pause applications for this position?"
-        description="Pausing this job posting will stop new applications from being submitted. The role will no longer appear in search results until it is reactivated."
-        confirmLabel="Yes, stop the advertisement"
-        cancelLabel="Back"
+        title={t("companyPage.jobs.modals.pause.title")}
+        description={t("companyPage.jobs.modals.pause.description")}
+        confirmLabel={t("companyPage.jobs.modals.pause.confirm")}
+        cancelLabel={t("common.back")}
         onConfirm={handlePauseJob}
         isLoading={isPending}
       />
       <DeleteModal
         open={deleteJob}
         onOpenChange={setDeleteJob}
-        title="Do you want to delete this advertisement?"
-        description="The advertisement will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
-        cancelLabel="Back"
+        title={t("companyPage.jobs.modals.delete.title")}
+        description={t("companyPage.jobs.modals.delete.description")}
+        confirmLabel={t("companyPage.jobs.modals.delete.confirm")}
+        cancelLabel={t("common.back")}
         onConfirm={handleDeleteJob}
         isLoading={isDeleting}
       />

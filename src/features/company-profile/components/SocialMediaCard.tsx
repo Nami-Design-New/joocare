@@ -6,6 +6,7 @@ import { useDeleteSocialLinks } from "../hooks/useDeleteSocialLinks";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import DeleteModal from "@/shared/components/modals/DeleteModal";
+import { useTranslations } from "next-intl";
 
 interface ISocialMediaProps {
     title: string;
@@ -15,6 +16,7 @@ interface ISocialMediaProps {
 }
 
 const SocialMediaCard = ({ link, title, src, isPending }: ISocialMediaProps) => {
+    const t = useTranslations();
     const { data: session } = useSession();
     const [deleteSocialMedia, setDeleteSocialMedia] = useState(false)
 
@@ -33,7 +35,7 @@ const SocialMediaCard = ({ link, title, src, isPending }: ISocialMediaProps) => 
     return (<>
         <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
-                <Image src={src} alt="facebook icon" width={35} height={35} />
+                <Image src={src} alt={t("companyPage.profile.social.icon-alt")} width={35} height={35} />
                 <div>
                     <h5 className="text-sm">{title}</h5>
                     <Link href={`${link}`} className="text-primary text-sm w-full">
@@ -46,9 +48,10 @@ const SocialMediaCard = ({ link, title, src, isPending }: ISocialMediaProps) => 
         <DeleteModal
             open={deleteSocialMedia}
             onOpenChange={setDeleteSocialMedia}
-            title="Do you want to delete this social media account?"
-            description="The account will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
-            cancelLabel="Back"
+            title={t("companyPage.profile.social.delete.title")}
+            description={t("companyPage.profile.social.delete.description")}
+            cancelLabel={t("common.back")}
+            confirmLabel={t("companyPage.profile.social.delete.confirm")}
             onConfirm={() => handleDelete({ title })}
             isLoading={isPendingDelete}
         />

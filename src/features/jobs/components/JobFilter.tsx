@@ -1,6 +1,7 @@
 "use client";
 
 import { SelectInputField } from "@/shared/components/SelectInputField";
+import { useTranslations } from "next-intl";
 
 type Option = {
   label: string;
@@ -13,20 +14,20 @@ type JobFilterProps = {
   onStatusChange?: (status: string) => void;
 };
 
-const jobTypes: Option[] = [
-  { label: "Open", value: "open" },
-  { label: "Closed", value: "closed" },
-  { label: "Paused Time", value: "paused" },
-  { label: "Draft", value: "draft" },
-];
-
 export default function JobFilter({ value = "", onStatusChange }: JobFilterProps) {
+  const t = useTranslations();
+  const jobTypes: Option[] = [
+    { label: t("companyPage.jobs.status.open"), value: "open" },
+    { label: t("companyPage.jobs.status.closed"), value: "closed" },
+    { label: t("companyPage.jobs.status.paused"), value: "paused" },
+    { label: t("companyPage.jobs.status.draft"), value: "draft" },
+  ];
   return (
     <form>
       <SelectInputField
         id="jobType"
         options={jobTypes}
-        placeholder="Status"
+        placeholder={t("companyPage.jobs.status.placeholder")}
         value={value}
         onChange={(nextValue) => onStatusChange?.(nextValue)}
         className="bg-white"

@@ -7,9 +7,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { InputField } from '@/shared/components/InputField'
 import { Button } from '@/shared/components/ui/button'
 import { usePathname } from 'next/navigation';
-import { ForgetPasswordSchema, TForgetPasswordSchema } from '@/features/auth/validation/forget-password-schema';
+import { createForgetPasswordSchema, TForgetPasswordSchema } from '@/features/auth/validation/forget-password-schema';
 import { useSession } from 'next-auth/react';
 import { useUpdateEmail } from '../hooks/useUpdateEmail';
+import { useTranslations } from "next-intl";
 
 interface IFormUpdateEmailProps {
     open: boolean
@@ -22,6 +23,7 @@ interface IFormUpdateEmailProps {
 }
 
 const FormUpdateEmail = ({ open, onOpenChange, btnLabel, email, setUserEmail, setIsModalOtpOpen }: IFormUpdateEmailProps) => {
+    const t = useTranslations();
     const pathname = usePathname();
     const employerForgetPassword = pathname.includes("candidate")
     const basicInfo = pathname.includes("basic-info")
@@ -34,7 +36,10 @@ const FormUpdateEmail = ({ open, onOpenChange, btnLabel, email, setUserEmail, se
         reset,
         formState: { errors },
     } = useForm<TForgetPasswordSchema>({
-        resolver: zodResolver(ForgetPasswordSchema),
+        resolver: zodResolver(createForgetPasswordSchema({
+            emailRequired: t("companyPage.accountSettings.validation.official-email-required"),
+            emailInvalid: t("companyPage.accountSettings.validation.official-email-invalid"),
+        })),
     });
 
     useEffect(() => {
@@ -52,9 +57,16 @@ const FormUpdateEmail = ({ open, onOpenChange, btnLabel, email, setUserEmail, se
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
-            <InputField label={employerForgetPassword || basicInfo ? 'Official Email' : 'Email'} id="email" type={"email"} error={errors.email?.message} {...register('email')} placeholder="ex:mail@mail.com" />
+            <InputField
+                label={employerForgetPassword || basicInfo ? t("companyPage.accountSettings.basicInfo.fields.official-email.label") : t("authPage.common.email")}
+                id="email"
+                type={"email"}
+                error={errors.email?.message}
+                {...register('email')}
+                placeholder={t("companyPage.accountSettings.basicInfo.fields.official-email.placeholder")}
+            />
             <Button variant={"secondary"} size={'pill'} className='w-full' type="submit" disabled={isPending}>
-                {isPending ? "Sending..." : btnLabel}
+                {isPending ? t("common.sending") : btnLabel}
             </Button>
 
         </form>

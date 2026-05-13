@@ -6,7 +6,7 @@ import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { InputField } from "@/shared/components/InputField";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import {
@@ -15,7 +15,7 @@ import {
   parsePhoneWithCode,
 } from "@/shared/lib/phone";
 import { YearPicker } from "@/shared/components/YearPicker";
-import { BasicInfoSchema, TBasicInfoSchema } from "../../validation/basic-info-schema";
+import { createBasicInfoSchema, TBasicInfoSchema } from "../../validation/basic-info-schema";
 import { OTPModal } from "@/features/auth/components/forget-password/OtpModal";
 import { useSession } from "next-auth/react";
 import { useUpdateBasicInfo } from "../../hooks/useUpdateBasicInfo";
@@ -26,6 +26,7 @@ import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompany
 import { TCompanyProfileViewModel } from "@/features/company-profile/types";
 import { UpdateEmailModal } from "./UpdateEmailModal";
 import { UpdateBasicInfoPayload } from "../../types";
+import { useTranslations } from "next-intl";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -69,6 +70,7 @@ const parsePhoneData = (phoneNumber: string, phoneCode?: string | null) => {
 // ---------------------------------------------------------------------------
 
 const BasicInfoForm = () => {
+  const t = useTranslations();
   // ── session & user data ──────────────────────────────────────────────
   const { data: session } = useSession();
   const token = session?.accessToken ?? "";
@@ -100,6 +102,23 @@ const BasicInfoForm = () => {
   const { mutate: updateBasicInfo, isPending } = useUpdateBasicInfo({ token });
 
   // ── form ─────────────────────────────────────────────────────────────
+  const schema = useMemo(
+    () =>
+      createBasicInfoSchema({
+        messages: {
+          companyNameRequired: t("companyPage.accountSettings.validation.company-name-required"),
+          officialEmailRequired: t("companyPage.accountSettings.validation.official-email-required"),
+          officialEmailInvalid: t("companyPage.accountSettings.validation.official-email-invalid"),
+          domainRequired: t("companyPage.accountSettings.validation.domain-required"),
+          personFullNameRequired: t("companyPage.accountSettings.validation.contact-person-name-required"),
+          phoneNumberRequired: t("companyPage.accountSettings.validation.contact-person-phone-required"),
+          countryRequired: t("companyPage.accountSettings.validation.country-required"),
+          cityRequired: t("companyPage.accountSettings.validation.city-required"),
+          dateOfEstablishmentRequired: t("companyPage.accountSettings.validation.date-of-establishment-required"),
+        },
+      }),
+    [t],
+  );
   const {
     register,
     control,
@@ -107,7 +126,7 @@ const BasicInfoForm = () => {
     reset,
     formState: { errors },
   } = useForm<TBasicInfoSchema>({
-    resolver: zodResolver(BasicInfoSchema),
+    resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: buildDefaults(userData),
   });
@@ -165,9 +184,9 @@ const BasicInfoForm = () => {
       >
         <InputField
           id="companyName"
-          label="Company Name"
+          label={t("companyPage.accountSettings.basicInfo.fields.company-name.label")}
           type="text"
-          placeholder="ex: JooCore"
+          placeholder={t("companyPage.accountSettings.basicInfo.fields.company-name.placeholder")}
           {...register("companyName")}
           error={errors.companyName?.message}
         />
@@ -176,8 +195,8 @@ const BasicInfoForm = () => {
           <InputField
             id="officialEmail"
             type="email"
-            label="Official Email"
-            placeholder="ex: mail@mail.com"
+            label={t("companyPage.accountSettings.basicInfo.fields.official-email.label")}
+            placeholder={t("companyPage.accountSettings.basicInfo.fields.official-email.placeholder")}
             disabled
             {...register("officialEmail")}
             error={errors.officialEmail?.message}
@@ -189,7 +208,7 @@ const BasicInfoForm = () => {
             size="pill"
             className="w-1/3 md:w-50 text-secondary"
           >
-            Edit
+            {t("common.edit")}
           </Button>
         </div>
 
@@ -199,8 +218,8 @@ const BasicInfoForm = () => {
           render={({ field }) => (
             <SelectInputField
               id="domain"
-              label="Domain"
-              placeholder="ex: Hospital"
+              label={t("companyPage.accountSettings.basicInfo.fields.domain.label")}
+              placeholder={t("companyPage.accountSettings.basicInfo.fields.domain.placeholder")}
               {...field}
               error={errors.domain?.message}
               options={domains.map((jt) => ({
@@ -218,8 +237,8 @@ const BasicInfoForm = () => {
         <InputField
           id="personFullName"
           type="text"
-          label="Contact person _ full name "
-          placeholder="ex: John Doe"
+          label={t("companyPage.accountSettings.basicInfo.fields.contact-person-name.label")}
+          placeholder={t("companyPage.accountSettings.basicInfo.fields.contact-person-name.placeholder")}
           {...register("personFullName")}
           error={errors.personFullName?.message}
         />
@@ -227,7 +246,7 @@ const BasicInfoForm = () => {
         {/* Phone number */}
         <>
           <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
-            Contact person _ Phone number
+            {t("companyPage.accountSettings.basicInfo.fields.contact-person-phone.label")}
           </label>
           <Controller
             name="phoneNumber"
@@ -238,7 +257,7 @@ const BasicInfoForm = () => {
                 defaultCountry={getCountryCodeByPhoneCode(userData?.person_phone_code)}
                 id="phoneNumber"
                 className="w-full"
-                placeholder="ex:52 987 6543"
+                placeholder={t("companyPage.accountSettings.basicInfo.fields.contact-person-phone.placeholder")}
                 onChange={(value) => field.onChange(value)}
                 error={!!errors.phoneNumber?.message}
               />
@@ -257,9 +276,9 @@ const BasicInfoForm = () => {
             htmlFor="orgOfficialPhoneNumber"
             className="mx-1 -mb-4 font-semibold"
           >
-            Organization official phone number
+            {t("companyPage.accountSettings.basicInfo.fields.org-official-phone.label")}
             <span className="mx-1 text-sm text-muted-foreground font-normal">
-              option
+              {t("companyPage.common.optional")}
             </span>
           </label>
           <Controller
@@ -271,7 +290,7 @@ const BasicInfoForm = () => {
                 defaultCountry={getCountryCodeByPhoneCode(userData?.phone_code)}
                 id="orgOfficialPhoneNumber"
                 className="w-full"
-                placeholder="ex:52 987 6543"
+                placeholder={t("companyPage.accountSettings.basicInfo.fields.org-official-phone.placeholder")}
                 onChange={(value) => field.onChange(value)}
                 error={!!errors.orgOfficialPhoneNumber?.message}
               />
@@ -290,7 +309,7 @@ const BasicInfoForm = () => {
             htmlFor="country"
             className="mx-1 mb-2 block font-semibold"
           >
-            Current Location
+            {t("companyPage.accountSettings.basicInfo.fields.current-location.label")}
           </label>
           <div className="flex items-center gap-2">
             <Controller
@@ -300,7 +319,7 @@ const BasicInfoForm = () => {
                 <SelectInputField
                   withSearchInput
                   id="country"
-                  placeholder="country"
+                  placeholder={t("companyPage.common.country")}
                   {...field}
                   error={errors.country?.message}
                   options={countries.map((country) => ({
@@ -322,7 +341,7 @@ const BasicInfoForm = () => {
                 <SelectInputField
                   withSearchInput
                   id="city"
-                  placeholder="city"
+                  placeholder={t("companyPage.common.city")}
                   {...field}
                   error={errors.city?.message}
                   options={cities.map((city) => ({
@@ -345,8 +364,8 @@ const BasicInfoForm = () => {
           render={({ field }) => (
             <YearPicker
               id="dateOfEstablishment"
-              label="Date of Establishment"
-              placeholder="ex: 2021"
+              label={t("companyPage.accountSettings.basicInfo.fields.date-of-establishment.label")}
+              placeholder={t("companyPage.accountSettings.basicInfo.fields.date-of-establishment.placeholder")}
               value={field.value}
               onChange={field.onChange}
               onBlur={field.onBlur}
@@ -365,7 +384,7 @@ const BasicInfoForm = () => {
             type="submit"
             disabled={isPending}
           >
-            {isPending ? "Saving..." : "Save"}
+            {isPending ? t("common.saving") : t("common.save")}
           </Button>
         </div>
       </form>

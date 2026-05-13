@@ -7,6 +7,7 @@ import { Eye } from "lucide-react";
 import { CompanyJob } from "../index.type";
 import { formatDate } from "@/shared/util/formateDate";
 import TextSkeleton from "@/features/company-profile/components/TextSkeleton";
+import { useTranslations } from "next-intl";
 
 export default function ActiveJobRow({
   activeJob,
@@ -17,6 +18,7 @@ export default function ActiveJobRow({
   onView?: (a: CompanyJob) => void;
   isLoading: boolean;
 }) {
+  const t = useTranslations();
   return (
     <TableRow className="border-border border-b bg-white text-center transition-colors">
       <TableCell className="text-muted-foreground w-12 px-4 py-5 font-medium text-ellipsis">
@@ -51,7 +53,7 @@ export default function ActiveJobRow({
               onClick={() => onView?.(activeJob!)}
             >
               <Eye className="h-4 w-4" />
-              View
+              {t("common.view")}
             </Link>
           </div>
         )}

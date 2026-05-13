@@ -4,7 +4,18 @@
     "save": "حفظ",
     "saved": "تم الحفظ",
     "save-job": "حفظ الوظيفة",
-    "unSave-job": "إلغاء حفظ الوظيفة"
+    "unSave-job": "إلغاء حفظ الوظيفة",
+    "back": "رجوع",
+    "edit": "تعديل",
+    "search": "بحث",
+    "country": "الدولة",
+    "loading": "جارٍ التحميل...",
+    "saving": "جارٍ الحفظ...",
+    "sending": "جارٍ الإرسال...",
+    "uploading": "جارٍ الرفع...",
+    "view": "عرض",
+    "select": "اختر",
+    "sidebar-navigation": "التنقل في الشريط الجانبي"
   },
   "header": {
     "home": "الرئيسية",
@@ -674,6 +685,340 @@
     "certificate-name-max": "يجب ألا يتجاوز اسم الشهادة 100 حرف.",
     "issuing-organization-min": "يجب أن تكون الجهة المانحة 3 أحرف على الأقل.",
     "issuing-organization-max": "يجب ألا تتجاوز الجهة المانحة 150 حرفًا."
+  },
+  "companyPage": {
+    "common": {
+      "optional": "(اختياري)",
+      "country": "الدولة",
+      "city": "المدينة",
+      "something-went-wrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    },
+    "sidebar": {
+      "company-profile": "الملف الشخصي للشركة",
+      "dashboard": "لوحة التحكم",
+      "job-management": "إدارة الوظائف",
+      "account-settings": "إعدادات الحساب",
+      "profile-image-alt": "صورة الملف الشخصي",
+      "account-under-review": "الحساب قيد المراجعة",
+      "account-review-rejected": "تم رفض مراجعة الحساب",
+      "complete-details-title": "يرجى استكمال بياناتك.",
+      "complete-details-description": "يرجى استكمال بيانات حسابك حتى تتمكن من استخدام المنصة بشكل طبيعي والاستفادة من جميع الميزات.",
+      "complete-now": "أكمل الآن",
+      "post-job": "نشر وظيفة",
+      "post-job-tooltip-line-1": "يرجى استكمال بيانات حسابك أولاً",
+      "post-job-tooltip-line-2": "لنشر وظيفة."
+    },
+    "dashboard": {
+      "active-jobs-title": "الوظائف النشطة",
+      "category-breakdown": "توزيع الفئات",
+      "cards": {
+        "active-job-postings": {
+          "title": "الوظائف المنشورة النشطة",
+          "description": "قوائم الوظائف النشطة الحالية"
+        },
+        "total-application-volume": {
+          "title": "إجمالي حجم التقديمات",
+          "description": "إجمالي التقديمات المستلمة",
+          "this-week": "هذا الأسبوع"
+        },
+        "latest-activity": {
+          "title": "آخر النشاطات",
+          "description": "المتقدمون في آخر 7 أيام",
+          "badge": "جديد"
+        },
+        "talent-intake": {
+          "title": "استقطاب المواهب",
+          "description": "السير الذاتية التي تم تحميلها"
+        }
+      },
+      "icons": {
+        "mic-alt": "أيقونة ميكروفون",
+        "users-alt": "أيقونة المستخدمين",
+        "arrow-target-alt": "أيقونة هدف السهم",
+        "double-check-alt": "أيقونة علامة مزدوجة"
+      },
+      "table": {
+        "job-title": "المسمى الوظيفي",
+        "job-views": "مشاهدات الوظيفة",
+        "applicants": "المتقدمون",
+        "posted-since": "نشر منذ"
+      }
+    },
+    "profile": {
+      "cover-alt": "صورة الغلاف",
+      "logo-alt": "شعار الشركة",
+      "about": {
+        "title": "نبذة",
+        "modal": {
+          "title": "تعديل النبذة",
+          "placeholder": "اكتب عن شركتك..."
+        },
+        "toasts": {
+          "updated-successfully": "تم تحديث النبذة بنجاح."
+        }
+      },
+      "baseInfo": {
+        "title": "المعلومات الأساسية",
+        "official-email": "البريد الإلكتروني الرسمي",
+        "location": "الموقع",
+        "official-phone": "الهاتف الرسمي",
+        "founded": "تاريخ التأسيس"
+      },
+      "social": {
+        "title": "وسائل التواصل الاجتماعي",
+        "icon-alt": "أيقونة وسائل التواصل",
+        "modal": {
+          "title": "تعديل وسائل التواصل"
+        },
+        "fields": {
+          "website": {
+            "label": "الموقع الإلكتروني",
+            "placeholder": "https://example.com",
+            "icon-alt": "أيقونة الموقع الإلكتروني"
+          },
+          "linkedin": {
+            "placeholder": "رابط لينكدإن",
+            "icon-alt": "أيقونة لينكدإن"
+          },
+          "facebook": {
+            "placeholder": "رابط فيسبوك",
+            "icon-alt": "أيقونة فيسبوك"
+          },
+          "twitter": {
+            "placeholder": "رابط إكس (تويتر)",
+            "icon-alt": "أيقونة إكس (تويتر)"
+          },
+          "instagram": {
+            "placeholder": "رابط إنستغرام",
+            "icon-alt": "أيقونة إنستغرام"
+          },
+          "snapchat": {
+            "placeholder": "رابط سناب شات",
+            "icon-alt": "أيقونة سناب شات"
+          }
+        },
+        "delete": {
+          "title": "هل تريد حذف رابط وسيلة التواصل هذه؟",
+          "description": "سيتم إزالة رابط وسيلة التواصل من ملفك الشخصي.",
+          "confirm": "حذف"
+        },
+        "toasts": {
+          "updated-successfully": "تم تحديث وسائل التواصل بنجاح."
+        }
+      }
+    },
+    "jobDetails": {
+      "back-to-job-management": "العودة إلى إدارة الوظائف",
+      "go-to-dashboard": "الذهاب إلى لوحة التحكم",
+      "untitled-job": "وظيفة بدون عنوان",
+      "your-company": "شركتك"
+    },
+    "jobs": {
+      "status": {
+        "open": "نشط",
+        "closed": "مغلق",
+        "paused": "متوقف",
+        "draft": "مسودة",
+        "placeholder": "تصفية حسب الحالة"
+      },
+      "actions": {
+        "close": "إغلاق",
+        "pause": "إيقاف",
+        "resume": "استئناف",
+        "delete": "حذف",
+        "complete-post": "إكمال النشر"
+      },
+      "modals": {
+        "close": {
+          "title": "إغلاق الوظيفة",
+          "description": "هل أنت متأكد من رغبتك في إغلاق هذه الوظيفة؟ لن تقبل تقديمات جديدة بعد الإغلاق.",
+          "confirm": "إغلاق"
+        },
+        "reactivate": {
+          "title": "إعادة تنشيط الوظيفة",
+          "description": "هل أنت متأكد من رغبتك في إعادة تنشيط هذه الوظيفة؟ ستكون مفتوحة للتقديم مرة أخرى.",
+          "confirm": "إعادة تنشيط"
+        },
+        "pause": {
+          "title": "إيقاف الوظيفة",
+          "description": "هل أنت متأكد من رغبتك في إيقاف هذه الوظيفة؟ سيتم إخفاؤها مؤقتًا.",
+          "confirm": "إيقاف"
+        },
+        "delete": {
+          "title": "حذف الوظيفة",
+          "description": "هل أنت متأكد من رغبتك في حذف هذه الوظيفة؟ لا يمكن التراجع عن هذا الإجراء.",
+          "confirm": "حذف"
+        }
+      }
+    },
+    "candidates": {
+      "filters": {
+        "search-placeholder": "ابحث بالاسم أو البريد الإلكتروني...",
+        "recent-placeholder": "الأحدث",
+        "recent-applied": "متقدم مؤخرًا",
+        "search-countries": "ابحث عن دولة...",
+        "with-medical-license": "مع ترخيص طبي",
+        "without-medical-license": "بدون ترخيص طبي",
+        "medical-license-placeholder": "الترخيص الطبي"
+      }
+    },
+    "accountSettings": {
+      "nav": {
+        "basic-info": "المعلومات الأساسية",
+        "business-verification": "التحقق من النشاط التجاري",
+        "change-password": "تغيير كلمة المرور"
+      },
+      "basicInfo": {
+        "fields": {
+          "company-name": {
+            "label": "اسم الشركة",
+            "placeholder": "مثال: جُوكير"
+          },
+          "official-email": {
+            "label": "البريد الإلكتروني الرسمي",
+            "placeholder": "مثال: info@joocare.com"
+          },
+          "domain": {
+            "label": "المجال",
+            "placeholder": "مثال: مستشفى"
+          },
+          "contact-person-name": {
+            "label": "اسم جهة الاتصال",
+            "placeholder": "مثال: John Doe"
+          },
+          "contact-person-phone": {
+            "label": "هاتف جهة الاتصال",
+            "placeholder": "أدخل رقم الهاتف"
+          },
+          "org-official-phone": {
+            "label": "الهاتف الرسمي للمؤسسة",
+            "placeholder": "أدخل رقم الهاتف"
+          },
+          "current-location": {
+            "label": "الموقع الحالي"
+          },
+          "date-of-establishment": {
+            "label": "تاريخ التأسيس",
+            "placeholder": "اختر التاريخ"
+          }
+        }
+      },
+      "businessVerification": {
+        "sections": {
+          "commercial-registration": "السجل التجاري",
+          "medical-license": "الترخيص الطبي"
+        },
+        "fields": {
+          "commercial-registration-number": {
+            "label": "رقم السجل التجاري",
+            "placeholder": "أدخل رقم السجل"
+          },
+          "issuing-country": {
+            "label": "دولة الإصدار"
+          },
+          "organization-size": {
+            "label": "حجم المؤسسة"
+          },
+          "commercial-issue-date": {
+            "label": "تاريخ إصدار السجل التجاري",
+            "placeholder": "اختر تاريخ الإصدار"
+          },
+          "commercial-expiry-date": {
+            "label": "تاريخ انتهاء السجل التجاري",
+            "placeholder": "اختر تاريخ الانتهاء"
+          },
+          "commercial-registration-image": {
+            "label": "صورة السجل التجاري",
+            "existing-label": "صورة السجل التجاري الحالية"
+          },
+          "employer-type": {
+            "label": "نوع صاحب العمل",
+            "placeholder": "اختر نوع صاحب العمل"
+          },
+          "medical-facility-license-number": {
+            "label": "رقم ترخيص المنشأة الطبية",
+            "placeholder": "أدخل رقم الترخيص"
+          },
+          "license-issuing-authority": {
+            "label": "جهة إصدار الترخيص",
+            "placeholder": "أدخل جهة الإصدار"
+          },
+          "specialty": {
+            "label": "التخصص",
+            "placeholder": "اختر التخصص"
+          },
+          "medical-issue-date": {
+            "label": "تاريخ إصدار الترخيص الطبي",
+            "placeholder": "اختر تاريخ الإصدار"
+          },
+          "medical-expiry-date": {
+            "label": "تاريخ انتهاء الترخيص الطبي",
+            "placeholder": "اختر تاريخ الانتهاء"
+          },
+          "medical-license-image": {
+            "label": "صورة الترخيص الطبي",
+            "existing-label": "صورة الترخيص الطبي الحالية"
+          }
+        }
+      },
+      "changePassword": {
+        "fields": {
+          "current-password": {
+            "label": "كلمة المرور الحالية"
+          },
+          "new-password": {
+            "label": "كلمة المرور الجديدة"
+          },
+          "confirm-new-password": {
+            "label": "تأكيد كلمة المرور الجديدة"
+          },
+          "password": {
+            "placeholder": "أدخل كلمة المرور"
+          }
+        }
+      },
+      "updateEmail": {
+        "title": "تحديث البريد الإلكتروني",
+        "description": "أدخل بريدك الإلكتروني الجديد للتحديث.",
+        "send-verification": "إرسال رمز التحقق"
+      },
+      "validation": {
+        "required": "هذا الحقل مطلوب",
+        "company-name-required": "اسم الشركة مطلوب",
+        "official-email-required": "البريد الإلكتروني الرسمي مطلوب",
+        "official-email-invalid": "يرجى إدخال بريد إلكتروني صالح",
+        "domain-required": "المجال مطلوب",
+        "contact-person-name-required": "اسم جهة الاتصال مطلوب",
+        "contact-person-phone-required": "هاتف جهة الاتصال مطلوب",
+        "country-required": "الدولة مطلوبة",
+        "city-required": "المدينة مطلوبة",
+        "date-of-establishment-required": "تاريخ التأسيس مطلوب",
+        "current-password-required": "كلمة المرور الحالية مطلوبة",
+        "new-password-required": "كلمة المرور الجديدة مطلوبة",
+        "new-password-min": "يجب أن تتكون كلمة المرور الجديدة من 6 أحرف على الأقل",
+        "new-password-max": "يجب ألا تتجاوز كلمة المرور الجديدة 15 حرفًا",
+        "confirm-new-password-required": "تأكيد كلمة المرور الجديدة مطلوب",
+        "passwords-do-not-match": "كلمتا المرور غير متطابقتين",
+        "commercial-registration-number-max": "يجب ألا يتجاوز رقم السجل التجاري 100 حرف",
+        "issuing-country-required": "دولة الإصدار مطلوبة",
+        "organization-size-required": "حجم المؤسسة مطلوب",
+        "commercial-issue-date-required": "تاريخ إصدار السجل التجاري مطلوب",
+        "commercial-expiry-date-required": "تاريخ انتهاء السجل التجاري مطلوب",
+        "employer-type-required": "نوع صاحب العمل مطلوب",
+        "medical-facility-license-number-max": "يجب ألا يتجاوز رقم ترخيص المنشأة الطبية 100 حرف",
+        "license-issuing-authority-min": "يجب أن تكون جهة إصدار الترخيص 3 أحرف على الأقل",
+        "license-issuing-authority-max": "يجب ألا تتجاوز جهة إصدار الترخيص 100 حرف",
+        "specialty-required": "التخصص مطلوب",
+        "medical-issue-date-required": "تاريخ إصدار الترخيص الطبي مطلوب",
+        "medical-expiry-date-required": "تاريخ انتهاء الترخيص الطبي مطلوب",
+        "commercial-issue-date-past": "يجب أن يكون تاريخ إصدار السجل التجاري اليوم أو قبل ذلك",
+        "commercial-expiry-date-future": "يجب أن يكون تاريخ انتهاء السجل التجاري اليوم أو بعد ذلك",
+        "commercial-expiry-after-issue": "يجب أن يكون تاريخ انتهاء السجل التجاري بعد تاريخ الإصدار",
+        "medical-issue-date-past": "يجب أن يكون تاريخ إصدار الترخيص الطبي اليوم أو قبل ذلك",
+        "medical-expiry-date-future": "يجب أن يكون تاريخ انتهاء الترخيص الطبي اليوم أو بعد ذلك",
+        "medical-expiry-after-issue": "يجب أن يكون تاريخ انتهاء الترخيص الطبي بعد تاريخ الإصدار"
+      }
+    }
   },
   "footer": {
     "description": "منصة توظيف صحية مدعومة بالذكاء الاصطناعي تدعم التوظيف المتوافق والقائم على البيانات عبر قطاعات الطب وعلوم الحياة.",

@@ -16,6 +16,7 @@ import {
 import { Textarea } from "@/shared/components/ui/textarea";
 
 import { useUpdateBio } from "../hooks/useUpdateBio";
+import { useTranslations } from "next-intl";
 
 interface EditAboutModalProps {
     open: boolean;
@@ -32,6 +33,7 @@ export function EditAboutModal({
     onOpenChange,
     defaultVal,
 }: EditAboutModalProps) {
+    const t = useTranslations();
     const { data: session } = useSession();
     const token = session?.accessToken as string;
 
@@ -58,11 +60,11 @@ export function EditAboutModal({
             { bio: data.bio },
             {
                 onSuccess: () => {
-                    toast.success("Bio updated successfully");
+                    toast.success(t("companyPage.profile.about.toasts.updated-successfully"));
                     onOpenChange(false);
                 },
                 onError: (error: any) => {
-                    toast.error(error?.message || "Something went wrong");
+                    toast.error(error?.message || t("companyPage.common.something-went-wrong"));
                 },
             }
         );
@@ -73,7 +75,7 @@ export function EditAboutModal({
             <DialogContent className="max-w-175 flex flex-col gap-5">
                 <DialogHeader>
                     <DialogTitle className="text-[28px] text-black">
-                        Edit About
+                        {t("companyPage.profile.about.modal.title")}
                     </DialogTitle>
                 </DialogHeader>
 
@@ -86,7 +88,7 @@ export function EditAboutModal({
                             <Textarea
                                 {...field}
                                 className="p-4 rounded-2xl bg-muted min-h-40"
-                                placeholder="Write something about your company..."
+                                placeholder={t("companyPage.profile.about.modal.placeholder")}
                             />
                         )}
                     />
@@ -98,7 +100,7 @@ export function EditAboutModal({
                             type="submit"
                             disabled={isPending}
                         >
-                            {isPending ? "Saving..." : "Save"}
+                            {isPending ? t("common.saving") : t("common.save")}
                         </Button>
                     </DialogFooter>
                 </form>

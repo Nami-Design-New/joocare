@@ -11,15 +11,10 @@ import { CustomPagination } from "@/shared/components/CustomPagination";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import useGetCompanyTableJobs from "../hooks/useGetCompanyTableJobs";
+import { useTranslations } from "next-intl";
 
-const tabelHeaderTitles = [
-  "Job Title",
-  "Job Views",
-  "Applicants",
-  "Posted Since",
-  " ",
-];
 export default function ActiveJobsTable() {
+  const t = useTranslations();
   const [page, setPage] = useState(1);
 
   const { data: session } = useSession();
@@ -44,7 +39,13 @@ export default function ActiveJobsTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              {tabelHeaderTitles.map((col) => (
+              {[
+                t("companyPage.dashboard.table.job-title"),
+                t("companyPage.dashboard.table.job-views"),
+                t("companyPage.dashboard.table.applicants"),
+                t("companyPage.dashboard.table.posted-since"),
+                " ",
+              ].map((col) => (
                 <TableHead key={col}>{col}</TableHead>
               ))}
             </TableRow>

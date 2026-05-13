@@ -9,12 +9,14 @@ import { getCompanyJobDetails } from "@/features/jobs/services/job-details-servi
 import { normalizeJobStatus } from "@/features/jobs/utils";
 import HttpStatusState from "@/shared/components/HttpStatusState";
 import { getHttpStatusCode } from "@/shared/lib/http-error";
+import { getTranslations } from "next-intl/server";
 
 export default async function JobDetailsPage({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
+  const t = await getTranslations();
   const { slug } = await params;
   let jobDetails: Awaited<ReturnType<typeof getCompanyJobDetails>>;
 
@@ -29,9 +31,9 @@ export default async function JobDetailsPage({
           statusCode={statusCode}
           error={error}
           primaryHref="/company/job-management"
-          primaryLabel="Back to job management"
+          primaryLabel={t("companyPage.jobDetails.back-to-job-management")}
           secondaryHref="/company/dashboard"
-          secondaryLabel="Go to dashboard"
+          secondaryLabel={t("companyPage.jobDetails.go-to-dashboard")}
         />
       );
     }
@@ -40,8 +42,8 @@ export default async function JobDetailsPage({
   }
 
   const job = jobDetails.job;
-  const jobTitle = job.title ?? job.job_title?.title ?? "Untitled job";
-  const companyName = job.company?.name ?? "Your company";
+  const jobTitle = job.title ?? job.job_title?.title ?? t("companyPage.jobDetails.untitled-job");
+  const companyName = job.company?.name ?? t("companyPage.jobDetails.your-company");
   const statusLabel = job.current_status?.status ?? job.status;
   const statusDate = job.current_status?.updated_at ?? job.updated_at;
 
@@ -53,7 +55,7 @@ export default async function JobDetailsPage({
             logoSrc={job.company?.image ?? "/assets/new-logo-dot.svg"}
             title={jobTitle}
             company={companyName}
-            employmentType={job.employment_type?.title ?? "Not specified"}
+            employmentType={job.employment_type?.title ?? t("jobsPage.not-specified")}
             status={normalizeJobStatus(statusLabel)}
             closingDate={statusDate}
             actions={

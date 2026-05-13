@@ -8,6 +8,7 @@ import { cn } from "@/shared/lib/utils";
 import { useSession } from "next-auth/react";
 import { TCompanyProfileViewModel } from "../types";
 import { useUpdateCompanyImagesFlow } from "../hooks/useUpdateCompanyImagesFlow";
+import { useTranslations } from "next-intl";
 
 type FormValues = {
     uploadCoverImage?: File | string;
@@ -21,6 +22,7 @@ const ProfileHeader = ({
     companyProfileData: TCompanyProfileViewModel;
     isPending: boolean;
 }) => {
+    const t = useTranslations();
     const { data: session } = useSession();
     const token = session?.accessToken || "";
 
@@ -56,19 +58,19 @@ const ProfileHeader = ({
                         <div className="relative w-full h-93.75 rounded-[40px] overflow-hidden border">
                             {isPending ? (
                                 <div className="w-full h-full flex items-center justify-center">
-                                    Loading...
+                                    {t("common.loading")}
                                 </div>
                             ) : (
                                 <Image
                                     src={coverPreview || "/image.png"}
-                                    alt="cover"
+                                    alt={t("companyPage.profile.cover-alt")}
                                     fill
                                     className="object-cover"
                                 />
                             )}
                             {loadingField === "cover" && (
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white">
-                                    Uploading...
+                                    {t("common.uploading")}
                                 </div>
                             )}
 
@@ -114,12 +116,12 @@ const ProfileHeader = ({
                         )}>
                             {isPending ? (
                                 <div className="w-full h-full flex items-center justify-center">
-                                    uploading...
+                                    {t("common.uploading")}
                                 </div>
                             ) : (
                                 <Image
                                     src={logoPreview || "/image.png"}
-                                    alt="logo"
+                                    alt={t("companyPage.profile.logo-alt")}
                                     fill
                                     className="object-cover rounded-full"
                                 />
@@ -127,7 +129,7 @@ const ProfileHeader = ({
 
                             {loadingField === "logo" && (
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-xs rounded-full">
-                                    Uploading...
+                                    {t("common.uploading")}
                                 </div>
                             )}
 

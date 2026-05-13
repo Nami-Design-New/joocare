@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog";
+import { useTranslations } from "next-intl";
 
 interface UpdateEmailModalProps {
   open: boolean;
@@ -24,15 +25,16 @@ export function UpdateEmailModal({
   setUserEmail,
   setIsModalOtpOpen,
 }: UpdateEmailModalProps) {
+  const t = useTranslations();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-full p-6 pt-14 sm:max-w-md">
         <DialogHeader className="flex items-center">
           <DialogTitle className="text-secondary text-[28px] font-semibold">
-            Enter the new email
+            {t("companyPage.accountSettings.updateEmail.title")}
           </DialogTitle>
           <DialogDescription className="text-center md:px-4">
-            A verification code will be sent to the new email address
+            {t("companyPage.accountSettings.updateEmail.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -41,7 +43,7 @@ export function UpdateEmailModal({
           open={open}
           onOpenChange={onOpenChange}
           email={email}
-          btnLabel="Send Verification"
+          btnLabel={t("companyPage.accountSettings.updateEmail.send-verification")}
           setIsModalOtpOpen={setIsModalOtpOpen}
         />
       </DialogContent>
