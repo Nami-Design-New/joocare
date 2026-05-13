@@ -4,12 +4,12 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { InputField } from "@/shared/components/InputField";
 import { Button } from "@/shared/components/ui/button";
 import {
-  ForgetPasswordSchema,
+  createForgetPasswordSchema,
   TForgetPasswordSchema,
 } from "../../validation/forget-password-schema";
 import { OTPModal } from "./OtpModal";
@@ -20,6 +20,7 @@ import {
 } from "../../lib/password-reset";
 
 const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
+  const t = useTranslations();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const pathname = usePathname();
@@ -33,7 +34,12 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<TForgetPasswordSchema>({
-    resolver: zodResolver(ForgetPasswordSchema),
+    resolver: zodResolver(
+      createForgetPasswordSchema({
+        emailRequired: t("authPage.validation.email-required"),
+        emailInvalid: t("authPage.validation.email-invalid-detailed"),
+      }),
+    ),
   });
 
   const onSubmit: SubmitHandler<TForgetPasswordSchema> = async (data) => {
@@ -50,7 +56,9 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
       setIsModalOpen(true);
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Failed to send reset code.",
+        error instanceof Error
+          ? error.message
+          : t("authPage.toasts.failed-send-reset-code"),
       );
     }
   };
@@ -60,12 +68,12 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
         <InputField
           // label={usesOfficialEmail ? "Official Email" : "Email"}
-          label={"Email"}
+          label={t("authPage.common.email")}
           id="email"
           type="email"
           error={errors.email?.message}
           {...register("email")}
-          placeholder="ex:mail@mail.com"
+          placeholder={t("authPage.placeholders.email-compact")}
         />
         <Button
           variant="secondary"
@@ -74,7 +82,7 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Sending..." : btnLabel}
+          {isSubmitting ? t("authPage.common.sending") : btnLabel}
         </Button>
       </form>
 

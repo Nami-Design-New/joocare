@@ -2,6 +2,7 @@
 
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { InputField } from "@/shared/components/InputField";
 import LabelCheckbox from "@/shared/components/LabelCheckbox";
@@ -14,7 +15,7 @@ import { useEffect, useState } from "react";
 import { parsePhoneNumber } from "react-phone-number-input";
 import { useRegisterCandidate } from "../../hooks/useRegisterCandidate";
 import {
-  RegisterCandidateSchema,
+  createRegisterCandidateSchema,
   TRegisterCandidateSchema,
 } from "../../validation/candidate-register-schema";
 import { OTPModal } from "../forget-password/OtpModal";
@@ -28,10 +29,9 @@ const CV_ACCEPTED_FILE_TYPES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
-const CV_INVALID_TYPE_MESSAGE =
-  "The uploaded file must be a document in PDF, DOC, or DOCX format.";
 
 const FormCandidateRegister = () => {
+  const t = useTranslations();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [countrySearchCurrent, setCountrySearchCurrent] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
@@ -49,7 +49,29 @@ const FormCandidateRegister = () => {
     clearErrors,
     formState: { errors },
   } = useForm<TRegisterCandidateSchema>({
-    resolver: typedZodResolver(RegisterCandidateSchema),
+    resolver: typedZodResolver(
+      createRegisterCandidateSchema({
+        phoneRequired: t("authPage.validation.phone-required"),
+        phoneInvalid: t("authPage.validation.phone-invalid"),
+        phoneDigits: t("authPage.validation.phone-digits"),
+        fullNameRequired: t("authPage.validation.full-name-required"),
+        fullNameMin: t("authPage.validation.full-name-min"),
+        emailRequired: t("authPage.validation.email-required"),
+        emailInvalid: t("authPage.validation.email-invalid-detailed"),
+        jobTitleRequired: t("authPage.validation.job-title-required"),
+        countryRequired: t("authPage.validation.country-required"),
+        cityRequired: t("authPage.validation.city-required"),
+        passwordRequired: t("authPage.validation.password-required"),
+        passwordMin: t("authPage.validation.password-min"),
+        passwordMax: t("authPage.validation.password-max"),
+        cvRequired: t("authPage.validation.cv-required"),
+        otherJobTitleRequired: t("authPage.validation.other-job-title-required"),
+        licenseCountryRequired: t("authPage.validation.license-country-required"),
+        licenseTitleRequired: t("authPage.validation.license-title-required"),
+        licenseTitleMin: t("authPage.validation.license-title-min"),
+        licenseTitleMax: t("authPage.validation.license-title-max"),
+      }),
+    ),
     defaultValues: {
       uploadCV: "",
       confirmRegister: false,
@@ -67,7 +89,7 @@ const FormCandidateRegister = () => {
   const confirmRegisterValue = useWatch({ control, name: "confirmRegister" });
   const isOtherJobTitle = selectedJobTitle === OTHER_JOB_TITLE_VALUE;
   const jobTitleOptions = [
-    { label: "Other", value: OTHER_JOB_TITLE_VALUE },
+    { label: t("authPage.common.other"), value: OTHER_JOB_TITLE_VALUE },
     ...jobTitles.map((jt) => ({
       label: jt.title,
       value: String(jt.id),
@@ -153,9 +175,9 @@ const FormCandidateRegister = () => {
       {/* Full Name */}
       <InputField
         id="fullName"
-        label="Full Name"
+        label={t("authPage.common.full-name")}
         type="text"
-        placeholder="ex: JooCore"
+        placeholder={t("authPage.placeholders.full-name")}
         {...register("fullName")}
         error={errors.fullName?.message}
       />
@@ -164,15 +186,15 @@ const FormCandidateRegister = () => {
       <InputField
         id="email"
         type="email"
-        label="Email"
-        placeholder="ex: mail@mail.com"
+        label={t("authPage.common.email")}
+        placeholder={t("authPage.placeholders.email")}
         {...register("email")}
         error={errors.email?.message}
       />
 
       <>
         <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
-          Phone Number
+          {t("authPage.common.phone-number")}
         </label>
         <Controller
           name="phoneNumber"
@@ -183,7 +205,7 @@ const FormCandidateRegister = () => {
               defaultCountry="AE"
               id="phoneNumber"
               className="w-full"
-              placeholder="Enter phone number"
+              placeholder={t("authPage.placeholders.phone-number")}
               onChange={(value) => field.onChange(value)}
               error={errors.phoneNumber?.message ? true : false}
 
@@ -204,10 +226,10 @@ const FormCandidateRegister = () => {
         render={({ field }) => (
           <SelectInputField
             id="jobTitle"
-            label="Job Title"
+            label={t("authPage.common.job-title")}
             withSearchInput={true}
             onSearchChange={setJobTitleSearch}
-            placeholder="ex : Senior Consultant, Radiology"
+            placeholder={t("authPage.placeholders.job-title")}
             {...field}
             error={errors.jobTitle?.message ?? (error instanceof Error ? error.message : undefined)}
             options={jobTitleOptions}
@@ -224,8 +246,8 @@ const FormCandidateRegister = () => {
         <InputField
           id="otherJobTitle"
           type="text"
-          label="Other Job Title"
-          placeholder="ex : Senior Consultant, Radiology"
+          label={t("authPage.common.other-job-title")}
+          placeholder={t("authPage.placeholders.job-title")}
           {...register("otherJobTitle")}
           error={errors.otherJobTitle?.message}
         />
@@ -234,7 +256,7 @@ const FormCandidateRegister = () => {
       {/* Current Location */}
       <div>
         <label htmlFor="country" className="mx-1 mb-2 block font-semibold">
-          Current Location
+          {t("authPage.common.current-location")}
         </label>
         <div className="flex items-center gap-2">
           <Controller
@@ -245,7 +267,7 @@ const FormCandidateRegister = () => {
                 withSearchInput
                 onSearchChange={setCountrySearchCurrent}
                 id="country"
-                placeholder="country"
+                placeholder={t("authPage.common.country-lower")}
                 {...field}
                 options={currentCountries.map((c) => ({
                   label: c.name,
@@ -265,7 +287,7 @@ const FormCandidateRegister = () => {
               <SelectInputField
                 withSearchInput
                 id="city"
-                placeholder="city"
+                placeholder={t("authPage.common.city-lower")}
                 {...field}
                 error={errors.city?.message}
                 options={cities.map((c) => ({
@@ -286,7 +308,7 @@ const FormCandidateRegister = () => {
       <InputField
         id="createPassword"
         type="password"
-        label="Create password"
+        label={t("authPage.common.create-password")}
         placeholder="******"
         {...register("createPassword")}
         error={errors.createPassword?.message}
@@ -299,10 +321,10 @@ const FormCandidateRegister = () => {
         render={({ field }) => (
 
           <FilepondUpload
-            label="Upload CV"
+            label={t("authPage.common.upload-cv")}
             value={field.value}
             acceptedFileTypes={CV_ACCEPTED_FILE_TYPES}
-            invalidTypeMessage={CV_INVALID_TYPE_MESSAGE}
+            invalidTypeMessage={t("authPage.validation.cv-invalid-type")}
             onUploadSuccess={(imagePath) => {
               field.onChange(imagePath);
               clearErrors("uploadCV");
@@ -331,7 +353,7 @@ const FormCandidateRegister = () => {
             onCheckedChange={field.onChange}
             error={errors.confirmRegister?.message}
           >
-            Do you hold a valid medical license?
+            {t("authPage.forms.candidate-register.has-medical-license")}
           </LabelCheckbox>
         )}
       />
@@ -347,9 +369,9 @@ const FormCandidateRegister = () => {
                 <SelectInputField
                   withSearchInput
                   onSearchChange={setCountrySearch}
-                  label="Country"
+                  label={t("authPage.common.country")}
                   id="specificCountry"
-                  placeholder="ex: United Arab Emirates (UAE)"
+                  placeholder={t("authPage.placeholders.license-country")}
                   error={errors.specificCountry?.message ? true : false}
                   {...field}
                   options={countries.map((c) => ({
@@ -364,22 +386,22 @@ const FormCandidateRegister = () => {
             />
 
             <span className={`mx-1 -mt-3 block text-[12px] ${errors.specificCountry?.message ? "text-red-500" : "text-primary"}`}>
-              Please specify the country issuing your license.
+              {t("authPage.forms.candidate-register.license-country-help")}
             </span>
           </>
 
           <InputField
             id="licenseTitle"
-            label="License Title"
-            placeholder="ex: License Title"
+            label={t("authPage.common.license-title")}
+            placeholder={t("authPage.placeholders.license-title")}
             {...register("licenseTitle")}
             error={errors.licenseTitle?.message}
           />
           <InputField
             id="licenseNumber"
-            label={`License Number`}
-            hint={`"Optional"`}
-            placeholder="ex: 23121212"
+            label={t("authPage.common.license-number")}
+            hint={t("authPage.common.optional")}
+            placeholder={t("authPage.placeholders.license-number")}
             {...register("licenseNumber")}
             error={errors.licenseNumber?.message}
           />
@@ -389,8 +411,8 @@ const FormCandidateRegister = () => {
             control={control}
             render={({ field }) => (
               <FilepondUpload
-                label="Upload the license image"
-                hint='"Optional"'
+                label={t("authPage.common.upload-license-image")}
+                hint={t("authPage.common.optional")}
                 value={field.value}
                 onUploadSuccess={(imagePath) => {
                   field.onChange(imagePath);
@@ -420,7 +442,7 @@ const FormCandidateRegister = () => {
           type="submit"
           disabled={isPending}
         >
-          {isPending ? "Registering..." : "Register"}
+          {isPending ? t("authPage.common.registering") : t("authPage.common.register")}
         </Button>
       </div>
     </form>

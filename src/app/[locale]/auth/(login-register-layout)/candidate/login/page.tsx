@@ -1,11 +1,14 @@
 
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 import SocialLoginButtons from "@/features/auth/components/login-content/SocialLoginButtons";
 import FormCandidateLogin from "@/features/auth/components/login-content/FormCandidateLogin";
 
 
-const LoginCandidatePage = () => {
+const LoginCandidatePage = async () => {
+  const t = await getTranslations();
+
   return (
     <main className="h-[calc(100vh-75px)] flex items-center justify-center gap-4 ">
       <section
@@ -13,9 +16,9 @@ const LoginCandidatePage = () => {
         className="w-full md:w-3/4 mx-auto p-4"
       >
         {/* header text */}
-        <h1>Welcome Back</h1>
+        <h1>{t("authPage.pages.candidate-login.title")}</h1>
         <p className="text-[clamp(.8rem,4vw,1rem)] mt-2">
-          Take the next step in your professional career
+          {t("authPage.pages.candidate-login.subtitle")}
         </p>
 
         {/* Login form */}
@@ -27,19 +30,19 @@ const LoginCandidatePage = () => {
                 before:content-[''] before:flex-1 before:h-px before:bg-gray-200
                 after:content-[''] after:flex-1 after:h-px after:bg-gray-200"
         >
-          or
+          {t("authPage.common.or")}
         </div>
 
         <SocialLoginButtons role="candidate" />
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">
-            Not a member yet?{" "}
+            {t("authPage.common.not-member-yet")}{" "}
             <Link
               href="/auth/candidate/register"
               className="text-primary hover:text-primary/60 underline font-medium transition-colors"
             >
-              Join Now
+              {t("header.join-now")}
             </Link>
           </p>
         </section>

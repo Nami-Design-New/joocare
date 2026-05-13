@@ -1,5 +1,8 @@
+"use client";
+
 // libraries
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 //components
 import { Button } from "@/shared/components/ui/button";
@@ -9,6 +12,8 @@ const GoogleButton = ({
 }: {
   onClick?: () => void | Promise<void>;
 }) => {
+  const t = useTranslations();
+
   return (
     <Button
       variant={"outline"}
@@ -17,10 +22,10 @@ const GoogleButton = ({
       type="button"
       onClick={onClick}
     >
-      Google
+      {t("authPage.social.google")}
       <Image
         src="/assets/icons/google-symbol.svg"
-        alt="Google Icon"
+        alt={t("authPage.social.google-icon")}
         width={24}
         height={24}
       />

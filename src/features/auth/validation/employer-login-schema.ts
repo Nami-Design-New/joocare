@@ -1,14 +1,29 @@
 import { z } from "zod";
 
-export const loginEmployerSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "This field is required" })
-    .email({ message: "Not valid email" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters" })
-    .max(15, { message: "Password must be at most 15 characters" }),
-});
+type CreateLoginEmployerSchemaOptions = {
+  fieldRequired?: string;
+  emailInvalid?: string;
+  passwordMin?: string;
+  passwordMax?: string;
+};
+
+export const createLoginEmployerSchema = ({
+  fieldRequired = "This field is required",
+  emailInvalid = "Not valid email",
+  passwordMin = "Password must be at least 6 characters",
+  passwordMax = "Password must be at most 15 characters",
+}: CreateLoginEmployerSchemaOptions = {}) =>
+  z.object({
+    email: z
+      .string()
+      .min(1, { message: fieldRequired })
+      .email({ message: emailInvalid }),
+    password: z
+      .string()
+      .min(6, { message: passwordMin })
+      .max(15, { message: passwordMax }),
+  });
+
+export const loginEmployerSchema = createLoginEmployerSchema();
 
 export type TLoginEmployerSchema = z.infer<typeof loginEmployerSchema>;

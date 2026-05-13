@@ -1,5 +1,8 @@
+"use client";
+
 // libraries
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 //components
 import { Button } from "@/shared/components/ui/button";
@@ -9,6 +12,8 @@ const LinkedInButton = ({
 }: {
   onClick?: () => void | Promise<void>;
 }) => {
+  const t = useTranslations();
+
   return (
     <Button
       variant={"outline"}
@@ -17,10 +22,10 @@ const LinkedInButton = ({
       type="button"
       onClick={onClick}
     >
-      LinkedIn
+      {t("authPage.social.linkedin")}
       <Image
         src="/assets/icons/linkedIn.svg"
-        alt="LinkedIn Icon"
+        alt={t("authPage.social.linkedin-icon")}
         width={24}
         height={24}
       />

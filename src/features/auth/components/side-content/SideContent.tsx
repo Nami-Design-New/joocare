@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 
 const SideContent = () => {
   const pathname = usePathname();
+  const t = useTranslations();
   const isEmployerLogin = pathname.includes("employer/login");
   const isCandidateLogin = pathname.includes("candidate/login");
 
@@ -19,29 +21,29 @@ const SideContent = () => {
         {isEmployerRegister ? (
           <>
             <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white mb-12">
-              Let’s Create Your Organization’s Account
+              {t("authPage.side-content.employer-register.title")}
             </h2>
           </>
         ) : (
           <>
             <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white">
-              Match Faster ,
+              {t("authPage.side-content.default.title-line-1")}
             </h2>
             <h3 className="mb-12 text-[clamp(1.5rem,4vw,3rem)] font-bold">
-              Work Smarter
+              {t("authPage.side-content.default.title-line-2")}
             </h3>
           </>
         )}
 
         <p className="text-justify text-[clamp(.8rem,4vw,1.2rem)] [word-spacing:0.1rem]">
           {isEmployerLogin &&
-            `With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
+            t("authPage.side-content.employer-login.description")}
           {isCandidateLogin &&
-            `Joocare connects professionals with relevant opportunities through data‑driven insights, supporting informed career decisions and long‑term growth.`}
+            t("authPage.side-content.candidate-login.description")}
           {isEmployerRegister &&
-            `Set the foundation for your hiring success. By finalizing your account details, you unlock Joocare’s smart matching tools and predictive insights to streamline your entire recruitment lifecycle`}
+            t("authPage.side-content.employer-register.description")}
           {isCandidateRegister &&
-            `With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence.`}
+            t("authPage.side-content.candidate-register.description")}
         </p>
       </div>
     </aside>

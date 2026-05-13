@@ -1,8 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 
 import { InputField } from "@/shared/components/InputField";
 import LabelCheckbox from "@/shared/components/LabelCheckbox";
@@ -14,12 +15,13 @@ import { useState } from "react";
 import { parsePhoneNumber } from "react-phone-number-input";
 import { useRegisterEmployer } from "../../hooks/useRegisterEmployer";
 import {
-  RegisterEmployerSchema,
+  createRegisterEmployerSchema,
   TRegisterEmployerSchema,
 } from "../../validation/employer-register-schema";
 import { OTPModal } from "../forget-password/OtpModal";
 
 const FormEmployerRegister = () => {
+  const t = useTranslations();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     domains,
@@ -34,14 +36,31 @@ const FormEmployerRegister = () => {
     register,
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<TRegisterEmployerSchema>({
-    resolver: zodResolver(RegisterEmployerSchema),
+    resolver: zodResolver(
+      createRegisterEmployerSchema({
+        companyNameRequired: t("authPage.validation.company-name-required"),
+        companyNameMin: t("authPage.validation.company-name-min"),
+        companyNameMax: t("authPage.validation.company-name-max"),
+        emailRequired: t("authPage.validation.email-required"),
+        emailInvalid: t("authPage.validation.email-invalid"),
+        domainRequired: t("authPage.validation.domain-required"),
+        personFullNameRequired: t("authPage.validation.person-full-name-required"),
+        personFullNameMin: t("authPage.validation.person-full-name-min"),
+        personFullNameMax: t("authPage.validation.person-full-name-max"),
+        phoneRequired: t("authPage.validation.phone-required"),
+        phoneMax: t("authPage.validation.phone-max"),
+        passwordMin: t("authPage.validation.password-min"),
+        passwordMax: t("authPage.validation.password-less-than-max"),
+        confirmAuthorized: t("authPage.validation.confirm-authorized"),
+        termsRequired: t("authPage.validation.terms-required"),
+      }),
+    ),
     mode: "onChange",
   });
 
-  const email = watch("officialEmail");
+  const email = useWatch({ control, name: "officialEmail" });
   const domainsOptions = domains.map(
     (jt: { id: number | string; name?: string; title?: string }) => ({
       label: jt.name ?? jt.title ?? String(jt.id),
@@ -75,9 +94,9 @@ const FormEmployerRegister = () => {
       >
         <InputField
           id="companyName"
-          label="Company Name"
+          label={t("authPage.common.company-name")}
           type={"text"}
-          placeholder="ex: JooCore"
+          placeholder={t("authPage.placeholders.company-name")}
           {...register("companyName")}
           error={errors.companyName?.message}
         />
@@ -85,8 +104,8 @@ const FormEmployerRegister = () => {
         <InputField
           id="officialEmail"
           type="email"
-          label="Business Email"
-          placeholder="ex: mail@mail.com"
+          label={t("authPage.common.business-email")}
+          placeholder={t("authPage.placeholders.email")}
           {...register("officialEmail")}
           error={errors.officialEmail?.message}
         />
@@ -97,8 +116,8 @@ const FormEmployerRegister = () => {
           render={({ field }) => (
             <SelectInputField
               id="domain"
-              label="Domain"
-              placeholder="ex: Hospital"
+              label={t("authPage.common.domain")}
+              placeholder={t("authPage.placeholders.domain")}
               withSearchInput={true}
               {...field}
               error={
@@ -116,8 +135,8 @@ const FormEmployerRegister = () => {
         <InputField
           id="personFullName"
           type="text"
-          label="Contact person _ full name "
-          placeholder="ex: John Doe"
+          label={t("authPage.common.contact-person-full-name")}
+          placeholder={t("authPage.placeholders.contact-person-full-name")}
           {...register("personFullName")}
           error={errors.personFullName?.message}
         />
@@ -125,7 +144,7 @@ const FormEmployerRegister = () => {
         {/* Phone number */}
         <>
           <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
-            Contact person _ Phone number
+            {t("authPage.common.contact-person-phone-number")}
           </label>
           <Controller
             name="phoneNumber"
@@ -136,7 +155,7 @@ const FormEmployerRegister = () => {
                 defaultCountry="AE"
                 id="phoneNumber"
                 className="w-full"
-                placeholder="Enter phone number"
+                placeholder={t("authPage.placeholders.phone-number")}
                 onChange={(value) => field.onChange(value)}
                 error={errors.phoneNumber?.message ? true : false}
               />
@@ -152,7 +171,7 @@ const FormEmployerRegister = () => {
         <InputField
           id="createPassword"
           type="password"
-          label="Create password"
+          label={t("authPage.common.create-password")}
           placeholder="******"
           {...register("createPassword")}
           error={errors.createPassword?.message}
@@ -168,8 +187,7 @@ const FormEmployerRegister = () => {
               onCheckedChange={field.onChange}
               error={errors.confirmRegister?.message}
             >
-              I confirm that I am an employee of the company and that I am
-              authoried to use JooCare services on its behalf.
+              {t("authPage.forms.employer-register.confirm-authorized")}
             </LabelCheckbox>
           )}
         />
@@ -184,19 +202,19 @@ const FormEmployerRegister = () => {
               onCheckedChange={field.onChange}
               error={errors.termsAndConditions?.message}
             >
-              I agree to the{" "}
+              {t("authPage.forms.employer-register.i-agree-to")}{" "}
               <Link
                 href="/terms-conditions"
                 className="underline-primary text-secondary underline"
               >
-                Terms & Conditions
+                {t("footer.terms-conditions")}
               </Link>
-              and
+              {" "}{t("authPage.forms.employer-register.and")}{" "}
               <Link
                 href="/privacy-policy"
                 className="underline-primary text-secondary underline"
               >
-                Privacy Policy.
+                {t("footer.data-privacy-security")}
               </Link>
             </LabelCheckbox>
           )}
@@ -210,7 +228,7 @@ const FormEmployerRegister = () => {
             type="submit"
           // disabled={isSubmitting}
           >
-            {isPending ? "Registering..." : "Register"}
+            {isPending ? t("authPage.common.registering") : t("authPage.common.register")}
           </Button>
         </div>
       </form>

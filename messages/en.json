@@ -218,6 +218,192 @@
     "why-section-title": "Talent at the Right Time",
     "get-started-for-free": "Get Started For Free"
   },
+  "authPage": {
+    "header": {
+      "homepage-aria": "Homepage",
+      "logo-alt": "Joocare Logo",
+      "switch-mode-aria": "Switch mode"
+    },
+    "common": {
+      "or": "or",
+      "sign-in": "Sign in",
+      "not-member-yet": "Not a member yet?",
+      "already-have-account": "Already have an account?",
+      "for-candidate": "For Candidate",
+      "email": "Email",
+      "password": "Password",
+      "forgot-password": "Forgot password?",
+      "logging-in": "Logging...",
+      "register": "Register",
+      "registering": "Registering...",
+      "send": "Send",
+      "sending": "Sending...",
+      "confirm": "Confirm",
+      "confirming": "Confirming...",
+      "new-password": "New password",
+      "confirm-new-password": "Confirm new password",
+      "full-name": "Full Name",
+      "phone-number": "Phone Number",
+      "job-title": "Job Title",
+      "other": "Other",
+      "other-job-title": "Other Job Title",
+      "current-location": "Current Location",
+      "country": "Country",
+      "country-lower": "country",
+      "city-lower": "city",
+      "create-password": "Create password",
+      "upload-cv": "Upload CV",
+      "license-title": "License Title",
+      "license-number": "License Number",
+      "upload-license-image": "Upload the license image",
+      "optional": "Optional",
+      "company-name": "Company Name",
+      "business-email": "Business Email",
+      "domain": "Domain",
+      "contact-person-full-name": "Contact person full name",
+      "contact-person-phone-number": "Contact person phone number"
+    },
+    "pages": {
+      "candidate-login": {
+        "title": "Welcome Back",
+        "subtitle": "Take the next step in your professional career"
+      },
+      "candidate-register": {
+        "title": "Let's Get Started"
+      },
+      "employer-login": {
+        "title-line-1": "Welcome back,",
+        "title-line-2": "business.",
+        "subtitle": "Manage your job posts and candidates"
+      },
+      "employer-register": {
+        "title": "Start your business"
+      }
+    },
+    "side-content": {
+      "default": {
+        "title-line-1": "Match Faster ,",
+        "title-line-2": "Work Smarter"
+      },
+      "employer-login": {
+        "description": "With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence."
+      },
+      "candidate-login": {
+        "description": "Joocare connects professionals with relevant opportunities through data-driven insights, supporting informed career decisions and long-term growth."
+      },
+      "employer-register": {
+        "title": "Let's Create Your Organization's Account",
+        "description": "Set the foundation for your hiring success. By finalizing your account details, you unlock Joocare's smart matching tools and predictive insights to streamline your entire recruitment lifecycle"
+      },
+      "candidate-register": {
+        "description": "With smart tools and AI-powered insights, joocare helps you find the right opportunity and land the job you deserve with confidence."
+      }
+    },
+    "forget-password": {
+      "title": "Forget Password",
+      "subtitle": "Please enter your registered email address. We'll send you a verification code to reset your password"
+    },
+    "new-password": {
+      "title": "New Password",
+      "subtitle": "Enter a strong password that's easy to remember."
+    },
+    "otp-modal": {
+      "title": "Email Verification",
+      "description-before": "Enter the code sent to",
+      "description-after": ", or click the link in the email.",
+      "resend-code": "Resend the code"
+    },
+    "forms": {
+      "candidate-register": {
+        "has-medical-license": "Do you hold a valid medical license?",
+        "license-country-help": "Please specify the country issuing your license."
+      },
+      "employer-register": {
+        "confirm-authorized": "I confirm that I am an employee of the company and that I am authorized to use JooCare services on its behalf.",
+        "i-agree-to": "I agree to the",
+        "and": "and"
+      }
+    },
+    "placeholders": {
+      "email": "ex: mail@mail.com",
+      "email-compact": "ex:mail@mail.com",
+      "full-name": "ex: JooCore",
+      "phone-number": "Enter phone number",
+      "job-title": "ex : Senior Consultant, Radiology",
+      "license-country": "ex: United Arab Emirates (UAE)",
+      "license-title": "ex: License Title",
+      "license-number": "ex: 23121212",
+      "company-name": "ex: JooCore",
+      "domain": "ex: Hospital",
+      "contact-person-full-name": "ex: John Doe"
+    },
+    "validation": {
+      "field-required": "This field is required",
+      "email-required": "Email is required",
+      "email-invalid": "Not valid email",
+      "email-invalid-detailed": "Please enter a valid email address",
+      "password-required": "Password is required",
+      "password-min": "Password must be at least 6 characters",
+      "password-max": "Password must be at most 15 characters",
+      "password-less-than-max": "Password must be less than 15 characters",
+      "password-pattern": "Password can include English, Arabic, numbers, special characters, or any mix of them",
+      "confirm-password-required": "Confirm password is required",
+      "passwords-do-not-match": "Passwords do not match",
+      "code-required": "Code is required",
+      "code-length": "Code must be 5 digits",
+      "phone-required": "Phone number is required",
+      "phone-invalid": "Phone number contains invalid characters",
+      "phone-digits": "Phone number must be between 7-15 digits",
+      "phone-max": "Phone number must be less than 15 characters",
+      "full-name-required": "Full name is required",
+      "full-name-min": "Full name must be at least 2 characters",
+      "job-title-required": "Job title is required",
+      "country-required": "Country is required",
+      "city-required": "City is required",
+      "cv-required": "CV is required",
+      "cv-invalid-type": "The uploaded file must be a document in PDF, DOC, or DOCX format.",
+      "other-job-title-required": "Other job title is required",
+      "license-country-required": "License country is required when you have a medical license",
+      "license-title-required": "License title is required",
+      "license-title-min": "License title must be at least 2 characters",
+      "license-title-max": "License title must be at most 100 characters",
+      "company-name-required": "Company name is required",
+      "company-name-min": "Company name must be at least 3 characters",
+      "company-name-max": "Company name must be less than 100 characters",
+      "domain-required": "Domain is required",
+      "person-full-name-required": "Person full name is required",
+      "person-full-name-min": "Person full name must be at least 3 characters",
+      "person-full-name-max": "Person full name must be less than 100 characters",
+      "confirm-authorized": "You must confirm that you are authorized to represent this company",
+      "terms-required": "You must accept the Privacy Policy and Terms & Conditions",
+      "max-file-size-5mb": "Max file size is 5MB",
+      "invalid-file-type": "Invalid file type",
+      "upload-failed": "Upload failed"
+    },
+    "file-upload": {
+      "icon-alt": "Upload icon",
+      "drag-drop-or-browse": "Drag & Drop your files or Browse"
+    },
+    "toasts": {
+      "login-failed": "Login failed",
+      "logged-in-successfully": "Logged in successfully.",
+      "registration-success": "Registration successful! Please verify your email.",
+      "something-went-wrong": "Something went wrong. Please try again.",
+      "unable-start-social-login": "Unable to start social login.",
+      "failed-send-reset-code": "Failed to send reset code.",
+      "invalid-verification-code": "Invalid verification code.",
+      "failed-resend-code": "Failed to resend code.",
+      "verification-code-sent": "Verification code sent successfully.",
+      "reset-session-missing": "Reset password session is missing. Please start again.",
+      "failed-reset-password": "Failed to reset password."
+    },
+    "social": {
+      "google-icon": "Google Icon",
+      "linkedin-icon": "LinkedIn Icon",
+      "google": "Google",
+      "linkedin": "LinkedIn"
+    }
+  },
   "footer": {
     "description": "An AI-powered healthcare recruitment platform supporting compliant, data-driven hiring across medical and life sciences sectors.",
     "copyright": "All rights reserved - JooCare © {year}",

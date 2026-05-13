@@ -218,6 +218,192 @@
     "why-section-title": "المواهب في الوقت المناسب",
     "get-started-for-free": "ابدأ مجانًا"
   },
+  "authPage": {
+    "header": {
+      "homepage-aria": "الصفحة الرئيسية",
+      "logo-alt": "شعار جُوكير",
+      "switch-mode-aria": "تبديل الوضع"
+    },
+    "common": {
+      "or": "أو",
+      "sign-in": "تسجيل الدخول",
+      "not-member-yet": "لست عضوًا بعد؟",
+      "already-have-account": "لديك حساب بالفعل؟",
+      "for-candidate": "للباحث عن عمل",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "forgot-password": "هل نسيت كلمة المرور؟",
+      "logging-in": "جارٍ تسجيل الدخول...",
+      "register": "إنشاء حساب",
+      "registering": "جارٍ إنشاء الحساب...",
+      "send": "إرسال",
+      "sending": "جارٍ الإرسال...",
+      "confirm": "تأكيد",
+      "confirming": "جارٍ التأكيد...",
+      "new-password": "كلمة المرور الجديدة",
+      "confirm-new-password": "تأكيد كلمة المرور الجديدة",
+      "full-name": "الاسم الكامل",
+      "phone-number": "رقم الهاتف",
+      "job-title": "المسمى الوظيفي",
+      "other": "أخرى",
+      "other-job-title": "مسمى وظيفي آخر",
+      "current-location": "الموقع الحالي",
+      "country": "الدولة",
+      "country-lower": "الدولة",
+      "city-lower": "المدينة",
+      "create-password": "إنشاء كلمة مرور",
+      "upload-cv": "رفع السيرة الذاتية",
+      "license-title": "عنوان الترخيص",
+      "license-number": "رقم الترخيص",
+      "upload-license-image": "رفع صورة الترخيص",
+      "optional": "اختيارى",
+      "company-name": "اسم الشركة",
+      "business-email": "البريد الإلكتروني للشركة",
+      "domain": "المجال",
+      "contact-person-full-name": "الاسم الكامل لجهة الاتصال",
+      "contact-person-phone-number": "رقم هاتف جهة الاتصال"
+    },
+    "pages": {
+      "candidate-login": {
+        "title": "مرحبًا بعودتك",
+        "subtitle": "خذ الخطوة التالية في مسيرتك المهنية"
+      },
+      "candidate-register": {
+        "title": "لنبدأ الآن"
+      },
+      "employer-login": {
+        "title-line-1": "مرحبًا بعودتك،",
+        "title-line-2": "شريكنا.",
+        "subtitle": "قم بإدارة الوظائف والمتقدمين بسهولة"
+      },
+      "employer-register": {
+        "title": "ابدأ عملك"
+      }
+    },
+    "side-content": {
+      "default": {
+        "title-line-1": "تطابق أسرع،",
+        "title-line-2": "واعمل بذكاء أكبر"
+      },
+      "employer-login": {
+        "description": "باستخدام الأدوات الذكية والتحليلات المدعومة بالذكاء الاصطناعي، تساعدك جُوكير في العثور على الفرصة المناسبة والحصول على الوظيفة التي تستحقها بثقة."
+      },
+      "candidate-login": {
+        "description": "تربط جُوكير المحترفين بالفرص المناسبة من خلال تحليلات تعتمد على البيانات لدعم القرارات المهنية والنمو طويل المدى."
+      },
+      "employer-register": {
+        "title": "لنقم بإنشاء حساب مؤسستك",
+        "description": "ضع الأساس لنجاح التوظيف لديك. من خلال إكمال بيانات حسابك، ستتمكن من استخدام أدوات المطابقة الذكية والتحليلات التنبؤية من جُوكير لتسهيل دورة التوظيف بالكامل."
+      },
+      "candidate-register": {
+        "description": "باستخدام الأدوات الذكية والتحليلات المدعومة بالذكاء الاصطناعي، تساعدك جُوكير في العثور على الفرصة المناسبة والحصول على الوظيفة التي تستحقها بثقة."
+      }
+    },
+    "forget-password": {
+      "title": "نسيت كلمة المرور",
+      "subtitle": "يرجى إدخال بريدك الإلكتروني المسجل. سنرسل لك رمز تحقق لإعادة تعيين كلمة المرور."
+    },
+    "new-password": {
+      "title": "كلمة مرور جديدة",
+      "subtitle": "أدخل كلمة مرور قوية يسهل تذكرها."
+    },
+    "otp-modal": {
+      "title": "التحقق من البريد الإلكتروني",
+      "description-before": "أدخل الرمز المرسل إلى",
+      "description-after": "، أو اضغط على الرابط الموجود في البريد الإلكتروني.",
+      "resend-code": "إعادة إرسال الرمز"
+    },
+    "forms": {
+      "candidate-register": {
+        "has-medical-license": "هل لديك ترخيص طبي ساري؟",
+        "license-country-help": "يرجى تحديد الدولة المصدرة للترخيص."
+      },
+      "employer-register": {
+        "confirm-authorized": "أؤكد أنني موظف في الشركة ومصرح لي باستخدام خدمات جُوكير نيابةً عنها.",
+        "i-agree-to": "أوافق على",
+        "and": "و"
+      }
+    },
+    "placeholders": {
+      "email": "مثال: mail@mail.com",
+      "email-compact": "مثال:mail@mail.com",
+      "full-name": "مثال: جُوكور",
+      "phone-number": "أدخل رقم الهاتف",
+      "job-title": "مثال: استشاري أول - الأشعة",
+      "license-country": "مثال: الإمارات العربية المتحدة",
+      "license-title": "مثال: عنوان الترخيص",
+      "license-number": "مثال: 23121212",
+      "company-name": "مثال: جُوكور",
+      "domain": "مثال: مستشفى",
+      "contact-person-full-name": "مثال: John Doe"
+    },
+    "validation": {
+      "field-required": "هذا الحقل مطلوب",
+      "email-required": "البريد الإلكتروني مطلوب",
+      "email-invalid": "البريد الإلكتروني غير صالح",
+      "email-invalid-detailed": "يرجى إدخال بريد إلكتروني صالح",
+      "password-required": "كلمة المرور مطلوبة",
+      "password-min": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+      "password-max": "يجب ألا تتجاوز كلمة المرور 15 حرفًا",
+      "password-less-than-max": "يجب أن تكون كلمة المرور أقل من 15 حرفًا",
+      "password-pattern": "يمكن أن تحتوي كلمة المرور على الإنجليزية أو العربية أو الأرقام أو الرموز الخاصة أو أي مزيج منها",
+      "confirm-password-required": "تأكيد كلمة المرور مطلوب",
+      "passwords-do-not-match": "كلمتا المرور غير متطابقتين",
+      "code-required": "الرمز مطلوب",
+      "code-length": "يجب أن يكون الرمز مكونًا من 5 أرقام",
+      "phone-required": "رقم الهاتف مطلوب",
+      "phone-invalid": "رقم الهاتف يحتوي على أحرف غير صالحة",
+      "phone-digits": "يجب أن يكون رقم الهاتف بين 7 و15 رقمًا",
+      "phone-max": "يجب ألا يتجاوز رقم الهاتف 15 حرفًا",
+      "full-name-required": "الاسم الكامل مطلوب",
+      "full-name-min": "يجب أن يكون الاسم الكامل حرفين على الأقل",
+      "job-title-required": "المسمى الوظيفي مطلوب",
+      "country-required": "الدولة مطلوبة",
+      "city-required": "المدينة مطلوبة",
+      "cv-required": "السيرة الذاتية مطلوبة",
+      "cv-invalid-type": "يجب أن يكون الملف المرفوع بصيغة PDF أو DOC أو DOCX.",
+      "other-job-title-required": "المسمى الوظيفي الآخر مطلوب",
+      "license-country-required": "دولة الترخيص مطلوبة عند وجود ترخيص طبي",
+      "license-title-required": "عنوان الترخيص مطلوب",
+      "license-title-min": "يجب أن يكون عنوان الترخيص حرفين على الأقل",
+      "license-title-max": "يجب ألا يتجاوز عنوان الترخيص 100 حرف",
+      "company-name-required": "اسم الشركة مطلوب",
+      "company-name-min": "يجب أن يكون اسم الشركة 3 أحرف على الأقل",
+      "company-name-max": "يجب ألا يتجاوز اسم الشركة 100 حرف",
+      "domain-required": "المجال مطلوب",
+      "person-full-name-required": "الاسم الكامل للشخص مطلوب",
+      "person-full-name-min": "يجب أن يكون الاسم الكامل 3 أحرف على الأقل",
+      "person-full-name-max": "يجب ألا يتجاوز الاسم الكامل 100 حرف",
+      "confirm-authorized": "يجب تأكيد أنك مخول لتمثيل هذه الشركة",
+      "terms-required": "يجب الموافقة على سياسة الخصوصية والشروط والأحكام",
+      "max-file-size-5mb": "الحد الأقصى لحجم الملف هو 5 ميجابايت",
+      "invalid-file-type": "نوع الملف غير صالح",
+      "upload-failed": "فشل رفع الملف"
+    },
+    "file-upload": {
+      "icon-alt": "أيقونة الرفع",
+      "drag-drop-or-browse": "اسحب الملفات وأفلتها أو تصفح"
+    },
+    "toasts": {
+      "login-failed": "فشل تسجيل الدخول",
+      "logged-in-successfully": "تم تسجيل الدخول بنجاح.",
+      "registration-success": "تم إنشاء الحساب بنجاح! يرجى التحقق من بريدك الإلكتروني.",
+      "something-went-wrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      "unable-start-social-login": "تعذر بدء تسجيل الدخول الاجتماعي.",
+      "failed-send-reset-code": "فشل إرسال رمز إعادة التعيين.",
+      "invalid-verification-code": "رمز التحقق غير صالح.",
+      "failed-resend-code": "فشل إعادة إرسال الرمز.",
+      "verification-code-sent": "تم إرسال رمز التحقق بنجاح.",
+      "reset-session-missing": "جلسة إعادة تعيين كلمة المرور مفقودة. يرجى البدء من جديد.",
+      "failed-reset-password": "فشل إعادة تعيين كلمة المرور."
+    },
+    "social": {
+      "google-icon": "أيقونة جوجل",
+      "linkedin-icon": "أيقونة لينكدإن",
+      "google": "جوجل",
+      "linkedin": "لينكدإن"
+    }
+  },
   "footer": {
     "description": "منصة توظيف صحية مدعومة بالذكاء الاصطناعي تدعم التوظيف المتوافق والقائم على البيانات عبر قطاعات الطب وعلوم الحياة.",
     "copyright": "جميع الحقوق محفوظة - جُوكير © {year}",

@@ -6,6 +6,7 @@ import "./filepondPlugins";
 // styles
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond/dist/filepond.min.css";
+import { useTranslations } from "next-intl";
 
 interface FilepondUploadProps {
   files?: File[];
@@ -47,6 +48,7 @@ export function FilepondUpload({
   invalidTypeMessage,
   onUploadError,
 }: FilepondUploadProps) {
+  const t = useTranslations();
   const MAX_SIZE = maxSize || 5 * 1024 * 1024;
 
   const matchesAcceptedType = (file: File) => {
@@ -92,11 +94,11 @@ export function FilepondUpload({
 
   const validateFile = (file: File) => {
     if (file.size > MAX_SIZE) {
-      return "Max file size is 5MB";
+      return t("authPage.validation.max-file-size-5mb");
     }
 
     if (!matchesAcceptedType(file)) {
-      return invalidTypeMessage ?? "Invalid file type";
+      return invalidTypeMessage ?? t("authPage.validation.invalid-file-type");
     }
 
     return null;
@@ -107,7 +109,7 @@ export function FilepondUpload({
       {label && (
         <label className="block text-base font-semibold">
           {label}
-          {required && <span className="ml-1 text-red-500">*</span>}
+          {required && <span className="mx-1 text-red-500">*</span>}
           {hint && (
             <span className="text-muted-foreground text-sm font-normal">
               {hint}{" "}
@@ -155,14 +157,16 @@ export function FilepondUpload({
                 onUploadSuccess(imagePath);
                 load(String(response.data.id)); // ✅ must be a string
               } else {
-                onUploadError?.("Upload failed");
-                error("Upload failed");
+                const uploadFailedMessage = t("authPage.validation.upload-failed");
+                onUploadError?.(uploadFailedMessage);
+                error(uploadFailedMessage);
               }
             };
 
             xhr.onerror = () => {
-              onUploadError?.("Upload failed");
-              error("Upload failed");
+              const uploadFailedMessage = t("authPage.validation.upload-failed");
+              onUploadError?.(uploadFailedMessage);
+              error(uploadFailedMessage);
             };
             xhr.send(formData);
 
@@ -182,7 +186,7 @@ export function FilepondUpload({
           if (addFileError) {
             const file = fileItem?.file;
             const validationMessage = file ? validateFile(file as File) : invalidTypeMessage;
-            onUploadError?.(validationMessage ?? "Upload failed");
+            onUploadError?.(validationMessage ?? t("authPage.validation.upload-failed"));
             return;
           }
 
@@ -200,8 +204,8 @@ export function FilepondUpload({
         }}
         labelIdle={`
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
-            <img src="/assets/icons/Group.svg" alt="icon image" width="20" height="20"/>
-            <span style="font-size:14px;">Drag & Drop your files or Browse</span>
+            <img src="/assets/icons/Group.svg" alt="${t("authPage.file-upload.icon-alt")}" width="20" height="20"/>
+            <span style="font-size:14px;">${t("authPage.file-upload.drag-drop-or-browse")}</span>
           </div>
         `}
       />

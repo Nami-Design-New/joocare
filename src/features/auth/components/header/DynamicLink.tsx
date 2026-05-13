@@ -1,11 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { buttonVariants } from "@/shared/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
 const DynamicLink = () => {
   const pathname = usePathname();
+  const t = useTranslations();
 
   const isEmployer = pathname.includes("employer");
   const isLogin = pathname.includes("login");
@@ -25,9 +27,9 @@ const DynamicLink = () => {
         size: "pill",
         variant: "secondary",
       })}
-      aria-label="Switch mode"
+      aria-label={t("authPage.header.switch-mode-aria")}
     >
-      {isEmployer ? "For Candidate" : "For Employer"}
+      {isEmployer ? t("authPage.common.for-candidate") : t("header.for-employer")}
     </Link>
   );
 };
