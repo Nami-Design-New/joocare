@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/shared/components/ui/button";
+import { useTranslations } from "next-intl";
 import useGetQualifications from "../../hooks/useGetQualifications";
 import { CredentialCardSkeletonList } from "../shared/CredentialCardSkeleton";
 import CredentialsEmptyState from "../shared/CredentialsEmptyState";
@@ -8,6 +9,7 @@ import InfiniteScrollTrigger from "../shared/InfiniteScrollTrigger";
 import QualificationCard from "./QualificationCard";
 
 export default function QualificationsContent() {
+  const t = useTranslations();
   const {
     qualifications,
     isInitialLoading,
@@ -27,7 +29,7 @@ export default function QualificationsContent() {
   if (isError) {
     return (
       <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-5 text-sm text-red-700">
-        <p>{error instanceof Error ? error.message : "Unable to load qualifications."}</p>
+        <p>{error instanceof Error ? error.message : t("candidatePage.credentials.load-qualifications-failed")}</p>
         <Button
           type="button"
           variant="outline"
@@ -35,7 +37,7 @@ export default function QualificationsContent() {
           className="mt-4"
           onClick={() => void refetch()}
         >
-          Try again
+          {t("candidatePage.common.try-again")}
         </Button>
       </div>
     );
@@ -44,8 +46,8 @@ export default function QualificationsContent() {
   if (qualifications.length === 0) {
     return (
       <CredentialsEmptyState
-        title="No qualifications added yet"
-        description="Use the add button above to create your first qualification entry."
+        title={t("candidatePage.credentials.no-qualifications")}
+        description={t("candidatePage.credentials.no-qualifications-description")}
       />
     );
   }

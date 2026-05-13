@@ -84,7 +84,7 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html
       lang={locale}
-      // dir={locale === "ar" ? "rtl" : "ltr"}
+      dir={locale === "ar" ? "rtl" : "ltr"}
       className={`${outfit.variable} ${notoSans.variable}`}
     >
       <body className={`antialiased ${outfit.className}`}>

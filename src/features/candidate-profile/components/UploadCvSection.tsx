@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/shared/components/ui/button";
 import { File, Eye } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { storeUploadedFile } from "@/shared/services/store-uploaded-file-service";
@@ -53,6 +53,7 @@ function resolveStoredFileUrl(path: string | null) {
 }
 
 const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
+  const t = useTranslations();
   const [currentCvUrl, setCurrentCvUrl] = useState<string | null>(cvUrl);
   const [selectedCvFile, setSelectedCvFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -125,7 +126,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
 
     const validation = cvSchema.safeParse({ cv: file });
     if (!validation.success) {
-      toast.error(validation.error.issues[0]?.message || "Invalid CV file.");
+      toast.error(validation.error.issues[0]?.message || t("candidatePage.toasts.invalid-cv-file"));
       e.target.value = "";
       return;
     }
@@ -148,7 +149,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
       toast.success(response.message);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to upload CV.";
+        error instanceof Error ? error.message : t("candidatePage.toasts.upload-cv-failed");
       toast.error(message);
     } finally {
       setIsUploading(false);
@@ -169,7 +170,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = displayFileName || "cv";
+    a.download = displayFileName || t("candidatePage.profile.cv-file-name");
     a.target = "_blank";
     a.rel = "noopener noreferrer";
     a.click();
@@ -186,7 +187,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
       toast.success(response.message);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to delete CV.";
+        error instanceof Error ? error.message : t("candidatePage.toasts.delete-cv-failed");
       toast.error(message);
     } finally {
       setIsDeleting(false);
@@ -213,7 +214,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
           onClick={handleUploadClick}
           disabled={isUploading}
         >
-          {isUploading ? "Uploading..." : "Upload CV"}
+          {isUploading ? t("candidatePage.common.uploading") : t("jobDetailsPage.upload-cv")}
         </Button>
       ) : (
         // ================= HAS CV =================
@@ -222,7 +223,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
           <div className="flex items-center justify-center gap-2 rounded-[8px] bg-white p-5 shadow">
             <Image
               src={"/assets/pdf_file.svg"}
-              alt="pdf"
+              alt={t("candidatePage.profile.pdf-file")}
               width={24}
               height={24}
             />
@@ -244,7 +245,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
               className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[12px]"
             >
               <File className="h-3 w-3" />
-              Download
+              {t("candidatePage.common.download")}
             </Button>
 
             <Button
@@ -253,7 +254,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
               className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[12px]"
             >
               <Eye className="h-3 w-3" />
-              View
+              {t("candidatePage.common.view")}
             </Button>
           </div>
         </section>
@@ -263,7 +264,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
         <CVModal
           open={open}
           onOpenChange={setOpen}
-          title={"View Cv"}
+          title={t("candidatePage.profile.view-cv")}
           url={displayUrl ?? undefined}
           fileName={displayFileName}
           handleDownload={handleDownload}

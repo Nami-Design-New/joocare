@@ -1,8 +1,12 @@
+"use client";
+
 import { cn } from '@/shared/lib/utils'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { CompanyProfile } from '../company-profile.type'
 
 export default function HeaderSection({ company }: { company: CompanyProfile }) {
+    const t = useTranslations();
     return (
         <>
             <div className="w-full h-72 mb-20">
@@ -16,7 +20,7 @@ export default function HeaderSection({ company }: { company: CompanyProfile }) 
                     >
                         <Image
                             src={company?.cover ?? "/assets/cover.svg"}
-                            alt={`${company.name}'s cover image`}
+                            alt={t("sharedCompanyProfilePage.cover-image", { companyName: company.name ?? t("sharedCompanyProfilePage.this-company") })}
                             fill
                             className="object-cover"
                         />
@@ -33,7 +37,7 @@ export default function HeaderSection({ company }: { company: CompanyProfile }) 
                     >
                         <Image
                             src={company?.image ?? "/assets/image_2.svg"}
-                            alt={`${company.name}'s logo image`}
+                            alt={t("sharedCompanyProfilePage.logo-image", { companyName: company.name ?? t("sharedCompanyProfilePage.this-company") })}
                             fill
                             className="object-cover rounded-full"
                         />

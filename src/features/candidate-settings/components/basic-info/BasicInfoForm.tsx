@@ -16,7 +16,7 @@ import {
   parsePhoneWithCode,
 } from "@/shared/lib/phone";
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -50,10 +50,9 @@ const CV_ACCEPTED_FILE_TYPES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
-const CV_INVALID_TYPE_MESSAGE =
-  "The uploaded file must be a document in PDF, DOC, or DOCX format.";
 
 const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
+  const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
   const { data: session } = useSession();
@@ -194,7 +193,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
   const jobTitleOptions = useMemo(
     () => [
-      { label: "Other", value: OTHER_JOB_TITLE_VALUE },
+      { label: t("authPage.common.other"), value: OTHER_JOB_TITLE_VALUE },
       ...jobTitles
         .map((jobTitle) => ({
           label: String(jobTitle.title ?? ""),
@@ -202,7 +201,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         }))
         .filter((jobTitle) => jobTitle.label),
     ],
-    [jobTitles],
+    [jobTitles, t],
   );
 
   const isOtherJobTitle = selectedJobTitle === OTHER_JOB_TITLE_VALUE;
@@ -224,7 +223,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     const parsedPhone = parsePhoneWithCode(data.phoneNumber, profile.phoneCode);
 
     if (!parsedPhone) {
-      toast.error("Please enter a valid phone number.");
+      toast.error(t("candidateSettingsPage.toasts.invalid-phone"));
       return;
     }
 
@@ -254,14 +253,14 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       }
 
       const response = await updateCandidateBasicInfoAction(formData, locale);
-      toast.success(response.message ?? "Profile updated successfully.");
+      toast.success(response.message ?? t("candidateSettingsPage.toasts.profile-updated"));
       queryClient.invalidateQueries({ queryKey: ['candidate-profile'] })
       router.push("/candidate/profile");
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : "Failed to update profile information.";
+          : t("candidateSettingsPage.toasts.profile-update-failed");
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -274,7 +273,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       className="mt-6 flex flex-col gap-5"
     >
       <div className="flex w-full flex-col">
-        <h3 className="mx-1 mb-1 text-base font-semibold">Profile Picture</h3>
+        <h3 className="mx-1 mb-1 text-base font-semibold">{t("candidateSettingsPage.profile-picture")}</h3>
         <Controller
           name="profileImage"
           control={control}
@@ -320,7 +319,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                   }
 
                   const message =
-                    error instanceof Error ? error.message : "Failed to upload profile image.";
+                    error instanceof Error ? error.message : t("candidateSettingsPage.toasts.upload-profile-image-failed");
                   setUploadedImagePath(null);
                   setError("profileImage", {
                     type: "server",
@@ -368,9 +367,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       <InputField
         id="fullName"
-        label="Full Name"
+        label={t("authPage.common.full-name")}
         type="text"
-        placeholder="ex: JooCore"
+        placeholder={t("authPage.placeholders.full-name")}
         {...register("fullName")}
         error={errors.fullName?.message}
       />
@@ -378,8 +377,8 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       <InputField
         id="email"
         type="email"
-        label="Email"
-        placeholder="ex: mail@mail.com"
+        label={t("authPage.common.email")}
+        placeholder={t("authPage.placeholders.email")}
         disabled
         {...register("email")}
         error={errors.email?.message}
@@ -387,7 +386,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       <div>
         <label htmlFor="phoneNumber" className="mx-1 mb-1 block font-semibold">
-          Phone number
+          {t("authPage.common.phone-number")}
         </label>
         <Controller
           name="phoneNumber"
@@ -397,7 +396,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
               defaultCountry={getCountryCodeByPhoneCode(profile.phoneCode)}
               id="phoneNumber"
               className="w-full"
-              placeholder="ex:52 987 6543"
+              placeholder={t("authPage.placeholders.phone-number")}
               value={field.value}
               onChange={(value) => field.onChange(value)}
               error={Boolean(errors.phoneNumber?.message)}
@@ -417,10 +416,10 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         render={({ field }) => (
           <SelectInputField
             id="jobTitle"
-            label="Job Title"
-            placeholder="ex: Consultant Internist"
+            label={t("authPage.common.job-title")}
+            placeholder={t("candidateSettingsPage.placeholders.job-title")}
             withSearchInput
-            searchPlaceholder="Search job titles..."
+            searchPlaceholder={t("candidateSettingsPage.placeholders.search-job-titles")}
             {...field}
             error={
               errors.jobTitle?.message ??
@@ -442,8 +441,8 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         <InputField
           id="otherJobTitle"
           type="text"
-          label="Other Job Title"
-          placeholder="ex: Consultant Internist"
+          label={t("authPage.common.other-job-title")}
+          placeholder={t("candidateSettingsPage.placeholders.job-title")}
           {...register("otherJobTitle")}
           error={errors.otherJobTitle?.message}
         />
@@ -481,9 +480,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         /> */}
         <InputField
           id="specialty"
-          label="Specialty"
+          label={t("jobDetailsPage.specialty")}
           type={"text"}
-          placeholder="ex: Cardiology"
+          placeholder={t("candidateSettingsPage.placeholders.specialty")}
           // className="bg-white"
           {...register("specialty")}
           error={errors.specialty?.message?.toString()}
@@ -493,11 +492,11 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           control={control}
           render={({ field }) => (
             <SelectInputField
-              label="Years of Experience"
+              label={t("candidateSettingsPage.years-of-experience")}
               id="yearsOfExperience"
-              placeholder="ex: 3-5 years"
+              placeholder={t("candidateSettingsPage.placeholders.years-of-experience")}
               withSearchInput
-              searchPlaceholder="Search experience..."
+              searchPlaceholder={t("candidateSettingsPage.placeholders.search-experience")}
               {...field}
               error={
                 errors.yearsOfExperience?.message ??
@@ -521,7 +520,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       <div>
         <label htmlFor="country" className="mx-1 mb-2 block font-semibold">
-          Current Location
+          {t("authPage.common.current-location")}
         </label>
         <div className="flex items-center gap-2">
           <Controller
@@ -530,9 +529,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
             render={({ field }) => (
               <SelectInputField
                 id="country"
-                placeholder="country"
+                placeholder={t("authPage.common.country-lower")}
                 withSearchInput
-                searchPlaceholder="Search countries..."
+                searchPlaceholder={t("candidatePage.profile.search-countries")}
                 {...field}
                 error={
                   errors.country?.message ??
@@ -558,9 +557,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
             render={({ field }) => (
               <SelectInputField
                 id="city"
-                placeholder="city"
+                placeholder={t("authPage.common.city-lower")}
                 withSearchInput
-                searchPlaceholder="Search cities..."
+                searchPlaceholder={t("candidateSettingsPage.placeholders.search-cities")}
                 {...field}
                 error={
                   errors.city?.message ??
@@ -586,7 +585,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       <InputField
         id="dateOfBirth"
         type="date"
-        label="Date of birth"
+        label={t("candidateSettingsPage.date-of-birth")}
         {...register("dateOfBirth")}
         error={errors.dateOfBirth?.message}
       />
@@ -596,13 +595,13 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         control={control}
         render={({ field }) => (
           <StoredFilepondUpload
-            label="Upload CV"
+            label={t("jobDetailsPage.upload-cv")}
             files={field.value}
             onChange={field.onChange}
             required={!(profile.cv && showExistingCv)}
             allowImagePreview={false}
             acceptedFileTypes={CV_ACCEPTED_FILE_TYPES}
-            invalidTypeMessage={CV_INVALID_TYPE_MESSAGE}
+            invalidTypeMessage={t("authPage.validation.cv-invalid-type")}
             maxSize={5 * 1024 * 1024}
             processFile={async (file) => {
               const uploadFormData = new FormData();
@@ -651,12 +650,12 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           disabled={isSaving || isImageUploading || isDeletingImage}
         >
           {isSaving
-            ? "Saving..."
+            ? t("candidatePage.common.saving")
             : isImageUploading
-              ? "Uploading image..."
+              ? t("candidateSettingsPage.common.uploading-image")
               : isDeletingImage
-                ? "Deleting image..."
-                : "Save"}
+                ? t("candidateSettingsPage.common.deleting-image")
+                : t("common.save")}
         </Button>
       </div>
     </form>

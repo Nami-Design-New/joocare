@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo, useState, useTransition } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import { InputField } from "@/shared/components/InputField";
@@ -118,6 +118,7 @@ export function QualificationModal({
   label,
   qualification,
 }: QualificationModalProps) {
+  const t = useTranslations();
   const locale = useLocale();
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
@@ -212,8 +213,8 @@ export function QualificationModal({
         toast.success(
           response.message ??
           (qualification?.id
-            ? "Qualification updated successfully."
-            : "Qualification added successfully."),
+            ? t("candidatePage.toasts.qualification-updated")
+            : t("candidatePage.toasts.qualification-added")),
         );
         await queryClient.invalidateQueries({
           queryKey: qualificationsQueryKeyPrefix(locale),
@@ -225,7 +226,7 @@ export function QualificationModal({
         });
 
         const message =
-          error instanceof Error ? error.message : "Failed to save qualification.";
+          error instanceof Error ? error.message : t("candidatePage.toasts.qualification-save-failed");
         toast.error(message);
       }
     });
@@ -244,7 +245,7 @@ export function QualificationModal({
             control={control}
             render={({ field }) => (
               <StoredFilepondUpload
-                label="Upload Image"
+                label={t("candidatePage.profile.upload-image")}
                 files={field.value}
                 onChange={field.onChange}
                 required={!(qualification?.image && showExistingImage)}
@@ -276,7 +277,7 @@ export function QualificationModal({
                   });
                 }}
                 existingFileUrl={showExistingImage ? qualification?.image ?? null : null}
-                existingFileLabel={qualification?.degree ?? "Qualification image"}
+                existingFileLabel={qualification?.degree ?? t("candidatePage.credentials.qualification-image")}
                 onExistingFileRemove={() => {
                   setShowExistingImage(false);
                   setStoredImagePath(null);
@@ -289,18 +290,18 @@ export function QualificationModal({
 
           <InputField
             id="degree"
-            label="Degree"
+            label={t("candidatePage.profile.degree")}
             type="text"
-            placeholder="ex: Bachelor's degree, Medicine and Surgery"
+            placeholder={t("candidatePage.profile.degree-placeholder")}
             {...register("degree")}
             error={errors.degree?.message}
           />
 
           <InputField
             id="university"
-            label="University"
+            label={t("candidatePage.profile.university")}
             type="text"
-            placeholder="ex: Ain Shams University - Faculty of Medicine"
+            placeholder={t("candidatePage.profile.university-placeholder")}
             {...register("university")}
             error={errors.university?.message}
           />
@@ -311,14 +312,14 @@ export function QualificationModal({
             render={({ field }) => (
               <SelectInputField
                 id="country"
-                label="Country"
-                placeholder={isLoading ? "Loading countries..." : "ex: Egypt"}
+                label={t("candidatePage.profile.country")}
+                placeholder={isLoading ? t("candidatePage.profile.loading-countries") : t("candidatePage.profile.country-placeholder")}
                 options={countryOptions}
                 value={field.value}
                 disabled={isLoading}
                 portalContainer={dialogContentElement}
                 withSearchInput
-                searchPlaceholder="Search countries..."
+                searchPlaceholder={t("candidatePage.profile.search-countries")}
                 onSearchChange={setCountrySearch}
                 onChange={field.onChange}
                 onReachEnd={() => void fetchNextPage()}
@@ -332,7 +333,7 @@ export function QualificationModal({
           <div className="flex items-center justify-between gap-2 max-md:flex-col">
             <InputField
               id="startDate"
-              label="Start Date"
+              label={t("candidatePage.profile.start-date")}
               type="date"
               {...register("startDate")}
               error={errors.startDate?.message}
@@ -340,7 +341,7 @@ export function QualificationModal({
 
             <InputField
               id="endDate"
-              label="End Date"
+              label={t("candidatePage.profile.end-date")}
               type="date"
               {...register("endDate")}
               error={errors.endDate?.message}
@@ -349,7 +350,7 @@ export function QualificationModal({
 
           <DialogFooter className="flex items-center justify-center!">
             <Button className="w-1/3" size={"pill"} type="submit" disabled={isPending}>
-              {isPending ? "Saving..." : qualification?.id ? "Save" : "Add"}
+              {isPending ? t("candidatePage.common.saving") : qualification?.id ? t("common.save") : t("candidatePage.common.add")}
             </Button>
           </DialogFooter>
         </form>

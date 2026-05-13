@@ -1,6 +1,6 @@
 'use client';
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import DeleteModal from "@/shared/components/modals/DeleteModal";
@@ -19,13 +19,14 @@ export default function ExperienceActions({
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const t = useTranslations();
   const locale = useLocale();
   const { data: session } = useSession();
   const router = useRouter();
 
   const handleDeleteExperience = async () => {
     if (!session?.accessToken) {
-      toast.error("Your session has expired. Please log in again.");
+      toast.error(t("candidatePage.toasts.session-expired"));
       return;
     }
 
@@ -37,12 +38,12 @@ export default function ExperienceActions({
         token: session.accessToken,
       });
 
-      toast.success(response?.message ?? "Experience deleted successfully.");
+      toast.success(response?.message ?? t("candidatePage.toasts.experience-deleted"));
       setDeleteOpen(false);
       router.refresh();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to delete experience.";
+        error instanceof Error ? error.message : t("candidatePage.toasts.experience-delete-failed");
       toast.error(message);
     } finally {
       setIsDeleting(false);
@@ -67,7 +68,7 @@ export default function ExperienceActions({
       </div>
 
       <ExperienceModal
-        label="Edit Experience"
+        label={t("candidatePage.profile.edit-experience")}
         open={open}
         onOpenChange={setOpen}
         experience={experience}
@@ -75,9 +76,9 @@ export default function ExperienceActions({
       <DeleteModal
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Do you want to delete this Experience?"
-        description="The Experience will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
-        cancelLabel="Back"
+        title={t("candidatePage.profile.delete-experience-title")}
+        description={t("candidatePage.profile.delete-experience-description")}
+        cancelLabel={t("candidatePage.common.back")}
         onConfirm={handleDeleteExperience}
         isLoading={isDeleting}
       />

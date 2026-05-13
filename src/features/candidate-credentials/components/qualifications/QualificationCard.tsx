@@ -4,7 +4,7 @@ import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import DeleteModal from "@/shared/components/modals/DeleteModal";
 import { deleteQualificationAction } from "../../actions/qualification-actions";
@@ -21,6 +21,7 @@ export default function QualificationCard({
   const [open, setOpen] = useState(false);
   const [deleteQualification, setDeleteQualification] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations();
   const locale = useLocale();
   const queryClient = useQueryClient();
 
@@ -46,7 +47,7 @@ export default function QualificationCard({
           locale,
         });
 
-        toast.success(response.message ?? "Qualification deleted successfully.");
+        toast.success(response.message ?? t("candidatePage.toasts.qualification-deleted"));
         await queryClient.invalidateQueries({
           queryKey: qualificationsQueryKeyPrefix(locale),
         });
@@ -57,7 +58,7 @@ export default function QualificationCard({
         });
 
         const message =
-          error instanceof Error ? error.message : "Failed to delete qualification.";
+          error instanceof Error ? error.message : t("candidatePage.toasts.qualification-delete-failed");
         toast.error(message);
       }
     });
@@ -95,15 +96,15 @@ export default function QualificationCard({
               />
             </div>
           </div>
-          <p className="text-base">{qualification.countryName ?? "Country not provided"}</p>
+          <p className="text-base">{qualification.countryName ?? t("candidatePage.profile.country-not-provided")}</p>
           <p className="text-base">{qualification.university}</p>
-          <p className="text-base">{qualification.period ?? "No period added yet."}</p>
+          <p className="text-base">{qualification.period ?? t("candidatePage.profile.no-period")}</p>
         </div>
       </section>
 
       {open ? (
         <QualificationModal
-          label="Edit Qualification"
+          label={t("candidatePage.credentials.edit-qualification")}
           open={open}
           onOpenChange={setOpen}
           qualification={qualification}
@@ -113,9 +114,9 @@ export default function QualificationCard({
       <DeleteModal
         open={deleteQualification}
         onOpenChange={setDeleteQualification}
-        title="Do you want to delete this Qualification?"
-        description="The Qualification will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
-        cancelLabel="Back"
+        title={t("candidatePage.credentials.delete-qualification-title")}
+        description={t("candidatePage.credentials.delete-qualification-description")}
+        cancelLabel={t("candidatePage.common.back")}
         onConfirm={handleDeleteQualification}
         isLoading={isPending}
       />

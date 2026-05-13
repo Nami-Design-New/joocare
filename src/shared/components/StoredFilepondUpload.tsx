@@ -6,6 +6,7 @@ import { FilePond } from "react-filepond";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond/dist/filepond.min.css";
 import "./filepondPlugins";
+import { useTranslations } from "next-intl";
 
 type StoredFilepondUploadProps = {
   files?: File[];
@@ -115,6 +116,7 @@ export function StoredFilepondUpload({
   onExistingFileRemove,
   onUploadingChange,
 }: StoredFilepondUploadProps) {
+  const t = useTranslations()
   const MAX_SIZE = maxSize || 5 * 1024 * 1024;
   const hasLocalFiles = files.length > 0;
   const resolvedExistingFileUrl = resolveExistingFileUrl(existingFileUrl);
@@ -331,7 +333,7 @@ export function StoredFilepondUpload({
         labelIdle={`
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
             <img src="/assets/icons/Group.svg" alt="upload icon" width="20" height="20"/>
-            <span style="font-size:14px;">Drag & Drop your files or Browse</span>
+            <span style="font-size:14px;">${t("authPage.file-upload.drag-drop-or-browse")}</span>
           </div>
         `}
       />

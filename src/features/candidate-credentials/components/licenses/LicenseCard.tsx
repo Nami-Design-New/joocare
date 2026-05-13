@@ -4,7 +4,7 @@ import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import DeleteModal from "@/shared/components/modals/DeleteModal";
@@ -18,6 +18,7 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
   const [open, setOpen] = useState(false);
   const [deleteLicense, setDeleteLicense] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations();
   const locale = useLocale();
   const queryClient = useQueryClient();
 
@@ -37,7 +38,7 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
           locale,
         });
 
-        toast.success(response.message ?? "License deleted successfully.");
+        toast.success(response.message ?? t("candidatePage.toasts.license-deleted"));
         setDeleteLicense(false);
         await queryClient.invalidateQueries({
           queryKey: licensesQueryKeyPrefix(locale),
@@ -47,7 +48,7 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
           queryClient.setQueryData(queryKey, data);
         });
 
-        const message = error instanceof Error ? error.message : "Failed to delete license.";
+        const message = error instanceof Error ? error.message : t("candidatePage.toasts.license-delete-failed");
         toast.error(message);
       }
     });
@@ -71,7 +72,7 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
             <div>
               <p className="text-sm text-muted-foreground">{license.number}</p>
               <p className="text-sm text-muted-foreground">
-                {license.countryName ?? "Country not provided"}
+                {license.countryName ?? t("candidatePage.profile.country-not-provided")}
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -94,7 +95,7 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
 
       {open && (
         <LicenseModal
-          label="Edit License"
+          label={t("candidatePage.credentials.edit-license")}
           open={open}
           onOpenChange={setOpen}
           license={license}
@@ -104,9 +105,9 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
       <DeleteModal
         open={deleteLicense}
         onOpenChange={setDeleteLicense}
-        title="Do you want to delete this License?"
-        description="The License will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
-        cancelLabel="Back"
+        title={t("candidatePage.credentials.delete-license-title")}
+        description={t("candidatePage.credentials.delete-license-description")}
+        cancelLabel={t("candidatePage.common.back")}
         onConfirm={handleDeleteLicense}
         isLoading={isPending}
       />

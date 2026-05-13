@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getTranslations } from "next-intl/server";
 
 import AboutSection from "@/features/shared-company-profile/components/AboutSection";
 import HeaderSection from "@/features/shared-company-profile/components/HeaderSection";
@@ -118,6 +119,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function SharedCompanyProfileDetails({
     params
 }: PageProps) {
+    const t = await getTranslations();
     const { locale, slug } = await params;
     const { company } = await getCompanyProfile(slug);
     const queryClient = getQueryClient();
@@ -135,7 +137,7 @@ export default async function SharedCompanyProfileDetails({
         jobsError = error;
     }
 
-    const companyName = company.name ?? "this company";
+    const companyName = company.name ?? t("sharedCompanyProfilePage.this-company");
     const companyJobsQuery = queryClient.getQueryData(
         getInfiniteCompanyJobsQueryOptions({
             slug,
@@ -150,8 +152,8 @@ export default async function SharedCompanyProfileDetails({
         <div className="bg-background min-h-screen pb-12">
             {/* Breadcrumb */}
             <Breadcrumb
-                title={`About ${companyName}`}
-                items={[{ label: "Home", href: "/" }, { label: `About ${companyName}` }]}
+                title={t("sharedCompanyProfilePage.about-company", { companyName })}
+                items={[{ label: t("header.home"), href: "/" }, { label: t("sharedCompanyProfilePage.about-company", { companyName }) }]}
             />
 
             {/* Content */}

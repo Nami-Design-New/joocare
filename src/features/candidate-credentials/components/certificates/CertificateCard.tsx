@@ -4,7 +4,7 @@ import { Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import DeleteModal from "@/shared/components/modals/DeleteModal";
@@ -22,6 +22,7 @@ export default function CertificateCard({
   const [open, setOpen] = useState(false);
   const [deleteCertificate, setDeleteCertificate] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations();
   const locale = useLocale();
   const queryClient = useQueryClient();
 
@@ -47,7 +48,7 @@ export default function CertificateCard({
           locale,
         });
 
-        toast.success(response.message ?? "Certificate deleted successfully.");
+        toast.success(response.message ?? t("candidatePage.toasts.certificate-deleted"));
         setDeleteCertificate(false);
         await queryClient.invalidateQueries({
           queryKey: certificatesQueryKeyPrefix(locale),
@@ -58,7 +59,7 @@ export default function CertificateCard({
         });
 
         const message =
-          error instanceof Error ? error.message : "Failed to delete certificate.";
+          error instanceof Error ? error.message : t("candidatePage.toasts.certificate-delete-failed");
         toast.error(message);
       }
     });
@@ -97,13 +98,13 @@ export default function CertificateCard({
             </div>
           </div>
           <p className="text-base">{certificate.company}</p>
-          <p className="text-base">{certificate.period ?? "No period added yet."}</p>
+          <p className="text-base">{certificate.period ?? t("candidatePage.profile.no-period")}</p>
         </div>
       </section>
 
       {open && (
         <CertificateModal
-          label="Edit Certificate"
+          label={t("candidatePage.credentials.edit-certificate")}
           open={open}
           onOpenChange={setOpen}
           certificate={certificate}
@@ -113,9 +114,9 @@ export default function CertificateCard({
       <DeleteModal
         open={deleteCertificate}
         onOpenChange={setDeleteCertificate}
-        title="Do you want to delete this Certificate?"
-        description="The Certificate will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
-        cancelLabel="Back"
+        title={t("candidatePage.credentials.delete-certificate-title")}
+        description={t("candidatePage.credentials.delete-certificate-description")}
+        cancelLabel={t("candidatePage.common.back")}
         onConfirm={handleDeleteCertificate}
         isLoading={isPending}
       />

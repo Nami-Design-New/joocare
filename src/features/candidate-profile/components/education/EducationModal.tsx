@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
@@ -64,6 +64,7 @@ export function EducationModal({
   label,
   education,
 }: EducationModalProps) {
+  const t = useTranslations();
   const router = useRouter();
   const locale = useLocale();
   const { data: session } = useSession();
@@ -108,7 +109,7 @@ export function EducationModal({
 
   const onSubmit: SubmitHandler<EducationModalFormData> = async (form) => {
     if (!session?.accessToken) {
-      toast.error("Your session has expired. Please log in again.");
+      toast.error(t("candidatePage.toasts.session-expired"));
       return;
     }
 
@@ -133,15 +134,15 @@ export function EducationModal({
       toast.success(
         response?.message ??
         (education?.id
-          ? "Education updated successfully."
-          : "Education added successfully."),
+          ? t("candidatePage.toasts.education-updated")
+          : t("candidatePage.toasts.education-added")),
       );
       reset(EMPTY_FORM);
       onOpenChange(false);
       router.refresh();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to save education.";
+        error instanceof Error ? error.message : t("candidatePage.toasts.education-save-failed");
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -158,28 +159,28 @@ export function EducationModal({
 
           <InputField
             id="degree"
-            label="Degree"
+            label={t("candidatePage.profile.degree")}
             type="text"
-            placeholder="ex: Bachelor's degree, Medicine and Surgery"
+            placeholder={t("candidatePage.profile.degree-placeholder")}
             {...register("degree")}
             error={errors.degree?.message}
           />
 
           <InputField
             id="university"
-            label="University"
+            label={t("candidatePage.profile.university")}
             type="text"
-            placeholder="ex: Ain Shams University - Faculty of Medicine"
+            placeholder={t("candidatePage.profile.university-placeholder")}
             {...register("university")}
             error={errors.university?.message}
           />
 
           <InputField
             id="gpa"
-            label="GPA"
+            label={t("candidatePage.profile.gpa")}
             type="text"
             inputMode="decimal"
-            placeholder="ex: 3.75"
+            placeholder={t("candidatePage.profile.gpa-placeholder")}
             {...register("gpa")}
             error={errors.gpa?.message}
           />
@@ -190,14 +191,14 @@ export function EducationModal({
             render={({ field }) => (
               <SelectInputField
                 id="country"
-                label="Country"
-                placeholder={isLoading ? "Loading countries..." : "ex: Egypt"}
+                label={t("candidatePage.profile.country")}
+                placeholder={isLoading ? t("candidatePage.profile.loading-countries") : t("candidatePage.profile.country-placeholder")}
                 options={countryOptions}
                 value={field.value}
                 disabled={isLoading}
                 portalContainer={dialogContentElement}
                 withSearchInput
-                searchPlaceholder="Search countries..."
+                searchPlaceholder={t("candidatePage.profile.search-countries")}
                 onSearchChange={setCountrySearch}
                 onChange={field.onChange}
                 onReachEnd={() => void fetchNextPage()}
@@ -211,7 +212,7 @@ export function EducationModal({
           <div className="flex items-center justify-between gap-2 max-md:flex-col">
             <InputField
               id="startDate"
-              label="Start Date"
+              label={t("candidatePage.profile.start-date")}
               type="date"
               {...register("startDate")}
               error={errors.startDate?.message}
@@ -219,7 +220,7 @@ export function EducationModal({
 
             <InputField
               id="endDate"
-              label="End Date"
+              label={t("candidatePage.profile.end-date")}
               type="date"
 
               {...register("endDate")}
@@ -229,7 +230,7 @@ export function EducationModal({
 
           <DialogFooter className="flex items-center justify-center!">
             <Button className="w-1/3" size={"pill"} type="submit" disabled={isSaving}>
-              {isSaving ? "Saving..." : education?.id ? "Save" : "Add"}
+              {isSaving ? t("candidatePage.common.saving") : education?.id ? t("common.save") : t("candidatePage.common.add")}
             </Button>
           </DialogFooter>
         </form>

@@ -8,6 +8,7 @@ import {
 } from "@/shared/components/ui/accordion";
 import { CalendarRange, Plus } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { CandidateProfileViewModel } from "../../types/profile.types";
 import { ExperienceModal } from "./ExperienceModal";
 import ExperienceActions from "./ExperienceActions";
@@ -17,6 +18,7 @@ export function ExperienceSection({
 }: {
   profile: CandidateProfileViewModel | null;
 }) {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const experiences = profile?.experiences ?? [];
 
@@ -25,7 +27,7 @@ export function ExperienceSection({
       <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         {/* Header */}
         <div className="mb-2 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-gray-900">Experience</h2>
+          <h2 className="text-lg font-bold text-gray-900">{t("candidatePage.profile.experience")}</h2>
           <Plus
             size={22}
             className="cursor-pointer"
@@ -55,7 +57,7 @@ export function ExperienceSection({
                     )}
                     <span className="text-secondary flex items-center gap-1 text-[12px]">
                       <CalendarRange size={16} />
-                      {exp.startDateLabel ?? "Start date"} - {exp.endDateLabel ?? "Present"}
+                      {exp.startDateLabel ?? t("candidatePage.profile.start-date")} - {exp.endDateLabel ?? t("candidatePage.profile.present")}
                     </span>
                   </div>
                 </div>
@@ -86,7 +88,7 @@ export function ExperienceSection({
                   </ul>
                 ) : (
                   <p className="text-muted-foreground text-[12px]">
-                    No details added yet.
+                    {t("candidatePage.profile.no-details")}
                   </p>
                 )}
               </AccordionContent>
@@ -95,7 +97,7 @@ export function ExperienceSection({
         </Accordion>
       </div>
       <ExperienceModal
-        label="Add Experience"
+        label={t("candidatePage.profile.add-experience")}
         open={open}
         onOpenChange={setOpen}
         experience={null}

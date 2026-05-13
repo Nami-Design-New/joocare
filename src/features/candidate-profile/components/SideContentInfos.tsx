@@ -3,6 +3,7 @@
 import { Progress } from "@/shared/components/ui/progress";
 import { CircleAlert, Sparkles } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import UploadCvSection from "./UploadCvSection";
 import type { CandidateProfileViewModel } from "../types/profile.types";
 
@@ -11,9 +12,10 @@ const SideContentInfos = ({
 }: {
   profile: CandidateProfileViewModel | null;
 }) => {
-  const displayName = profile?.name || "Candidate";
+  const t = useTranslations();
+  const displayName = profile?.name || t("candidatePage.profile.candidate");
   const displayImage = profile?.image || "/assets/profile_image.svg";
-  const displayJobTitle = profile?.jobTitle || "Candidate account";
+  const displayJobTitle = profile?.jobTitle || t("candidatePage.profile.candidate-account");
   const displayEmail = profile?.email || "-";
   const displayLocation = profile?.location || "-";
   const displayPhone = profile?.fullPhone || "-";
@@ -29,7 +31,7 @@ const SideContentInfos = ({
       <section className="mx-auto flex w-50 flex-col items-center justify-center gap-2">
         <Image
           src={displayImage}
-          alt="profile image"
+          alt={t("candidatePage.profile.profile-image")}
           width={150}
           height={150}
           className="rounded-full h-37.5 w-37.5"
@@ -47,7 +49,7 @@ const SideContentInfos = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-center gap-2">
             <Sparkles className="text-primary h-4 w-4" />
-            <span className="text-sm font-semibold">Hiring Readines</span>
+            <span className="text-sm font-semibold">{t("candidatePage.profile.hiring-readiness")}</span>
           </div>
           <span className="text-primary">{hiringReadiness}%</span>
         </div>
@@ -56,7 +58,7 @@ const SideContentInfos = ({
           <div className="flex items-center gap-2">
             <CircleAlert className="text-primary h-4 w-4" />
             <span className="text-muted-foreground max-w-62 text-[12px]">
-              Add your ACLS certificate to unlock premium job matches.
+              {t("candidatePage.profile.hiring-readiness-help")}
             </span>
           </div>
         )}
@@ -67,30 +69,30 @@ const SideContentInfos = ({
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">
             {" "}
-            Email{" "}
+            {t("authPage.common.email")}{" "}
           </h6>
           <span className="text-sm font-semibold">{displayEmail}</span>
         </div>
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">
             {" "}
-            Location{" "}
+            {t("candidatePage.profile.location")}{" "}
           </h6>
           <span className="text-sm font-semibold">{displayLocation}</span>
         </div>
         <div className="flex items-center justify-between p-2">
-          <h6 className="text-muted-foreground text-sm font-semibold">Phone</h6>
+          <h6 className="text-muted-foreground text-sm font-semibold">{t("candidatePage.profile.phone")}</h6>
           <span className="text-sm font-semibold">{displayPhone}</span>
         </div>
         <div className="flex items-center justify-between p-2">
           <h6 className="text-muted-foreground text-sm font-semibold">
             {" "}
-            Experience{" "}
+            {t("candidatePage.profile.experience")}{" "}
           </h6>
           <span className="text-sm font-semibold">{displayExp}</span>
         </div>
         <div className="flex items-center justify-between p-2">
-          <h6 className="text-muted-foreground text-sm font-semibold">Age</h6>
+          <h6 className="text-muted-foreground text-sm font-semibold">{t("candidatePage.profile.age")}</h6>
           <span className="text-sm font-semibold">{displayAge}</span>
         </div>
       </section>
