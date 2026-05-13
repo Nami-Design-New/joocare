@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { createPortal } from "react-dom";
 import { Button } from "../ui/button";
 import UserProfileCard from "./UserProfileCard";
+import { useTranslations } from "next-intl";
 
 export default function ResponsiveNavigationBar({
   setToggleSideMenu,
@@ -16,6 +17,7 @@ export default function ResponsiveNavigationBar({
   setToggleSideMenu: React.Dispatch<React.SetStateAction<boolean>>;
   companyHeader: boolean;
 }) {
+  const t = useTranslations();
   const router = useRouter();
   const { data: session, status } = useSession();
   const isAuthed = status === "authenticated";
@@ -40,7 +42,7 @@ export default function ResponsiveNavigationBar({
               href={homeHref}
               onClick={() => setToggleSideMenu(false)}
             >
-              Home
+              {t('header.home')}
             </Link>
           </li>
           <li>
@@ -49,7 +51,7 @@ export default function ResponsiveNavigationBar({
               className="nav-link"
               onClick={() => setToggleSideMenu(false)}
             >
-              About
+              {t('header.about')}
             </Link>
           </li>
           <li>
@@ -58,7 +60,7 @@ export default function ResponsiveNavigationBar({
               className="nav-link"
               onClick={() => setToggleSideMenu(false)}
             >
-              Jobs
+              {t('header.jobs')}
             </Link>
           </li>
           <li>
@@ -67,7 +69,7 @@ export default function ResponsiveNavigationBar({
               className="nav-link"
               onClick={() => setToggleSideMenu(false)}
             >
-              Contact
+              {t('header.contact')}
             </Link>
           </li>
         </ul>
@@ -91,7 +93,7 @@ export default function ResponsiveNavigationBar({
               size="pill"
               className="flex-1"
             >
-              Login
+              {t('header.login')}
             </Button>
             <Button
               onClick={() => router.push("/auth/candidate/register")}
@@ -100,7 +102,7 @@ export default function ResponsiveNavigationBar({
               size="pill"
               className="flex-1"
             >
-              Join Now
+              {t('header.join-now')}
             </Button>
           </>
         )}

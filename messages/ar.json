@@ -13,7 +13,20 @@
     "contact": "تواصل معنا",
     "login": "الدخول",
     "join-now": "انضم الآن",
-    "for-employer": "لأصحاب العمل"
+    "for-employer": "لأصحاب العمل",
+    "user": "مستخدم",
+    "company-account": "حساب شركة",
+    "candidate-account": "حساب مرشح",
+    "view-profile": "عرض الملف الشخصي",
+    "account-settings": "إعدادات الحساب",
+    "dashboard": "لوحة التحكم",
+    "job-management": "إدارة الوظائف",
+    "saved": "المحفوظات",
+    "account-management": "إدارة الحساب",
+    "log-out": "تسجيل الخروج",
+    "loading": "جارٍ التحميل...",
+    "no-more-notifications": "لا توجد إشعارات إضافية",
+    "no-notifications-yet": "لا توجد إشعارات بعد"
   },
   "search-filter": {
     "search-job": "المسمى الوظيفي أو كلمة مفتاحية",

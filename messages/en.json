@@ -13,7 +13,20 @@
     "contact": "Contact",
     "login": "Login",
     "join-now": "Join Now",
-    "for-employer": "For Employer"
+    "for-employer": "For Employer",
+    "user": "User",
+    "company-account": "Company account",
+    "candidate-account": "Candidate account",
+    "view-profile": "View Profile",
+    "account-settings": "Account settings",
+    "dashboard": "Dashboard",
+    "job-management": "Job Management",
+    "saved": "Saved",
+    "account-management": "Account Management",
+    "log-out": "Log out",
+    "loading": "Loading...",
+    "no-more-notifications": "No more notifications",
+    "no-notifications-yet": "No notifications yet"
   },
   "search-filter": {
     "search-job": "Job title or keyword",

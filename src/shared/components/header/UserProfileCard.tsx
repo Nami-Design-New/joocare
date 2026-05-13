@@ -12,12 +12,14 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 export default function UserProfileCard({
   companyHeader,
 }: {
   companyHeader: boolean;
 }) {
+  const t = useTranslations();
   const { logout } = useLogout();
   const { data: session } = useSession();
   const isEmployer = session?.authRole === "employer" || companyHeader;
@@ -27,10 +29,10 @@ export default function UserProfileCard({
   const settingsHref = isEmployer
     ? "/company/account-settings/basic-info"
     : "/candidate/settings/basic-info";
-  const displayName = session?.user?.name || "User";
+  const displayName = session?.user?.name || t("header.user");
   const subtitle = isEmployer
-    ? "Company account"
-    : "Candidate account";
+    ? t("header.company-account")
+    : t("header.candidate-account");
   const imageSrc = session?.user?.image || "/profile-placeholder.svg";
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
@@ -53,14 +55,14 @@ export default function UserProfileCard({
             href={profileHref}
             className="text-secondary text-normal flex items-center gap-1 font-normal"
           >
-            View Profile <ArrowUpRight size={16} />
+            {t("header.view-profile")} <ArrowUpRight size={16} />
           </Link>
         </div>
       </div>
       <ul className="flex flex-col gap-2 p-2">
         <li className={itemClass}>
           <Settings className="text-muted-foreground group-hover:text-muted-foreground h-5 w-5" />
-          <Link href={settingsHref}>Account settings</Link>
+          <Link href={settingsHref}>{t("header.account-settings")}</Link>
         </li>
         {isEmployer ? (
           <>
@@ -69,20 +71,20 @@ export default function UserProfileCard({
                 className="text-muted-foreground group-hover:text-primary h-5 w-5"
                 strokeWidth={2.5}
               />
-              <Link href="/company/dashboard">Dashboard</Link>
+              <Link href="/company/dashboard">{t("header.dashboard")}</Link>
             </li>
             <li className={itemClass}>
               <UserRoundCogIcon
                 className="text-muted-foreground group-hover:text-primary h-5 w-5"
                 strokeWidth={2.5}
               />
-              <Link href="/company/job-management">Job Management</Link>
+              <Link href="/company/job-management">{t("header.job-management")}</Link>
             </li>
           </>
         ) : (
           <li className={itemClass}>
             <Bookmark className="text-muted-foreground group-hover:text-muted-foreground h-5 w-5" />
-            <Link href="/jobs/saved">Saved</Link>
+            <Link href="/jobs/saved">{t("header.saved")}</Link>
           </li>
         )}
       </ul>
@@ -94,7 +96,7 @@ export default function UserProfileCard({
           logout();
         }}
       >
-        Log out
+        {t("header.log-out")}
       </Button>
     </section>
   );
