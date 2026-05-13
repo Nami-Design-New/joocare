@@ -6,6 +6,46 @@
     "save-job": "save job",
     "unSave-job": "Unsave job"
   },
+  "header": {
+    "home": "Home",
+    "about": "About",
+    "jobs": "Jobs",
+    "contact": "Contact",
+    "login": "Login",
+    "join-now": "Join Now",
+    "for-employer": "For Employer"
+  },
+  "search-filter": {
+    "search-job": "Job title or keyword",
+    "by-country": "By Country",
+    "by-domain": "By Domain",
+    "by-category": "By Category",
+    "country": "Search country...",
+    "domain": "Search domain...",
+    "category": "Search category...",
+    "find-job": "Find Job",
+    "popular-searches": "Popular Searches",
+    "show-more": "Show More",
+    "show-less": "Show Less",
+    "search": "Search"
+  },
+  "home": {
+    "how-it-work": "How it work",
+    "why-joocare": "Why Joocare",
+    "joocare-model": "The Joocare Model",
+    "legacy-model": "The Joocare Model",
+    "top-employers": "Top Employers",
+    "proven-hiring-impact": "Proven Hiring Impact",
+    "recent-jobs": "Recent Jobs",
+    "explore-more": "Explore More",
+    "what-professionals-say": "What Professionals Say",
+    "faq": "FAQ",
+    "verified-healthcare-professionals": "Verified Healthcare Professionals",
+    "active-job-opportunities": "Active Job Opportunities",
+    "healthcare-specializations-covered": "Healthcare Specializations Covered",
+    "hiring-success-rate": "Hiring Success Rate",
+    "lets-get-started": "Let's get started"
+  },
   "aboutPage": {
     "section-title": "About JooCare",
     "about-image-alt": "About image",
@@ -15,7 +55,10 @@
     "our-mission": "Our Mission",
     "mission-image-alt": "Mission image",
     "our-vision": "Our Vision",
-    "vision-image-alt": "Vision image"
+    "vision-image-alt": "Vision image",
+    "search-jobs": "Search jobs",
+    "credentialing-ai": "Credentialing AI",
+    "verified-doctors": "Verified Doctors"
   },
   "faqPage": {
     "pagination-show": "Show",
@@ -174,46 +217,6 @@
     "step": "Step {number}",
     "why-section-title": "Talent at the Right Time",
     "get-started-for-free": "Get Started For Free"
-  },
-  "header": {
-    "home": "Home",
-    "about": "About",
-    "jobs": "Jobs",
-    "contact": "Contact",
-    "login": "Login",
-    "join-now": "Join Now",
-    "for-employer": "For Employer"
-  },
-  "search-filter": {
-    "search-job": "Job title or keyword",
-    "by-country": "By Country",
-    "by-domain": "By Domain",
-    "by-category": "By Category",
-    "country": "Search country...",
-    "domain": "Search domain...",
-    "category": "Search category...",
-    "find-job": "Find Job",
-    "popular-searches": "Popular Searches",
-    "show-more": "Show More",
-    "show-less": "Show Less",
-    "search": "Search"
-  },
-  "home": {
-    "how-it-work": "How it work",
-    "why-joocare": "Why Joocare",
-    "joocare-model": "The Joocare Model",
-    "legacy-model": "The Joocare Model",
-    "top-employers": "Top Employers",
-    "proven-hiring-impact": "Proven Hiring Impact",
-    "recent-jobs": "Recent Jobs",
-    "explore-more": "Explore More",
-    "what-professionals-say": "What Professionals Say",
-    "faq": "FAQ",
-    "verified-healthcare-professionals": "Verified Healthcare Professionals",
-    "active-job-opportunities": "Active Job Opportunities",
-    "healthcare-specializations-covered": "Healthcare Specializations Covered",
-    "hiring-success-rate": "Hiring Success Rate",
-    "lets-get-started": "Let's get started"
   },
   "footer": {
     "description": "An AI-powered healthcare recruitment platform supporting compliant, data-driven hiring across medical and life sciences sectors.",

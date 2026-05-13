@@ -6,6 +6,46 @@
     "save-job": "حفظ الوظيفة",
     "unSave-job": "إلغاء حفظ الوظيفة"
   },
+  "header": {
+    "home": "الرئيسية",
+    "about": "عنا",
+    "jobs": "الوظائف",
+    "contact": "تواصل معنا",
+    "login": "الدخول",
+    "join-now": "انضم الآن",
+    "for-employer": "لأصحاب العمل"
+  },
+  "search-filter": {
+    "search-job": "المسمى الوظيفي أو كلمة مفتاحية",
+    "by-country": "حسب الدولة",
+    "by-domain": "حسب المجال",
+    "by-category": "حسب التصنيف",
+    "country": "ابحث عن دولة...",
+    "domain": "ابحث عن مجال...",
+    "category": "ابحث عن تصنيف...",
+    "find-job": "ابحث عن وظيفة",
+    "popular-searches": "البحث الشائع",
+    "show-more": "عرض المزيد",
+    "show-less": "عرض أقل",
+    "search": "بحث"
+  },
+  "home": {
+    "how-it-work": "كيف يعمل",
+    "why-joocare": "لماذا جُوكير",
+    "joocare-model": "نموذج جُوكير",
+    "legacy-model": "النموذج التقليدي",
+    "top-employers": "أفضل أصحاب العمل",
+    "proven-hiring-impact": "نتائج مثبتة في التوظيف",
+    "recent-jobs": "أحدث الوظائف",
+    "explore-more": "استكشف المزيد",
+    "what-professionals-say": "ماذا يقول المحترفون",
+    "faq": "الأسئلة الشائعة",
+    "verified-healthcare-professionals": "المتخصصون الصحيون المعتمدون",
+    "active-job-opportunities": "فرص العمل النشطة",
+    "healthcare-specializations-covered": "التخصصات الصحية المغطاة",
+    "hiring-success-rate": "معدل نجاح التوظيف",
+    "lets-get-started": "لنبدأ الآن"
+  },
   "aboutPage": {
     "section-title": "حول جُوكير",
     "about-image-alt": "صورة حول",
@@ -15,7 +55,10 @@
     "our-mission": "مهمتنا",
     "mission-image-alt": "صورة المهمة",
     "our-vision": "رؤيتنا",
-    "vision-image-alt": "صورة الرؤية"
+    "vision-image-alt": "صورة الرؤية",
+    "search-jobs": "بحث الوظائف",
+    "credentialing-ai": "الذكاء الاصطناعي للاعتماد",
+    "verified-doctors": "أطباء معتمدون"
   },
   "faqPage": {
     "pagination-show": "عرض",
@@ -174,46 +217,6 @@
     "step": "الخطوة {number}",
     "why-section-title": "المواهب في الوقت المناسب",
     "get-started-for-free": "ابدأ مجانًا"
-  },
-  "header": {
-    "home": "الرئيسية",
-    "about": "عنا",
-    "jobs": "الوظائف",
-    "contact": "تواصل معنا",
-    "login": "الدخول",
-    "join-now": "انضم الآن",
-    "for-employer": "لأصحاب العمل"
-  },
-  "search-filter": {
-    "search-job": "المسمى الوظيفي أو كلمة مفتاحية",
-    "by-country": "حسب الدولة",
-    "by-domain": "حسب المجال",
-    "by-category": "حسب التصنيف",
-    "country": "ابحث عن دولة...",
-    "domain": "ابحث عن مجال...",
-    "category": "ابحث عن تصنيف...",
-    "find-job": "ابحث عن وظيفة",
-    "popular-searches": "البحث الشائع",
-    "show-more": "عرض المزيد",
-    "show-less": "عرض أقل",
-    "search": "بحث"
-  },
-  "home": {
-    "how-it-work": "كيف يعمل",
-    "why-joocare": "لماذا جُوكير",
-    "joocare-model": "نموذج جُوكير",
-    "legacy-model": "النموذج التقليدي",
-    "top-employers": "أفضل أصحاب العمل",
-    "proven-hiring-impact": "نتائج مثبتة في التوظيف",
-    "recent-jobs": "أحدث الوظائف",
-    "explore-more": "استكشف المزيد",
-    "what-professionals-say": "ماذا يقول المحترفون",
-    "faq": "الأسئلة الشائعة",
-    "verified-healthcare-professionals": "المتخصصون الصحيون المعتمدون",
-    "active-job-opportunities": "فرص العمل النشطة",
-    "healthcare-specializations-covered": "التخصصات الصحية المغطاة",
-    "hiring-success-rate": "معدل نجاح التوظيف",
-    "lets-get-started": "لنبدأ الآن"
   },
   "footer": {
     "description": "منصة توظيف صحية مدعومة بالذكاء الاصطناعي تدعم التوظيف المتوافق والقائم على البيانات عبر قطاعات الطب وعلوم الحياة.",
