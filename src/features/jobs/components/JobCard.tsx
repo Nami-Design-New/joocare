@@ -170,7 +170,7 @@ export default function JobCard({ resumeMatch,
                     disabled={isPending}
                     onClick={() => setClosedJob(true)}
                   >
-                    <CheckCheck /> <span>closedd</span>
+                    <CheckCheck /> <span>close</span>
                   </DropdownMenuItem>
                 </>
                 )}
