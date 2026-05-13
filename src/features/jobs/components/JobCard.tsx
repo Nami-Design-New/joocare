@@ -21,6 +21,7 @@ import {
 } from "@/shared/components/ui/dropdown-menu";
 import { useQueryClient } from "@tanstack/react-query";
 import {
+  ArrowLeft,
   ArrowRight,
   Briefcase,
   CheckCheck,
@@ -37,6 +38,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { JobListItem } from "../types/jobs.types";
 import { getJobLocation, getJobSalaryWithCurrency, normalizeJobStatus } from "../utils";
+import { useLocale, useTranslations } from "next-intl";
 
 type JobCardProps = {
   job: Omit<JobListItem, 'status'> & {
@@ -62,6 +64,8 @@ export default function JobCard({ resumeMatch,
   onSavedChange
 
 }: JobCardProps) {
+  const t = useTranslations();
+  const locale = useLocale()
   const [closedJob, setClosedJob] = useState(false);
   const [reactivateJob, setReactivateJob] = useState(false);
   const [pauseJob, setPauseJob] = useState(false);
@@ -97,23 +101,30 @@ export default function JobCard({ resumeMatch,
 
   // console.log(job);
 
-  const title = job?.job_title?.title || job?.title || "Untitled job";
-  const company = job?.company?.name || "Joocare Employer";
+  const title =
+    job?.job_title?.title ||
+    job?.title ||
+    t("companyPage.postJob.review.untitledJob");
+  const company = job?.company?.name || t("jobsPage.joocare-employer");
   const companyLogo = job?.company?.image;
   const postedAtLabel = job?.current_status?.updated_at;
-  const location = getJobLocation(job);
-  const category = job?.category?.title || job?.category_title || "Not specified";
-  const employmentType = job?.employment_type?.title || "Not specified";
-  const salary = getJobSalaryWithCurrency(job);
-  const experience = job?.experience?.title || job?.experience_title || "Experience not specified";
-  const specialty = job?.specialty?.title || job?.specialty_title || "Healthcare";
-  const excerpt = job?.description?.slice(0, 70) || "Explore the job details to learn more about the role and employer.";
-  const statusLabel = (() => {
-    const rawStatus = job.status?.status ?? "draft";
-    return rawStatus.charAt(0).toUpperCase() + rawStatus.slice(1).toLowerCase();
-  })();
+  const location = getJobLocation(job, t("jobsPage.location-not-specified"));
+  const category =
+    job?.category?.title || job?.category_title || t("jobsPage.not-specified");
+  const employmentType =
+    job?.employment_type?.title || t("jobsPage.not-specified");
+  const salary = getJobSalaryWithCurrency(job, t("jobsPage.not-specified"));
+  const experience =
+    job?.experience?.title ||
+    job?.experience_title ||
+    t("jobsPage.experience-not-specified");
+  const specialty =
+    job?.specialty?.title || job?.specialty_title || t("jobsPage.healthcare");
+  const excerpt =
+    job?.description?.slice(0, 70) || t("jobsPage.card-description-fallback");
   const statusDate = job.status?.created_at ?? job.updated_at ?? "";
   const normalizedStatus = normalizeJobStatus(job.status?.status ?? "draft");
+  const statusLabel = t(`companyPage.jobs.status.${normalizedStatus}`);
 
   // { console.log(normalizedStatus, job) }
 
@@ -125,7 +136,7 @@ export default function JobCard({ resumeMatch,
             width={52}
             height={52}
             src={companyLogo || "/assets/new-logo-dot.svg"}
-            alt={`${company} logo`}
+            alt={t("companyPage.postJob.review.companyLogoAlt")}
             className="rounded-2xl w-14 h-12"
           />
           <div className="flex grow flex-col gap-1">
@@ -155,7 +166,7 @@ export default function JobCard({ resumeMatch,
                     <Link
                       href={`/company/post-job?editId=${job.id}`}
                       className="flex gap-2 items-center w-full">
-                      <Edit /> <span>Edit</span>
+                      <Edit /> <span>{t("common.edit")}</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -163,14 +174,14 @@ export default function JobCard({ resumeMatch,
                     disabled={isPending}
                     onClick={() => setPauseJob(true)}
                   >
-                    <EyeOff /> <span>Pause</span>
+                    <EyeOff /> <span>{t("companyPage.jobs.actions.pause")}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="flex gap-2 cursor-pointer"
                     disabled={isPending}
                     onClick={() => setClosedJob(true)}
                   >
-                    <CheckCheck /> <span>close</span>
+                    <CheckCheck /> <span>{t("companyPage.jobs.actions.close")}</span>
                   </DropdownMenuItem>
                 </>
                 )}
@@ -180,7 +191,7 @@ export default function JobCard({ resumeMatch,
                     <Link
                       href={`/company/post-job?jobId=${job.id}`}
                       className="flex gap-2 items-center w-full">
-                      <Edit2 /> <span>Complete</span>
+                      <Edit2 /> <span>{t("companyPage.jobs.actions.complete-post")}</span>
                     </Link>
                   </DropdownMenuItem>
                 }
@@ -190,7 +201,7 @@ export default function JobCard({ resumeMatch,
                     disabled={isPending}
                     onClick={() => setReactivateJob(true)}
                   >
-                    <EyeOff /> <span>Reactive</span>
+                    <EyeOff /> <span>{t("companyPage.jobs.actions.resume")}</span>
                   </DropdownMenuItem>
                 }
                 {(normalizedStatus === "draft") &&
@@ -199,13 +210,13 @@ export default function JobCard({ resumeMatch,
                     disabled={isDeleting}
                     onClick={() => setDeleteJob(true)}
                   >
-                    <Trash2 color="var(--destructive)" /> <span>Delete</span>
+                    <Trash2 color="var(--destructive)" /> <span>{t("companyPage.jobs.actions.delete")}</span>
                   </DropdownMenuItem>
                 }
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <p className="text-secondary text-[12px]">Resume Match</p>
+            <p className="text-secondary text-[12px]">{t("companyPage.jobs.card.resume-match")}</p>
           )}
         </CardHeader>
         <CardContent className="max-lg:px-2">
@@ -221,7 +232,7 @@ export default function JobCard({ resumeMatch,
               </li>
               <li className="text-secondary flex items-start gap-1 text-sm font-normal">
                 <CircleDollarSign size={14} color="var(--muted-foreground)" />
-                {job.has_salary ? salary : "not specified"}
+                {job.has_salary ? salary : t("jobsPage.not-specified")}
               </li>
             </ul>
             <ul className="items-cente flex gap-2">
@@ -241,7 +252,7 @@ export default function JobCard({ resumeMatch,
               dangerouslySetInnerHTML={{
                 __html:
                   excerpt ||
-                  "<p>No description available.</p>",
+                  `<p>${t("jobsPage.no-description-available")}</p>`,
               }}
             />
           </div>
@@ -255,7 +266,7 @@ export default function JobCard({ resumeMatch,
               })} lg:w-2/3`}
               href={`/company/job/candidates/${job.id}`}
             >
-              View Candidates {job.applications_count}
+              {t("companyPage.jobs.card.view-candidates")} {job.applications_count}
             </Link>
             <Link
               className={`lg-max:py-2 lg-max:px-4 flex items-center gap-2 ${buttonVariants(
@@ -266,8 +277,12 @@ export default function JobCard({ resumeMatch,
               )} lg:w-1/3`}
               href={`/company/job/${job.id}`}
             >
-              View Details
-              <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+              {t("companyPage.jobs.card.view-details")}
+              {locale === 'ar' ? (
+                <ArrowLeft size={18} strokeWidth={1.5} className="size-5" />
+              ) : (
+                <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+              )}
             </Link>
           </div>
           <Badge
@@ -287,20 +302,20 @@ export default function JobCard({ resumeMatch,
       <AlertModal
         open={closedJob}
         onOpenChange={setClosedJob}
-        title="Has this position been successfully filled?"
-        description="Closing this job posting will archive the role and remove it from visibility to medical professionals. Please ensure all relevant applicant details have been saved before proceeding."
-        confirmLabel="Yes, closed the advertisement."
-        cancelLabel="Back"
+        title={t("companyPage.jobs.card.modals.close.title")}
+        description={t("companyPage.jobs.card.modals.close.description")}
+        confirmLabel={t("companyPage.jobs.card.modals.close.confirm")}
+        cancelLabel={t("common.back")}
         onConfirm={handleClosedJob}
         isLoading={isPending}
       />
       <AlertModal
         open={reactivateJob}
         onOpenChange={setReactivateJob}
-        title="Would you like to resume accepting applications?"
-        description="Reactivating this job posting will make it visible in search results and allow qualified medical professionals to apply immediately. All applicant activity will resume according to your previous posting settings."
-        confirmLabel="Yes, active now"
-        cancelLabel="Back"
+        title={t("companyPage.jobs.card.modals.reactivate.title")}
+        description={t("companyPage.jobs.card.modals.reactivate.description")}
+        confirmLabel={t("companyPage.jobs.card.modals.reactivate.confirm")}
+        cancelLabel={t("common.back")}
         onConfirm={handleReactivateJob}
         isLoading={isPending}
       />
@@ -308,19 +323,20 @@ export default function JobCard({ resumeMatch,
         open={pauseJob}
         onOpenChange={setPauseJob}
         confirmButtonVariant="destructive"
-        title="Would you like to pause applications for this position?"
-        description="Pausing this job posting will stop new applications from being submitted. The role will no longer appear in search results until it is reactivated."
-        confirmLabel="Yes, stop the advertisement"
-        cancelLabel="Back"
+        title={t("companyPage.jobs.card.modals.pause.title")}
+        description={t("companyPage.jobs.card.modals.pause.description")}
+        confirmLabel={t("companyPage.jobs.card.modals.pause.confirm")}
+        cancelLabel={t("common.back")}
         onConfirm={handlePauseJob}
         isLoading={isPending}
       />
       <DeleteModal
         open={deleteJob}
         onOpenChange={setDeleteJob}
-        title="Do you want to delete this advertisement?"
-        description="The advertisement will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
-        cancelLabel="Back"
+        title={t("companyPage.jobs.card.modals.delete.title")}
+        description={t("companyPage.jobs.card.modals.delete.description")}
+        confirmLabel={t("companyPage.jobs.card.modals.delete.confirm")}
+        cancelLabel={t("common.back")}
         onConfirm={handleDeleteJob}
         isLoading={isDeleting}
       />

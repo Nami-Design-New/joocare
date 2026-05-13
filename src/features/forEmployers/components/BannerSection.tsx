@@ -4,7 +4,7 @@ import { cn } from "@/shared/lib/utils";
 import { MoveRight } from "lucide-react";
 import Image from "next/image";
 import type { BannerSectionProps } from "../types";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export default async function BannerSection({
   title,
@@ -12,11 +12,14 @@ export default async function BannerSection({
   image,
 }: BannerSectionProps) {
   const t = await getTranslations();
+  const locale = await getLocale();
+
   const bannerImage = image ?? {
     id: "fallback-banner",
     image: "/assets/employers/bannerImg.png",
     alt: t("forEmployersPage.banner-image-alt"),
   };
+  // console.log(locale);
 
   return (
     <section className="relative bg-white ">
@@ -52,7 +55,7 @@ export default async function BannerSection({
             alt={bannerImage.alt}
             width={500}
             height={600}
-            className="relative xl:absolute object-contain bottom-0 xl:-right-12 h-75 sm:h-98"
+            className={`relative xl:absolute object-contain bottom-0  h-75 sm:h-98 ${locale === "ar" ? "xl:-left-12" : "xl:-right-12"}`}
           />
         </div>
       </div>

@@ -139,9 +139,9 @@ export function JobActionButtons({
       <AlertModal
         open={closeJob}
         onOpenChange={setCloseJob}
-        title={t("companyPage.jobs.modals.close.title")}
-        description={t("companyPage.jobs.modals.close.description")}
-        confirmLabel={t("companyPage.jobs.modals.close.confirm")}
+        title={t("companyPage.jobs.card.modals.close.title")}
+        description={t("companyPage.jobs.card.modals.close.description")}
+        confirmLabel={t("companyPage.jobs.card.modals.close.confirm")}
         cancelLabel={t("common.back")}
         onConfirm={handleCloseJob}
         isLoading={isPending}
@@ -149,9 +149,9 @@ export function JobActionButtons({
       <AlertModal
         open={reactivateJob}
         onOpenChange={setReactivateJob}
-        title={t("companyPage.jobs.modals.reactivate.title")}
-        description={t("companyPage.jobs.modals.reactivate.description")}
-        confirmLabel={t("companyPage.jobs.modals.reactivate.confirm")}
+        title={t("companyPage.jobs.card.modals.reactivate.title")}
+        description={t("companyPage.jobs.card.modals.reactivate.description")}
+        confirmLabel={t("companyPage.jobs.card.modals.reactivate.confirm")}
         cancelLabel={t("common.back")}
         onConfirm={handleReactivateJob}
         isLoading={isPending}
@@ -160,9 +160,9 @@ export function JobActionButtons({
         open={pauseJob}
         onOpenChange={setPauseJob}
         confirmButtonVariant="destructive"
-        title={t("companyPage.jobs.modals.pause.title")}
-        description={t("companyPage.jobs.modals.pause.description")}
-        confirmLabel={t("companyPage.jobs.modals.pause.confirm")}
+        title={t("companyPage.jobs.card.modals.pause.title")}
+        description={t("companyPage.jobs.card.modals.pause.description")}
+        confirmLabel={t("companyPage.jobs.card.modals.pause.confirm")}
         cancelLabel={t("common.back")}
         onConfirm={handlePauseJob}
         isLoading={isPending}
@@ -170,9 +170,9 @@ export function JobActionButtons({
       <DeleteModal
         open={deleteJob}
         onOpenChange={setDeleteJob}
-        title={t("companyPage.jobs.modals.delete.title")}
-        description={t("companyPage.jobs.modals.delete.description")}
-        confirmLabel={t("companyPage.jobs.modals.delete.confirm")}
+        title={t("companyPage.jobs.card.modals.delete.title")}
+        description={t("companyPage.jobs.card.modals.delete.description")}
+        confirmLabel={t("companyPage.jobs.card.modals.delete.confirm")}
         cancelLabel={t("common.back")}
         onConfirm={handleDeleteJob}
         isLoading={isDeleting}

@@ -8,7 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/shared/components/ui/pagination";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 type CustomPaginationProps = {
   currentPage: number;
@@ -48,6 +48,7 @@ export function CustomPagination({
   getHref,
 }: CustomPaginationProps) {
   const t = useTranslations();
+  const locale = useLocale();
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, totalItems);
@@ -91,11 +92,10 @@ export function CustomPagination({
                 }
                 handleChange(currentPage - 1);
               }}
-              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${
-                isPreviousDisabled
-                  ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
-                  : "cursor-pointer bg-gray-100 hover:bg-gray-200"
-              }`}
+              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${isPreviousDisabled
+                ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
+                : "cursor-pointer bg-gray-100 hover:bg-gray-200"
+                }`}
             />
           </PaginationItem>
 
@@ -142,11 +142,10 @@ export function CustomPagination({
                 }
                 handleChange(currentPage + 1);
               }}
-              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${
-                isNextDisabled
-                  ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
-                  : "cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
+              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${isNextDisabled
+                ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
+                : "cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
             />
           </PaginationItem>
         </PaginationContent>

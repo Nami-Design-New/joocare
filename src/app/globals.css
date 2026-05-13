@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -196,13 +196,13 @@
     @apply text-secondary font-semibold;
   }
 
-  input[type="password"]::-ms-reveal,
-  input[type="password"]::-ms-clear {
+  input[type='password']::-ms-reveal,
+  input[type='password']::-ms-clear {
     display: none;
   }
 
-  input[type="password"]::-webkit-credentials-auto-fill-button,
-  input[type="password"]::-webkit-textfield-decoration-container {
+  input[type='password']::-webkit-credentials-auto-fill-button,
+  input[type='password']::-webkit-textfield-decoration-container {
     display: none !important;
     visibility: hidden;
     pointer-events: none;
@@ -261,7 +261,7 @@
   .dashed-list {
     list-style: none;
     li::marker {
-      content: "-   ";
+      content: '-   ';
     }
   }
 }
@@ -272,13 +272,13 @@
 }
 
 .bg-before::before {
-  content: "";
+  content: '';
   position: absolute;
 
   min-width: 24px;
   height: 100%;
   inset-inline-start: 0;
-  background-image: url("../../public/assets/footer2.svg");
+  background-image: url('../../public/assets/footer2.svg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -287,12 +287,12 @@
 }
 
 .bg-container {
-  background-image: url("../../public/assets/container.svg");
+  background-image: url('../../public/assets/container.svg');
   background-color: var(--color-primary);
 }
 .bg-container-gray-2 {
   /* background-image: url("../../public/assets/why.svg"); */
-  background-image: url("../../public/assets/why.png");
+  background-image: url('../../public/assets/why.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -300,13 +300,13 @@
 }
 @media (max-width: 1024px) {
   .bg-container-gray-2 {
-    background-image: url("../../public/assets/why-vertical.png");
+    background-image: url('../../public/assets/why-vertical.png');
   }
 }
 
 .bg-container-gray-3 {
   /* background-image: url("../../public/assets/why.svg"); */
-  background-image: url("../../public/assets/why-vertical.png");
+  background-image: url('../../public/assets/why-vertical.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

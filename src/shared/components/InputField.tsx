@@ -4,6 +4,7 @@ import * as React from "react";
 import { Input } from "./ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { cn } from "../lib/utils";
+import { useLocale } from "next-intl";
 
 type InputFieldProps = {
   label?: string;
@@ -31,6 +32,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     },
     ref,
   ) => {
+    const locale = useLocale();
     const [showPassword, setShowPassword] = React.useState(false);
 
     const isPassword = type === "password";
@@ -65,7 +67,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2"
+              className={`text-muted-foreground absolute top-1/2 -translate-y-1/2 ${locale === 'ar' ? "left-3" : "right-3"}`}
             >
               {showPassword ? (
                 <EyeOffIcon className="h-4 w-4" />
@@ -74,7 +76,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               )}
             </button>
           )}
-          {icon && <div className="absolute top-1/2 right-3 -translate-y-1/2">
+          {icon && <div className={`absolute top-1/2 -translate-y-1/2 ${locale === 'ar' ? "left-3" : "right-3"}`}>
             {icon}
           </div>}
         </div>

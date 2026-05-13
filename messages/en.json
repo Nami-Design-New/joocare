@@ -997,9 +997,9 @@
           }
         },
         "delete": {
-          "title": "Do you want to delete this social media link?",
-          "description": "The social media link will be removed from your profile.",
-          "confirm": "Delete"
+          "title": "Do you want to delete this social media account?",
+          "description": "The account will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone.",
+          "confirm": "Confirm Deletion"
         },
         "toasts": {
           "updated-successfully": "Social media updated successfully."
@@ -1026,6 +1026,33 @@
         "resume": "Resume",
         "delete": "Delete",
         "complete-post": "Complete Post"
+      },
+      "card": {
+        "resume-match": "Resume Match",
+        "view-candidates": "View Candidates",
+        "view-details": "View Details",
+        "modals": {
+          "close": {
+            "title": "Has this position been successfully filled?",
+            "description": "Closing this job posting will archive the role and remove it from visibility to medical professionals. Please ensure all relevant applicant details have been saved before proceeding.",
+            "confirm": "Yes, close the advertisement"
+          },
+          "reactivate": {
+            "title": "Would you like to resume accepting applications?",
+            "description": "Reactivating this job posting will make it visible in search results and allow qualified medical professionals to apply immediately. All applicant activity will resume according to your previous posting settings.",
+            "confirm": "Yes, activate now"
+          },
+          "pause": {
+            "title": "Would you like to pause applications for this position?",
+            "description": "Pausing this job posting will stop new applications from being submitted. The role will no longer appear in search results until it is reactivated.",
+            "confirm": "Yes, stop the advertisement"
+          },
+          "delete": {
+            "title": "Do you want to delete this advertisement?",
+            "description": "The advertisement will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone.",
+            "confirm": "Confirm Deletion"
+          }
+        }
       },
       "modals": {
         "close": {

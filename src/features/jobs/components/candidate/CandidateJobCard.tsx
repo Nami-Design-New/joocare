@@ -13,6 +13,7 @@ import {
   CardHeader,
 } from "@/shared/components/ui/card";
 import {
+  ArrowLeft,
   ArrowRight,
   Briefcase,
   CircleDollarSign,
@@ -21,7 +22,7 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useJobShare } from "../../hooks/useJobShare";
 import ToggleSavedJobButton from "./ToggleSavedJobButton";
 
@@ -43,6 +44,7 @@ export default function CandidateJobCard({
   companyImage
 }: CandidateJobCardProps) {
   const t = useTranslations();
+  const locale = useLocale()
   const { data: session } = useSession();
   const title = job.title || job.job_title?.title || t("jobsPage.healthcare-opportunity");
   const sharePath = `/jobs/${job.id}`;
@@ -116,9 +118,9 @@ export default function CandidateJobCard({
           <div
             className="prose prose-sm max-w-none mt-3"
             dangerouslySetInnerHTML={{
-                __html:
-                  excerpt ||
-                  `<p>${t("jobsPage.no-description-available")}</p>`,
+              __html:
+                excerpt ||
+                `<p>${t("jobsPage.no-description-available")}</p>`,
             }}
           />
           {/* <p className="text-sm text-gray-600 line-clamp-3">
@@ -143,7 +145,7 @@ export default function CandidateJobCard({
               className="border-border text-muted-foreground h-9 px-4 py-2 text-sm bg-muted"
               onClick={() => void shareJob()}
             >
-              <Share /> {t("jobsPage.share")}
+              <Share className="mx-1" /> {t("jobsPage.share")}
             </Button>
           </div>
 
@@ -162,7 +164,11 @@ export default function CandidateJobCard({
               href={href}
             >
               {t("jobsPage.view-job")}
-              <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+              {locale === 'ar' ? (
+                <ArrowLeft size={18} strokeWidth={1.5} className="size-5" />
+              ) : (
+                <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+              )}
             </Link>
           }
         </div>
