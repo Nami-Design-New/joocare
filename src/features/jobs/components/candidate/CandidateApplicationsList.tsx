@@ -5,6 +5,7 @@ import { buildCandidateApplicationsPagePath } from "@/features/jobs/utils";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import EmptyDataState from "@/shared/components/EmptyDataState";
 import CandidateJobCard from "./CandidateJobCard";
+import { useTranslations } from "next-intl";
 
 type CandidateApplicationsListProps = {
   applications: CandidateApplicationItem[];
@@ -21,6 +22,7 @@ export default function CandidateApplicationsList({
   pageSize,
   locale,
 }: CandidateApplicationsListProps) {
+  const t = useTranslations()
   const buildPageHref = (page: number) =>
     buildCandidateApplicationsPagePath(locale, page);
 
@@ -39,7 +41,7 @@ export default function CandidateApplicationsList({
           ))
         ) : (
           <EmptyDataState
-            title="No Data"
+            title={t('jobsPage.empty-title')}
             description="You have not submitted any applications yet."
           />
         )}

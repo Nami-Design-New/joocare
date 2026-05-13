@@ -92,6 +92,7 @@
     "job": "Job",
     "browse-jobs": "Browse jobs",
     "empty-title": "No Data",
+    "no-job-description": "You have not saved any jobs yet.",
     "empty-description": "No jobs matched the current search and filters.",
     "healthcare-opportunity": "Healthcare Opportunity",
     "joocare-employer": "Joocare Employer",
