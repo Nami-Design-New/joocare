@@ -14,12 +14,12 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import { useRouter } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { updateCandidateBio } from "../../services/profile-client-service";
 import {
-  aboutModalSchema,
+  createAboutModalSchema,
   type AboutModalFormData,
 } from "../../validation/about-modal-schema";
 
@@ -38,13 +38,21 @@ export function EditAboutModal({
   const locale = useLocale();
   const { data: session } = useSession();
   const [isSaving, setIsSaving] = useState(false);
+  const aboutSchema = useMemo(
+    () =>
+      createAboutModalSchema({
+        bioMax: t("candidateValidation.bio-max"),
+        bioMinWords: t("candidateValidation.bio-min-words"),
+      }),
+    [t],
+  );
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<AboutModalFormData>({
-    resolver: zodResolver(aboutModalSchema),
+    resolver: zodResolver(aboutSchema),
     defaultValues: {
       bio: defaultVal,
     },

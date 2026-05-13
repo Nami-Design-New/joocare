@@ -130,8 +130,22 @@ export function QualificationModal({
     () =>
       createQualificationSchema({
         requireImage: !(qualification?.image && showExistingImage),
+        messages: {
+          degreeMin: t("candidateValidation.degree-min"),
+          degreeMax: t("candidateValidation.degree-max"),
+          universityMin: t("candidateValidation.university-min"),
+          universityMax: t("candidateValidation.university-max-150"),
+          countryRequired: t("authPage.validation.country-required"),
+          startDateRequired: t("candidateValidation.start-date-required"),
+          imageRequired: t("candidateValidation.qualification-image-required"),
+          oneImageOnly: t("candidateValidation.one-image-only"),
+          imageType: t("candidateValidation.image-jpg-png"),
+          imageSize: t("candidateValidation.image-max-5mb"),
+          startDatePast: t("candidateValidation.start-date-past"),
+          endDateAfterStart: t("candidateValidation.end-date-after-start"),
+        },
       }),
-    [qualification?.image, showExistingImage],
+    [qualification?.image, showExistingImage, t],
   );
   const {
     register,

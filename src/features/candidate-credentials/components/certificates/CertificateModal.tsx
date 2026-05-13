@@ -118,8 +118,21 @@ export function CertificateModal({
     () =>
       createCertificateSchema({
         requireImage: !(certificate?.image && showExistingImage),
+        messages: {
+          nameMin: t("candidateValidation.certificate-name-min"),
+          nameMax: t("candidateValidation.certificate-name-max"),
+          companyMin: t("candidateValidation.issuing-organization-min"),
+          companyMax: t("candidateValidation.issuing-organization-max"),
+          startDateRequired: t("candidateValidation.start-date-required"),
+          imageRequired: t("candidateValidation.certificate-image-required"),
+          oneImageOnly: t("candidateValidation.one-image-only"),
+          imageType: t("candidateValidation.image-jpg-png"),
+          imageSize: t("candidateValidation.image-max-5mb"),
+          startDatePast: t("candidateValidation.start-date-past"),
+          endDateAfterStart: t("candidateValidation.end-date-after-start"),
+        },
       }),
-    [certificate?.image, showExistingImage],
+    [certificate?.image, showExistingImage, t],
   );
   const {
     register,

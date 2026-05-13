@@ -25,7 +25,7 @@ import {
   updateExperience,
 } from "../../services/experience-client-service";
 import type { CandidateExperienceViewModel } from "../../types/profile.types";
-import { experienceModalSchema, FormData } from "../../validation/experience-modal-schema";
+import { createExperienceModalSchema, FormData } from "../../validation/experience-modal-schema";
 
 interface ExperienceModalProps {
   open: boolean;
@@ -83,6 +83,23 @@ export function ExperienceModal({
   const { data: session } = useSession();
   const [isSaving, setIsSaving] = useState(false);
   const defaultValues = useMemo(() => toFormState(experience), [experience]);
+  const experienceSchema = useMemo(
+    () =>
+      createExperienceModalSchema({
+        jobTitleRequired: t("authPage.validation.job-title-required"),
+        organizationMin: t("candidateValidation.organization-min"),
+        organizationMax: t("candidateValidation.organization-max"),
+        startDateRequired: t("candidateValidation.start-date-required"),
+        responsibilityMin: t("candidateValidation.responsibility-min"),
+        responsibilityMax: t("candidateValidation.responsibility-max"),
+        responsibilitiesMin: t("candidateValidation.responsibilities-min"),
+        otherJobTitleRequired: t("authPage.validation.other-job-title-required"),
+        startDatePast: t("candidateValidation.start-date-past"),
+        endDateRequired: t("candidateValidation.end-date-required"),
+        endDateAfterStart: t("candidateValidation.end-date-after-start"),
+      }),
+    [t],
+  );
   const [jobTitleSearch, setJobTitleSearch] = useState("");
   const {
     control,
@@ -93,7 +110,7 @@ export function ExperienceModal({
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: typedZodResolver(experienceModalSchema),
+    resolver: typedZodResolver(experienceSchema),
     defaultValues,
   });
   const [dialogContentElement, setDialogContentElement] = useState<HTMLDivElement | null>(null);

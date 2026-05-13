@@ -19,6 +19,22 @@ export const cvSchema = z.object({
     }),
 });
 
+export function createCvSchema(messages?: {
+  invalidType?: string;
+  invalidSize?: string;
+}) {
+  return z.object({
+    cv: z
+      .instanceof(File)
+      .refine((file) => hasAllowedExtension(file), {
+        message: messages?.invalidType ?? "CV must be a PDF or Word document.",
+      })
+      .refine((file) => file.size <= MAX_FILE_SIZE, {
+        message: messages?.invalidSize ?? "CV must be 5 MB or smaller.",
+      }),
+  });
+}
+
 export type CvFormData = z.infer<typeof cvSchema>;
 
 export function isPdfFileName(fileName: string) {

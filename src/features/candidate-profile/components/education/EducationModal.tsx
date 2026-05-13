@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
@@ -21,7 +21,7 @@ import { useRouter } from "@/i18n/navigation";
 import { createEducation, updateEducation } from "../../services/education-client-service";
 import type { CandidateEducationViewModel } from "../../types/profile.types";
 import {
-  educationModalSchema,
+  createEducationModalSchema,
   type EducationModalFormData,
 } from "../../validation/education-modal-schema";
 
@@ -71,6 +71,22 @@ export function EducationModal({
   const [dialogContentElement, setDialogContentElement] = useState<HTMLDivElement | null>(null);
   const [countrySearch, setCountrySearch] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const educationSchema = useMemo(
+    () =>
+      createEducationModalSchema({
+        degreeMin: t("candidateValidation.degree-min"),
+        degreeMax: t("candidateValidation.degree-max"),
+        universityMin: t("candidateValidation.university-min"),
+        universityMax: t("candidateValidation.university-max"),
+        countryRequired: t("authPage.validation.country-required"),
+        startDateRequired: t("candidateValidation.start-date-required"),
+        gpaRequired: t("candidateValidation.gpa-required"),
+        gpaInvalid: t("candidateValidation.gpa-invalid"),
+        startDatePast: t("candidateValidation.start-date-past"),
+        endDateAfterStart: t("candidateValidation.end-date-after-start"),
+      }),
+    [t],
+  );
   const {
     register,
     control,
@@ -78,7 +94,7 @@ export function EducationModal({
     reset,
     formState: { errors },
   } = useForm<EducationModalFormData>({
-    resolver: zodResolver(educationModalSchema),
+    resolver: zodResolver(educationSchema),
     defaultValues: toFormState(education),
   });
   const {

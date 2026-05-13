@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { storeUploadedFile } from "@/shared/services/store-uploaded-file-service";
 import CVModal from "./CVModal";
 import { deleteCvAction, updateCvAction } from "../actions/cv-actions";
-import { cvSchema } from "../validation/cv-schema";
+import { createCvSchema } from "../validation/cv-schema";
 
 function getShortFileName(fileName: string) {
   const trimmedName = fileName.trim();
@@ -61,6 +61,14 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [open, setOpen] = useState(false);
   const locale = useLocale();
+  const cvValidationSchema = useMemo(
+    () =>
+      createCvSchema({
+        invalidType: t("authPage.validation.cv-invalid-type"),
+        invalidSize: t("authPage.validation.max-file-size-5mb"),
+      }),
+    [t],
+  );
   const { data: session } = useSession();
   const objectUrlRef = useRef<string | null>(null);
 
@@ -124,7 +132,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const validation = cvSchema.safeParse({ cv: file });
+    const validation = cvValidationSchema.safeParse({ cv: file });
     if (!validation.success) {
       toast.error(validation.error.issues[0]?.message || t("candidatePage.toasts.invalid-cv-file"));
       e.target.value = "";

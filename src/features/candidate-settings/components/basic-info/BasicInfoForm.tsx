@@ -90,8 +90,27 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     () =>
       createSettingBasicInfoSchema({
         requireCv: !(profile.cv && showExistingCv),
+        messages: {
+          fullNameMin: t("candidateSettingsPage.validation.full-name-min"),
+          fullNameMax: t("candidateSettingsPage.validation.full-name-max"),
+          emailRequired: t("authPage.validation.email-required"),
+          emailInvalid: t("authPage.validation.email-invalid"),
+          phoneRequired: t("authPage.validation.phone-required"),
+          jobTitleRequired: t("authPage.validation.job-title-required"),
+          countryRequired: t("authPage.validation.country-required"),
+          cityRequired: t("authPage.validation.city-required"),
+          ageMin: t("candidateSettingsPage.validation.age-min"),
+          profileImageRequired: t("candidateSettingsPage.validation.profile-image-required"),
+          onlyOneFileAllowed: t("candidateSettingsPage.validation.only-one-file"),
+          profileImageInvalidType: t("candidateSettingsPage.validation.profile-image-invalid-type"),
+          profileImageInvalidSize: t("candidateSettingsPage.validation.profile-image-invalid-size"),
+          cvRequired: t("authPage.validation.cv-required"),
+          cvInvalidType: t("authPage.validation.cv-invalid-type"),
+          cvInvalidSize: t("authPage.validation.max-file-size-5mb"),
+          otherJobTitleRequired: t("authPage.validation.other-job-title-required"),
+        },
       }),
-    [profile.cv, showExistingCv],
+    [profile.cv, showExistingCv, t],
   );
   const queryClient = useQueryClient()
   const { mutateAsync: deleteImageUser, isPending: isDeletingImage } = useDeleteImageUser({ token });

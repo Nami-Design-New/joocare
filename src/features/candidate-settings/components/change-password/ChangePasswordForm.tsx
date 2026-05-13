@@ -5,16 +5,29 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { InputField } from '@/shared/components/InputField';
 import { Button } from '@/shared/components/ui/button';
-import { ChangePasswordSchema, TChangePasswordSchema } from '../../validation/change-password-schema';
+import { createChangePasswordSchema, TChangePasswordSchema } from '../../validation/change-password-schema';
 import { useChangePassword } from '../../hooks/useChangePassword';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import { useMemo } from "react";
 
 const ChangePasswordForm = () => {
     const t = useTranslations();
     const { data: session } = useSession();
     const token = session?.accessToken || "";
     const { mutate: changePassword, isPending } = useChangePassword({ token });
+    const schema = useMemo(
+        () =>
+            createChangePasswordSchema({
+                currentPasswordRequired: t("candidateValidation.current-password-required"),
+                newPasswordRequired: t("authPage.validation.password-required"),
+                newPasswordMin: t("authPage.validation.password-min"),
+                newPasswordMax: t("authPage.validation.password-max"),
+                confirmPasswordRequired: t("authPage.validation.confirm-password-required"),
+                passwordsMismatch: t("authPage.validation.passwords-do-not-match"),
+            }),
+        [t],
+    );
 
     const {
         register,
@@ -22,7 +35,7 @@ const ChangePasswordForm = () => {
         reset,
         formState: { errors },
     } = useForm<TChangePasswordSchema>({
-        resolver: zodResolver(ChangePasswordSchema),
+        resolver: zodResolver(schema),
     });
 
     const onSubmit: SubmitHandler<TChangePasswordSchema> = (data) => {

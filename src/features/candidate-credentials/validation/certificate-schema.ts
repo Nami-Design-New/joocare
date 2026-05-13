@@ -5,44 +5,58 @@ const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 
 type CreateCertificateSchemaOptions = {
   requireImage?: boolean;
+  messages?: {
+    nameMin: string;
+    nameMax: string;
+    companyMin: string;
+    companyMax: string;
+    startDateRequired: string;
+    imageRequired: string;
+    oneImageOnly: string;
+    imageType: string;
+    imageSize: string;
+    startDatePast: string;
+    endDateAfterStart: string;
+  };
 };
 
 export const createCertificateSchema = ({
   requireImage = true,
+  messages,
 }: CreateCertificateSchemaOptions = {}) =>
   z
   .object({
     name: z
       .string()
       .trim()
-      .min(3, "Certificate name must be at least 3 characters.")
-      .max(100, "Certificate name must be at most 100 characters."),
+      .min(3, messages?.nameMin ?? "Certificate name must be at least 3 characters.")
+      .max(100, messages?.nameMax ?? "Certificate name must be at most 100 characters."),
     company: z
       .string()
       .trim()
-      .min(3, "Issuing organization must be at least 3 characters.")
-      .max(150, "Issuing organization must be at most 150 characters."),
-    startDate: z.string().min(1, "Start date is required."),
+      .min(3, messages?.companyMin ?? "Issuing organization must be at least 3 characters.")
+      .max(150, messages?.companyMax ?? "Issuing organization must be at most 150 characters."),
+    startDate: z.string().min(1, messages?.startDateRequired ?? "Start date is required."),
     endDate: z.string().optional(),
     image: z
       .array(z.instanceof(File))
-      .min(requireImage ? 1 : 0, "Certificate image is required.")
-      .max(1, "Only one image is allowed.")
+      .min(requireImage ? 1 : 0, messages?.imageRequired ?? "Certificate image is required.")
+      .max(1, messages?.oneImageOnly ?? "Only one image is allowed.")
       .refine(
         (files) => files.every((file) => ALLOWED_IMAGE_TYPES.includes(file.type)),
-        "Certificate image must be JPG or PNG.",
+        messages?.imageType ?? "Certificate image must be JPG or PNG.",
       )
       .refine(
         (files) => files.every((file) => file.size <= MAX_IMAGE_SIZE),
-        "Certificate image size must not exceed 5MB.",
+        messages?.imageSize ?? "Certificate image size must not exceed 5MB.",
       ),
   })
   .refine((data) => data.startDate <= new Date().toISOString().split("T")[0], {
-    message: "Start date must be today or earlier.",
+    message: messages?.startDatePast ?? "Start date must be today or earlier.",
     path: ["startDate"],
   })
   .refine((data) => !data.endDate || data.endDate >= data.startDate, {
-    message: "End date must be after start date.",
+    message: messages?.endDateAfterStart ?? "End date must be after start date.",
     path: ["endDate"],
   });
 

@@ -103,8 +103,19 @@ export function LicenseModal({
     () =>
       createLicenseSchema({
         requireImage: !(license?.image && showExistingImage),
+        messages: {
+          titleMin: t("candidateValidation.license-title-min"),
+          titleMax: t("candidateValidation.license-title-max"),
+          numberMin: t("candidateValidation.license-number-min"),
+          numberMax: t("candidateValidation.license-number-max"),
+          countryRequired: t("authPage.validation.country-required"),
+          imageRequired: t("candidateValidation.license-image-required"),
+          oneImageOnly: t("candidateValidation.one-image-only"),
+          imageType: t("candidateValidation.image-jpg-png"),
+          imageSize: t("candidateValidation.image-max-2mb"),
+        },
       }),
-    [license?.image, showExistingImage],
+    [license?.image, showExistingImage, t],
   );
   const [uploadingCount, setUploadingCount] = useState(0);
   const isUploading = uploadingCount > 0;
