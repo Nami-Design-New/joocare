@@ -101,6 +101,8 @@ async function authorizeWithEndpoint({
     locale: credentials.locale ?? "en",
     body: formData,
   });
+  console.log("USER FOUND:", data);
+
   const errorMessage = message || "Invalid email or password.";
   const accessToken = extractToken(data);
   const loginUser = extractUser(data);
@@ -270,6 +272,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         // token from register
+
         if (credentials?.accessToken) {
           return {
             id: "temp-id",
@@ -298,6 +301,8 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         // token from register
+        console.log("LOGIN ATTEMPT:", credentials?.email);
+
         if (credentials?.accessToken) {
           return {
             id: "temp-id",
