@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { useFormContext, Controller, useWatch } from "react-hook-form";
 import { useUploadImage } from "@/shared/hooks/useUploadImage";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // ✅ Lives outside the component — survives step navigation
 const imagePreviewCache = {
@@ -15,6 +15,7 @@ const imagePreviewCache = {
 
 export default function CoverUploadImage() {
   const t = useTranslations();
+  const locale = useLocale()
   const {
     control,
     formState: { errors },
@@ -159,7 +160,7 @@ export default function CoverUploadImage() {
               <div
                 onClick={() => !logoUploading && logoInputRef.current?.click()}
                 className={cn(
-                  "absolute bottom-0 translate-y-1/2 left-6",
+                  `absolute bottom-0 translate-y-1/2 ${locale === 'ar' ? "right-6" : "left-6"}`,
                   "w-37.5 h-37.5 rounded-full border",
                   "flex flex-col items-center justify-center cursor-pointer",
                   "bg-[#EBEBEB] hover:bg-[#e0e0e0] transition-colors duration-200",
