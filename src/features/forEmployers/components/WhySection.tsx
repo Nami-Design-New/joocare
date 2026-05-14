@@ -1,11 +1,11 @@
-import { MoveRight } from "lucide-react";
+import { MoveLeft, MoveRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/shared/components/ui/button";
 import SectionTitle from "../../home/components/SectionTitle";
 import { FeatureItem } from "./FeatureItem";
 import type { WhySectionProps } from "../types";
 import { cn } from "@/shared/lib/utils";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export default async function WhySection({
   title,
@@ -13,6 +13,8 @@ export default async function WhySection({
   items,
 }: WhySectionProps) {
   const t = await getTranslations();
+  const locale = await getLocale();
+
   return (
     <section className="bg-white py-20">
       <div className="mx-auto px-4 sm:px-6">
@@ -42,7 +44,11 @@ export default async function WhySection({
               }), "mt-5 flex w-full items-center justify-center gap-2 sm:mt-5 sm:w-fit")}
             >
               {t("forEmployersPage.get-started-for-free")}
-              <MoveRight className="mt-0.75" size={16} />
+              {locale === "ar" ? <MoveLeft className="mt-0.75" size={16} /> :
+                <MoveRight className="mt-0.75" size={16} />
+              }
+
+
             </Link>
           </div>
 

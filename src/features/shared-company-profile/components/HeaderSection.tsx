@@ -2,11 +2,12 @@
 
 import { cn } from '@/shared/lib/utils'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { CompanyProfile } from '../company-profile.type'
 
 export default function HeaderSection({ company }: { company: CompanyProfile }) {
     const t = useTranslations();
+    const locale = useLocale()
     return (
         <>
             <div className="w-full h-72 mb-20">
@@ -29,7 +30,7 @@ export default function HeaderSection({ company }: { company: CompanyProfile }) 
                     {/* LOGO */}
                     <div
                         className={cn(
-                            "absolute -bottom-16 left-8",
+                            `absolute -bottom-16 ${locale === "ar" ? "right-8" : "left-8"}`,
                             "w-37.5 h-37.5 rounded-full border bg-white",
                             "flex items-center justify-center ",
                             "ring-4 ring-white"

@@ -1,7 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";
-import { MoveRight } from "lucide-react";
+import { MoveLeft, MoveRight } from "lucide-react";
 import Image from "next/image";
 import type { BannerSectionProps } from "../types";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -45,7 +45,9 @@ export default async function BannerSection({
             }), "mx-auto mt-6 flex w-full items-center justify-center gap-2 sm:mt-8 sm:w-fit")}
           >
             {t("forEmployersPage.get-started-now")}
-            <MoveRight className="mt-0.75" size={16} />
+            {locale === "ar" ? <MoveLeft className="mt-0.75" size={16} /> :
+              <MoveRight className="mt-0.75" size={16} />
+            }
           </Link>
         </div>
 

@@ -8,7 +8,7 @@ import { cn } from "@/shared/lib/utils";
 import { useSession } from "next-auth/react";
 import { TCompanyProfileViewModel } from "../types";
 import { useUpdateCompanyImagesFlow } from "../hooks/useUpdateCompanyImagesFlow";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 type FormValues = {
     uploadCoverImage?: File | string;
@@ -23,6 +23,8 @@ const ProfileHeader = ({
     isPending: boolean;
 }) => {
     const t = useTranslations();
+    const locale = useLocale()
+
     const { data: session } = useSession();
     const token = session?.accessToken || "";
 
@@ -109,7 +111,7 @@ const ProfileHeader = ({
                     control={control}
                     render={({ field: { onChange } }) => (
                         <div className={cn(
-                            "absolute -bottom-12 left-8",
+                            `absolute -bottom-12 ${locale === "ar" ? "right-8" : "left-8"}`,
                             "w-37.5 h-37.5 rounded-full border bg-white",
                             "flex items-center justify-center cursor-pointer",
                             "ring-4 ring-white",
