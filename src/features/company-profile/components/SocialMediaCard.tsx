@@ -33,17 +33,34 @@ const SocialMediaCard = ({ link, title, src, isPending }: ISocialMediaProps) => 
     }
 
     return (<>
-        <div className="flex justify-between items-center">
-            <div className="flex items-center gap-4">
-                <Image src={src} alt={t("companyPage.profile.social.icon-alt")} width={35} height={35} />
-                <div>
+        <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4 min-w-0 flex-1">
+                <Image
+                    src={src}
+                    alt={t("companyPage.profile.social.icon-alt")}
+                    width={35}
+                    height={35}
+                />
+
+                <div className="min-w-0">
                     <h5 className="text-sm">{title}</h5>
-                    <Link href={`${link}`} className="text-primary text-sm w-full">
+
+                    <Link
+                        href={link}
+                        title={link}
+                        className="text-primary text-sm block truncate hover:underline"
+                    >
                         {isPending ? <TextSkeleton /> : link}
                     </Link>
                 </div>
             </div>
-            <Trash2 className="text-red-400 cursor-pointer" width={20} height={20} onClick={() => setDeleteSocialMedia(true)} />
+
+            <Trash2
+                className="text-red-400 cursor-pointer shrink-0"
+                width={20}
+                height={20}
+                onClick={() => setDeleteSocialMedia(true)}
+            />
         </div>
         <DeleteModal
             open={deleteSocialMedia}

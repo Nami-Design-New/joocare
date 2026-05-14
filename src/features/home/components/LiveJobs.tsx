@@ -4,7 +4,7 @@ import SectionTitle from "./SectionTitle";
 import JobCard from "./JobCard";
 import type { HomeRecentJob } from "../types/home.types";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export const LiveJobs = ({
   title,
@@ -14,6 +14,7 @@ export const LiveJobs = ({
   jobs: HomeRecentJob[];
 }) => {
   const t = useTranslations();
+  const locale = useLocale()
   return (
     <section
       className="bg-white py-10 md:py-20"
@@ -42,8 +43,8 @@ export const LiveJobs = ({
               <ArrowRight
                 size={28}
                 strokeWidth={1.5}
-                className="border-muted-foreground text-muted-foreground size-7 -rotate-45 rounded-full border bg-white transition-transform group-hover:rotate-0"
-              />
+                className={`border-muted-foreground text-muted-foreground size-7 rounded-full border
+               bg-white transition-transform  ${locale === 'ar' ? " -rotate-135 group-hover:-rotate-180" : " -rotate-45 group-hover:rotate-0"}`} />
             </Link>
           </header>
 

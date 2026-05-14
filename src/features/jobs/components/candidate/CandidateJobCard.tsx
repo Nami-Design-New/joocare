@@ -57,8 +57,19 @@ export default function CandidateJobCard({
   const salary = getJobSalaryWithCurrency(job, t("jobsPage.not-specified"));
   const experience = job?.experience?.title || job?.experience_title || t("jobsPage.experience-not-specified");
   const specialty = job?.specialty?.title || job?.specialty_title || t("jobsPage.healthcare");
+  // const excerpt =
+  //   job.description?.slice(0, 70) || t("jobsPage.card-description-fallback");
+  const plainDescription =
+    typeof window !== "undefined"
+      ? new DOMParser()
+        .parseFromString(job.description || "", "text/html")
+        .body.textContent || ""
+      : "";
+
   const excerpt =
-    job.description?.slice(0, 70) || t("jobsPage.card-description-fallback");
+    plainDescription.slice(0, 70) ||
+    t("jobsPage.card-description-fallback");
+
   const shouldShowAppliedBadge = appliedBadge || job.is_applied;
   const appliedLabel = appliedAtLabel || postedAtLabel;
   const { shareJob } = useJobShare({ title, path: sharePath });
@@ -115,17 +126,17 @@ export default function CandidateJobCard({
             </li>
           </ul>
           {/* <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p> */}
-          <div
+          {/* <div
             className="prose prose-sm max-w-none mt-3"
             dangerouslySetInnerHTML={{
               __html:
                 excerpt ||
                 `<p>${t("jobsPage.no-description-available")}</p>`,
             }}
-          />
-          {/* <p className="text-sm text-gray-600 line-clamp-3">
-            {shortText || "No description available."}
-          </p> */}
+          /> */}
+          <div className="prose prose-sm max-w-none mt-3">
+            {excerpt || t("jobsPage.no-description-available")}
+          </div>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4  max-lg:px-2">

@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
 } from "@/shared/components/ui/carousel";
 import type { HomeRate } from "../types/home.types";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export const TestimonialCard = ({
   name,
@@ -55,7 +55,7 @@ export const Testimonials = ({
   reviews: HomeRate[];
 }) => {
   const t = useTranslations();
-
+  const locale = useLocale()
   // console.log("review ::", reviews);
 
   return (
@@ -77,10 +77,11 @@ export const Testimonials = ({
               </div>
 
               {/* Shadcn carousel controls wired to the same Carousel context */}
-              <div className="flex gap-4">
+              <div className={`flex gap-4 ${locale === "ar" ? "flex-row-reverse" : ""}`}>
                 <CarouselPrevious className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
                 <CarouselNext className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
               </div>
+
             </div>
 
             {/* Cards */}
