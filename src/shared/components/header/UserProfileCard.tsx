@@ -13,6 +13,9 @@ import { Button } from "../ui/button";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import useGetCandidateProfile from "@/features/candidate-profile/hooks/useGetCandidateProfile";
+import { getSafeImageSrc } from "./UserDropDown";
 
 export default function UserProfileCard({
   companyHeader,
@@ -23,17 +26,42 @@ export default function UserProfileCard({
   const { logout } = useLogout();
   const { data: session } = useSession();
   const isEmployer = session?.authRole === "employer" || companyHeader;
+
+  const token = session?.accessToken || "";
+
+  const { data: companyProfileData } = useGetCompanyProfile({
+    token: isEmployer ? token : "",
+  });
+  const { data: candidateProfileData } = useGetCandidateProfile({
+    token: !isEmployer ? token : "",
+  });
+
   const profileHref = isEmployer
     ? "/company/company-profile"
     : "/candidate/profile";
   const settingsHref = isEmployer
     ? "/company/account-settings/basic-info"
     : "/candidate/settings/basic-info";
-  const displayName = session?.user?.name || t("header.user");
+  const displayName =
+    (isEmployer
+      ? companyProfileData?.name || t("header.user")
+      : candidateProfileData?.name) || t("header.user");
+
   const subtitle = isEmployer
     ? t("header.company-account")
     : t("header.candidate-account");
-  const imageSrc = session?.user?.image || "/profile-placeholder.svg";
+
+
+  const fallbackImage = isEmployer
+    ? "/assets/new-logo-dot.svg"
+    : "/assets/profile_image.svg";
+
+  const imageSrc = getSafeImageSrc(
+    (isEmployer ? (companyProfileData?.image ? companyProfileData?.image : '/assets/new-logo-dot.svg') : (candidateProfileData?.image ? candidateProfileData?.image : '/assets/profile_image.svg')) ??
+    session?.user?.image,
+    fallbackImage
+  );
+
   const itemClass =
     "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
     "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +
@@ -49,7 +77,7 @@ export default function UserProfileCard({
           className="rounded-full"
         />
         <div>
-          <p className="text-md font-semibold text-black">{displayName}</p>
+          <p className="text-md font-semibold text-black">{displayName as string}</p>
           <p className="text-md text-muted-foreground font-normal">{subtitle}</p>
           <Link
             href={profileHref}
