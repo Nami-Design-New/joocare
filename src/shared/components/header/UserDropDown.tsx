@@ -27,7 +27,7 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
-function getSafeImageSrc(value: unknown, fallback: string) {
+export function getSafeImageSrc(value: unknown, fallback: string) {
   return typeof value === "string" && value.trim() ? value : fallback;
 }
 
@@ -55,7 +55,10 @@ export default function UserDropDown({
   const profileHref = isEmployer
     ? "/company/company-profile"
     : "/candidate/profile";
-  const displayName = session?.user?.name || t("header.user");
+  const displayName =
+    (isEmployer
+      ? companyProfileData?.name || t("header.user")
+      : candidateProfileData?.name) || t("header.user");
   const subtitle = isEmployer
     ? t("header.company-account")
     : t("header.candidate-account");
@@ -109,7 +112,7 @@ export default function UserDropDown({
                 className="rounded-full h-13.75 w-13.75"
               />
               <div>
-                <p className="text-lg font-semibold text-black">{displayName}</p>
+                <p className="text-lg font-semibold text-black">{displayName as string}</p>
                 <p className="text-md text-muted-foreground font-normal">
                   {subtitle}
                 </p>
