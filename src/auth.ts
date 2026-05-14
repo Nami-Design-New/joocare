@@ -182,7 +182,7 @@ async function authorizeWithSocialEndpoint({
 
   return {
     id: String(loginUser.id),
-    user: loginUser,
+    // user: loginUser,
     accessToken,
     authRole: role,
     authMessage: message ?? "Login successful.",
@@ -276,7 +276,7 @@ export const authOptions: NextAuthOptions = {
         if (credentials?.accessToken) {
           return {
             id: "temp-id",
-            user: JSON.parse(credentials.user || "{}"),
+            // user: JSON.parse(credentials.user || "{}"),
             accessToken: credentials.accessToken,
             authRole: "candidate",
             authMessage: "Registered successfully",
@@ -306,7 +306,7 @@ export const authOptions: NextAuthOptions = {
         if (credentials?.accessToken) {
           return {
             id: "temp-id",
-            user: JSON.parse(credentials.user || "{}"),
+            // user: JSON.parse(credentials.user || "{}"),
             accessToken: credentials.accessToken,
             authRole: "employer",
             authMessage: "Registered successfully",
@@ -372,7 +372,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: true,
