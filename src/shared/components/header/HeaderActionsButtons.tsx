@@ -192,7 +192,7 @@ function HeaderActionsButtons({
       {/*  Drawer */}
       {open && (
         <DrawerScrollableContent
-          title="notification"
+          title={t("header.notification")}
           open={open}
           onOpenChange={setOpen}
         />

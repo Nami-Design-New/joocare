@@ -43,7 +43,8 @@
     "log-out": "تسجيل الخروج",
     "loading": "جارٍ التحميل...",
     "no-more-notifications": "لا توجد إشعارات إضافية",
-    "no-notifications-yet": "لا توجد إشعارات بعد"
+    "no-notifications-yet": "لا توجد إشعارات بعد",
+    "notification": "إشعارات"
   },
   "search-filter": {
     "search-job": "المسمى الوظيفي أو كلمة مفتاحية",
