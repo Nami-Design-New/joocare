@@ -43,7 +43,8 @@
     "log-out": "Log out",
     "loading": "Loading...",
     "no-more-notifications": "No more notifications",
-    "no-notifications-yet": "No notifications yet"
+    "no-notifications-yet": "No notifications yet",
+    "notification": "notification"
   },
   "search-filter": {
     "search-job": "Job title or keyword",
