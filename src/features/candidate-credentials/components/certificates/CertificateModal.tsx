@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState, useTransition } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { InputField } from "@/shared/components/InputField";
 import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
@@ -108,6 +108,7 @@ export function CertificateModal({
   label,
   certificate,
 }: CertificateModalProps) {
+  const t = useTranslations();
   const locale = useLocale();
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
@@ -117,8 +118,21 @@ export function CertificateModal({
     () =>
       createCertificateSchema({
         requireImage: !(certificate?.image && showExistingImage),
+        messages: {
+          nameMin: t("candidateValidation.certificate-name-min"),
+          nameMax: t("candidateValidation.certificate-name-max"),
+          companyMin: t("candidateValidation.issuing-organization-min"),
+          companyMax: t("candidateValidation.issuing-organization-max"),
+          startDateRequired: t("candidateValidation.start-date-required"),
+          imageRequired: t("candidateValidation.certificate-image-required"),
+          oneImageOnly: t("candidateValidation.one-image-only"),
+          imageType: t("candidateValidation.image-jpg-png"),
+          imageSize: t("candidateValidation.image-max-5mb"),
+          startDatePast: t("candidateValidation.start-date-past"),
+          endDateAfterStart: t("candidateValidation.end-date-after-start"),
+        },
       }),
-    [certificate?.image, showExistingImage],
+    [certificate?.image, showExistingImage, t],
   );
   const {
     register,
@@ -181,8 +195,8 @@ export function CertificateModal({
         toast.success(
           response.message ??
             (certificate?.id
-              ? "Certificate updated successfully."
-              : "Certificate added successfully."),
+              ? t("candidatePage.toasts.certificate-updated")
+              : t("candidatePage.toasts.certificate-added")),
         );
         onOpenChange(false);
         await queryClient.invalidateQueries({
@@ -194,7 +208,7 @@ export function CertificateModal({
         });
 
         const message =
-          error instanceof Error ? error.message : "Failed to save certificate.";
+          error instanceof Error ? error.message : t("candidatePage.toasts.certificate-save-failed");
         toast.error(message);
       }
     });
@@ -213,7 +227,7 @@ export function CertificateModal({
             control={control}
             render={({ field }) => (
               <StoredFilepondUpload
-                label="Upload Image"
+                label={t("candidatePage.profile.upload-image")}
                 files={field.value}
                 onChange={field.onChange}
                 required={!(certificate?.image && showExistingImage)}
@@ -245,7 +259,7 @@ export function CertificateModal({
                   });
                 }}
                 existingFileUrl={showExistingImage ? certificate?.image ?? null : null}
-                existingFileLabel={certificate?.name ?? "Certificate image"}
+                existingFileLabel={certificate?.name ?? t("candidatePage.credentials.certificate-image")}
                 onExistingFileRemove={() => {
                   setShowExistingImage(false);
                   setStoredImagePath(null);
@@ -258,18 +272,18 @@ export function CertificateModal({
 
           <InputField
             id="certificateName"
-            label="Certificate Name"
+            label={t("candidatePage.credentials.certificate-name")}
             type="text"
-            placeholder="ex: Infection Control Diploma"
+            placeholder={t("candidatePage.credentials.certificate-name-placeholder")}
             {...register("name")}
             error={errors.name?.message}
           />
 
           <InputField
             id="issuingOrganization"
-            label="Issuing Organization"
+            label={t("candidatePage.credentials.issuing-organization")}
             type="text"
-            placeholder="ex: American Heart Association"
+            placeholder={t("candidatePage.credentials.issuing-organization-placeholder")}
             {...register("company")}
             error={errors.company?.message}
           />
@@ -277,14 +291,14 @@ export function CertificateModal({
           <div className="flex flex-col items-center justify-between gap-2 md:flex-row">
             <InputField
               id="startDate"
-              label="Start Date"
+              label={t("candidatePage.profile.start-date")}
               type="date"
               {...register("startDate")}
               error={errors.startDate?.message}
             />
             <InputField
               id="endDate"
-              label="End Date"
+              label={t("candidatePage.profile.end-date")}
               type="date"
               {...register("endDate")}
               error={errors.endDate?.message}
@@ -293,7 +307,7 @@ export function CertificateModal({
 
           <DialogFooter className="flex items-center justify-center!">
             <Button className="w-1/3" size="pill" type="submit" disabled={isPending}>
-              {isPending ? "Saving..." : certificate?.id ? "Save" : "Add"}
+              {isPending ? t("candidatePage.common.saving") : certificate?.id ? t("common.save") : t("candidatePage.common.add")}
             </Button>
           </DialogFooter>
         </form>

@@ -4,16 +4,18 @@
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 //components
 import { InputField } from "@/shared/components/InputField";
 import { Button } from "@/shared/components/ui/button";
 import {
-  loginCandidateSchema,
+  createLoginCandidateSchema,
   TLoginCandidateSchema,
 } from "../../validation/candidate-login-schema";
 import { useLogin } from "../../hooks/useLogin";
 
 const FormCandidateLogin = () => {
+  const t = useTranslations();
   const { login } = useLogin("candidate");
 
   const {
@@ -21,7 +23,14 @@ const FormCandidateLogin = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<TLoginCandidateSchema>({
-    resolver: zodResolver(loginCandidateSchema),
+    resolver: zodResolver(
+      createLoginCandidateSchema({
+        fieldRequired: t("authPage.validation.field-required"),
+        emailInvalid: t("authPage.validation.email-invalid"),
+        passwordMin: t("authPage.validation.password-min"),
+        passwordMax: t("authPage.validation.password-max"),
+      }),
+    ),
   });
 
   const onSubmit: SubmitHandler<TLoginCandidateSchema> = async (data) => {
@@ -39,22 +48,22 @@ const FormCandidateLogin = () => {
     >
       <InputField
         id="email"
-        label="Email"
+        label={t("authPage.common.email")}
         type={"email"}
-        placeholder="ex: mail@mail.com"
+        placeholder={t("authPage.placeholders.email")}
         {...register("email")}
         error={errors.email?.message}
       />
       <InputField
         id="password"
         type="password"
-        label="Password"
+        label={t("authPage.common.password")}
         placeholder="******"
         {...register("password")}
         error={errors.password?.message}
       />
       <Link href="/auth/candidate/forget-password" className="text-xs hover:text-primary">
-        Forgot password?
+        {t("authPage.common.forgot-password")}
       </Link>
       <div className="flex justify-center">
         <Button
@@ -64,7 +73,7 @@ const FormCandidateLogin = () => {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Logging..." : "Login"}
+          {isSubmitting ? t("authPage.common.logging-in") : t("header.login")}
         </Button>
       </div>
     </form>

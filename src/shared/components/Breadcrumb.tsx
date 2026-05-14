@@ -1,5 +1,6 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { getLocale } from "next-intl/server";
 
 type BreadcrumbItem = {
   label: string;
@@ -12,11 +13,12 @@ type BreadcrumbProps = {
   gradient?: boolean;
 };
 
-export default function Breadcrumb({
+export default async function Breadcrumb({
   title,
   items,
   gradient = true,
 }: BreadcrumbProps) {
+  const locale = await getLocale()
   return (
     <div
       className={`layout-shell py-4 lg:pt-12 lg:pb-38 ${gradient ? "bg-primary-gradient text-white" : "bg-transparent text-secondary"
@@ -45,12 +47,12 @@ export default function Breadcrumb({
                   ) : (
                     <span
                       className={`${isLast
-                          ? gradient
-                            ? "font-semibold text-white"
-                            : "font-semibold text-secondary"
-                          : gradient
-                            ? "text-white/70"
-                            : "text-muted-foreground"
+                        ? gradient
+                          ? "font-semibold text-white"
+                          : "font-semibold text-secondary"
+                        : gradient
+                          ? "text-white/70"
+                          : "text-muted-foreground"
                         }`}
                       aria-current={isLast ? "page" : undefined}
                     >
@@ -59,10 +61,21 @@ export default function Breadcrumb({
                   )}
 
                   {!isLast && (
-                    <ChevronRight
-                      className={gradient ? "text-white/70" : "text-muted-foreground"}
-                      size={20}
-                    />
+                    <>
+                      {locale === 'ar' ? (
+                        <ChevronLeft
+                          className={gradient ? "text-white/70" : "text-muted-foreground"}
+                          size={20}
+                        />
+                      ) : (
+                        <ChevronRight
+                          className={gradient ? "text-white/70" : "text-muted-foreground"}
+                          size={20}
+                        />
+                      )}
+                    </>
+
+
                   )}
                 </li>
               );

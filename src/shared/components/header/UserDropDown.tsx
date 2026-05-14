@@ -25,6 +25,7 @@ import { cn } from "@/shared/lib/utils";
 import { useState } from "react";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 function getSafeImageSrc(value: unknown, fallback: string) {
   return typeof value === "string" && value.trim() ? value : fallback;
@@ -35,6 +36,7 @@ export default function UserDropDown({
 }: {
   companyHeader: boolean;
 }) {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const { logout } = useLogout();
   const { data: session } = useSession();
@@ -53,10 +55,10 @@ export default function UserDropDown({
   const profileHref = isEmployer
     ? "/company/company-profile"
     : "/candidate/profile";
-  const displayName = session?.user?.name || "User";
+  const displayName = session?.user?.name || t("header.user");
   const subtitle = isEmployer
-    ? "Company account"
-    : "Candidate account";
+    ? t("header.company-account")
+    : t("header.candidate-account");
 
   const fallbackImage = isEmployer
     ? "/assets/new-logo-dot.svg"
@@ -126,7 +128,7 @@ export default function UserDropDown({
               href={profileHref}
               onClick={() => toggleOpen()}
             >
-              View Profile
+              {t("header.view-profile")}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -146,7 +148,7 @@ export default function UserDropDown({
                   href={"/company/job-management"}
                   onClick={() => toggleOpen()}
                 >
-                  Job Management
+                  {t("header.job-management")}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className={itemClass}>
@@ -155,7 +157,7 @@ export default function UserDropDown({
                   strokeWidth={2.5}
                 />
                 <Link href={"/company/dashboard"} onClick={() => toggleOpen()}>
-                  Dashboard
+                  {t("header.dashboard")}
                 </Link>{" "}
               </DropdownMenuItem>
 
@@ -167,7 +169,7 @@ export default function UserDropDown({
                 strokeWidth={2.5}
               />
               <Link href={"/jobs/saved"} onClick={() => toggleOpen()}>
-                Saved
+                {t("header.saved")}
               </Link>
             </DropdownMenuItem>
           )}
@@ -184,7 +186,7 @@ export default function UserDropDown({
               }
               onClick={() => toggleOpen()}
             >
-              Account Management
+              {t("header.account-management")}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -202,7 +204,7 @@ export default function UserDropDown({
           >
             <LogOut className="text-destructive group-hover:text-destructive/80 h-5 w-5 transition-colors" />
             <p className="text-destructive group-hover:text-destructive/80">
-              Log out
+              {t("header.log-out")}
             </p>
           </DropdownMenuItem>
         </DropdownMenuGroup>

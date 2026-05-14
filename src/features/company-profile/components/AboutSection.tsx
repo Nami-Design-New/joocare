@@ -4,14 +4,16 @@ import { useState } from "react"
 import { TCompanyProfileViewModel } from "../types"
 import { EditAboutModal } from "./EditAboutModal"
 import TextSkeleton from "./TextSkeleton"
+import { useTranslations } from "next-intl"
 
 const AboutSection = ({ companyProfileData, isPending }: { companyProfileData: TCompanyProfileViewModel, isPending: boolean }) => {
     const [open, setOpen] = useState(false)
+    const t = useTranslations();
 
     return (<>
         <div className="rounded-2xl bg-white flex flex-col gap-4 p-4 border">
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold ">About</h2>
+                <h2 className="text-xl font-semibold ">{t("companyPage.profile.about.title")}</h2>
                 {companyProfileData?.status !== "Draft" && <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />}
             </div>
             {isPending ? (

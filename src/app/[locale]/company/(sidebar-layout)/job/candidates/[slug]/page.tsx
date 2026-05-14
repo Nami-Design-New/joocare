@@ -11,9 +11,11 @@ import useGetCountries from "@/shared/hooks/useGetCountries";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 
 
 export default function Page() {
+  const t = useTranslations();
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState<CandidatesFilterValues>({
     search: "",
@@ -80,10 +82,10 @@ export default function Page() {
     value: String(country.id),
   }));
 
-  const jobTitle = job?.title ?? job?.job_title?.title ?? "Untitled job";
-  const companyName = job?.company?.name ?? "Your company";
+  const jobTitle = job?.title ?? job?.job_title?.title ?? t("companyPage.jobDetails.untitled-job");
+  const companyName = job?.company?.name ?? t("companyPage.jobDetails.your-company");
   const companyLogo = job?.company?.image ?? "/assets/new-logo-dot.svg";
-  const employmentType = job?.employment_type?.title ?? "Not specified";
+  const employmentType = job?.employment_type?.title ?? t("jobsPage.not-specified");
 
   return (
     <section className="grid grid-cols-1">

@@ -4,7 +4,7 @@ import AboutVisionSection from "@/features/about/components/AboutVisionSection";
 import CorePillarsSection from "@/features/about/components/CorePillarsSection";
 import { getAboutPageData } from "@/features/about/services/about-service";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
-import { settingService } from "@/shared/services/settings-services";
+import { getTranslations } from "next-intl/server";
 
 export default async function AboutPage({
   params,
@@ -13,12 +13,15 @@ export default async function AboutPage({
 }) {
   const { locale } = await params;
   const aboutData = await getAboutPageData(locale);
-
+  const t = await getTranslations();
 
   return (
     <>
       <PlainBreadcrumb
-        items={[{ label: "Home", href: "/" }, { label: "About" }]}
+        items={[
+          { label: t("header.home"), href: "/" },
+          { label: t("header.about") },
+        ]}
       />
       <AboutHeroSection
         title={aboutData.aboutSection.title}

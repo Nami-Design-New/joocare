@@ -11,14 +11,15 @@ import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
 import { Button } from "@/shared/components/ui/button";
 import { useSession } from "next-auth/react";
 import { useLocale } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useUpdateBusinessVerification } from "../../hooks/useUpdateBusinessVerification";
 import { UpdateBusinessVerificationPayload } from "../../types";
-import { BusinessVerificationSchema, TBusinessVerificationSchema } from "../../validation/business-verification-schema";
+import { createBusinessVerificationSchema, TBusinessVerificationSchema } from "../../validation/business-verification-schema";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
 import useGetOrganizationSizes from "@/shared/hooks/useGetOrganizationSizes";
 import useGetEmployerTypes from "@/shared/hooks/useGetEmployerTypes";
+import { useTranslations } from "next-intl";
 
 const formatDateForInput = (value?: string | Date | null) => {
     if (!value) return "";
@@ -31,6 +32,7 @@ const formatDateForInput = (value?: string | Date | null) => {
 };
 
 export default function BusinessVerificationForm() {
+    const t = useTranslations();
     // hooks land and token
     const locale = useLocale();
     const { data: session } = useSession();
@@ -91,6 +93,30 @@ export default function BusinessVerificationForm() {
     const [showExistingMedicalLicenseImage, setShowExistingMedicalLicenseImage] = useState<boolean | null>(null);
 
     // form states
+    const schema = useMemo(() => createBusinessVerificationSchema({
+        messages: {
+            required: t("companyPage.accountSettings.validation.required"),
+            commercialRegistrationNumberMax: t("companyPage.accountSettings.validation.commercial-registration-number-max"),
+            issuingCountryRequired: t("companyPage.accountSettings.validation.issuing-country-required"),
+            organizationSizeRequired: t("companyPage.accountSettings.validation.organization-size-required"),
+            commercialIssueDateRequired: t("companyPage.accountSettings.validation.commercial-issue-date-required"),
+            commercialExpiryDateRequired: t("companyPage.accountSettings.validation.commercial-expiry-date-required"),
+            employerTypeRequired: t("companyPage.accountSettings.validation.employer-type-required"),
+            medicalFacilityLicenseNumberMax: t("companyPage.accountSettings.validation.medical-facility-license-number-max"),
+            licenseIssuingAuthorityMin: t("companyPage.accountSettings.validation.license-issuing-authority-min"),
+            licenseIssuingAuthorityMax: t("companyPage.accountSettings.validation.license-issuing-authority-max"),
+            specialtyRequired: t("companyPage.accountSettings.validation.specialty-required"),
+            medicalIssueDateRequired: t("companyPage.accountSettings.validation.medical-issue-date-required"),
+            medicalExpiryDateRequired: t("companyPage.accountSettings.validation.medical-expiry-date-required"),
+            commercialIssueDatePast: t("companyPage.accountSettings.validation.commercial-issue-date-past"),
+            commercialExpiryDateFuture: t("companyPage.accountSettings.validation.commercial-expiry-date-future"),
+            commercialExpiryAfterIssue: t("companyPage.accountSettings.validation.commercial-expiry-after-issue"),
+            medicalIssueDatePast: t("companyPage.accountSettings.validation.medical-issue-date-past"),
+            medicalExpiryDateFuture: t("companyPage.accountSettings.validation.medical-expiry-date-future"),
+            medicalExpiryAfterIssue: t("companyPage.accountSettings.validation.medical-expiry-after-issue"),
+        }
+    }), [t]);
+
     const {
         register,
         handleSubmit,
@@ -100,7 +126,7 @@ export default function BusinessVerificationForm() {
         clearErrors,
         formState: { errors },
     } = useForm<TBusinessVerificationSchema>({
-        resolver: typedZodResolver(BusinessVerificationSchema),
+        resolver: typedZodResolver(schema),
     });
 
     // update business verification
@@ -160,13 +186,13 @@ export default function BusinessVerificationForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
             <div className="bg-input p-5 rounded-2xl flex flex-col justify-between gap-y-5">
                 <h2 className="text-lg text-disabled font-semibold text-start mt-2">
-                    Commercial Registration
+                    {t("companyPage.accountSettings.businessVerification.sections.commercial-registration")}
                 </h2>
                 <InputField
                     id="commercial_registration_number"
-                    label="Commercial Registration No"
+                    label={t("companyPage.accountSettings.businessVerification.fields.commercial-registration-number.label")}
                     type={"text"}
-                    placeholder="ex: 23121212"
+                    placeholder={t("companyPage.accountSettings.businessVerification.fields.commercial-registration-number.placeholder")}
                     className="bg-white"
                     {...register("commercial_registration_number")}
                     error={errors.commercial_registration_number?.message?.toString()}
@@ -180,8 +206,8 @@ export default function BusinessVerificationForm() {
                             <SelectInputField
                                 withSearchInput={true}
                                 id="license_issue_country_id"
-                                label="Issuing country of the license"
-                                placeholder="Select"
+                                label={t("companyPage.accountSettings.businessVerification.fields.issuing-country.label")}
+                                placeholder={t("common.select")}
                                 className="bg-white hover:bg-transparent"
                                 {...field}
                                 error={
@@ -209,8 +235,8 @@ export default function BusinessVerificationForm() {
                         render={({ field }) => (
                             <SelectInputField
                                 id="organization_size_id"
-                                label="Organization Size"
-                                placeholder="Select"
+                                label={t("companyPage.accountSettings.businessVerification.fields.organization-size.label")}
+                                placeholder={t("common.select")}
                                 className="bg-white"
                                 {...field}
                                 error={
@@ -237,9 +263,9 @@ export default function BusinessVerificationForm() {
                 <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
                     <InputField
                         id="commercial_registration_issue_date"
-                        label="Commercial Registration Issue Date"
+                        label={t("companyPage.accountSettings.businessVerification.fields.commercial-issue-date.label")}
                         type={"date"}
-                        placeholder="ex:Dec 2025"
+                        placeholder={t("companyPage.accountSettings.businessVerification.fields.commercial-issue-date.placeholder")}
                         className="bg-white"
                         {...register("commercial_registration_issue_date")}
                         error={errors.commercial_registration_issue_date?.message?.toString()}
@@ -247,9 +273,9 @@ export default function BusinessVerificationForm() {
 
                     <InputField
                         id="commercial_registration_expiry_date"
-                        label="Commercial Registration Expiry Date"
+                        label={t("companyPage.accountSettings.businessVerification.fields.commercial-expiry-date.label")}
                         type={"date"}
-                        placeholder="ex:Dec 2025"
+                        placeholder={t("companyPage.accountSettings.businessVerification.fields.commercial-expiry-date.placeholder")}
                         className="bg-white"
                         {...register("commercial_registration_expiry_date")}
                         error={errors.commercial_registration_expiry_date?.message?.toString()}
@@ -263,7 +289,7 @@ export default function BusinessVerificationForm() {
                     render={({ field }) => (
                         <StoredFilepondUpload
                             className="file-pond-style-custom"
-                            label="Commercial Registration Image"
+                            label={t("companyPage.accountSettings.businessVerification.fields.commercial-registration-image.label")}
                             files={field.value}
                             onChange={field.onChange}
                             allowImagePreview={true}
@@ -293,7 +319,7 @@ export default function BusinessVerificationForm() {
                                 });
                             }}
                             existingFileUrl={(showExistingCommercialRegistrationImage ?? Boolean(companyProfileData?.commercial_registration_image)) ? companyProfileData?.commercial_registration_image : null}
-                            existingFileLabel={(showExistingCommercialRegistrationImage ?? Boolean(companyProfileData?.commercial_registration_image)) ? "Existing Commercial Registration Image" : undefined}
+                            existingFileLabel={(showExistingCommercialRegistrationImage ?? Boolean(companyProfileData?.commercial_registration_image)) ? t("companyPage.accountSettings.businessVerification.fields.commercial-registration-image.existing-label") : undefined}
                             onExistingFileRemove={() => {
                                 setShowExistingCommercialRegistrationImage(false);
                                 setCommercialRegistrationImage(null);
@@ -310,7 +336,7 @@ export default function BusinessVerificationForm() {
 
             <div className="bg-input p-5 rounded-2xl flex flex-col justify-between gap-y-5">
                 <h2 className="text-lg text-disabled font-semibold text-start mt-2">
-                    Medical License
+                    {t("companyPage.accountSettings.businessVerification.sections.medical-license")}
                 </h2>
                 <Controller
                     name="employer_type_id"
@@ -318,8 +344,8 @@ export default function BusinessVerificationForm() {
                     render={({ field }) => (
                         <SelectInputField
                             id="employer_type_id"
-                            label="Employer type"
-                            placeholder="ex: Full-time"
+                            label={t("companyPage.accountSettings.businessVerification.fields.employer-type.label")}
+                            placeholder={t("companyPage.accountSettings.businessVerification.fields.employer-type.placeholder")}
                             className="bg-white"
                             {...field}
                             error={
@@ -342,18 +368,18 @@ export default function BusinessVerificationForm() {
                 />
                 <InputField
                     id="medical_facility_license_number"
-                    label="Medical Facility License Number"
+                    label={t("companyPage.accountSettings.businessVerification.fields.medical-facility-license-number.label")}
                     type={"text"}
-                    placeholder="ex: 23121212"
+                    placeholder={t("companyPage.accountSettings.businessVerification.fields.medical-facility-license-number.placeholder")}
                     className="bg-white"
                     {...register("medical_facility_license_number")}
                     error={errors.medical_facility_license_number?.message?.toString()}
                 />
                 <InputField
                     id="license_issuing_authority"
-                    label="License Issuing Authority"
+                    label={t("companyPage.accountSettings.businessVerification.fields.license-issuing-authority.label")}
                     type={"text"}
-                    placeholder="ex: Dubai Health Authority"
+                    placeholder={t("companyPage.accountSettings.businessVerification.fields.license-issuing-authority.placeholder")}
                     className="bg-white"
                     {...register("license_issuing_authority")}
                     error={errors.license_issuing_authority?.message?.toString()}
@@ -361,9 +387,9 @@ export default function BusinessVerificationForm() {
 
                 <InputField
                     id="specialty_title"
-                    label="Specialty / Scope of Practice"
+                    label={t("companyPage.accountSettings.businessVerification.fields.specialty.label")}
                     type={"text"}
-                    placeholder="ex: Cardiology"
+                    placeholder={t("companyPage.accountSettings.businessVerification.fields.specialty.placeholder")}
                     className="bg-white"
                     {...register("specialty_title")}
                     error={errors.specialty_title?.message?.toString()}
@@ -400,9 +426,9 @@ export default function BusinessVerificationForm() {
                 <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
                     <InputField
                         id="medical_license_issue_date"
-                        label="Medical License Issue Date"
+                        label={t("companyPage.accountSettings.businessVerification.fields.medical-issue-date.label")}
                         type={"date"}
-                        placeholder="ex:Dec 2025"
+                        placeholder={t("companyPage.accountSettings.businessVerification.fields.medical-issue-date.placeholder")}
                         className="bg-white"
                         {...register("medical_license_issue_date")}
                         error={errors.medical_license_issue_date?.message?.toString()}
@@ -410,9 +436,9 @@ export default function BusinessVerificationForm() {
 
                     <InputField
                         id="medical_license_expiry_date"
-                        label="Medical License Expiry Date"
+                        label={t("companyPage.accountSettings.businessVerification.fields.medical-expiry-date.label")}
                         type={"date"}
-                        placeholder="ex:Dec 2025"
+                        placeholder={t("companyPage.accountSettings.businessVerification.fields.medical-expiry-date.placeholder")}
                         className="bg-white"
                         {...register("medical_license_expiry_date")}
                         error={errors.medical_license_expiry_date?.message?.toString()}
@@ -425,7 +451,7 @@ export default function BusinessVerificationForm() {
                     render={({ field }) => (
                         <StoredFilepondUpload
                             className="file-pond-style-custom"
-                            label="Medical License Image"
+                            label={t("companyPage.accountSettings.businessVerification.fields.medical-license-image.label")}
                             files={field.value}
                             onChange={field.onChange}
                             allowMultiple={false}
@@ -457,7 +483,7 @@ export default function BusinessVerificationForm() {
                                 });
                             }}
                             existingFileUrl={(showExistingMedicalLicenseImage ?? Boolean(companyProfileData?.medical_license_image)) ? companyProfileData?.medical_license_image : null}
-                            existingFileLabel={(showExistingMedicalLicenseImage ?? Boolean(companyProfileData?.medical_license_image)) ? "Existing Medical License Image" : undefined}
+                            existingFileLabel={(showExistingMedicalLicenseImage ?? Boolean(companyProfileData?.medical_license_image)) ? t("companyPage.accountSettings.businessVerification.fields.medical-license-image.existing-label") : undefined}
                             onExistingFileRemove={() => {
                                 setShowExistingMedicalLicenseImage(false);
                                 setMedicalLicenseImage(null);
@@ -472,7 +498,7 @@ export default function BusinessVerificationForm() {
             <div className="flex justify-center items-center">
 
                 <Button variant={"secondary"} hoverStyle={'slidePrimary'} size={'pill'} className='w-1/3 md:w-56' type="submit" disabled={isUpdating || isCompanyProfilePending}>
-                    {isUpdating ? "Saving..." : "Save"}
+                    {isUpdating ? t("common.saving") : t("common.save")}
                 </Button>
             </div>
 

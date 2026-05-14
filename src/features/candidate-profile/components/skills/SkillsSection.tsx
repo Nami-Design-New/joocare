@@ -1,6 +1,7 @@
 "use client";
 import { Edit2, Plus } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import OneSkillSection from "./OneSkillSection";
 import { AddSkillsModal } from "./AddSkillsModal";
 import { EditSkillsModal } from "./EditSkillsModal";
@@ -14,6 +15,7 @@ const SkillsSection = ({
 }: {
   profile: CandidateProfileViewModel | null;
 }) => {
+  const t = useTranslations();
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
 
@@ -23,7 +25,7 @@ const SkillsSection = ({
     <>
       <section className="flex flex-col gap-5 rounded-2xl border bg-white p-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold">Skills</h3>
+          <h3 className="text-xl font-semibold">{t("candidatePage.profile.skills")}</h3>
 
           <div className="flex items-center gap-4">
             <Plus
@@ -44,7 +46,7 @@ const SkillsSection = ({
             skills.map((skill) => <OneSkillSection key={skill.id} label={skill.label} />)
           ) : (
             <p className="text-muted-foreground text-sm">
-              No skills added yet.
+              {t("candidatePage.profile.no-skills")}
             </p>
           )}
         </div>

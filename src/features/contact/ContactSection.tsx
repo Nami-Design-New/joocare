@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import ContactForm from "./ContactForm";
 import SideCard from "./SideCard";
 import type { ContactInitialValues, ContactRole } from "./types";
+import { useTranslations } from "next-intl";
 
 export type ContactSocialLink = {
   href: string;
@@ -22,6 +23,7 @@ export default function ContactSection({
   containerClassName?: string;
   socialLinks?: ContactSocialLink[];
 }) {
+  const t = useTranslations();
   const { data: session, status } = useSession();
   const [guestRole, setGuestRole] = useState<ContactRole>("candidate");
   const resolvedAuthRole =
@@ -36,6 +38,13 @@ export default function ContactSection({
         <SideCard
           socialLinks={socialLinks}
           role={activeRole}
+          title={t("contactPage.contact-us")}
+          subtitle={
+            activeRole === "candidate"
+              ? t("contactPage.get-in-touch-candidate")
+              : t("contactPage.get-in-touch-employer")
+          }
+          imageAlt={t("contactPage.illustration-alt")}
           canSwitchRole={canSwitchRole}
           onSwitchRole={() =>
             setGuestRole((currentRole) =>

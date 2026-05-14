@@ -2,7 +2,7 @@ import { routing } from "@/i18n/routing";
 import MainProviders from "@/shared/providers/MainProviders";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { Noto_Sans, Outfit } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
@@ -78,11 +78,17 @@ export default async function RootLayout({ children, params }: Props) {
 
   // Enable static rendering for next-intl
   setRequestLocale(locale);
+  const messages = await getMessages();
+
 
   return (
-    <html lang={locale} className={`${outfit.variable} ${notoSans.variable}`}>
+    <html
+      lang={locale}
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      className={`${outfit.variable} ${notoSans.variable}`}
+    >
       <body className={`antialiased ${outfit.className}`}>
-        <MainProviders locale={locale}>
+        <MainProviders locale={locale} messages={messages}>
           <main className="min-h-screen">{children}</main>
         </MainProviders>
       </body>

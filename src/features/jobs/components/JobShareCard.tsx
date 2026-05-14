@@ -3,6 +3,7 @@
 import { Button } from "@/shared/components/ui/button";
 import { useJobShare } from "../hooks/useJobShare";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 type JobShareCardProps = {
   title?: string;
@@ -10,14 +11,15 @@ type JobShareCardProps = {
 };
 
 export default function JobShareCard({ title, path }: JobShareCardProps) {
+  const t = useTranslations();
   const { shareUrl, copyLink } = useJobShare({ title, path });
   const encodedShareUrl = encodeURIComponent(shareUrl);
-  const encodedTitle = encodeURIComponent(title || "Check out this job");
+  const encodedTitle = encodeURIComponent(title || t("jobDetailsPage.check-out-this-job"));
 
   return (
     <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-8">
       <h2 className="text-foreground mb-4 text-lg font-semibold">
-        Share this job:
+        {t("jobDetailsPage.share-this-job")}
       </h2>
       <div className="flex gap-2">
         <Button
@@ -28,11 +30,11 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
         >
           <Image
             src="/assets/icons/pin-link-icon.svg"
-            alt="link icon"
+            alt={t("jobDetailsPage.link-icon")}
             width={24}
             height={24}
           />
-          <span className="text-lg">Copy Link</span>
+          <span className="text-lg">{t("jobDetailsPage.copy-link")}</span>
         </Button>
         <div className="flex gap-2">
           <a

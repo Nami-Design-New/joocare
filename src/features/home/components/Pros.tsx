@@ -1,6 +1,7 @@
 import SectionTitle from "./SectionTitle";
 import { LiquidGlass } from "@liquidglass/react";
 import type { HomeWhyModel } from "../types/home.types";
+import { useTranslations } from "next-intl";
 
 export default function Pros({
   title,
@@ -11,10 +12,12 @@ export default function Pros({
   description: string;
   items: HomeWhyModel[];
 }) {
+  const t = useTranslations();
+
   return (
     <>
       <SectionTitle
-        sectionTitle="The Joocare Model"
+        sectionTitle={t('home.joocare-model')}
         textColor="text-white"
         icon="/assets/icons/section-title-white-icon.svg"
       />

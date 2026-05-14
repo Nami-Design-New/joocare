@@ -19,7 +19,7 @@ import {
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
-  PasswordOtpSchema,
+  createPasswordOtpSchema,
   TPasswordOtpSchema,
 } from "../../validation/password-otp-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,7 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
 import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { verifyUpdatedEmail } from "@/features/accout-settings/lib/update-email-verification";
@@ -62,6 +62,7 @@ export function OTPModal({
   successRedirectPath,
   onSuccess,
 }: OTPModalProps) {
+  const t = useTranslations();
   const [countdown, setCountdown] = useState(60);
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -104,7 +105,12 @@ export function OTPModal({
     reset,
     formState: { errors, isSubmitting },
   } = useForm<TPasswordOtpSchema>({
-    resolver: zodResolver(PasswordOtpSchema),
+    resolver: zodResolver(
+      createPasswordOtpSchema({
+        codeRequired: t("authPage.validation.code-required"),
+        codeLength: t("authPage.validation.code-length"),
+      }),
+    ),
   });
 
   const onSubmit: SubmitHandler<TPasswordOtpSchema> = async (data) => {
@@ -181,7 +187,9 @@ export function OTPModal({
       await handleGenericSuccess();
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Invalid verification code.",
+        error instanceof Error
+          ? error.message
+          : t("authPage.toasts.invalid-verification-code"),
       );
     }
   };
@@ -234,16 +242,18 @@ export function OTPModal({
         );
 
         if (!ok) {
-          throw new Error(message || "Failed to resend code.");
+          throw new Error(message || t("authPage.toasts.failed-resend-code"));
         }
 
-        toast.success(message || "Verification code sent successfully.");
+        toast.success(message || t("authPage.toasts.verification-code-sent"));
       }
 
       setCountdown(60);
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Failed to resend code.",
+        error instanceof Error
+          ? error.message
+          : t("authPage.toasts.failed-resend-code"),
       );
     }
   };
@@ -253,12 +263,12 @@ export function OTPModal({
       <DialogContent className="w-full p-6 pt-14 sm:max-w-md">
         <DialogHeader className="flex items-center">
           <DialogTitle className="text-secondary text-[28px] font-semibold">
-            Email Verification
+            {t("authPage.otp-modal.title")}
           </DialogTitle>
           <DialogDescription className="text-center md:px-4">
-            Enter the code sent to{" "}
-            <span className="text-secondary font-bold">{email}</span>, or click
-            the link in the email.
+            {t("authPage.otp-modal.description-before")}{" "}
+            <span className="text-secondary font-bold">{email}</span>
+            {t("authPage.otp-modal.description-after")}
           </DialogDescription>
         </DialogHeader>
 
@@ -303,7 +313,7 @@ export function OTPModal({
               onClick={handleResend}
               className="text-secondary cursor-pointer disabled:opacity-50"
             >
-              Resend the code
+              {t("authPage.otp-modal.resend-code")}
             </button>
             <span>{`00:${countdown.toString().padStart(2, "0")}`}</span>
           </div>
@@ -315,7 +325,7 @@ export function OTPModal({
             className="mt-4 w-full"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Confirming..." : "Confirm"}
+            {isSubmitting ? t("authPage.common.confirming") : t("authPage.common.confirm")}
           </Button>
         </form>
       </DialogContent>

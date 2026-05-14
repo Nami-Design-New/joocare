@@ -7,6 +7,7 @@ import { cn } from "@/shared/lib/utils";
 import { useState } from "react";
 import type { AboutPillar } from "../types/about.types";
 import CorePillarsAccordionItem from "./CorePillarsAccordionItem";
+import { useTranslations } from "next-intl";
 
 export default function CorePillarsContent({
   title,
@@ -16,11 +17,12 @@ export default function CorePillarsContent({
   items: AboutPillar[];
 }) {
   const [openIndex, setOpenIndex] = useState(0);
+  const t = useTranslations();
 
   return (
     <div className="px-1 sm:px-0">
       <div className="mb-4">
-        <SectionTitle sectionTitle="Why choose us?" textColor="text-dark" />
+        <SectionTitle sectionTitle={t("aboutPage.why-choose-us")} textColor="text-dark" />
       </div>
 
       <h2 className="text-secondary mb-6 text-3xl leading-tight font-bold sm:mb-8 sm:text-4xl lg:text-5xl">
@@ -39,7 +41,6 @@ export default function CorePillarsContent({
       </div>
 
       <Link
-
         href={"/auth/candidate/login"}
         className={cn(buttonVariants({
           variant: "default"
@@ -47,7 +48,7 @@ export default function CorePillarsContent({
           hoverStyle: "slideSecondary"
         }), "mt-8 w-full justify-center gap-2 sm:w-fit")}
       >
-        Get Started For Free
+        {t("aboutPage.get-started-for-free")}
       </Link>
     </div>
   );

@@ -1,12 +1,14 @@
 import Image from "next/image";
 import type { HireSectionProps } from "../types";
 import { employerHireFallbackStepImages } from "../utils";
+import { getTranslations } from "next-intl/server";
 
-export default function HireSection({
+export default async function HireSection({
   title,
   description,
   items,
 }: HireSectionProps) {
+  const t = await getTranslations();
   const steps = items.slice(0, 3);
 
   return (
@@ -45,7 +47,7 @@ export default function HireSection({
               <div className="mt-6 flex-1">
                 <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[#F6FFF6] px-3 py-1 text-sm text-[#0B6B0F] shadow-[-4px_4px_12px_rgba(0,107,77,.3)]">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#0F7F10]" />
-                  Step {index + 1}
+                  {t("forEmployersPage.step", { number: index + 1 })}
                 </span>
 
                 <h3 className="mt-4 text-lg">{step.title}</h3>

@@ -8,7 +8,7 @@ import { Link } from "@/i18n/navigation";
 import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
 import { listenForMessages } from "@/shared/util/firebase-notifications";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -17,12 +17,16 @@ import { LanguageToggle } from "../LanguageToggle";
 import { Button, buttonVariants } from "../ui/button";
 import { DrawerScrollableContent } from "./DrawerScrollableContent";
 import UserDropDown from "./UserDropDown";
+import { useLocale, useTranslations } from "next-intl";
 
 function HeaderActionsButtons({
   companyHeader,
 }: {
   companyHeader: boolean;
 }) {
+  const t = useTranslations();
+  const locale = useLocale()
+
   const router = useRouter();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -97,7 +101,7 @@ function HeaderActionsButtons({
               size="pill"
               className="hidden lg:flex"
             >
-              Login
+              {t('header.login')}
             </Button>
 
             <Button
@@ -107,7 +111,7 @@ function HeaderActionsButtons({
               size="pill"
               className="hidden lg:flex"
             >
-              Join Now
+              {t('header.join-now')}
             </Button>
           </>
         )}
@@ -179,7 +183,8 @@ function HeaderActionsButtons({
               },
             )}`}
           >
-            For Employer <ChevronRight size={24} />
+            {t('header.for-employer')}
+            {locale === 'ar' ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
           </Link>
         )}
       </div>

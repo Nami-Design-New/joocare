@@ -12,6 +12,7 @@ import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { AccordionSection, FilterState } from "../../types/index.types";
 import JobFilterSidebar from "./JobsSideBarFilter";
+import { useTranslations } from "next-intl";
 
 type MobileFilterDrawerProps = {
   actionPath: string;
@@ -24,6 +25,7 @@ type MobileFilterDrawerProps = {
 
 export default function MobileFilterDrawer(props: MobileFilterDrawerProps) {
   const [open, setOpen] = useState(false);
+  const t = useTranslations();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -34,7 +36,7 @@ export default function MobileFilterDrawer(props: MobileFilterDrawerProps) {
           className="flex items-center gap-2 rounded-full border-none bg-white lg:hidden"
         >
           <SlidersHorizontal className="h-4 w-4" />
-          <span>Filters</span>
+          <span>{t("jobsPage.filters.title")}</span>
         </Button>
       </SheetTrigger>
 
@@ -44,7 +46,7 @@ export default function MobileFilterDrawer(props: MobileFilterDrawerProps) {
       >
         <SheetHeader className="border-border border-b px-4 py-3">
           <SheetTitle className="text-left text-base font-semibold">
-            Filters
+            {t("jobsPage.filters.title")}
           </SheetTitle>
         </SheetHeader>
 

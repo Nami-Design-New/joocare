@@ -5,13 +5,15 @@ import { EditSocialMediaModal } from "./EditSocialMediaModal"
 import SocialMediaCard from "./SocialMediaCard"
 import { TCompanyProfileViewModel } from "../types"
 import DeleteModal from "@/shared/components/modals/DeleteModal"
+import { useTranslations } from "next-intl"
 
 const SocialMediaSection = ({ companyProfileData, isPending }: { companyProfileData: TCompanyProfileViewModel, isPending: boolean }) => {
     const [open, setOpen] = useState(false)
+    const t = useTranslations();
     return (<>
         <div className="rounded-2xl bg-white flex flex-col gap-4 p-4 border">
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold ">Social Media</h2>
+                <h2 className="text-xl font-semibold ">{t("companyPage.profile.social.title")}</h2>
                 {companyProfileData?.status !== "Draft" && <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />}
             </div>
             {companyProfileData?.website !== null &&

@@ -14,8 +14,10 @@ import { YearPicker } from "@/shared/components/YearPicker";
 import { useState } from "react";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
+import { useTranslations } from "next-intl";
 
 export default function StepThree() {
+  const t = useTranslations();
   const { data: session } = useSession();
   const token = session?.accessToken || "";
   const { data: profileData } = useGetCompanyProfile({ token });
@@ -68,9 +70,10 @@ export default function StepThree() {
       {/* phone number */}
       <>
         <label htmlFor={"organizationPhoneCode"} className="mx-1 font-semibold mb-2">
-          Organization official phone number
+          {t("completeAccount.stepThree.organization-official-phone")}
           <span className="text-muted-foreground text-sm font-normal mx-2">
-            option</span>
+            {t("companyPage.common.optional")}
+          </span>
         </label>
         <Controller
           name="organizationPhoneNumber"
@@ -81,7 +84,7 @@ export default function StepThree() {
               defaultCountry={organizationPhoneCountry}
               id="organizationPhoneNumber"
               className="w-full"
-              placeholder="Enter phone number"
+              placeholder={t("authPage.placeholders.phone-number")}
               onChange={(value) => field.onChange(value)}
               error={errors.organizationPhoneNumber?.message ? true : false}
             />
@@ -97,7 +100,7 @@ export default function StepThree() {
       {/* Current Location */}
       <div>
         <label htmlFor="organizationCountry" className="mx-1 mb-2 block font-semibold">
-          Current Location
+          {t("companyPage.accountSettings.basicInfo.fields.current-location.label")}
         </label>
         <div className="flex flex-col md:flex-row items-center gap-2">
           <Controller
@@ -107,7 +110,7 @@ export default function StepThree() {
               <SelectInputField
                 withSearchInput={true}
                 id="organizationCountry"
-                placeholder="country"
+                placeholder={t("companyPage.common.country")}
                 className="bg-white hover:bg-transparent"
                 {...field}
                 onChange={(val) => {
@@ -140,7 +143,7 @@ export default function StepThree() {
               <SelectInputField
                 withSearchInput={true}
                 id="organizationCity"
-                placeholder="city"
+                placeholder={t("companyPage.common.city")}
                 className="bg-white hover:bg-transparent"
                 {...field}
                 error={
@@ -170,7 +173,7 @@ export default function StepThree() {
         render={({ field }) => (
           <YearPicker
             id="dateOfEstablishment"
-            label="Date of Establishment"
+            label={t("companyPage.accountSettings.basicInfo.fields.date-of-establishment.label")}
             placeholder="ex: 2021"
             value={field.value}
             onChange={field.onChange}
@@ -183,8 +186,8 @@ export default function StepThree() {
 
       <TextareaField
         id="aboutOrganization"
-        label="About the Organization"
-        placeholder="ex: About the Organization"
+        label={t("completeAccount.stepThree.about-organization.label")}
+        placeholder={t("completeAccount.stepThree.about-organization.placeholder")}
         className="bg-muted rounded-[30px] min-h-46"
         {...register("aboutOrganization")}
         error={errors.aboutOrganization?.message?.toString()}
@@ -192,14 +195,14 @@ export default function StepThree() {
 
 
       <div className="bg-body-bg p-4 rounded-2xl flex flex-col gap-5">
-        <h3 className="text-lg font-semibold">Online profile</h3>
+        <h3 className="text-lg font-semibold">{t("completeAccount.stepThree.online-profile")}</h3>
 
         <InputField
           id="website"
           type="text"
-          label="Website"
-          placeholder="ex: www.joocare.com"
-          icon={<Image src='/assets/icons/social-icons/globe.svg' alt="website icon" width={20} height={20} />
+          label={t("companyPage.profile.social.fields.website.label")}
+          placeholder={t("companyPage.profile.social.fields.website.placeholder")}
+          icon={<Image src='/assets/icons/social-icons/globe.svg' alt={t("companyPage.profile.social.fields.website.icon-alt")} width={20} height={20} />
           }
           {...register("website")}
           error={errors.website?.message?.toString()}
@@ -207,9 +210,9 @@ export default function StepThree() {
         <InputField
           id="linkedIn"
           type="text"
-          label="LinkedIn"
-          placeholder="ex: linkedin.com/in/username"
-          icon={<Image src='/assets/icons/social-icons/linkedin.svg' alt="linkedin icon" width={20} height={20} />
+          label={t("completeAccount.stepThree.social.linkedin")}
+          placeholder={t("companyPage.profile.social.fields.linkedin.placeholder")}
+          icon={<Image src='/assets/icons/social-icons/linkedin.svg' alt={t("companyPage.profile.social.fields.linkedin.icon-alt")} width={20} height={20} />
           }
           {...register("linkedIn")}
           error={errors.linkedIn?.message?.toString()}
@@ -217,9 +220,9 @@ export default function StepThree() {
         <InputField
           id="facebook"
           type="text"
-          label="Facebook"
-          placeholder="ex: facebook.com/username"
-          icon={<Image src='/assets/icons/social-icons/facebook.svg' alt="facebook icon" width={20} height={20} />
+          label={t("completeAccount.stepThree.social.facebook")}
+          placeholder={t("companyPage.profile.social.fields.facebook.placeholder")}
+          icon={<Image src='/assets/icons/social-icons/facebook.svg' alt={t("companyPage.profile.social.fields.facebook.icon-alt")} width={20} height={20} />
           }
           {...register("facebook")}
           error={errors.facebook?.message?.toString()}
@@ -227,9 +230,9 @@ export default function StepThree() {
         <InputField
           id="XTwitter"
           type="text"
-          label="X/Twitter"
-          placeholder="ex: x.com/username"
-          icon={<Image src='/assets/icons/social-icons/twitter.svg' alt="twitter icon" width={20} height={20} />
+          label={t("completeAccount.stepThree.social.twitter")}
+          placeholder={t("companyPage.profile.social.fields.twitter.placeholder")}
+          icon={<Image src='/assets/icons/social-icons/twitter.svg' alt={t("companyPage.profile.social.fields.twitter.icon-alt")} width={20} height={20} />
           }
           {...register("XTwitter")}
           error={errors.XTwitter?.message?.toString()}
@@ -237,9 +240,9 @@ export default function StepThree() {
         <InputField
           id="instagram"
           type="text"
-          label="Instagram"
-          placeholder="ex: instagram.com/username"
-          icon={<Image src='/assets/icons/social-icons/instagram.svg' alt="instagram icon" width={20} height={20} />
+          label={t("completeAccount.stepThree.social.instagram")}
+          placeholder={t("companyPage.profile.social.fields.instagram.placeholder")}
+          icon={<Image src='/assets/icons/social-icons/instagram.svg' alt={t("companyPage.profile.social.fields.instagram.icon-alt")} width={20} height={20} />
           }
           {...register("instagram")}
           error={errors.instagram?.message?.toString()}
@@ -247,9 +250,9 @@ export default function StepThree() {
         <InputField
           id="snapchat"
           type="text"
-          label="Snapchat"
-          placeholder="ex: snapchat.com/username"
-          icon={<Image src='/assets/icons/social-icons/snap.svg' alt="snap icon" width={20} height={20} />
+          label={t("completeAccount.stepThree.social.snapchat")}
+          placeholder={t("companyPage.profile.social.fields.snapchat.placeholder")}
+          icon={<Image src='/assets/icons/social-icons/snap.svg' alt={t("companyPage.profile.social.fields.snapchat.icon-alt")} width={20} height={20} />
           }
           {...register("snapchat")}
           error={errors.snapchat?.message?.toString()}

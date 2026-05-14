@@ -5,6 +5,7 @@ import { settingService } from "@/shared/services/settings-services";
 import Image from "next/image";
 import SectionTitle from "./SectionTitle";
 import StatCard from "./StatCard";
+import { getTranslations } from "next-intl/server";
 
 export const ImpactSection = async ({
   title,
@@ -14,6 +15,7 @@ export const ImpactSection = async ({
   description: string;
 }) => {
   const settings = await settingService()
+  const t = await getTranslations();
 
   return (
     <section className="bg-background py-10 md:py-20">
@@ -21,7 +23,7 @@ export const ImpactSection = async ({
 
         <div className="layout-content grid gap-12 lg:grid-cols-2">
           <div className="flex flex-col justify-center">
-            <SectionTitle sectionTitle="Proven Hiring Impact" />
+            <SectionTitle sectionTitle={t('home.proven-hiring-impact')} />
             <h2 className="text-foreground mt-4 mb-8">{title}</h2>
             <p className="text-muted-foreground mb-8 max-w-132 text-xl">{description}</p>
             <Link
@@ -38,18 +40,18 @@ export const ImpactSection = async ({
                 height={20}
                 alt=""
               />
-              Let&apos;s get started
+              {t('home.lets-get-started')}
             </Link>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <StatCard
               value={settings?.verified_healthcare_professionals}
-              label="Verified Healthcare Professionals"
+              label={t('home.verified-healthcare-professionals')}
             />
-            <StatCard value={settings?.active_job_opportunities} label="Active Job opportunities" />
-            <StatCard value={settings?.healthcare_specializations_covered} label="Healthcare Specializations Covered" />
-            <StatCard value={settings?.hiring_success_rate} label="Hiring Success Rate" percentage="%" plus={false} />
+            <StatCard value={settings?.active_job_opportunities} label={t('home.active-job-opportunities')} />
+            <StatCard value={settings?.healthcare_specializations_covered} label={t('home.healthcare-specializations-covered')} />
+            <StatCard value={settings?.hiring_success_rate} label={t('home.hiring-success-rate')} percentage="%" plus={false} />
           </div>
         </div>
       </div>

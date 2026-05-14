@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
+import { useTranslations } from "next-intl";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -12,6 +13,7 @@ interface PdfViewerProps {
 }
 
 export default function PdfViewer({ url }: PdfViewerProps) {
+  const t = useTranslations();
   const [numPages, setNumPages] = useState<number>(0);
   const fileUrl = useMemo(() => {
     if (url.startsWith("blob:") || url.startsWith("data:") || url.startsWith("/api/")) {
@@ -30,8 +32,8 @@ export default function PdfViewer({ url }: PdfViewerProps) {
       <Document
         file={fileUrl}
         onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-        loading={<p>Loading PDF...</p>}
-        error={<p>Failed to load PDF.</p>}
+        loading={<p>{t("common.loading-pdf")}</p>}
+        error={<p>{t("common.failed-load-pdf")}</p>}
       >
         {Array.from({ length: numPages }, (_, i) => (
           <Page key={i + 1} pageNumber={i + 1} className="mb-4" />

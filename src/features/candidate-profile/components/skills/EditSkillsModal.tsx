@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -28,6 +28,7 @@ export function EditSkillsModal({
   onSave,
 }: EditSkillsModalProps) {
   const locale = useLocale();
+  const t = useTranslations();
   const [current, setCurrent] = useState<CandidateSkillViewModel[]>(skills);
   const [profileSkills, setProfileSkills] =
     useState<CandidateSkillViewModel[]>(skills);
@@ -71,7 +72,7 @@ export function EditSkillsModal({
       onOpenChange(false);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to update skills.";
+        error instanceof Error ? error.message : t("candidatePage.toasts.skills-update-failed");
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -82,11 +83,11 @@ export function EditSkillsModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-150 gap-4 rounded-2xl">
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold">Edit Skills</DialogTitle>
+          <DialogTitle className="text-lg font-bold">{t("candidatePage.profile.edit-skills")}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-1.5">
-          <label className="font-semibold">Skill</label>
+          <label className="font-semibold">{t("candidatePage.profile.skill-label")}</label>
           <div className="flex min-h-[60px] flex-wrap gap-2 rounded-xl bg-[#09760A08] p-3">
             {profileSkills.map((skill) => {
               const isSelected = current.some((item) => item.id === skill.id);
@@ -108,7 +109,7 @@ export function EditSkillsModal({
 
             {profileSkills.length === 0 ? (
               <p className="text-muted-foreground text-sm">
-                No skills available to edit.
+                {t("candidatePage.profile.no-skills-to-edit")}
               </p>
             ) : null}
           </div>
@@ -120,7 +121,7 @@ export function EditSkillsModal({
             className="rounded-full px-10"
             disabled={isSaving || profileSkills.length === 0}
           >
-            {isSaving ? "Saving..." : "Save"}
+            {isSaving ? t("candidatePage.common.saving") : t("common.save")}
           </Button>
         </div>
       </DialogContent>

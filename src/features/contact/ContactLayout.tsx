@@ -5,6 +5,7 @@ import type { ContactInitialValues, ContactRole } from "./types";
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 import { settingService } from "@/shared/services/settings-services";
+import { getTranslations } from "next-intl/server";
 
 export default async function ContactLayout({
   authRole,
@@ -13,6 +14,7 @@ export default async function ContactLayout({
   authRole?: ContactRole;
   initialValues?: ContactInitialValues;
 }) {
+  const t = await getTranslations();
   const settings = await Promise.all([
     getServerSession(authOptions),
     settingService().catch(() => null),
@@ -28,8 +30,11 @@ export default async function ContactLayout({
   return (
     <div className="bg-background min-h-screen pb-12">
       <Breadcrumb
-        title="Contact us"
-        items={[{ label: "Home", href: "/" }, { label: "Contact us" }]}
+        title={t("footer.contact-us")}
+        items={[
+          { label: t("header.home"), href: "/" },
+          { label: t("footer.contact-us") },
+        ]}
       />
       <section className="layout-shell">
         <section className="layout-content">

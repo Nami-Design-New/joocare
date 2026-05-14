@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface ProfileImageProps {
   value?: File[] | string | null;
@@ -20,6 +21,7 @@ const ProfileImage = ({
   error,
   isUploading = false,
 }: ProfileImageProps) => {
+  const t = useTranslations();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const preview = useMemo(() => {
@@ -54,7 +56,7 @@ const ProfileImage = ({
         >
           <Image
             src={preview ? '' + preview : "/assets/profile_image.svg"}
-            alt="Profile"
+            alt={t("candidateSettingsPage.profile-image")}
             fill
             className="rounded-full object-cover"
           />
@@ -94,7 +96,7 @@ const ProfileImage = ({
               }}
               disabled={isUploading}
               className="absolute z-20 right-3 bottom-0 flex h-7 w-7 items-center justify-center rounded-full bg-red-500 transition"
-              aria-label="Remove profile image"
+              aria-label={t("candidateSettingsPage.remove-profile-image")}
             >
               <Trash2 width={16} className="text-white" />
             </button>
@@ -110,7 +112,7 @@ const ProfileImage = ({
               }}
               disabled={isUploading}
               className="bg-primary absolute right-3 bottom-0 flex h-7 w-7 items-center justify-center rounded-full transition"
-              aria-label="Upload profile image"
+              aria-label={t("candidateSettingsPage.upload-profile-image")}
             >
               <Plus width={16} className="text-white" />
             </button>

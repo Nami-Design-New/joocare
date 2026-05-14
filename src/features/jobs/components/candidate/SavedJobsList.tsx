@@ -6,6 +6,7 @@ import CandidateJobCard from "./CandidateJobCard";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import { buildSavedJobsPagePath } from "@/features/jobs/utils";
 import EmptyDataState from "@/shared/components/EmptyDataState";
+import { useTranslations } from "next-intl";
 
 type SavedJobsListProps = {
   jobs: JobListItem[];
@@ -22,6 +23,7 @@ export default function SavedJobsList({
   pageSize,
   locale,
 }: SavedJobsListProps) {
+  const t = useTranslations()
   const [removedJobIds, setRemovedJobIds] = useState<number[]>([]);
   const visibleJobs = jobs.filter((job) => !removedJobIds.includes(job.id));
   const visibleTotal = Math.max(0, totalItems - removedJobIds.length);
@@ -48,20 +50,20 @@ export default function SavedJobsList({
           ))
         ) : (
           <EmptyDataState
-            title="No Data"
-            description="You have not saved any jobs yet."
+            title={t('jobsPage.empty-title')}
+            description={t('jobsPage.no-job-description')}
           />
         )}
       </section>
       {currentPage > 1 || visibleTotal > pageSize ? (
         <section className="mt-4 w-full">
-        <CustomPagination
-          currentPage={currentPage}
-          totalItems={visibleTotal}
-          pageSize={pageSize}
-          onPageChange={() => undefined}
-          getHref={buildPageHref}
-        />
+          <CustomPagination
+            currentPage={currentPage}
+            totalItems={visibleTotal}
+            pageSize={pageSize}
+            onPageChange={() => undefined}
+            getHref={buildPageHref}
+          />
         </section>
       ) : null}
     </section>

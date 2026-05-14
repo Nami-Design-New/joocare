@@ -16,6 +16,7 @@ import { useNotificationsInfinite } from "@/features/notifications/hooks/useGetA
 import { useMarkAllAsRead } from "@/features/notifications/hooks/useMarkAllAsRead";
 import { useMarkAsRead } from "@/features/notifications/hooks/useMarkAsRead";
 import { Notification } from "@/features/notifications/notifications.types";
+import { useTranslations } from "next-intl";
 
 export function DrawerScrollableContent({
   title,
@@ -26,6 +27,7 @@ export function DrawerScrollableContent({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const t = useTranslations();
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.accessToken || "";
@@ -138,7 +140,7 @@ export function DrawerScrollableContent({
 
           {loading && (
             <p className="text-sm text-gray-500">
-              Loading...
+              {t("header.loading")}
             </p>
           )}
 
@@ -146,13 +148,13 @@ export function DrawerScrollableContent({
 
           {!hasMore && data.length > 0 && (
             <p className="text-sm text-gray-400 text-center">
-              No more notifications
+              {t("header.no-more-notifications")}
             </p>
           )}
 
           {!loading && data.length === 0 && (
             <p className="text-sm text-gray-400 text-center py-6">
-              No notifications yet
+              {t("header.no-notifications-yet")}
             </p>
           )}
 

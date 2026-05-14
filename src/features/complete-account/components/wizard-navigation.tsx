@@ -1,4 +1,5 @@
 import { Button } from "@/shared/components/ui/button";
+import { useTranslations } from "next-intl";
 
 interface Props {
   isFirstStep: boolean;
@@ -15,6 +16,7 @@ export default function WizardNavigation({
   prev,
   isPending
 }: Props) {
+  const t = useTranslations();
 
   return (
     <div className="flex justify-center items-center mt-5 w-full gap-2">
@@ -27,7 +29,7 @@ export default function WizardNavigation({
           className="w-1/3 lg:w-56"
           disabled={isPending}
         >
-          Prev
+          {t("completeAccount.actions.prev")}
         </Button>
       )}
 
@@ -40,7 +42,7 @@ export default function WizardNavigation({
           className="w-1/3 lg:w-56"
           disabled={isPending}
         >
-          {isPending ? "Loading..." : "Next"}
+          {isPending ? t("common.loading") : t("completeAccount.actions.next")}
         </Button>
       )}
 
@@ -52,7 +54,7 @@ export default function WizardNavigation({
           className="w-1/3 lg:w-56"
           disabled={isPending}
         >
-          {isPending ? "Loading..." : "Submit"}
+          {isPending ? t("common.loading") : t("completeAccount.actions.submit")}
         </Button>
       )}
     </div>

@@ -1,11 +1,11 @@
 export const navLinks = [
-  { href: "/company/account-settings/basic-info", label: "Basic Info" },
+  { href: "/company/account-settings/basic-info", label: "companyPage.accountSettings.nav.basic-info" },
   {
     href: "/company/account-settings/business-verification",
-    label: "Business Verification",
+    label: "companyPage.accountSettings.nav.business-verification",
   },
   {
     href: "/company/account-settings/change-password",
-    label: "Change Password",
+    label: "companyPage.accountSettings.nav.change-password",
   },
 ];

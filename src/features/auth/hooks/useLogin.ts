@@ -2,7 +2,7 @@
 
 import { useRouter } from "@/i18n/navigation";
 import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { getSession, signIn } from "next-auth/react";
 import { toast } from "sonner";
@@ -22,6 +22,7 @@ const defaultRedirectByRole: Record<LoginRole, string> = {
 export const useLogin = (role: LoginRole) => {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations();
   const searchParams = useSearchParams();
 
   const login = async (email: string, password: string) => {
@@ -37,14 +38,14 @@ export const useLogin = (role: LoginRole) => {
     });
 
     if (!res?.ok) {
-      const message = res?.error || "Login failed";
+      const message = res?.error || t("authPage.toasts.login-failed");
       toast.error(message);
       throw new Error(message);
     }
 
     const session = await getSession();
     void requestNotificationPermission();
-    toast.success(session?.authMessage || "Logged in successfully.");
+    toast.success(session?.authMessage || t("authPage.toasts.logged-in-successfully"));
     router.push(callbackUrl);
     router.refresh();
     return res;

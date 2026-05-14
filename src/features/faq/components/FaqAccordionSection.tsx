@@ -18,7 +18,7 @@ export default function FaqAccordionSection({
     <div className="container mx-auto mt-8 grid grid-cols-12 gap-6 px-3 py-20 lg:px-20">
       <div className="col-span-12 md:col-span-2">
         <div className="flex flex-col items-center gap-4">
-          <Image src="/assets/faq.svg" alt="FAQ" width={110} height={110} />
+          <Image src="/assets/faq.svg" alt={title} width={110} height={110} />
           <h1 className="text-[40px] font-bold">{title}</h1>
         </div>
       </div>

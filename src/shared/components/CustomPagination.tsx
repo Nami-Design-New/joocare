@@ -8,6 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/shared/components/ui/pagination";
+import { useLocale, useTranslations } from "next-intl";
 
 type CustomPaginationProps = {
   currentPage: number;
@@ -46,6 +47,11 @@ export function CustomPagination({
   onPageChange,
   getHref,
 }: CustomPaginationProps) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const isRtl = locale === "ar";
+  const PreviousComponent = isRtl ? PaginationNext : PaginationPrevious;
+  const NextComponent = isRtl ? PaginationPrevious : PaginationNext;
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, totalItems);
@@ -62,11 +68,11 @@ export function CustomPagination({
     <div className="flex w-full flex-wrap items-center justify-center gap-2 md:gap-8">
       {/* Status */}
       <div className="text-muted-foreground order-2 text-sm font-medium md:order-1">
-        Show{" "}
+        {t("faqPage.pagination-show")}{" "}
         <span className="font-semibold">
           {start} - {end}
         </span>{" "}
-        from <span className="font-semibold">{totalItems}</span>
+        {t("faqPage.pagination-from")} <span className="font-semibold">{totalItems}</span>
       </div>
 
       {/* Pagination */}
@@ -74,12 +80,13 @@ export function CustomPagination({
         <PaginationContent className="gap-1">
           {/* Previous */}
           <PaginationItem>
-            <PaginationPrevious
+            <PreviousComponent
               href={
                 !isPreviousDisabled && getHref
                   ? getHref(Math.max(1, currentPage - 1))
                   : undefined
               }
+              aria-label="Go to previous page"
               aria-disabled={isPreviousDisabled}
               tabIndex={isPreviousDisabled ? -1 : undefined}
               onClick={(event) => {
@@ -89,11 +96,10 @@ export function CustomPagination({
                 }
                 handleChange(currentPage - 1);
               }}
-              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${
-                isPreviousDisabled
-                  ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
-                  : "cursor-pointer bg-gray-100 hover:bg-gray-200"
-              }`}
+              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${isPreviousDisabled
+                ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
+                : "cursor-pointer bg-gray-100 hover:bg-gray-200"
+                }`}
             />
           </PaginationItem>
 
@@ -125,12 +131,13 @@ export function CustomPagination({
 
           {/* Next */}
           <PaginationItem>
-            <PaginationNext
+            <NextComponent
               href={
                 !isNextDisabled && getHref
                   ? getHref(Math.min(totalPages, currentPage + 1))
                   : undefined
               }
+              aria-label="Go to next page"
               aria-disabled={isNextDisabled}
               tabIndex={isNextDisabled ? -1 : undefined}
               onClick={(event) => {
@@ -140,11 +147,10 @@ export function CustomPagination({
                 }
                 handleChange(currentPage + 1);
               }}
-              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${
-                isNextDisabled
-                  ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
-                  : "cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
+              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${isNextDisabled
+                ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
+                : "cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
             />
           </PaginationItem>
         </PaginationContent>

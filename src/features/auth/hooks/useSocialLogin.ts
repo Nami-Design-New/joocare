@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 
@@ -25,6 +25,7 @@ const defaultRedirectByRole: Record<LoginRole, string> = {
 
 export const useSocialLogin = (role: LoginRole) => {
   const locale = useLocale();
+  const t = useTranslations();
 
   const loginWithProvider = async (provider: SocialProvider) => {
     try {
@@ -37,7 +38,7 @@ export const useSocialLogin = (role: LoginRole) => {
         callbackUrl,
       });
     } catch {
-      toast.error("Unable to start social login.");
+      toast.error(t("authPage.toasts.unable-start-social-login"));
     }
   };
 

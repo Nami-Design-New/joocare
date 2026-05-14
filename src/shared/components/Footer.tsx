@@ -4,8 +4,10 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { settingService } from "../services/settings-services";
 import BackToTopButton from "./BackToTopButton";
+import { getTranslations } from "next-intl/server";
 
 const Footer = async () => {
+  const t = await getTranslations();
   const currentYear = new Date().getFullYear();
   const [session, settings] = await Promise.all([
     getServerSession(authOptions),
@@ -17,9 +19,9 @@ const Footer = async () => {
   const footerLogo = settings?.footer_logo || "/assets/new-logo-light-dot.svg";
   const footerText =
     settings?.footer_text ||
-    "An AI-powered healthcare recruitment platform supporting compliant, data-driven hiring across medical and life sciences sectors.";
+    t("footer.description");
   const copyrightText =
-    settings?.copyright || `All rights reserved - JooCare © ${currentYear}`;
+    settings?.copyright || t("footer.copyright", { year: currentYear });
   const socialLinks = [
     { href: settings?.linkedin, srcImg: "/assets/icons/social-icons/linkedin-footer.svg", label: "LinkedIn" },
     { href: settings?.facebook, srcImg: "/assets/icons/social-icons/facebook-footer.svg", label: "Facebook" },
@@ -30,24 +32,24 @@ const Footer = async () => {
 
   const candidateLinks = isEmployer
     ? [
-      { href: "/jobs", label: "Explore Jobs" },
+      { href: "/jobs", label: t("footer.explore-jobs") },
     ]
     : isCandidate
       ? [
-        { href: "/jobs", label: "Explore Jobs" },
-        { href: "/faq", label: "FAQ" },
+        { href: "/jobs", label: t("footer.explore-jobs") },
+        { href: "/faq", label: t("footer.faq") },
       ]
       : [
-        { href: "/jobs", label: "Explore Jobs" },
-        { href: "/auth/candidate/register", label: "Create Profile" },
-        { href: "/faq", label: "FAQ" },
+        { href: "/jobs", label: t("footer.explore-jobs") },
+        { href: "/auth/candidate/register", label: t("footer.create-profile") },
+        { href: "/faq", label: t("footer.faq") },
       ];
 
   const employerLinks = isCandidate
     ? []
     : [
-      { href: "/for-employers", label: "For Employers" },
-      { href: "/for-employers#how-it-works", label: "How It Works" },
+      { href: "/for-employers", label: t("footer.for-employers") },
+      { href: "/for-employers#how-it-works", label: t("footer.how-it-works") },
     ];
 
   return (
@@ -60,7 +62,7 @@ const Footer = async () => {
             <div className="flex items-center gap-2">
               <Image
                 src={footerLogo}
-                alt="Joo Care Logo"
+                alt={t("footer.logo-alt")}
                 width={140}
                 height={60}
               />
@@ -72,7 +74,7 @@ const Footer = async () => {
 
           {/* Column 2: Candidates */}
           <div className="bg-before">
-            <h4>For Candidates</h4>
+            <h4>{t("footer.for-candidates")}</h4>
             <ul className="text-md space-y-4 text-gray-300">
               {candidateLinks.map((item) => (
                 <li key={item.label}>
@@ -87,7 +89,7 @@ const Footer = async () => {
           {/* Column 3: Employers */}
           {employerLinks.length > 0 ? (
             <div className="bg-before">
-              <h4>For Employers</h4>
+              <h4>{t("footer.for-employers")}</h4>
               <ul className="text-md space-y-4 text-gray-300">
                 {employerLinks.map((item) => (
                   <li key={item.label}>
@@ -104,21 +106,21 @@ const Footer = async () => {
 
           {/* Column 4: Company*/}
           <div className="bg-before">
-            <h4>Company & Trust</h4>
+            <h4>{t("footer.company-trust")}</h4>
             <ul className="text-md mb-8 space-y-4 text-gray-300">
               <li>
                 <Link href="/about" className="transition hover:text-white">
-                  About Joocare
+                  {t("footer.about-joocare")}
                 </Link>
               </li>
               <li>
                 <Link href="/privacy-policy" className="transition hover:text-white">
-                  Data Privacy & Security
+                  {t("footer.data-privacy-security")}
                 </Link>
               </li>
               <li>
                 <Link href="/terms-conditions" className="transition hover:text-white">
-                  Terms & Conditions
+                  {t("footer.terms-conditions")}
                 </Link>
               </li>
 
@@ -126,11 +128,11 @@ const Footer = async () => {
           </div>
 
           <div className="bg-before">
-            <h4>Get in Touch</h4>
+            <h4>{t("footer.get-in-touch")}</h4>
             <ul className="text-md mb-8 space-y-4 text-gray-300">
               <li>
                 <Link href="/contact" className="transition hover:text-white">
-                  Contact us
+                  {t("footer.contact-us")}
                 </Link>
               </li>
             </ul>
@@ -157,7 +159,7 @@ const Footer = async () => {
           <div className="relative col-span-1 h-7 w-full lg:w-[calc(100%+1rem)] lg:col-span-4 ">
             <Image
               src="/assets/footer1.svg"
-              alt="Joo Care Logo"
+              alt={t("footer.logo-alt")}
               fill
               className="object-cover w-full lg:left-4.5!"
             />

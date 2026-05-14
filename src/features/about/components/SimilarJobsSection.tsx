@@ -8,8 +8,10 @@ import {
 } from "@/shared/components/ui/carousel";
 import SimilarJobCard from "./SimilarJobCard";
 import { SimilarJob } from "@/features/jobs/types/jobs.types";
+import { getTranslations } from "next-intl/server";
 
-export default function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
+export default async function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
+  const t = await getTranslations();
 
   return (
     <section className="py-10 md:py-20">
@@ -23,8 +25,8 @@ export default function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
           {/* Header */}
           <div className="mb-12 flex items-center justify-between">
             <div className="space-y-4">
-              <SectionTitle sectionTitle="Similar Jobs" />
-              <h2>Handpicked for your profile</h2>
+              <SectionTitle sectionTitle={t("jobDetailsPage.similar-jobs")} />
+              <h2>{t("jobDetailsPage.handpicked-for-your-profile")}</h2>
             </div>
 
             {/* Shadcn carousel controls wired to the same Carousel context */}

@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -22,6 +23,7 @@ export default function CVModal({
   title,
   pdfUrl,
 }: ConfirmDialogProps) {
+  const t = useTranslations();
   // console.log("pdfUrl", pdfUrl);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -37,15 +39,21 @@ export default function CVModal({
                   src="/assets/icons/pdf-icon.svg"
                   width={14}
                   height={14}
-                  alt="pdf icon"
+                  alt={t("companyPage.candidates.pdf-icon-alt")}
                 />
-                Download
+                {t("companyPage.candidates.actions.download")}
               </a>
             </Button>
           ) : null}
         </DialogHeader>
 
-        {pdfUrl ? <PdfViewer url={pdfUrl} /> : <p className="text-muted-foreground">No CV available.</p>}
+        {pdfUrl ? (
+          <PdfViewer url={pdfUrl} />
+        ) : (
+          <p className="text-muted-foreground">
+            {t("companyPage.candidates.cv-modal.no-cv")}
+          </p>
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -4,16 +4,18 @@
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 //components
 import { InputField } from "@/shared/components/InputField";
 import { Button } from "@/shared/components/ui/button";
 import {
-  loginEmployerSchema,
+  createLoginEmployerSchema,
   TLoginEmployerSchema,
 } from "../../validation/employer-login-schema";
 import { useLogin } from "../../hooks/useLogin";
 
 const FormEmployerLogin = () => {
+  const t = useTranslations();
   const { login } = useLogin("employer");
 
   const {
@@ -21,7 +23,14 @@ const FormEmployerLogin = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<TLoginEmployerSchema>({
-    resolver: zodResolver(loginEmployerSchema),
+    resolver: zodResolver(
+      createLoginEmployerSchema({
+        fieldRequired: t("authPage.validation.field-required"),
+        emailInvalid: t("authPage.validation.email-invalid"),
+        passwordMin: t("authPage.validation.password-min"),
+        passwordMax: t("authPage.validation.password-max"),
+      }),
+    ),
   });
   const onSubmit: SubmitHandler<TLoginEmployerSchema> = async (data) => {
     try {
@@ -38,22 +47,22 @@ const FormEmployerLogin = () => {
     >
       <InputField
         id="email"
-        label="Email"
+        label={t("authPage.common.email")}
         type={"email"}
-        placeholder="ex:mail@mail.com"
+        placeholder={t("authPage.placeholders.email-compact")}
         {...register("email")}
         error={errors.email?.message}
       />
       <InputField
         id="password"
         type="password"
-        label="Password"
+        label={t("authPage.common.password")}
         placeholder="******"
         {...register("password")}
         error={errors.password?.message}
       />
       <Link href="/auth/employer/forget-password" className="text-xs hover:text-primary">
-        Forgot password?
+        {t("authPage.common.forgot-password")}
       </Link>
       <div className="flex justify-center">
         <Button
@@ -63,7 +72,7 @@ const FormEmployerLogin = () => {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Logging..." : "Login"}
+          {isSubmitting ? t("authPage.common.logging-in") : t("header.login")}
         </Button>
       </div>
     </form>

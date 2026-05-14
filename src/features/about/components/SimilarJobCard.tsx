@@ -10,14 +10,14 @@ import {
 import {
   Briefcase,
   CircleDollarSign,
-  DollarSign,
   LocationEdit,
-  Sparkles,
   Timer
 } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function SimilarJobCard({ job }: { job: SimilarJob }) {
+  const t = useTranslations();
 
 
   return (
@@ -27,7 +27,7 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
           width={52}
           height={46}
           src={job?.company?.image ?? "/assets/new-logo-dot.svg"}
-          alt="company logo"
+          alt={t("jobDetailsPage.company-logo")}
           className="rounded-2xl w-14 h-12"
         />
         <div className="flex grow flex-col gap-1">
@@ -50,22 +50,22 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
             </li>
             <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <Briefcase size={14} color="var(--muted-foreground)" />
-              {job?.category?.title ?? job?.category_title ?? "Not specified"}{" "}
+              {job?.category?.title ?? job?.category_title ?? t("jobsPage.not-specified")}{" "}
             </li>
             <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <CircleDollarSign size={14} color="var(--muted-foreground)" />
-              {getJobSalary(job)}
+              {getJobSalary(job, t("jobsPage.not-specified"))}
             </li>
           </ul>
           <ul className="items-cente flex gap-2">
             <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
-              {job?.experience?.title ?? job?.experience_title ?? "Not specified"}
+              {job?.experience?.title ?? job?.experience_title ?? t("jobsPage.not-specified")}
             </li>
             <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
               {job?.employment_type?.title}
             </li>
             <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
-              {job?.specialty?.title ?? job?.specialty_title ?? "Not specified"}
+              {job?.specialty?.title ?? job?.specialty_title ?? t("jobsPage.not-specified")}
             </li>
           </ul>
           <div
@@ -73,7 +73,7 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
             dangerouslySetInnerHTML={{
               __html:
                 job?.description ||
-                "<p>No description available.</p>",
+                `<p>${t("jobDetailsPage.no-description-available")}</p>`,
             }}
           />
         </Link>

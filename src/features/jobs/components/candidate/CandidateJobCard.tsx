@@ -13,6 +13,7 @@ import {
   CardHeader,
 } from "@/shared/components/ui/card";
 import {
+  ArrowLeft,
   ArrowRight,
   Briefcase,
   CircleDollarSign,
@@ -21,6 +22,7 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
 import { useJobShare } from "../../hooks/useJobShare";
 import ToggleSavedJobButton from "./ToggleSavedJobButton";
 
@@ -41,20 +43,33 @@ export default function CandidateJobCard({
   onSavedChange,
   companyImage
 }: CandidateJobCardProps) {
+  const t = useTranslations();
+  const locale = useLocale()
   const { data: session } = useSession();
-  const title = job.title || job.job_title?.title || "Healthcare Opportunity";
+  const title = job.title || job.job_title?.title || t("jobsPage.healthcare-opportunity");
   const sharePath = `/jobs/${job.id}`;
-  const company = job.company?.name || "Joocare Employer";
+  const company = job.company?.name || t("jobsPage.joocare-employer");
   const companyLogo = job.company?.image;
   const postedAtLabel = job?.current_status?.updated_at;
-  const location = getJobLocation(job);
-  const category = job?.category?.title || job?.category_title || "Not specified";
-  const employmentType = job?.employment_type?.title || "Not specified";
-  const salary = getJobSalaryWithCurrency(job);
-  const experience = job?.experience?.title || job?.experience_title || "Experience not specified";
-  const specialty = job?.specialty?.title || job?.specialty_title || "Healthcare";
+  const location = getJobLocation(job, t("jobsPage.location-not-specified"));
+  const category = job?.category?.title || job?.category_title || t("jobsPage.not-specified");
+  const employmentType = job?.employment_type?.title || t("jobsPage.not-specified");
+  const salary = getJobSalaryWithCurrency(job, t("jobsPage.not-specified"));
+  const experience = job?.experience?.title || job?.experience_title || t("jobsPage.experience-not-specified");
+  const specialty = job?.specialty?.title || job?.specialty_title || t("jobsPage.healthcare");
+  // const excerpt =
+  //   job.description?.slice(0, 70) || t("jobsPage.card-description-fallback");
+  const plainDescription =
+    typeof window !== "undefined"
+      ? new DOMParser()
+        .parseFromString(job.description || "", "text/html")
+        .body.textContent || ""
+      : "";
+
   const excerpt =
-    job.description?.slice(0, 70) || "Explore the job details to learn more about the role and employer.";
+    plainDescription.slice(0, 70) ||
+    t("jobsPage.card-description-fallback");
+
   const shouldShowAppliedBadge = appliedBadge || job.is_applied;
   const appliedLabel = appliedAtLabel || postedAtLabel;
   const { shareJob } = useJobShare({ title, path: sharePath });
@@ -111,17 +126,17 @@ export default function CandidateJobCard({
             </li>
           </ul>
           {/* <p className="text-muted-foreground grow h-auto text-sm">{excerpt}</p> */}
-          <div
+          {/* <div
             className="prose prose-sm max-w-none mt-3"
             dangerouslySetInnerHTML={{
               __html:
                 excerpt ||
-                "<p>No description available.</p>",
+                `<p>${t("jobsPage.no-description-available")}</p>`,
             }}
-          />
-          {/* <p className="text-sm text-gray-600 line-clamp-3">
-            {shortText || "No description available."}
-          </p> */}
+          /> */}
+          <div className="prose prose-sm max-w-none mt-3">
+            {excerpt || t("jobsPage.no-description-available")}
+          </div>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4  max-lg:px-2">
@@ -141,7 +156,7 @@ export default function CandidateJobCard({
               className="border-border text-muted-foreground h-9 px-4 py-2 text-sm bg-muted"
               onClick={() => void shareJob()}
             >
-              <Share /> Share
+              <Share className="mx-1" /> {t("jobsPage.share")}
             </Button>
           </div>
 
@@ -150,7 +165,7 @@ export default function CandidateJobCard({
               className={`border-border bg-primary/10 flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white cursor-default`}
 
             >
-              <span className="text-primary font-semibold">Applied</span>
+              <span className="text-primary font-semibold">{t("jobsPage.applied")}</span>
               <span className="grow text-end text-xs text-muted-foreground">{appliedLabel}</span>
             </Button>
 
@@ -159,8 +174,12 @@ export default function CandidateJobCard({
               className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white`}
               href={href}
             >
-              View Job
-              <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+              {t("jobsPage.view-job")}
+              {locale === 'ar' ? (
+                <ArrowLeft size={18} strokeWidth={1.5} className="size-5" />
+              ) : (
+                <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+              )}
             </Link>
           }
         </div>
