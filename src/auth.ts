@@ -121,7 +121,7 @@ async function authorizeWithEndpoint({
 
   return {
     id: String(user.id),
-    user,
+    // user,
     accessToken,
     authRole: role,
     authMessage: data?.message ?? "Login successful.",
@@ -372,7 +372,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   session: {
-    strategy: "jwt",
+    strategy: "database",
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: true,
