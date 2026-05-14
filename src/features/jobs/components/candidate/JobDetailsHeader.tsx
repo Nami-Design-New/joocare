@@ -1,18 +1,18 @@
 import { Badge } from "@/shared/components/ui/badge";
-import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import { JobDetails } from "../../types/jobs.types";
 import CandidateJobDetailsCardActions from "./CandidateJobDetailsCardActions";
+import { getTranslations } from "next-intl/server";
 
-export default function JobDetailsHeader({ job }: { job: JobDetails }) {
-  console.log(job);
+export default async function JobDetailsHeader({ job }: { job: JobDetails }) {
+  const t = await getTranslations();
 
   return (
     <section className="flex flex-col lg:items-center justify-between rounded-2xl bg-white p-4 lg:flex-row">
       <div className="flex items-center gap-2 lg:gap-6">
         <Image
           src={job?.company?.image ?? "/assets/new-logo-dot.svg"}
-          alt={`company logo`}
+          alt={t("jobDetailsPage.company-logo")}
           width={96}
           height={86}
           className="rounded-2xl w-24 h-22"
@@ -28,7 +28,7 @@ export default function JobDetailsHeader({ job }: { job: JobDetails }) {
           </h6>
           <div className="flex items-center gap-2 mt-2">
             <div className="text-muted-foreground text-lg font-normal">
-              <span> at {job?.company?.domain?.title} </span>
+              <span>{t("jobDetailsPage.at")} {job?.company?.domain?.title} </span>
             </div>
             <Badge size="md" className="rounded-[3px] bg-[#0BA02C] font-semibold">
               {job?.employment_type?.title}

@@ -11,15 +11,12 @@ import { CustomPagination } from "@/shared/components/CustomPagination";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import useGetCompanyTableJobs from "../hooks/useGetCompanyTableJobs";
+import { useLocale, useTranslations } from "next-intl";
 
-const tabelHeaderTitles = [
-  "Job Title",
-  "Job Views",
-  "Applicants",
-  "Posted Since",
-  " ",
-];
 export default function ActiveJobsTable() {
+  const t = useTranslations();
+  const locale = useLocale();
+  const isRtl = locale === "ar";
   const [page, setPage] = useState(1);
 
   const { data: session } = useSession();
@@ -40,12 +37,23 @@ export default function ActiveJobsTable() {
 
   return (
     <section>
-      <div className="border-border w-full overflow-x-auto rounded-2xl border bg-white">
+      <div
+        className="border-border w-full overflow-x-auto rounded-2xl border bg-white"
+        dir={isRtl ? "rtl" : "ltr"}
+      >
         <Table>
           <TableHeader>
             <TableRow>
-              {tabelHeaderTitles.map((col) => (
-                <TableHead key={col}>{col}</TableHead>
+              {[
+                t("companyPage.dashboard.table.job-title"),
+                t("companyPage.dashboard.table.job-views"),
+                t("companyPage.dashboard.table.applicants"),
+                t("companyPage.dashboard.table.posted-since"),
+                " ",
+              ].map((col) => (
+                <TableHead key={col} className={isRtl ? "text-right" : undefined}>
+                  {col}
+                </TableHead>
               ))}
             </TableRow>
           </TableHeader>

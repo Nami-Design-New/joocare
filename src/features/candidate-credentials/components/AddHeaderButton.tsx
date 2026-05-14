@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { PlusCircle } from "lucide-react";
 import { usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/shared/components/ui/button";
 import { QualificationModal } from "./qualifications/QualificationModal";
@@ -17,29 +18,30 @@ type ModalProps = {
 
 type ModalConfig = {
     key: string;
-    label: string;
+    labelKey: string;
     Component: React.ComponentType<ModalProps>;
 };
 
 const MODAL_CONFIGS: ModalConfig[] = [
     {
         key: "qualifications",
-        label: "Add Qualifications",
+        labelKey: "candidatePage.credentials.add-qualifications",
         Component: QualificationModal,
     },
     {
         key: "certificates",
-        label: "Add Certificates",
+        labelKey: "candidatePage.credentials.add-certificates",
         Component: CertificateModal,
     },
     {
         key: "licenses",
-        label: "Add Licenses",
+        labelKey: "candidatePage.credentials.add-licenses",
         Component: LicenseModal,
     },
 ];
 
 export default function AddHeaderButton() {
+    const t = useTranslations();
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
 
@@ -55,7 +57,7 @@ export default function AddHeaderButton() {
         <>
             {open && ModalComponent && (
                 <ModalComponent
-                    label={activeConfig.label}
+                    label={t(activeConfig.labelKey)}
                     open={open}
                     onOpenChange={setOpen}
                 />
@@ -68,7 +70,7 @@ export default function AddHeaderButton() {
                 onClick={() => setOpen(true)}
             >
                 <PlusCircle size={32} />
-                {activeConfig?.label ?? "Add Item"}
+                {activeConfig ? t(activeConfig.labelKey) : t("candidatePage.credentials.add-item")}
             </Button>
         </>
     );

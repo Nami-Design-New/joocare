@@ -1,121 +1,162 @@
 import { z } from "zod";
 
-const phoneNumberSchema = z
-  .string({
-    message: 'Phone number is required',
-  })
-  .min(1, { message: "Phone number is required" })
-  .regex(/^[\d\s\-\+\(\)]+$/, {
-    message: "Phone number contains invalid characters",
-  })
-  .refine(
-    (value) => {
-      const digitsOnly = value.replace(/\D/g, "");
-      return digitsOnly.length >= 7 && digitsOnly.length <= 15;
-    },
-    { message: "Phone number must be between 7-15 digits" },
-  );
-
 // Reusable transforms
 const optionalString = z
   .string()
   .optional()
   .transform((val) => (val?.trim() === "" ? undefined : val));
 
-export const RegisterCandidateSchema = z
-  .object({
-    fullName: z
-      .string()
-      .min(1, { message: "Full name is required" })
-      .min(2, { message: "Full name must be at least 2 characters" }),
+type CreateRegisterCandidateSchemaOptions = {
+  phoneRequired?: string;
+  phoneInvalid?: string;
+  phoneDigits?: string;
+  fullNameRequired?: string;
+  fullNameMin?: string;
+  emailRequired?: string;
+  emailInvalid?: string;
+  jobTitleRequired?: string;
+  countryRequired?: string;
+  cityRequired?: string;
+  passwordRequired?: string;
+  passwordMin?: string;
+  passwordMax?: string;
+  cvRequired?: string;
+  otherJobTitleRequired?: string;
+  licenseCountryRequired?: string;
+  licenseTitleRequired?: string;
+  licenseTitleMin?: string;
+  licenseTitleMax?: string;
+};
 
-    email: z
-      .string()
-      .min(1, { message: "Email is required" })
-      .email({ message: "Please enter a valid email address" }),
+export const createRegisterCandidateSchema = ({
+  phoneRequired = "Phone number is required",
+  phoneInvalid = "Phone number contains invalid characters",
+  phoneDigits = "Phone number must be between 7-15 digits",
+  fullNameRequired = "Full name is required",
+  fullNameMin = "Full name must be at least 2 characters",
+  emailRequired = "Email is required",
+  emailInvalid = "Please enter a valid email address",
+  jobTitleRequired = "Job title is required",
+  countryRequired = "Country is required",
+  cityRequired = "City is required",
+  passwordRequired = "Password is required",
+  passwordMin = "Password must be at least 6 characters",
+  passwordMax = "Password must be at most 15 characters",
+  cvRequired = "cv is required",
+  otherJobTitleRequired = "Other job title is required",
+  licenseCountryRequired = "License country is required when you have a medical license",
+  licenseTitleRequired = "License title is required",
+  licenseTitleMin = "License title must be at least 2 characters",
+  licenseTitleMax = "License title must be at most 100 characters",
+}: CreateRegisterCandidateSchemaOptions = {}) => {
+  const phoneNumberSchema = z
+    .string({
+      message: phoneRequired,
+    })
+    .min(1, { message: phoneRequired })
+    .regex(/^[\d\s\-\+\(\)]+$/, {
+      message: phoneInvalid,
+    })
+    .refine(
+      (value) => {
+        const digitsOnly = value.replace(/\D/g, "");
+        return digitsOnly.length >= 7 && digitsOnly.length <= 15;
+      },
+      { message: phoneDigits },
+    );
 
-    phoneNumber: phoneNumberSchema,
+  return z
+    .object({
+      fullName: z
+        .string()
+        .min(1, { message: fullNameRequired })
+        .min(2, { message: fullNameMin }),
 
-    jobTitle: z.string({
-      message: 'Job title is required',
-    }).min(1, { message: "Job title is required" }),
-    otherJobTitle: z.string().default(""),
+      email: z
+        .string()
+        .min(1, { message: emailRequired })
+        .email({ message: emailInvalid }),
 
-    country: z.string({
-      message: 'Country is required',
-    }).min(1, { message: "Country is required" }),
+      phoneNumber: phoneNumberSchema,
 
-    city: z.string({
-      message: 'City is required',
-    }).min(1, { message: "City is required" }),
+      jobTitle: z.string({
+        message: jobTitleRequired,
+      }).min(1, { message: jobTitleRequired }),
+      otherJobTitle: z.string().default(""),
 
-    createPassword: z
-      .string({
-        message: 'Password is required',
-      })
-      .min(6, { message: "Password must be at least 6 characters" }).max(15, { message: "Password must be at most 15 characters" }),
+      country: z.string({
+        message: countryRequired,
+      }).min(1, { message: countryRequired }),
 
-    // Sends undefined (omitted) if no files uploaded
-    uploadCV: z
-      .string("cv is required")
-      .min(1, { message: "cv is required" })
-      .transform((val) => (val?.trim() === "" ? undefined : val)),
+      city: z.string({
+        message: cityRequired,
+      }).min(1, { message: cityRequired }),
 
-    confirmRegister: z.boolean().default(false),
+      createPassword: z
+        .string({
+          message: passwordRequired,
+        })
+        .min(6, { message: passwordMin }).max(15, { message: passwordMax }),
 
-    // Sends undefined (omitted) if left empty
-    licenseTitle: z
-      .string()
-      .optional()
-      .transform((val) => (val?.trim() === "" ? undefined : val)),
+      uploadCV: z
+        .string(cvRequired)
+        .min(1, { message: cvRequired })
+        .transform((val) => (val?.trim() === "" ? undefined : val)),
 
-    licenseNumber: optionalString,
+      confirmRegister: z.boolean().default(false),
 
-    specificCountry: optionalString,
+      licenseTitle: z
+        .string()
+        .optional()
+        .transform((val) => (val?.trim() === "" ? undefined : val)),
 
-    // Sends undefined (omitted) if no files uploaded
-    uploadLicense: optionalString,
-  })
-  .superRefine((data, ctx) => {
-    if (data.jobTitle === "__other__" && !data.otherJobTitle.trim()) {
-      ctx.addIssue({
-        path: ["otherJobTitle"],
-        message: "Other job title is required",
-        code: "custom",
-      });
-    }
+      licenseNumber: optionalString,
 
-    if (data.confirmRegister) {
-      // specificCountry
-      if (!data.specificCountry) {
+      specificCountry: optionalString,
+
+      uploadLicense: optionalString,
+    })
+    .superRefine((data, ctx) => {
+      if (data.jobTitle === "__other__" && !data.otherJobTitle.trim()) {
         ctx.addIssue({
-          path: ["specificCountry"],
-          message: "License country is required when you have a medical license",
+          path: ["otherJobTitle"],
+          message: otherJobTitleRequired,
           code: "custom",
         });
       }
 
-      // licenseTitle
-      if (!data.licenseTitle) {
-        ctx.addIssue({
-          path: ["licenseTitle"],
-          message: "License title is required",
-          code: "custom",
-        });
-      } else if (data.licenseTitle.length < 2) {
-        ctx.addIssue({
-          path: ["licenseTitle"],
-          message: "License title must be at least 2 characters",
-          code: "custom",
-        });
-      } else if (data.licenseTitle.length > 100) {
-        ctx.addIssue({
-          path: ["licenseTitle"],
-          message: "License title must be at most 100 characters",
-          code: "custom",
-        });
+      if (data.confirmRegister) {
+        if (!data.specificCountry) {
+          ctx.addIssue({
+            path: ["specificCountry"],
+            message: licenseCountryRequired,
+            code: "custom",
+          });
+        }
+
+        if (!data.licenseTitle) {
+          ctx.addIssue({
+            path: ["licenseTitle"],
+            message: licenseTitleRequired,
+            code: "custom",
+          });
+        } else if (data.licenseTitle.length < 2) {
+          ctx.addIssue({
+            path: ["licenseTitle"],
+            message: licenseTitleMin,
+            code: "custom",
+          });
+        } else if (data.licenseTitle.length > 100) {
+          ctx.addIssue({
+            path: ["licenseTitle"],
+            message: licenseTitleMax,
+            code: "custom",
+          });
+        }
       }
-    }
-  });
+    });
+};
+
+export const RegisterCandidateSchema = createRegisterCandidateSchema();
 
 export type TRegisterCandidateSchema = z.infer<typeof RegisterCandidateSchema>;

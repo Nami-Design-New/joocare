@@ -1,20 +1,25 @@
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";
-import { MoveRight } from "lucide-react";
+import { MoveLeft, MoveRight } from "lucide-react";
 import Image from "next/image";
 import type { BannerSectionProps } from "../types";
+import { getLocale, getTranslations } from "next-intl/server";
 
-export default function BannerSection({
+export default async function BannerSection({
   title,
   description,
   image,
 }: BannerSectionProps) {
+  const t = await getTranslations();
+  const locale = await getLocale();
+
   const bannerImage = image ?? {
     id: "fallback-banner",
     image: "/assets/employers/bannerImg.png",
-    alt: "Medical hiring",
+    alt: t("forEmployersPage.banner-image-alt"),
   };
+  // console.log(locale);
 
   return (
     <section className="relative bg-white ">
@@ -39,10 +44,10 @@ export default function BannerSection({
               , hoverStyle: "slideSecondary"
             }), "mx-auto mt-6 flex w-full items-center justify-center gap-2 sm:mt-8 sm:w-fit")}
           >
-
-            Get Started Now
-            <MoveRight className="mt-0.75" size={16} />
-
+            {t("forEmployersPage.get-started-now")}
+            {locale === "ar" ? <MoveLeft className="mt-0.75" size={16} /> :
+              <MoveRight className="mt-0.75" size={16} />
+            }
           </Link>
         </div>
 
@@ -52,7 +57,7 @@ export default function BannerSection({
             alt={bannerImage.alt}
             width={500}
             height={600}
-            className="relative xl:absolute object-contain bottom-0 xl:-right-12 h-75 sm:h-98"
+            className={`relative xl:absolute object-contain bottom-0  h-75 sm:h-98 ${locale === "ar" ? "xl:-left-12" : "xl:-right-12"}`}
           />
         </div>
       </div>

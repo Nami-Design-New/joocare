@@ -13,7 +13,8 @@ import useGetInquiryTypes from "@/shared/hooks/useGetInquiryTypes";
 import SectionTitle from "../home/components/SectionTitle";
 import { useSubmitContact } from "./hooks/useSubmitContact";
 import type { ContactFormValues, ContactInitialValues, ContactRole } from "./types";
-import { contactSchema } from "./validation/contact-schema";
+import { createContactSchema } from "./validation/contact-schema";
+import { useTranslations } from "next-intl";
 
 const OTHER_INQUIRY_TYPE_VALUE = "__other__";
 
@@ -55,6 +56,7 @@ export default function ContactForm({
   role: ContactRole;
   initialValues?: ContactInitialValues;
 }) {
+  const t = useTranslations();
   const [inquirySearch, setInquirySearch] = useState("");
   const {
     inquiryTypes,
@@ -78,7 +80,18 @@ export default function ContactForm({
     setValue,
     formState: { errors },
   } = useForm<ContactFormValues>({
-    resolver: zodResolver(contactSchema),
+    resolver: zodResolver(
+      createContactSchema({
+        nameRequired: t("contactPage.validation.name-required"),
+        emailInvalid: t("contactPage.validation.email-invalid"),
+        inquiryTypeRequired: t("contactPage.validation.inquiry-type-required"),
+        messageMin: t("contactPage.validation.message-min"),
+        otherInquiryTypeRequired: t("contactPage.validation.other-inquiry-type-required"),
+        phoneRequired: t("contactPage.validation.phone-required"),
+        currentLocationRequired: t("contactPage.validation.current-location-required"),
+        cityRequired: t("contactPage.validation.city-required"),
+      }),
+    ),
     defaultValues,
   });
 
@@ -117,20 +130,28 @@ export default function ContactForm({
   });
 
   const inquiryOptions = inquiryTypes.map((type) => ({
-    label: type.title ?? type.name ?? "Inquiry type",
+    label: type.title ?? type.name ?? t("contactPage.inquiry-type"),
     value: String(type.id ?? ""),
   }));
   const inquiryOptionsWithOther = [
-    { label: "Other", value: OTHER_INQUIRY_TYPE_VALUE },
+    { label: t("contactPage.other"), value: OTHER_INQUIRY_TYPE_VALUE },
     ...inquiryOptions,
   ];
 
   return (
     <div className="h-full">
-      <SectionTitle sectionTitle={role === "candidate" ? "Share Your Thoughts" : "REQUEST FOR DEMO"} />
+      <SectionTitle
+        sectionTitle={
+          role === "candidate"
+            ? t("contactPage.share-your-thoughts")
+            : t("contactPage.request-for-demo")
+        }
+      />
 
       <h2 className="text-secondary my-4 text-2xl font-bold">
-        {role === "candidate" ? "Tell us how we can help" : "Send Your Message"}
+        {role === "candidate"
+          ? t("contactPage.tell-us-how-we-can-help")
+          : t("contactPage.send-your-message")}
 
       </h2>
 
@@ -139,18 +160,22 @@ export default function ContactForm({
         onSubmit={handleSubmit((data) => submitContact.mutate(data))}
       >
         <InputField
-          label={role === "candidate" ? "Full Name" : "Company Name"}
+          label={role === "candidate" ? t("contactPage.full-name") : t("contactPage.company-name")}
           id="name"
-          placeholder={role === "candidate" ? "ex: Ahmed eltawy" : "ex: JooCare"}
+          placeholder={
+            role === "candidate"
+              ? t("contactPage.full-name-placeholder")
+              : t("contactPage.company-name-placeholder")
+          }
           error={errors.name?.message}
           {...register("name")}
         />
 
         <InputField
-          label={role === "candidate" ? "Email" : "Official Email"}
+          label={role === "candidate" ? t("contactPage.email") : t("contactPage.official-email")}
           id="email"
           type="email"
-          placeholder="ex:mail@mail.com"
+          placeholder={t("contactPage.email-placeholder")}
           error={errors.email?.message}
           {...register("email")}
         />
@@ -159,7 +184,7 @@ export default function ContactForm({
           <>
             <>
               <label htmlFor="phone" className="mx-1 -mb-4 font-semibold">
-                Phone Number
+                {t("contactPage.phone-number")}
               </label>
               <Controller
                 control={control}
@@ -170,7 +195,7 @@ export default function ContactForm({
                     defaultCountry="AE"
                     id="phone"
                     className="w-full"
-                    placeholder="Enter phone number"
+                    placeholder={t("contactPage.phone-placeholder")}
                     onChange={(value) => field.onChange(value)}
                     error={Boolean(errors.phone?.message)}
                   />
@@ -191,8 +216,8 @@ export default function ContactForm({
                   <SelectInputField
                     withSearchInput
                     id="countryId"
-                    label="Current Location"
-                    placeholder="country"
+                    label={t("contactPage.current-location")}
+                    placeholder={t("contactPage.country")}
                     {...field}
                     onChange={(value) => {
                       field.onChange(value);
@@ -221,9 +246,9 @@ export default function ContactForm({
                 render={({ field }) => (
                   <SelectInputField
                     withSearchInput
-                    label="City"
+                    label={t("contactPage.city")}
                     id="cityId"
-                    placeholder="city"
+                    placeholder={t("contactPage.city-lower")}
                     {...field}
                     error={
                       errors.cityId?.message ??
@@ -251,8 +276,8 @@ export default function ContactForm({
           render={({ field }) => (
             <SelectInputField
               id="inquiryTypeId"
-              label="Type of inquiry"
-              placeholder="Select inquiry type"
+              label={t("contactPage.type-of-inquiry")}
+              placeholder={t("contactPage.select-inquiry-type")}
               options={inquiryOptionsWithOther}
               value={field.value}
               onChange={(value) => {
@@ -263,7 +288,7 @@ export default function ContactForm({
               }}
               error={errors.inquiryTypeId?.message}
               withSearchInput
-              searchPlaceholder="Search inquiry type"
+              searchPlaceholder={t("contactPage.search-inquiry-type")}
               onSearchChange={setInquirySearch}
               onReachEnd={() => {
                 if (hasNextPage) {
@@ -279,17 +304,17 @@ export default function ContactForm({
         {isOtherInquiryType && (
           <InputField
             id="inquiryTypeTitle"
-            label="Other inquiry type"
-            placeholder="Enter inquiry type"
+            label={t("contactPage.other-inquiry-type")}
+            placeholder={t("contactPage.enter-inquiry-type")}
             {...register("inquiryTypeTitle")}
             error={errors.inquiryTypeTitle?.message}
           />
         )}
 
         <TextareaField
-          label="Message"
+          label={t("contactPage.message")}
           id="message"
-          placeholder="Message goes here..."
+          placeholder={t("contactPage.message-placeholder")}
           rows={6}
           error={errors.message?.message}
           {...register("message")}
@@ -303,7 +328,7 @@ export default function ContactForm({
           className="w-full justify-center"
           disabled={submitContact.isPending}
         >
-          {submitContact.isPending ? "Sending..." : "Send"}
+          {submitContact.isPending ? t("contactPage.sending") : t("contactPage.send")}
         </Button>
       </form>
     </div>

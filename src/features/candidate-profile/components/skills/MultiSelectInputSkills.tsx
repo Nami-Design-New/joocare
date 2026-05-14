@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface MultiSelectInputSkillsProps {
   selected: string[];
@@ -33,6 +34,7 @@ export function MultiSelectInputSkills({
   isLoading,
   optionsById,
 }: MultiSelectInputSkillsProps) {
+  const t = useTranslations();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [hasWrappedContent, setHasWrappedContent] = useState(false);
@@ -190,7 +192,7 @@ export function MultiSelectInputSkills({
         ))}
         <input
           className="min-w-[140px] flex-1 bg-transparent text-sm text-secondary outline-none placeholder:text-muted-foreground"
-          placeholder={selectedLabels.length === 0 ? "ex: consultant cardiologist" : ""}
+          placeholder={selectedLabels.length === 0 ? t("candidatePage.profile.skills-placeholder") : ""}
           value={effectiveQuery}
           onChange={(event) => {
             const nextValue = event.target.value;
@@ -231,12 +233,12 @@ export function MultiSelectInputSkills({
           )}
 
           {(isLoading || isFetchingNextPage) && (
-            <li className="text-muted-foreground px-4 py-2 text-xs">Loading...</li>
+            <li className="text-muted-foreground px-4 py-2 text-xs">{t("common.loading")}</li>
           )}
 
           {!isLoading && filtered.length === 0 && !isFetchingNextPage && (
             <li className="text-muted-foreground px-4 py-2 text-xs">
-              No results found.
+              {t("common.no-results-found")}
             </li>
           )}
         </ul>

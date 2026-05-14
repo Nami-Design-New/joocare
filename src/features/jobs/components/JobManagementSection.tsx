@@ -11,9 +11,11 @@ import JobCard from "./JobCard";
 import JobCardSkeleton from "@/features/shared-company-profile/components/JobCardSkeleton";
 import EmptyDataState from "@/shared/components/EmptyDataState";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import { useTranslations } from "next-intl";
 
 
 export default function JobManagementSection() {
+    const t = useTranslations();
     const [page, setPage] = useState(1);
     const [selectedStatus, setSelectedStatus] = useState("");
 
@@ -77,14 +79,14 @@ export default function JobManagementSection() {
                     ${companyProfileData?.status !== "Approved" ? "pointer-events-none opacity-50" : ""}`}
                         href="/company/post-job"
                     >
-                        Post a Job
+                        {t("companyPage.sidebar.post-job")}
                     </Link>
 
                     {companyProfileData?.status !== "Approved" && (
                         <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
                             whitespace-nowrap rounded bg-black text-white text-xs px-3 py-1 
                             opacity-0 group-hover:opacity-100 transition">
-                            You can&apos;t post a job until <br /> your account is approved
+                            {t("companyPage.sidebar.post-job-tooltip-line-1")} <br /> {t("companyPage.sidebar.post-job-tooltip-line-2")}
                         </span>
                     )}
                 </div>

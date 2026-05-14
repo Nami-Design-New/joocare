@@ -6,6 +6,7 @@ import { InputField } from "@/shared/components/InputField";
 import { Option, SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
 import useGetCountries from "@/shared/hooks/useGetCountries";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 type JobsFilterSectionProps = {
@@ -26,12 +27,12 @@ export default function JobsFilterSection({
   actionPath,
   search,
   country,
-  countries,
   popularSearches,
   popularSearchesCurrentPage = 1,
   popularSearchesLastPage = 1,
   hiddenInputs,
 }: JobsFilterSectionProps) {
+  const t = useTranslations();
   const [location, setLocation] = useState<string>(country);
   const [countrySearch, setCountrySearch] = useState("");
   const {
@@ -71,7 +72,7 @@ export default function JobsFilterSection({
               className="grow bg-white"
               containerStyles="w-3/5 grow"
               id="search"
-              placeholder="Job title or keyword"
+              placeholder={t("search-filter.search-job")}
             />
 
             <input type="hidden" name="country" value={location} />
@@ -82,11 +83,11 @@ export default function JobsFilterSection({
                 label: apiCountry.name,
                 value: String(apiCountry.id),
               }))}
-              placeholder="By country"
+              placeholder={t("search-filter.by-country")}
               value={location}
               onChange={setLocation}
               disabled={countriesLoading}
-              searchPlaceholder="Search countries..."
+              searchPlaceholder={t("search-filter.country")}
               onSearchChange={setCountrySearch}
               onReachEnd={() => void fetchCountriesNextPage()}
               hasNextPage={countriesHasNextPage}
@@ -97,7 +98,7 @@ export default function JobsFilterSection({
             />
 
             <Button type="submit" variant="default" size="pill" className="shrink-0">
-              Search
+              {t("search-filter.search")}
             </Button>
           </form>
           <PopularSearchesInteractive

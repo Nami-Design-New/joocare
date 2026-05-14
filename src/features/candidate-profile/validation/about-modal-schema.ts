@@ -1,10 +1,15 @@
 import { z } from "zod";
 
-export const aboutModalSchema = z.object({
+type AboutSchemaMessages = {
+  bioMax: string;
+  bioMinWords: string;
+};
+
+export const createAboutModalSchema = (messages: AboutSchemaMessages) => z.object({
   bio: z
     .string()
     .trim()
-    .max(1000, "Bio must be at most 1000 characters.")
+    .max(1000, messages.bioMax)
     .refine(
       (value) => {
         const words = value
@@ -15,9 +20,14 @@ export const aboutModalSchema = z.object({
         return words.length >= 50;
       },
       {
-        message: "Please provide at least 50 words",
+        message: messages.bioMinWords,
       }
     ),
+});
+
+export const aboutModalSchema = createAboutModalSchema({
+  bioMax: "Bio must be at most 1000 characters.",
+  bioMinWords: "Please provide at least 50 words",
 });
 
 export type AboutModalFormData = z.infer<typeof aboutModalSchema>;

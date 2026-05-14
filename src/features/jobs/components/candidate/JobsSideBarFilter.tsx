@@ -15,6 +15,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { AccordionSection, FilterState } from '../../types/index.types';
 import FilterAccordion from './FilterAccordion';
+import { useTranslations } from 'next-intl';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -43,6 +44,7 @@ export default function JobFilterSidebar({
   sections,
   salaryTypeOptions,
 }: JobsSidebarFilterProps) {
+  const t = useTranslations();
   const [filters, setFilters] = useState<FilterState>(initialFilters);
   const [openSections, setOpenSections] = useState<Set<string>>(DEFAULT_OPEN);
   const selectedRoleCategoryIds = useMemo(
@@ -130,9 +132,9 @@ export default function JobFilterSidebar({
           options: hasSelectedRoleCategory ? normalizedSeniorityOptions : [],
           disabled: !hasSelectedRoleCategory || seniorityLevelsLoading,
           helperText: !hasSelectedRoleCategory
-            ? 'Choose a role category first'
+            ? t('jobsPage.filters.choose-role-category-first')
             : seniorityLevelsLoading
-              ? 'Loading seniority levels...'
+              ? t('jobsPage.filters.loading-seniority-levels')
               : undefined,
         };
       }),
@@ -141,6 +143,7 @@ export default function JobFilterSidebar({
       hasSelectedRoleCategory,
       normalizedSeniorityOptions,
       seniorityLevelsLoading,
+      t,
     ],
   );
 
@@ -176,7 +179,7 @@ export default function JobFilterSidebar({
           {/* Row: label + salary type */}
           <div className="mb-3 flex items-center justify-between">
             <span className="text-foreground/80 text-sm font-semibold">
-              Salary range
+              {t('jobsPage.filters.salary-range')}
             </span>
             <Select
               value={filters.salaryTypes[0] ?? '__all__'}
@@ -188,10 +191,10 @@ export default function JobFilterSidebar({
               }
             >
               <SelectTrigger className="border-border bg-muted h-9 rounded-lg text-sm">
-                <SelectValue placeholder="Any salary type" />
+                <SelectValue placeholder={t('jobsPage.filters.any-salary-type')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="__all__">Any salary type</SelectItem>
+                <SelectItem value="__all__">{t('jobsPage.filters.any-salary-type')}</SelectItem>
                 {salaryTypeOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -208,7 +211,7 @@ export default function JobFilterSidebar({
                 className="text-muted-foreground text-xs"
                 htmlFor="min-salary"
               >
-                Min
+                {t('jobsPage.filters.min')}
               </Label>
               <Input
                 id="min-salary"
@@ -229,7 +232,7 @@ export default function JobFilterSidebar({
                 className="text-muted-foreground text-xs"
                 htmlFor="max-salary"
               >
-                Max
+                {t('jobsPage.filters.max')}
               </Label>
               <Input
                 id="max-salary"
@@ -256,13 +259,13 @@ export default function JobFilterSidebar({
             size="pill"
             className="bg-success flex-1"
           >
-            Apply Filters
+            {t('jobsPage.filters.apply-filters')}
           </Button>
           <Link
             href={actionPath}
             className="border-border text-foreground flex h-11 items-center justify-center rounded-full border px-4 text-sm font-medium"
           >
-            Reset
+            {t('jobsPage.filters.reset')}
           </Link>
         </div>
       </form>

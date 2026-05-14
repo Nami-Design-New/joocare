@@ -20,6 +20,7 @@ import {
 } from "@/shared/components/ui/popover";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { cn } from "@/shared/lib/utils";
+import { useTranslations } from "next-intl";
 
 type PhoneInputCodeProps = Omit<
   React.ComponentProps<"input">,
@@ -99,6 +100,7 @@ const CountrySelect = ({
   onChange,
   fallbackCountry,
 }: CountrySelectProps) => {
+  const t = useTranslations();
   const scrollAreaRef = React.useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = React.useState("");
   const [isOpen, setIsOpen] = React.useState(false);
@@ -162,11 +164,11 @@ const CountrySelect = ({
                 }
               }, 0);
             }}
-            placeholder="Search country..."
+            placeholder={t("search-filter.country")}
           />
           <CommandList>
             <ScrollArea ref={scrollAreaRef} className="h-72">
-              <CommandEmpty>No country found.</CommandEmpty>
+              <CommandEmpty>{t("common.no-country-found")}</CommandEmpty>
               <CommandGroup>
                 {countryList.map(({ value, label }) =>
                   value ? (

@@ -5,6 +5,7 @@ import { Option, SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
 import useGetCountries from "@/shared/hooks/useGetCountries";
 import { FormEvent, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export type CandidatesFilterValues = {
   search: string;
@@ -22,13 +23,6 @@ type CandidatesFilterProps = {
   isSubmitting?: boolean;
 };
 
-const recentOptions: Option[] = [{ label: "Recent applied", value: "1" }];
-
-const medicalLicenseOptions: Option[] = [
-  { label: "With medical license", value: "1" },
-  { label: "Without medical license", value: "0" },
-];
-
 export default function CandidatesFilter({
   values,
   countryOptions,
@@ -37,6 +31,7 @@ export default function CandidatesFilter({
   onSubmit,
   isSubmitting = false,
 }: CandidatesFilterProps) {
+  const t = useTranslations();
   const [countrySearch, setCountrySearch] = useState("");
   const {
     countries,
@@ -51,6 +46,12 @@ export default function CandidatesFilter({
     onSubmit(values);
   };
 
+  const recentOptions: Option[] = [{ label: t("companyPage.candidates.filters.recent-applied"), value: "1" }];
+  const medicalLicenseOptions: Option[] = [
+    { label: t("companyPage.candidates.filters.with-medical-license"), value: "1" },
+    { label: t("companyPage.candidates.filters.without-medical-license"), value: "0" },
+  ];
+
   return (
     <section className="mt-13 flex w-full flex-col gap-3 lg:flex-row lg:items-center">
       <form
@@ -61,13 +62,13 @@ export default function CandidatesFilter({
           className="grow bg-white"
           containerStyles="w-full"
           id="search"
-          placeholder="search name...."
+          placeholder={t("companyPage.candidates.filters.search-placeholder")}
           value={values.search}
           onChange={(event) => onSearchChange(event.target.value)}
         />
 
         <Button variant="default" size="pill" className="shrink-0" disabled={isSubmitting}>
-          Search
+          {t("common.search")}
         </Button>
       </form>
 
@@ -75,7 +76,7 @@ export default function CandidatesFilter({
         <SelectInputField
           id="recent"
           options={recentOptions}
-          placeholder="recent applied"
+          placeholder={t("companyPage.candidates.filters.recent-placeholder")}
           value={values.recent}
           onChange={(recent) => onFilterChange({ ...values, recent })}
           className="bg-white"
@@ -85,12 +86,12 @@ export default function CandidatesFilter({
         <SelectInputField
           id="location"
           options={countryOptions}
-          placeholder="Country"
+          placeholder={t("common.country")}
           value={values.country}
           onChange={(country) => onFilterChange({ ...values, country })}
           disabled={countriesLoading}
           withSearchInput
-          searchPlaceholder="Search countries..."
+          searchPlaceholder={t("companyPage.candidates.filters.search-countries")}
           onSearchChange={setCountrySearch}
           onReachEnd={() => void fetchCountriesNextPage()}
           hasNextPage={countriesHasNextPage}
@@ -102,7 +103,7 @@ export default function CandidatesFilter({
         <SelectInputField
           id="license"
           options={medicalLicenseOptions}
-          placeholder="Medical License"
+          placeholder={t("companyPage.candidates.filters.medical-license-placeholder")}
           value={values.medicalLicense}
           onChange={(medicalLicense) => onFilterChange({ ...values, medicalLicense })}
           className="bg-white"

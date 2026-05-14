@@ -1,8 +1,9 @@
 import SectionTitle from "@/features/home/components/SectionTitle";
 import Image from "next/image";
 import type { AboutImage } from "../types/about.types";
+import { getTranslations } from "next-intl/server";
 
-export default function AboutMissionSection({
+export default async function AboutMissionSection({
   title,
   description,
   images,
@@ -13,13 +14,14 @@ export default function AboutMissionSection({
 }) {
   const primaryImage = images[0];
   const secondaryImage = images[1];
+  const t = await getTranslations();
 
   return (
     <section className="bg-white py-16 sm:py-20 xl:py-24">
       <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 xl:grid-cols-5 xl:gap-16 xl:px-0 justify-center items-center">
         <div className="order-2 xl:col-span-3">
           <div className="mb-2">
-            <SectionTitle sectionTitle="Our Mission" textColor="text-dark" />
+            <SectionTitle sectionTitle={t("aboutPage.our-mission")} textColor="text-dark" />
           </div>
 
           <h2 className="text-secondary my-7 text-3xl leading-tight font-bold sm:text-4xl xl:mb-2 xl:text-5xl">
@@ -36,7 +38,7 @@ export default function AboutMissionSection({
             <div className="absolute top-0 right-0 h-[100%] w-[80%] overflow-hidden rounded-[30px] sm:rounded-[40px]">
               <Image
                 src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
-                alt={primaryImage?.alt ?? "Mission image"}
+                alt={primaryImage?.alt ?? t("aboutPage.mission-image-alt")}
                 fill
                 className="object-cover"
               />
@@ -45,7 +47,7 @@ export default function AboutMissionSection({
             <div className="absolute top-[29.5%] left-0 h-[50%] w-1/2 overflow-hidden rounded-[22px] border-8 border-white shadow-xl sm:rounded-[30px] sm:border-[12px]">
               <Image
                 src={secondaryImage?.image ?? "/assets/about/doctor1.jpg"}
-                alt={secondaryImage?.alt ?? "Mission image"}
+                alt={secondaryImage?.alt ?? t("aboutPage.mission-image-alt")}
                 fill
                 className="object-cover"
               />

@@ -8,6 +8,7 @@ import { JobsSearchFilters } from "@/features/jobs/types/index.types";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import EmptyDataState from "@/shared/components/EmptyDataState";
 import CandidateJobCard from "./CandidateJobCard";
+import { useTranslations } from "next-intl";
 
 type JobsListProps = {
   jobs: JobListItem[];
@@ -26,6 +27,7 @@ export default function JobsList({
   locale,
   filters,
 }: JobsListProps) {
+  const t = useTranslations();
   const buildPageHref = (page: number) =>
     buildJobsPagePath(locale, {
       ...filters,
@@ -45,8 +47,8 @@ export default function JobsList({
           ))
         ) : (
           <EmptyDataState
-            title="No Data"
-            description="No jobs matched the current search and filters."
+            title={t("jobsPage.empty-title")}
+            description={t("jobsPage.empty-description")}
           />
         )}
       </section>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Edit, Trash2 } from "lucide-react";
@@ -20,13 +20,14 @@ const OneEducationSection = ({
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const t = useTranslations();
   const locale = useLocale();
   const { data: session } = useSession();
   const router = useRouter();
 
   const handleDeleteEducation = async () => {
     if (!session?.accessToken) {
-      toast.error("Your session has expired. Please log in again.");
+      toast.error(t("candidatePage.toasts.session-expired"));
       return;
     }
 
@@ -38,12 +39,12 @@ const OneEducationSection = ({
         token: session.accessToken,
       });
 
-      toast.success(response?.message ?? "Education deleted successfully.");
+      toast.success(response?.message ?? t("candidatePage.toasts.education-deleted"));
       setDeleteOpen(false);
       router.refresh();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to delete education.";
+        error instanceof Error ? error.message : t("candidatePage.toasts.education-delete-failed");
       toast.error(message);
     } finally {
       setIsDeleting(false);
@@ -57,7 +58,7 @@ const OneEducationSection = ({
           <div className="bg-accent rounded-full p-2">
             <Image
               src={"/assets/building-office-2.svg"}
-              alt="building image"
+              alt={t("candidatePage.profile.building-image")}
               width={24}
               height={24}
             />
@@ -66,14 +67,14 @@ const OneEducationSection = ({
             <h3 className="text-lg font-semibold">{education.university}</h3>
             <div className="flex gap-2 items-center">
               <p className="text-muted-foreground text-sm font-normal">
-                {education.degree ?? "No degree details added yet."}
+                {education.degree ?? t("candidatePage.profile.no-degree-details")}
               </p>
               <p className="text-muted-foreground text-xs font-normal">
                 ( {`${education.gpa}`} )
               </p>
             </div>
             <span className="text-muted-foreground text-sm font-normal">
-              {education.educationPeriod ?? "No period added yet."}
+              {education.educationPeriod ?? t("candidatePage.profile.no-period")}
             </span>
           </div>
         </div>
@@ -95,7 +96,7 @@ const OneEducationSection = ({
       </div>
 
       <EducationModal
-        label="Edit Education"
+        label={t("candidatePage.profile.edit-education")}
         open={open}
         onOpenChange={setOpen}
         education={education}
@@ -103,9 +104,9 @@ const OneEducationSection = ({
       <DeleteModal
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Do you want to delete this Education?"
-        description="The Education will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone."
-        cancelLabel="Back"
+        title={t("candidatePage.profile.delete-education-title")}
+        description={t("candidatePage.profile.delete-education-description")}
+        cancelLabel={t("candidatePage.common.back")}
         onConfirm={handleDeleteEducation}
         isLoading={isDeleting}
       />

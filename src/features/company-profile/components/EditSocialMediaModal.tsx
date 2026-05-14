@@ -1,3 +1,5 @@
+"use client";
+
 import { InputField } from "@/shared/components/InputField";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -14,6 +16,7 @@ import { useUpdateSocialLinks } from "../hooks/useUpdateSocialLinks";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 interface EditSocialMediaModalProps {
     open: boolean;
@@ -31,6 +34,7 @@ type FormValues = {
 };
 
 export function EditSocialMediaModal({ open, onOpenChange, companyProfileData }: EditSocialMediaModalProps) {
+    const t = useTranslations();
     const { data: session } = useSession();
     const token = session?.accessToken as string;
 
@@ -76,11 +80,11 @@ export function EditSocialMediaModal({ open, onOpenChange, companyProfileData }:
             },
             {
                 onSuccess: () => {
-                    toast.success("Social links updated successfully");
+                    toast.success(t("companyPage.profile.social.toasts.updated-successfully"));
                     onOpenChange(false);
                 },
                 onError: (error: Error) => {
-                    toast.error(error?.message || "Something went wrong");
+                    toast.error(error?.message || t("companyPage.common.something-went-wrong"));
                 },
             }
         );
@@ -92,61 +96,61 @@ export function EditSocialMediaModal({ open, onOpenChange, companyProfileData }:
             <DialogContent className="max-w-175 ">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col  gap-5">
                     <DialogHeader>
-                        <DialogTitle className="text-[28px] text-black">Edit Online profile</DialogTitle>
+                        <DialogTitle className="text-[28px] text-black">{t("companyPage.profile.social.modal.title")}</DialogTitle>
                     </DialogHeader>
 
                     <InputField
                         id="website"
                         type="text"
-                        label="Website"
-                        placeholder="ex: www.example.com"
-                        icon={<Image src='/assets/icons/social-icons/globe.svg' alt="website icon" width={20} height={20} />}
+                        label={t("companyPage.profile.social.fields.website.label")}
+                        placeholder={t("companyPage.profile.social.fields.website.placeholder")}
+                        icon={<Image src='/assets/icons/social-icons/globe.svg' alt={t("companyPage.profile.social.fields.website.icon-alt")} width={20} height={20} />}
                         {...register("website")}
                     />
                     <InputField
                         id="linkedIn"
                         type="text"
                         label="LinkedIn"
-                        placeholder="ex: linkedin.com/in/username"
-                        icon={<Image src='/assets/icons/social-icons/linkedin.svg' alt="linkedin icon" width={20} height={20} />}
+                        placeholder={t("companyPage.profile.social.fields.linkedin.placeholder")}
+                        icon={<Image src='/assets/icons/social-icons/linkedin.svg' alt={t("companyPage.profile.social.fields.linkedin.icon-alt")} width={20} height={20} />}
                         {...register("linkedIn")}
                     />
                     <InputField
                         id="facebook"
                         type="text"
                         label="Facebook"
-                        placeholder="ex: facebook.com/username"
-                        icon={<Image src='/assets/icons/social-icons/facebook.svg' alt="facebook icon" width={20} height={20} />}
+                        placeholder={t("companyPage.profile.social.fields.facebook.placeholder")}
+                        icon={<Image src='/assets/icons/social-icons/facebook.svg' alt={t("companyPage.profile.social.fields.facebook.icon-alt")} width={20} height={20} />}
                         {...register("facebook")}
                     />
                     <InputField
                         id="XTwitter"
                         type="text"
                         label="X/Twitter"
-                        placeholder="ex: x.com/username"
-                        icon={<Image src='/assets/icons/social-icons/twitter.svg' alt="twitter icon" width={20} height={20} />}
+                        placeholder={t("companyPage.profile.social.fields.twitter.placeholder")}
+                        icon={<Image src='/assets/icons/social-icons/twitter.svg' alt={t("companyPage.profile.social.fields.twitter.icon-alt")} width={20} height={20} />}
                         {...register("twitter")}
                     />
                     <InputField
                         id="instagram"
                         type="text"
                         label="Instagram"
-                        placeholder="ex: instagram.com/username"
-                        icon={<Image src='/assets/icons/social-icons/instagram.svg' alt="instagram icon" width={20} height={20} />}
+                        placeholder={t("companyPage.profile.social.fields.instagram.placeholder")}
+                        icon={<Image src='/assets/icons/social-icons/instagram.svg' alt={t("companyPage.profile.social.fields.instagram.icon-alt")} width={20} height={20} />}
                         {...register("instagram")}
                     />
                     <InputField
                         id="snapchat"
                         type="text"
                         label="Snapchat"
-                        placeholder="ex: snapchat.com/username"
-                        icon={<Image src='/assets/icons/social-icons/snap.svg' alt="snap icon" width={20} height={20} />}
+                        placeholder={t("companyPage.profile.social.fields.snapchat.placeholder")}
+                        icon={<Image src='/assets/icons/social-icons/snap.svg' alt={t("companyPage.profile.social.fields.snapchat.icon-alt")} width={20} height={20} />}
                         {...register("snapchat")}
                     />
 
                     <DialogFooter className="flex justify-center! ">
                         <Button className="w-1/3" size={"pill"} type="submit" disabled={isPending}>
-                            {isPending ? "Saving..." : "Save"}
+                            {isPending ? t("common.saving") : t("common.save")}
                         </Button>
                     </DialogFooter>
                 </form>

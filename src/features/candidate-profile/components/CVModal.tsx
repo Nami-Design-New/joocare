@@ -10,6 +10,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { RefreshCw } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { isPdfFileName } from "../validation/cv-schema";
 
 type ConfirmDialogProps = {
@@ -35,6 +36,7 @@ export default function CVModal({
   isDeleting = false,
   isUploading = false,
 }: ConfirmDialogProps) {
+  const t = useTranslations();
   const isPdf = isPdfFileName(fileName);
 
   return (
@@ -54,9 +56,9 @@ export default function CVModal({
               src="/assets/icons/pdf-icon.svg"
               width={14}
               height={14}
-              alt="pdf icon"
+              alt={t("candidatePage.profile.pdf-icon")}
             />
-            Download
+            {t("candidatePage.common.download")}
           </Button>
         </DialogHeader>
 
@@ -64,7 +66,7 @@ export default function CVModal({
           <PdfViewer url={url} />
         ) : (
           <div className="text-muted-foreground flex min-h-60 items-center justify-center rounded-2xl border border-dashed p-6 text-sm">
-            Preview is available for PDF files only. You can still download, update, or delete this CV.
+            {t("candidatePage.profile.pdf-preview-only")}
           </div>
         )}
 
@@ -87,7 +89,7 @@ export default function CVModal({
             disabled={isUploading || isDeleting}
           >
             <RefreshCw className="h-4 w-4" />
-            {isUploading ? "Updating..." : "Update"}
+            {isUploading ? t("candidatePage.common.updating") : t("candidatePage.common.update")}
           </Button>
         </div>
 

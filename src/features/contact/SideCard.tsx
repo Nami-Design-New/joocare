@@ -1,16 +1,8 @@
-// components/contact/SideCard.tsx
-
-import {
-  Facebook,
-  Ghost,
-  Instagram,
-  Linkedin,
-  Twitter,
-} from "lucide-react";
 import SectionTitle from "../home/components/SectionTitle";
 import Image from "next/image";
 import { Button } from "@/shared/components/ui/button";
 import type { ContactRole } from "./types";
+import { useTranslations } from "next-intl";
 
 type SocialPlatform =
   | "linkedin"
@@ -57,6 +49,7 @@ export default function SideCard({
   showSocial = true,
   socialLinks = [],
 }: SideCardProps) {
+  const t = useTranslations();
   const resolvedImageSrc =
     imageSrc ??
     (role === "employer"
@@ -64,7 +57,10 @@ export default function SideCard({
       : "/assets/contact/candidate.png");
 
   const resolvedButtonText =
-    buttonText ?? (role === "employer" ? "For Candidate" : "For Employer");
+    buttonText ??
+    (role === "employer"
+      ? t("contactPage.for-candidate")
+      : t("contactPage.for-employer"));
 
   return (
     <div className="bg-muted flex h-full flex-col rounded-3xl p-5 text-left lg:p-6">
@@ -88,7 +84,7 @@ export default function SideCard({
       {showSocial && socialLinks.length > 0 ? (
         <div className="mt-auto pt-10">
           <p className="text-foreground mb-3 text-sm font-semibold">
-            Follow us
+            {t("contactPage.follow-us")}
           </p>
           <div className="flex items-center gap-2.5">
             {socialLinks.map(({ href, platform }) => {

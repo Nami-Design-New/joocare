@@ -3,18 +3,20 @@
 import { useJobShare } from "@/features/jobs/hooks/useJobShare";
 import { Button } from "@/shared/components/ui/button";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { CompanyProfile } from "../company-profile.type";
 
 export default function AboutSection({ company }: { company: CompanyProfile }) {
-    const companyName = company.name ?? "this company";
+    const t = useTranslations();
+    const companyName = company.name ?? t("sharedCompanyProfilePage.this-company");
     const { shareJob } = useJobShare({
-        title: `Check out ${companyName} on JooCare`,
+        title: t("sharedCompanyProfilePage.share-company-title", { companyName }),
     });
 
     return (
         <div className="rounded-2xl bg-white flex flex-col gap-4 p-4 border">
             <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold ">About</h3>
+                <h3 className="text-xl font-semibold ">{t("sharedCompanyProfilePage.about")}</h3>
             </div>
             <p className="text-muted-foreground text-sm text-justify">
                 {company.bio}
@@ -27,7 +29,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                                 src="/assets/icons/social-icons/linkedin-about.svg"
                                 width={30}
                                 height={30}
-                                alt="LinkedIn"
+                                alt={t("sharedCompanyProfilePage.linkedin")}
                             />
                         </a>
                     )}
@@ -38,7 +40,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                                 src="/assets/icons/social-icons/facebook-about.svg"
                                 width={30}
                                 height={30}
-                                alt="Facebook"
+                                alt={t("sharedCompanyProfilePage.facebook")}
                             />
                         </a>
                     )}
@@ -49,7 +51,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                                 src="/assets/icons/social-icons/instagram-about.svg"
                                 width={30}
                                 height={30}
-                                alt="Instagram"
+                                alt={t("sharedCompanyProfilePage.instagram")}
                             />
                         </a>
                     )}
@@ -60,7 +62,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                                 src="/assets/icons/social-icons/twitter-about.svg"
                                 width={30}
                                 height={30}
-                                alt="X (Twitter)"
+                                alt={t("sharedCompanyProfilePage.twitter")}
                             />
                         </a>
                     )}
@@ -71,7 +73,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                                 src="/assets/icons/social-icons/snap-about.svg"
                                 width={30}
                                 height={30}
-                                alt="Snapchat"
+                                alt={t("sharedCompanyProfilePage.snapchat")}
                             />
                         </a>
                     )}
@@ -84,11 +86,11 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                 >
                     <Image
                         src="/assets/icons/pin-link-icon.svg"
-                        alt="link icon"
+                        alt={t("sharedCompanyProfilePage.link-icon")}
                         width={24}
                         height={24}
                     />
-                    <span className="text-lg">Share</span>
+                    <span className="text-lg">{t("jobsPage.share")}</span>
                 </Button>
             </div>
         </div>

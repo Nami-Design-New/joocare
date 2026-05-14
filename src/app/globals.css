@@ -290,7 +290,7 @@
   background-image: url("../../public/assets/container.svg");
   background-color: var(--color-primary);
 }
-.bg-container-gray-2 {
+.bg-container-gray {
   /* background-image: url("../../public/assets/why.svg"); */
   background-image: url("../../public/assets/why.png");
   background-size: cover;
@@ -298,20 +298,21 @@
   background-repeat: no-repeat;
   /* background-color: var(--color-gray); */
 }
-@media (max-width: 1024px) {
-  .bg-container-gray-2 {
-    background-image: url("../../public/assets/why-vertical.png");
-  }
-}
-
-.bg-container-gray-3 {
+.bg-container-gray-ar {
   /* background-image: url("../../public/assets/why.svg"); */
-  background-image: url("../../public/assets/why-vertical.png");
+  background-image: url("../../public/assets/why-ar.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   /* background-color: var(--color-gray); */
 }
+@media (max-width: 1024px) {
+  .bg-container-gray,
+  .bg-container-gray-ar {
+    background-image: url("../../public/assets/why-vertical.png");
+  }
+}
+
 /* file pond */
 .filepond--credits {
   display: none;

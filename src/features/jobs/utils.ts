@@ -189,10 +189,11 @@ export function getJobPostedAtLabel(date: string | null) {
 
 export function getJobLocation(
   job: Pick<JobListItem | JobDetails, 'city' | 'country'>,
+  locationNotSpecified = 'Location not specified',
 ) {
   return (
     [job.city?.name, job.country?.name].filter(Boolean).join(', ') ||
-    'Location not specified'
+    locationNotSpecified
   );
 }
 
@@ -226,7 +227,7 @@ type SalaryLike = {
   hasSalary?: boolean;
 };
 
-export function getJobSalary(job: SalaryLike) {
+export function getJobSalary(job: SalaryLike, notSpecified = 'Not specified') {
   const minSalary = formatSalaryAmount(job.min_salary);
   const maxSalary = formatSalaryAmount(job.max_salary);
   const hasMinSalary = minSalary !== null;
@@ -237,12 +238,12 @@ export function getJobSalary(job: SalaryLike) {
   }
 
   if (hasMinSalary || hasMaxSalary) {
-    return minSalary ?? maxSalary ?? 'Not specified';
+    return minSalary ?? maxSalary ?? notSpecified;
   }
-  if (!job.hasSalary) return 'Not specified';
-  return 'Not specified';
+  if (!job.hasSalary) return notSpecified;
+  return notSpecified;
 }
-export function getJobSalaryWithCurrency(job: SalaryLike) {
+export function getJobSalaryWithCurrency(job: SalaryLike, notSpecified = 'Not specified') {
   const minSalary = formatSalaryAmount(job.min_salary);
   const maxSalary = formatSalaryAmount(job.max_salary);
   const hasMinSalary = minSalary !== null;
@@ -253,10 +254,10 @@ export function getJobSalaryWithCurrency(job: SalaryLike) {
   }
 
   if (hasMinSalary || hasMaxSalary) {
-    return minSalary ?? maxSalary ?? 'Not specified';
+    return minSalary ?? maxSalary ?? notSpecified;
   }
 
-  return 'Not specified';
+  return notSpecified;
 }
 
 export function normalizeJobStatus(

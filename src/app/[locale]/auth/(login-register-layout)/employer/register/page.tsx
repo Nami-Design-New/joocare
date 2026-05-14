@@ -1,13 +1,16 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 import FormEmployerRegister from "@/features/auth/components/register-employer-content/FormEmployerRegister";
 
-const RegisterEmployerPage = () => {
+const RegisterEmployerPage = async () => {
+  const t = await getTranslations();
+
   return (
     <div className="flex items-center justify-center gap-4 ">
       <div className="w-full md:w-3/4 mx-auto p-4">
         {/* header text */}
-        <h1>Start your business</h1>
+        <h1>{t("authPage.pages.employer-register.title")}</h1>
 
         {/* Login form */}
         <FormEmployerRegister />
@@ -15,12 +18,12 @@ const RegisterEmployerPage = () => {
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">
-            Already have an account?{" "}
+            {t("authPage.common.already-have-account")}{" "}
             <Link
               href="/auth/employer/login"
               className="text-primary hover:text-primary/60 underline font-medium transition-colors"
             >
-              Sign in
+              {t("authPage.common.sign-in")}
             </Link>
           </p>
         </section>

@@ -1,9 +1,12 @@
+"use client";
+
 import CandidateJobCard from "@/features/jobs/components/candidate/CandidateJobCard";
 import { JobListItem } from "@/features/jobs/types/jobs.types";
 import JobsSectionSkeleton from "./JobsSectionSkeleton";
 import JobsSectionErrorState from "./JobsSectionErrorState";
 import JobsSectionsInfinite from "./JobsSectionsInfinite";
 import EmptyDataState from "@/shared/components/EmptyDataState";
+import { useTranslations } from "next-intl";
 
 type JobsSectionsProps = {
   slug: string;
@@ -26,10 +29,11 @@ export default function JobsSections({
   jobsError,
   companyImage
 }: JobsSectionsProps) {
+  const t = useTranslations();
   return (
     <div className="mt-4 flex flex-col gap-4 rounded-2xl border bg-white p-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold">More Jobs</h3>
+        <h3 className="text-xl font-semibold">{t("sharedCompanyProfilePage.more-jobs")}</h3>
       </div>
 
       {jobsError ? (
@@ -49,7 +53,7 @@ export default function JobsSections({
           </div>
         </>
       ) : (
-        <EmptyDataState description=" No jobs are available for this company right now." />
+        <EmptyDataState description={t("sharedCompanyProfilePage.no-jobs")} />
       )}
     </div>
   );

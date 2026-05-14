@@ -7,6 +7,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Switch } from "@/shared/components/ui/switch";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
+import { useTranslations } from "next-intl";
 
 // import hooks for fetching select options
 import useGetAvailabilities from "@/shared/hooks/useGetAvailabilities";
@@ -79,6 +80,7 @@ function getOptionLabels(options: Option[], values: string[]) {
 
 // ─── tiny helper: surface zod error message under a field ───────────────────
 function FieldError({ name }: { name: string }) {
+  const t = useTranslations();
   const {
     formState: { errors },
   } = useFormContext<JobFormData>();
@@ -92,7 +94,15 @@ function FieldError({ name }: { name: string }) {
     ) as { message?: string } | undefined;
 
   if (!error?.message) return null;
-  return <p className="mt-1 text-xs text-red-500">{error.message}</p>;
+
+  let translatedMessage: string;
+  try {
+    translatedMessage = t(error.message as never);
+  } catch {
+    translatedMessage = error.message;
+  }
+
+  return <p className="mt-1 text-xs text-red-500">{translatedMessage}</p>;
 }
 
 
@@ -108,6 +118,17 @@ function JobPostStepOneContent({
   onPreviewLabelChange?: (key: PreviewLabelKey, value: string | string[]) => void;
   existingJob?: JobDetails | null;
 }) {
+  const t = useTranslations();
+
+  const translateMessage = (message?: string) => {
+    if (!message) return undefined;
+    try {
+      return t(message as never);
+    } catch {
+      return message;
+    }
+  };
+
   // search states
   // const [specialtySearch, setSpecialtySearch] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
@@ -371,7 +392,7 @@ function JobPostStepOneContent({
   }
   const jobTitleOptions = mergePersistedOption(
     [
-      { label: "Other", value: OTHER_OPTION_VALUE },
+      { label: t("companyPage.postJob.common.other"), value: OTHER_OPTION_VALUE },
       ...jobTitles.map((type) => ({
         label: type.title,
         value: String(type.id),
@@ -380,15 +401,15 @@ function JobPostStepOneContent({
     persistedOptions?.title,
   );
   const categoryOptions = [
-    { label: "Other", value: OTHER_OPTION_VALUE },
+    { label: t("companyPage.postJob.common.other"), value: OTHER_OPTION_VALUE },
     ...toSelectOptions(categories),
   ];
   const experienceOptions = [
-    { label: "Other", value: OTHER_OPTION_VALUE },
+    { label: t("companyPage.postJob.common.other"), value: OTHER_OPTION_VALUE },
     ...toSelectOptions(experiences),
   ];
   const availabilityOptions = [
-    { label: "Other", value: OTHER_OPTION_VALUE },
+    { label: t("companyPage.postJob.common.other"), value: OTHER_OPTION_VALUE },
     ...toSelectOptions(availabilities),
   ];
   const countryOptions = mergePersistedOption(
@@ -447,11 +468,11 @@ function JobPostStepOneContent({
               <SelectInputField
                 {...field}
                 id="title"
-                label="Job Title"
-                placeholder="ex: Cardiac surgeon"
+                label={t("companyPage.postJob.fields.jobTitle.label")}
+                placeholder={t("companyPage.postJob.fields.jobTitle.placeholder")}
                 withSearchInput
                 error={
-                  errors.title?.message ??
+                  translateMessage(errors.title?.message) ??
                   (jobTitlesError instanceof Error
                     ? jobTitlesError.message
                     : undefined)
@@ -487,21 +508,21 @@ function JobPostStepOneContent({
               <SelectInputField
                 {...field}
                 id="license"
-                label="Professional License"
-                placeholder="ex: DHA License"
+                label={t("companyPage.postJob.fields.professionalLicense.label")}
+                placeholder={t("companyPage.postJob.fields.professionalLicense.placeholder")}
                 error={
-                  errors.license?.message
+                  translateMessage(errors.license?.message)
                   // ?? (licensesError instanceof Error
                   //   ? licensesError.message
                   //   : undefined)
                 }
                 options={[
                   {
-                    title: "with medical license",
+                    title: t("companyPage.postJob.fields.professionalLicense.options.withMedicalLicense"),
                     value: "with_medical_license"
                   },
                   {
-                    title: "without medical license",
+                    title: t("companyPage.postJob.fields.professionalLicense.options.withoutMedicalLicense"),
                     value: "without_medical_license"
                   }
                 ].map((item) => ({
@@ -521,20 +542,20 @@ function JobPostStepOneContent({
         {isOtherJobTitle && (
           <InputField
             id="otherJobTitle"
-            label="Other job title"
-            placeholder="Enter job title"
+            label={t("companyPage.postJob.fields.otherJobTitle.label")}
+            placeholder={t("companyPage.postJob.fields.otherJobTitle.placeholder")}
             {...register("otherJobTitle", {
               onChange: (event) => {
                 onPreviewLabelChange?.("title", event.target.value);
               },
             })}
-            error={errors.otherJobTitle?.message}
+            error={translateMessage(errors.otherJobTitle?.message)}
           />
         )}</div>
       {/* ── Salary Section ── */}
       <div className="bg-muted rounded-[12px] p-3">
         <div className="mb-5 flex items-center justify-between">
-          <p className="font-semibold">Do you want to add salary?</p>
+          <p className="font-semibold">{t("companyPage.postJob.sections.salary.addSalaryQuestion")}</p>
           {/* Wire the Switch to addSalary boolean */}
           <Controller
             control={control}
@@ -574,7 +595,7 @@ function JobPostStepOneContent({
             {/* Salary Range */}
             <div className="space-y-2">
               <label className="mb-1 block font-semibold">
-                Salary Range
+                {t("companyPage.postJob.sections.salary.rangeLabel")}
               </label>
               <div className="flex items-end gap-3">
                 <div className="flex-1">
@@ -582,7 +603,7 @@ function JobPostStepOneContent({
                     {...register("salary.min")}
                     id="salary-min"
                     type="number"
-                    placeholder="Min"
+                    placeholder={t("companyPage.postJob.sections.salary.minPlaceholder")}
                     className="bg-white"
                     onChange={(e) => {
                       const value = e.target.value;
@@ -600,7 +621,7 @@ function JobPostStepOneContent({
                     {...register("salary.max")}
                     id="salary-max"
                     type="number"
-                    placeholder="Max"
+                    placeholder={t("companyPage.postJob.sections.salary.maxPlaceholder")}
                     className="bg-white"
                     onChange={(e) => {
                       const value = e.target.value;
@@ -625,11 +646,11 @@ function JobPostStepOneContent({
                   <SelectInputField
                     {...field}
                     id="salary-type"
-                    label="Salary Type"
+                    label={t("companyPage.postJob.fields.salaryType.label")}
                     className="bg-white"
-                    placeholder="Hourly"
+                    placeholder={t("companyPage.postJob.fields.salaryType.placeholder")}
                     error={
-                      errors.salary?.type?.message ??
+                      translateMessage(errors.salary?.type?.message) ??
                       (salaryTypesError instanceof Error
                         ? salaryTypesError.message
                         : undefined)
@@ -661,12 +682,12 @@ function JobPostStepOneContent({
                   <SelectInputField
                     {...field}
                     id="currency"
-                    label="Currency"
+                    label={t("companyPage.postJob.fields.currency.label")}
                     className="bg-white"
-                    placeholder="Choose"
+                    placeholder={t("companyPage.postJob.fields.currency.placeholder")}
                     withSearchInput
                     error={
-                      errors.salary?.currency?.message ??
+                      translateMessage(errors.salary?.currency?.message) ??
                       (currenciesError instanceof Error
                         ? currenciesError.message
                         : undefined)
@@ -702,9 +723,9 @@ function JobPostStepOneContent({
               <SelectInputField
                 {...field}
                 id="category"
-                label="Job Category"
+                label={t("companyPage.postJob.fields.jobCategory.label")}
                 error={
-                  errors.category?.message ??
+                  translateMessage(errors.category?.message) ??
                   (categoriesError instanceof Error
                     ? categoriesError.message
                     : undefined)
@@ -763,36 +784,36 @@ function JobPostStepOneContent({
 
         <InputField
           id="specialty"
-          label="Specialty"
+          label={t("companyPage.postJob.fields.specialty.label")}
           type={"text"}
-          placeholder="ex: specialty"
+          placeholder={t("companyPage.postJob.fields.specialty.placeholder")}
           // className="bg-white"
           {...register("specialty", {
             onChange: (event) => {
               onPreviewLabelChange?.("specialty", event.target.value);
             },
           })}
-          error={errors.specialty?.message?.toString()}
+          error={translateMessage(errors.specialty?.message?.toString())}
         />
       </div>
       {isOtherCategory && (
         <InputField
           id="otherCategoryTitle"
-          label="Other category"
-          placeholder="Enter category"
+          label={t("companyPage.postJob.fields.otherCategory.label")}
+          placeholder={t("companyPage.postJob.fields.otherCategory.placeholder")}
           {...register("otherCategoryTitle", {
             onChange: (event) => {
               onPreviewLabelChange?.("category", event.target.value);
             },
           })}
-          error={errors.otherCategoryTitle?.message}
+          error={translateMessage(errors.otherCategoryTitle?.message)}
         />
       )}
 
       {/* ── Employment Type Section ── */}
       <div className="bg-muted rounded-[12px] p-3">
         <h6 className="text-gray-45 mb-5 font-semibold">
-          Employment Type Section
+          {t("companyPage.postJob.sections.employment.title")}
         </h6>
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
           <div className="space-y-2">
@@ -803,15 +824,15 @@ function JobPostStepOneContent({
                 <SelectInputField
                   {...field}
                   id="employment-type"
-                  label="Employment Type"
+                  label={t("companyPage.postJob.fields.employmentType.label")}
                   className="bg-white"
-                  placeholder="ex: Full-time"
-                  error={
-                    errors.employmentType?.message ??
-                    (employmentTypesError instanceof Error
-                      ? employmentTypesError.message
-                      : undefined)
-                  }
+                  placeholder={t("companyPage.postJob.fields.employmentType.placeholder")}
+                error={
+                  translateMessage(errors.employmentType?.message) ??
+                  (employmentTypesError instanceof Error
+                    ? employmentTypesError.message
+                    : undefined)
+                }
                   options={toSelectOptions(employmentTypes)}
                   onChange={(value) => {
                     field.onChange(value);
@@ -837,11 +858,11 @@ function JobPostStepOneContent({
                 <SelectInputField
                   {...field}
                   id="role-category"
-                  label="Role Category"
+                  label={t("companyPage.postJob.fields.roleCategory.label")}
                   className="bg-white"
-                  placeholder="ex: Clinical"
+                  placeholder={t("companyPage.postJob.fields.roleCategory.placeholder")}
                   error={
-                    errors.roleCategory?.message ??
+                    translateMessage(errors.roleCategory?.message) ??
                     (roleCategoriesError instanceof Error
                       ? roleCategoriesError.message
                       : undefined)
@@ -873,11 +894,11 @@ function JobPostStepOneContent({
                 <SelectInputField
                   {...field}
                   id="seniority-level"
-                  label="Seniority Level"
-                  placeholder="select"
+                  label={t("companyPage.postJob.fields.seniorityLevel.label")}
+                  placeholder={t("common.select")}
                   className="bg-white"
                   error={
-                    errors.seniorityLevel?.message ??
+                    translateMessage(errors.seniorityLevel?.message) ??
                     (seniorityLevelsError instanceof Error
                       ? seniorityLevelsError.message
                       : undefined)
@@ -904,7 +925,7 @@ function JobPostStepOneContent({
 
       {/* ── Job Location ── */}
       <div className="bg-muted rounded-[12px] p-3">
-        <h6 className="text-gray-45 mb-5 font-semibold">Job Location</h6>
+        <h6 className="text-gray-45 mb-5 font-semibold">{t("companyPage.postJob.sections.location.title")}</h6>
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Controller
@@ -914,12 +935,12 @@ function JobPostStepOneContent({
                 <SelectInputField
                   {...field}
                   id="country"
-                  label="Country"
+                  label={t("companyPage.postJob.fields.country.label")}
                   className="bg-white"
-                  placeholder="ex: United Arab Emirates (UAE)"
+                  placeholder={t("companyPage.postJob.fields.country.placeholder")}
                   withSearchInput
                   error={
-                    errors.country?.message ??
+                    translateMessage(errors.country?.message) ??
                     (countriesError instanceof Error
                       ? countriesError.message
                       : undefined)
@@ -956,12 +977,12 @@ function JobPostStepOneContent({
                 <SelectInputField
                   {...field}
                   id="city"
-                  label="City"
+                  label={t("companyPage.postJob.fields.city.label")}
                   className="bg-white"
-                  placeholder="ex: Dubai"
+                  placeholder={t("companyPage.postJob.fields.city.placeholder")}
                   withSearchInput
                   error={
-                    errors.city?.message ??
+                    translateMessage(errors.city?.message) ??
                     (citiesError instanceof Error ? citiesError.message : undefined)
                   }
                   onChange={(value) => {
@@ -994,10 +1015,10 @@ function JobPostStepOneContent({
             <SelectInputField
               {...field}
               id="experience-years"
-              label="Years of Experience"
-              placeholder="select"
+              label={t("companyPage.postJob.fields.yearsOfExperience.label")}
+              placeholder={t("common.select")}
               error={
-                errors.yearsOfExperience?.message ??
+                translateMessage(errors.yearsOfExperience?.message) ??
                 (experiencesError instanceof Error
                   ? experiencesError.message
                   : undefined)
@@ -1025,21 +1046,21 @@ function JobPostStepOneContent({
       {isOtherExperience && (
         <InputField
           id="otherExperienceTitle"
-          label="Other years of experience"
-          placeholder="Enter years of experience"
+          label={t("companyPage.postJob.fields.otherYearsOfExperience.label")}
+          placeholder={t("companyPage.postJob.fields.otherYearsOfExperience.placeholder")}
           {...register("otherExperienceTitle", {
             onChange: (event) => {
               onPreviewLabelChange?.("yearsOfExperience", event.target.value);
             },
           })}
-          error={errors.otherExperienceTitle?.message}
+          error={translateMessage(errors.otherExperienceTitle?.message)}
         />
       )}
 
       {/* ── Education & Certifications ── */}
       <div className="bg-muted rounded-[12px] p-3">
         <h6 className="text-gray-45 mb-5 font-semibold">
-          Education & Certifications section
+          {t("companyPage.postJob.sections.education.title")}
         </h6>
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
           <div className="space-y-2">
@@ -1050,11 +1071,11 @@ function JobPostStepOneContent({
                 <MultiSelectInputField
                   {...field}
                   id="education-level"
-                  label="Education Level"
-                  placeholder="select"
+                  label={t("companyPage.postJob.fields.educationLevel.label")}
+                  placeholder={t("common.select")}
                   className="bg-white"
                   error={
-                    errors.educationLevel?.message ??
+                    translateMessage(errors.educationLevel?.message) ??
                     (educationLevelsError instanceof Error
                       ? educationLevelsError.message
                       : undefined)
@@ -1087,11 +1108,11 @@ function JobPostStepOneContent({
                   <MultiSelectInputField
                     {...field}
                     id="mandatory-certifications"
-                    label="Mandatory Certifications"
-                    placeholder="select"
+                    label={t("companyPage.postJob.fields.mandatoryCertifications.label")}
+                    placeholder={t("common.select")}
                     className="bg-white"
                     error={
-                      errors.mandatoryCertifications?.message ??
+                      translateMessage(errors.mandatoryCertifications?.message) ??
                       (mandatoryCertificationsError instanceof Error
                         ? mandatoryCertificationsError.message
                         : undefined)
@@ -1116,8 +1137,8 @@ function JobPostStepOneContent({
                   <div className="flex items-end gap-3">
                     <InputField
                       id="new-mandatory-certification"
-                      label="Add new certification"
-                      placeholder="Type a certification title"
+                      label={t("companyPage.postJob.fields.addNewCertification.label")}
+                      placeholder={t("companyPage.postJob.fields.addNewCertification.placeholder")}
                       value={newMandatoryCertification}
                       onChange={(event) =>
                         setNewMandatoryCertification(event.currentTarget.value)
@@ -1138,7 +1159,7 @@ function JobPostStepOneContent({
                       className="mb-0.5 shrink-0"
                       onClick={addCustomMandatoryCertification}
                     >
-                      Add new
+                      {t("companyPage.postJob.actions.addNew")}
                     </Button>
                   </div>
                 </div>
@@ -1149,7 +1170,7 @@ function JobPostStepOneContent({
       </div>
 
       <div className="bg-muted rounded-[12px] p-3">
-        <h6 className="text-gray-45 mb-5 font-semibold">Availability</h6>{" "}
+        <h6 className="text-gray-45 mb-5 font-semibold">{t("companyPage.postJob.sections.availability.title")}</h6>{" "}
         <div className="grid w-full grid-cols-1 gap-4">
           <div className="space-y-2">
             <Controller
@@ -1159,11 +1180,11 @@ function JobPostStepOneContent({
                 <SelectInputField
                   {...field}
                   id="availability"
-                  label="Availability"
+                  label={t("companyPage.postJob.fields.availability.label")}
                   className="bg-white"
-                  placeholder="select"
+                  placeholder={t("common.select")}
                   error={
-                    errors.availability?.message ??
+                    translateMessage(errors.availability?.message) ??
                     (availabilitiesError instanceof Error
                       ? availabilitiesError.message
                       : undefined)
@@ -1190,14 +1211,14 @@ function JobPostStepOneContent({
             {isOtherAvailability && (
               <InputField
                 id="otherAvailabilityTitle"
-                label="Other availability"
-                placeholder="Enter availability"
+                label={t("companyPage.postJob.fields.otherAvailability.label")}
+                placeholder={t("companyPage.postJob.fields.otherAvailability.placeholder")}
                 {...register("otherAvailabilityTitle", {
                   onChange: (event) => {
                     onPreviewLabelChange?.("availability", event.target.value);
                   },
                 })}
-                error={errors.otherAvailabilityTitle?.message}
+                error={translateMessage(errors.otherAvailabilityTitle?.message)}
               />
             )}
           </div>

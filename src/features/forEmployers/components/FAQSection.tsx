@@ -10,9 +10,11 @@ import {
 } from "@/shared/components/ui/accordion";
 import { Button } from "@/shared/components/ui/button";
 import type { FAQSectionProps } from "../types";
+import { useTranslations } from "next-intl";
 
 export default function FAQSection({ title, items }: FAQSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const t = useTranslations();
 
   const initialCount = 6;
   const visibleItems = isExpanded ? items : items.slice(0, initialCount);
@@ -63,7 +65,7 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
                     className="text-muted-foreground text-md group mt-6 items-center gap-2 border-none font-normal flex"
                     onClick={() => setIsExpanded((prev) => !prev)}
                   >
-                    {isExpanded ? "Show Less" : "Show More"}
+                    {isExpanded ? t("search-filter.show-less") : t("search-filter.show-more")}
 
                     <ArrowRight
                       size={28}

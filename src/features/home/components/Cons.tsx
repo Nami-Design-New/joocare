@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { HomeWhyModel } from "../types/home.types";
 import SectionTitle from "./SectionTitle";
+import { useTranslations } from "next-intl";
 
 export default function Cons({
   title,
@@ -11,9 +12,11 @@ export default function Cons({
   description: string;
   items: HomeWhyModel[];
 }) {
+  const t = useTranslations();
+
   return (
     <div className="">
-      <SectionTitle sectionTitle="The Legacy Model" />
+      <SectionTitle sectionTitle={t('home.legacy-model')} />
       <h3 className="text-secondary mt-2 text-xl font-semibold">{title}</h3>
       <p className="text-4 text-muted-foreground mt-6 mb-10">{description}</p>
       <ul className="flex flex-col items-start gap-8">

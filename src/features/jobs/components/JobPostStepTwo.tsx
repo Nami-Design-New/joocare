@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { JobFormData } from "../validation/job-post-schema";
 const CustomEditor = dynamic(() => import("./CustomEditor"), { ssr: true });
@@ -11,6 +11,7 @@ import { MultiSelectInputField } from "@/shared/components/MultiSelectInputField
 import useGetSkills from "@/shared/hooks/useGetSkills";
 import { useSearchParams } from "next/navigation";
 import { JobDetails } from "../types/jobs.types";
+import { useTranslations } from "next-intl";
 
 export default function JobPostStepTwo({
   onPreviewLabelChange,
@@ -19,6 +20,7 @@ export default function JobPostStepTwo({
   onPreviewLabelChange?: (key: "skills", value: string[]) => void;
   existingJob?: JobDetails | null;
 }) {
+  const t = useTranslations();
   const {
     control,
     formState: { errors },
@@ -54,32 +56,24 @@ export default function JobPostStepTwo({
     [existingJob],
   );
 
-  const [skillsOptionsCache, setSkillsOptionsCache] = useState<Map<string, string>>(
-    () => {
-      const map = new Map<string, string>();
-      existingSkillOptions.forEach((option) => map.set(option.value, option.label));
-      return map;
-    },
-  );
-
-  useEffect(() => {
-    setSkillsOptionsCache((prev) => {
-      const next = new Map(prev);
-      let changed = false;
-
-      [...existingSkillOptions, ...skillOptions].forEach((option) => {
-        if (!next.has(option.value)) {
-          next.set(option.value, option.label);
-          changed = true;
-        }
-      });
-
-      return changed ? next : prev;
+  const skillsOptionsCache = useMemo(() => {
+    const map = new Map<string, string>();
+    [...existingSkillOptions, ...skillOptions].forEach((option) => {
+      map.set(option.value, option.label);
     });
+    return map;
   }, [existingSkillOptions, skillOptions]);
 
   function getOptionLabels(values: string[]) {
     return values.map((v) => skillsOptionsCache.get(v) ?? v);
+  }
+
+  function translateMessage(message: string) {
+    try {
+      return t(message as never);
+    } catch {
+      return message;
+    }
   }
 
   return (
@@ -92,7 +86,7 @@ export default function JobPostStepTwo({
             render={({ field }) => (
               <div className="job-editor">
                 <label className="mb-2 block font-medium">
-                  Job Description
+                  {t("companyPage.postJob.fields.jobDescription.label")}
                 </label>
                 <CustomEditor
                   value={field.value || ""}
@@ -100,7 +94,9 @@ export default function JobPostStepTwo({
                 />
                 {errors.description && (
                   <p className="text-sm text-red-500">
-                    {errors.description.message}
+                    {errors.description.message
+                      ? translateMessage(errors.description.message)
+                      : null}
                   </p>
                 )}
               </div>
@@ -116,11 +112,13 @@ export default function JobPostStepTwo({
                 <MultiSelectInputField
                   {...field}
                   id="skills"
-                  label="Skills"
-                  placeholder="ex: Improvement"
+                  label={t("companyPage.postJob.fields.skills.label")}
+                  placeholder={t("companyPage.postJob.fields.skills.placeholder")}
                   withSearchInput
                   error={
-                    errors.skills?.message ??
+                    (errors.skills?.message
+                      ? translateMessage(errors.skills.message)
+                      : undefined) ??
                     (skillsError instanceof Error
                       ? skillsError.message
                       : undefined)

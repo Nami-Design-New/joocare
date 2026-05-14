@@ -4,7 +4,7 @@ import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { Minus, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
@@ -25,7 +25,7 @@ import {
   updateExperience,
 } from "../../services/experience-client-service";
 import type { CandidateExperienceViewModel } from "../../types/profile.types";
-import { experienceModalSchema, FormData } from "../../validation/experience-modal-schema";
+import { createExperienceModalSchema, FormData } from "../../validation/experience-modal-schema";
 
 interface ExperienceModalProps {
   open: boolean;
@@ -77,11 +77,29 @@ export function ExperienceModal({
   label,
   experience,
 }: ExperienceModalProps) {
+  const t = useTranslations();
   const router = useRouter();
   const locale = useLocale();
   const { data: session } = useSession();
   const [isSaving, setIsSaving] = useState(false);
   const defaultValues = useMemo(() => toFormState(experience), [experience]);
+  const experienceSchema = useMemo(
+    () =>
+      createExperienceModalSchema({
+        jobTitleRequired: t("authPage.validation.job-title-required"),
+        organizationMin: t("candidateValidation.organization-min"),
+        organizationMax: t("candidateValidation.organization-max"),
+        startDateRequired: t("candidateValidation.start-date-required"),
+        responsibilityMin: t("candidateValidation.responsibility-min"),
+        responsibilityMax: t("candidateValidation.responsibility-max"),
+        responsibilitiesMin: t("candidateValidation.responsibilities-min"),
+        otherJobTitleRequired: t("authPage.validation.other-job-title-required"),
+        startDatePast: t("candidateValidation.start-date-past"),
+        endDateRequired: t("candidateValidation.end-date-required"),
+        endDateAfterStart: t("candidateValidation.end-date-after-start"),
+      }),
+    [t],
+  );
   const [jobTitleSearch, setJobTitleSearch] = useState("");
   const {
     control,
@@ -92,7 +110,7 @@ export function ExperienceModal({
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: typedZodResolver(experienceModalSchema),
+    resolver: typedZodResolver(experienceSchema),
     defaultValues,
   });
   const [dialogContentElement, setDialogContentElement] = useState<HTMLDivElement | null>(null);
@@ -127,10 +145,10 @@ export function ExperienceModal({
       .filter((jobTitle) => jobTitle.label);
 
     return [
-      { label: "Other", value: "__other__" },
+      { label: t("authPage.common.other"), value: "__other__" },
       ...mappedOptions,
     ];
-  }, [jobTitles]);
+  }, [jobTitles, t]);
 
   useEffect(() => {
     if (open) {
@@ -156,7 +174,7 @@ export function ExperienceModal({
 
   const onSubmit: SubmitHandler<FormData> = async (form) => {
     if (!session?.accessToken) {
-      toast.error("Your session has expired. Please log in again.");
+      toast.error(t("candidatePage.toasts.session-expired"));
       return;
     }
 
@@ -188,15 +206,15 @@ export function ExperienceModal({
       toast.success(
         response?.message ??
         (experience?.id
-          ? "Experience updated successfully."
-          : "Experience added successfully."),
+          ? t("candidatePage.toasts.experience-updated")
+          : t("candidatePage.toasts.experience-added")),
       );
       reset(EMPTY_FORM);
       onOpenChange(false);
       router.refresh();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to save experience.";
+        error instanceof Error ? error.message : t("candidatePage.toasts.experience-save-failed");
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -217,14 +235,14 @@ export function ExperienceModal({
             render={({ field }) => (
               <SelectInputField
                 id="jobTitle"
-                label="Job title"
-                placeholder={isJobTitlesLoading ? "Loading job titles..." : "Select job title"}
+                label={t("authPage.common.job-title")}
+                placeholder={isJobTitlesLoading ? t("candidatePage.profile.loading-job-titles") : t("candidatePage.profile.select-job-title")}
                 options={jobTitleOptions}
                 value={field.value}
                 onChange={field.onChange}
                 disabled={isJobTitlesLoading}
                 withSearchInput
-                searchPlaceholder="Search job titles..."
+                searchPlaceholder={t("candidatePage.profile.search-job-titles")}
                 portalContainer={dialogContentElement}
                 onReachEnd={() => void fetchNextPage()}
                 hasNextPage={!!hasNextPage}
@@ -241,8 +259,8 @@ export function ExperienceModal({
           {isOtherJobTitle && (
             <InputField
               id="otherJobTitle"
-              label="Other job title"
-              placeholder="Enter your job title"
+              label={t("authPage.common.other-job-title")}
+              placeholder={t("candidatePage.profile.enter-job-title")}
               {...register("otherJobTitle")}
               error={errors.otherJobTitle?.message}
             />
@@ -250,8 +268,8 @@ export function ExperienceModal({
 
           <InputField
             id="organizationOrHospitalName"
-            label="Organization Name"
-            placeholder="ex: health care"
+            label={t("candidatePage.profile.organization-name")}
+            placeholder={t("candidatePage.profile.organization-placeholder")}
             {...register("organizationOrHospitalName")}
             error={errors.organizationOrHospitalName?.message}
           />
@@ -259,7 +277,7 @@ export function ExperienceModal({
           <div className="flex gap-2 max-md:flex-col">
             <InputField
               id="startDate"
-              label="Start Date"
+              label={t("candidatePage.profile.start-date")}
               type="date"
               {...register("startDate")}
               error={errors.startDate?.message}
@@ -267,7 +285,7 @@ export function ExperienceModal({
 
             <InputField
               id="endDate"
-              label="End Date"
+              label={t("candidatePage.profile.end-date")}
               type="date"
               disabled={workHere}
               {...register("endDate")}
@@ -285,19 +303,19 @@ export function ExperienceModal({
                 onCheckedChange={field.onChange}
                 error={errors.workHere?.message}
               >
-                I currently work here
+                {t("candidatePage.profile.currently-work-here")}
               </LabelCheckbox>
             )}
           />
 
           <div className="flex flex-col gap-3">
-            <label className="text-sm font-medium">Responsibilities</label>
+            <label className="text-sm font-medium">{t("candidatePage.profile.responsibilities")}</label>
 
             {fields.map((field, index) => (
               <div key={field.id} className="flex items-end gap-2">
                 <InputField
                   id={`responsibilities-${index}`}
-                  placeholder="Describe your responsibilities"
+                  placeholder={t("candidatePage.profile.responsibilities-placeholder")}
                   {...register(`responsibilities.${index}.value`)}
                   error={errors.responsibilities?.[index]?.value?.message}
                 />
@@ -327,7 +345,7 @@ export function ExperienceModal({
 
           <DialogFooter className="flex items-center justify-center!">
             <Button className="w-1/3 hover:bg-primary/70" size="pill" type="submit" disabled={isSaving}>
-              {isSaving ? "Saving..." : experience?.id ? "Save" : "Add"}
+              {isSaving ? t("candidatePage.common.saving") : experience?.id ? t("common.save") : t("candidatePage.common.add")}
             </Button>
           </DialogFooter>
         </form>

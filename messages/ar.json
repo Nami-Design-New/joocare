@@ -1,5 +1,1332 @@
 {
-  "HomePage": {
-    "title": "اهلا بك"
+  "common": {
+    "back-to-home": "العودة إلى الرئيسية",
+    "save": "حفظ",
+    "saved": "تم الحفظ",
+    "save-job": "حفظ الوظيفة",
+    "unSave-job": "إلغاء حفظ الوظيفة",
+    "back": "رجوع",
+    "edit": "تعديل",
+    "search": "بحث",
+    "country": "الدولة",
+    "loading": "جارٍ التحميل...",
+    "saving": "جارٍ الحفظ...",
+    "sending": "جارٍ الإرسال...",
+    "uploading": "جارٍ الرفع...",
+    "view": "عرض",
+    "select": "اختر",
+    "select-an-option": "اختر خيارًا",
+    "no-results-found": "لم يتم العثور على نتائج.",
+    "no-country-found": "لم يتم العثور على دولة.",
+    "loading-pdf": "جارٍ تحميل ملف PDF...",
+    "failed-load-pdf": "تعذر تحميل ملف PDF.",
+    "placeholder-image-alt": "صورة افتراضية",
+    "sidebar-navigation": "التنقل في الشريط الجانبي"
+  },
+  "header": {
+    "home": "الرئيسية",
+    "about": "عنا",
+    "jobs": "الوظائف",
+    "contact": "تواصل معنا",
+    "login": "الدخول",
+    "join-now": "انضم الآن",
+    "for-employer": "لأصحاب العمل",
+    "user": "مستخدم",
+    "company-account": "حساب شركة",
+    "candidate-account": "حساب مرشح",
+    "view-profile": "عرض الملف الشخصي",
+    "account-settings": "إعدادات الحساب",
+    "dashboard": "لوحة التحكم",
+    "job-management": "إدارة الوظائف",
+    "saved": "المحفوظات",
+    "account-management": "إدارة الحساب",
+    "log-out": "تسجيل الخروج",
+    "loading": "جارٍ التحميل...",
+    "no-more-notifications": "لا توجد إشعارات إضافية",
+    "no-notifications-yet": "لا توجد إشعارات بعد"
+  },
+  "search-filter": {
+    "search-job": "المسمى الوظيفي أو كلمة مفتاحية",
+    "by-country": "حسب الدولة",
+    "by-domain": "حسب المجال",
+    "by-category": "حسب التصنيف",
+    "country": "ابحث عن دولة...",
+    "domain": "ابحث عن مجال...",
+    "category": "ابحث عن تصنيف...",
+    "find-job": "ابحث عن وظيفة",
+    "popular-searches": "البحث الشائع",
+    "show-more": "عرض المزيد",
+    "show-less": "عرض أقل",
+    "search": "بحث"
+  },
+  "home": {
+    "how-it-work": "كيف يعمل",
+    "why-joocare": "لماذا جُوكير",
+    "joocare-model": "نموذج جُوكير",
+    "legacy-model": "النموذج التقليدي",
+    "top-employers": "أفضل أصحاب العمل",
+    "proven-hiring-impact": "نتائج مثبتة في التوظيف",
+    "recent-jobs": "أحدث الوظائف",
+    "explore-more": "استكشف المزيد",
+    "what-professionals-say": "ماذا يقول المحترفون",
+    "faq": "الأسئلة الشائعة",
+    "verified-healthcare-professionals": "المتخصصون الصحيون المعتمدون",
+    "active-job-opportunities": "فرص العمل النشطة",
+    "healthcare-specializations-covered": "التخصصات الصحية المغطاة",
+    "hiring-success-rate": "معدل نجاح التوظيف",
+    "lets-get-started": "لنبدأ الآن"
+  },
+  "aboutPage": {
+    "section-title": "حول جُوكير",
+    "about-image-alt": "صورة حول",
+    "verified": "موثّق",
+    "why-choose-us": "لماذا تختارنا؟",
+    "get-started-for-free": "ابدأ مجانًا",
+    "our-mission": "مهمتنا",
+    "mission-image-alt": "صورة المهمة",
+    "our-vision": "رؤيتنا",
+    "vision-image-alt": "صورة الرؤية",
+    "search-jobs": "بحث الوظائف",
+    "credentialing-ai": "الذكاء الاصطناعي للاعتماد",
+    "verified-doctors": "أطباء معتمدون"
+  },
+  "faqPage": {
+    "pagination-show": "عرض",
+    "pagination-from": "من"
+  },
+  "jobsPage": {
+    "job": "وظيفة",
+    "browse-jobs": "تصفح الوظائف",
+    "empty-title": "لا توجد بيانات",
+    "no-job-description": "لم تقم بحفظ أي وظائف بعد.",
+    "empty-description": "لا توجد وظائف مطابقة لعملية البحث والفلاتر الحالية.",
+    "healthcare-opportunity": "فرصة في القطاع الصحي",
+    "joocare-employer": "جهة توظيف جُوكير",
+    "location-not-specified": "الموقع غير محدد",
+    "not-specified": "غير محدد",
+    "experience-not-specified": "الخبرة غير محددة",
+    "healthcare": "الرعاية الصحية",
+    "card-description-fallback": "استكشف تفاصيل الوظيفة لمعرفة المزيد عن الدور وجهة العمل.",
+    "no-description-available": "لا يوجد وصف متاح.",
+    "share": "مشاركة",
+    "applied": "تم التقديم",
+    "view-job": "عرض الوظيفة",
+    "filters": {
+      "title": "الفلاتر",
+      "professional-license": "الترخيص المهني",
+      "with-medical-license": "مع ترخيص طبي",
+      "without-medical-license": "بدون ترخيص طبي",
+      "role-category": "فئة الدور",
+      "seniority-level": "المستوى الوظيفي",
+      "domain": "المجال",
+      "experience": "الخبرة",
+      "availability": "التوفر",
+      "category": "التصنيف",
+      "employment-type": "نوع التوظيف",
+      "choose-role-category-first": "اختر فئة الدور أولاً",
+      "loading-seniority-levels": "جارٍ تحميل مستويات الأقدمية...",
+      "salary-range": "نطاق الراتب",
+      "any-salary-type": "أي نوع راتب",
+      "min": "الحد الأدنى",
+      "max": "الحد الأقصى",
+      "apply-filters": "تطبيق الفلاتر",
+      "reset": "إعادة تعيين"
+    },
+    "toasts": {
+      "job-link-copied": "تم نسخ رابط الوظيفة بنجاح.",
+      "unable-copy-job-link": "تعذر نسخ رابط الوظيفة.",
+      "unable-share-job-link": "تعذر مشاركة رابط الوظيفة."
+    }
+  },
+  "jobDetailsPage": {
+    "breadcrumb-title": "تفاصيل الوظيفة",
+    "at": "في",
+    "already-applied": "تم التقديم بالفعل",
+    "apply-now": "قدّم الآن",
+    "applying": "جارٍ التقديم...",
+    "job-description": "وصف الوظيفة",
+    "qualifications": "المؤهلات",
+    "skills": "المهارات:",
+    "job-location": "موقع الوظيفة",
+    "salary": "الراتب",
+    "job-overview": "نظرة عامة على الوظيفة",
+    "job-category": "فئة الوظيفة",
+    "specialty": "التخصص",
+    "education-certifications": "قسم التعليم والشهادات",
+    "education-level": "المستوى التعليمي",
+    "mandatory-certifications": "الشهادات الإلزامية",
+    "share-this-job": "شارك هذه الوظيفة:",
+    "copy-link": "نسخ الرابط",
+    "check-out-this-job": "اطلع على هذه الوظيفة",
+    "about-the-employer": "عن صاحب العمل",
+    "view-profile": "عرض الملف الشخصي",
+    "cv-submission-required": "مطلوب إرسال السيرة الذاتية",
+    "cv-submission-description": "لإكمال تقديمك على هذه الوظيفة، تحتاج الجهة الطبية إلى مراجعة سيرتك الذاتية. يمكنك استخدام سيرتك الذاتية المحفوظة أو رفع سيرة جديدة الآن بصيغة PDF أو Word.",
+    "loading-cv": "جارٍ تحميل سيرتك الذاتية...",
+    "or": "أو",
+    "upload-new-cv": "رفع سيرة ذاتية جديدة",
+    "upload-cv": "رفع السيرة الذاتية",
+    "go-to-profile": "الذهاب إلى الملف الشخصي",
+    "success-title": "تم إرسال الطلب بنجاح",
+    "success-description": "شكرًا لتقديم طلبك. تمت مشاركة ملفك الشخصي مع فريق التوظيف وهو الآن قيد المراجعة. سيتم إشعارك إذا انتقلت إلى المرحلة التالية.",
+    "go-to-job-applications": "الذهاب إلى طلبات الوظائف",
+    "explore-more-jobs": "استكشف المزيد من الوظائف",
+    "similar-jobs": "وظائف مشابهة",
+    "handpicked-for-your-profile": "مختارة لملفك الشخصي",
+    "company-logo": "شعار الشركة",
+    "currency-icon": "أيقونة العملة",
+    "location-icon": "أيقونة الموقع",
+    "link-icon": "أيقونة الرابط",
+    "employer-profile-card": "بطاقة ملف صاحب العمل",
+    "cv-file": "ملف السيرة الذاتية",
+    "icon": "أيقونة",
+    "no-description-available": "لا يوجد وصف متاح.",
+    "toasts": {
+      "only-candidates": "يمكن فقط لحسابات المرشحين التقديم على الوظائف.",
+      "failed-load-cv": "تعذر تحميل سيرتك الذاتية.",
+      "please-wait": "يرجى الانتظار قليلًا ثم المحاولة مرة أخرى.",
+      "upload-cv-first": "يرجى رفع سيرتك الذاتية أولاً قبل التقديم.",
+      "application-submitted": "تم إرسال طلب التقديم بنجاح.",
+      "failed-submit-application": "تعذر إرسال طلب التقديم."
+    }
+  },
+  "contactPage": {
+    "contact-us": "تواصل معنا",
+    "get-in-touch-candidate": "تواصل معنا",
+    "get-in-touch-employer": "تواصل معنا",
+    "illustration-alt": "صورة توضيحية",
+    "for-candidate": "للباحثين عن عمل",
+    "for-employer": "لأصحاب العمل",
+    "follow-us": "تابعنا",
+    "share-your-thoughts": "شاركنا أفكارك",
+    "request-for-demo": "طلب عرض توضيحي",
+    "tell-us-how-we-can-help": "أخبرنا كيف يمكننا مساعدتك",
+    "send-your-message": "أرسل رسالتك",
+    "full-name": "الاسم الكامل",
+    "company-name": "اسم الشركة",
+    "full-name-placeholder": "مثال: أحمد الطاوي",
+    "company-name-placeholder": "مثال: جُوكير",
+    "email": "البريد الإلكتروني",
+    "official-email": "البريد الإلكتروني الرسمي",
+    "email-placeholder": "مثال: mail@mail.com",
+    "phone-number": "رقم الهاتف",
+    "phone-placeholder": "أدخل رقم الهاتف",
+    "current-location": "الموقع الحالي",
+    "country": "الدولة",
+    "city": "المدينة",
+    "city-lower": "المدينة",
+    "type-of-inquiry": "نوع الاستفسار",
+    "select-inquiry-type": "اختر نوع الاستفسار",
+    "search-inquiry-type": "ابحث عن نوع الاستفسار",
+    "inquiry-type": "نوع الاستفسار",
+    "other": "أخرى",
+    "other-inquiry-type": "نوع استفسار آخر",
+    "enter-inquiry-type": "أدخل نوع الاستفسار",
+    "message": "الرسالة",
+    "message-placeholder": "اكتب رسالتك هنا...",
+    "sending": "جارٍ الإرسال...",
+    "send": "إرسال",
+    "toast": {
+      "success": "تم إرسال رسالتك بنجاح.",
+      "error": "حدث خطأ ما، يرجى المحاولة مرة أخرى."
+    },
+    "validation": {
+      "name-required": "الاسم مطلوب",
+      "email-invalid": "البريد الإلكتروني غير صالح",
+      "inquiry-type-required": "نوع الاستفسار مطلوب",
+      "message-min": "يجب أن تحتوي الرسالة على 10 أحرف على الأقل",
+      "other-inquiry-type-required": "نوع الاستفسار الآخر مطلوب",
+      "phone-required": "رقم الهاتف مطلوب",
+      "current-location-required": "الموقع الحالي مطلوب",
+      "city-required": "المدينة مطلوبة"
+    }
+  },
+  "forEmployersPage": {
+    "hero-section-title": "توظيف الرعاية الصحية أصبح أسهل!",
+    "banner-image-alt": "التوظيف الطبي",
+    "get-started-now": "ابدأ الآن",
+    "step": "الخطوة {number}",
+    "why-section-title": "المواهب في الوقت المناسب",
+    "get-started-for-free": "ابدأ مجانًا"
+  },
+  "authPage": {
+    "header": {
+      "homepage-aria": "الصفحة الرئيسية",
+      "logo-alt": "شعار جُوكير",
+      "switch-mode-aria": "تبديل الوضع"
+    },
+    "common": {
+      "or": "أو",
+      "sign-in": "تسجيل الدخول",
+      "not-member-yet": "لست عضوًا بعد؟",
+      "already-have-account": "لديك حساب بالفعل؟",
+      "for-candidate": "للباحث عن عمل",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "forgot-password": "هل نسيت كلمة المرور؟",
+      "logging-in": "جارٍ تسجيل الدخول...",
+      "register": "إنشاء حساب",
+      "registering": "جارٍ إنشاء الحساب...",
+      "send": "إرسال",
+      "sending": "جارٍ الإرسال...",
+      "confirm": "تأكيد",
+      "confirming": "جارٍ التأكيد...",
+      "new-password": "كلمة المرور الجديدة",
+      "confirm-new-password": "تأكيد كلمة المرور الجديدة",
+      "full-name": "الاسم الكامل",
+      "phone-number": "رقم الهاتف",
+      "job-title": "المسمى الوظيفي",
+      "other": "أخرى",
+      "other-job-title": "مسمى وظيفي آخر",
+      "current-location": "الموقع الحالي",
+      "country": "الدولة",
+      "country-lower": "الدولة",
+      "city-lower": "المدينة",
+      "create-password": "إنشاء كلمة مرور",
+      "upload-cv": "رفع السيرة الذاتية",
+      "license-title": "عنوان الترخيص",
+      "license-number": "رقم الترخيص",
+      "upload-license-image": "رفع صورة الترخيص ",
+      "optional": "اختيارى",
+      "company-name": "اسم الشركة",
+      "business-email": "البريد الإلكتروني للشركة",
+      "domain": "المجال",
+      "contact-person-full-name": "الاسم الكامل لجهة الاتصال",
+      "contact-person-phone-number": "رقم هاتف جهة الاتصال"
+    },
+    "pages": {
+      "candidate-login": {
+        "title": "مرحبًا بعودتك",
+        "subtitle": "خذ الخطوة التالية في مسيرتك المهنية"
+      },
+      "candidate-register": {
+        "title": "لنبدأ الآن"
+      },
+      "employer-login": {
+        "title-line-1": "مرحبًا بعودتك،",
+        "title-line-2": "شريكنا.",
+        "subtitle": "قم بإدارة الوظائف والمتقدمين بسهولة"
+      },
+      "employer-register": {
+        "title": "ابدأ عملك"
+      }
+    },
+    "side-content": {
+      "default": {
+        "title-line-1": "تطابق أسرع،",
+        "title-line-2": "واعمل بذكاء أكبر"
+      },
+      "employer-login": {
+        "description": "باستخدام الأدوات الذكية والتحليلات المدعومة بالذكاء الاصطناعي، تساعدك جُوكير في العثور على الفرصة المناسبة والحصول على الوظيفة التي تستحقها بثقة."
+      },
+      "candidate-login": {
+        "description": "تربط جُوكير المحترفين بالفرص المناسبة من خلال تحليلات تعتمد على البيانات لدعم القرارات المهنية والنمو طويل المدى."
+      },
+      "employer-register": {
+        "title": "لنقم بإنشاء حساب مؤسستك",
+        "description": "ضع الأساس لنجاح التوظيف لديك. من خلال إكمال بيانات حسابك، ستتمكن من استخدام أدوات المطابقة الذكية والتحليلات التنبؤية من جُوكير لتسهيل دورة التوظيف بالكامل."
+      },
+      "candidate-register": {
+        "description": "باستخدام الأدوات الذكية والتحليلات المدعومة بالذكاء الاصطناعي، تساعدك جُوكير في العثور على الفرصة المناسبة والحصول على الوظيفة التي تستحقها بثقة."
+      }
+    },
+    "forget-password": {
+      "title": "نسيت كلمة المرور",
+      "subtitle": "يرجى إدخال بريدك الإلكتروني المسجل. سنرسل لك رمز تحقق لإعادة تعيين كلمة المرور."
+    },
+    "new-password": {
+      "title": "كلمة مرور جديدة",
+      "subtitle": "أدخل كلمة مرور قوية يسهل تذكرها."
+    },
+    "otp-modal": {
+      "title": "التحقق من البريد الإلكتروني",
+      "description-before": "أدخل الرمز المرسل إلى",
+      "description-after": "، أو اضغط على الرابط الموجود في البريد الإلكتروني.",
+      "resend-code": "إعادة إرسال الرمز"
+    },
+    "forms": {
+      "candidate-register": {
+        "has-medical-license": "هل لديك ترخيص طبي ساري؟",
+        "license-country-help": "يرجى تحديد الدولة المصدرة للترخيص."
+      },
+      "employer-register": {
+        "confirm-authorized": "أؤكد أنني موظف في الشركة ومصرح لي باستخدام خدمات جُوكير نيابةً عنها.",
+        "i-agree-to": "أوافق على",
+        "and": "و"
+      }
+    },
+    "placeholders": {
+      "email": "مثال: mail@mail.com",
+      "email-compact": "مثال:mail@mail.com",
+      "full-name": "مثال: جُوكور",
+      "phone-number": "أدخل رقم الهاتف",
+      "job-title": "مثال: استشاري أول - الأشعة",
+      "license-country": "مثال: الإمارات العربية المتحدة",
+      "license-title": "مثال: عنوان الترخيص",
+      "license-number": "مثال: 23121212",
+      "company-name": "مثال: جُوكور",
+      "domain": "مثال: مستشفى",
+      "contact-person-full-name": "مثال: John Doe"
+    },
+    "validation": {
+      "field-required": "هذا الحقل مطلوب",
+      "email-required": "البريد الإلكتروني مطلوب",
+      "email-invalid": "البريد الإلكتروني غير صالح",
+      "email-invalid-detailed": "يرجى إدخال بريد إلكتروني صالح",
+      "password-required": "كلمة المرور مطلوبة",
+      "password-min": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+      "password-max": "يجب ألا تتجاوز كلمة المرور 15 حرفًا",
+      "password-less-than-max": "يجب أن تكون كلمة المرور أقل من 15 حرفًا",
+      "password-pattern": "يمكن أن تحتوي كلمة المرور على الإنجليزية أو العربية أو الأرقام أو الرموز الخاصة أو أي مزيج منها",
+      "confirm-password-required": "تأكيد كلمة المرور مطلوب",
+      "passwords-do-not-match": "كلمتا المرور غير متطابقتين",
+      "code-required": "الرمز مطلوب",
+      "code-length": "يجب أن يكون الرمز مكونًا من 5 أرقام",
+      "phone-required": "رقم الهاتف مطلوب",
+      "phone-invalid": "رقم الهاتف يحتوي على أحرف غير صالحة",
+      "phone-digits": "يجب أن يكون رقم الهاتف بين 7 و15 رقمًا",
+      "phone-max": "يجب ألا يتجاوز رقم الهاتف 15 حرفًا",
+      "full-name-required": "الاسم الكامل مطلوب",
+      "full-name-min": "يجب أن يكون الاسم الكامل حرفين على الأقل",
+      "job-title-required": "المسمى الوظيفي مطلوب",
+      "country-required": "الدولة مطلوبة",
+      "city-required": "المدينة مطلوبة",
+      "cv-required": "السيرة الذاتية مطلوبة",
+      "cv-invalid-type": "يجب أن يكون الملف المرفوع بصيغة PDF أو DOC أو DOCX.",
+      "other-job-title-required": "المسمى الوظيفي الآخر مطلوب",
+      "license-country-required": "دولة الترخيص مطلوبة عند وجود ترخيص طبي",
+      "license-title-required": "عنوان الترخيص مطلوب",
+      "license-title-min": "يجب أن يكون عنوان الترخيص حرفين على الأقل",
+      "license-title-max": "يجب ألا يتجاوز عنوان الترخيص 100 حرف",
+      "company-name-required": "اسم الشركة مطلوب",
+      "company-name-min": "يجب أن يكون اسم الشركة 3 أحرف على الأقل",
+      "company-name-max": "يجب ألا يتجاوز اسم الشركة 100 حرف",
+      "domain-required": "المجال مطلوب",
+      "person-full-name-required": "الاسم الكامل للشخص مطلوب",
+      "person-full-name-min": "يجب أن يكون الاسم الكامل 3 أحرف على الأقل",
+      "person-full-name-max": "يجب ألا يتجاوز الاسم الكامل 100 حرف",
+      "confirm-authorized": "يجب تأكيد أنك مخول لتمثيل هذه الشركة",
+      "terms-required": "يجب الموافقة على سياسة الخصوصية والشروط والأحكام",
+      "max-file-size-5mb": "الحد الأقصى لحجم الملف هو 5 ميجابايت",
+      "invalid-file-type": "نوع الملف غير صالح",
+      "upload-failed": "فشل رفع الملف"
+    },
+    "file-upload": {
+      "icon-alt": "أيقونة الرفع",
+      "drag-drop-or-browse": "اسحب الملفات وأفلتها أو تصفح"
+    },
+    "toasts": {
+      "login-failed": "فشل تسجيل الدخول",
+      "logged-in-successfully": "تم تسجيل الدخول بنجاح.",
+      "registration-success": "تم إنشاء الحساب بنجاح! يرجى التحقق من بريدك الإلكتروني.",
+      "something-went-wrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      "unable-start-social-login": "تعذر بدء تسجيل الدخول الاجتماعي.",
+      "failed-send-reset-code": "فشل إرسال رمز إعادة التعيين.",
+      "invalid-verification-code": "رمز التحقق غير صالح.",
+      "failed-resend-code": "فشل إعادة إرسال الرمز.",
+      "verification-code-sent": "تم إرسال رمز التحقق بنجاح.",
+      "reset-session-missing": "جلسة إعادة تعيين كلمة المرور مفقودة. يرجى البدء من جديد.",
+      "failed-reset-password": "فشل إعادة تعيين كلمة المرور."
+    },
+    "social": {
+      "google-icon": "أيقونة جوجل",
+      "linkedin-icon": "أيقونة لينكدإن",
+      "google": "جوجل",
+      "linkedin": "لينكدإن"
+    }
+  },
+  "candidatePage": {
+    "overview": "نظرة عامة",
+    "common": {
+      "saving": "جارٍ الحفظ...",
+      "add": "إضافة",
+      "back": "رجوع",
+      "try-again": "حاول مرة أخرى",
+      "uploading": "جارٍ الرفع...",
+      "download": "تنزيل",
+      "view": "عرض",
+      "updating": "جارٍ التحديث...",
+      "update": "تحديث"
+    },
+    "sidebar": {
+      "my-profile": "ملفي الشخصي",
+      "job-applications": "طلبات التوظيف",
+      "professional-credentials": "المؤهلات المهنية",
+      "profile-settings": "إعدادات الملف الشخصي",
+      "complete-details-title": "يرجى استكمال بياناتك.",
+      "complete-details-description": "يرجى استكمال بيانات حسابك حتى تتمكن من استخدام المنصة بشكل طبيعي والاستفادة من جميع الميزات."
+    },
+    "settings": {
+      "basic-info": "المعلومات الأساسية",
+      "change-password": "تغيير كلمة المرور",
+      "current-password": "كلمة المرور الحالية",
+      "new-password": "كلمة المرور الجديدة",
+      "confirm-new-password": "تأكيد كلمة المرور الجديدة"
+    },
+    "credentials": {
+      "qualifications": "المؤهلات",
+      "certificates": "الشهادات",
+      "licenses": "التراخيص",
+      "add-qualifications": "إضافة مؤهل",
+      "add-certificates": "إضافة شهادة",
+      "add-licenses": "إضافة ترخيص",
+      "add-item": "إضافة عنصر",
+      "load-qualifications-failed": "تعذر تحميل المؤهلات.",
+      "load-certificates-failed": "تعذر تحميل الشهادات.",
+      "load-licenses-failed": "تعذر تحميل التراخيص.",
+      "no-qualifications": "لا توجد مؤهلات مضافة بعد",
+      "no-certificates": "لا توجد شهادات مضافة بعد",
+      "no-licenses": "لا توجد تراخيص مضافة بعد",
+      "no-qualifications-description": "استخدم زر الإضافة بالأعلى لإنشاء أول مؤهل لك.",
+      "no-certificates-description": "استخدم زر الإضافة بالأعلى لإنشاء أول شهادة لك.",
+      "no-licenses-description": "استخدم زر الإضافة بالأعلى لإنشاء أول ترخيص لك.",
+      "edit-qualification": "تعديل المؤهل",
+      "edit-certificate": "تعديل الشهادة",
+      "edit-license": "تعديل الترخيص",
+      "delete-qualification-title": "هل تريد حذف هذا المؤهل؟",
+      "delete-certificate-title": "هل تريد حذف هذه الشهادة؟",
+      "delete-license-title": "هل تريد حذف هذا الترخيص؟",
+      "delete-qualification-description": "سيتم حذف المؤهل نهائيًا من حسابك ولن تتمكن من استعادته لاحقًا. يرجى التأكد قبل المتابعة لأن هذا الإجراء لا يمكن التراجع عنه.",
+      "delete-certificate-description": "سيتم حذف الشهادة نهائيًا من حسابك ولن تتمكن من استعادتها لاحقًا. يرجى التأكد قبل المتابعة لأن هذا الإجراء لا يمكن التراجع عنه.",
+      "delete-license-description": "سيتم حذف الترخيص نهائيًا من حسابك ولن تتمكن من استعادته لاحقًا. يرجى التأكد قبل المتابعة لأن هذا الإجراء لا يمكن التراجع عنه.",
+      "qualification-image": "صورة المؤهل",
+      "license-image": "صورة الترخيص",
+      "certificate-image": "صورة الشهادة",
+      "license-title-placeholder": "مثال: ترخيص طبيب عام",
+      "license-number-placeholder": "مثال: GPL-2024-3321",
+      "license-country-placeholder": "مثال: الإمارات العربية المتحدة",
+      "certificate-name": "اسم الشهادة",
+      "certificate-name-placeholder": "مثال: دبلومة مكافحة العدوى",
+      "issuing-organization": "الجهة المانحة",
+      "issuing-organization-placeholder": "مثال: جمعية القلب الأمريكية"
+    },
+    "profile": {
+      "about": "نبذة",
+      "edit-about": "تعديل النبذة",
+      "about-description": "شارك ملخصًا مهنيًا قصيرًا يبرز خبراتك ومجالات تخصصك ومهاراتك وإنجازاتك البارزة. هذا يساعد أصحاب العمل على فهم خلفيتك بسرعة.",
+      "about-placeholder": "اكتب ملخصًا مهنيًا مختصرًا (بحد أدنى 50 كلمة) يوضح خبراتك ومهاراتك وإنجازاتك.",
+      "no-bio": "لم تتم إضافة نبذة بعد.",
+      "education": "التعليم",
+      "add-education": "إضافة تعليم",
+      "edit-education": "تعديل التعليم",
+      "no-education": "لا توجد بيانات تعليمية مضافة بعد.",
+      "experience": "الخبرة",
+      "add-experience": "إضافة خبرة",
+      "edit-experience": "تعديل الخبرة",
+      "no-details": "لا توجد تفاصيل مضافة بعد.",
+      "present": "حتى الآن",
+      "start-date": "تاريخ البدء",
+      "end-date": "تاريخ الانتهاء",
+      "degree": "الدرجة العلمية",
+      "degree-placeholder": "مثال: بكالوريوس الطب والجراحة",
+      "university": "الجامعة",
+      "university-placeholder": "مثال: جامعة عين شمس - كلية الطب",
+      "gpa": "المعدل التراكمي",
+      "gpa-placeholder": "مثال: 3.75",
+      "country": "الدولة",
+      "country-placeholder": "مثال: مصر",
+      "loading-countries": "جارٍ تحميل الدول...",
+      "search-countries": "ابحث عن دولة...",
+      "loading-job-titles": "جارٍ تحميل المسميات الوظيفية...",
+      "select-job-title": "اختر المسمى الوظيفي",
+      "search-job-titles": "ابحث عن مسمى وظيفي...",
+      "enter-job-title": "أدخل مسماك الوظيفي",
+      "organization-name": "اسم الجهة",
+      "organization-placeholder": "مثال: مؤسسة صحية",
+      "currently-work-here": "أعمل هنا حاليًا",
+      "responsibilities": "المهام والمسؤوليات",
+      "responsibilities-placeholder": "اكتب مسؤولياتك",
+      "no-degree-details": "لا توجد تفاصيل للدرجة العلمية بعد.",
+      "no-period": "لا توجد فترة مضافة بعد.",
+      "building-image": "صورة مبنى",
+      "country-not-provided": "الدولة غير متوفرة",
+      "delete-education-title": "هل تريد حذف هذا التعليم؟",
+      "delete-education-description": "سيتم حذف التعليم نهائيًا من حسابك ولن تتمكن من استعادته لاحقًا. يرجى التأكد قبل المتابعة لأن هذا الإجراء لا يمكن التراجع عنه.",
+      "delete-experience-title": "هل تريد حذف هذه الخبرة؟",
+      "delete-experience-description": "سيتم حذف الخبرة نهائيًا من حسابك ولن تتمكن من استعادتها لاحقًا. يرجى التأكد قبل المتابعة لأن هذا الإجراء لا يمكن التراجع عنه.",
+      "pdf-file": "ملف PDF",
+      "pdf-icon": "أيقونة PDF",
+      "pdf-preview-only": "المعاينة متاحة لملفات PDF فقط. لا يزال بإمكانك تنزيل السيرة الذاتية أو تحديثها أو حذفها.",
+      "view-cv": "عرض السيرة الذاتية",
+      "cv-file-name": "السيرة-الذاتية",
+      "upload-image": "رفع صورة",
+      "skills": "المهارات",
+      "add-skills": "إضافة مهارات",
+      "edit-skills": "تعديل المهارات",
+      "skill-label": "المهارة",
+      "suggested-skills-title": "مقترحة بناءً على ملفك الشخصي",
+      "no-suggested-skills": "لا توجد مهارات مقترحة متاحة.",
+      "no-skills-to-edit": "لا توجد مهارات متاحة للتعديل.",
+      "skills-placeholder": "مثال: استشاري أمراض القلب",
+      "no-skills": "لا توجد مهارات مضافة بعد.",
+      "no-experience": "لا توجد خبرات مضافة بعد.",
+      "candidate": "مرشح",
+      "candidate-account": "حساب مرشح",
+      "profile-image": "صورة الملف الشخصي",
+      "hiring-readiness": "جاهزية التوظيف",
+      "hiring-readiness-help": "أضف شهادة ACLS الخاصة بك لفتح فرص توظيف مميزة.",
+      "missing-score-items": "أكمل العناصر الناقصة في التقييم",
+      "location": "الموقع",
+      "phone": "الهاتف",
+      "age": "العمر"
+    },
+    "toasts": {
+      "session-expired": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
+      "about-updated": "تم تحديث النبذة بنجاح.",
+      "about-update-failed": "فشل تحديث النبذة.",
+      "skills-add-failed": "فشلت إضافة المهارات.",
+      "skills-update-failed": "فشل تحديث المهارات.",
+      "education-added": "تمت إضافة التعليم بنجاح.",
+      "education-updated": "تم تحديث التعليم بنجاح.",
+      "education-save-failed": "فشل حفظ التعليم.",
+      "education-deleted": "تم حذف التعليم بنجاح.",
+      "education-delete-failed": "فشل حذف التعليم.",
+      "experience-added": "تمت إضافة الخبرة بنجاح.",
+      "experience-updated": "تم تحديث الخبرة بنجاح.",
+      "experience-save-failed": "فشل حفظ الخبرة.",
+      "experience-deleted": "تم حذف الخبرة بنجاح.",
+      "experience-delete-failed": "فشل حذف الخبرة.",
+      "invalid-cv-file": "ملف السيرة الذاتية غير صالح.",
+      "upload-cv-failed": "فشل رفع السيرة الذاتية.",
+      "delete-cv-failed": "فشل حذف السيرة الذاتية.",
+      "qualification-deleted": "تم حذف المؤهل بنجاح.",
+      "qualification-delete-failed": "فشل حذف المؤهل.",
+      "license-deleted": "تم حذف الترخيص بنجاح.",
+      "license-delete-failed": "فشل حذف الترخيص.",
+      "certificate-deleted": "تم حذف الشهادة بنجاح.",
+      "certificate-delete-failed": "فشل حذف الشهادة.",
+      "qualification-added": "تمت إضافة المؤهل بنجاح.",
+      "qualification-updated": "تم تحديث المؤهل بنجاح.",
+      "qualification-save-failed": "فشل حفظ المؤهل.",
+      "license-added": "تمت إضافة الترخيص بنجاح.",
+      "license-updated": "تم تحديث الترخيص بنجاح.",
+      "license-save-failed": "فشل حفظ الترخيص.",
+      "certificate-added": "تمت إضافة الشهادة بنجاح.",
+      "certificate-updated": "تم تحديث الشهادة بنجاح.",
+      "certificate-save-failed": "فشل حفظ الشهادة."
+    }
+  },
+  "legalPages": {
+    "privacy-policy-title": "سياسة الخصوصية",
+    "terms-conditions-title": "الشروط والأحكام",
+    "no-description-available": "لا يوجد وصف متاح."
+  },
+  "sharedCompanyProfilePage": {
+    "this-company": "هذه الشركة",
+    "about": "عن الشركة",
+    "about-company": "عن {companyName}",
+    "share-company-title": "اطّلع على {companyName} في JooCare",
+    "linkedin": "لينكدإن",
+    "facebook": "فيسبوك",
+    "instagram": "إنستغرام",
+    "twitter": "إكس (تويتر)",
+    "snapchat": "سناب شات",
+    "link-icon": "أيقونة الرابط",
+    "cover-image": "صورة غلاف {companyName}",
+    "logo-image": "شعار {companyName}",
+    "more-jobs": "وظائف أكثر",
+    "no-jobs": "لا توجد وظائف متاحة لهذه الشركة حاليًا.",
+    "jobs-load-failed": "تعذر تحميل وظائف هذه الشركة حاليًا.",
+    "jobs-unavailable": "الوظائف غير متاحة",
+    "jobs-from": "وظائف من {companyName}"
+  },
+  "candidateSettingsPage": {
+    "unable-load-profile": "تعذر تحميل معلومات الملف الشخصي.",
+    "profile-picture": "الصورة الشخصية",
+    "profile-image": "الملف الشخصي",
+    "remove-profile-image": "إزالة الصورة الشخصية",
+    "upload-profile-image": "رفع صورة شخصية",
+    "date-of-birth": "تاريخ الميلاد",
+    "years-of-experience": "سنوات الخبرة",
+    "common": {
+      "uploading-image": "جارٍ رفع الصورة...",
+      "deleting-image": "جارٍ حذف الصورة..."
+    },
+    "placeholders": {
+      "job-title": "مثال: استشاري باطنية",
+      "search-job-titles": "ابحث عن مسمى وظيفي...",
+      "specialty": "مثال: أمراض القلب",
+      "years-of-experience": "مثال: 3-5 سنوات",
+      "search-experience": "ابحث عن الخبرة...",
+      "search-cities": "ابحث عن مدينة..."
+    },
+    "toasts": {
+      "invalid-phone": "يرجى إدخال رقم هاتف صالح.",
+      "profile-updated": "تم تحديث الملف الشخصي بنجاح.",
+      "profile-update-failed": "فشل تحديث معلومات الملف الشخصي.",
+      "upload-profile-image-failed": "فشل رفع الصورة الشخصية."
+    },
+    "validation": {
+      "full-name-min": "يجب أن يكون الاسم الكامل 3 أحرف على الأقل.",
+      "full-name-max": "يجب ألا يتجاوز الاسم الكامل 255 حرفًا.",
+      "age-min": "يجب أن يكون عمرك 18 سنة على الأقل.",
+      "profile-image-required": "الصورة الشخصية مطلوبة.",
+      "only-one-file": "مسموح برفع ملف واحد فقط.",
+      "profile-image-invalid-type": "يجب أن تكون الصورة الشخصية بصيغة JPG أو PNG.",
+      "profile-image-invalid-size": "يجب ألا يتجاوز حجم الصورة الشخصية 2MB."
+    }
+  },
+  "candidateValidation": {
+    "organization-min": "يجب أن يكون اسم الجهة 3 أحرف على الأقل.",
+    "organization-max": "يجب ألا يتجاوز اسم الجهة 100 حرف.",
+    "start-date-required": "تاريخ البدء مطلوب.",
+    "start-date-past": "يجب أن يكون تاريخ البدء اليوم أو قبل اليوم.",
+    "end-date-required": "تاريخ الانتهاء مطلوب ما لم تكن تعمل هنا حاليًا.",
+    "end-date-after-start": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء.",
+    "responsibility-min": "يجب أن تكون المسؤولية 3 أحرف على الأقل.",
+    "responsibility-max": "يجب ألا تتجاوز المسؤولية 255 حرفًا.",
+    "responsibilities-min": "مطلوب إضافة مسؤولية واحدة على الأقل.",
+    "degree-min": "يجب أن تكون الدرجة العلمية 3 أحرف على الأقل.",
+    "degree-max": "يجب ألا تتجاوز الدرجة العلمية 100 حرف.",
+    "university-min": "يجب أن يكون اسم الجامعة 3 أحرف على الأقل.",
+    "university-max": "يجب ألا يتجاوز اسم الجامعة 100 حرف.",
+    "university-max-150": "يجب ألا يتجاوز اسم الجامعة 150 حرفًا.",
+    "gpa-required": "المعدل التراكمي مطلوب.",
+    "gpa-invalid": "يجب أن يكون المعدل التراكمي رقمًا بين 0 و 4.",
+    "bio-max": "يجب ألا يتجاوز الوصف 1000 حرف.",
+    "bio-min-words": "يرجى إدخال 50 كلمة على الأقل",
+    "current-password-required": "كلمة المرور الحالية مطلوبة.",
+    "one-image-only": "يسمح بصورة واحدة فقط.",
+    "image-jpg-png": "يجب أن تكون الصورة بصيغة JPG أو PNG.",
+    "image-max-5mb": "يجب ألا يتجاوز حجم الصورة 5MB.",
+    "image-max-2mb": "يجب ألا يتجاوز حجم الصورة 2MB.",
+    "qualification-image-required": "صورة المؤهل مطلوبة.",
+    "license-image-required": "صورة الترخيص مطلوبة.",
+    "certificate-image-required": "صورة الشهادة مطلوبة.",
+    "license-title-min": "يجب أن يكون عنوان الترخيص 3 أحرف على الأقل.",
+    "license-title-max": "يجب ألا يتجاوز عنوان الترخيص 100 حرف.",
+    "license-number-min": "يجب أن يكون رقم الترخيص 3 أحرف على الأقل.",
+    "license-number-max": "يجب ألا يتجاوز رقم الترخيص 100 حرف.",
+    "certificate-name-min": "يجب أن يكون اسم الشهادة 3 أحرف على الأقل.",
+    "certificate-name-max": "يجب ألا يتجاوز اسم الشهادة 100 حرف.",
+    "issuing-organization-min": "يجب أن تكون الجهة المانحة 3 أحرف على الأقل.",
+    "issuing-organization-max": "يجب ألا تتجاوز الجهة المانحة 150 حرفًا."
+  },
+  "companyPage": {
+    "common": {
+      "optional": "(اختياري)",
+      "country": "الدولة",
+      "city": "المدينة",
+      "something-went-wrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    },
+    "sidebar": {
+      "company-profile": "الملف الشخصي للشركة",
+      "dashboard": "لوحة التحكم",
+      "job-management": "إدارة الوظائف",
+      "account-settings": "إعدادات الحساب",
+      "profile-image-alt": "صورة الملف الشخصي",
+      "account-under-review": "الحساب قيد المراجعة",
+      "account-review-rejected": "تم رفض مراجعة الحساب",
+      "complete-details-title": "يرجى استكمال بياناتك.",
+      "complete-details-description": "يرجى استكمال بيانات حسابك حتى تتمكن من استخدام المنصة بشكل طبيعي والاستفادة من جميع الميزات.",
+      "complete-now": "أكمل الآن",
+      "post-job": "نشر وظيفة",
+      "post-job-tooltip-line-1": "يرجى استكمال بيانات حسابك أولاً",
+      "post-job-tooltip-line-2": "لنشر وظيفة."
+    },
+    "postJob": {
+      "common": {
+        "other": "أخرى"
+      },
+      "steps": {
+        "jobDetails": "تفاصيل الوظيفة",
+        "jobDescriptionRequirements": "وصف الوظيفة والمتطلبات",
+        "jobPreview": "معاينة الوظيفة"
+      },
+      "loadingJobData": "جارٍ تحميل بيانات الوظيفة...",
+      "actions": {
+        "saveAsDraft": "حفظ كمسودة",
+        "prev": "السابق",
+        "next": "التالي",
+        "posting": "جارٍ النشر...",
+        "saveChanges": "حفظ التغييرات",
+        "confirmPostJob": "تأكيد ونشر الوظيفة",
+        "add": "إضافة",
+        "addNew": "إضافة جديد"
+      },
+      "modals": {
+        "saveDraft": {
+          "title": "حفظ كمسودة",
+          "description": "سيتم حفظ جميع المعلومات المُدخلة في قسم المسودات. لن يتم نشر إعلان الوظيفة حتى تستكمل التفاصيل وتختار النشر.",
+          "confirm": "حفظ كمسودة"
+        },
+        "savedSuccessfully": {
+          "title": "تم الحفظ بنجاح",
+          "description": "تم حفظ تفاصيل الوظيفة. يمكنك المتابعة في التعديل ونشر الإعلان في أي وقت من إدارة الوظائف."
+        },
+        "postSuccess": {
+          "updatedTitle": "تم تحديث الوظيفة بنجاح!",
+          "publishedTitle": "تم نشر الإعلان بنجاح!",
+          "updatedDescription": "تم حفظ تغييراتك وتم تحديث إعلان الوظيفة.",
+          "publishedDescription": "تم تفعيل إعلان الوظيفة وأصبح متاحًا للمتقدمين. جميع الطلبات ونشاط التفاعل ومؤشرات الأداء متاحة في لوحة التحكم."
+        }
+      },
+      "sections": {
+        "salary": {
+          "addSalaryQuestion": "هل ترغب في إضافة راتب؟",
+          "rangeLabel": "نطاق الراتب",
+          "minPlaceholder": "الحد الأدنى",
+          "maxPlaceholder": "الحد الأقصى"
+        },
+        "employment": {
+          "title": "قسم نوع التوظيف"
+        },
+        "location": {
+          "title": "موقع الوظيفة"
+        },
+        "education": {
+          "title": "قسم التعليم والشهادات"
+        },
+        "availability": {
+          "title": "التوفر"
+        }
+      },
+      "fields": {
+        "jobTitle": {
+          "label": "المسمى الوظيفي",
+          "placeholder": "مثال: جرّاح قلب"
+        },
+        "otherJobTitle": {
+          "label": "مسمى وظيفي آخر",
+          "placeholder": "أدخل المسمى الوظيفي"
+        },
+        "professionalLicense": {
+          "label": "الترخيص المهني",
+          "placeholder": "مثال: ترخيص DHA",
+          "options": {
+            "withMedicalLicense": "مع ترخيص طبي",
+            "withoutMedicalLicense": "بدون ترخيص طبي"
+          }
+        },
+        "salaryType": {
+          "label": "نوع الراتب",
+          "placeholder": "بالساعة"
+        },
+        "currency": {
+          "label": "العملة",
+          "placeholder": "اختر"
+        },
+        "jobCategory": {
+          "label": "فئة الوظيفة"
+        },
+        "specialty": {
+          "label": "التخصص",
+          "placeholder": "مثال: تخصص"
+        },
+        "otherCategory": {
+          "label": "فئة أخرى",
+          "placeholder": "أدخل الفئة"
+        },
+        "employmentType": {
+          "label": "نوع التوظيف",
+          "placeholder": "مثال: دوام كامل"
+        },
+        "roleCategory": {
+          "label": "فئة الدور الوظيفي",
+          "placeholder": "مثال: سريري"
+        },
+        "seniorityLevel": {
+          "label": "المستوى الوظيفي"
+        },
+        "country": {
+          "label": "الدولة",
+          "placeholder": "مثال: الإمارات العربية المتحدة (UAE)"
+        },
+        "city": {
+          "label": "المدينة",
+          "placeholder": "مثال: دبي"
+        },
+        "yearsOfExperience": {
+          "label": "سنوات الخبرة"
+        },
+        "otherYearsOfExperience": {
+          "label": "سنوات خبرة أخرى",
+          "placeholder": "أدخل سنوات الخبرة"
+        },
+        "educationLevel": {
+          "label": "المستوى التعليمي"
+        },
+        "mandatoryCertifications": {
+          "label": "الشهادات الإلزامية"
+        },
+        "addNewCertification": {
+          "label": "إضافة شهادة جديدة",
+          "placeholder": "اكتب عنوان الشهادة"
+        },
+        "availability": {
+          "label": "التوفر"
+        },
+        "otherAvailability": {
+          "label": "توفر آخر",
+          "placeholder": "أدخل التوفر"
+        },
+        "jobDescription": {
+          "label": "وصف الوظيفة"
+        },
+        "skills": {
+          "label": "المهارات",
+          "placeholder": "مثال: تحسين الأداء"
+        }
+      },
+      "review": {
+        "untitledJob": "وظيفة بدون عنوان",
+        "noDescriptionHtml": "<p>لا يوجد وصف متاح.</p>",
+        "noPreviewData": "لا توجد بيانات معاينة بعد. أكمل الخطوة الثانية بنجاح لعرض تفاصيل الوظيفة.",
+        "companyLogoAlt": "شعار الشركة",
+        "at": "في",
+        "companyFallback": "الشركة",
+        "na": "غير متاح",
+        "jobDescriptionTitle": "وصف الوظيفة",
+        "skillsTitle": "المهارات",
+        "noSkillsSelected": "لم يتم اختيار مهارات.",
+        "salary": "الراتب",
+        "jobLocation": "موقع الوظيفة",
+        "jobOverview": "نظرة عامة على الوظيفة",
+        "educationSectionTitle": "قسم التعليم والشهادات",
+        "fields": {
+          "experience": "الخبرة",
+          "jobCategory": "فئة الوظيفة",
+          "specialty": "التخصص",
+          "roleCategory": "فئة الدور الوظيفي",
+          "seniorityLevel": "المستوى الوظيفي",
+          "educationLevel": "المستوى التعليمي",
+          "mandatoryCertifications": "الشهادات الإلزامية",
+          "availability": "التوفر"
+        }
+      },
+      "validation": {
+        "salaryMaxDigits": "يجب ألا يتجاوز الراتب 10 أرقام",
+        "jobTitleRequired": "المسمى الوظيفي مطلوب",
+        "professionalLicenseRequired": "الترخيص المهني مطلوب",
+        "categoryRequired": "الفئة مطلوبة",
+        "specialtyRequired": "التخصص مطلوب",
+        "employmentTypeRequired": "نوع التوظيف مطلوب",
+        "roleCategoryRequired": "فئة الدور الوظيفي مطلوبة",
+        "countryRequired": "الدولة مطلوبة",
+        "cityRequired": "المدينة مطلوبة",
+        "yearsOfExperienceRequired": "سنوات الخبرة مطلوبة",
+        "educationLevelRequired": "المستوى التعليمي مطلوب",
+        "mandatoryCertificationsRequired": "الشهادات الإلزامية مطلوبة",
+        "availabilityRequired": "التوفر مطلوب",
+        "otherJobTitleRequired": "يرجى إدخال المسمى الوظيفي الآخر",
+        "otherCategoryRequired": "يرجى إدخال الفئة الأخرى",
+        "otherYearsOfExperienceRequired": "يرجى إدخال سنوات الخبرة الأخرى",
+        "otherAvailabilityRequired": "يرجى إدخال التوفر الآخر",
+        "salaryRequired": "الراتب مطلوب",
+        "minSalaryRequired": "الحد الأدنى للراتب مطلوب",
+        "maxSalaryRequired": "الحد الأقصى للراتب مطلوب",
+        "maxSalaryGreaterThanMin": "يجب أن يكون الحد الأقصى أكبر من الحد الأدنى",
+        "salaryTypeRequired": "نوع الراتب مطلوب",
+        "currencyRequired": "العملة مطلوبة",
+        "descriptionRequired": "وصف الوظيفة مطلوب",
+        "atLeastOneSkillRequired": "يجب اختيار مهارة واحدة على الأقل"
+      }
+    },
+    "dashboard": {
+      "active-jobs-title": "الوظائف النشطة",
+      "category-breakdown": "توزيع الفئات",
+      "cards": {
+        "active-job-postings": {
+          "title": "الوظائف المنشورة النشطة",
+          "description": "قوائم الوظائف النشطة الحالية"
+        },
+        "total-application-volume": {
+          "title": "إجمالي حجم التقديمات",
+          "description": "إجمالي التقديمات المستلمة",
+          "this-week": "هذا الأسبوع"
+        },
+        "latest-activity": {
+          "title": "آخر النشاطات",
+          "description": "المتقدمون في آخر 7 أيام",
+          "badge": "جديد"
+        },
+        "talent-intake": {
+          "title": "استقطاب المواهب",
+          "description": "السير الذاتية التي تم تحميلها"
+        }
+      },
+      "icons": {
+        "mic-alt": "أيقونة ميكروفون",
+        "users-alt": "أيقونة المستخدمين",
+        "arrow-target-alt": "أيقونة هدف السهم",
+        "double-check-alt": "أيقونة علامة مزدوجة"
+      },
+      "table": {
+        "job-title": "المسمى الوظيفي",
+        "job-views": "مشاهدات الوظيفة",
+        "applicants": "المتقدمون",
+        "posted-since": "نشر منذ"
+      }
+    },
+    "profile": {
+      "cover-alt": "صورة الغلاف",
+      "logo-alt": "شعار الشركة",
+      "about": {
+        "title": "نبذة",
+        "modal": {
+          "title": "تعديل النبذة",
+          "placeholder": "اكتب عن شركتك..."
+        },
+        "toasts": {
+          "updated-successfully": "تم تحديث النبذة بنجاح."
+        }
+      },
+      "baseInfo": {
+        "title": "المعلومات الأساسية",
+        "official-email": "البريد الإلكتروني الرسمي",
+        "location": "الموقع",
+        "official-phone": "الهاتف الرسمي",
+        "founded": "تاريخ التأسيس"
+      },
+      "social": {
+        "title": "وسائل التواصل الاجتماعي",
+        "icon-alt": "أيقونة وسائل التواصل",
+        "modal": {
+          "title": "تعديل وسائل التواصل"
+        },
+        "fields": {
+          "website": {
+            "label": "الموقع الإلكتروني",
+            "placeholder": "https://example.com",
+            "icon-alt": "أيقونة الموقع الإلكتروني"
+          },
+          "linkedin": {
+            "placeholder": "رابط لينكدإن",
+            "icon-alt": "أيقونة لينكدإن"
+          },
+          "facebook": {
+            "placeholder": "رابط فيسبوك",
+            "icon-alt": "أيقونة فيسبوك"
+          },
+          "twitter": {
+            "placeholder": "رابط إكس (تويتر)",
+            "icon-alt": "أيقونة إكس (تويتر)"
+          },
+          "instagram": {
+            "placeholder": "رابط إنستغرام",
+            "icon-alt": "أيقونة إنستغرام"
+          },
+          "snapchat": {
+            "placeholder": "رابط سناب شات",
+            "icon-alt": "أيقونة سناب شات"
+          }
+        },
+        "delete": {
+          "title": "هل تريد حذف حساب التواصل الاجتماعي هذا؟",
+          "description": "سيتم حذف الحساب نهائيًا من حسابك ولن تتمكن من استعادته لاحقًا. يرجى التأكد قبل المتابعة، حيث لا يمكن التراجع عن هذا الإجراء.",
+          "confirm": "تأكيد الحذف"
+        },
+        "toasts": {
+          "updated-successfully": "تم تحديث وسائل التواصل بنجاح."
+        }
+      }
+    },
+    "jobDetails": {
+      "back-to-job-management": "العودة إلى إدارة الوظائف",
+      "go-to-dashboard": "الذهاب إلى لوحة التحكم",
+      "untitled-job": "وظيفة بدون عنوان",
+      "your-company": "شركتك"
+    },
+    "jobs": {
+      "status": {
+        "open": "نشط",
+        "closed": "مغلق",
+        "paused": "متوقف",
+        "draft": "مسودة",
+        "placeholder": "تصفية حسب الحالة"
+      },
+      "actions": {
+        "close": "إغلاق",
+        "pause": "إيقاف",
+        "resume": "استئناف",
+        "delete": "حذف",
+        "complete-post": "إكمال النشر"
+      },
+      "card": {
+        "resume-match": "تطابق السيرة الذاتية",
+        "view-candidates": "عرض المرشحين",
+        "view-details": "عرض التفاصيل",
+        "modals": {
+          "close": {
+            "title": "هل تم شغل هذا المنصب بنجاح؟",
+            "description": "سيؤدي إغلاق هذا الإعلان الوظيفي إلى أرشفة الدور وإزالته من الظهور أمام المهنيين الطبيين. يرجى التأكد من حفظ جميع بيانات المتقدمين ذات الصلة قبل المتابعة.",
+            "confirm": "نعم، أغلق الإعلان"
+          },
+          "reactivate": {
+            "title": "هل تود استئناف استقبال الطلبات؟",
+            "description": "إعادة تفعيل هذا الإعلان الوظيفي ستجعله مرئيًا في نتائج البحث وتسمح للمهنيين الطبيين المؤهلين بالتقديم فورًا. ستستأنف جميع أنشطة المتقدمين وفقًا لإعدادات النشر السابقة.",
+            "confirm": "نعم، فعّله الآن"
+          },
+          "pause": {
+            "title": "هل تود إيقاف استقبال الطلبات لهذا المنصب؟",
+            "description": "إيقاف هذا الإعلان الوظيفي سيمنع تقديم طلبات جديدة. ولن يظهر الدور في نتائج البحث إلى أن يتم إعادة تفعيله.",
+            "confirm": "نعم، أوقف الإعلان"
+          },
+          "delete": {
+            "title": "هل تريد حذف هذا الإعلان؟",
+            "description": "سيتم حذف الإعلان نهائيًا من حسابك ولن تتمكن من استعادته لاحقًا. يرجى التأكد قبل المتابعة، فهذا الإجراء لا يمكن التراجع عنه.",
+            "confirm": "تأكيد الحذف"
+          }
+        }
+      },
+      "modals": {
+        "close": {
+          "title": "إغلاق الوظيفة",
+          "description": "هل أنت متأكد من رغبتك في إغلاق هذه الوظيفة؟ لن تقبل تقديمات جديدة بعد الإغلاق.",
+          "confirm": "إغلاق"
+        },
+        "reactivate": {
+          "title": "إعادة تنشيط الوظيفة",
+          "description": "هل أنت متأكد من رغبتك في إعادة تنشيط هذه الوظيفة؟ ستكون مفتوحة للتقديم مرة أخرى.",
+          "confirm": "إعادة تنشيط"
+        },
+        "pause": {
+          "title": "إيقاف الوظيفة",
+          "description": "هل أنت متأكد من رغبتك في إيقاف هذه الوظيفة؟ سيتم إخفاؤها مؤقتًا.",
+          "confirm": "إيقاف"
+        },
+        "delete": {
+          "title": "حذف الوظيفة",
+          "description": "هل أنت متأكد من رغبتك في حذف هذه الوظيفة؟ لا يمكن التراجع عن هذا الإجراء.",
+          "confirm": "حذف"
+        }
+      }
+    },
+    "candidates": {
+      "filters": {
+        "search-placeholder": "ابحث بالاسم أو البريد الإلكتروني...",
+        "recent-placeholder": "الأحدث",
+        "recent-applied": "متقدم مؤخرًا",
+        "search-countries": "ابحث عن دولة...",
+        "with-medical-license": "مع ترخيص طبي",
+        "without-medical-license": "بدون ترخيص طبي",
+        "medical-license-placeholder": "الترخيص الطبي"
+      },
+      "table": {
+        "number": "#",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "date": "التاريخ",
+        "cv": "السيرة الذاتية"
+      },
+      "actions": {
+        "download": "تحميل",
+        "downloading": "جارٍ التحميل..."
+      },
+      "cv-modal": {
+        "title": "عرض السيرة الذاتية",
+        "no-cv": "لا توجد سيرة ذاتية متاحة."
+      },
+      "pdf-icon-alt": "أيقونة PDF",
+      "toasts": {
+        "download-cv-failed": "فشل تحميل السيرة الذاتية"
+      }
+    },
+    "accountSettings": {
+      "nav": {
+        "basic-info": "المعلومات الأساسية",
+        "business-verification": "التحقق من النشاط التجاري",
+        "change-password": "تغيير كلمة المرور"
+      },
+      "basicInfo": {
+        "fields": {
+          "company-name": {
+            "label": "اسم الشركة",
+            "placeholder": "مثال: جُوكير"
+          },
+          "official-email": {
+            "label": "البريد الإلكتروني الرسمي",
+            "placeholder": "مثال: info@joocare.com"
+          },
+          "domain": {
+            "label": "المجال",
+            "placeholder": "مثال: مستشفى"
+          },
+          "contact-person-name": {
+            "label": "اسم جهة الاتصال",
+            "placeholder": "مثال: John Doe"
+          },
+          "contact-person-phone": {
+            "label": "هاتف جهة الاتصال",
+            "placeholder": "أدخل رقم الهاتف"
+          },
+          "org-official-phone": {
+            "label": "الهاتف الرسمي للمؤسسة",
+            "placeholder": "أدخل رقم الهاتف"
+          },
+          "current-location": {
+            "label": "الموقع الحالي"
+          },
+          "date-of-establishment": {
+            "label": "تاريخ التأسيس",
+            "placeholder": "اختر التاريخ"
+          }
+        }
+      },
+      "businessVerification": {
+        "sections": {
+          "commercial-registration": "السجل التجاري",
+          "medical-license": "الترخيص الطبي"
+        },
+        "fields": {
+          "commercial-registration-number": {
+            "label": "رقم السجل التجاري",
+            "placeholder": "أدخل رقم السجل"
+          },
+          "issuing-country": {
+            "label": "دولة الإصدار"
+          },
+          "organization-size": {
+            "label": "حجم المؤسسة"
+          },
+          "commercial-issue-date": {
+            "label": "تاريخ إصدار السجل التجاري",
+            "placeholder": "اختر تاريخ الإصدار"
+          },
+          "commercial-expiry-date": {
+            "label": "تاريخ انتهاء السجل التجاري",
+            "placeholder": "اختر تاريخ الانتهاء"
+          },
+          "commercial-registration-image": {
+            "label": "صورة السجل التجاري",
+            "existing-label": "صورة السجل التجاري الحالية"
+          },
+          "employer-type": {
+            "label": "نوع صاحب العمل",
+            "placeholder": "اختر نوع صاحب العمل"
+          },
+          "medical-facility-license-number": {
+            "label": "رقم ترخيص المنشأة الطبية",
+            "placeholder": "أدخل رقم الترخيص"
+          },
+          "license-issuing-authority": {
+            "label": "جهة إصدار الترخيص",
+            "placeholder": "أدخل جهة الإصدار"
+          },
+          "specialty": {
+            "label": "التخصص",
+            "placeholder": "اختر التخصص"
+          },
+          "medical-issue-date": {
+            "label": "تاريخ إصدار الترخيص الطبي",
+            "placeholder": "اختر تاريخ الإصدار"
+          },
+          "medical-expiry-date": {
+            "label": "تاريخ انتهاء الترخيص الطبي",
+            "placeholder": "اختر تاريخ الانتهاء"
+          },
+          "medical-license-image": {
+            "label": "صورة الترخيص الطبي",
+            "existing-label": "صورة الترخيص الطبي الحالية"
+          }
+        }
+      },
+      "changePassword": {
+        "fields": {
+          "current-password": {
+            "label": "كلمة المرور الحالية"
+          },
+          "new-password": {
+            "label": "كلمة المرور الجديدة"
+          },
+          "confirm-new-password": {
+            "label": "تأكيد كلمة المرور الجديدة"
+          },
+          "password": {
+            "placeholder": "أدخل كلمة المرور"
+          }
+        }
+      },
+      "updateEmail": {
+        "title": "تحديث البريد الإلكتروني",
+        "description": "أدخل بريدك الإلكتروني الجديد للتحديث.",
+        "send-verification": "إرسال رمز التحقق"
+      },
+      "validation": {
+        "required": "هذا الحقل مطلوب",
+        "company-name-required": "اسم الشركة مطلوب",
+        "official-email-required": "البريد الإلكتروني الرسمي مطلوب",
+        "official-email-invalid": "يرجى إدخال بريد إلكتروني صالح",
+        "domain-required": "المجال مطلوب",
+        "contact-person-name-required": "اسم جهة الاتصال مطلوب",
+        "contact-person-phone-required": "هاتف جهة الاتصال مطلوب",
+        "country-required": "الدولة مطلوبة",
+        "city-required": "المدينة مطلوبة",
+        "date-of-establishment-required": "تاريخ التأسيس مطلوب",
+        "current-password-required": "كلمة المرور الحالية مطلوبة",
+        "new-password-required": "كلمة المرور الجديدة مطلوبة",
+        "new-password-min": "يجب أن تتكون كلمة المرور الجديدة من 6 أحرف على الأقل",
+        "new-password-max": "يجب ألا تتجاوز كلمة المرور الجديدة 15 حرفًا",
+        "confirm-new-password-required": "تأكيد كلمة المرور الجديدة مطلوب",
+        "passwords-do-not-match": "كلمتا المرور غير متطابقتين",
+        "commercial-registration-number-max": "يجب ألا يتجاوز رقم السجل التجاري 100 حرف",
+        "issuing-country-required": "دولة الإصدار مطلوبة",
+        "organization-size-required": "حجم المؤسسة مطلوب",
+        "commercial-issue-date-required": "تاريخ إصدار السجل التجاري مطلوب",
+        "commercial-expiry-date-required": "تاريخ انتهاء السجل التجاري مطلوب",
+        "employer-type-required": "نوع صاحب العمل مطلوب",
+        "medical-facility-license-number-max": "يجب ألا يتجاوز رقم ترخيص المنشأة الطبية 100 حرف",
+        "license-issuing-authority-min": "يجب أن تكون جهة إصدار الترخيص 3 أحرف على الأقل",
+        "license-issuing-authority-max": "يجب ألا تتجاوز جهة إصدار الترخيص 100 حرف",
+        "specialty-required": "التخصص مطلوب",
+        "medical-issue-date-required": "تاريخ إصدار الترخيص الطبي مطلوب",
+        "medical-expiry-date-required": "تاريخ انتهاء الترخيص الطبي مطلوب",
+        "commercial-issue-date-past": "يجب أن يكون تاريخ إصدار السجل التجاري اليوم أو قبل ذلك",
+        "commercial-expiry-date-future": "يجب أن يكون تاريخ انتهاء السجل التجاري اليوم أو بعد ذلك",
+        "commercial-expiry-after-issue": "يجب أن يكون تاريخ انتهاء السجل التجاري بعد تاريخ الإصدار",
+        "medical-issue-date-past": "يجب أن يكون تاريخ إصدار الترخيص الطبي اليوم أو قبل ذلك",
+        "medical-expiry-date-future": "يجب أن يكون تاريخ انتهاء الترخيص الطبي اليوم أو بعد ذلك",
+        "medical-expiry-after-issue": "يجب أن يكون تاريخ انتهاء الترخيص الطبي بعد تاريخ الإصدار"
+      }
+    }
+  },
+  "footer": {
+    "description": "منصة توظيف صحية مدعومة بالذكاء الاصطناعي تدعم التوظيف المتوافق والقائم على البيانات عبر قطاعات الطب وعلوم الحياة.",
+    "copyright": "جميع الحقوق محفوظة - جُوكير © {year}",
+    "logo-alt": "شعار جُوكير",
+    "for-candidates": "للمرشحين",
+    "explore-jobs": "استكشف الوظائف",
+    "faq": "الأسئلة الشائعة",
+    "create-profile": "إنشاء ملف شخصي",
+    "for-employers": "لأصحاب العمل",
+    "how-it-works": "كيف يعمل",
+    "company-trust": "الشركة والثقة",
+    "about-joocare": "عن جُوكير",
+    "data-privacy-security": "خصوصية البيانات والأمان",
+    "terms-conditions": "الشروط والأحكام",
+    "get-in-touch": "تواصل معنا",
+    "contact-us": "اتصل بنا"
+  },
+  "completeAccount": {
+    "actions": {
+      "prev": "السابق",
+      "next": "التالي",
+      "submit": "إرسال"
+    },
+    "upload": {
+      "cover-alt": "صورة الغلاف",
+      "logo-alt": "شعار المؤسسة",
+      "upload-icon-alt": "أيقونة الرفع",
+      "cover-cta": "رفع صورة غلاف",
+      "logo-cta": "شعار المؤسسة",
+      "uploading-short": "جارٍ الرفع",
+      "cover-and-logo-required": "صورة الغلاف والشعار مطلوبة"
+    },
+    "stepThree": {
+      "organization-official-phone": "رقم هاتف المؤسسة الرسمي",
+      "about-organization": {
+        "label": "نبذة عن المؤسسة",
+        "placeholder": "اكتب نبذة عن المؤسسة..."
+      },
+      "online-profile": "الملف الإلكتروني",
+      "social": {
+        "linkedin": "لينكدإن",
+        "facebook": "فيسبوك",
+        "twitter": "إكس/تويتر",
+        "instagram": "إنستغرام",
+        "snapchat": "سناب شات"
+      }
+    }
   }
 }

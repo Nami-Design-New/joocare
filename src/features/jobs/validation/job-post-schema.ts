@@ -6,7 +6,7 @@ const optionalSalaryNumber = z.preprocess((value) => {
   }
 
   return value;
-}, z.coerce.number().min(0).max(9999999999, "Salary must not exceed 10 digits").optional());
+}, z.coerce.number().min(0).max(9999999999, "companyPage.postJob.validation.salaryMaxDigits").optional());
 
 // ─────────────────────────────────────────────
 // STEP 1 — Job Post Schema
@@ -16,9 +16,9 @@ const optionalSalaryNumber = z.preprocess((value) => {
 export const step1Schema = z
   .object({
     // ── Core Info ──────────────────────────────
-    title: z.string().min(1, "Job title is required"),
+    title: z.string().min(1, "companyPage.postJob.validation.jobTitleRequired"),
     otherJobTitle: z.string().optional(),
-    license: z.string().min(1, "Professional license is required"),
+    license: z.string().min(1, "companyPage.postJob.validation.professionalLicenseRequired"),
 
     // ── Salary (conditionally required) ────────
     // addSalary: z.boolean().default(false),
@@ -45,38 +45,38 @@ export const step1Schema = z
       })
       .optional(),
     // ── Classification ─────────────────────────
-    category: z.string().min(1, "Category is required"),
+    category: z.string().min(1, "companyPage.postJob.validation.categoryRequired"),
     otherCategoryTitle: z.string().optional(),
-    specialty: z.string().min(1, "Specialty is required"),
+    specialty: z.string().min(1, "companyPage.postJob.validation.specialtyRequired"),
 
     // ── Employment Type ────────────────────────
-    employmentType: z.string().min(1, "Employment type is required"),
-    roleCategory: z.string().min(1, "Role category is required"),
+    employmentType: z.string().min(1, "companyPage.postJob.validation.employmentTypeRequired"),
+    roleCategory: z.string().min(1, "companyPage.postJob.validation.roleCategoryRequired"),
     seniorityLevel: z.string().optional(), // marked optional in UI (hint="optional")
 
     // ── Location ───────────────────────────────
-    country: z.string().min(1, "Country is required"),
-    city: z.string().min(1, "City is required"),
+    country: z.string().min(1, "companyPage.postJob.validation.countryRequired"),
+    city: z.string().min(1, "companyPage.postJob.validation.cityRequired"),
 
     // ── Experience ─────────────────────────────
-    yearsOfExperience: z.string().min(1, "Years of experience is required"),
+    yearsOfExperience: z.string().min(1, "companyPage.postJob.validation.yearsOfExperienceRequired"),
     otherExperienceTitle: z.string().optional(),
 
     // ── Education & Certifications ─────────────
     educationLevel: z
       .array(z.string())
-      .min(1, "Education level is required"),
+      .min(1, "companyPage.postJob.validation.educationLevelRequired"),
     mandatoryCertifications: z
       .array(z.string())
-      .min(1, "Mandatory certifications is required"),
-    availability: z.string().min(1, "Availability is required"),
+      .min(1, "companyPage.postJob.validation.mandatoryCertificationsRequired"),
+    availability: z.string().min(1, "companyPage.postJob.validation.availabilityRequired"),
     otherAvailabilityTitle: z.string().optional(),
   }).superRefine((data, ctx) => {
     // ── Other job title ──
     if (data.title === "__other__" && !data.otherJobTitle?.trim()) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Other job title is required",
+        message: "companyPage.postJob.validation.otherJobTitleRequired",
         path: ["otherJobTitle"],
       });
     }
@@ -84,7 +84,7 @@ export const step1Schema = z
     if (data.category === "__other__" && !data.otherCategoryTitle?.trim()) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Other category is required",
+        message: "companyPage.postJob.validation.otherCategoryRequired",
         path: ["otherCategoryTitle"],
       });
     }
@@ -95,7 +95,7 @@ export const step1Schema = z
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Other years of experience is required",
+        message: "companyPage.postJob.validation.otherYearsOfExperienceRequired",
         path: ["otherExperienceTitle"],
       });
     }
@@ -103,7 +103,7 @@ export const step1Schema = z
     if (data.availability === "__other__" && !data.otherAvailabilityTitle?.trim()) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Other availability is required",
+        message: "companyPage.postJob.validation.otherAvailabilityRequired",
         path: ["otherAvailabilityTitle"],
       });
     }
@@ -113,7 +113,7 @@ export const step1Schema = z
       if (!data.salary) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Salary is required",
+          message: "companyPage.postJob.validation.salaryRequired",
           path: ["salary"],
         });
         return;
@@ -122,7 +122,7 @@ export const step1Schema = z
       if (data.salary.min == null) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Min salary is required",
+          message: "companyPage.postJob.validation.minSalaryRequired",
           path: ["salary", "min"],
         });
       }
@@ -130,7 +130,7 @@ export const step1Schema = z
       if (data.salary.max == null) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Max salary is required",
+          message: "companyPage.postJob.validation.maxSalaryRequired",
           path: ["salary", "max"],
         });
       }
@@ -142,7 +142,7 @@ export const step1Schema = z
       ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Max salary must be greater than min",
+          message: "companyPage.postJob.validation.maxSalaryGreaterThanMin",
           path: ["salary", "max"],
         });
       }
@@ -150,7 +150,7 @@ export const step1Schema = z
       if (!data.salary.type) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Salary type is required",
+          message: "companyPage.postJob.validation.salaryTypeRequired",
           path: ["salary", "type"],
         });
       }
@@ -158,7 +158,7 @@ export const step1Schema = z
       if (!data.salary.currency) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "Currency is required",
+          message: "companyPage.postJob.validation.currencyRequired",
           path: ["salary", "currency"],
         });
       }
@@ -173,7 +173,7 @@ export const step2Schema = z.object({
   // CKEditor emits an HTML string; strip tags to measure real content length
   description: z
     .string()
-    .min(1, "Description is required"),
+    .min(1, "companyPage.postJob.validation.descriptionRequired"),
   // .refine(
   //   (val) => val.replace(/<[^>]*>/g, "").trim().length >= 20,
   //   "Description must be at least 20 characters",
@@ -181,7 +181,7 @@ export const step2Schema = z.object({
 
   // SelectInputField stores a single string value per selection.
   // If you later switch to a multi-select, change to z.array(z.string())
-  skills: z.array(z.string()).min(1, "At least one skill is required"),
+  skills: z.array(z.string()).min(1, "companyPage.postJob.validation.atLeastOneSkillRequired"),
 });
 
 // ─────────────────────────────────────────────

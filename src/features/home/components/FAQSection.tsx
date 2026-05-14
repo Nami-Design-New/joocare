@@ -11,6 +11,7 @@ import SectionTitle from "./SectionTitle";
 import type { HomeFaq } from "../types/home.types";
 import { Button } from "@/shared/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function FAQSection({
   title,
@@ -28,13 +29,14 @@ export default function FAQSection({
   const handleToggle = () => {
     setIsExpanded((prev) => !prev);
   };
+  const t = useTranslations();
 
   return (
     <section className="bg-white pt-10 pb-10 md:pt-16 md:pb-48">
       <div className="layout-shell">
         <div className="layout-content">
           <div className="mb-8 flex flex-col items-center space-y-4">
-            <SectionTitle sectionTitle="FAQ" />
+            <SectionTitle sectionTitle={t('home.faq')} />
             <h2>{title}</h2>
           </div>
 
@@ -68,9 +70,9 @@ export default function FAQSection({
                 className="text-muted-foreground text-md group mt-6 items-center gap-2 border-none font-normal flex"
                 onClick={handleToggle}
               >
-                {isExpanded ? "Show Less" : "Show More"}
+                {isExpanded ? t('search-filter.show-less') : t('search-filter.show-more')}
 
-                <ArrowRight
+                < ArrowRight
                   size={28}
                   strokeWidth={1.5}
                   className={`border-muted-foreground text-muted-foreground size-7 rounded-full border bg-white transition-transform 

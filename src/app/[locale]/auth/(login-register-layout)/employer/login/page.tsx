@@ -1,21 +1,23 @@
 // libraries
 import FormEmployerLogin from "@/features/auth/components/login-content/FormEmployerLogin";
-import SocialLoginButtons from "@/features/auth/components/login-content/SocialLoginButtons";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 //components
 
-const LoginEmployerPage = () => {
+const LoginEmployerPage = async () => {
+  const t = await getTranslations();
+
   return (
     <div className="h-[calc(100vh-75px)] flex items-center justify-center gap-4 ">
       <div className="w-full md:w-3/4  mx-auto p-4">
         {/* header text */}
         <h1>
-          Welcome back,
-          <br /> business.
+          {t("authPage.pages.employer-login.title-line-1")}
+          <br /> {t("authPage.pages.employer-login.title-line-2")}
         </h1>
         <p className="text-[clamp(.8rem,4vw,1rem)] mt-1">
-          Manage your job posts and candidates
+          {t("authPage.pages.employer-login.subtitle")}
         </p>
 
         {/* Login form */}
@@ -33,12 +35,12 @@ const LoginEmployerPage = () => {
         {/* Bottom CTA */}
         <section className="text-center border-t border-gray-100 pt-6">
           <p className="text-sm text-gray-600">
-            Not a member yet?{" "}
+            {t("authPage.common.not-member-yet")}{" "}
             <Link
               href="/auth/employer/register"
               className="text-primary hover:text-primary/60 underline font-medium transition-colors"
             >
-              Join Now
+              {t("header.join-now")}
             </Link>
           </p>
         </section>

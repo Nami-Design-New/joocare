@@ -5,6 +5,7 @@ import { TableCell, TableRow } from "@/shared/components/ui/table";
 import { Eye, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Applicant } from "../types/index.types";
+import { useTranslations } from "next-intl";
 
 export default function ApplicantRow({
   applicant,
@@ -19,6 +20,7 @@ export default function ApplicantRow({
   index: number;
   isDownloading?: boolean;
 }) {
+  const t = useTranslations();
   // console.log("applic", applicant);
 
   return (
@@ -54,10 +56,12 @@ export default function ApplicantRow({
                 src="/assets/icons/pdf-icon.svg"
                 width={14}
                 height={14}
-                alt="pdf icon"
+                alt={t("companyPage.candidates.pdf-icon-alt")}
               />
             )}
-            {isDownloading ? "Downloading..." : "Download"}
+            {isDownloading
+              ? t("companyPage.candidates.actions.downloading")
+              : t("companyPage.candidates.actions.download")}
           </Button>
           <Button
             size="sm"
@@ -66,7 +70,7 @@ export default function ApplicantRow({
             onClick={() => onView?.(applicant)}
           >
             <Eye className="h-4 w-4" />
-            View
+            {t("common.view")}
           </Button>
         </div>
       </TableCell>

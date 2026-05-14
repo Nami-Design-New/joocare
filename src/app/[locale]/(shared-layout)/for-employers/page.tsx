@@ -7,6 +7,7 @@ import WhySection from "@/features/forEmployers/components/WhySection";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
 import HttpStatusState from "@/shared/components/HttpStatusState";
 import { getHttpStatusCode } from "@/shared/lib/http-error";
+import { getTranslations } from "next-intl/server";
 
 export default async function ForEmployers({
   params,
@@ -14,6 +15,7 @@ export default async function ForEmployers({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const t = await getTranslations();
   let pageData;
 
   try {
@@ -27,7 +29,7 @@ export default async function ForEmployers({
           statusCode={statusCode}
           error={error}
           primaryHref="/"
-          primaryLabel="Back to home"
+          primaryLabel={t("common.back-to-home")}
         />
       );
     }
@@ -38,7 +40,10 @@ export default async function ForEmployers({
   return (
     <>
       <PlainBreadcrumb
-        items={[{ label: "Home", href: "/" }, { label: "For Employers" }]}
+        items={[
+          { label: t("header.home"), href: "/" },
+          { label: t("footer.for-employers") },
+        ]}
       />
       <section className="layout-shell">
         <section className="layout-content">

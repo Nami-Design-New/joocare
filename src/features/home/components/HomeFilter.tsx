@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import useGetCategories from "@/shared/hooks/useGetCategories";
 import useGetCountries from "@/shared/hooks/useGetCountries";
@@ -31,6 +31,7 @@ function resolveLocalizedLabel(
 }
 
 export default function HomeFilter() {
+  const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
   const [search, setSearch] = useState("");
@@ -112,21 +113,21 @@ export default function HomeFilter() {
         className="grow bg-white"
         containerStyles="w-1/2 grow"
         id="search"
-        placeholder="Job title or keyword"
+        placeholder={t('search-filter.search-job')}
         value={search}
         onChange={(event) => setSearch(event.currentTarget.value)}
       />
       <SelectInputField
         id="location"
         options={countryOptions}
-        placeholder="By Country"
+        placeholder={t('search-filter.by-country')}
         value={countryId}
         onChange={setCountryId}
         className="bg-white"
         containerStyles="w-auto grow"
         disabled={countriesLoading}
         withSearchInput
-        searchPlaceholder="Search countries..."
+        searchPlaceholder={t('search-filter.country')}
         onSearchChange={setCountrySearch}
         onReachEnd={() => void fetchCountriesNextPage()}
         hasNextPage={countriesHasNextPage}
@@ -136,14 +137,14 @@ export default function HomeFilter() {
       <SelectInputField
         id="domain"
         options={domainOptions}
-        placeholder="By Domain"
+        placeholder={t('search-filter.by-domain')}
         value={domainId}
         onChange={setDomainId}
         className="bg-white"
         containerStyles="w-auto grow"
         disabled={domainsLoading}
         withSearchInput
-        searchPlaceholder="Search domains..."
+        searchPlaceholder={t('search-filter.domain')}
         onSearchChange={setDomainSearch}
         onReachEnd={() => void fetchDomainsNextPage()}
         hasNextPage={domainsHasNextPage}
@@ -153,14 +154,14 @@ export default function HomeFilter() {
       <SelectInputField
         id="category"
         options={categoryOptions}
-        placeholder="By Category"
+        placeholder={t('search-filter.by-category')}
         value={categoryId}
         onChange={setCategoryId}
         className="bg-white"
         containerStyles="w-auto grow"
         disabled={categoriesLoading}
         withSearchInput
-        searchPlaceholder="Search categories..."
+        searchPlaceholder={t('search-filter.category')}
         onSearchChange={setCategorySearch}
         onReachEnd={() => void fetchCategoriesNextPage()}
         hasNextPage={categoriesHasNextPage}
@@ -168,7 +169,7 @@ export default function HomeFilter() {
       />
 
       <Button type="submit" variant="default" size="pill" className="shrink-0">
-        Find Jobs
+        {t('search-filter.find-job')}
       </Button>
     </form>
   );

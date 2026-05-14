@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
 import "swiper/css";
 import { TCompanyProfile } from "@/features/company-profile/types";
+import { useTranslations } from "next-intl";
 
 interface ILinkItem {
   label: string;
@@ -22,13 +23,14 @@ interface ILinksProps {
 }
 
 const SidebarLinks = ({ links, companyProfileData }: ILinksProps) => {
+  const t = useTranslations();
   const pathname = usePathname();
   const normalizedPathname = pathname.replace(/^\/[a-z]{2}/, "");
 
   // Conditionally modify Account Settings link based on company profile status
   const modifiedLinks = links.map((link) => {
     if (
-      link.label === "Account Settings" &&
+      link.href.startsWith("/company/account-settings") &&
       companyProfileData?.status === "Draft"
     ) {
       return {
@@ -42,7 +44,7 @@ const SidebarLinks = ({ links, companyProfileData }: ILinksProps) => {
   return (
     <>
       {/* ── Mobile / Tablet — horizontal scroll strip ─────────────────────── */}
-      <nav aria-label="Company navigation" className="lg:hidden">
+      <nav aria-label={t("common.sidebar-navigation")} className="lg:hidden">
         <Swiper
           modules={[FreeMode]}
           spaceBetween={8}
@@ -102,7 +104,7 @@ const SidebarLinks = ({ links, companyProfileData }: ILinksProps) => {
       </nav>
       {/* ── Desktop — original vertical sidebar ───────────────────────────── */}
       <nav
-        aria-label="Company navigation"
+        aria-label={t("common.sidebar-navigation")}
         className="hidden lg:block "
       >
         <ul className="flex flex-col gap-5">

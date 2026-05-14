@@ -12,14 +12,14 @@ import {
 } from "@/shared/components/ui/dialog";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { useRouter } from "@/i18n/navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { updateCandidateBio } from "../../services/profile-client-service";
 import {
-  aboutModalSchema,
+  createAboutModalSchema,
   type AboutModalFormData,
 } from "../../validation/about-modal-schema";
 
@@ -33,17 +33,26 @@ export function EditAboutModal({
   onOpenChange,
   defaultVal,
 }: EditAboutModalProps) {
+  const t = useTranslations();
   const router = useRouter();
   const locale = useLocale();
   const { data: session } = useSession();
   const [isSaving, setIsSaving] = useState(false);
+  const aboutSchema = useMemo(
+    () =>
+      createAboutModalSchema({
+        bioMax: t("candidateValidation.bio-max"),
+        bioMinWords: t("candidateValidation.bio-min-words"),
+      }),
+    [t],
+  );
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<AboutModalFormData>({
-    resolver: zodResolver(aboutModalSchema),
+    resolver: zodResolver(aboutSchema),
     defaultValues: {
       bio: defaultVal,
     },
@@ -59,7 +68,7 @@ export function EditAboutModal({
 
   const onSubmit = async ({ bio }: AboutModalFormData) => {
     if (!session?.accessToken) {
-      toast.error("Your session has expired. Please log in again.");
+      toast.error(t("candidatePage.toasts.session-expired"));
       return;
     }
 
@@ -71,14 +80,14 @@ export function EditAboutModal({
         token: session.accessToken,
       });
 
-      toast.success(response?.message ?? "About updated successfully.");
+      toast.success(response?.message ?? t("candidatePage.toasts.about-updated"));
       onOpenChange(false);
       router.refresh();
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : "Failed to update about information.";
+          : t("candidatePage.toasts.about-update-failed");
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -91,16 +100,16 @@ export function EditAboutModal({
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <DialogHeader>
             <DialogTitle className="text-[28px] text-black">
-              Edit About
+              {t("candidatePage.profile.edit-about")}
             </DialogTitle>
           </DialogHeader>
           <DialogDescription className="text-muted-foreground -mt-2 text-sm">
-            Share a brief professional summary highlighting your experience, areas of expertise, key skills, and notable achievements. This helps employers understand your background at a glance.
+            {t("candidatePage.profile.about-description")}
           </DialogDescription>
 
           <Textarea
             className="bg-muted min-h-40 rounded-2xl p-4"
-            placeholder="Write a brief professional summary (minimum 50 words) highlighting your experience, skills, and achievements."
+            placeholder={t("candidatePage.profile.about-placeholder")}
             {...register("bio")}
           />
           {errors.bio?.message && (
@@ -114,7 +123,7 @@ export function EditAboutModal({
               type="submit"
               disabled={isSaving}
             >
-              {isSaving ? "Saving..." : "Save"}
+              {isSaving ? t("candidatePage.common.saving") : t("common.save")}
             </Button>
           </DialogFooter>
         </form>

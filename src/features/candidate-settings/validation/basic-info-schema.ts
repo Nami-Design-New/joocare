@@ -21,6 +21,7 @@ function optionalFileArrayField({
   requiredMessage,
   invalidTypeMessage,
   invalidSizeMessage,
+  singleFileMessage,
 }: {
   required?: boolean;
   maxSize: number;
@@ -28,11 +29,12 @@ function optionalFileArrayField({
   requiredMessage: string;
   invalidTypeMessage: string;
   invalidSizeMessage: string;
+  singleFileMessage?: string;
 }) {
   return z
     .array(z.instanceof(File))
     .min(required ? 1 : 0, { message: requiredMessage })
-    .max(1, { message: "Only one file is allowed." })
+    .max(1, { message: singleFileMessage ?? "Only one file is allowed." })
     .optional()
     .default([])
     .refine(
@@ -64,73 +66,95 @@ function isAtLeast18YearsOld(value: string) {
 
 type CreateSettingBasicInfoSchemaOptions = {
   requireCv?: boolean;
+  messages?: {
+    fullNameMin: string;
+    fullNameMax: string;
+    emailRequired: string;
+    emailInvalid: string;
+    phoneRequired: string;
+    jobTitleRequired: string;
+    countryRequired: string;
+    cityRequired: string;
+    ageMin: string;
+    profileImageRequired: string;
+    onlyOneFileAllowed: string;
+    profileImageInvalidType: string;
+    profileImageInvalidSize: string;
+    cvRequired: string;
+    cvInvalidType: string;
+    cvInvalidSize: string;
+    otherJobTitleRequired: string;
+  };
 };
 
 export const createSettingBasicInfoSchema = ({
   requireCv = true,
+  messages,
 }: CreateSettingBasicInfoSchemaOptions = {}) =>
   z
     .object({
       fullName: z
         .string()
         .trim()
-        .min(3, { message: "Full name must be at least 3 characters." })
-        .max(255, { message: "Full name must be at most 255 characters." }),
+        .min(3, { message: messages?.fullNameMin ?? "Full name must be at least 3 characters." })
+        .max(255, { message: messages?.fullNameMax ?? "Full name must be at most 255 characters." }),
       email: z
         .string()
-        .min(1, { message: "email is required" })
-        .email({ message: "Not valid email" }),
+        .min(1, { message: messages?.emailRequired ?? "email is required" })
+        .email({ message: messages?.emailInvalid ?? "Not valid email" }),
       phoneNumber: z
         .string({
-          error: "phone number is required",
+          error: messages?.phoneRequired ?? "phone number is required",
         })
         .trim()
-        .min(MIN_PHONE_NUMBER_LENGTH, { message: "Phone number is required" }),
+        .min(MIN_PHONE_NUMBER_LENGTH, { message: messages?.phoneRequired ?? "Phone number is required" }),
       jobTitle: z
         .string({
-          error: "job title is required",
+          error: messages?.jobTitleRequired ?? "job title is required",
         })
-        .min(1, { message: "Job title is required." }),
+        .min(1, { message: messages?.jobTitleRequired ?? "Job title is required." }),
       otherJobTitle: z.string().default(""),
       specialty: optionalSelectField(),
       yearsOfExperience: optionalSelectField(),
       country: z
         .string({
-          error: "Current location country is required.",
+          error: messages?.countryRequired ?? "Current location country is required.",
         })
-        .min(1, { message: "Country is required." }),
+        .min(1, { message: messages?.countryRequired ?? "Country is required." }),
       city: z
         .string({
-          error: "Current location city is required.",
+          error: messages?.cityRequired ?? "Current location city is required.",
         })
-        .min(1, { message: "City is required." }),
+        .min(1, { message: messages?.cityRequired ?? "City is required." }),
       dateOfBirth: z
         .string()
         .default("")
         .refine((value) => value === "" || isAtLeast18YearsOld(value), {
-          message: "You must be at least 18 years old.",
+          message: messages?.ageMin ?? "You must be at least 18 years old.",
         }),
       profileImage: optionalFileArrayField({
         required: false,
         maxSize: MAX_IMAGE_SIZE,
         allowedTypes: ALLOWED_IMAGE_TYPES,
-        requiredMessage: "Profile image is required.",
-        invalidTypeMessage: "Profile image must be JPG or PNG.",
-        invalidSizeMessage: "Profile image size must not exceed 2MB.",
+        requiredMessage: messages?.profileImageRequired ?? "Profile image is required.",
+        invalidTypeMessage: messages?.profileImageInvalidType ?? "Profile image must be JPG or PNG.",
+        invalidSizeMessage: messages?.profileImageInvalidSize ?? "Profile image size must not exceed 2MB.",
+        singleFileMessage: messages?.onlyOneFileAllowed ?? "Only one file is allowed.",
       }),
       uploadCV: optionalFileArrayField({
         required: requireCv,
         maxSize: MAX_CV_SIZE,
         allowedTypes: ALLOWED_CV_TYPES,
-        requiredMessage: "CV is required ",
-        invalidTypeMessage: "CV must be a PDF or Word document.",
-        invalidSizeMessage: "Max file size is 5MB",
+        requiredMessage: messages?.cvRequired ?? "CV is required ",
+        invalidTypeMessage: messages?.cvInvalidType ?? "CV must be a PDF or Word document.",
+        invalidSizeMessage: messages?.cvInvalidSize ?? "Max file size is 5MB",
+        singleFileMessage: messages?.onlyOneFileAllowed ?? "Only one file is allowed.",
       }),
     })
     .refine(
       (data) => data.jobTitle !== "__other__" || Boolean(data.otherJobTitle.trim()),
       {
-        message: "Please enter the other job title.",
+        message: messages?.otherJobTitleRequired ?? "Please enter the other job title.",
         path: ["otherJobTitle"],
       },
     );
