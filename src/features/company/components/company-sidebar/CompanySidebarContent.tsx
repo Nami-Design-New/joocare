@@ -32,9 +32,9 @@ const CompanySidebarContent = () => {
         {companyProfileData?.status === "Rejected" && (
           <AccountUnderReview companyProfileData={companyProfileData} />
         )}
-        {/* {companyProfileData?.status === "Draft" && ( */}
-        <CompleteDetails />
-        {/* // )} */}
+        {companyProfileData?.status === "Draft" && (
+          <CompleteDetails />
+        )}
       </div>
       <div className="order-1 lg:order-2">
         <SidebarLinks links={translatedLinks} companyProfileData={companyProfileData} />
