@@ -11,11 +11,11 @@ const AccountUnderReview = ({ companyProfileData }: { companyProfileData: TCompa
         <section className="bg-background border rounded-2xl flex flex-col gap-3 py-3 px-4">
             <div className="flex gap-2 w-full items-center ">
                 <Image
-                    src={companyProfileData?.image}
+                    src={companyProfileData?.image || "/assets/new-logo-dot.svg"}
                     alt={t("companyPage.sidebar.profile-image-alt")}
                     width={60}
                     height={60}
-                    className="rounded-full w-15 h-15 object-cover"
+                    className="rounded-full w-15 h-15 object-contain"
                 />
                 <div>
                     <p className="text-black font-semibold text-md">
