@@ -1,6 +1,6 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import type { Analytics } from "firebase/analytics";
+import type { Messaging } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBmk2V514sINB6UOPaBsYSw4HRk1LytePI",
@@ -14,10 +14,61 @@ const firebaseConfig = {
 
 export const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-export const analytics =
-  typeof window !== "undefined" ? getAnalytics(app) : null;
+let cachedAnalytics: Analytics | null | undefined;
+let cachedMessaging: Messaging | null | undefined;
 
-export const messaging =
-  typeof window !== "undefined" ? getMessaging(app) : null;
+export async function getFirebaseAnalytics() {
+  if (cachedAnalytics !== undefined) {
+    return cachedAnalytics;
+  }
 
-export { getToken, onMessage };
+  if (typeof window === "undefined") {
+    cachedAnalytics = null;
+    return cachedAnalytics;
+  }
+
+  try {
+    const analyticsModule = await import("firebase/analytics");
+    const supported = await analyticsModule.isSupported().catch(() => false);
+
+    if (!supported) {
+      cachedAnalytics = null;
+      return cachedAnalytics;
+    }
+
+    cachedAnalytics = analyticsModule.getAnalytics(app);
+    return cachedAnalytics;
+  } catch (error) {
+    console.warn("[Firebase] Analytics unavailable in this environment.", error);
+    cachedAnalytics = null;
+    return cachedAnalytics;
+  }
+}
+
+export async function getFirebaseMessaging() {
+  if (cachedMessaging !== undefined) {
+    return cachedMessaging;
+  }
+
+  if (typeof window === "undefined") {
+    cachedMessaging = null;
+    return cachedMessaging;
+  }
+
+  try {
+    const messagingModule = await import("firebase/messaging");
+    const supported = await messagingModule.isSupported().catch(() => false);
+
+    if (!supported) {
+      cachedMessaging = null;
+      return cachedMessaging;
+    }
+
+    cachedMessaging = messagingModule.getMessaging(app);
+    return cachedMessaging;
+  } catch (error) {
+    console.warn("[Firebase] Messaging unavailable in this environment.", error);
+    cachedMessaging = null;
+    return cachedMessaging;
+  }
+}
