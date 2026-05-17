@@ -45,7 +45,7 @@ export default function JobsFilterSection({
 
 
   return (
-    <section className="layout-shell">
+    <section className="">
       <section className="layout-content mt-4 lg:-mt-24">
         <section className="rounded-2xl bg-white p-4">
           {/* <div className="mx-auto mb-6 max-w-5xl text-center">

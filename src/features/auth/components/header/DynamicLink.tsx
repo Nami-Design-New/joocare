@@ -17,8 +17,8 @@ const DynamicLink = () => {
       ? "/auth/candidate/login"
       : "/auth/employer/login"
     : isEmployer
-    ? "/auth/candidate/register"
-    : "/auth/employer/register";
+      ? "/auth/candidate/register"
+      : "/auth/employer/register";
 
   return (
     <Link
@@ -26,6 +26,8 @@ const DynamicLink = () => {
       className={buttonVariants({
         size: "pill",
         variant: "secondary",
+        className:
+          "max-sm:text-xs! max-sm:px-3! max-sm:h-10! ",
       })}
       aria-label={t("authPage.header.switch-mode-aria")}
     >

@@ -26,11 +26,11 @@ export default async function JobDetailsHeader({ job }: { job: JobDetails }) {
               <Sparkles size={16} /> 90 %
             </span> */}
           </h6>
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-start lg:items-center gap-2 mt-2 max-sm:flex-col">
             <div className="text-muted-foreground text-lg font-normal">
               <span>{t("jobDetailsPage.at")} {job?.company?.domain?.title} </span>
             </div>
-            <Badge size="md" className="rounded-[3px] bg-[#0BA02C] font-semibold">
+            <Badge size="md" className="rounded-[3px] bg-[#0BA02C] font-semibold max-sm:text-[10px]">
               {job?.employment_type?.title}
             </Badge>
           </div>

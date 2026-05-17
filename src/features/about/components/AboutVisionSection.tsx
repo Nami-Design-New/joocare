@@ -17,7 +17,7 @@ export default async function AboutVisionSection({
   const t = await getTranslations();
 
   return (
-    <section className="sm:my-14 sm:py-16 bg-background">
+    <section className="my-14 py-16 bg-background">
       <div className="layout-shell">
         <div className="layout-content">
           <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 xl:grid-cols-5 xl:gap-16 xl:px-0 justify-center items-center">

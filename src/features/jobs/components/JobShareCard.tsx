@@ -21,7 +21,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
       <h2 className="text-foreground mb-4 text-lg font-semibold">
         {t("jobDetailsPage.share-this-job")}
       </h2>
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         <Button
           type="button"
           variant="ghost"
@@ -34,7 +34,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
             width={24}
             height={24}
           />
-          <span className="text-lg">{t("jobDetailsPage.copy-link")}</span>
+          <span className="text-sm md:text-lg">{t("jobDetailsPage.copy-link")}</span>
         </Button>
         <div className="flex gap-2">
           <a

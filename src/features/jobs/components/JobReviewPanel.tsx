@@ -407,7 +407,7 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
 
   return (
     <>
-      <div className="card border-border shadow-card flex min-h-36 items-center justify-around rounded-2xl border-2 bg-white px-6 py-8 lg:justify-between">
+      <div className="card border-border shadow-card flex min-h-36 items-start justify-around rounded-2xl border-2 bg-white px-6 py-8 lg:justify-between">
         <div className="flex flex-1 flex-col items-center justify-center gap-2">
           <div className="flex items-center justify-center p-1 rounded-full border-3 border-primary">
             <Image
@@ -428,8 +428,8 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
           <span className="text-muted-foreground text-sm">{preview.salaryType}</span>
         </div>
         <div className="bg-muted h-full w-0.5"></div>
-        <div className="flex flex-1 flex-col items-center justify-center gap-1">
-          <div className="flex items-center justify-center -mt-3">
+        <div className="flex flex-1 flex-col items-center justify-center gap-1 -mt-[3px]">
+          <div className="flex items-center justify-center ">
             <Image
               src={"/assets/icons/map-pin.svg"}
               width={38}
@@ -592,7 +592,7 @@ export default function JobReviewPanel({
           <h6 className="text-foreground text-2xl font-semibold mb-2">
             {preview?.title ?? job?.title ?? job?.job_title?.title ?? data.title}
           </h6>
-          <div className="flex items-center gap-2 ">
+          <div className="flex items-start sm:items-center gap-2 max-sm:flex-col">
             <span className="text-muted-foreground text-lg font-normal">
               {tPostJob("review.at")} {job?.company?.name ?? tPostJob("review.companyFallback")}
             </span>{" "}
@@ -605,7 +605,7 @@ export default function JobReviewPanel({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 p-7 lg:grid-cols-3">
+      <div className="grid grid-cols-1 max-lg:gap-y-5 lg:gap-5 lg:p-7 lg:grid-cols-3">
         <div className="font-noto-sans col-span-2 text-[#212529]">
           <h3 className="text-primary mb-4 text-xl font-bold">
             {tPostJob("review.jobDescriptionTitle")}

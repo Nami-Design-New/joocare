@@ -100,17 +100,17 @@ export default function CandidateJobCard({
       </CardHeader>
       <CardContent className="max-lg:px-2 grow">
         <div className=" flex flex-col gap-4  ">
-          <ul className="items-center flex gap-2">
+          <ul className="items-start flex gap-2">
             <li className="text-secondary flex items-start gap-1 text-sm font-normal">
-              <MapPin size={14} color="var(--muted-foreground)" />
+              <MapPin size={16} color="var(--muted-foreground)" className="shrink-0" />
               {location}
             </li>
             <li className="text-secondary flex items-start gap-1 text-sm font-normal">
-              <Briefcase size={14} color="var(--muted-foreground)" />
+              <Briefcase size={16} color="var(--muted-foreground)" className="shrink-0" />
               {category}
             </li>
             <li className="text-secondary flex items-start gap-1 text-sm font-normal">
-              <CircleDollarSign size={14} color="var(--muted-foreground)" />
+              <CircleDollarSign size={16} color="var(--muted-foreground)" className="shrink-0" />
               {salary}
             </li>
           </ul>

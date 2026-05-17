@@ -43,7 +43,7 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
       </CardHeader>
       <CardContent>
         <Link href={`/jobs/${job.id}`} className="flex flex-col gap-2 cursor-pointer">
-          <ul className="items-center flex gap-2">
+          <ul className="items-start flex gap-2">
             <li className="text-secondary flex items-start gap-1 text-sm font-normal">
               <LocationEdit size={14} color="var(--muted-foreground)" />
               {job?.city?.name ? `${job?.city?.name} ,` : ""}{job?.country?.name}

@@ -1,4 +1,4 @@
-import { getToken, messaging } from "@/shared/lib/firebase";
+import { getFirebaseMessaging } from "@/shared/lib/firebase";
 
 const vapidKey =
   "BLZpduvGv1XFGZegMfGxGAHquj-pp3C-eyEJJXqURVzKSQWakGiz8i3oejcsP2RKrqdnj4mGxoijIcAYWlMkMVI";
@@ -6,12 +6,24 @@ const PROMPTED_SESSION_KEY = "notification-permission-prompted";
 const TOKEN_REQUESTED_SESSION_KEY = "notification-token-requested";
 const SERVICE_WORKER_PATH = "/firebase-messaging-sw.js";
 
+function hasSessionStorage() {
+  try {
+    return typeof window !== "undefined" && typeof window.sessionStorage !== "undefined";
+  } catch {
+    return false;
+  }
+}
+
 function canUseBrowserNotifications() {
+  const serviceWorker = typeof navigator !== "undefined" ? navigator.serviceWorker : undefined;
+
   return (
     typeof window !== "undefined" &&
     "Notification" in window &&
-    "serviceWorker" in navigator &&
-    !!window.sessionStorage
+    Boolean(serviceWorker) &&
+    typeof serviceWorker?.register === "function" &&
+    typeof serviceWorker?.getRegistration === "function" &&
+    hasSessionStorage()
   );
 }
 
@@ -21,7 +33,12 @@ async function registerMessagingServiceWorker() {
     SERVICE_WORKER_PATH,
   );
 
-  const existingRegistration = await navigator.serviceWorker
+  const serviceWorker = navigator.serviceWorker;
+  if (!serviceWorker) {
+    throw new Error("Service workers are unavailable.");
+  }
+
+  const existingRegistration = await serviceWorker
     .getRegistration(SERVICE_WORKER_PATH)
     .catch(() => undefined);
 
@@ -31,7 +48,7 @@ async function registerMessagingServiceWorker() {
   }
 
   console.info("[Notifications] Registering firebase messaging service worker.");
-  return navigator.serviceWorker.register(SERVICE_WORKER_PATH, {
+  return serviceWorker.register(SERVICE_WORKER_PATH, {
     scope: "/",
   });
 }
@@ -45,7 +62,15 @@ export async function requestNotificationPermission(
 ): Promise<string | null> {
   const { forcePrompt = false } = options;
 
-  if (!messaging || !canUseBrowserNotifications()) {
+  if (!canUseBrowserNotifications()) {
+    console.warn(
+      "[Notifications] Messaging is unavailable or browser notifications are unsupported.",
+    );
+    return null;
+  }
+
+  const messaging = await getFirebaseMessaging();
+  if (!messaging) {
     console.warn(
       "[Notifications] Messaging is unavailable or browser notifications are unsupported.",
     );
@@ -105,6 +130,7 @@ export async function requestNotificationPermission(
     scope: serviceWorkerRegistration.scope,
   });
 
+  const { getToken } = await import("firebase/messaging");
   const token = await getToken(messaging, {
     vapidKey,
     serviceWorkerRegistration,

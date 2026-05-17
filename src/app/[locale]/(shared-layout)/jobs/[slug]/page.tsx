@@ -74,10 +74,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const plainDescription = stripHtml(job.description ?? "").trim();
     const description = truncateText(
       plainDescription ||
-        [companyName, location].filter(Boolean).join(" • ") ||
-        (locale === "ar"
-          ? "اكتشف تفاصيل هذه الوظيفة على Joocare."
-          : "Explore this opportunity on Joocare."),
+      [companyName, location].filter(Boolean).join(" • ") ||
+      (locale === "ar"
+        ? "اكتشف تفاصيل هذه الوظيفة على Joocare."
+        : "Explore this opportunity on Joocare."),
       160,
     );
     const title = companyName
@@ -162,12 +162,12 @@ export default async function page({
       <section className="layout-shell">
         <section className="layout-content mt-4 lg:-mt-20">
           <JobDetailsHeader job={jobDetails?.job} />
-          <div className="grid grid-cols-1 gap-5 pt-7 lg:grid-cols-3">
+          <div className="grid grid-cols-1 max-lg:gap-y-5 lg:gap-5 pt-7 lg:grid-cols-3">
             <div className="col-span-2 flex flex-col gap-8">
               <JobDescriptionCard job={jobDetails?.job} />
               <AboutEmployer employer={jobDetails?.job?.company} />
             </div>
-            <div className="col-span-1 flex flex-col gap-8">
+            <div className="col-span-1 flex flex-col gap-8 max-lg:order-first">
               <JobLocationAndSalaryCard job={jobDetails.job} />
               <JobOverviewCard job={jobDetails.job} />
               <JobEducationAndCertificationsCard job={jobDetails.job} />

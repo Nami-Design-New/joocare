@@ -157,7 +157,7 @@ export default async function SharedCompanyProfileDetails({
             />
 
             {/* Content */}
-            <div className="bg-card shadow-soft mx-auto -mt-31  max-w-6xl gap-8 rounded-3xl border p-6 md:p-7">
+            <div className="bg-card shadow-soft mx-auto lg:-mt-31   max-w-6xl gap-8 rounded-3xl border p-6 md:p-7">
                 <HeaderSection company={company} />
                 <AboutSection company={company} />
                 <HydrationBoundary state={dehydrate(queryClient)}>

@@ -27,11 +27,11 @@ export default function PositionCard({
       />
       <div>
         <h6 className="text-foreground text-2xl font-semibold mb-1">{title}</h6>
-        <p className="flex items-center gap-2">
+        <p className="flex max-sm:flex-col items-start sm:items-center gap-2">
           <span className="text-muted-foreground text-base font-normal">
             {t("companyPage.postJob.review.at")} {company}
           </span>
-          <Badge size="sm" className="bg-[#0BA02C] rounded-[3px]">
+          <Badge size="sm" className="bg-[#0BA02C] rounded-[3px] font-semibold max-sm:text-[10px]">
             {employmentType}
           </Badge>
         </p>
