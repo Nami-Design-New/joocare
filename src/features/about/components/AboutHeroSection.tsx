@@ -86,7 +86,7 @@ export default async function AboutHeroSection({
 
           {/* setting impact */}
           <div className="w-full grid grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
-            <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
+            <div className="flex flex-col items-center justify-start p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
                 <Plus
                   color="var(--primary)"
@@ -100,7 +100,7 @@ export default async function AboutHeroSection({
                 {t("home.verified-healthcare-professionals")}
               </p>
             </div>
-            <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
+            <div className="flex flex-col items-center justify-start p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
                 <Plus
                   color="var(--primary)"
@@ -114,7 +114,7 @@ export default async function AboutHeroSection({
                 {t("home.active-job-opportunities")}
               </p>
             </div>
-            <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
+            <div className="flex flex-col items-center justify-start p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
                 <Plus
                   color="var(--primary)"
@@ -128,7 +128,7 @@ export default async function AboutHeroSection({
                 {t("home.healthcare-specializations-covered")}
               </p>
             </div>
-            <div className="flex flex-col items-center justify-center p-8 text-center transition-all ">
+            <div className="flex flex-col items-center justify-start p-8 text-center transition-all ">
               <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
                 {settings?.hiring_success_rate} <span className="text-primary">%</span>
               </span>

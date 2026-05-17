@@ -170,7 +170,7 @@ const Footer = async () => {
       <p className="relative border-t border-[#0D0D0D73] pt-4 text-center text-lg text-white">
         {copyrightText}
       </p>
-      <section className="absolute right-4 bottom-4 z-50 md:right-6 md:bottom-6">
+      <section className="absolute right-4 bottom-22 z-50 md:right-6 md:bottom-6">
         <BackToTopButton />
       </section>
     </footer>

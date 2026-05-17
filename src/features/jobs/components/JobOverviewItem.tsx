@@ -20,7 +20,7 @@ const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
 }) => {
   return (
     <div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-start gap-2">
         {icon && <Image src={icon} width={20} height={20} alt="" />}
         <p className="text-muted-foreground text-md">{label}</p>
       </div>

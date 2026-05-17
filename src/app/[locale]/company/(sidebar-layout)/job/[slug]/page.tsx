@@ -69,11 +69,11 @@ export default async function JobDetailsPage({
             }
           />
 
-          <div className="grid grid-cols-1 gap-5 pt-7 xl:grid-cols-3">
+          <div className="grid grid-cols-1 max-xl:gap-y-5 xl:gap-5 pt-7 xl:grid-cols-3">
             <div className="col-span-2 flex flex-col gap-8">
               <JobDescriptionCard job={job} />
             </div>
-            <div className="col-span-1 flex flex-col gap-8">
+            <div className="col-span-1 flex flex-col gap-8 max-xl:order-first">
               <JobLocationAndSalaryCard job={job} />
               <JobOverviewCard job={job} />
               <JobEducationAndCertificationsCard job={job} />

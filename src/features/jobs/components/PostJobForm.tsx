@@ -729,7 +729,7 @@ export default function PostJobForm() {
                   variant="outline"
                   hoverStyle="slidePrimary"
                   size="pill"
-                  className="w-1/6"
+                  className="w-2/6 md:w-1/6"
                 >
                   {t("companyPage.postJob.actions.prev")}
                 </Button>
@@ -743,7 +743,7 @@ export default function PostJobForm() {
                   variant="secondary"
                   hoverStyle="slidePrimary"
                   size="pill"
-                  className="w-1/6"
+                  className="w-2/6 md:w-1/6"
                 >
                   {isBusy && !isEditMode
                     ? t("common.saving")
@@ -757,7 +757,7 @@ export default function PostJobForm() {
                   variant="secondary"
                   size="pill"
                   hoverStyle="slidePrimary"
-                  className="w-1/6"
+                  className="w-3/6 md:w-1/6"
                 >
                   {isSubmitting ? (
                     <>

@@ -36,7 +36,7 @@ export default function MobileFilterDrawer(props: MobileFilterDrawerProps) {
           className="flex items-center gap-2 rounded-full border-none bg-white lg:hidden"
         >
           <SlidersHorizontal className="h-4 w-4" />
-          <span>{t("jobsPage.filters.title")}</span>
+          <span className="text-base">{t("jobsPage.filters.title")}</span>
         </Button>
       </SheetTrigger>
 

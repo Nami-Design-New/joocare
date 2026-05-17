@@ -33,7 +33,7 @@ export default async function AboutMissionSection({
           </p>
         </div>
 
-        <div className="xl:col-span-2">
+        <div className="xl:col-span-2 max-xl:order-3">
           <div className="relative mx-auto h-[420px] w-full max-w-[340px] sm:h-[520px] sm:max-w-[520px] xl:max-w-none">
             <div className="absolute top-0 right-0 h-[100%] w-[80%] overflow-hidden rounded-[30px] sm:rounded-[40px]">
               <Image
