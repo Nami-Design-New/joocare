@@ -117,14 +117,14 @@
       "professional-license": "الترخيص المهني",
       "with-medical-license": "مع ترخيص طبي",
       "without-medical-license": "بدون ترخيص طبي",
-      "role-category": "فئة الدور",
+      "role-category": "الوظيفة",
       "seniority-level": "المستوى الوظيفي",
       "domain": "المجال",
       "experience": "الخبرة",
       "availability": "التوفر",
       "category": "التصنيف",
       "employment-type": "نوع التوظيف",
-      "choose-role-category-first": "اختر فئة الدور أولاً",
+      "choose-role-category-first": "اختر الوظيفة أولاً",
       "loading-seniority-levels": "جارٍ تحميل مستويات الأقدمية...",
       "salary-range": "نطاق الراتب",
       "any-salary-type": "أي نوع راتب",
@@ -823,7 +823,7 @@
           "placeholder": "مثال: دوام كامل"
         },
         "roleCategory": {
-          "label": "فئة الدور الوظيفي",
+          "label": "الوظيفة",
           "placeholder": "مثال: سريري"
         },
         "seniorityLevel": {
@@ -888,7 +888,7 @@
           "experience": "الخبرة",
           "jobCategory": "فئة الوظيفة",
           "specialty": "التخصص",
-          "roleCategory": "فئة الدور الوظيفي",
+          "roleCategory": "الوظيفة",
           "seniorityLevel": "المستوى الوظيفي",
           "educationLevel": "المستوى التعليمي",
           "mandatoryCertifications": "الشهادات الإلزامية",
@@ -902,7 +902,7 @@
         "categoryRequired": "الفئة مطلوبة",
         "specialtyRequired": "التخصص مطلوب",
         "employmentTypeRequired": "نوع التوظيف مطلوب",
-        "roleCategoryRequired": "فئة الدور الوظيفي مطلوبة",
+        "roleCategoryRequired": "الوظيفة مطلوبة",
         "countryRequired": "الدولة مطلوبة",
         "cityRequired": "المدينة مطلوبة",
         "yearsOfExperienceRequired": "سنوات الخبرة مطلوبة",
