@@ -42,9 +42,9 @@ export default function NotificationCard({
         <p className="text-muted-foreground mt-1 text-sm break-words">
           {message}
         </p>
-        <p className="text-muted-foreground mt-2 text-sm">
-          {isPending ? "Loading..." : createdAt || "Now"}
-        </p>
+        {/* <p className="text-muted-foreground mt-2 text-sm">
+          {isPending ? "Loading..." : createdAt }
+        </p> */}
       </div>
     </button>
   );

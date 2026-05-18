@@ -2,7 +2,7 @@ import BasicInfoForm from "@/features/accout-settings/components/basic-info/Basi
 
 const BasicInfoPage = () => {
     return (
-        <main className="p-6 rounded-2xl bg-white">
+        <main className="p-2 md:p-6 rounded-2xl bg-white">
             <BasicInfoForm />
         </main>
     )

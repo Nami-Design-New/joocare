@@ -74,7 +74,7 @@ export default function UserProfileCard({
           alt="Profile"
           width={60}
           height={60}
-          className="rounded-full"
+          className="rounded-full h-14 w-14"
         />
         <div>
           <p className="text-md font-semibold text-black">{displayName as string}</p>
