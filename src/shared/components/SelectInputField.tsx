@@ -143,7 +143,7 @@ export const SelectInputField = React.forwardRef<
             render={
               <Button
                 className={cn(
-                  "bg-muted border-input h-13 w-full justify-between rounded-full px-4 text-sm font-normal",
+                  "bg-muted border-input h-13 w-full justify-between rounded-full px-4 text-sm font-normal truncate",
                   "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
                   "disabled:bg-disabled text-foreground",
                   error && "border-destructive",

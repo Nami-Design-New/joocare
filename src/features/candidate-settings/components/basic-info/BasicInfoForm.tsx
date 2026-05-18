@@ -542,62 +542,71 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           {t("authPage.common.current-location")}
         </label>
         <div className="flex items-center gap-2">
-          <Controller
-            name="country"
-            control={control}
-            render={({ field }) => (
-              <SelectInputField
-                id="country"
-                placeholder={t("authPage.common.country-lower")}
-                withSearchInput
-                searchPlaceholder={t("candidatePage.profile.search-countries")}
-                {...field}
-                error={
-                  errors.country?.message ??
-                  (countriesError instanceof Error
-                    ? countriesError.message
-                    : undefined)
-                }
-                options={countries.map((country) => ({
-                  label: country.name,
-                  value: String(country.id),
-                }))}
-                disabled={isCountriesLoading}
-                onReachEnd={() => fetchMoreCountries()}
-                hasNextPage={Boolean(hasMoreCountries)}
-                isFetchingNextPage={isFetchingMoreCountries}
-                onSearchChange={setCountrySearch}
-              />
-            )}
-          />
-          <Controller
-            name="city"
-            control={control}
-            render={({ field }) => (
-              <SelectInputField
-                id="city"
-                placeholder={t("authPage.common.city-lower")}
-                withSearchInput
-                searchPlaceholder={t("candidateSettingsPage.placeholders.search-cities")}
-                {...field}
-                error={
-                  errors.city?.message ??
-                  (citiesError instanceof Error
-                    ? citiesError.message
-                    : undefined)
-                }
-                options={cities.map((city) => ({
-                  label: city.name,
-                  value: String(city.id),
-                }))}
-                disabled={!selectedCountryId || isCitiesLoading}
-                onReachEnd={() => fetchMoreCities()}
-                hasNextPage={Boolean(hasMoreCities)}
-                isFetchingNextPage={isFetchingMoreCities}
-                onSearchChange={setCitySearch}
-              />
-            )}
-          />
+          <div className="flex-1 min-w-0">
+            <Controller
+              name="country"
+              control={control}
+              render={({ field }) => (
+                <SelectInputField
+                  id="country"
+                  className="w-full"
+                  placeholder={t("authPage.common.country-lower")}
+                  withSearchInput
+                  searchPlaceholder={t("candidatePage.profile.search-countries")}
+                  {...field}
+                  error={
+                    errors.country?.message ??
+                    (countriesError instanceof Error
+                      ? countriesError.message
+                      : undefined)
+                  }
+                  options={countries.map((country) => ({
+                    label: country.name,
+                    value: String(country.id),
+                  }))}
+                  disabled={isCountriesLoading}
+                  onReachEnd={() => fetchMoreCountries()}
+                  hasNextPage={Boolean(hasMoreCountries)}
+                  isFetchingNextPage={isFetchingMoreCountries}
+                  onSearchChange={setCountrySearch}
+                />
+              )}
+            />
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <Controller
+              name="city"
+              control={control}
+              render={({ field }) => (
+                <SelectInputField
+                  id="city"
+                  className="w-full"
+                  placeholder={t("authPage.common.city-lower")}
+                  withSearchInput
+                  searchPlaceholder={t(
+                    "candidateSettingsPage.placeholders.search-cities"
+                  )}
+                  {...field}
+                  error={
+                    errors.city?.message ??
+                    (citiesError instanceof Error
+                      ? citiesError.message
+                      : undefined)
+                  }
+                  options={cities.map((city) => ({
+                    label: city.name,
+                    value: String(city.id),
+                  }))}
+                  disabled={!selectedCountryId || isCitiesLoading}
+                  onReachEnd={() => fetchMoreCities()}
+                  hasNextPage={Boolean(hasMoreCities)}
+                  isFetchingNextPage={isFetchingMoreCities}
+                  onSearchChange={setCitySearch}
+                />
+              )}
+            />
+          </div>
         </div>
       </div>
 
