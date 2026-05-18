@@ -606,7 +606,7 @@ export default function JobReviewPanel({
       </div>
 
       <div className="grid grid-cols-1 max-lg:gap-y-5 lg:gap-5 lg:p-7 lg:grid-cols-3">
-        <div className="font-noto-sans col-span-2 text-[#212529]">
+        <div className="font-noto-sans col-span-2 text-[#212529] max-sm:order-2">
           <h3 className="text-primary mb-4 text-xl font-bold">
             {tPostJob("review.jobDescriptionTitle")}
           </h3>
@@ -632,7 +632,7 @@ export default function JobReviewPanel({
           </div>
         </div>
 
-        <div className="col-span-1 flex flex-col gap-8">
+        <div className="col-span-1 flex flex-col gap-8 max-sm:order-1">
           <ReviewSidebarCards preview={sidebarPreview} />
         </div>
       </div>

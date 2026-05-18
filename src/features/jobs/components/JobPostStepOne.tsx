@@ -459,7 +459,7 @@ function JobPostStepOneContent({
   return (
     <div className="space-y-4">
       {/* ── Job Title + Professional License ── */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
         <div>
           <Controller
             control={control}
@@ -714,7 +714,7 @@ function JobPostStepOneContent({
       </div>
 
       {/* ── Category + Specialty ── */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <Controller
             control={control}
@@ -827,12 +827,12 @@ function JobPostStepOneContent({
                   label={t("companyPage.postJob.fields.employmentType.label")}
                   className="bg-white"
                   placeholder={t("companyPage.postJob.fields.employmentType.placeholder")}
-                error={
-                  translateMessage(errors.employmentType?.message) ??
-                  (employmentTypesError instanceof Error
-                    ? employmentTypesError.message
-                    : undefined)
-                }
+                  error={
+                    translateMessage(errors.employmentType?.message) ??
+                    (employmentTypesError instanceof Error
+                      ? employmentTypesError.message
+                      : undefined)
+                  }
                   options={toSelectOptions(employmentTypes)}
                   onChange={(value) => {
                     field.onChange(value);
@@ -1149,7 +1149,7 @@ function JobPostStepOneContent({
                           addCustomMandatoryCertification();
                         }
                       }}
-                      className="bg-white"
+                      className="bg-white max-sm:placeholder:text-[11px]"
                     />
                     <Button
                       type="button"

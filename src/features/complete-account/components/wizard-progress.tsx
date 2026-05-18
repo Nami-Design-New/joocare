@@ -35,7 +35,7 @@ export default function WizardProgress({ step, steps, className }: Props) {
         {steps.map((label, index) => (
           <span
             key={index}
-            className={`text-sm md:text-lg ${step >= index ? "" : "text-disabled"}`}
+            className={`text-xs md:text-lg ${step >= index ? "" : "text-disabled"}`}
           >
             {label}
           </span>
