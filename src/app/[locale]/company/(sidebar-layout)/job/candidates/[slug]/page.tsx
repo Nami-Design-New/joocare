@@ -40,12 +40,20 @@ export default function Page() {
   const {
     candidates,
     isFetching,
+    total,
+    perPage,
+    lastPage,
   } = useGetApplicationsCandidates({
     token,
     page,
     slug,
     filters: submittedFilters,
   });
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > lastPage) return;
+    setPage(newPage);
+  };
 
   const handleSearchChange = (search: string) => {
     setFilters((current) => ({ ...current, search }));
@@ -103,7 +111,17 @@ export default function Page() {
         onSubmit={handleFiltersSubmit}
         isSubmitting={isFetching}
       />
-      {status === "loading" ? null : applicants.length > 0 ? <ApplicantsClient applicants={applicants} token={token} /> : null}
+      {status === "loading" ? null : applicants.length > 0 ? (
+        <ApplicantsClient
+          applicants={applicants}
+          token={token}
+          total={total}
+          perPage={perPage}
+          page={page}
+          lastPage={lastPage}
+          onPageChange={handlePageChange}
+        />
+      ) : null}
       {!isFetching && applicants.length === 0 ? (
         <div className="border-border text-muted-foreground mt-4 rounded-2xl border border-dashed p-8 text-center">
           <EmptyDataState />

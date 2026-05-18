@@ -8,6 +8,8 @@ const candidateProtectedRoute = "/candidate";
 const employerProtectedRoute = "/company";
 const employerLandingRoute = "/for-employers";
 
+const LOCALE_COOKIE_NAME = "NEXT_LOCALE";
+
 function getDefaultPath(locale: string, authRole?: "candidate" | "employer") {
   if (authRole === "employer") {
     return `/${locale}${employerLandingRoute}`;
@@ -21,18 +23,60 @@ function getDefaultPath(locale: string, authRole?: "candidate" | "employer") {
 }
 
 export default async function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  const supportedLocales = routing.locales as readonly string[];
+  const preferredLocale = request.cookies.get(LOCALE_COOKIE_NAME)?.value;
+  const normalizedPreferredLocale =
+    preferredLocale && supportedLocales.includes(preferredLocale) ? preferredLocale : undefined;
+
+  // Detect locale (/en, /ar, ...)
+  const segments = pathname.split("/");
+  const requestedLocale = segments[1]; // e.g. "en" or "ar"
+  const hasLocalePrefix = supportedLocales.includes(requestedLocale);
+
+  // If the URL does not have a locale, force preferred locale (if set) before next-intl routing.
+  if (!hasLocalePrefix && normalizedPreferredLocale) {
+    const url = request.nextUrl.clone();
+    url.pathname =
+      pathname === "/" ? `/${normalizedPreferredLocale}` : `/${normalizedPreferredLocale}${pathname}`;
+    return NextResponse.redirect(url);
+  }
+
   const i18nResponse = handleI18nRouting(request);
 
-  if (i18nResponse.headers.get("location")) {
+  // If next-intl wants to redirect (e.g. add locale), still respect the user's preferred locale.
+  const i18nLocation = i18nResponse.headers.get("location");
+  if (i18nLocation) {
+    if (normalizedPreferredLocale) {
+      const url = request.nextUrl.clone();
+      const redirectedUrl = new URL(i18nLocation, url);
+      const redirectedSegments = redirectedUrl.pathname.split("/");
+      const redirectedLocale = redirectedSegments[1];
+      if (
+        supportedLocales.includes(redirectedLocale) &&
+        redirectedLocale !== normalizedPreferredLocale
+      ) {
+        redirectedSegments[1] = normalizedPreferredLocale;
+        redirectedUrl.pathname = redirectedSegments.join("/");
+        return NextResponse.redirect(redirectedUrl);
+      }
+    }
+
     return i18nResponse;
   }
 
-  const pathname = request.nextUrl.pathname;
-
   // Remove locale (/en, /ar, ...)
-  const segments = pathname.split("/");
-  const locale = segments[1]; // e.g. "en" or "ar"
-  const pathWithoutLocale = `/${segments.slice(2).join("/")}`;
+  const locale = hasLocalePrefix ? requestedLocale : routing.defaultLocale;
+  const pathWithoutLocale = hasLocalePrefix ? `/${segments.slice(2).join("/")}` : pathname;
+
+  // If the URL locale differs from the preferred locale, redirect to the preferred locale.
+  if (normalizedPreferredLocale && hasLocalePrefix && locale !== normalizedPreferredLocale) {
+    const url = request.nextUrl.clone();
+    segments[1] = normalizedPreferredLocale;
+    url.pathname = segments.join("/");
+    return NextResponse.redirect(url);
+  }
 
   // 1. Get the user token (session)
   const isAuth = await getToken({

@@ -871,7 +871,7 @@
       },
       "review": {
         "untitledJob": "Untitled job",
-        "noDescriptionHtml": "<p>No description available.</p>",
+        "noDescriptionHtml": "No description available.",
         "noPreviewData": "No preview data yet. Complete step 2 successfully to load job details.",
         "companyLogoAlt": "Company logo",
         "at": "at",
