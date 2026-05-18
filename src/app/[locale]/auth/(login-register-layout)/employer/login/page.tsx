@@ -14,7 +14,8 @@ const LoginEmployerPage = async () => {
         {/* header text */}
         <h1>
           {t("authPage.pages.employer-login.title-line-1")}
-          <br /> {t("authPage.pages.employer-login.title-line-2")}
+          <br />
+          {/* {t("authPage.pages.employer-login.title-line-2")} */}
         </h1>
         <p className="text-[clamp(.8rem,4vw,1rem)] mt-1">
           {t("authPage.pages.employer-login.subtitle")}

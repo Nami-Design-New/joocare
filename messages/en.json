@@ -297,16 +297,16 @@
     },
     "pages": {
       "candidate-login": {
-        "title": "Welcome Back",
-        "subtitle": "Take the next step in your professional career"
+        "title": "Welcome Back!",
+        "subtitle": "Discover opportunities that match your ambitions."
       },
       "candidate-register": {
         "title": "Let's Get Started"
       },
       "employer-login": {
-        "title-line-1": "Welcome back,",
+        "title-line-1": "Welcome back!",
         "title-line-2": "business.",
-        "subtitle": "Manage your job posts and candidates"
+        "subtitle": "Access your employer dashboard to manage job postings and review candidates."
       },
       "employer-register": {
         "title": "Start your business"
