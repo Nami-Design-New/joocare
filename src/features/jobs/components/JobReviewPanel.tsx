@@ -586,17 +586,18 @@ export default function JobReviewPanel({
           alt={tPostJob("review.companyLogoAlt")}
           width={96}
           height={86}
+          className="h-16 md:h-20 w-16 md:w-20"
         />
 
         <div>
-          <h6 className="text-foreground text-2xl font-semibold mb-2">
+          <h6 className="text-foreground text-base md:text-2xl font-semibold mb-2">
             {preview?.title ?? job?.title ?? job?.job_title?.title ?? data.title}
           </h6>
           <div className="flex items-start sm:items-center gap-2 max-sm:flex-col">
-            <span className="text-muted-foreground text-lg font-normal">
+            <span className="text-muted-foreground text-sm md:text-lg font-normal">
               {tPostJob("review.at")} {job?.company?.name ?? tPostJob("review.companyFallback")}
             </span>{" "}
-            <Badge size="md" className="rounded-[3px] bg-[#0BA02C]">
+            <Badge size="md" className="rounded-[3px] bg-[#0BA02C] max-sm:text-[10px]">
               {preview?.employmentType?.toUpperCase() ??
                 job?.employment_type?.title?.toUpperCase() ??
                 tPostJob("review.na")}
