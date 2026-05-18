@@ -46,7 +46,7 @@ export default function PdfViewer({ url }: PdfViewerProps) {
   return (
     <div
       ref={containerRef}
-      className="no-scrollbar mt-6 flex h-125 w-full flex-col items-center overflow-y-auto overflow-x-hidden"
+      className="no-scrollbar mt-6 flex h-125 w-full flex-col items-center overflow-y-auto overflow-x-hidden text-4xl "
     >
       <Document
         file={fileUrl}
@@ -59,7 +59,7 @@ export default function PdfViewer({ url }: PdfViewerProps) {
             key={i + 1}
             pageNumber={i + 1}
             className="mb-4"
-            width={pageWidth || undefined}
+            width={Math.min(pageWidth, 1000)}
           />
         ))}
       </Document>

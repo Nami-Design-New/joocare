@@ -27,7 +27,7 @@ export default function CVModal({
   // console.log("pdfUrl", pdfUrl);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="mb-25 max-w-150 rounded-2xl p-3 text-center sm:p-8">
+      <DialogContent className="mb-25 max-w-150 rounded-2xl text-center p-8">
         <DialogHeader className="-mt-5 flex flex-row items-center justify-between pe-2">
           <DialogTitle className="text-foreground text-xl font-bold">
             {title}
