@@ -199,7 +199,7 @@ export function ApplyNowModal({
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-175">
+        <DialogContent className="max-w-150">
           <div className="flex flex-col gap-6">
             <DialogHeader>
               <DialogTitle className="text-[28px] text-black">
@@ -210,8 +210,8 @@ export function ApplyNowModal({
               {t("jobDetailsPage.cv-submission-description")}
             </DialogDescription>
 
-            <div className="flex flex-col gap-5 rounded-b-[4px] border border-[#D9D9D9]">
-              <div className="px-6 pt-2">
+            <div className="flex w-full flex-col gap-4 rounded-b-[4px] border border-[#D9D9D9] sm:gap-5">
+              <div className="px-4 pt-2 sm:px-6">
                 {isLoadingCv ? (
                   <div className="rounded-xl border border-[#0B7A75] bg-[#F8FBFB] px-4 py-5 text-sm text-muted-foreground">
                     {t("jobDetailsPage.loading-cv")}
@@ -220,7 +220,7 @@ export function ApplyNowModal({
                   <div className="rounded-xl border border-[#0B7A75] bg-[#F8FBFB] px-4 py-5">
                     <button
                       type="button"
-                      className="flex items-center gap-3 text-left"
+                      className="flex min-w-0 items-center gap-3 text-left"
                       onClick={() =>
                         existingCvUrl
                           ? window.open(existingCvUrl, "_blank", "noopener,noreferrer")
@@ -233,21 +233,26 @@ export function ApplyNowModal({
                         width={24}
                         height={24}
                       />
-                      <span className="text-sm text-foreground">{existingCvFileName}</span>
+                      <span className="hidden sm:block truncate text-sm text-foreground">
+                        {existingCvFileName}
+                      </span>
+                      <span className="sm:hidden truncate text-sm text-foreground">
+                        {existingCvFileName.slice(0, 15)}.pdf
+                      </span>
                     </button>
                   </div>
                 ) : null}
               </div>
 
               {hasExistingCv ? (
-                <div className="flex items-center gap-4 px-6">
+                <div className="flex items-center gap-4 px-4 sm:px-6">
                   <div className="h-px flex-1 bg-border" />
                   <span className="text-sm font-medium text-foreground">{t("jobDetailsPage.or")}</span>
                   <div className="h-px flex-1 bg-border" />
                 </div>
               ) : null}
 
-              <div className="px-6 pb-6">
+              <div className="px-4 pb-4 sm:px-6 sm:pb-6">
                 <StoredFilepondUpload
                   label={hasExistingCv ? t("jobDetailsPage.upload-new-cv") : t("jobDetailsPage.upload-cv")}
                   files={uploadedFiles}

@@ -41,7 +41,7 @@ export default function CVModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="mb-25 max-w-150 rounded-2xl p-8 text-center">
+      <DialogContent className="mb-25 w-[calc(100vw-1rem)] max-w-150 rounded-2xl text-center sm:max-w-175 p-8">
         <DialogHeader className="-mt-5 flex flex-row items-center justify-between pe-2">
           <DialogTitle className="text-foreground text-xl font-bold">
             {title}

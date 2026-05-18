@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -15,6 +15,8 @@ interface PdfViewerProps {
 export default function PdfViewer({ url }: PdfViewerProps) {
   const t = useTranslations();
   const [numPages, setNumPages] = useState<number>(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
   const fileUrl = useMemo(() => {
     if (url.startsWith("blob:") || url.startsWith("data:") || url.startsWith("/api/")) {
       return url;
@@ -27,8 +29,25 @@ export default function PdfViewer({ url }: PdfViewerProps) {
     return url;
   }, [url]);
 
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+
+    const update = () => setContainerWidth(element.clientWidth);
+    update();
+
+    const observer = new ResizeObserver(() => update());
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  const pageWidth = Math.max(0, containerWidth);
+
   return (
-    <div className="no-scrollbar mt-10 flex h-125 flex-col items-center overflow-scroll">
+    <div
+      ref={containerRef}
+      className="no-scrollbar mt-6 flex h-125 w-full flex-col items-center overflow-y-auto overflow-x-hidden text-4xl "
+    >
       <Document
         file={fileUrl}
         onLoadSuccess={({ numPages }) => setNumPages(numPages)}
@@ -36,7 +55,12 @@ export default function PdfViewer({ url }: PdfViewerProps) {
         error={<p>{t("common.failed-load-pdf")}</p>}
       >
         {Array.from({ length: numPages }, (_, i) => (
-          <Page key={i + 1} pageNumber={i + 1} className="mb-4" />
+          <Page
+            key={i + 1}
+            pageNumber={i + 1}
+            className="mb-4"
+            width={Math.min(pageWidth, 1000)}
+          />
         ))}
       </Document>
     </div>

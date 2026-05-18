@@ -44,10 +44,10 @@ export const createBusinessVerificationSchema = ({
       commercial_registration_number: z
         .string()
         .min(1, { message: messages?.required ?? "This field is required" })
-        .max(20, {
+        .max(100, {
           message:
             messages?.commercialRegistrationNumberMax ??
-            "Commercial registration number must be at most 20 characters",
+            "Commercial registration number must be at most 100 characters",
         }),
       license_issue_country_id: z
         .string({
@@ -76,10 +76,10 @@ export const createBusinessVerificationSchema = ({
       medical_facility_license_number: z
         .string()
         .min(1, { message: messages?.required ?? "This field is required" })
-        .max(20, {
+        .max(100, {
           message:
             messages?.medicalFacilityLicenseNumberMax ??
-            "Medical facility license number must be at most 20 characters",
+            "Medical facility license number must be at most 100 characters",
         }),
       license_issuing_authority: z
         .string()

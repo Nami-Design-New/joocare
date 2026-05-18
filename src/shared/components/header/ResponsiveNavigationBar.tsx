@@ -82,7 +82,7 @@ export default function ResponsiveNavigationBar({
         {/* <Button variant="outline" size="icon-circle" aria-label="Search">
         <Search />
       </Button> */}
-        {isAuthed && <UserProfileCard companyHeader={companyHeader} />}
+        {isAuthed && <UserProfileCard companyHeader={companyHeader} setToggleSideMenu={setToggleSideMenu} />}
         {!isAuthed && (
           <>
             {" "}

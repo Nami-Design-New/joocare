@@ -78,14 +78,14 @@ export function JobActionButtons({
             className={`${buttonVariants({
               variant: "default",
               size: "pill",
-            })} items-center gap-2`}
+            })} items-center gap-2 max-sm:px-4`}
           >
             <Edit className="h-4 w-4" /> {t("common.edit")}
           </Link>
           <Button
             variant="default"
             size="pill"
-            className="bg-destructive flex items-center gap-2"
+            className="bg-destructive flex items-center gap-2 max-sm:px-4"
             disabled={isPending}
             onClick={() => setCloseJob(true)}
           >
@@ -93,7 +93,7 @@ export function JobActionButtons({
           </Button>
           <Button
             size="pill"
-            className="bg-warning flex items-center gap-2"
+            className="bg-warning flex items-center gap-2 max-sm:px-4"
             disabled={isPending}
             onClick={() => setPauseJob(true)}
           >
@@ -107,7 +107,7 @@ export function JobActionButtons({
             className={`${buttonVariants({
               variant: "default",
               size: "pill",
-            })} flex-1 items-center justify-center gap-2`}
+            })} flex-1 items-center justify-center gap-2 max-sm:px-4`}
           >
             {t("companyPage.jobs.actions.complete-post")}
           </Link>
@@ -117,7 +117,7 @@ export function JobActionButtons({
           <Button
             variant="default"
             size="pill"
-            className="flex-1 items-center justify-center gap-2"
+            className="flex-1 items-center justify-center gap-2 max-sm:px-4"
             disabled={isPending}
             onClick={() => setReactivateJob(true)}
           >
@@ -128,7 +128,7 @@ export function JobActionButtons({
           <Button
             variant="destructive"
             size="pill"
-            className={`flex-1 items-center justify-center gap-2 `}
+            className={`flex-1 items-center justify-center gap-2 max-sm:px-4 `}
             disabled={isDeleting}
             onClick={() => setDeleteJob(true)}
           >

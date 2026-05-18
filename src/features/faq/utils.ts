@@ -30,8 +30,8 @@ export function getFaqPageCopy(locale: string, page: number) {
       title: page > 1 ? `الأسئلة الشائعة - صفحة ${page}` : "الأسئلة الشائعة",
       description:
         "تصفح الأسئلة الشائعة على جيوكير لمعرفة إجابات واضحة حول التقديم على الوظائف، إنشاء حسابات الشركات، وإدارة الملف الشخصي.",
-      heading: "FAQ",
-      tryTitle: "Try it now",
+      heading: "الاسئله الشائعة",
+      tryTitle: "جرب الان",
     };
   }
 

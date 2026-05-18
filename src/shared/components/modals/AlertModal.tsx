@@ -49,7 +49,7 @@ export default function AlertModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-150 rounded-2xl p-8 text-center">
         <div className="mt-15 mb-12 flex w-full items-center justify-center">
-          <div className="h-50 w-50">
+          <div className="h-40 sm:h-50 w-40 sm:w-50">
             <Lottie
               lottieRef={lottieRef}
               animationData={animationData}
@@ -75,7 +75,7 @@ export default function AlertModal({
               disabled={isLoading}
               variant={confirmButtonVariant}
               size="pill"
-              className="grow"
+              className="max-sm:w-auto max-sm:text-xs max-sm:px-2 grow"
             >
               {isLoading ? "Saving..." : confirmLabel}
             </Button>
@@ -85,7 +85,7 @@ export default function AlertModal({
               size="pill"
               onClick={handleCancel}
               disabled={isLoading}
-              className="grow"
+              className="max-sm:w-auto max-sm:text-xs max-sm:px-2 grow"
             >
               {cancelLabel}
             </Button>}

@@ -117,14 +117,14 @@
       "professional-license": "Professional License",
       "with-medical-license": "With medical license",
       "without-medical-license": "Without medical license",
-      "role-category": "Role category",
+      "role-category": "Job Function",
       "seniority-level": "Seniority level",
       "domain": "Domain",
       "experience": "Experience",
       "availability": "Availability",
       "category": "Category",
       "employment-type": "Employment type",
-      "choose-role-category-first": "Choose a role category first",
+      "choose-role-category-first": "Choose a job function first",
       "loading-seniority-levels": "Loading seniority levels...",
       "salary-range": "Salary range",
       "any-salary-type": "Any salary type",
@@ -823,7 +823,7 @@
           "placeholder": "ex: Full-time"
         },
         "roleCategory": {
-          "label": "Role Category",
+          "label": "Job Function",
           "placeholder": "ex: Clinical"
         },
         "seniorityLevel": {
@@ -888,7 +888,7 @@
           "experience": "Experience",
           "jobCategory": "Job Category",
           "specialty": "Specialty",
-          "roleCategory": "Role category",
+          "roleCategory": "Job Function",
           "seniorityLevel": "Seniority Level",
           "educationLevel": "Education Level",
           "mandatoryCertifications": "Mandatory Certifications",
@@ -902,7 +902,7 @@
         "categoryRequired": "Category is required",
         "specialtyRequired": "Specialty is required",
         "employmentTypeRequired": "Employment type is required",
-        "roleCategoryRequired": "Role category is required",
+        "roleCategoryRequired": "Job function is required",
         "countryRequired": "Country is required",
         "cityRequired": "City is required",
         "yearsOfExperienceRequired": "Years of experience is required",

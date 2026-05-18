@@ -134,7 +134,7 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
           totalItems={faqsData.totalItems}
         />
 
-        <div className="bg-body-bg container mx-auto flex flex-col gap-12 px-3 py-20 lg:px-20">
+        <div className="bg-body-bg flex flex-col gap-12 py-20">
           <h2 className="text-center text-5xl font-bold">{copy.tryTitle}</h2>
           <ContactSection
             authRole={authSession?.authRole}
@@ -142,7 +142,7 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
               name: authSession?.user?.name ?? "",
               email: authSession?.user?.email ?? "",
             }}
-            containerClassName="bg-card shadow-soft grid grid-cols-12 gap-8 rounded-3xl border p-6 md:p-7"
+            containerClassName="bg-card shadow-soft mx-auto grid w-full grid-cols-12 gap-y-4 rounded-3xl border p-4 sm:p-6 md:p-7 lg:gap-x-8"
           />
         </div>
       </section>

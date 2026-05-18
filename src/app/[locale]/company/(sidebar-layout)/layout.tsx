@@ -7,7 +7,7 @@ const CompanyLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <Header />
 
-      <main className="grid grid-cols-12 min-h-dvh">
+      <main className="grid grid-cols-12 lg:min-h-dvh">
 
         {/* Sidebar */}
         <aside

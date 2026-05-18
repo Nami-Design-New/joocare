@@ -19,8 +19,10 @@ import { getSafeImageSrc } from "./UserDropDown";
 
 export default function UserProfileCard({
   companyHeader,
+  setToggleSideMenu
 }: {
   companyHeader: boolean;
+  setToggleSideMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const t = useTranslations();
   const { logout } = useLogout();
@@ -74,7 +76,7 @@ export default function UserProfileCard({
           alt="Profile"
           width={60}
           height={60}
-          className="rounded-full"
+          className="rounded-full h-14 w-14"
         />
         <div>
           <p className="text-md font-semibold text-black">{displayName as string}</p>
@@ -82,6 +84,7 @@ export default function UserProfileCard({
           <Link
             href={profileHref}
             className="text-secondary text-normal flex items-center gap-1 font-normal"
+            onClick={() => setToggleSideMenu(false)}
           >
             {t("header.view-profile")} <ArrowUpRight size={16} />
           </Link>
@@ -90,7 +93,9 @@ export default function UserProfileCard({
       <ul className="flex flex-col gap-2 p-2">
         <li className={itemClass}>
           <Settings className="text-muted-foreground group-hover:text-muted-foreground h-5 w-5" />
-          <Link href={settingsHref}>{t("header.account-settings")}</Link>
+          <Link
+            onClick={() => setToggleSideMenu(false)}
+            href={settingsHref}>{t("header.account-settings")}</Link>
         </li>
         {isEmployer ? (
           <>
@@ -99,20 +104,26 @@ export default function UserProfileCard({
                 className="text-muted-foreground group-hover:text-primary h-5 w-5"
                 strokeWidth={2.5}
               />
-              <Link href="/company/dashboard">{t("header.dashboard")}</Link>
+              <Link
+                onClick={() => setToggleSideMenu(false)}
+                href="/company/dashboard">{t("header.dashboard")}</Link>
             </li>
             <li className={itemClass}>
               <UserRoundCogIcon
                 className="text-muted-foreground group-hover:text-primary h-5 w-5"
                 strokeWidth={2.5}
               />
-              <Link href="/company/job-management">{t("header.job-management")}</Link>
+              <Link
+                onClick={() => setToggleSideMenu(false)}
+                href="/company/job-management">{t("header.job-management")}</Link>
             </li>
           </>
         ) : (
           <li className={itemClass}>
             <Bookmark className="text-muted-foreground group-hover:text-muted-foreground h-5 w-5" />
-            <Link href="/jobs/saved">{t("header.saved")}</Link>
+            <Link
+              onClick={() => setToggleSideMenu(false)}
+              href="/jobs/saved">{t("header.saved")}</Link>
           </li>
         )}
       </ul>
@@ -121,6 +132,7 @@ export default function UserProfileCard({
         variant="destructive"
         className="bg-destructive mt-4 w-full text-white"
         onClick={() => {
+          setToggleSideMenu(false);
           logout();
         }}
       >

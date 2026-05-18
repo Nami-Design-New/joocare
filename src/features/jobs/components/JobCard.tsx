@@ -273,15 +273,17 @@ export default function JobCard({ resumeMatch,
         </CardContent>
         <CardFooter className="flex flex-col gap-4 max-lg:px-2 flex-1 justify-end ">
           <div className="flex w-full flex-col gap-2 md:flex-row md:items-center">
-            <Link
-              className={` grow ${buttonVariants({
-                variant: "secondary",
-                size: "pill",
-              })} lg:w-2/3`}
-              href={`/company/job/candidates/${job.id}`}
-            >
-              {t("companyPage.jobs.card.view-candidates")} {job.applications_count}
-            </Link>
+            {(normalizedStatus !== "draft" && job.status?.status !== undefined && job.status?.status !== null) && (
+              <Link
+                className={` grow ${buttonVariants({
+                  variant: "secondary",
+                  size: "pill",
+                })} lg:w-2/3`}
+                href={`/company/job/candidates/${job.id}`}
+              >
+                {t("companyPage.jobs.card.view-candidates")} {job.applications_count}
+              </Link>
+            )}
             <Link
               className={`lg-max:py-2 lg-max:px-4 flex items-center gap-2 ${buttonVariants(
                 {
