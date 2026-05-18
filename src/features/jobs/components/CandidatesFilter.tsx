@@ -59,7 +59,7 @@ export default function CandidatesFilter({
         onSubmit={handleSearchSubmit}
       >
         <InputField
-          className="grow bg-white"
+          className="grow bg-white max-md:placeholder:text-[11px]"
           containerStyles="w-full"
           id="search"
           placeholder={t("companyPage.candidates.filters.search-placeholder")}

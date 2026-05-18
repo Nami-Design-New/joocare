@@ -42,7 +42,7 @@ const renderInsideLabel = ({
 
 export function ChartPieDonut({ isPending, companyDashboardData }: { isPending?: boolean, companyDashboardData: any }) {
   return (
-    <div className="flex items-center justify-between pb-0">
+    <div className="flex max-sm:flex-col gap-3 items-center justify-between pb-0">
       <div className="aspect-square w-full max-w-[160px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -52,7 +52,7 @@ export function ChartPieDonut({ isPending, companyDashboardData }: { isPending?:
               cx="50%"
               cy="50%"
               innerRadius={50}
-              outerRadius={70}
+              outerRadius={75}
               label={renderInsideLabel}
               labelLine={false}
             >

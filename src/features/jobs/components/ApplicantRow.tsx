@@ -41,7 +41,7 @@ export default function ApplicantRow({
         {applicant.date}
       </TableCell>
       <TableCell>
-        <div className="flex items-center gap-1 md:gap-2">
+        <div className="flex items-center gap-1 md:gap-2 px-4">
           <Button
             size="sm"
             variant="secondary"

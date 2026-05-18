@@ -93,7 +93,10 @@ const DashboardPage = () => {
           companyDashboardData={companyDashboardData}
           className="lg:col-span-2 lg:col-start-1 lg:row-start-3 xl:col-span-1 xl:row-start-3 xl:row-end-4" />
         {/* Right column table spanning 2 columns */}
-        <div className="lg:col-span-2 lg:row-start-4 xl:col-span-2 xl:col-start-2 xl:row-start-2 xl:row-end-4">
+        <div className="lg:col-span-2 lg:row-start-4 xl:col-span-2 xl:col-start-2 xl:row-start-2 xl:row-end-4 bg-white p-4 rounded-2xl">
+          <h5 className="text-foreground text-xl font-semibold mb-3">
+            {t("companyPage.dashboard.active-jobs-title")}
+          </h5>
           <ActiveJobsTable />
         </div>
       </div>

@@ -43,7 +43,7 @@ export default function ActiveJobsTable() {
       >
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="bg-muted">
               {[
                 t("companyPage.dashboard.table.job-title"),
                 t("companyPage.dashboard.table.job-views"),
@@ -51,7 +51,7 @@ export default function ActiveJobsTable() {
                 t("companyPage.dashboard.table.posted-since"),
                 " ",
               ].map((col) => (
-                <TableHead key={col} className={isRtl ? "text-right" : undefined}>
+                <TableHead key={col} className="text-center">
                   {col}
                 </TableHead>
               ))}
