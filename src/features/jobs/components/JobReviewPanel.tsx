@@ -170,6 +170,7 @@ function buildEditPreviewData(
     )
     : "";
 
+  // console.log("data job preview panel:::::::::", data);
 
   return {
     title:
@@ -419,7 +420,7 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
           </div>
           <h4 className="text-foreground text-lg font-semibold">
             {tPostJob("review.salary")}
-            {preview.salaryType !== "-" ? ` (${preview.currencyCode})` : ""}
+            {preview.salaryType !== "-" && preview.currencyCode ? ` (${preview.currencyCode})` : ""}
           </h4>
           <p className="text-primary text-md font-semibold">
             {preview.salary}
@@ -561,7 +562,7 @@ export default function JobReviewPanel({
   const labels = {
     untitledJob: tPostJob("review.untitledJob"),
     notSpecified: t("jobsPage.not-specified"),
-    noDescriptionHtml: tPostJob("review.noDescriptionHtml"),
+    noDescriptionHtml: `<p>${tPostJob("review.noDescriptionHtml")}</p>`,
   };
 
   if (!job && !isEditMode) {
@@ -617,7 +618,7 @@ export default function JobReviewPanel({
               __html:
                 preview?.description ||
                 job?.description ||
-                labels.noDescriptionHtml,
+                labels?.noDescriptionHtml,
             }}
           />
           <div>

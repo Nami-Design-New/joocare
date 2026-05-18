@@ -871,7 +871,7 @@
       },
       "review": {
         "untitledJob": "وظيفة بدون عنوان",
-        "noDescriptionHtml": "<p>لا يوجد وصف متاح.</p>",
+        "noDescriptionHtml": "لا يوجد وصف متاح.",
         "noPreviewData": "لا توجد بيانات معاينة بعد. أكمل الخطوة الثانية بنجاح لعرض تفاصيل الوظيفة.",
         "companyLogoAlt": "شعار الشركة",
         "at": "في",

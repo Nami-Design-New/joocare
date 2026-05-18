@@ -8,20 +8,23 @@ import JobLocationAndSalaryCard from "@/features/jobs/components/JobLocationAndS
 import JobOverviewCard from "@/features/jobs/components/JobOverviewCard";
 import JobShareCard from "@/features/jobs/components/JobShareCard";
 import { getJobDetails } from "@/features/jobs/services/job-details-service";
-import { getSiteOrigin, stripHtml, truncateText } from "@/features/jobs/utils";
+import { stripHtml, truncateText } from "@/features/jobs/utils";
 import Breadcrumb from "@/shared/components/Breadcrumb";
 import HttpStatusState from "@/shared/components/HttpStatusState";
 import { getHttpStatusCode } from "@/shared/lib/http-error";
+import { getRequestOrigin, toAbsoluteUrl } from "@/shared/lib/request-origin";
 import { getTranslations } from "next-intl/server";
 
 type PageProps = {
   params: Promise<{ locale: string, slug: string }>;
 };
 
-function getJobPageMetadataFallback(locale: string, slug: string): Metadata {
-  const siteOrigin = getSiteOrigin();
+async function getJobPageMetadataFallback(locale: string, slug: string): Promise<Metadata> {
+  const siteOrigin = await getRequestOrigin();
   const canonicalUrl = `${siteOrigin}/${locale}/jobs/${slug}`;
-  const previewImage = `${siteOrigin}/logo-icon.jfif`;
+  const previewImage = `${siteOrigin}/api/og/job?title=${encodeURIComponent(
+    locale === "ar" ? "تفاصيل الوظيفة" : "Job Details",
+  )}&company=${encodeURIComponent("Joocare")}`;
   const title =
     locale === "ar" ? "تفاصيل الوظيفة | Joocare" : "Job Details | Joocare";
   const description =
@@ -63,7 +66,7 @@ function getJobPageMetadataFallback(locale: string, slug: string): Metadata {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
-  const siteOrigin = getSiteOrigin();
+  const siteOrigin = await getRequestOrigin();
   const canonicalUrl = `${siteOrigin}/${locale}/jobs/${slug}`;
 
   try {
@@ -83,7 +86,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const title = companyName
       ? `${jobTitle} at ${companyName} | Joocare`
       : `${jobTitle} | Joocare`;
-    const previewImage = job.company?.image || `${siteOrigin}/logo-icon.jfif`;
+
+    const previewImage = `${siteOrigin}/api/og/job?title=${encodeURIComponent(
+      jobTitle,
+    )}&company=${encodeURIComponent(companyName || "Joocare")}${
+      location ? `&location=${encodeURIComponent(location)}` : ""
+    }`;
+    const absolutePreviewImage = toAbsoluteUrl(previewImage, siteOrigin);
 
     return {
       title,
@@ -103,8 +112,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         siteName: "Joocare",
         images: [
           {
-            url: previewImage,
-            alt: companyName ? `${companyName} logo` : "Joocare logo",
+            url: absolutePreviewImage,
+            width: 1200,
+            height: 630,
+            alt: companyName ? `${companyName} job opening` : "Joocare job opening",
           },
         ],
       },
@@ -112,11 +123,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         card: "summary_large_image",
         title,
         description,
-        images: [previewImage],
+        images: [absolutePreviewImage],
       },
     };
   } catch {
-    return getJobPageMetadataFallback(locale, slug);
+    return await getJobPageMetadataFallback(locale, slug);
   }
 }
 
