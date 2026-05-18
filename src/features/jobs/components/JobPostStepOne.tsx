@@ -35,6 +35,7 @@ type LookupOptionItem = {
   id?: number | string;
   title?: string;
   name?: string;
+  code?: string;
 };
 
 type PersistedOptions = Partial<Record<"title" | "country" | "city", Option>>;
@@ -695,9 +696,12 @@ function JobPostStepOneContent({
                     options={toSelectOptions(currencies)}
                     onChange={(value) => {
                       field.onChange(value);
+                      const selectedCurrency = currencies.find(
+                        (currency) => String(currency.id ?? "") === value,
+                      );
                       onPreviewLabelChange?.(
                         "currency",
-                        getOptionLabel(toSelectOptions(currencies), value),
+                        selectedCurrency?.code ?? selectedCurrency?.title ?? selectedCurrency?.name ?? value,
                       );
                     }}
                     disabled={isCurrenciesLoading}
