@@ -8,10 +8,16 @@ import { useIncrementCvDownloads } from "../hooks/useIncrementCvDownloads";
 import { Applicant } from "../types/index.types";
 import { getTimeZone } from "@/shared/lib/fetch-manager";
 import { useTranslations } from "next-intl";
+import { CustomPagination } from "@/shared/components/CustomPagination";
 
 type Props = {
   applicants: Applicant[];
   token: string;
+  total: number;
+  perPage: number;
+  page: number;
+  lastPage: number;
+  onPageChange: (page: number) => void;
 };
 
 const getDownloadFileName = (applicant: Applicant) => {
@@ -29,7 +35,15 @@ const getDownloadFileName = (applicant: Applicant) => {
   return `${safeName || "candidate-cv"}${extension}`;
 };
 
-export default function ApplicantsClient({ applicants, token }: Props) {
+export default function ApplicantsClient({
+  applicants,
+  token,
+  total,
+  perPage,
+  page,
+  lastPage,
+  onPageChange,
+}: Props) {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(
@@ -89,6 +103,11 @@ export default function ApplicantsClient({ applicants, token }: Props) {
   };
   // console.log("application", applicants);
 
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > lastPage) return;
+    onPageChange(newPage);
+  };
+
   return (
     <>
       <ApplicantsTable
@@ -97,6 +116,15 @@ export default function ApplicantsClient({ applicants, token }: Props) {
         onDownload={handleDownload}
         downloadingApplicantId={downloadingApplicantId}
       />
+
+      <div className="mt-4 flex justify-center">
+        <CustomPagination
+          totalItems={total}
+          pageSize={perPage}
+          currentPage={page}
+          onPageChange={handlePageChange}
+        />
+      </div>
 
       <CVModal
         open={open}
