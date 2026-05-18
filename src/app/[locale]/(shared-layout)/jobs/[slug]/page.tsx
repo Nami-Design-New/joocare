@@ -61,6 +61,9 @@ async function getJobPageMetadataFallback(locale: string, slug: string): Promise
       description,
       images: [previewImage],
     },
+    appLinks: null,
+    itunes: null,
+    appleWebApp: null,
   };
 }
 
@@ -125,6 +128,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         description,
         images: [absolutePreviewImage],
       },
+      appLinks: null,
+      itunes: null,
+      appleWebApp: null,
     };
   } catch {
     return await getJobPageMetadataFallback(locale, slug);
