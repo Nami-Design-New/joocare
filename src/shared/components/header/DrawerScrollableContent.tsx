@@ -17,6 +17,7 @@ import { useMarkAllAsRead } from "@/features/notifications/hooks/useMarkAllAsRea
 import { useMarkAsRead } from "@/features/notifications/hooks/useMarkAsRead";
 import { Notification } from "@/features/notifications/notifications.types";
 import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useRef } from "react";
 
 export function DrawerScrollableContent({
   title,
@@ -49,11 +50,65 @@ export function DrawerScrollableContent({
     token,
   );
 
-  const loadMoreRef = useInfiniteScroll(() => {
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const isFetchingNextPageRef = useRef(isFetchingNextPage);
+  isFetchingNextPageRef.current = isFetchingNextPage;
+
+  const loadMoreLockRef = useRef(false);
+
+  useEffect(() => {
     if (!isFetchingNextPage) {
-      void loadMore();
+      loadMoreLockRef.current = false;
     }
-  }, hasMore);
+  }, [isFetchingNextPage]);
+
+  const handleLoadMore = useCallback(() => {
+    if (!hasMore) return;
+    if (loading) return;
+    if (isFetchingNextPageRef.current) return;
+    if (loadMoreLockRef.current) return;
+
+    loadMoreLockRef.current = true;
+    void loadMore();
+  }, [hasMore, loading, loadMore]);
+
+  const { setRootRef, setTargetRef } = useInfiniteScroll({
+    enabled: open && hasMore && !loading,
+    onLoadMore: handleLoadMore,
+    rootMargin: "300px 0px",
+    threshold: 0,
+  });
+
+  const setScrollContainerRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      scrollContainerRef.current = node;
+      setRootRef(node);
+    },
+    [setRootRef],
+  );
+
+  useEffect(() => {
+    if (!open || loading || isFetchingNextPage || !hasMore) {
+      return;
+    }
+
+    const el = scrollContainerRef.current;
+    if (!el) {
+      return;
+    }
+
+    const raf = requestAnimationFrame(() => {
+      const container = scrollContainerRef.current;
+      if (!container) return;
+
+      const isScrollable = container.scrollHeight > container.clientHeight + 1;
+      if (!isScrollable) {
+        void loadMore();
+      }
+    });
+
+    return () => cancelAnimationFrame(raf);
+  }, [data.length, hasMore, isFetchingNextPage, loading, loadMore, open]);
 
   async function handleNotificationClick(item: Notification) {
     if (!item.is_read) {
@@ -90,9 +145,10 @@ export function DrawerScrollableContent({
   }
   // console.log('data notify:::', data);
 
+
   return (
     <Drawer direction="right" open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="bg-white">
+      <DrawerContent className="bg-white overflow-hidden flex flex-col">
         <DrawerHeader className="flex flex-row items-center justify-between">
           <div className="flex items-center gap-3">
             <DrawerTitle>{title}</DrawerTitle>
@@ -125,7 +181,12 @@ export function DrawerScrollableContent({
           </div>
         </DrawerHeader>
 
-        <div className="no-scrollbar z-10 overflow-y-auto px-4 max-h-[80vh] space-y-3">
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <div
+            ref={setScrollContainerRef}
+            className="no-scrollbar z-10 h-full space-y-3 overflow-y-auto px-4"
+            style={{ maxHeight: "80vh" }}
+          >
           {data.map((item) => (
             <NotificationCard
               key={item.id}
@@ -144,7 +205,17 @@ export function DrawerScrollableContent({
             </p>
           )}
 
-          <div ref={loadMoreRef} />
+          {isFetchingNextPage && (
+            <p className="text-sm text-gray-500">
+              {t("header.loading")}
+            </p>
+          )}
+
+            <div
+              ref={setTargetRef}
+              className="h-12 w-full"
+              aria-hidden="true"
+            />
 
           {!hasMore && data.length > 0 && (
             <p className="text-sm text-gray-400 text-center">
@@ -158,6 +229,7 @@ export function DrawerScrollableContent({
             </p>
           )}
 
+          </div>
         </div>
       </DrawerContent>
     </Drawer>

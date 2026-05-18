@@ -1,8 +1,8 @@
 import { AuthApiRole, getAuthApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { apiFetch, getTimeZone } from "@/shared/lib/fetch-manager";
 import {
     NotificationMutationResponse,
-    NotificationsResponse,
+    NotificationsPage,
 } from "../notifications.types";
 
 type NotificationsParams = {
@@ -63,10 +63,21 @@ export async function getNotifications({
 
     const url = `${baseUrl}/notifications?pagination=on&limit_per_page=${limit}&page=${page}`;
 
-    return apiFetch<NotificationsResponse>(url, {
+    const res = await fetch(url, {
         method: "GET",
-        token,
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Timezone": getTimeZone(),
+        },
+        cache: "no-store",
     });
+
+    if (!res.ok) {
+        throw new Error("Failed to load notifications.");
+    }
+
+    return (await res.json()) as NotificationsPage;
 }
 
 export async function markNotificationAsRead({
