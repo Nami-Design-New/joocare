@@ -53,7 +53,8 @@ export function useJobShare({ title = "Check out this job", path }: UseJobShareO
   const copyLink = async () => {
     const fallbackUrl = buildAbsoluteUrl(resolvedPath);
     const urlToCopy = shareUrl || fallbackUrl;
-    const shareText = `${title}\n${urlToCopy}`;
+    // const shareText = `${title}\n${urlToCopy}`;
+    const shareText = `${urlToCopy}`;
 
     try {
       await navigator.clipboard.writeText(shareText);
