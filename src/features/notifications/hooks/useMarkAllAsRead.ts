@@ -4,11 +4,11 @@ import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query
 import { toast } from "sonner";
 
 import { AuthApiRole } from "@/shared/lib/api-endpoints";
-import { NotificationsResponse } from "../notifications.types";
+import { NotificationsPage } from "../notifications.types";
 import { markAllNotificationsAsRead } from "../service/notifications-service";
 import { notificationsQueryKey } from "./useGetAllNotifications";
 
-type NotificationsInfiniteData = InfiniteData<NotificationsResponse>;
+type NotificationsInfiniteData = InfiniteData<NotificationsPage>;
 
 function patchAllNotificationsReadState(
   currentData: NotificationsInfiniteData | undefined,

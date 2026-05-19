@@ -22,15 +22,23 @@ export type Notification = {
   is_read: boolean;
   created_at: string;
   updated_at: string;
-  data: {
-    job_id: number
-  }
+  data: Record<string, unknown> & {
+    job_id?: number;
+  };
 };
 
-export type NotificationsResponse = Notification[] &
-  Omit<PaginatedResponse<Notification>, "data"> & {
-    data: Notification[];
-  };
+export type NotificationsPage = {
+  message?: string;
+  code?: number;
+
+  data: Notification[];
+  current_page?: number;
+  last_page?: number;
+  total?: number;
+  per_page?: number;
+  next_page_url?: string | null;
+  prev_page_url?: string | null;
+};
 
 export type NotificationMutationResponse = {
   code?: number;

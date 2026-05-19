@@ -35,9 +35,9 @@ export default function ApplicantRow({
         {applicant.email}
       </TableCell>
       <TableCell className="text-foreground text-md px-4 py-5 font-normal">
-        {applicant.phone}
+        {applicant.phone !== 'null null' ? applicant.phone : '-'}
       </TableCell>
-      <TableCell className="text-muted-foreground px-4 py-5 text-sm whitespace-pre-line">
+      <TableCell className="text-muted-foreground px-4 py-5 text-sm ">
         {applicant.date}
       </TableCell>
       <TableCell>

@@ -2,7 +2,7 @@
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { AuthApiRole } from "@/shared/lib/api-endpoints";
-import { Notification, NotificationsResponse } from "../notifications.types";
+import { Notification, NotificationsPage } from "../notifications.types";
 import { getNotifications } from "../service/notifications-service";
 
 type UseNotificationsInfiniteOptions = {
@@ -21,43 +21,56 @@ export function useNotificationsInfinite(
 ) {
   const { enabled = true, limit = 10 } = options;
 
-  const query = useInfiniteQuery<NotificationsResponse, Error>({
+  const query = useInfiniteQuery<NotificationsPage, Error>({
     queryKey: notificationsQueryKey(role),
-    queryFn: async ({ pageParam = 1 }): Promise<NotificationsResponse> => {
+    queryFn: async ({ pageParam = 1 }): Promise<NotificationsPage> => {
       if (!role || !token) {
         throw new Error("Missing notification auth context.");
       }
 
-      const res = await getNotifications({
+      return await getNotifications({
         role,
         page: Number(pageParam),
         limit,
         token,
       });
-
-      if (!res.ok || !res.data?.data) {
-        throw new Error(res.message || "Failed to load notifications.");
-      }
-      // console.log("notification s ::", res.data.data);
-
-      return res.data.data;
     },
     getNextPageParam: (lastPage) => {
-      const current = lastPage?.current_page ?? 1;
-      const last = lastPage?.last_page ?? 1;
+      if (!lastPage?.next_page_url) {
+        const current = lastPage?.current_page ?? 1;
+        const last = lastPage?.last_page ?? 1;
 
-      if (current < last) {
-        return current + 1;
+        if (current < last) {
+          return current + 1;
+        }
+
+        return undefined;
       }
 
-      return undefined;
+      const url = new URL(lastPage.next_page_url);
+      const page = Number(url.searchParams.get("page"));
+
+      return Number.isNaN(page) ? undefined : page;
     },
     initialPageParam: 1,
     enabled: enabled && !!token && !!role,
   });
 
   const pages = query.data?.pages ?? [];
-  const data: Notification[] = pages.flatMap((page) => page ?? []);
+  const data: Notification[] = (() => {
+    const seen = new Set<number>();
+    const merged: Notification[] = [];
+
+    for (const page of pages) {
+      for (const item of page?.data ?? []) {
+        if (seen.has(item.id)) continue;
+        seen.add(item.id);
+        merged.push(item);
+      }
+    }
+
+    return merged;
+  })();
   const unreadCount = data.filter((item) => !item.is_read).length;
   const total = pages[0]?.total ?? data.length;
 

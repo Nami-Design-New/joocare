@@ -87,12 +87,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ? `${jobTitle} at ${companyName} | Joocare`
       : `${jobTitle} | Joocare`;
 
-    const previewImage = `${siteOrigin}/api/og/job?title=${encodeURIComponent(
-      jobTitle,
-    )}&company=${encodeURIComponent(companyName || "Joocare")}${
-      location ? `&location=${encodeURIComponent(location)}` : ""
-    }`;
-    const absolutePreviewImage = toAbsoluteUrl(previewImage, siteOrigin);
+    // const previewImage = `${siteOrigin}/api/og/job?title=${encodeURIComponent(
+    //   jobTitle,
+    // )}&company=${encodeURIComponent(companyName || "Joocare")}${location ? `&location=${encodeURIComponent(location)}` : ""
+    //   }`;
+
+    const logoImagePreview = 'https://admin.joocare.com/storage/uploads/setting/69faf5eb96d8c1778054635.svg'
+    const absolutePreviewImage = toAbsoluteUrl(logoImagePreview, siteOrigin);
+    console.log(absolutePreviewImage);
 
     return {
       title,
