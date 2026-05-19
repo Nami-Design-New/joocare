@@ -13,20 +13,22 @@ export default function ApplicantRow({
   onView,
   index,
   isDownloading = false,
+  currentPage = 1
 }: {
   applicant: Applicant;
   onDownload?: (a: Applicant) => void | Promise<void>;
   onView?: (a: Applicant) => void;
   index: number;
   isDownloading?: boolean;
+  currentPage?: number;
 }) {
   const t = useTranslations();
-  // console.log("applic", applicant);
+  console.log("applic", applicant);
 
   return (
     <TableRow className="odd:bg-muted border-border border-b bg-white transition-colors">
       <TableCell className="text-muted-foreground w-12 px-4 py-5 font-medium">
-        {index + 1}
+        {10 * (currentPage - 1) + index + 1}
       </TableCell>
       <TableCell className="text-foreground text-md px-4 py-5 font-normal">
         {applicant.name}

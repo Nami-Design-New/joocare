@@ -1,8 +1,10 @@
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getTimeZone } from "../lib/fetch-manager";
+import { useLocale } from "next-intl";
 
 export default function useGetCitiesByCountryId(countryId: number, search = "") {
+    const locale = useLocale();
     const query = useInfiniteQuery({
         queryKey: ["cities-by-country-id", countryId, search],
         initialPageParam: 1,
@@ -21,6 +23,7 @@ export default function useGetCitiesByCountryId(countryId: number, search = "") 
             const res = await fetch(`${getBaseApiUrl()}/cities?${params.toString()}`, {
                 headers: {
                     "X-Timezone": getTimeZone(),
+                    "Accept-Language": locale,
                 }
             });
 

@@ -13,6 +13,7 @@ import Breadcrumb from "@/shared/components/Breadcrumb";
 import HttpStatusState from "@/shared/components/HttpStatusState";
 import { getHttpStatusCode } from "@/shared/lib/http-error";
 import { getRequestOrigin, toAbsoluteUrl } from "@/shared/lib/request-origin";
+import { settingService } from "@/shared/services/settings-services";
 import { getTranslations } from "next-intl/server";
 
 type PageProps = {
@@ -22,9 +23,13 @@ type PageProps = {
 async function getJobPageMetadataFallback(locale: string, slug: string): Promise<Metadata> {
   const siteOrigin = await getRequestOrigin();
   const canonicalUrl = `${siteOrigin}/${locale}/jobs/${slug}`;
-  const previewImage = `${siteOrigin}/api/og/job?title=${encodeURIComponent(
+  const defaultPreviewImage = `${siteOrigin}/api/og/job?title=${encodeURIComponent(
     locale === "ar" ? "تفاصيل الوظيفة" : "Job Details",
   )}&company=${encodeURIComponent("Joocare")}`;
+  const settings = await settingService().catch(() => null);
+  const previewImage = settings?.share_link_image
+    ? toAbsoluteUrl(settings.share_link_image, siteOrigin)
+    : defaultPreviewImage;
   const title =
     locale === "ar" ? "تفاصيل الوظيفة | Joocare" : "Job Details | Joocare";
   const description =
@@ -70,6 +75,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const canonicalUrl = `${siteOrigin}/${locale}/jobs/${slug}`;
 
   try {
+    const settings = await settingService().catch(() => null);
     const { job } = await getJobDetails(slug);
     const jobTitle = job.title ?? job.job_title?.title ?? "Job opportunity";
     const companyName = job.company?.name?.trim();
@@ -87,14 +93,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ? `${jobTitle} at ${companyName} | Joocare`
       : `${jobTitle} | Joocare`;
 
-    // const previewImage = `${siteOrigin}/api/og/job?title=${encodeURIComponent(
-    //   jobTitle,
-    // )}&company=${encodeURIComponent(companyName || "Joocare")}${location ? `&location=${encodeURIComponent(location)}` : ""
-    //   }`;
-
-    const logoImagePreview = 'https://admin.joocare.com/storage/uploads/setting/69faf5eb96d8c1778054635.svg'
-    const absolutePreviewImage = toAbsoluteUrl(logoImagePreview, siteOrigin);
-    console.log(absolutePreviewImage);
+    const absolutePreviewImage = settings?.share_link_image
+      ? toAbsoluteUrl(settings.share_link_image, siteOrigin)
+      : `${siteOrigin}/api/og/job?title=${encodeURIComponent(jobTitle)}&company=${encodeURIComponent(
+        companyName || "Joocare",
+      )}${location ? `&location=${encodeURIComponent(location)}` : ""}`;
 
     return {
       title,

@@ -31,6 +31,10 @@ function getAllowedHosts() {
 
 export async function GET(request: NextRequest) {
   const targetUrl = request.nextUrl.searchParams.get("url");
+  const locale =
+    request.nextUrl.searchParams.get("locale") ??
+    request.headers.get("accept-language") ??
+    "en";
 
   if (!targetUrl) {
     return NextResponse.json({ message: "Missing url parameter." }, { status: 400 });
@@ -59,6 +63,7 @@ export async function GET(request: NextRequest) {
       headers: {
         Accept: "application/pdf,*/*",
         "X-Timezone": getTimeZone(),
+        "Accept-Language": locale,
 
       },
     });

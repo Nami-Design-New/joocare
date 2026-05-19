@@ -1,4 +1,5 @@
 import { routing } from "@/i18n/routing";
+import { settingService } from "@/shared/services/settings-services";
 import MainProviders from "@/shared/providers/MainProviders";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
@@ -32,36 +33,44 @@ const notoSans = Noto_Sans({
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-noto-sans",
 });
-export const metadata: Metadata = {
-  metadataBase: getMetadataBase(),
-  title: "Joocare - Find the best healthcare jobs",
-  description: "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
-  icons: {
-    icon: "/logo-icon.jfif",
-    shortcut: "/logo-icon.jfif",
-    apple: "/logo-icon.jfif",
-  },
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const metadataBase = getMetadataBase();
+  const settings = await settingService().catch(() => null);
+  const shareLinkImage =
+    settings?.share_link_image?.trim() || "/logo-icon.jfif";
+
+  return {
+    metadataBase,
     title: "Joocare - Find the best healthcare jobs",
     description:
       "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
-    siteName: "Joocare",
-    type: "website",
-    images: [
-      {
-        url: "/logo-icon.jfif",
-        alt: "Joocare logo",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Joocare - Find the best healthcare jobs",
-    description:
-      "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
-    images: ["/logo-icon.jfif"],
-  },
-};
+    icons: {
+      icon: "/logo-icon.jfif",
+      shortcut: "/logo-icon.jfif",
+      apple: "/logo-icon.jfif",
+    },
+    openGraph: {
+      title: "Joocare - Find the best healthcare jobs",
+      description:
+        "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
+      siteName: "Joocare",
+      type: "website",
+      images: [
+        {
+          url: shareLinkImage,
+          alt: "Joocare",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Joocare - Find the best healthcare jobs",
+      description:
+        "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
+      images: [shareLinkImage],
+    },
+  };
+}
 
 type Props = {
   children: React.ReactNode;

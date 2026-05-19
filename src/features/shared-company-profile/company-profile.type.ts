@@ -10,6 +10,7 @@ export type CompanyBase = {
 
 
 export type CompanyProfile = CompanyBase & {
+    website: string;
     facebook: string;
     twitter: string;
     linkedin: string;

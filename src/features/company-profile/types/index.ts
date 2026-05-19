@@ -116,6 +116,7 @@ export type TCompanyProfileViewModel = {
 
     created_at: string;
     updated_at: string;
+    unread_notifications_count: number
 };
 
 // 🔹 Final Response Type

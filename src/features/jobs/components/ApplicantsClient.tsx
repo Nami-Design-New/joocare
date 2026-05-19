@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useIncrementCvDownloads } from "../hooks/useIncrementCvDownloads";
 import { Applicant } from "../types/index.types";
 import { getTimeZone } from "@/shared/lib/fetch-manager";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 
 type Props = {
@@ -45,6 +45,7 @@ export default function ApplicantsClient({
   onPageChange,
 }: Props) {
   const t = useTranslations();
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(
     null,
@@ -68,10 +69,12 @@ export default function ApplicantsClient({
       const params = new URLSearchParams({
         url: applicant.cvUrl,
         filename: getDownloadFileName(applicant),
+        locale,
       });
       const response = await fetch(`/api/download-cv?${params.toString()}`, {
         headers: {
           "X-Timezone": getTimeZone(),
+          "Accept-Language": locale,
         }
       });
 
@@ -115,6 +118,7 @@ export default function ApplicantsClient({
         onView={handleView}
         onDownload={handleDownload}
         downloadingApplicantId={downloadingApplicantId}
+        currentPage={page}
       />
 
       <div className="mt-4 flex justify-center">
