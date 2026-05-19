@@ -1,8 +1,10 @@
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getTimeZone } from "../lib/fetch-manager";
+import { useLocale } from "next-intl";
 
 export default function useGetSpecialties(search = "", categoryId?: number) {
+    const locale = useLocale();
     const query = useInfiniteQuery({
         queryKey: ["specialties", search, categoryId],
         initialPageParam: 1,
@@ -24,6 +26,7 @@ export default function useGetSpecialties(search = "", categoryId?: number) {
             const res = await fetch(`${getBaseApiUrl()}/specialties?${params.toString()}`, {
                 headers: {
                     "X-Timezone": getTimeZone(),
+                    "Accept-Language": locale,
                 }
             });
 

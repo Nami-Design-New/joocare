@@ -1,4 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
 
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { getTimeZone } from "../lib/fetch-manager";
@@ -23,6 +24,8 @@ export function useInfiniteLookup({
   extraParams,
   enabled = true,
 }: InfiniteLookupOptions) {
+  const locale = useLocale();
+
   return useInfiniteQuery({
     queryKey: [queryKey, search, limitPerPage, extraParams],
     initialPageParam: 1,
@@ -57,6 +60,7 @@ export function useInfiniteLookup({
       const res = await fetch(`${getBaseApiUrl()}/${endpoint}?${params.toString()}`, {
         headers: {
           "X-Timezone": getTimeZone(),
+          "Accept-Language": locale,
         }
       });
 

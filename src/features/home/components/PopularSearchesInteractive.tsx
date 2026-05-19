@@ -77,6 +77,8 @@ export default function PopularSearchesInteractive({
             headers: {
               Accept: "application/json",
               "X-Timezone": getTimeZone(),
+              "Accept-Language":
+                (typeof params?.locale === "string" && params.locale ? params.locale : "en"),
             },
           });
 

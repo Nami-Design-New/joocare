@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { AuthApiRole } from "@/shared/lib/api-endpoints";
 import { Notification, NotificationsPage } from "../notifications.types";
 import { getNotifications } from "../service/notifications-service";
+import { useLocale } from "next-intl";
 
 type UseNotificationsInfiniteOptions = {
   enabled?: boolean;
@@ -20,6 +21,7 @@ export function useNotificationsInfinite(
   options: UseNotificationsInfiniteOptions = {},
 ) {
   const { enabled = true, limit = 10 } = options;
+  const locale = useLocale();
 
   const query = useInfiniteQuery<NotificationsPage, Error>({
     queryKey: notificationsQueryKey(role),
@@ -33,6 +35,7 @@ export function useNotificationsInfinite(
         page: Number(pageParam),
         limit,
         token,
+        locale,
       });
     },
     getNextPageParam: (lastPage) => {

@@ -1,8 +1,10 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { getTimeZone } from "../lib/fetch-manager";
+import { useLocale } from "next-intl";
 
 export default function useGetCurrencies(search = "") {
+  const locale = useLocale();
   const query = useInfiniteQuery({
     queryKey: ["currencies", search],
     initialPageParam: 1,
@@ -20,6 +22,7 @@ export default function useGetCurrencies(search = "") {
       const res = await fetch(`${getBaseApiUrl()}/currencies?${params.toString()}`, {
         headers: {
           "X-Timezone": getTimeZone(),
+          "Accept-Language": locale,
         }
       });
 

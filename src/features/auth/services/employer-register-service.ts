@@ -1,7 +1,7 @@
 import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { getTimeZone } from "@/shared/lib/fetch-manager";
 
-type RegisterEmployerPayload = {
+export type RegisterEmployerPayload = {
     name: string;
     email: string;
     domain_id: number;
@@ -11,12 +11,16 @@ type RegisterEmployerPayload = {
     person_phone_code: string;
 };
 
-export const registerEmployerService = async (data: RegisterEmployerPayload) => {
+export const registerEmployerService = async (
+    data: RegisterEmployerPayload,
+    locale: string = "en",
+) => {
     const response = await fetch(`${getCompanyApiUrl()}/auth/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "X-Timezone": getTimeZone(),
+            "Accept-Language": locale,
         },
         body: JSON.stringify(data),
     });

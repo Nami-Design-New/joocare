@@ -1,8 +1,10 @@
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getTimeZone } from "../lib/fetch-manager";
+import { useLocale } from "next-intl";
 
 export default function useGetExperiences(search = "") {
+    const locale = useLocale();
     const query = useInfiniteQuery({
         queryKey: ["experiences", search],
         initialPageParam: 1,
@@ -20,6 +22,7 @@ export default function useGetExperiences(search = "") {
             const res = await fetch(`${getBaseApiUrl()}/experiences?${params.toString()}`, {
                 headers: {
                     "X-Timezone": getTimeZone(),
+                    "Accept-Language": locale,
                 }
             });
 

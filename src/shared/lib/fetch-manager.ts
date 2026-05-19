@@ -1,3 +1,5 @@
+import { getLocale } from "next-intl/server";
+
 type ApiMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export type ApiFetchResponse<T = Record<string, unknown>> = {
@@ -15,7 +17,6 @@ export type ApiResult<T = Record<string, unknown>> = {
   ok: boolean;
   message: string | null;
 };
-
 type ApiFetchOptions = {
   method?: ApiMethod;
   locale?: string;
@@ -27,6 +28,35 @@ type ApiFetchOptions = {
 };
 
 export const UNAUTHORIZED_EVENT = "app:unauthorized";
+
+function normalizeLocale(locale: string | null | undefined) {
+  if (!locale) return null;
+  const value = locale.trim();
+  if (!value) return null;
+
+  const primary = value.split(",")[0]?.trim() ?? "";
+  if (!primary) return null;
+
+  const lower = primary.toLowerCase();
+  if (lower.startsWith("ar")) return "ar";
+  if (lower.startsWith("en")) return "en";
+
+  return primary;
+}
+
+function resolveDefaultLocale() {
+  if (typeof document !== "undefined") {
+    const fromDom = normalizeLocale(document.documentElement?.lang);
+    if (fromDom) return fromDom;
+  }
+
+  if (typeof navigator !== "undefined") {
+    const fromNavigator = normalizeLocale(navigator.language);
+    if (fromNavigator) return fromNavigator;
+  }
+
+  return "en";
+}
 
 function getHeaderValue(headers: Headers, names: string[]) {
   for (const name of names) {
@@ -107,9 +137,9 @@ export async function apiFetch<T = Record<string, unknown>>(
   url: string,
   options: ApiFetchOptions = {},
 ): Promise<ApiResult<T>> {
+  const locale = await getLocale();
   const {
     method = "GET",
-    locale = "en",
     token,
     headers,
     body,
@@ -117,7 +147,9 @@ export async function apiFetch<T = Record<string, unknown>>(
     skipUnauthorizedHandler = false,
   } = options;
 
+  // const resolvedLocale = normalizeLocale(locale) ?? resolveDefaultLocale();
   const requestHeaders = new Headers(headers);
+  console.log(locale, locale);
 
   requestHeaders.set('X-Timezone', getTimeZone());
   if (!requestHeaders.has("Accept")) {

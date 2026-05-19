@@ -72,7 +72,7 @@ export function useJobShare({ title = "Check out this job", path }: UseJobShareO
       if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
         await navigator.share({
           title,
-          text: title,
+          // text: title,
           url: urlToShare,
         });
         return;

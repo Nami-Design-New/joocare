@@ -1,8 +1,10 @@
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
 import { getTimeZone } from "@/shared/lib/fetch-manager";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
 
 export default function useGetUserSkills(search = "", job_title_id = "", token = "") {
+  const locale = useLocale();
   const trimmedSearch = search.trim();
 
   const query = useInfiniteQuery({
@@ -19,7 +21,9 @@ export default function useGetUserSkills(search = "", job_title_id = "", token =
 
       const res = await fetch(`${getUserApiUrl()}/user-skills?${params.toString()}`, {
         headers: {
-          Authorization: `Bearer ${token}`, "X-Timezone": getTimeZone(),
+          Authorization: `Bearer ${token}`,
+          "X-Timezone": getTimeZone(),
+          "Accept-Language": locale,
         },
       });
 

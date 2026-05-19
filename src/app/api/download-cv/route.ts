@@ -40,6 +40,10 @@ function buildContentDisposition(fileName: string) {
 
 export async function GET(request: NextRequest) {
   const url = request.nextUrl.searchParams.get("url");
+  const locale =
+    request.nextUrl.searchParams.get("locale") ??
+    request.headers.get("accept-language") ??
+    "en";
   const fileName =
     request.nextUrl.searchParams.get("filename") ?? DEFAULT_FILE_NAME;
 
@@ -64,6 +68,7 @@ export async function GET(request: NextRequest) {
     cache: "no-store",
     headers: {
       "X-Timezone": getTimeZone(),
+      "Accept-Language": locale,
     },
   });
 

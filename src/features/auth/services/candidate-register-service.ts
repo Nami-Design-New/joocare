@@ -2,7 +2,7 @@
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
 import { getTimeZone } from "@/shared/lib/fetch-manager";
 
-type RegisterCandidatePayload = {
+export type RegisterCandidatePayload = {
     name: string;
     email: string;
     phone: string;
@@ -20,13 +20,17 @@ type RegisterCandidatePayload = {
     license: string | undefined;
 };
 
-export const registerCandidateService = async (data: RegisterCandidatePayload) => {
+export const registerCandidateService = async (
+    data: RegisterCandidatePayload,
+    locale: string = "en",
+) => {
     const response = await fetch(`${getUserApiUrl()}/auth/register`, {
 
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "X-Timezone": getTimeZone(),
+            "Accept-Language": locale,
         },
         body: JSON.stringify(data),
     });

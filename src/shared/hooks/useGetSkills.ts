@@ -1,9 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { getTimeZone } from "../lib/fetch-manager";
+import { useLocale } from "next-intl";
 
 export default function useGetSkills(search = "", job_title_id = "") {
   const trimmedSearch = search.trim();
+  const locale = useLocale();
   const query = useInfiniteQuery({
     queryKey: ["skills", trimmedSearch, job_title_id],
     initialPageParam: 1,
@@ -24,6 +26,7 @@ export default function useGetSkills(search = "", job_title_id = "") {
       const res = await fetch(`${getBaseApiUrl()}/skills?${params.toString()}`, {
         headers: {
           "X-Timezone": getTimeZone(),
+          "Accept-Language": locale,
         }
       });
 

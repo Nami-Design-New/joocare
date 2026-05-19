@@ -10,6 +10,7 @@ type NotificationsParams = {
     page?: number;
     limit?: number;
     token: string;
+    locale?: string;
 };
 
 type NotificationActionParams = {
@@ -58,6 +59,7 @@ export async function getNotifications({
     page = 1,
     limit = 10,
     token,
+    locale = "en",
 }: NotificationsParams) {
     const baseUrl = getNotificationsBaseUrl(role);
 
@@ -69,6 +71,7 @@ export async function getNotifications({
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
             "X-Timezone": getTimeZone(),
+            "Accept-Language": locale,
         },
         cache: "no-store",
     });
