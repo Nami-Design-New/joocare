@@ -12,6 +12,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
     const { shareJob } = useJobShare({
         title: t("sharedCompanyProfilePage.share-company-title", { companyName }),
     });
+    console.log(company);
 
     return (
         <div className="rounded-2xl bg-white flex flex-col gap-4 p-4 border">
@@ -23,6 +24,16 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
             </p>
             <div className="flex gap-2 justify-between items-center">
                 <div className="flex gap-2">
+                    {/* {company?.website && (
+                        <a href={company.website} target="_blank" rel="noopener noreferrer">
+                            <Image
+                                src="/assets/icons/social-icons/globe-about.svg"
+                                width={30}
+                                height={30}
+                                alt={t("sharedCompanyProfilePage.website")}
+                            />
+                        </a>
+                    )} */}
                     {company?.linkedin && (
                         <a href={company.linkedin} target="_blank" rel="noopener noreferrer">
                             <Image

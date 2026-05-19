@@ -1,5 +1,3 @@
-import { getLocale } from "next-intl/server";
-
 type ApiMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export type ApiFetchResponse<T = Record<string, unknown>> = {
@@ -137,9 +135,9 @@ export async function apiFetch<T = Record<string, unknown>>(
   url: string,
   options: ApiFetchOptions = {},
 ): Promise<ApiResult<T>> {
-  const locale = await getLocale();
   const {
     method = "GET",
+    locale,
     token,
     headers,
     body,
@@ -147,9 +145,8 @@ export async function apiFetch<T = Record<string, unknown>>(
     skipUnauthorizedHandler = false,
   } = options;
 
-  // const resolvedLocale = normalizeLocale(locale) ?? resolveDefaultLocale();
+  const resolvedLocale = normalizeLocale(locale) ?? resolveDefaultLocale();
   const requestHeaders = new Headers(headers);
-  console.log(locale, locale);
 
   requestHeaders.set('X-Timezone', getTimeZone());
   if (!requestHeaders.has("Accept")) {
@@ -157,7 +154,7 @@ export async function apiFetch<T = Record<string, unknown>>(
   }
 
   if (!requestHeaders.has("Accept-Language")) {
-    requestHeaders.set("Accept-Language", locale);
+    requestHeaders.set("Accept-Language", resolvedLocale);
   }
 
   if (token && !requestHeaders.has("Authorization")) {
