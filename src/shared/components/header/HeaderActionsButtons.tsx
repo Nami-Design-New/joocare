@@ -18,6 +18,8 @@ import { Button, buttonVariants } from "../ui/button";
 import { DrawerScrollableContent } from "./DrawerScrollableContent";
 import UserDropDown from "./UserDropDown";
 import { useLocale, useTranslations } from "next-intl";
+import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import useGetCandidateProfile from "@/features/candidate-profile/hooks/useGetCandidateProfile";
 
 function HeaderActionsButtons({
   companyHeader,
@@ -33,7 +35,24 @@ function HeaderActionsButtons({
 
   const { data: session, status } = useSession();
   const role = session?.authRole;
-  const token = session?.accessToken;
+
+  const isEmployer = session?.authRole === "employer" || companyHeader;
+  const token = session?.accessToken || "";
+
+  const { data: companyProfileData } = useGetCompanyProfile({
+    token: isEmployer ? token : "",
+  });
+  const { data: candidateProfileData } = useGetCandidateProfile({
+    token: !isEmployer ? token : "",
+  });
+  console.log("comany candiditate profile data::: ", companyProfileData, candidateProfileData);
+
+  const unCountNotification =
+    (isEmployer
+      ? companyProfileData?.unread_notifications_count
+      : candidateProfileData?.unread_notifications_count)
+    ?? 0
+
 
   const isLoading = status === "loading";
   const isAuthed = status === "authenticated";
@@ -75,6 +94,7 @@ function HeaderActionsButtons({
     console.info("[Notifications] Requesting permission after opening notifications drawer.");
     void requestNotificationPermission();
   }, [isAuthed, open]);
+
 
   return (
     <>
@@ -133,9 +153,9 @@ function HeaderActionsButtons({
                 alt="Notification Icon"
               />
 
-              {unreadCount > 0 && (
+              {Number(unCountNotification) > 0 && (
                 <span className="bg-primary absolute top-0 right-0 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white">
-                  {unreadCount}
+                  {Number(unCountNotification)}
                 </span>
               )}
             </Button>

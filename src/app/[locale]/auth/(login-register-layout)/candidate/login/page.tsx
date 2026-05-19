@@ -17,7 +17,7 @@ const LoginCandidatePage = async () => {
       >
         {/* header text */}
         <h1>{t("authPage.pages.candidate-login.title")}</h1>
-        <p className="text-[clamp(.8rem,4vw,1rem)] mt-2">
+        <p className="text-[clamp(.8rem,4vw,1rem)] mt-2 mb-8">
           {t("authPage.pages.candidate-login.subtitle")}
         </p>
 

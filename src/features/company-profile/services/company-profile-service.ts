@@ -8,12 +8,21 @@ export async function getCompanyProfileService({
 }: {
     token: string;
     locale: string;
-}) {
+}): Promise<TCompanyProfileViewModel | undefined> {
     const res = await apiFetch(`${getCompanyApiUrl()}/auth/profile`, {
         method: "GET",
         locale,
         token,
     });
 
-    return res.data?.data?.company as TCompanyProfileViewModel;
+    const company = (res.data?.data?.company ?? undefined) as
+        | TCompanyProfileViewModel
+        | undefined;
+
+    if (!company) return undefined;
+
+    return {
+        ...company,
+        unread_notifications_count: company.unread_notifications_count ?? 0,
+    };
 }

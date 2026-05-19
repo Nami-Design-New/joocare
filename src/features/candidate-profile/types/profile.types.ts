@@ -60,6 +60,7 @@ export type CandidateProfileApiUser = {
   email: string;
   phone: string | null;
   phone_code: string | null;
+  unread_notifications_count?: number;
   job_title_id: number | null;
   job_title: {
     title: string
@@ -105,6 +106,7 @@ export type CandidateProfileViewModel = {
   phone: string | null;
   phoneCode: string | null;
   fullPhone: string | null;
+  unread_notifications_count: number;
   jobTitleId?: string | null;
   specialty_title?: string | null;
   experienceId?: string | null;

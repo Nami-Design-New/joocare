@@ -193,6 +193,7 @@ export async function getCandidateProfile() {
     phone: user.phone,
     phoneCode: user.phone_code,
     fullPhone: fullPhone ?? null,
+    unread_notifications_count: user.unread_notifications_count ?? 0,
     jobTitleId: user.job_title_id ? String(user.job_title_id) : null,
     specialty_title: specialtyTitle,
     experienceId: user.experience_id ? String(user.experience_id) : null,

@@ -15,6 +15,7 @@ type applicantsTableProps = {
   onDownload?: (applicant: Applicant) => void | Promise<void>;
   onView?: (applicant: Applicant) => void;
   downloadingApplicantId?: number | null;
+  currentPage?: number;
 };
 
 export default function ApplicantsTable({
@@ -22,6 +23,7 @@ export default function ApplicantsTable({
   onDownload,
   onView,
   downloadingApplicantId,
+  currentPage
 }: applicantsTableProps) {
   const t = useTranslations();
   const locale = useLocale();
@@ -62,6 +64,7 @@ export default function ApplicantsTable({
                 onView={onView}
                 index={index}
                 isDownloading={downloadingApplicantId === applicant.id}
+                currentPage={currentPage}
               />
             ))}
           </TableBody>

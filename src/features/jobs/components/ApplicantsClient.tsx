@@ -118,6 +118,7 @@ export default function ApplicantsClient({
         onView={handleView}
         onDownload={handleDownload}
         downloadingApplicantId={downloadingApplicantId}
+        currentPage={page}
       />
 
       <div className="mt-4 flex justify-center">
