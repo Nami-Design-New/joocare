@@ -20,6 +20,8 @@ import {
   normalizeJobsSearchParams,
 } from '@/features/jobs/utils';
 import Breadcrumb from '@/shared/components/Breadcrumb';
+import { toAbsoluteUrl } from '@/shared/lib/request-origin';
+import { settingService } from '@/shared/services/settings-services';
 import { getTranslations } from 'next-intl/server';
 type PageProps = {
   params: Promise<{ locale: string }>;
@@ -53,6 +55,10 @@ export async function generateMetadata({
   const copy = getPageCopy(locale, normalizedParams.search);
   const siteOrigin = getSiteOrigin();
   const canonicalPath = buildJobsPagePath(locale, normalizedParams);
+  const settings = await settingService().catch(() => null);
+  const shareLinkImage = settings?.share_link_image
+    ? toAbsoluteUrl(settings.share_link_image, siteOrigin)
+    : `${siteOrigin}/logo-icon.jfif`;
 
   return {
     title: copy.title,
@@ -72,8 +78,8 @@ export async function generateMetadata({
       siteName: 'Joocare',
       images: [
         {
-          url: `${siteOrigin}/logo-icon.jfif`,
-          alt: 'Joocare logo',
+          url: shareLinkImage,
+          alt: 'Joocare',
         },
       ],
     },
@@ -81,7 +87,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: copy.title,
       description: copy.description,
-      images: [`${siteOrigin}/logo-icon.jfif`],
+      images: [shareLinkImage],
     },
   };
 }

@@ -6,6 +6,7 @@ export type AppSetting = {
   logo: string;
   fav_icon: string;
   footer_logo: string;
+  share_link_image?: string | null;
   footer_text: string;
   copyright: string;
   verified_healthcare_professionals: number;

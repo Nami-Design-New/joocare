@@ -24,7 +24,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
             </p>
             <div className="flex gap-2 justify-between items-center">
                 <div className="flex gap-2">
-                    {/* {company?.website && (
+                    {company?.website && (
                         <a href={company.website} target="_blank" rel="noopener noreferrer">
                             <Image
                                 src="/assets/icons/social-icons/globe-about.svg"
@@ -33,7 +33,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                                 alt={t("sharedCompanyProfilePage.website")}
                             />
                         </a>
-                    )} */}
+                    )}
                     {company?.linkedin && (
                         <a href={company.linkedin} target="_blank" rel="noopener noreferrer">
                             <Image
