@@ -1,9 +1,13 @@
 import { z } from "zod";
 
-const today = new Date();
-today.setHours(0, 0, 0, 0)
 const dateField = (requiredMessage: string) =>
   z.string().min(1, { message: requiredMessage });
+
+const getToday = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+};
 
 const parseDateValue = (value: string) => {
   const date = new Date(value);
@@ -42,10 +46,10 @@ export const stepTwoSchema = z.object({
   medicalRegistrationExpiryDate: dateField("Medical expiry date is required"),
   medicalLicenseImage: z.any().optional(),
   medicalLicenseImagePath: z.string("Medical license image path is required").min(1, { message: "Medical license image path is required" }),
-}).refine((data) => parseDateValue(data.commercialRegistrationIssueDate) <= today, {
+}).refine((data) => parseDateValue(data.commercialRegistrationIssueDate) <= getToday(), {
   path: ["commercialRegistrationIssueDate"],
 })
-  .refine((data) => parseDateValue(data.commercialRegistrationExpiryDate) >= today, {
+  .refine((data) => parseDateValue(data.commercialRegistrationExpiryDate) >= getToday(), {
     message: "Commercial registration expiry date must be today or a future date",
     path: ["commercialRegistrationExpiryDate"],
   })
@@ -57,10 +61,10 @@ export const stepTwoSchema = z.object({
       message: "Commercial registration expiry date must be after issue date",
       path: ["commercialRegistrationExpiryDate"],
     }
-  ).refine((data) => parseDateValue(data.medicalRegistrationIssueDate) <= today, {
+  ).refine((data) => parseDateValue(data.medicalRegistrationIssueDate) <= getToday(), {
     path: ["medicalRegistrationIssueDate"],
   })
-  .refine((data) => parseDateValue(data.medicalRegistrationExpiryDate) >= today, {
+  .refine((data) => parseDateValue(data.medicalRegistrationExpiryDate) >= getToday(), {
     message: "Medical license expiry date must be today or a future date",
     path: ["medicalRegistrationExpiryDate"],
   })

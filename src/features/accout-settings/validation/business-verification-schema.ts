@@ -1,10 +1,13 @@
 import { z } from "zod";
 
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-
 const dateField = (requiredMessage: string) =>
   z.string().min(1, { message: requiredMessage });
+
+const getToday = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+};
 
 const parseDateValue = (value: string) => {
   const date = new Date(value);
@@ -108,13 +111,13 @@ export const createBusinessVerificationSchema = ({
       ),
       medical_license_image: z.any().optional(),
     })
-    .refine((data) => parseDateValue(data.commercial_registration_issue_date) <= today, {
+    .refine((data) => parseDateValue(data.commercial_registration_issue_date) <= getToday(), {
       message:
         messages?.commercialIssueDatePast ??
         "Commercial registration issue date must be today or a past date",
       path: ["commercial_registration_issue_date"],
     })
-    .refine((data) => parseDateValue(data.commercial_registration_expiry_date) >= today, {
+    .refine((data) => parseDateValue(data.commercial_registration_expiry_date) >= getToday(), {
       message:
         messages?.commercialExpiryDateFuture ??
         "Commercial registration expiry date must be today or a future date",
@@ -131,12 +134,12 @@ export const createBusinessVerificationSchema = ({
         path: ["commercial_registration_expiry_date"],
       },
     )
-    .refine((data) => parseDateValue(data.medical_license_issue_date) <= today, {
+    .refine((data) => parseDateValue(data.medical_license_issue_date) <= getToday(), {
       message:
         messages?.medicalIssueDatePast ?? "Medical issue date must be today or a past date",
       path: ["medical_license_issue_date"],
     })
-    .refine((data) => parseDateValue(data.medical_license_expiry_date) >= today, {
+    .refine((data) => parseDateValue(data.medical_license_expiry_date) >= getToday(), {
       message:
         messages?.medicalExpiryDateFuture ??
         "Medical license expiry date must be today or a future date",

@@ -39,6 +39,7 @@ import { useState } from "react";
 import { JobListItem } from "../types/jobs.types";
 import { getJobLocation, getJobSalaryWithCurrency, normalizeJobStatus } from "../utils";
 import { useLocale, useTranslations } from "next-intl";
+import { htmlToText } from "@/shared/lib/truncateHtml";
 
 type JobCardProps = {
   job: Omit<JobListItem, 'status'> & {
@@ -122,12 +123,7 @@ export default function JobCard({ resumeMatch,
     job?.specialty?.title || job?.specialty_title || t("jobsPage.healthcare");
   // const excerpt =
   //   job?.description?.slice(0, 70) || t("jobsPage.card-description-fallback");
-  const plainDescription =
-    typeof window !== "undefined"
-      ? new DOMParser()
-        .parseFromString(job.description || "", "text/html")
-        .body.textContent || ""
-      : "";
+  const plainDescription = htmlToText(job.description || "");
 
   const excerpt =
     plainDescription.slice(0, 70) ||

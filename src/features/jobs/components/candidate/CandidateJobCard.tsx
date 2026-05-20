@@ -25,6 +25,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useJobShare } from "../../hooks/useJobShare";
 import ToggleSavedJobButton from "./ToggleSavedJobButton";
+import { htmlToText } from "@/shared/lib/truncateHtml";
 
 type CandidateJobCardProps = {
   job: JobListItem;
@@ -59,12 +60,7 @@ export default function CandidateJobCard({
   const specialty = job?.specialty?.title || job?.specialty_title || t("jobsPage.healthcare");
   // const excerpt =
   //   job.description?.slice(0, 70) || t("jobsPage.card-description-fallback");
-  const plainDescription =
-    typeof window !== "undefined"
-      ? new DOMParser()
-        .parseFromString(job.description || "", "text/html")
-        .body.textContent || ""
-      : "";
+  const plainDescription = htmlToText(job.description || "");
 
   const excerpt =
     plainDescription.slice(0, 70) ||
