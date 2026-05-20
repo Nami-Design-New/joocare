@@ -75,7 +75,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const canonicalUrl = `${siteOrigin}/${locale}/jobs/${slug}`;
 
   try {
-    const settings = await settingService().catch(() => null);
     const { job } = await getJobDetails(slug);
     const jobTitle = job.title ?? job.job_title?.title ?? "Job opportunity";
     const companyName = job.company?.name?.trim();
@@ -93,12 +92,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ? `${jobTitle} at ${companyName} | Joocare`
       : `${jobTitle} | Joocare`;
 
-    const absolutePreviewImage = settings?.share_link_image
-      ? toAbsoluteUrl(settings.share_link_image, siteOrigin)
-      : `${siteOrigin}/api/og/job?title=${encodeURIComponent(jobTitle)}&company=${encodeURIComponent(
+    const companyLogoRaw = job.company?.image;
+    const companyLogoAbsolute = companyLogoRaw
+      ? toAbsoluteUrl(companyLogoRaw, siteOrigin)
+      : null;
+
+    const absolutePreviewImage =
+      companyLogoAbsolute ??
+      `${siteOrigin}/api/og/job?title=${encodeURIComponent(jobTitle)}&company=${encodeURIComponent(
         companyName || "Joocare",
       )}${location ? `&location=${encodeURIComponent(location)}` : ""}`;
 
+    // console.log("companyLogoAbsolute:::", absolutePreviewImage, companyLogoAbsolute);
     return {
       title,
       description,
@@ -135,7 +140,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return await getJobPageMetadataFallback(locale, slug);
   }
 }
-
 export default async function page({
   params
 }: PageProps) {
