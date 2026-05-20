@@ -9,6 +9,7 @@ import { createPortal } from "react-dom";
 import { Button } from "../ui/button";
 import UserProfileCard from "./UserProfileCard";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
 export default function ResponsiveNavigationBar({
   setToggleSideMenu,
@@ -20,11 +21,20 @@ export default function ResponsiveNavigationBar({
   const t = useTranslations();
   const router = useRouter();
   const { data: session, status } = useSession();
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   const isAuthed = status === "authenticated";
   const homeHref = session?.authRole === "employer" ? "/for-employers" : "/";
 
   return createPortal(
-    <section className="fixed inset-0 z-50 flex h-dvh flex-col gap-6 bg-white px-4 py-6 lg:hidden">
+    <section className="fixed inset-0 z-50 flex h-dvh flex-col gap-6 bg-white px-4 py-6 lg:hidden no-scrollbar">
       <header className="flex w-full items-center justify-between">
         <Image src="/assets/new-logo-dot.svg" width={70} height={30} alt="Logo" />
         <button
