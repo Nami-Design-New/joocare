@@ -12,7 +12,8 @@ import { stripHtml, truncateText } from "@/features/jobs/utils";
 import Breadcrumb from "@/shared/components/Breadcrumb";
 import HttpStatusState from "@/shared/components/HttpStatusState";
 import { getHttpStatusCode } from "@/shared/lib/http-error";
-import { getRequestOrigin, toAbsoluteUrl } from "@/shared/lib/request-origin";
+import { toAbsoluteUrl } from "@/shared/lib/request-origin";
+import { getSiteBaseUrl } from "@/shared/lib/site-url";
 import { settingService } from "@/shared/services/settings-services";
 import { getTranslations } from "next-intl/server";
 
@@ -21,7 +22,7 @@ type PageProps = {
 };
 
 async function getJobPageMetadataFallback(locale: string, slug: string): Promise<Metadata> {
-  const siteOrigin = await getRequestOrigin();
+  const siteOrigin = getSiteBaseUrl();
   const canonicalUrl = `${siteOrigin}/${locale}/jobs/${slug}`;
   const defaultPreviewImage = `${siteOrigin}/api/og/job?title=${encodeURIComponent(
     locale === "ar" ? "تفاصيل الوظيفة" : "Job Details",
@@ -71,7 +72,7 @@ async function getJobPageMetadataFallback(locale: string, slug: string): Promise
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
-  const siteOrigin = await getRequestOrigin();
+  const siteOrigin = getSiteBaseUrl();
   const canonicalUrl = `${siteOrigin}/${locale}/jobs/${slug}`;
 
   try {
@@ -136,10 +137,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         images: [absolutePreviewImage],
       },
     };
-  } catch {
+  } catch (error) {
+    console.error("[jobs/[slug]] generateMetadata failed", {
+      slug,
+      locale,
+      siteOrigin,
+      error,
+    });
     return await getJobPageMetadataFallback(locale, slug);
   }
 }
+// generateMetadata()
 export default async function page({
   params
 }: PageProps) {

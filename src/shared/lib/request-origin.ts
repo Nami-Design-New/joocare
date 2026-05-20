@@ -34,16 +34,18 @@ export async function getRequestOrigin() {
 export function toAbsoluteUrl(inputUrl: string, origin: string) {
   if (!inputUrl) return origin;
 
-  if (/^https?:\/\//i.test(inputUrl)) return inputUrl;
+  const trimmed = inputUrl.trim();
+
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
 
   const normalizedOrigin = normalizeOrigin(origin);
 
-  if (inputUrl.startsWith("//")) {
+  if (trimmed.startsWith("//")) {
     const protocol = new URL(normalizedOrigin).protocol;
-    return `${protocol}${inputUrl}`;
+    return `${protocol}${trimmed}`;
   }
 
-  if (inputUrl.startsWith("/")) return `${normalizedOrigin}${inputUrl}`;
+  if (trimmed.startsWith("/")) return `${normalizedOrigin}${trimmed}`;
 
-  return `${normalizedOrigin}/${inputUrl}`;
+  return `${normalizedOrigin}/${trimmed}`;
 }
