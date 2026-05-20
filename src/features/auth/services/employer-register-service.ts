@@ -26,8 +26,9 @@ export const registerEmployerService = async (
     });
 
     const result = await response.json();
+    console.log("response for register employer", result, response);
 
-    if (!response.ok) {
+    if (result.code >= 400 || !response.ok) {
         throw new Error(result.message || "Something went wrong");
     }
 
