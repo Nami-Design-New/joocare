@@ -1,6 +1,7 @@
 import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
 import { useQuery } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
 
 export type ApplicationCandidate = {
     id: number;
@@ -54,6 +55,7 @@ export default function useGetApplicationsCandidates({
     filters,
     initialData,
 }: UseGetApplicationsCandidatesParams) {
+    const locale = useLocale();
     const normalizedFilters = {
         search: filters?.search?.trim() ?? "",
         country: filters?.country ?? "",
@@ -64,6 +66,7 @@ export default function useGetApplicationsCandidates({
     const query = useQuery({
         queryKey: [
             "application-candidates",
+            locale,
             slug,
             page,
             normalizedFilters.search,
@@ -96,7 +99,7 @@ export default function useGetApplicationsCandidates({
 
             const res = await apiFetch(
                 `${getCompanyApiUrl()}/applications/${slug}?${params.toString()}`,
-                { method: "GET", token }
+                { method: "GET", token, locale }
             );
 
             if (!res.ok || !res.data) {

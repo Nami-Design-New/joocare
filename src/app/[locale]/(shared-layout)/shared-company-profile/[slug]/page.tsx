@@ -70,10 +70,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const { locale, slug } = await params;
     const siteOrigin = getSiteOrigin();
     const canonicalUrl = `${siteOrigin}/${locale}/shared-company-profile/${slug}`;
-    const settings = await settingService().catch(() => null);
-    const shareLinkImage = settings?.share_link_image
-        ? toAbsoluteUrl(settings.share_link_image, siteOrigin)
+    const { company } = await getCompanyProfile(slug);
+    const shareLinkImage = company?.image
+        ? toAbsoluteUrl(company?.image, siteOrigin)
         : `${siteOrigin}/logo-icon.jfif`;
+
+
+    // console.log("SHARE COMPANY L INK :::::::::::::::::::::::::::::::", shareLinkImage ,);
 
     try {
         const { company } = await getCompanyProfile(slug);

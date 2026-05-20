@@ -2,6 +2,7 @@ import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
 import { CompanyJob } from "@/features/company-dashboard/index.type";
 import { useQuery } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
 
 interface JobsPage {
     data: CompanyJob[];
@@ -13,8 +14,10 @@ interface JobsPage {
 }
 
 export default function useGetCompanyTableJobs({ token, page }: { token: string, page: number }) {
+    const locale = useLocale();
+
     const query = useQuery({
-        queryKey: ["company-jobs-table", page],
+        queryKey: ["company-jobs-table", locale, page],
         queryFn: async (): Promise<JobsPage> => {
             const params = new URLSearchParams({
                 page: String(page),

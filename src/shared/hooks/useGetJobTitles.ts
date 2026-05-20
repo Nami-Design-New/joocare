@@ -6,7 +6,7 @@ import { useLocale } from "next-intl";
 export default function useGetJobTitles(search = "") {
     const locale = useLocale();
     const query = useInfiniteQuery({
-        queryKey: ["job-titles", search],
+        queryKey: ["job-titles", locale, search],
         initialPageParam: 1,
         queryFn: async ({ pageParam }) => {
             const params = new URLSearchParams({

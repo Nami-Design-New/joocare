@@ -1,6 +1,7 @@
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
+import { getLocale } from "next-intl/server";
 
 import { getCompanyApiUrl, getUserApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
@@ -55,12 +56,14 @@ async function fetchJobDetails(url: string, token?: string): Promise<{
     similar_jobs: NonNullable<JobDetailsResponse["data"]["similar_jobs"]>;
 }> {
     const session = await getServerSession(authOptions);
+    const locale = await getLocale().catch(() => undefined);
 
     const result = await apiFetch<JobDetailsResponse["data"]>(
         url,
         {
             method: "GET",
             token: token ?? session?.accessToken,
+            locale,
             cache: "no-store",
         }
     );

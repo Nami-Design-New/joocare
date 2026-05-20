@@ -30,7 +30,7 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
                                 src="/assets/icons/social-icons/globe-about.svg"
                                 width={30}
                                 height={30}
-                                alt={t("sharedCompanyProfilePage.website")}
+                                alt="website"
                             />
                         </a>
                     )}

@@ -45,7 +45,6 @@ function HeaderActionsButtons({
   const { data: candidateProfileData } = useGetCandidateProfile({
     token: !isEmployer ? token : "",
   });
-  // console.log("comany candiditate profile data::: ", companyProfileData, candidateProfileData);
 
   const unCountNotification =
     (isEmployer

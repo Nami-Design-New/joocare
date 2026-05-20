@@ -1,6 +1,7 @@
 import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
 import { useQuery } from "@tanstack/react-query";
+import { useLocale } from "next-intl";
 import { JobListItem } from "../types/jobs.types";
 
 export type ManagedCompanyJob = Omit<JobListItem, 'status'> & {
@@ -32,8 +33,9 @@ export default function useGetCompanyJobs({
     status = "",
     initialData,
 }: UseGetCompanyJobsParams) {
+    const locale = useLocale();
     const query = useQuery({
-        queryKey: ["company-jobs", page, status],
+        queryKey: ["company-jobs", locale, page, status],
         queryFn: async (): Promise<JobsPage> => {
             const params = new URLSearchParams({
                 page: String(page),
@@ -47,7 +49,7 @@ export default function useGetCompanyJobs({
 
             const res = await apiFetch(
                 `${getCompanyApiUrl()}/jobs?${params.toString()}`,
-                { method: "GET", token }
+                { method: "GET", token, locale }
             );
 
             if (!res.ok || !res.data) {
