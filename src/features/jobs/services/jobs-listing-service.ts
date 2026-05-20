@@ -1,8 +1,10 @@
+import { cache } from 'react';
 import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/auth';
 import { getBaseApiUrl, getUserApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch, getTimeZone } from '@/shared/lib/fetch-manager';
+import { runWithInFlightDedupe } from '@/shared/lib/in-flight-dedupe';
 import {
   JobsFiltersData,
   JobsFilterOption,
@@ -28,6 +30,21 @@ type RawLookupItem = {
 };
 
 const PAGE_SIZE = 10;
+
+const fetchJobsListingRequest = cache(
+  async (url: string, locale: string, token?: string) => {
+    return runWithInFlightDedupe(
+      `jobs-listing:${locale}:${token ?? 'guest'}:${url}`,
+      () =>
+        apiFetch(url, {
+          method: 'GET',
+          locale,
+          cache: 'no-store',
+          token,
+        }),
+    );
+  },
+);
 
 function resolveLocalizedValue(value: LocalizedValue, locale: string) {
   if (!value) {
@@ -133,14 +150,10 @@ export async function getJobsListing(
   }
 
   const session = await getServerSession(authOptions);
-  const result = await apiFetch(
+  const result = await fetchJobsListingRequest(
     `${getUserApiUrl()}/jobs?${params.toString()}`,
-    {
-      method: 'GET',
-      locale,
-      cache: 'no-store',
-      token: session?.accessToken,
-    },
+    locale,
+    session?.accessToken,
   );
 
   if (!result.ok || !result.data) {

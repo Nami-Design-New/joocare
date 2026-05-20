@@ -14,7 +14,6 @@ import { getSiteOrigin, stripHtml, truncateText } from "@/features/jobs/utils";
 import Breadcrumb from "@/shared/components/Breadcrumb";
 import { toAbsoluteUrl } from "@/shared/lib/request-origin";
 import { getQueryClient } from "@/shared/providers/tanstack-query/query-client-setup";
-import { settingService } from "@/shared/services/settings-services";
 
 type PageProps = {
     params: Promise<{ locale: string, slug: string }>;

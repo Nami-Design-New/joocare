@@ -10,8 +10,6 @@ import {
   normalizeFaqPageParam,
 } from "@/features/faq/utils";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
-import { toAbsoluteUrl } from "@/shared/lib/request-origin";
-import { settingService } from "@/shared/services/settings-services";
 import { getNextAuthToken } from "@/shared/util/auth.util";
 import { getTranslations } from "next-intl/server";
 
@@ -44,10 +42,7 @@ export async function generateMetadata({
   const copy = getFaqPageCopy(locale, currentPage);
   const siteOrigin = getSiteOrigin();
   const canonicalPath = buildFaqPagePath(locale, currentPage);
-  const settings = await settingService().catch(() => null);
-  const shareLinkImage = settings?.share_link_image
-    ? toAbsoluteUrl(settings.share_link_image, siteOrigin)
-    : `${siteOrigin}/logo-icon.jfif`;
+  const shareLinkImage = `${siteOrigin}/logo-icon.jfif`;
 
   return {
     title: copy.title,

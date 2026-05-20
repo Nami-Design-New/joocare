@@ -1,12 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import SectionTitle from "@/features/home/components/SectionTitle";
 import AboutFeatureItem from "./AboutFeatureItem";
 import type { AboutFeature, AboutImage } from "../types/about.types";
-import { settingService } from "@/shared/services/settings-services";
+import { useAppSelector } from "@/shared/providers/redux/hooks";
 import { Plus } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-export default async function AboutHeroSection({
+export default function AboutHeroSection({
   title,
   description,
   items,
@@ -19,8 +21,8 @@ export default async function AboutHeroSection({
 }) {
   const primaryImage = images[0];
   const secondaryImage = images[1];
-  const settings = await settingService();
-  const t = await getTranslations();
+  const settings = useAppSelector((state) => state.settings.data);
+  const t = useTranslations();
 
   return (
     <section className="pt-6 xl:pt-14 xl:pt-18 xl:gap-16 xl:px-0 bg-background">

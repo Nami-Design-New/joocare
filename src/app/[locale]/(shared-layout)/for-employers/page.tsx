@@ -9,6 +9,8 @@ import HttpStatusState from "@/shared/components/HttpStatusState";
 import { getHttpStatusCode } from "@/shared/lib/http-error";
 import { getTranslations } from "next-intl/server";
 
+export const revalidate = 300;
+
 export default async function ForEmployers({
   params,
 }: {

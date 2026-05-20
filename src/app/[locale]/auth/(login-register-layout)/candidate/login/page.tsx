@@ -1,10 +1,23 @@
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
 import SocialLoginButtons from "@/features/auth/components/login-content/SocialLoginButtons";
 import FormCandidateLogin from "@/features/auth/components/login-content/FormCandidateLogin";
 
+function LoginFormSkeleton() {
+  return (
+    <div aria-hidden="true" className="mt-6 flex flex-col gap-4">
+      <div className="bg-muted h-14 w-full animate-pulse rounded-2xl" />
+      <div className="bg-muted h-14 w-full animate-pulse rounded-2xl" />
+      <div className="bg-muted h-4 w-32 animate-pulse rounded" />
+      <div className="flex justify-center">
+        <div className="bg-muted h-11 w-1/3 animate-pulse rounded-full" />
+      </div>
+    </div>
+  );
+}
 
 const LoginCandidatePage = async () => {
   const t = await getTranslations();
@@ -22,7 +35,9 @@ const LoginCandidatePage = async () => {
         </p>
 
         {/* Login form */}
-        <FormCandidateLogin />
+        <Suspense fallback={<LoginFormSkeleton />}>
+          <FormCandidateLogin />
+        </Suspense>
 
         {/* social buttons */}
         <div

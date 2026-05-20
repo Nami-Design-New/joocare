@@ -1,6 +1,8 @@
+"use client";
+
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { getLocale } from "next-intl/server";
+import { useLocale } from "next-intl";
 
 type BreadcrumbItem = {
   label: string;
@@ -13,15 +15,15 @@ type BreadcrumbProps = {
   gradient?: boolean;
 };
 
-export default async function Breadcrumb({
+export default function Breadcrumb({
   title,
   items,
   gradient = true,
 }: BreadcrumbProps) {
-  const locale = await getLocale()
+  const locale = useLocale();
   return (
     <div
-      className={`layout-shell py-4 lg:pt-12 lg:pb-38 ${gradient ? "bg-primary-gradient text-white" : "bg-transparent text-secondary"
+      className={`layout-shell -z-10 relative py-4 lg:pt-12 lg:pb-38 ${gradient ? "bg-primary-gradient text-white" : "bg-transparent text-secondary"
         }`}
     >
       <div className="layout-content flex items-center justify-between">

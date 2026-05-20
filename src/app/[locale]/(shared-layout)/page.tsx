@@ -13,6 +13,8 @@ import WhyUs from "@/features/home/components/WhyUs";
 import HttpStatusState from "@/shared/components/HttpStatusState";
 import { getHttpStatusCode } from "@/shared/lib/http-error";
 
+export const revalidate = 300;
+
 export default async function Home({
   params,
 }: {

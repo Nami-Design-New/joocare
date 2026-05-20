@@ -1,18 +1,17 @@
-import { authOptions } from "@/auth";
-import { Link } from "@/i18n/navigation";
-import { getServerSession } from "next-auth";
-import Image from "next/image";
-import { settingService } from "../services/settings-services";
-import BackToTopButton from "./BackToTopButton";
-import { getTranslations } from "next-intl/server";
+"use client";
 
-const Footer = async () => {
-  const t = await getTranslations();
+import { Link } from "@/i18n/navigation";
+import { useAppSelector } from "@/shared/providers/redux/hooks";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import BackToTopButton from "./BackToTopButton";
+import { useTranslations } from "next-intl";
+
+const Footer = () => {
+  const t = useTranslations();
   const currentYear = new Date().getFullYear();
-  const [session, settings] = await Promise.all([
-    getServerSession(authOptions),
-    settingService().catch(() => null),
-  ]);
+  const settings = useAppSelector((state) => state.settings.data);
+  const { data: session } = useSession();
   const authRole = session?.authRole;
   const isCandidate = authRole === "candidate";
   const isEmployer = authRole === "employer";

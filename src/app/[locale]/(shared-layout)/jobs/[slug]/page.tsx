@@ -1,5 +1,8 @@
+import { cache } from "react";
+import { getServerSession } from "next-auth";
 import type { Metadata } from "next";
 import SimilarJobsSection from "@/features/about/components/SimilarJobsSection";
+import { authOptions } from "@/auth";
 import AboutEmployer from "@/features/jobs/components/candidate/AboutEmployer";
 import JobDetailsHeader from "@/features/jobs/components/candidate/JobDetailsHeader";
 import JobDescriptionCard from "@/features/jobs/components/JobDescriptionCard";
@@ -7,19 +10,27 @@ import JobEducationAndCertificationsCard from "@/features/jobs/components/JobEdu
 import JobLocationAndSalaryCard from "@/features/jobs/components/JobLocationAndSalaryCard";
 import JobOverviewCard from "@/features/jobs/components/JobOverviewCard";
 import JobShareCard from "@/features/jobs/components/JobShareCard";
-import { getJobDetails } from "@/features/jobs/services/job-details-service";
+import {
+  getAuthenticatedJobDetails,
+  getPublicJobDetailsCached,
+} from "@/features/jobs/services/job-details-service";
 import { stripHtml, truncateText } from "@/features/jobs/utils";
 import Breadcrumb from "@/shared/components/Breadcrumb";
 import HttpStatusState from "@/shared/components/HttpStatusState";
 import { getHttpStatusCode } from "@/shared/lib/http-error";
 import { toAbsoluteUrl } from "@/shared/lib/request-origin";
 import { getSiteBaseUrl } from "@/shared/lib/site-url";
-import { settingService } from "@/shared/services/settings-services";
 import { getTranslations } from "next-intl/server";
 
 type PageProps = {
   params: Promise<{ locale: string, slug: string }>;
 };
+
+export const revalidate = 300;
+
+const getJobDetailsCached = cache(async (slug: string, locale: string) => {
+  return getPublicJobDetailsCached(slug, locale);
+});
 
 async function getJobPageMetadataFallback(locale: string, slug: string): Promise<Metadata> {
   const siteOrigin = getSiteBaseUrl();
@@ -27,10 +38,7 @@ async function getJobPageMetadataFallback(locale: string, slug: string): Promise
   const defaultPreviewImage = `${siteOrigin}/api/og/job?title=${encodeURIComponent(
     locale === "ar" ? "تفاصيل الوظيفة" : "Job Details",
   )}&company=${encodeURIComponent("Joocare")}`;
-  const settings = await settingService().catch(() => null);
-  const previewImage = settings?.share_link_image
-    ? toAbsoluteUrl(settings.share_link_image, siteOrigin)
-    : defaultPreviewImage;
+  const previewImage = defaultPreviewImage;
   const title =
     locale === "ar" ? "تفاصيل الوظيفة | Joocare" : "Job Details | Joocare";
   const description =
@@ -76,7 +84,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const canonicalUrl = `${siteOrigin}/${locale}/jobs/${slug}`;
 
   try {
-    const { job } = await getJobDetails(slug);
+    const { job } = await getJobDetailsCached(slug, locale);
     const jobTitle = job.title ?? job.job_title?.title ?? "Job opportunity";
     const companyName = job.company?.name?.trim();
     const location = [job.city?.name, job.country?.name].filter(Boolean).join(", ");
@@ -137,13 +145,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         images: [absolutePreviewImage],
       },
     };
-  } catch (error) {
-    console.error("[jobs/[slug]] generateMetadata failed", {
-      slug,
-      locale,
-      siteOrigin,
-      error,
-    });
+  } catch {
+    console.error("[jobs/[slug]] generateMetadata failed", { locale, slug });
     return await getJobPageMetadataFallback(locale, slug);
   }
 }
@@ -152,12 +155,15 @@ export default async function page({
   params
 }: PageProps) {
 
-  const { slug } = await params
+  const { locale, slug } = await params
   const t = await getTranslations();
   let jobDetails;
 
   try {
-    jobDetails = await getJobDetails(slug)
+    const session = await getServerSession(authOptions);
+    jobDetails = session?.accessToken
+      ? await getAuthenticatedJobDetails(slug, locale, session.accessToken)
+      : await getJobDetailsCached(slug, locale);
   } catch (error) {
     const statusCode = getHttpStatusCode(error);
 
