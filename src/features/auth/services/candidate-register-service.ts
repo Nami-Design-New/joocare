@@ -37,7 +37,7 @@ export const registerCandidateService = async (
 
     const result = await response.json();
 
-    if (!response.ok) {
+    if (result.code >= 400 || !response.ok) {
         throw new Error(result.message || "Something went wrong");
     }
 
