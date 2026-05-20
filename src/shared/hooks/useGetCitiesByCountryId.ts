@@ -6,7 +6,7 @@ import { useLocale } from "next-intl";
 export default function useGetCitiesByCountryId(countryId: number, search = "") {
     const locale = useLocale();
     const query = useInfiniteQuery({
-        queryKey: ["cities-by-country-id", countryId, search],
+        queryKey: ["cities-by-country-id", locale, countryId, search],
         initialPageParam: 1,
         queryFn: async ({ pageParam }) => {
             const params = new URLSearchParams({

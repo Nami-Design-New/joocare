@@ -6,7 +6,7 @@ import { useLocale } from "next-intl";
 export default function useGetEducationLevels(search = "") {
     const locale = useLocale();
     const query = useInfiniteQuery({
-        queryKey: ["education-levels", search],
+        queryKey: ["education-levels", locale, search],
         initialPageParam: 1,
         queryFn: async ({ pageParam }) => {
             const params = new URLSearchParams({

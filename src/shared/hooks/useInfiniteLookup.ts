@@ -27,7 +27,7 @@ export function useInfiniteLookup({
   const locale = useLocale();
 
   return useInfiniteQuery({
-    queryKey: [queryKey, search, limitPerPage, extraParams],
+    queryKey: [queryKey, locale, search, limitPerPage, extraParams],
     initialPageParam: 1,
     enabled,
     queryFn: async ({ pageParam }) => {

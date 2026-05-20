@@ -6,7 +6,7 @@ import { useLocale } from "next-intl";
 export default function useGetDomains(search = "") {
   const locale = useLocale();
   const query = useInfiniteQuery({
-    queryKey: ["domains", search],
+    queryKey: ["domains", locale, search],
     initialPageParam: 1,
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams({

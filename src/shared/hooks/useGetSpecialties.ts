@@ -6,7 +6,7 @@ import { useLocale } from "next-intl";
 export default function useGetSpecialties(search = "", categoryId?: number) {
     const locale = useLocale();
     const query = useInfiniteQuery({
-        queryKey: ["specialties", search, categoryId],
+        queryKey: ["specialties", locale, search, categoryId],
         initialPageParam: 1,
         queryFn: async ({ pageParam }) => {
             const params = new URLSearchParams({

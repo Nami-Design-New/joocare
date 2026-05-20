@@ -7,7 +7,7 @@ export default function useGetSkills(search = "", job_title_id = "") {
   const trimmedSearch = search.trim();
   const locale = useLocale();
   const query = useInfiniteQuery({
-    queryKey: ["skills", trimmedSearch, job_title_id],
+    queryKey: ["skills", locale, trimmedSearch, job_title_id],
     initialPageParam: 1,
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams();
