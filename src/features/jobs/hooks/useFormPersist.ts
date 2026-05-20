@@ -14,10 +14,22 @@ export default function useFormPersist(defaultValues: Partial<JobFormData>) {
   };
 
   const save = (data: Partial<JobFormData>) => {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if (typeof window === "undefined") return;
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch {
+      // ignore write failures (e.g. disabled storage)
+    }
   };
 
-  const clear = () => sessionStorage.removeItem(STORAGE_KEY);
+  const clear = () => {
+    if (typeof window === "undefined") return;
+    try {
+      sessionStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+  };
 
   return { load, save, clear };
 }

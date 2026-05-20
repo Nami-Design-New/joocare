@@ -9,7 +9,7 @@ import { createPortal } from "react-dom";
 import { Button } from "../ui/button";
 import UserProfileCard from "./UserProfileCard";
 import { useTranslations } from "next-intl";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ResponsiveNavigationBar({
   setToggleSideMenu,
@@ -21,9 +21,12 @@ export default function ResponsiveNavigationBar({
   const t = useTranslations();
   const router = useRouter();
   const { data: session, status } = useSession();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
 
     return () => {
       document.body.style.overflow = "";
@@ -31,7 +34,10 @@ export default function ResponsiveNavigationBar({
   }, []);
 
   const isAuthed = status === "authenticated";
+  const isLoading = status === "loading";
   const homeHref = session?.authRole === "employer" ? "/for-employers" : "/";
+
+  if (!isMounted) return null;
 
   return createPortal(
     <section className="fixed inset-0 z-50 flex h-dvh flex-col gap-6 bg-white px-4 py-6 lg:hidden no-scrollbar">
@@ -92,8 +98,13 @@ export default function ResponsiveNavigationBar({
         {/* <Button variant="outline" size="icon-circle" aria-label="Search">
         <Search />
       </Button> */}
-        {isAuthed && <UserProfileCard companyHeader={companyHeader} setToggleSideMenu={setToggleSideMenu} />}
-        {!isAuthed && (
+        {!isLoading && isAuthed && (
+          <UserProfileCard
+            companyHeader={companyHeader}
+            setToggleSideMenu={setToggleSideMenu}
+          />
+        )}
+        {!isLoading && !isAuthed && (
           <>
             {" "}
             <Button

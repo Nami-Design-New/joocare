@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname, useRouter } from "@/i18n/navigation";
 import {
   Select,
@@ -28,7 +30,9 @@ export function LanguageToggle(props: LanguageToggleProps) {
     const query = searchParams.toString();
     const href = query ? `${pathname}?${query}` : pathname;
 
-    document.cookie = `NEXT_LOCALE=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    if (typeof document !== "undefined") {
+      document.cookie = `NEXT_LOCALE=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    }
     router.replace(href, { locale: nextLocale });
     router.refresh();
   };
