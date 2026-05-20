@@ -8,10 +8,11 @@ import {
 } from "@/shared/components/ui/carousel";
 import SimilarJobCard from "./SimilarJobCard";
 import { SimilarJob } from "@/features/jobs/types/jobs.types";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export default async function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] }) {
   const t = await getTranslations();
+  const locale = await getLocale()
 
   return (
     <section className="py-10 md:py-20">
@@ -30,7 +31,7 @@ export default async function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] 
             </div>
 
             {/* Shadcn carousel controls wired to the same Carousel context */}
-            <div className="flex gap-4">
+            <div className={`flex gap-4 ${locale === "ar" ? "flex-row-reverse" : ""}`}>
               <CarouselPrevious className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
               <CarouselNext className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
             </div>
