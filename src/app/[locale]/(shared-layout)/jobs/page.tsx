@@ -54,7 +54,7 @@ export async function generateMetadata({
   const copy = getPageCopy(locale, normalizedParams.search);
   const siteOrigin = getSiteOrigin();
   const canonicalPath = buildJobsPagePath(locale, normalizedParams);
-  const shareLinkImage = `${siteOrigin}/logo-icon.jfif`;
+  // const shareLinkImage = `${siteOrigin}/logo-icon.jfif`;
 
   return {
     title: copy.title,
@@ -72,18 +72,18 @@ export async function generateMetadata({
       url: `${siteOrigin}${canonicalPath}`,
       type: 'website',
       siteName: 'Joocare',
-      images: [
-        {
-          url: shareLinkImage,
-          alt: 'Joocare',
-        },
-      ],
+      // images: [
+      //   {
+      //     url: shareLinkImage,
+      //     alt: 'Joocare',
+      //   },
+      // ],
     },
     twitter: {
       card: 'summary_large_image',
       title: copy.title,
       description: copy.description,
-      images: [shareLinkImage],
+      // images: [shareLinkImage],
     },
   };
 }
