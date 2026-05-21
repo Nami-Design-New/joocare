@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
@@ -7,6 +8,15 @@ import { LanguageToggle } from "@/shared/components/LanguageToggle";
 import DynamicLink from "./DynamicLink";
 import { Link } from "@/i18n/navigation";
 import { usePathname } from "next/navigation";
+
+function LanguageToggleSkeleton() {
+  return (
+    <div
+      aria-hidden="true"
+      className="bg-muted h-12 w-24 animate-pulse rounded-full"
+    />
+  );
+}
 
 const AuthHeader = () => {
   const pathname = usePathname();
@@ -28,7 +38,9 @@ const AuthHeader = () => {
         <nav className="flex items-center gap-2 md:gap-4">
           {!hiddenDynamicLink && <DynamicLink />}
 
-          <LanguageToggle />
+          <Suspense fallback={<LanguageToggleSkeleton />}>
+            <LanguageToggle />
+          </Suspense>
         </nav>
       </div>
     </header>

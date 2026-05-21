@@ -34,7 +34,6 @@ export function LanguageToggle(props: LanguageToggleProps) {
       document.cookie = `NEXT_LOCALE=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
     }
     router.replace(href, { locale: nextLocale });
-    router.refresh();
   };
 
   return (

@@ -17,11 +17,11 @@ export default async function JobDetailsPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const t = await getTranslations();
-  const { slug } = await params;
+  const { locale, slug } = await params;
   let jobDetails: Awaited<ReturnType<typeof getCompanyJobDetails>>;
 
   try {
-    jobDetails = await getCompanyJobDetails(slug);
+    jobDetails = await getCompanyJobDetails(slug, locale);
   } catch (error) {
     const statusCode = getHttpStatusCode(error);
 

@@ -1,9 +1,8 @@
 "use client";
 
-import { usePathname } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { Menu } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import HeaderActionsButtons from "./HeaderActionsButtons";
@@ -24,6 +23,7 @@ const Header = () => {
   };
 
   return (
+
     <>
       <header className="layout-shell shadow-header sticky top-0 z-30 flex h-19 w-full items-center justify-between bg-white py-4">
         <div className="layout-content flex items-center justify-between">

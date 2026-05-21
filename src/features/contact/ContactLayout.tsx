@@ -1,24 +1,20 @@
+"use client";
 
 import Breadcrumb from "@/shared/components/Breadcrumb";
 import ContactSection, { ContactSocialLink } from "./ContactSection";
 import type { ContactInitialValues, ContactRole } from "./types";
-import { authOptions } from "@/auth";
-import { getServerSession } from "next-auth";
-import { settingService } from "@/shared/services/settings-services";
-import { getTranslations } from "next-intl/server";
+import { useAppSelector } from "@/shared/providers/redux/hooks";
+import { useTranslations } from "next-intl";
 
-export default async function ContactLayout({
+export default function ContactLayout({
   authRole,
   initialValues,
 }: {
   authRole?: ContactRole;
   initialValues?: ContactInitialValues;
 }) {
-  const t = await getTranslations();
-  const settings = await Promise.all([
-    getServerSession(authOptions),
-    settingService().catch(() => null),
-  ]).then(([, resolvedSettings]) => resolvedSettings);
+  const t = useTranslations();
+  const settings = useAppSelector((state) => state.settings.data);
   const socialLinks = [
     { href: settings?.linkedin, platform: "linkedin" as const },
     { href: settings?.facebook, platform: "facebook" as const },

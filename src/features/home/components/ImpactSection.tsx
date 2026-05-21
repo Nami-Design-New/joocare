@@ -1,21 +1,23 @@
+"use client";
+
 import { Link } from "@/i18n/navigation";
 import { buttonVariants } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";
-import { settingService } from "@/shared/services/settings-services";
+import { useAppSelector } from "@/shared/providers/redux/hooks";
 import Image from "next/image";
 import SectionTitle from "./SectionTitle";
 import StatCard from "./StatCard";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-export const ImpactSection = async ({
+export const ImpactSection = ({
   title,
   description,
 }: {
   title: string;
   description: string;
 }) => {
-  const settings = await settingService()
-  const t = await getTranslations();
+  const settings = useAppSelector((state) => state.settings.data);
+  const t = useTranslations();
 
   return (
     <section className="bg-background py-10 md:py-20">

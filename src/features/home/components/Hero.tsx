@@ -1,6 +1,27 @@
+import { Suspense } from "react";
 import HomeFilter from "./HomeFilter";
 import { PopularSearchesItem } from "./PopularSearches";
 import PopularSearchesInteractive from "./PopularSearchesInteractive";
+
+function PopularSearchesSkeleton() {
+  return (
+    <section
+      aria-hidden="true"
+      className="flex w-full flex-col items-center gap-3 lg:flex-row lg:items-start lg:justify-between"
+    >
+      <div className="bg-muted h-7 w-40 animate-pulse rounded-md" />
+      <div className="flex flex-wrap justify-center gap-2 lg:flex-1 lg:justify-start">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div
+            key={index}
+            className="bg-muted h-10 w-28 animate-pulse rounded-full"
+          />
+        ))}
+      </div>
+      <div className="bg-muted hidden h-10 w-28 animate-pulse rounded-full lg:block" />
+    </section>
+  );
+}
 
 type HeroProps = {
   title: string;
@@ -33,13 +54,15 @@ export default function Hero({
 
         <div className=" min-w-full flex flex-col items-center gap-12 md:gap-18">
           <HomeFilter />
-          <PopularSearchesInteractive
-            items={searches}
-            variant="hero"
-            maxVisible={5}
-            currentPage={popularSearchesCurrentPage}
-            lastPage={popularSearchesLastPage}
-          />
+          <Suspense fallback={<PopularSearchesSkeleton />}>
+            <PopularSearchesInteractive
+              items={searches}
+              variant="hero"
+              maxVisible={5}
+              currentPage={popularSearchesCurrentPage}
+              lastPage={popularSearchesLastPage}
+            />
+          </Suspense>
         </div>
       </section>
     </section>
