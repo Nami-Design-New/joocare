@@ -36,39 +36,58 @@ const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
 });
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const metadataBase = getMetadataBase();
-  const shareLinkImage = "/logo-icon.jfif";
+  const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    return { metadataBase };
+  }
+
+  const settings = await settingService(locale);
+  const shareLinkImage =
+    settings?.share_link_image || "/logo-icon.jfif";
+
+  // convert to absolute URL if it's relative
+  const imageUrl = shareLinkImage.startsWith("http")
+    ? shareLinkImage
+    : `${metadataBase}${shareLinkImage}`;
+
+  // console.log("url image:::::", settings, shareLinkImage, imageUrl);
 
   return {
     metadataBase,
     title: "Joocare - Find the best healthcare jobs",
     description:
       "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
-    // icons: {
-    //   icon: "/logo-icon.jfif",
-    //   shortcut: "/logo-icon.jfif",
-    //   apple: "/logo-icon.jfif",
-    // },
+    icons: {
+      icon: imageUrl,
+      shortcut: imageUrl,
+      apple: imageUrl,
+    },
     openGraph: {
       title: "Joocare - Find the best healthcare jobs",
       description:
         "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
       siteName: "Joocare",
       type: "website",
-      // images: [
-      //   {
-      //     url: shareLinkImage,
-      //     alt: "Joocare",
-      //   },
-      // ],
+      images: [
+        {
+          url: imageUrl,
+          alt: "Joocare",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: "Joocare - Find the best healthcare jobs",
       description:
         "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
-      // images: [shareLinkImage],
+      images: [imageUrl],
     },
   };
 }
