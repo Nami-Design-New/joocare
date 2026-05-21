@@ -22,21 +22,22 @@ export default function Breadcrumb({
 }: BreadcrumbProps) {
   const locale = useLocale();
   return (
-    <div
-      className={`layout-shell -z-10 relative py-4 lg:pt-12 lg:pb-38 ${gradient ? "bg-primary-gradient text-white" : "bg-transparent text-secondary"
-        }`}
-    >
-      <div className="layout-content flex items-center justify-between">
+    <div className="layout-shell relative py-4 lg:pt-12 lg:pb-38">
+
+      <div
+        className={`absolute inset-0 -z-10 ${gradient ? "bg-primary-gradient" : "bg-transparent"
+          }`}
+      />
+
+      <div className={`layout-content relative z-0 flex items-center justify-between ${gradient ? "text-white" : "text-secondary"
+        }`}>
         <h6 className="text-lg font-semibold">{title}</h6>
 
         <nav aria-label="Breadcrumb">
-          <ol
-            className={`flex items-center space-x-2 text-sm ${gradient ? "text-white/90" : "text-muted-foreground"
-              }`}
-          >
+          <ol className={`flex items-center space-x-2 text-sm ${gradient ? "text-white/90" : "text-muted-foreground"
+            }`}>
             {items.map((item, index) => {
               const isLast = index === items.length - 1;
-
               return (
                 <li key={index} className="flex items-center space-x-2">
                   {item.href && !isLast ? (
@@ -49,12 +50,8 @@ export default function Breadcrumb({
                   ) : (
                     <span
                       className={`${isLast
-                        ? gradient
-                          ? "font-semibold text-white"
-                          : "font-semibold text-secondary"
-                        : gradient
-                          ? "text-white/70"
-                          : "text-muted-foreground"
+                        ? gradient ? "font-semibold text-white" : "font-semibold text-secondary"
+                        : gradient ? "text-white/70" : "text-muted-foreground"
                         }`}
                       aria-current={isLast ? "page" : undefined}
                     >
@@ -76,8 +73,6 @@ export default function Breadcrumb({
                         />
                       )}
                     </>
-
-
                   )}
                 </li>
               );
