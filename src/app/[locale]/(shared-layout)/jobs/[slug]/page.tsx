@@ -112,7 +112,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         companyName || "Joocare",
       )}${location ? `&location=${encodeURIComponent(location)}` : ""}`;
 
-    console.log("companyLogoAbsolute:::", absolutePreviewImage, companyLogoAbsolute);
+    // console.log("companyLogoAbsolute:::", absolutePreviewImage, companyLogoAbsolute);
     return {
       title,
       description,
