@@ -1,3 +1,10 @@
+import {
+  createRequestLogContext,
+  incrementRouteCounter,
+  shouldLogOnly429,
+  shouldLogRequests,
+} from "@/shared/lib/request-logging";
+
 type ApiMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export type ApiFetchResponse<T = Record<string, unknown>> = {
@@ -22,6 +29,10 @@ type ApiFetchOptions = {
   headers?: HeadersInit;
   body?: BodyInit | null;
   cache?: RequestCache;
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
   skipUnauthorizedHandler?: boolean;
 };
 
@@ -131,6 +142,49 @@ function resolveMessage<T>(
 export function getTimeZone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
+
+function logApiFetch(input: {
+  requestId: string;
+  method: string;
+  url: string;
+  statusCode: number;
+  startedAt: number;
+  locale: string;
+  hasToken: boolean;
+  message: string | null;
+}) {
+  const { routeCount, routePath } = incrementRouteCounter("apiFetch", input.url);
+
+  if (!shouldLogRequests()) {
+    return;
+  }
+
+  if (shouldLogOnly429() && input.statusCode !== 429) {
+    return;
+  }
+
+  console.log(
+    "[apiFetch]",
+    JSON.stringify(
+      createRequestLogContext({
+        requestId: input.requestId,
+        source: "apiFetch",
+        method: input.method,
+        url: input.url,
+        status: input.statusCode,
+        durationMs: Date.now() - input.startedAt,
+        details: {
+          routePath,
+          routeCount,
+          locale: input.locale,
+          hasToken: input.hasToken,
+          message: input.message,
+        },
+      }),
+    ),
+  );
+}
+
 export async function apiFetch<T = Record<string, unknown>>(
   url: string,
   options: ApiFetchOptions = {},
@@ -142,8 +196,11 @@ export async function apiFetch<T = Record<string, unknown>>(
     headers,
     body,
     cache = "no-store",
+    next,
     skipUnauthorizedHandler = false,
   } = options;
+  const startedAt = Date.now();
+  const requestId = crypto.randomUUID();
 
   const resolvedLocale = normalizeLocale(locale) ?? resolveDefaultLocale();
   const requestHeaders = new Headers(headers);
@@ -166,6 +223,7 @@ export async function apiFetch<T = Record<string, unknown>>(
     headers: requestHeaders,
     body,
     cache,
+    next,
   });
 
 
@@ -178,6 +236,17 @@ export async function apiFetch<T = Record<string, unknown>>(
 
   const ok = statusCode >= 200 && statusCode < 300;
   const message = resolveMessage(response, data);
+
+  logApiFetch({
+    requestId,
+    method,
+    url,
+    statusCode,
+    startedAt,
+    locale: resolvedLocale,
+    hasToken: Boolean(token),
+    message,
+  });
 
   if (
     statusCode === 401 &&

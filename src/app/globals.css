@@ -430,7 +430,6 @@
   display: none;
 }
 
-/* 1. العناصر التي تحتوي gradient */
 .bg-primary-gradient,
 .bg-container,
 .bg-container-gray,
@@ -446,7 +445,6 @@
   perspective: 1000;
 }
 
-/* 2. منع الـ glitch من الانتشار للعناصر الأبناء */
 .bg-primary-gradient *,
 .bg-container * {
   -webkit-backface-visibility: hidden;

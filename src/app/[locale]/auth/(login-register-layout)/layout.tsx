@@ -1,7 +1,6 @@
-import { ReactNode } from "react";
-
 import AuthHeader from "@/features/auth/components/header/AuthHeader";
 import SideContent from "@/features/auth/components/side-content/SideContent";
+import { ReactNode } from "react";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (

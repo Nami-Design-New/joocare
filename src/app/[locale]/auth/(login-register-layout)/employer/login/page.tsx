@@ -1,9 +1,23 @@
+import { Suspense } from "react";
 // libraries
 import FormEmployerLogin from "@/features/auth/components/login-content/FormEmployerLogin";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
 //components
+
+function LoginFormSkeleton() {
+  return (
+    <div aria-hidden="true" className="mt-6 flex flex-col gap-4">
+      <div className="bg-muted h-14 w-full animate-pulse rounded-2xl" />
+      <div className="bg-muted h-14 w-full animate-pulse rounded-2xl" />
+      <div className="bg-muted h-4 w-32 animate-pulse rounded" />
+      <div className="flex justify-center">
+        <div className="bg-muted h-11 w-1/3 animate-pulse rounded-full" />
+      </div>
+    </div>
+  );
+}
 
 const LoginEmployerPage = async () => {
   const t = await getTranslations();
@@ -22,7 +36,9 @@ const LoginEmployerPage = async () => {
         </p>
 
         {/* Login form */}
-        <FormEmployerLogin />
+        <Suspense fallback={<LoginFormSkeleton />}>
+          <FormEmployerLogin />
+        </Suspense>
 
         {/* <div
           className="flex items-center gap-3 my-4 text-sm text-gray-500 font-medium 

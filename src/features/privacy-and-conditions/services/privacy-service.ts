@@ -5,11 +5,14 @@ export type PrivacyPolicy = {
   privacy: string
 };
 
-export const privacyService = async () => {
+export const privacyService = async (locale: string) => {
   const { data, ok, message } = await apiFetch<PrivacyPolicy>(
     `${getBaseApiUrl()}/privacy`,
     {
       method: "GET",
+      cache: "force-cache",
+      next: { revalidate: 300 },
+      locale
     },
   );
 

@@ -1,4 +1,10 @@
 import { routing } from "@/i18n/routing";
+import {
+  createRequestLogContext,
+  incrementRouteCounter,
+  shouldLogOnly429,
+  shouldLogRequests,
+} from "@/shared/lib/request-logging";
 import createMiddleware from "next-intl/middleware";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
@@ -22,7 +28,53 @@ function getDefaultPath(locale: string, authRole?: "candidate" | "employer") {
   return `/${locale}`;
 }
 
+function logProxyRequest(input: {
+  request: NextRequest;
+  requestId: string;
+  status: number;
+  startedAt: number;
+  details?: Record<string, unknown>;
+}) {
+  const { routeCount, routePath } = incrementRouteCounter(
+    "proxy",
+    input.request.url,
+  );
+
+  if (!shouldLogRequests()) {
+    return;
+  }
+
+  if (shouldLogOnly429() && input.status !== 429) {
+    return;
+  }
+
+  console.log(
+    "[proxy]",
+    JSON.stringify(
+      createRequestLogContext({
+        requestId: input.requestId,
+        source: "proxy",
+        method: input.request.method,
+        url: input.request.url,
+        status: input.status,
+        durationMs: Date.now() - input.startedAt,
+        details: {
+          routePath,
+          routeCount,
+          pathname: input.request.nextUrl.pathname,
+          search: input.request.nextUrl.search,
+          userAgent: input.request.headers.get("user-agent"),
+          forwardedFor: input.request.headers.get("x-forwarded-for"),
+          ...input.details,
+        },
+      }),
+    ),
+  );
+}
+
 export default async function proxy(request: NextRequest) {
+  const startedAt = Date.now();
+  const requestId = crypto.randomUUID();
   const pathname = request.nextUrl.pathname;
 
   const supportedLocales = routing.locales as readonly string[];
@@ -40,6 +92,16 @@ export default async function proxy(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname =
       pathname === "/" ? `/${normalizedPreferredLocale}` : `/${normalizedPreferredLocale}${pathname}`;
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: "redirect:add-preferred-locale",
+        redirectTo: url.toString(),
+      },
+    });
     return NextResponse.redirect(url);
   }
 
@@ -59,10 +121,30 @@ export default async function proxy(request: NextRequest) {
       ) {
         redirectedSegments[1] = normalizedPreferredLocale;
         redirectedUrl.pathname = redirectedSegments.join("/");
+        logProxyRequest({
+          request,
+          requestId,
+          status: 307,
+          startedAt,
+          details: {
+            action: "redirect:normalize-intl-locale",
+            redirectTo: redirectedUrl.toString(),
+          },
+        });
         return NextResponse.redirect(redirectedUrl);
       }
     }
 
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: "redirect:i18n",
+        redirectTo: i18nLocation,
+      },
+    });
     return i18nResponse;
   }
 
@@ -75,6 +157,16 @@ export default async function proxy(request: NextRequest) {
     const url = request.nextUrl.clone();
     segments[1] = normalizedPreferredLocale;
     url.pathname = segments.join("/");
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: "redirect:preferred-locale",
+        redirectTo: url.toString(),
+      },
+    });
     return NextResponse.redirect(url);
   }
 
@@ -104,15 +196,49 @@ export default async function proxy(request: NextRequest) {
       : `/${locale}/auth/candidate/login`;
     const loginUrl = new URL(loginPath, request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: "redirect:protected-route-login",
+        redirectTo: loginUrl.toString(),
+      },
+    });
     return NextResponse.redirect(loginUrl);
   }
 
   if (isAuth && authRole === "employer" && isHomeRoute) {
-    return NextResponse.redirect(new URL(getDefaultPath(locale, authRole), request.url));
+    const redirectUrl = new URL(getDefaultPath(locale, authRole), request.url);
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: "redirect:employer-home",
+        authRole,
+        redirectTo: redirectUrl.toString(),
+      },
+    });
+    return NextResponse.redirect(redirectUrl);
   }
 
   if (isAuth && authRole === "candidate" && isEmployerLandingPage) {
-    return NextResponse.redirect(new URL(getDefaultPath(locale, authRole), request.url));
+    const redirectUrl = new URL(getDefaultPath(locale, authRole), request.url);
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: "redirect:candidate-employer-landing",
+        authRole,
+        redirectTo: redirectUrl.toString(),
+      },
+    });
+    return NextResponse.redirect(redirectUrl);
   }
 
   if (
@@ -120,7 +246,19 @@ export default async function proxy(request: NextRequest) {
     ((authRole === "candidate" && isEmployerRoute) ||
       (authRole === "employer" && isCandidateRoute))
   ) {
-    return NextResponse.redirect(new URL(getDefaultPath(locale, authRole), request.url));
+    const redirectUrl = new URL(getDefaultPath(locale, authRole), request.url);
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: "redirect:role-mismatch",
+        authRole,
+        redirectTo: redirectUrl.toString(),
+      },
+    });
+    return NextResponse.redirect(redirectUrl);
   }
 
   // 4. Redirect: Authenticated user trying to access login pages
@@ -128,10 +266,33 @@ export default async function proxy(request: NextRequest) {
   if (isAuth && isAuthRoute) {
     const callbackUrl = request.nextUrl.searchParams.get("callbackUrl");
     const redirectTo = callbackUrl ?? getDefaultPath(locale, authRole);
-    return NextResponse.redirect(new URL(redirectTo, request.url));
+    const redirectUrl = new URL(redirectTo, request.url);
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: "redirect:authenticated-auth-route",
+        authRole,
+        redirectTo: redirectUrl.toString(),
+      },
+    });
+    return NextResponse.redirect(redirectUrl);
   }
 
   // Allow the request to proceed if no conditions are met
+  logProxyRequest({
+    request,
+    requestId,
+    status: i18nResponse.status || 200,
+    startedAt,
+    details: {
+      action: "next",
+      authRole,
+      isAuth: Boolean(isAuth),
+    },
+  });
   return i18nResponse;
 }
 

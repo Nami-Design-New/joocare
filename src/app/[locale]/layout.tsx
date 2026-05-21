@@ -21,7 +21,9 @@ function getMetadataBase() {
     return undefined;
   }
 }
-
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 const outfit = Outfit({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
@@ -33,11 +35,10 @@ const notoSans = Noto_Sans({
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-noto-sans",
 });
+
 export async function generateMetadata(): Promise<Metadata> {
   const metadataBase = getMetadataBase();
-  const settings = await settingService().catch(() => null);
-  const shareLinkImage =
-    settings?.share_link_image?.trim() || "/logo-icon.jfif";
+  const shareLinkImage = "/logo-icon.jfif";
 
   return {
     metadataBase,
@@ -55,19 +56,19 @@ export async function generateMetadata(): Promise<Metadata> {
         "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
       siteName: "Joocare",
       type: "website",
-      images: [
-        {
-          url: shareLinkImage,
-          alt: "Joocare",
-        },
-      ],
+      // images: [
+      //   {
+      //     url: shareLinkImage,
+      //     alt: "Joocare",
+      //   },
+      // ],
     },
     twitter: {
       card: "summary_large_image",
       title: "Joocare - Find the best healthcare jobs",
       description:
         "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
-      images: [shareLinkImage],
+      // images: [shareLinkImage],
     },
   };
 }
@@ -87,7 +88,10 @@ export default async function RootLayout({ children, params }: Props) {
 
   // Enable static rendering for next-intl
   setRequestLocale(locale);
-  const messages = await getMessages();
+  const [messages, initialSettings] = await Promise.all([
+    getMessages(),
+    settingService(locale).catch(() => null),
+  ]);
 
 
   return (
@@ -97,7 +101,11 @@ export default async function RootLayout({ children, params }: Props) {
       className={`${outfit.variable} ${notoSans.variable}`}
     >
       <body className={`antialiased ${outfit.className}`}>
-        <MainProviders locale={locale} messages={messages}>
+        <MainProviders
+          locale={locale}
+          messages={messages}
+          initialSettings={initialSettings}
+        >
           <main className="min-h-screen">{children}</main>
         </MainProviders>
       </body>

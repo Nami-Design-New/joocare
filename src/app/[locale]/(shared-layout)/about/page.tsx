@@ -6,6 +6,8 @@ import { getAboutPageData } from "@/features/about/services/about-service";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
 import { getTranslations } from "next-intl/server";
 
+export const revalidate = 300;
+
 export default async function AboutPage({
   params,
 }: {

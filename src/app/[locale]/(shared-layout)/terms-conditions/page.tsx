@@ -1,10 +1,12 @@
-import { privacyService } from "@/features/privacy-and-conditions/services/privacy-service"
 import { termsService } from "@/features/privacy-and-conditions/services/terms-service"
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+
+export const revalidate = 300;
 
 export default async function TermsConditions() {
     const t = await getTranslations();
-    const terms = await termsService()
+    const locale = await getLocale()
+    const terms = await termsService(locale)
     return (
         <section className="layout-shell py-20">
             <h1>{t("legalPages.terms-conditions-title")}</h1>

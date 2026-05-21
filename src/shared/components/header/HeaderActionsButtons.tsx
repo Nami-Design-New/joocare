@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import {
   notificationsQueryKey,
   useNotificationsInfinite,
@@ -12,7 +13,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { LanguageToggle } from "../LanguageToggle";
 import { Button, buttonVariants } from "../ui/button";
 import { DrawerScrollableContent } from "./DrawerScrollableContent";
@@ -20,6 +20,18 @@ import UserDropDown from "./UserDropDown";
 import { useLocale, useTranslations } from "next-intl";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import useGetCandidateProfile from "@/features/candidate-profile/hooks/useGetCandidateProfile";
+import { useEffect, useState } from "react";
+
+let hasRequestedNotificationPermissionAfterAuth = false;
+
+function LanguageToggleSkeleton() {
+  return (
+    <div
+      aria-hidden="true"
+      className="bg-muted hidden h-12 w-24 animate-pulse rounded-full md:flex"
+    />
+  );
+}
 
 function HeaderActionsButtons({
   companyHeader,
@@ -55,7 +67,7 @@ function HeaderActionsButtons({
 
   const isLoading = status === "loading";
   const isAuthed = status === "authenticated";
-  const { unreadCount } = useNotificationsInfinite(role, token, {
+  useNotificationsInfinite(role, token, {
     enabled: isAuthed,
   });
 
@@ -64,12 +76,7 @@ function HeaderActionsButtons({
       return;
     }
 
-    console.info("[Notifications] Subscribing to foreground notifications.", {
-      role,
-    });
-
     return listenForMessages(() => {
-      console.info("[Notifications] Invalidating notifications query after foreground message.");
       void queryClient.invalidateQueries({
         queryKey: notificationsQueryKey(role),
       });
@@ -77,11 +84,11 @@ function HeaderActionsButtons({
   }, [isAuthed, queryClient, role]);
 
   useEffect(() => {
-    if (!isAuthed) {
+    if (!isAuthed || hasRequestedNotificationPermissionAfterAuth) {
       return;
     }
 
-    console.info("[Notifications] Requesting permission after authenticated app load.");
+    hasRequestedNotificationPermissionAfterAuth = true;
     void requestNotificationPermission();
   }, [isAuthed]);
 
@@ -90,7 +97,6 @@ function HeaderActionsButtons({
       return;
     }
 
-    console.info("[Notifications] Requesting permission after opening notifications drawer.");
     void requestNotificationPermission();
   }, [isAuthed, open]);
 
@@ -164,7 +170,9 @@ function HeaderActionsButtons({
         )}
 
         {/*  Always visible */}
-        <LanguageToggle aria-label="Toggle Language" />
+        <Suspense fallback={<LanguageToggleSkeleton />}>
+          <LanguageToggle aria-label="Toggle Language" />
+        </Suspense>
 
         {/*  Mobile Notifications */}
         {!isLoading && isAuthed && (

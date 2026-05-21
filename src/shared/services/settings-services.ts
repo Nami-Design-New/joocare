@@ -1,5 +1,8 @@
+import { cache } from "react";
+
 import { getBaseApiUrl } from "../lib/api-endpoints";
 import { apiFetch } from "../lib/fetch-manager";
+import { runWithInFlightDedupe } from "../lib/in-flight-dedupe";
 
 export type AppSetting = {
   id: number;
@@ -22,18 +25,23 @@ export type AppSetting = {
   updated_at: string;
 };
 
-export const settingService = async () => {
-  const { data, ok, message } = await apiFetch<AppSetting[]>(
-    `${getBaseApiUrl()}/setting`,
-    {
-      method: "GET",
-    },
+export const settingService = cache(async (locale: string) => {
+  const { data, ok, message } = await runWithInFlightDedupe(
+    `setting:${locale}`,
+    () =>
+      apiFetch<AppSetting[]>(
+        `${getBaseApiUrl()}/setting`,
+        {
+          method: "GET",
+          locale,
+          cache: "force-cache",
+        },
+      ),
   );
-  // console.log("data setting", data);
 
   if (!ok) {
     throw new Error(message || "Failed to fetch settings");
   }
 
   return data?.data?.[0] ?? null;
-};
+});

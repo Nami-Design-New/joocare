@@ -3,32 +3,45 @@ import { getFirebaseMessaging } from "@/shared/lib/firebase";
 
 type ForegroundMessageHandler = (payload: MessagePayload) => void;
 
+let foregroundListenerAttached = false;
+const foregroundHandlers = new Set<ForegroundMessageHandler>();
+
 export function listenForMessages(
   onForegroundMessage?: ForegroundMessageHandler,
 ) {
-  let unsubscribe: (() => void) | undefined;
-  let cancelled = false;
+  if (onForegroundMessage) {
+    foregroundHandlers.add(onForegroundMessage);
+  }
 
-  void (async () => {
-    const messaging = await getFirebaseMessaging();
-    if (cancelled || !messaging) {
-      console.warn(
-        "[Notifications] Foreground listener not attached: messaging unavailable.",
-      );
-      return;
-    }
+  if (!foregroundListenerAttached) {
+    foregroundListenerAttached = true;
 
-    const { onMessage } = await import("firebase/messaging");
-    console.info("[Notifications] Foreground listener attached.");
+    void (async () => {
+      const messaging = await getFirebaseMessaging();
+      if (!messaging) {
+        console.warn(
+          "[Notifications] Foreground listener not attached: messaging unavailable.",
+        );
+        foregroundListenerAttached = false;
+        return;
+      }
 
-    unsubscribe = onMessage(messaging, (payload) => {
-      console.info("[Notifications] Foreground message received.", payload);
-      onForegroundMessage?.(payload);
-    });
-  })();
+      const { onMessage } = await import("firebase/messaging");
+      console.info("[Notifications] Foreground listener attached.");
+
+      onMessage(messaging, (payload) => {
+        console.info("[Notifications] Foreground message received.", payload);
+
+        foregroundHandlers.forEach((handler) => {
+          handler(payload);
+        });
+      });
+    })();
+  }
 
   return () => {
-    cancelled = true;
-    unsubscribe?.();
+    if (onForegroundMessage) {
+      foregroundHandlers.delete(onForegroundMessage);
+    }
   };
 }
