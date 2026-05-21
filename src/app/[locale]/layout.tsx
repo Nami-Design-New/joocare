@@ -56,19 +56,19 @@ export async function generateMetadata(): Promise<Metadata> {
         "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
       siteName: "Joocare",
       type: "website",
-      images: [
-        {
-          url: shareLinkImage,
-          alt: "Joocare",
-        },
-      ],
+      // images: [
+      //   {
+      //     url: shareLinkImage,
+      //     alt: "Joocare",
+      //   },
+      // ],
     },
     twitter: {
       card: "summary_large_image",
       title: "Joocare - Find the best healthcare jobs",
       description:
         "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
-      images: [shareLinkImage],
+      // images: [shareLinkImage],
     },
   };
 }

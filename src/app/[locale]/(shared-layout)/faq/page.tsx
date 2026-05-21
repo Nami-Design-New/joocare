@@ -42,7 +42,7 @@ export async function generateMetadata({
   const copy = getFaqPageCopy(locale, currentPage);
   const siteOrigin = getSiteOrigin();
   const canonicalPath = buildFaqPagePath(locale, currentPage);
-  const shareLinkImage = `${siteOrigin}/logo-icon.jfif`;
+  // const shareLinkImage = `${siteOrigin}/logo-icon.jfif`;
 
   return {
     title: copy.title,
@@ -60,18 +60,18 @@ export async function generateMetadata({
       url: `${siteOrigin}${canonicalPath}`,
       type: "website",
       siteName: "Joocare",
-      images: [
-        {
-          url: shareLinkImage,
-          alt: "Joocare",
-        },
-      ],
+      // images: [
+      //   {
+      //     url: shareLinkImage,
+      //     alt: "Joocare",
+      //   },
+      // ],
     },
     twitter: {
       card: "summary_large_image",
       title: copy.title,
       description: copy.description,
-      images: [shareLinkImage],
+      // images: [shareLinkImage],
     },
   };
 }

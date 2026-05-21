@@ -5,11 +5,14 @@ export type termsPolicy = {
   terms: string
 };
 
-export const termsService = async () => {
+export const termsService = async (locale: string) => {
   const { data, ok, message } = await apiFetch<termsPolicy>(
     `${getBaseApiUrl()}/terms`,
     {
       method: "GET",
+      cache: "force-cache",
+      next: { revalidate: 300 },
+      locale
     },
   );
 

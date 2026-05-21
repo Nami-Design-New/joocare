@@ -1,11 +1,12 @@
 import { privacyService } from "@/features/privacy-and-conditions/services/privacy-service"
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export const revalidate = 300;
 
 export default async function TermsConditions() {
     const t = await getTranslations();
-    const privacyPolicy = await privacyService()
+    const locale = await getLocale()
+    const privacyPolicy = await privacyService(locale)
     // console.log(privacyPolicy)
     return (
         <section className="layout-shell py-20">
