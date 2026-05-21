@@ -45,11 +45,11 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Joocare - Find the best healthcare jobs",
     description:
       "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
-    icons: {
-      icon: "/logo-icon.jfif",
-      shortcut: "/logo-icon.jfif",
-      apple: "/logo-icon.jfif",
-    },
+    // icons: {
+    //   icon: "/logo-icon.jfif",
+    //   shortcut: "/logo-icon.jfif",
+    //   apple: "/logo-icon.jfif",
+    // },
     openGraph: {
       title: "Joocare - Find the best healthcare jobs",
       description:
