@@ -21,6 +21,7 @@ import {
 } from '@/features/jobs/utils';
 import Breadcrumb from '@/shared/components/Breadcrumb';
 import { getTranslations } from 'next-intl/server';
+import GpuFixClient from '@/shared/components/GpuFixClient';
 type PageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -267,6 +268,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <section className="bg-body-bg">
+      <GpuFixClient />
       <Breadcrumb
         title={t('header.jobs')}
         items={[

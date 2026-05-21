@@ -87,6 +87,27 @@ export default async function proxy(request: NextRequest) {
   const requestedLocale = segments[1]; // e.g. "en" or "ar"
   const hasLocalePrefix = supportedLocales.includes(requestedLocale);
 
+  // If the URL locale differs from the preferred locale, redirect immediately.
+  // This must happen before next-intl middleware runs because it may update the locale cookie
+  // based on the URL (which would "undo" the user's chosen language when navigating back/forward).
+  if (normalizedPreferredLocale && hasLocalePrefix && requestedLocale !== normalizedPreferredLocale) {
+    const url = request.nextUrl.clone();
+    segments[1] = normalizedPreferredLocale;
+    url.pathname = segments.join("/");
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: "redirect:preferred-locale:pre-intl",
+        redirectTo: url.toString(),
+      },
+    });
+    return NextResponse.redirect(url);
+  }
+  // console.log("locale ::::: ", preferredLocale, requestedLocale, !hasLocalePrefix && normalizedPreferredLocale);
+
   // If the URL does not have a locale, force preferred locale (if set) before next-intl routing.
   if (!hasLocalePrefix && normalizedPreferredLocale) {
     const url = request.nextUrl.clone();
@@ -151,24 +172,6 @@ export default async function proxy(request: NextRequest) {
   // Remove locale (/en, /ar, ...)
   const locale = hasLocalePrefix ? requestedLocale : routing.defaultLocale;
   const pathWithoutLocale = hasLocalePrefix ? `/${segments.slice(2).join("/")}` : pathname;
-
-  // If the URL locale differs from the preferred locale, redirect to the preferred locale.
-  if (normalizedPreferredLocale && hasLocalePrefix && locale !== normalizedPreferredLocale) {
-    const url = request.nextUrl.clone();
-    segments[1] = normalizedPreferredLocale;
-    url.pathname = segments.join("/");
-    logProxyRequest({
-      request,
-      requestId,
-      status: 307,
-      startedAt,
-      details: {
-        action: "redirect:preferred-locale",
-        redirectTo: url.toString(),
-      },
-    });
-    return NextResponse.redirect(url);
-  }
 
   // 1. Get the user token (session)
   const isAuth = await getToken({

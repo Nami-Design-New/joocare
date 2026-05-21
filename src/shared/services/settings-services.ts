@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
 import { getBaseApiUrl } from "../lib/api-endpoints";
@@ -25,7 +26,7 @@ export type AppSetting = {
   updated_at: string;
 };
 
-export const settingService = cache(async (locale: string) => {
+async function fetchSettings(locale: string) {
   const { data, ok, message } = await runWithInFlightDedupe(
     `setting:${locale}`,
     () =>
@@ -44,4 +45,15 @@ export const settingService = cache(async (locale: string) => {
   }
 
   return data?.data?.[0] ?? null;
+}
+
+const fetchSettingsCached = unstable_cache(fetchSettings, ["settingService"], {
+  // Keep settings reasonably fresh while still preventing repeated calls.
+  // Adjust if you want faster updates.
+  revalidate: 300,
+  tags: ["settings"],
+});
+
+export const settingService = cache(async (locale: string) => {
+  return fetchSettingsCached(locale);
 });
