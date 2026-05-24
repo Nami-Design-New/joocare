@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
 
 import type { PopularSearchesItem } from '@/features/home/components/PopularSearches';
 import { getPopularSearchesPage } from '@/features/home/services/home-service';
@@ -48,13 +48,18 @@ function getPageCopy(locale: string, search: string) {
 export async function generateMetadata({
   params,
   searchParams,
-}: PageProps): Promise<Metadata> {
+}: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const { locale } = await params;
   const normalizedParams = normalizeJobsSearchParams(await searchParams);
   const copy = getPageCopy(locale, normalizedParams.search);
   const siteOrigin = getSiteOrigin();
   const canonicalPath = buildJobsPagePath(locale, normalizedParams);
-  // const shareLinkImage = `${siteOrigin}/logo-icon.jfif`;
+  const parentMetadata = await parent;
+  const parentOpenGraphImages = parentMetadata.openGraph?.images;
+  const parentTwitterImages = parentMetadata.twitter?.images;
+
+  console.log(parentOpenGraphImages, parentTwitterImages);
+
 
   return {
     title: copy.title,
@@ -72,18 +77,13 @@ export async function generateMetadata({
       url: `${siteOrigin}${canonicalPath}`,
       type: 'website',
       siteName: 'Joocare',
-      // images: [
-      //   {
-      //     url: shareLinkImage,
-      //     alt: 'Joocare',
-      //   },
-      // ],
+      ...(parentOpenGraphImages ? { images: parentOpenGraphImages } : {}),
     },
     twitter: {
       card: 'summary_large_image',
       title: copy.title,
       description: copy.description,
-      // images: [shareLinkImage],
+      ...(parentTwitterImages ? { images: parentTwitterImages } : {}),
     },
   };
 }

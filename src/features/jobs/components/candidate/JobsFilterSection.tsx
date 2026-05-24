@@ -92,12 +92,12 @@ export default function JobsFilterSection({
               onReachEnd={() => void fetchCountriesNextPage()}
               hasNextPage={countriesHasNextPage}
               isFetchingNextPage={countriesFetchingNextPage}
-              className="bg-white"
+              className="bg-white z-10"
               containerStyles="w-auto grow"
               allowDeselect
             />
 
-            <Button type="submit" variant="default" size="pill" className="shrink-0">
+            <Button type="submit" variant="default" size="pill" className="shrink-0 z-10">
               {t("search-filter.search")}
             </Button>
           </form>

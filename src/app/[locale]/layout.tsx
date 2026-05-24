@@ -52,10 +52,12 @@ export async function generateMetadata({
   const shareLinkImage =
     settings?.share_link_image || "/logo-icon.jfif";
 
-  // convert to absolute URL if it's relative
+  // Convert to absolute URL when possible (share platforms prefer absolute URLs).
   const imageUrl = shareLinkImage.startsWith("http")
     ? shareLinkImage
-    : `${metadataBase}${shareLinkImage}`;
+    : metadataBase
+      ? new URL(shareLinkImage, metadataBase).toString()
+      : shareLinkImage;
 
   // console.log("url image:::::", settings, shareLinkImage, imageUrl);
 
