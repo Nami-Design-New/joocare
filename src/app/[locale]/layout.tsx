@@ -9,10 +9,23 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { headers } from "next/headers";
 
+
 async function getMetadataBase(): Promise<URL> {
-  const headersList = await headers();
-  const host = headersList.get("host") || "www.joocare.com";
-  return new URL(`https://${host}`);
+  try {
+    const headersList = await headers();
+    const host = headersList.get("host");
+    if (host) return new URL(`https://${host}`);
+  } catch {
+    // static generation — headers() مش متاحة
+  }
+
+  // ✅ fallback للـ env
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (baseUrl) {
+    return new URL(baseUrl.replace(/\/api\/?$/, ""));
+  }
+
+  return new URL("https://www.joocare.com");
 }
 
 export function generateStaticParams() {
