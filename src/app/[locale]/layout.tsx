@@ -7,24 +7,11 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { Noto_Sans, Outfit } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
-import { headers } from "next/headers";
 
 
-async function getMetadataBase(): Promise<URL> {
-  try {
-    const headersList = await headers();
-    const host = headersList.get("host");
-    if (host) return new URL(`https://${host}`);
-  } catch {
-    // static generation — headers() مش متاحة
-  }
-
-  // ✅ fallback للـ env
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  if (baseUrl) {
-    return new URL(baseUrl.replace(/\/api\/?$/, ""));
-  }
-
+function getMetadataBase(): URL {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (siteUrl) return new URL(siteUrl.trim());
   return new URL("https://www.joocare.com");
 }
 
@@ -48,7 +35,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const metadataBase = await getMetadataBase();
+  const metadataBase = getMetadataBase();
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {
