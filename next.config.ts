@@ -7,6 +7,22 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '5mb',
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "joocare.com",
+          },
+        ],
+        destination: "https://www.joocare.com/:path*",
+        permanent: true,
+        basePath: false,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

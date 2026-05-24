@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getTranslations } from "next-intl/server";
 
@@ -65,7 +65,10 @@ function getSharedCompanyProfileMetadataFallback(
     };
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata(
+    { params }: PageProps,
+    parent: ResolvingMetadata,
+): Promise<Metadata> {
     const { locale, slug } = await params;
     const siteOrigin = getSiteOrigin();
     const canonicalUrl = `${siteOrigin}/${locale}/shared-company-profile/${slug}`;
@@ -73,6 +76,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const shareLinkImage = company?.image
         ? toAbsoluteUrl(company?.image, siteOrigin)
         : `${siteOrigin}/logo-icon.jfif`;
+
+    const parentMetadata = await parent;
+    const parentOpenGraphImages = parentMetadata.openGraph?.images;
+    const parentTwitterImages = parentMetadata.twitter?.images;
 
 
     // console.log("SHARE COMPANY L INK :::::::::::::::::::::::::::::::", shareLinkImage ,);
@@ -108,22 +115,35 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
                 url: canonicalUrl,
                 type: "profile",
                 siteName: "Joocare",
-                images: [
-                    {
-                        url: shareLinkImage,
-                        alt: "Joocare",
-                    },
-                ],
+                ...(parentOpenGraphImages ? { images: parentOpenGraphImages } : {
+                    images: [
+                        {
+                            url: shareLinkImage,
+                            alt: "Joocare",
+                        },
+                    ],
+                }),
             },
             twitter: {
                 card: "summary_large_image",
                 title,
                 description,
-                images: [shareLinkImage],
+                ...(parentTwitterImages ? { images: parentTwitterImages } : { images: [shareLinkImage] }),
             },
         };
     } catch {
-        return getSharedCompanyProfileMetadataFallback(locale, slug, shareLinkImage);
+        const fallback = getSharedCompanyProfileMetadataFallback(locale, slug, shareLinkImage);
+        return {
+            ...fallback,
+            openGraph: {
+                ...fallback.openGraph,
+                ...(parentOpenGraphImages ? { images: parentOpenGraphImages } : {}),
+            },
+            twitter: {
+                ...fallback.twitter,
+                ...(parentTwitterImages ? { images: parentTwitterImages } : {}),
+            },
+        };
     }
 }
 
