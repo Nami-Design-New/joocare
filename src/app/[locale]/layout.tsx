@@ -7,20 +7,14 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { Noto_Sans, Outfit } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
+import { headers } from "next/headers";
 
-function getMetadataBase() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-  if (!baseUrl) {
-    return undefined;
-  }
-
-  try {
-    return new URL(baseUrl.replace(/\/api\/?$/, ""));
-  } catch {
-    return undefined;
-  }
+async function getMetadataBase(): Promise<URL> {
+  const headersList = await headers();
+  const host = headersList.get("host") || "www.joocare.com";
+  return new URL(`https://${host}`);
 }
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -41,7 +35,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const metadataBase = getMetadataBase();
+  const metadataBase = await getMetadataBase();
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {
@@ -49,44 +43,35 @@ export async function generateMetadata({
   }
 
   const settings = await settingService(locale);
-  const shareLinkImage =
-    settings?.share_link_image || "/logo-icon.jfif";
 
-  // convert to absolute URL if it's relative
-  const imageUrl = shareLinkImage.startsWith("http")
-    ? shareLinkImage
-    : `${metadataBase}${shareLinkImage}`;
+  const title = "Joocare - Find the best healthcare jobs";
+  const description = "Discover your ideal healthcare job with Joocare.";
 
-  // console.log("url image:::::", settings, shareLinkImage, imageUrl);
+  const rawImage = settings?.share_link_image || "/tab-icon.png";
+  const imageUrl = rawImage.startsWith("http")
+    ? rawImage
+    : new URL(rawImage, metadataBase).toString();
 
   return {
     metadataBase,
-    title: "Joocare - Find the best healthcare jobs",
-    description:
-      "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
+    title,
+    description,
     icons: {
-      icon: imageUrl,
-      shortcut: imageUrl,
-      apple: imageUrl,
+      icon: "/tab-icon.png",
+      shortcut: "/tab-icon.png",
+      apple: "/tab-icon.png",
     },
     openGraph: {
-      title: "Joocare - Find the best healthcare jobs",
-      description:
-        "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
+      title,
+      description,
       siteName: "Joocare",
       type: "website",
-      images: [
-        {
-          url: imageUrl,
-          alt: "Joocare",
-        },
-      ],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Joocare - Find the best healthcare jobs",
-      description:
-        "Discover your ideal healthcare job with Joocare. We connect healthcare professionals with top employers, offering a wide range of opportunities in the medical field. Start your career journey today!",
+      title,
+      description,
       images: [imageUrl],
     },
   };

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import ContactSection from "@/features/contact/ContactSection";
 import FaqAccordionSection from "@/features/faq/components/FaqAccordionSection";
 import FaqPagination from "@/features/faq/components/FaqPagination";
@@ -35,14 +35,16 @@ function getFaqAudienceByRole(
 export async function generateMetadata({
   params,
   searchParams,
-}: PageProps): Promise<Metadata> {
+}: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const { locale } = await params;
   const resolvedSearchParams = await searchParams;
   const currentPage = normalizeFaqPageParam(resolvedSearchParams.page);
   const copy = getFaqPageCopy(locale, currentPage);
   const siteOrigin = getSiteOrigin();
   const canonicalPath = buildFaqPagePath(locale, currentPage);
-  // const shareLinkImage = `${siteOrigin}/logo-icon.jfif`;
+  const parentMetadata = await parent;
+  const parentOpenGraphImages = parentMetadata.openGraph?.images;
+  const parentTwitterImages = parentMetadata.twitter?.images;
 
   return {
     title: copy.title,
@@ -60,18 +62,13 @@ export async function generateMetadata({
       url: `${siteOrigin}${canonicalPath}`,
       type: "website",
       siteName: "Joocare",
-      // images: [
-      //   {
-      //     url: shareLinkImage,
-      //     alt: "Joocare",
-      //   },
-      // ],
+      ...(parentOpenGraphImages ? { images: parentOpenGraphImages } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title: copy.title,
       description: copy.description,
-      // images: [shareLinkImage],
+      ...(parentTwitterImages ? { images: parentTwitterImages } : {}),
     },
   };
 }
