@@ -12,6 +12,7 @@ import {
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
 import { getNextAuthToken } from "@/shared/util/auth.util";
 import { getTranslations } from "next-intl/server";
+import { getSharedOgImage } from "@/shared/util/metadata";
 
 type PageProps = {
   params: Promise<{ locale: string }>;
@@ -35,16 +36,15 @@ function getFaqAudienceByRole(
 export async function generateMetadata({
   params,
   searchParams,
-}: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const resolvedSearchParams = await searchParams;
   const currentPage = normalizeFaqPageParam(resolvedSearchParams.page);
   const copy = getFaqPageCopy(locale, currentPage);
   const siteOrigin = getSiteOrigin();
   const canonicalPath = buildFaqPagePath(locale, currentPage);
-  const parentMetadata = await parent;
-  const parentOpenGraphImages = parentMetadata.openGraph?.images;
-  const parentTwitterImages = parentMetadata.twitter?.images;
+
+  const ogImage = await getSharedOgImage(locale);
 
   return {
     title: copy.title,
@@ -62,17 +62,16 @@ export async function generateMetadata({
       url: `${siteOrigin}${canonicalPath}`,
       type: "website",
       siteName: "Joocare",
-      ...(parentOpenGraphImages ? { images: parentOpenGraphImages } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: copy.title }], // ✅
     },
     twitter: {
       card: "summary_large_image",
       title: copy.title,
       description: copy.description,
-      ...(parentTwitterImages ? { images: parentTwitterImages } : {}),
+      images: [ogImage], // ✅
     },
   };
 }
-
 export default async function FaqPage({ params, searchParams }: PageProps) {
   const { locale } = await params;
   const resolvedSearchParams = await searchParams;

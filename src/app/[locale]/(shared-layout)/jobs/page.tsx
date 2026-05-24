@@ -22,6 +22,7 @@ import {
 import Breadcrumb from '@/shared/components/Breadcrumb';
 import { getTranslations } from 'next-intl/server';
 import GpuFixClient from '@/shared/components/GpuFixClient';
+import { getSharedOgImage } from '@/shared/util/metadata';
 type PageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -48,17 +49,14 @@ function getPageCopy(locale: string, search: string) {
 export async function generateMetadata({
   params,
   searchParams,
-}: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const normalizedParams = normalizeJobsSearchParams(await searchParams);
   const copy = getPageCopy(locale, normalizedParams.search);
   const siteOrigin = getSiteOrigin();
   const canonicalPath = buildJobsPagePath(locale, normalizedParams);
-  const parentMetadata = await parent;
-  const parentOpenGraphImages = parentMetadata.openGraph?.images;
-  const parentTwitterImages = parentMetadata.twitter?.images;
 
-  console.log(parentOpenGraphImages, parentTwitterImages);
+  const ogImage = await getSharedOgImage(locale)
 
   return {
     title: copy.title,
@@ -76,17 +74,16 @@ export async function generateMetadata({
       url: `${siteOrigin}${canonicalPath}`,
       type: 'website',
       siteName: 'Joocare',
-      ...(parentOpenGraphImages ? { images: parentOpenGraphImages } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: copy.title }], // ✅
     },
     twitter: {
       card: 'summary_large_image',
       title: copy.title,
       description: copy.description,
-      ...(parentTwitterImages ? { images: parentTwitterImages } : {}),
+      images: [ogImage], // ✅
     },
   };
 }
-
 export default async function Page({ params, searchParams }: PageProps) {
   const { locale } = await params;
   const normalizedParams = normalizeJobsSearchParams(await searchParams);
