@@ -60,7 +60,6 @@ export async function generateMetadata({
 
   console.log(parentOpenGraphImages, parentTwitterImages);
 
-
   return {
     title: copy.title,
     description: copy.description,
