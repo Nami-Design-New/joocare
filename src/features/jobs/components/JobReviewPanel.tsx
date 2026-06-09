@@ -439,7 +439,7 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
             />
           </div>
           <h4 className="text-foreground text-lg font-semibold">{tPostJob("review.jobLocation")}</h4>
-          <p className="text-muted-foreground text-md text-center font-semibold">
+          <p className="text-muted-foreground text-sm md:text-base text-center font-semibold">
             {preview.city}
             {preview.city !== "-" ? "," : ""}
             <br />
@@ -500,7 +500,7 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
                 width={20} height={20}
                 alt=""
               />
-              <p className="text-muted-foreground text-md">{tPostJob("review.fields.educationLevel")}</p>
+              <p className="text-muted-foreground text-sm md:text-base">{tPostJob("review.fields.educationLevel")}</p>
             </div>
             <ul className="mt-2 flex flex-col gap-2">
               {preview.educationLevels.map((level) => (
@@ -520,7 +520,7 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
                 width={20} height={20}
                 alt=""
               />
-              <p className="text-muted-foreground text-md">{tPostJob("review.fields.mandatoryCertifications")}</p>
+              <p className="text-muted-foreground text-sm md:text-base">{tPostJob("review.fields.mandatoryCertifications")}</p>
             </div>
             <ul className="mt-2 flex flex-col gap-2">
               {preview.mandatoryCertifications.map((item) => (

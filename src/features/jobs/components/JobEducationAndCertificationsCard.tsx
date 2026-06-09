@@ -27,7 +27,7 @@ export default async function JobEducationAndCertificationsCard({ job }: { job: 
                 height={20}
                 alt={t("jobDetailsPage.icon")}
               />
-              <p className="text-muted-foreground text-md">
+              <p className="text-muted-foreground text-sm md:text-base">
                 {t("jobDetailsPage.mandatory-certifications")}
               </p>
             </div>

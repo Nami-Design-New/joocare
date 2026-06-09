@@ -23,7 +23,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
                 height={20}
                 alt="icon"
               />
-              <p className="text-muted-foreground text-md">
+              <p className="text-muted-foreground text-sm md:text-base">
                 Mandatory Certifications
               </p>
             </div>

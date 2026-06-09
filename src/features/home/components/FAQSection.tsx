@@ -67,7 +67,7 @@ export default function FAQSection({
                 variant="outline"
                 size="pill"
                 hoverStyle="slidehorizontalPrimary"
-                className="text-muted-foreground text-md group mt-6 items-center gap-2 border-none font-normal flex"
+                className="text-muted-foreground text-sm md:text-base group mt-6 items-center gap-2 border-none font-normal flex"
                 onClick={handleToggle}
               >
                 {isExpanded ? t('search-filter.show-less') : t('search-filter.show-more')}

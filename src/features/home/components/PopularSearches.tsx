@@ -55,7 +55,7 @@
 //           variant="outline"
 //           size="pill"
 //           hoverStyle="slidehorizontalPrimary"
-//           className="text-muted-foreground text-md group flex items-center gap-2 border-none font-normal"
+//           className="text-muted-foreground text-sm md:text-base group flex items-center gap-2 border-none font-normal"
 //           onClick={isExpanded ? onShowLess : onShowMore}
 //         >
 //           {isExpanded ? showLessLabel : showMoreLabel}
@@ -123,7 +123,7 @@ export default function PopularSearches({
             variant="outline"
             size="pill"
             hoverStyle="slidehorizontalPrimary"
-            className="text-muted-foreground text-sm md:text-md group flex items-center gap-2 border-none font-normal lg:hidden"
+            className="text-muted-foreground text-sm md:text-base group flex items-center gap-2 border-none font-normal lg:hidden"
             onClick={isExpanded ? onShowLess : onShowMore}
             disabled={isLoadingMore}
           >
@@ -159,7 +159,7 @@ export default function PopularSearches({
           variant="outline"
           size="pill"
           hoverStyle="slidehorizontalPrimary"
-          className="text-muted-foreground text-sm md:text-md group hidden items-center gap-2 border-none font-normal lg:flex"
+          className="text-muted-foreground text-sm md:text-base group hidden items-center gap-2 border-none font-normal lg:flex"
           onClick={isExpanded ? onShowLess : onShowMore}
           disabled={isLoadingMore}
         >

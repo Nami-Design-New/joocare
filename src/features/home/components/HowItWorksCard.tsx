@@ -20,7 +20,7 @@ export default function HowItWorksCard({
 
       <h4 className="text-lg font-semibold">{title}</h4>
 
-      <p className="text-muted-foreground text-md">{description}</p>
+      <p className="text-muted-foreground text-sm md:text-base">{description}</p>
     </section>
   );
 }

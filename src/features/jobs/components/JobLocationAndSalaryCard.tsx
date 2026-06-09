@@ -32,7 +32,7 @@ export default async function JobLocationAndSalaryCard({ job }: { job: JobDetail
           />
         </div>
         <h4 className="text-foreground text-lg font-semibold">{t("jobDetailsPage.job-location")}</h4>
-        <p className="text-muted-foreground text-md text-center font-semibold">
+        <p className="text-muted-foreground text-sm md:text-base text-center font-semibold">
           {job?.city?.name}{job?.city_id === null ? "" : ","}<br />{job?.country?.name}
         </p>
       </div>

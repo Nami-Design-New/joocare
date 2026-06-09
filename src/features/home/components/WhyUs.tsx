@@ -30,7 +30,7 @@ export default function WhyUs({
         <SectionTitle sectionTitle={t('home.why-joocare')} />
         {/* <h2 className="text-center">{title}</h2> */}
       </div>
-      <div className={` flex flex-col lg:flex-row max-w-[2800px] gap-y-44 lg:gap-y-0 mx-auto ${locale === "ar" ? "bg-container-gray-ar" : "bg-container-gray"}`}>
+      <div className={` flex flex-col lg:flex-row max-w-[2800px] gap-y-44 lg:gap-y-0 mx-auto px-2 ${locale === "ar" ? "bg-container-gray-ar" : "bg-container-gray"}`}>
         <div className=" layout-container flex flex-col py-10 md:py-20 lg:flex-row lg:pl-22 max-lg:order-1">
           <Cons
             title={legacyModelTitle}

@@ -62,7 +62,7 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
                     variant="outline"
                     size="pill"
                     hoverStyle="slidehorizontalPrimary"
-                    className="text-muted-foreground text-md group mt-6 items-center gap-2 border-none font-normal flex"
+                    className="text-muted-foreground text-sm md:text-base group mt-6 items-center gap-2 border-none font-normal flex"
                     onClick={() => setIsExpanded((prev) => !prev)}
                   >
                     {isExpanded ? t("search-filter.show-less") : t("search-filter.show-more")}

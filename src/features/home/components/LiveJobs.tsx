@@ -36,7 +36,7 @@ export const LiveJobs = ({
                   size: "pill",
                   hoverStyle: "slidehorizontalPrimary",
                 }) +
-                " text-muted-foreground text-md group flex items-center gap-2 border-none font-normal"
+                " text-muted-foreground text-sm md:text-base group flex items-center gap-2 border-none font-normal"
               }
             >
               {t('home.explore-more')}

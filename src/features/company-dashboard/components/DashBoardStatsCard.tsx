@@ -69,7 +69,7 @@ export default function DashBoardStatsCard({
             </p>
           )}
         </div>
-        <p className="text-muted-foreground text-md">{description}</p>
+        <p className="text-muted-foreground text-sm md:text-base">{description}</p>
       </div>
       {icon}
     </section>
