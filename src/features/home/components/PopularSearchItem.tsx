@@ -12,8 +12,8 @@ const PopularSearchItem = ({ label, onClick }: PopularSearchItemProps) => {
       onClick={onClick}
       className="border-border cursor-pointer flex w-full items-center justify-center gap-2 rounded-full border bg-white px-3 py-2"
     >
-      <Search className="h-6 w-6 text-[#0D0D0D73]" strokeWidth={1.5} />
-      <p className="text-md text-primary font-normal">{label}</p>
+      <Search className="h-4 md:h-6 w-4 md:w-6 text-[#0D0D0D73]" strokeWidth={1.5} />
+      <p className="text-xs md:text-md text-primary font-normal">{label}</p>
     </button>
   );
 };

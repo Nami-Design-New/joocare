@@ -145,7 +145,7 @@ export const SelectInputField = React.forwardRef<
                 className={cn(
                   "bg-muted border-input h-13 w-full justify-between rounded-full px-4 text-sm font-normal truncate",
                   "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                  "disabled:bg-disabled text-foreground",
+                  "disabled:bg-disabled text-foreground ",
                   error && "border-destructive",
                   className,
                 )}
@@ -166,7 +166,7 @@ export const SelectInputField = React.forwardRef<
                 <span>{selectedOption.label}</span>
               </>
             ) : (
-              <span className="text-muted-foreground flex gap-1">
+              <span className="text-muted-foreground flex gap-1 text-xs md:text-sm">
                 {showPlaceholderImage && (
                   <Image
                     src={showPlaceholderImage}

@@ -114,7 +114,7 @@ export default function PopularSearches({
     <section className="flex w-full  flex-col items-center gap-2 lg:flex-row lg:items-start lg:justify-between">
       {/* Top Row (mobile/tablet) */}
       <div className="flex w-full items-center justify-between lg:w-auto lg:shrink-0">
-        <h4 className="text-foreground text-xl font-semibold whitespace-nowrap">
+        <h4 className="text-foreground text-md md:text-xl font-semibold whitespace-nowrap">
           {t(title)}
         </h4>
 
@@ -123,7 +123,7 @@ export default function PopularSearches({
             variant="outline"
             size="pill"
             hoverStyle="slidehorizontalPrimary"
-            className="text-muted-foreground text-md group flex items-center gap-2 border-none font-normal lg:hidden"
+            className="text-muted-foreground text-sm md:text-md group flex items-center gap-2 border-none font-normal lg:hidden"
             onClick={isExpanded ? onShowLess : onShowMore}
             disabled={isLoadingMore}
           >
@@ -135,7 +135,7 @@ export default function PopularSearches({
             <ArrowRight
               size={28}
               strokeWidth={1.5}
-              className={`border-muted-foreground text-muted-foreground size-7 rounded-full border
+              className={`border-muted-foreground text-muted-foreground size-5 md:size-7 rounded-full border
                bg-white transition-transform  ${locale === 'ar' ? " -rotate-135 group-hover:-rotate-180" : " -rotate-45 group-hover:rotate-0"}`} />
           </Button>
         )}
@@ -159,7 +159,7 @@ export default function PopularSearches({
           variant="outline"
           size="pill"
           hoverStyle="slidehorizontalPrimary"
-          className="text-muted-foreground text-md group hidden items-center gap-2 border-none font-normal lg:flex"
+          className="text-muted-foreground text-sm md:text-md group hidden items-center gap-2 border-none font-normal lg:flex"
           onClick={isExpanded ? onShowLess : onShowMore}
           disabled={isLoadingMore}
         >
@@ -171,7 +171,7 @@ export default function PopularSearches({
           <ArrowRight
             size={28}
             strokeWidth={1.5}
-            className={`border-muted-foreground text-muted-foreground size-7 rounded-full border
+            className={`border-muted-foreground text-muted-foreground size-5 md:size-7 rounded-full border
                bg-white transition-transform  ${locale === 'ar' ? " -rotate-135 group-hover:-rotate-180" : " -rotate-45 group-hover:rotate-0"}`}
           />
         </Button>

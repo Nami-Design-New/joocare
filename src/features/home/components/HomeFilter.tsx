@@ -168,7 +168,7 @@ export default function HomeFilter() {
         isFetchingNextPage={categoriesFetchingNextPage}
       />
 
-      <Button type="submit" variant="default" size="pill" className="shrink-0">
+      <Button type="submit" variant="default" size="pill" className="shrink-0 max-md:w-full">
         {t('search-filter.find-job')}
       </Button>
     </form>
