@@ -43,7 +43,7 @@ export const LiveJobs = ({
               <ArrowRight
                 size={28}
                 strokeWidth={1.5}
-                className={`border-muted-foreground text-muted-foreground size-7 rounded-full border
+                className={`border-muted-foreground text-muted-foreground size-5 md:size-7 rounded-full border
                bg-white transition-transform  ${locale === 'ar' ? " -rotate-135 group-hover:-rotate-180" : " -rotate-45 group-hover:rotate-0"}`} />
             </Link>
           </header>

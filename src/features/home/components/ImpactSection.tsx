@@ -23,11 +23,11 @@ export const ImpactSection = ({
     <section className="bg-background py-10 md:py-20">
       <div className="layout-shell">
 
-        <div className="layout-content grid gap-12 lg:grid-cols-2">
+        <div className="layout-content grid gap-12 lg:grid-cols-2 px-1">
           <div className="flex flex-col justify-center">
             <SectionTitle sectionTitle={t('home.proven-hiring-impact')} />
             <h2 className="text-foreground mt-4 mb-8">{title}</h2>
-            <p className="text-muted-foreground mb-8 max-w-132 text-xl">{description}</p>
+            <p className="text-muted-foreground mb-8 max-w-132 text-sm md:text-xl">{description}</p>
             <Link
 
               // variant="default"
@@ -38,8 +38,8 @@ export const ImpactSection = ({
             >
               <Image
                 src="/assets/icons/get-started-button.svg"
-                width={20}
-                height={20}
+                width={18}
+                height={18}
                 alt=""
               />
               {t('home.lets-get-started')}
