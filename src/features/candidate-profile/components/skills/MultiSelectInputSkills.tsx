@@ -177,7 +177,7 @@ export function MultiSelectInputSkills({
         {selected.map((skillId) => (
           <span
             key={skillId}
-            className="flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 text-xs text-white"
+            className="flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 text-[10px] text-white md:text-xs"
           >
             {getLabel(skillId)}
             <X
@@ -191,7 +191,7 @@ export function MultiSelectInputSkills({
           </span>
         ))}
         <input
-          className="min-w-[140px] flex-1 bg-transparent text-sm text-secondary outline-none placeholder:text-muted-foreground"
+          className="min-w-[140px] flex-1 bg-transparent text-xs text-secondary outline-none placeholder:text-muted-foreground md:text-sm"
           placeholder={selectedLabels.length === 0 ? t("candidatePage.profile.skills-placeholder") : ""}
           value={effectiveQuery}
           onChange={(event) => {
@@ -218,7 +218,7 @@ export function MultiSelectInputSkills({
           {filtered.map((skill) => (
             <li
               key={skill.id}
-              className="cursor-pointer px-4 py-2 text-sm text-secondary transition hover:bg-[#09760A10] hover:text-primary"
+              className="cursor-pointer px-4 py-2 text-xs text-secondary transition hover:bg-[#09760A10] hover:text-primary md:text-sm"
               onMouseDown={(event) => {
                 event.preventDefault();
                 handleSelect(skill.id);
@@ -233,11 +233,11 @@ export function MultiSelectInputSkills({
           )}
 
           {(isLoading || isFetchingNextPage) && (
-            <li className="text-muted-foreground px-4 py-2 text-xs">{t("common.loading")}</li>
+            <li className="text-muted-foreground px-4 py-2 text-[10px] md:text-xs">{t("common.loading")}</li>
           )}
 
           {!isLoading && filtered.length === 0 && !isFetchingNextPage && (
-            <li className="text-muted-foreground px-4 py-2 text-xs">
+            <li className="text-muted-foreground px-4 py-2 text-[10px] md:text-xs">
               {t("common.no-results-found")}
             </li>
           )}

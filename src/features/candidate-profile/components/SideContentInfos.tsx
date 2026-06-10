@@ -36,10 +36,10 @@ const SideContentInfos = ({
           height={150}
           className="rounded-full h-37.5 w-37.5"
         />
-        <h2 className="mt-1 text-[21px] font-semibold text-black">
+        <h2 className="mt-1 text-[19px] font-semibold text-black md:text-[21px]">
           {displayName}
         </h2>
-        <span className="text-primary text-sm font-semibold">
+        <span className="text-primary text-xs font-semibold md:text-sm">
           {displayJobTitle}
         </span>
       </section>
@@ -49,15 +49,15 @@ const SideContentInfos = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-center gap-2">
             <Sparkles className="text-primary h-4 w-4" />
-            <span className="text-sm font-semibold">{t("candidatePage.profile.hiring-readiness")}</span>
+            <span className="text-xs font-semibold md:text-sm">{t("candidatePage.profile.hiring-readiness")}</span>
           </div>
-          <span className="text-primary">{hiringReadiness}%</span>
+          <span className="text-primary text-sm md:text-base">{hiringReadiness}%</span>
         </div>
         <Progress value={hiringReadiness} />
         {profile?.hiring_readiness_score === 0 && (
           <div className="flex items-center gap-2">
             <CircleAlert className="text-primary h-4 w-4" />
-            <span className="text-muted-foreground max-w-62 text-[12px]">
+            <span className="text-muted-foreground max-w-62 text-[10px] md:text-base">
               {t("candidatePage.profile.hiring-readiness-help")}
             </span>
           </div>
@@ -65,7 +65,7 @@ const SideContentInfos = ({
         {(readinessScore > 0 && readinessScore < 100) && (
           <div className="flex items-center gap-2">
             <CircleAlert className="text-primary h-4 w-4" />
-            <span className="text-muted-foreground max-w-62 text-[12px]">
+            <span className="text-muted-foreground max-w-62 text-[10px] md:text-base">
               {t('candidatePage.profile.missing-score-items')}{profile?.missing_score_items.map((item, index) => <span className="mx-0.5" key={index}>{item}</span>)}            </span>
           </div>
         )}
@@ -74,33 +74,33 @@ const SideContentInfos = ({
       {/* progress */}
       <section className="my-2 flex flex-col lg:my-3 lg:gap-y-4">
         <div className="flex items-center justify-between p-2">
-          <h6 className="text-muted-foreground text-sm font-semibold">
+          <h6 className="text-muted-foreground text-xs font-semibold md:text-sm">
             {" "}
             {t("authPage.common.email")}{" "}
           </h6>
-          <span className="text-sm font-semibold">{displayEmail}</span>
+          <span className="text-xs font-semibold md:text-sm">{displayEmail}</span>
         </div>
         <div className="flex items-center justify-between p-2">
-          <h6 className="text-muted-foreground text-sm font-semibold">
+          <h6 className="text-muted-foreground text-xs font-semibold md:text-sm">
             {" "}
             {t("candidatePage.profile.location")}{" "}
           </h6>
-          <span className="text-sm font-semibold">{displayLocation}</span>
+          <span className="text-xs font-semibold md:text-sm">{displayLocation}</span>
         </div>
         <div className="flex items-center justify-between p-2">
-          <h6 className="text-muted-foreground text-sm font-semibold">{t("candidatePage.profile.phone")}</h6>
-          <span className="text-sm font-semibold">{displayPhone}</span>
+          <h6 className="text-muted-foreground text-xs font-semibold md:text-sm">{t("candidatePage.profile.phone")}</h6>
+          <span className="text-xs font-semibold md:text-sm">{displayPhone}</span>
         </div>
         <div className="flex items-center justify-between p-2">
-          <h6 className="text-muted-foreground text-sm font-semibold">
+          <h6 className="text-muted-foreground text-xs font-semibold md:text-sm">
             {" "}
             {t("candidatePage.profile.experience")}{" "}
           </h6>
-          <span className="text-sm font-semibold">{displayExp}</span>
+          <span className="text-xs font-semibold md:text-sm">{displayExp}</span>
         </div>
         <div className="flex items-center justify-between p-2">
-          <h6 className="text-muted-foreground text-sm font-semibold">{t("candidatePage.profile.age")}</h6>
-          <span className="text-sm font-semibold">{displayAge}</span>
+          <h6 className="text-muted-foreground text-xs font-semibold md:text-sm">{t("candidatePage.profile.age")}</h6>
+          <span className="text-xs font-semibold md:text-sm">{displayAge}</span>
         </div>
       </section>
 

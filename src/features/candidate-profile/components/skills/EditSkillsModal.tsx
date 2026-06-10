@@ -83,7 +83,7 @@ export function EditSkillsModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-150 gap-4 rounded-2xl">
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold">{t("candidatePage.profile.edit-skills")}</DialogTitle>
+          <DialogTitle className="text-base font-bold md:text-lg">{t("candidatePage.profile.edit-skills")}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-1.5">
@@ -97,7 +97,7 @@ export function EditSkillsModal({
                   key={skill.id}
                   type="button"
                   onClick={() => toggle(skill)}
-                  className={`border-border rounded-full border px-4 py-2 text-sm transition-all ${isSelected
+                  className={`border-border rounded-full border px-4 py-2 text-xs transition-all md:text-sm ${isSelected
                     ? "border-primary bg-primary text-white"
                     : "border-muted hover:border-primary hover:text-primary bg-white text-black"
                     }`}
@@ -108,7 +108,7 @@ export function EditSkillsModal({
             })}
 
             {profileSkills.length === 0 ? (
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-xs md:text-sm">
                 {t("candidatePage.profile.no-skills-to-edit")}
               </p>
             ) : null}

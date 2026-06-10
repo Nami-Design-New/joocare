@@ -64,16 +64,16 @@ const OneEducationSection = ({
             />
           </div>
           <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-semibold">{education.university}</h3>
+            <h3 className="text-base font-semibold md:text-lg">{education.university}</h3>
             <div className="flex gap-2 items-center">
-              <p className="text-muted-foreground text-sm font-normal">
+              <p className="text-muted-foreground text-xs font-normal md:text-sm">
                 {education.degree ?? t("candidatePage.profile.no-degree-details")}
               </p>
-              <p className="text-muted-foreground text-xs font-normal">
+              <p className="text-muted-foreground text-[10px] font-normal md:text-xs">
                 ( {`${education.gpa}`} )
               </p>
             </div>
-            <span className="text-muted-foreground text-sm font-normal">
+            <span className="text-muted-foreground text-xs font-normal md:text-sm">
               {education.educationPeriod ?? t("candidatePage.profile.no-period")}
             </span>
           </div>
@@ -109,6 +109,7 @@ const OneEducationSection = ({
         cancelLabel={t("candidatePage.common.back")}
         onConfirm={handleDeleteEducation}
         isLoading={isDeleting}
+        responsiveText
       />
     </>
   );

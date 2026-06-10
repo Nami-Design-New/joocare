@@ -236,10 +236,10 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
               height={24}
             />
 
-            <span className="text-sm">{displayFileName}</span>
+            <span className="text-xs md:text-sm">{displayFileName}</span>
 
             {displayFileSize && (
-              <span className="text-primary text-sm font-semibold">
+              <span className="text-primary text-xs font-semibold md:text-sm">
                 {displayFileSize}
               </span>
             )}
@@ -250,7 +250,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
             <Button
               variant="secondary"
               onClick={handleDownload}
-              className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[12px]"
+              className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[10px] md:text-xs"
             >
               <File className="h-3 w-3" />
               {t("candidatePage.common.download")}
@@ -259,7 +259,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
             <Button
               variant="outline"
               onClick={handleView}
-              className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[12px]"
+              className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[10px] md:text-[12px]"
             >
               <Eye className="h-3 w-3" />
               {t("candidatePage.common.view")}

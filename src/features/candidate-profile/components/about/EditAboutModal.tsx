@@ -99,11 +99,11 @@ export function EditAboutModal({
       <DialogContent className="flex max-w-175 flex-col gap-5">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <DialogHeader>
-            <DialogTitle className="text-[28px] text-black">
+            <DialogTitle className="text-[26px] text-black md:text-[28px]">
               {t("candidatePage.profile.edit-about")}
             </DialogTitle>
           </DialogHeader>
-          <DialogDescription className="text-muted-foreground -mt-2 text-sm">
+          <DialogDescription className="text-muted-foreground -mt-2 text-xs md:text-sm">
             {t("candidatePage.profile.about-description")}
           </DialogDescription>
 
@@ -113,7 +113,7 @@ export function EditAboutModal({
             {...register("bio")}
           />
           {errors.bio?.message && (
-            <span className="text-[12px] text-red-500">{errors.bio.message}</span>
+            <span className="text-[10px] text-red-500 md:text-[12px]">{errors.bio.message}</span>
           )}
 
           <DialogFooter className="flex justify-center!">

@@ -17,7 +17,7 @@ const EducationSection = ({
     return (<>
         <section className="rounded-2xl bg-white flex flex-col gap-5 p-4 border">
             <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold ">{t("candidatePage.profile.education")}</h3>
+                <h3 className="text-lg font-semibold md:text-xl">{t("candidatePage.profile.education")}</h3>
                 <Plus size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />
             </div>
 
@@ -28,7 +28,7 @@ const EducationSection = ({
                     ))}
                 </div>
             ) : (
-                <p className="text-sm text-muted-foreground">{t("candidatePage.profile.no-education")}</p>
+                <p className="text-xs text-muted-foreground md:text-sm">{t("candidatePage.profile.no-education")}</p>
             )}
 
         </section>
