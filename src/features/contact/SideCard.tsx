@@ -96,7 +96,7 @@ export default function SideCard({
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:scale-105  h-10 w-10"
+                  className="hover:scale-105  h-7 md:h-10 w-7 md:w-10"
                   aria-label={label}
                 >
                   <Image

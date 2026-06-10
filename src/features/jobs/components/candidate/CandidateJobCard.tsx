@@ -84,10 +84,10 @@ export default function CandidateJobCard({
 
         />
         <div className="flex grow flex-col gap-1">
-          <h6 onClick={() => router.push(href)} className="text-secondary text-lg font-semibold group-hover:text-primary cursor-pointer">
+          <h6 onClick={() => router.push(href)} className="text-secondary text-sm md:text-lg font-semibold group-hover:text-primary cursor-pointer">
             {title}
           </h6>
-          <p className="text-foreground text-md font-normal">{company}</p>
+          <p className="text-foreground text-sm md:text-base font-normal">{company}</p>
           <time className="text-muted-foreground text-xs font-normal">
             {postedAtLabel}
           </time>
@@ -96,28 +96,28 @@ export default function CandidateJobCard({
       </CardHeader>
       <CardContent className="max-lg:px-2 grow">
         <div className=" flex flex-col gap-4  ">
-          <ul className="items-start flex gap-2">
-            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
+          <ul className="items-start flex flex-wrap gap-2">
+            <li className="text-secondary flex items-start gap-1 text-xs md:text-sm font-normal">
               <MapPin size={16} color="var(--muted-foreground)" className="shrink-0" />
               {location}
             </li>
-            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
+            <li className="text-secondary flex items-start gap-1 text-xs md:text-sm font-normal">
               <Briefcase size={16} color="var(--muted-foreground)" className="shrink-0" />
               {category}
             </li>
-            <li className="text-secondary flex items-start gap-1 text-sm font-normal">
+            <li className="text-secondary flex items-start gap-1 text-xs md:text-sm font-normal">
               <CircleDollarSign size={16} color="var(--muted-foreground)" className="shrink-0" />
               {salary}
             </li>
           </ul>
           <ul className="items-cente flex gap-2">
-            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
+            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] md:text-xs font-normal">
               {experience}
             </li>
-            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
+            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] md:text-xs font-normal">
               {employmentType}
             </li>
-            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
+            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] md:text-xs font-normal">
               {specialty}
             </li>
           </ul>
@@ -130,7 +130,7 @@ export default function CandidateJobCard({
                 `<p>${t("jobsPage.no-description-available")}</p>`,
             }}
           /> */}
-          <div className="prose prose-sm max-w-none mt-3">
+          <div className="prose prose-sm max-w-none mt-3 text-sm md:text-base">
             {excerpt || t("jobsPage.no-description-available")}
           </div>
         </div>
@@ -149,16 +149,16 @@ export default function CandidateJobCard({
             <Button
               variant="outline"
               size="pill"
-              className="border-border text-muted-foreground h-9 px-4 py-2 text-sm bg-muted"
+              className="border-border text-muted-foreground h-9 px-4 py-2 text-xs md:text-sm bg-muted"
               onClick={() => void shareJob()}
             >
-              <Share className="mx-1" /> {t("jobsPage.share")}
+              <Share className="mx-1 size-4 md:size-5" /> {t("jobsPage.share")}
             </Button>
           </div>
 
           {shouldShowAppliedBadge ? (
             <Button
-              className={`border-border bg-primary/10 flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white cursor-default`}
+              className={`border-border bg-primary/10 flex h-9 items-center gap-2 rounded-full px-3 py-2 text-xs md:text-sm text-white cursor-default`}
 
             >
               <span className="text-primary font-semibold">{t("jobsPage.applied")}</span>
@@ -167,14 +167,14 @@ export default function CandidateJobCard({
 
           ) :
             <Link
-              className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-sm text-white`}
+              className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-xs md:text-sm text-white`}
               href={href}
             >
               {t("jobsPage.view-job")}
               {locale === 'ar' ? (
-                <ArrowLeft size={18} strokeWidth={1.5} className="size-5" />
+                <ArrowLeft size={18} strokeWidth={1.5} className="size-4 md:size-5" />
               ) : (
-                <ArrowRight size={18} strokeWidth={1.5} className="size-5" />
+                <ArrowRight size={18} strokeWidth={1.5} className="size-4 md:size-5" />
               )}
             </Link>
           }

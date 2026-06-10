@@ -24,7 +24,7 @@ export default async function AboutMissionSection({
             <SectionTitle sectionTitle={t("aboutPage.our-mission")} textColor="text-dark" />
           </div>
 
-          <h2 className="text-secondary my-7 text-3xl leading-tight font-bold sm:text-4xl xl:mb-2 xl:text-5xl">
+          <h2 className="text-secondary my-7 text-xl leading-tight font-bold sm:text-4xl xl:mb-2 xl:text-5xl">
             {title}
           </h2>
 

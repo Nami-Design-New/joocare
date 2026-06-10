@@ -17,10 +17,10 @@ export default async function PlainBreadcrumb({ items }: { items: Crumb[] }) {
   return (
     <div className="layout-shell border-b border-[#e6e6e6] bg-[#0D0D0D0D] py-2">
       <div className="layout-content flex items-center justify-between py-3">
-        <h1 className="text-lg font-semibold text-black">{title}</h1>
+        <h1 className="text-base md:text-lg font-semibold text-black">{title}</h1>
 
         <nav aria-label="Breadcrumb">
-          <ol className="flex items-center space-x-2 text-sm text-gray-600">
+          <ol className="flex items-center space-x-2 text-xs md:text-sm text-gray-600">
             {items.map((it, idx) => {
               const isLast = idx === last;
               return (
@@ -28,13 +28,13 @@ export default async function PlainBreadcrumb({ items }: { items: Crumb[] }) {
                   {!isLast && it.href ? (
                     <Link
                       href={it.href}
-                      className="hover:text-gray-600 text-secondary text-sm font-semibold"
+                      className="hover:text-gray-600 text-secondary text-xs md:text-sm font-semibold"
                     >
                       {it.label}
                     </Link>
                   ) : (
                     <span
-                      className={`text-sm ${isLast ? "text-secondary font-semibold" : "text-gray-600"}`}
+                      className={`text-xs md:text-sm ${isLast ? "text-secondary font-semibold" : "text-gray-600"}`}
                     >
                       {it.label}
                     </span>

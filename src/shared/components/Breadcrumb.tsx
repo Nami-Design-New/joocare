@@ -31,10 +31,10 @@ export default function Breadcrumb({
 
       <div className={`layout-content relative z-0 flex items-center justify-between ${gradient ? "text-white" : "text-secondary"
         }`}>
-        <h6 className="text-lg font-semibold">{title}</h6>
+        <h6 className="text-base md:text-lg font-semibold">{title}</h6>
 
         <nav aria-label="Breadcrumb">
-          <ol className={`flex items-center space-x-2 text-sm ${gradient ? "text-white/90" : "text-muted-foreground"
+          <ol className={`flex items-center space-x-2 text-xs md:text-sm ${gradient ? "text-white/90" : "text-muted-foreground"
             }`}>
             {items.map((item, index) => {
               const isLast = index === items.length - 1;

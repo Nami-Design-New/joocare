@@ -38,7 +38,7 @@ export default function ContactLayout({
             socialLinks={socialLinks as ContactSocialLink[]}
             authRole={authRole}
             initialValues={initialValues}
-            containerClassName="bg-card shadow-soft mx-auto mt-6 grid grid-cols-12 gap-y-4 rounded-3xl border p-6 md:p-7 lg:-mt-31 lg:gap-x-8"
+            containerClassName="bg-card shadow-soft mx-auto mt-6 grid grid-cols-12 gap-y-4 rounded-3xl border p-4 md:p-7 lg:-mt-31 lg:gap-x-8"
           />
         </section>
       </section>

@@ -186,6 +186,7 @@ const FormEmployerRegister = () => {
               checked={field.value}
               onCheckedChange={field.onChange}
               error={errors.confirmRegister?.message}
+              className="text-sm md:text-base"
             >
               {t("authPage.forms.employer-register.confirm-authorized")}
             </LabelCheckbox>
@@ -201,6 +202,7 @@ const FormEmployerRegister = () => {
               checked={field.value}
               onCheckedChange={field.onChange}
               error={errors.termsAndConditions?.message}
+              className="text-sm md:text-base"
             >
               {t("authPage.forms.employer-register.i-agree-to")}{" "}
               <Link
