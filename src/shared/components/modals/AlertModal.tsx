@@ -61,10 +61,10 @@ export default function AlertModal({
           </div>
         </div>
         <DialogHeader className="">
-          <DialogTitle className="text-foreground text-center text-3xl font-bold">
+          <DialogTitle className="text-foreground text-center text-2xl md:text-3xl font-bold">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-foreground text-center text-lg leading-tight mt-2">
+          <DialogDescription className="text-foreground text-center text-base md:text-lg leading-tight mt-2">
             {description}
           </DialogDescription>
         </DialogHeader>

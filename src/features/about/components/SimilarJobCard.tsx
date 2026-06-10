@@ -31,8 +31,8 @@ export default function SimilarJobCard({ job }: { job: SimilarJob }) {
           className="rounded-2xl w-14 h-12"
         />
         <div className="flex grow flex-col gap-1">
-          <p className="text-foreground text-md font-normal">{job?.title === null ? job?.job_title?.title : job?.title}</p>
-          <p className="text-foreground text-md font-normal">{job?.company?.name}</p>
+          <p className="text-foreground text-base font-normal">{job?.title === null ? job?.job_title?.title : job?.title}</p>
+          <p className="text-foreground text-base font-normal">{job?.company?.name}</p>
           {/* <time className="text-muted-foreground font normal text-xs">
             {job.created_at}
           </time> */}

@@ -46,14 +46,14 @@ export default function DashBoardStatsCard({
       className={`flex h-full items-center gap-4 rounded-xl bg-white p-6 ${className}`}
     >
       <div className="flex grow flex-col gap-4">
-        <h5 className="text-md text-secondary font-semibold">{title}</h5>
+        <h5 className="text-base text-secondary font-semibold">{title}</h5>
         <div className="flex items-center justify-between gap-2">
           <p>
             <span className="text-primary text-3xl font-extrabold">
               {isPending ? <TextSkeleton /> : primaryValue}{" "}
             </span>
             {badge && (
-              <span className="text-md text-muted-foreground font-normal">
+              <span className="text-base text-muted-foreground font-normal">
                 {badge.label}
               </span>
             )}

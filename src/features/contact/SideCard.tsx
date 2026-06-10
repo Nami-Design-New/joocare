@@ -66,7 +66,7 @@ export default function SideCard({
     <div className="bg-muted flex h-full flex-col rounded-3xl p-5 text-left lg:p-6">
       <div className="w-fit">
         <SectionTitle sectionTitle={title} />
-        <h2 className="text-secondary my-4 text-2xl leading-tight font-bold">
+        <h2 className="text-secondary my-4 text-xl md:text-2xl leading-tight font-bold">
           {subtitle}
         </h2>
       </div>

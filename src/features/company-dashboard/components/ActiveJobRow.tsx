@@ -29,13 +29,13 @@ export default function ActiveJobRow({
       <TableCell className="text-muted-foreground w-12 px-4 py-5 font-medium text-ellipsis">
         {isLoading ? <TextSkeleton /> : activeJob?.job_title?.title ?? activeJob?.title}
       </TableCell>
-      <TableCell className="text-foreground text-md px-4 py-5 font-normal">
+      <TableCell className="text-foreground text-base px-4 py-5 font-normal">
         {isLoading ? <TextSkeleton /> : activeJob?.views_num}
       </TableCell>
-      <TableCell className="text-foreground text-md px-4 py-5 font-normal">
+      <TableCell className="text-foreground text-base px-4 py-5 font-normal">
         {isLoading ? <TextSkeleton /> : activeJob?.applications_count}
       </TableCell>
-      <TableCell className="text-foreground text-md px-4 py-5 font-normal">
+      <TableCell className="text-foreground text-base px-4 py-5 font-normal">
         {isLoading ? (
           <TextSkeleton />
         ) : (

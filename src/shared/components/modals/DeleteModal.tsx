@@ -59,10 +59,10 @@ export default function DeleteModal({
           </div>
         </div>
         <DialogHeader className="">
-          <DialogTitle className="text-foreground text-center text-3xl font-bold">
+          <DialogTitle className="text-foreground text-center text-2xl md:text-3xl font-bold">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-foreground text-center text-lg leading-tight">
+          <DialogDescription className="text-foreground text-center text-base md:text-lg leading-tight">
             {description}
           </DialogDescription>
         </DialogHeader>

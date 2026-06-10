@@ -17,7 +17,7 @@ export default async function JobLocationAndSalaryCard({ job }: { job: JobDetail
           />
         </div>
         <h4 className="text-foreground text-lg font-semibold">{t("jobDetailsPage.salary")} {job?.salary_type === null ? null : (job?.currency?.code)}</h4>
-        <p className="text-primary text-md font-semibold">
+        <p className="text-primary text-base font-semibold">
           {job.has_salary ? getJobSalary(job, t("jobsPage.not-specified")) : t("jobsPage.not-specified")} </p>
         <span className="text-muted-foreground text-sm">{job.has_salary ? job?.salary_type?.title : ""}</span>
       </div>

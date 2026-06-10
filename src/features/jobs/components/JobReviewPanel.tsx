@@ -422,7 +422,7 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
             {tPostJob("review.salary")}
             {preview.salaryType !== "-" && preview.currencyCode ? ` (${preview.currencyCode})` : ""}
           </h4>
-          <p className="text-primary text-md font-semibold">
+          <p className="text-primary text-base font-semibold">
             {preview.salary}
             {/* {preview.salaryType !== "-" ? preview.currencyCode : ""} */}
           </p>

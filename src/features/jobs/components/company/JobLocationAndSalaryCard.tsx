@@ -21,8 +21,8 @@ export default function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
           {job?.salary_type ? `(${job?.currency?.code})` : ""}
         </h4>
         {job.has_salary ?
-          <p className="text-primary text-md font-semibold">{getJobSalary(job)} </p>
-          : <p className="text-primary text-md font-semibold">{t("jobsPage.not-specified")}</p>
+          <p className="text-primary text-base font-semibold">{getJobSalary(job)} </p>
+          : <p className="text-primary text-base font-semibold">{t("jobsPage.not-specified")}</p>
         }
         <span className="text-muted-foreground text-sm">{job?.salary_type?.title ?? ""}</span>
       </div>

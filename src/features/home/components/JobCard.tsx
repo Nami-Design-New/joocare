@@ -27,7 +27,7 @@ const JobCard = ({ title, company, location, type, timeLabel, id, image, updated
           {title}
         </h3>
         <div className="flex flex-wrap items-center gap-1 text-gray-500">
-          <span className="text-sm md:text-md text-foreground font-semibold">{company}</span>
+          <span className="text-sm md:text-base text-foreground font-semibold">{company}</span>
           <span className="flex items-center gap-0.5 text-xs md:text-sm">{location}</span>
         </div>{" "}
         <footer className="mt-4 flex items-center gap-1">

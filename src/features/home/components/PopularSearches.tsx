@@ -114,7 +114,7 @@ export default function PopularSearches({
     <section className="flex w-full  flex-col items-center gap-2 lg:flex-row lg:items-start lg:justify-between">
       {/* Top Row (mobile/tablet) */}
       <div className="flex w-full items-center justify-between lg:w-auto lg:shrink-0">
-        <h4 className="text-foreground text-md md:text-xl font-semibold whitespace-nowrap">
+        <h4 className="text-foreground text-base md:text-xl font-semibold whitespace-nowrap">
           {t(title)}
         </h4>
 

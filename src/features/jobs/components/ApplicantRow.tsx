@@ -30,13 +30,13 @@ export default function ApplicantRow({
       <TableCell className="text-muted-foreground w-12 px-4 py-5 font-medium">
         {10 * (currentPage - 1) + index + 1}
       </TableCell>
-      <TableCell className="text-foreground text-md px-4 py-5 font-normal">
+      <TableCell className="text-foreground text-base px-4 py-5 font-normal">
         {applicant.name}
       </TableCell>
-      <TableCell className="text-foreground text-md px-4 py-5 font-normal">
+      <TableCell className="text-foreground text-base px-4 py-5 font-normal">
         {applicant.email}
       </TableCell>
-      <TableCell className="text-foreground text-md px-4 py-5 font-normal">
+      <TableCell className="text-foreground text-base px-4 py-5 font-normal">
         {applicant.phone !== 'null null' ? applicant.phone : '-'}
       </TableCell>
       <TableCell className="text-muted-foreground px-4 py-5 text-sm ">
