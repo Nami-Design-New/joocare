@@ -5,7 +5,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 export function CredentialCardSkeleton() {
   return (
     <div className="flex flex-col justify-start gap-2 rounded-2xl border bg-white p-2 shadow sm:flex-row sm:items-center">
-      <Skeleton className="h-38 w-40 shrink-0 rounded-lg" />
+      <Skeleton className="h-38 w-full sm:w-40 shrink-0 rounded-lg" />
       <div className="flex flex-1 flex-col gap-3 p-2">
         <div className="flex items-start justify-between gap-4">
           <Skeleton className="h-6 w-3/5" />

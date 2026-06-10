@@ -70,7 +70,7 @@ export default function CertificateCard({
   return (
     <>
       <section className="flex flex-col justify-start gap-2 rounded-2xl border bg-white p-2 shadow sm:flex-row sm:items-center">
-        <div className="h-38 w-40 shrink-0">
+        <div className="h-38 w-full sm:w-40 shrink-0">
           <Image
             className="h-full w-full rounded-lg"
             width={160}

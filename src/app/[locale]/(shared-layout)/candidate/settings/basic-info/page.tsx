@@ -9,7 +9,7 @@ const BasicInfoPage = async () => {
 
   if (!profile) {
     return (
-      <main className="rounded-2xl bg-white p-6">
+      <main className="rounded-2xl bg-white p-2 md:p-6">
         <p className="text-muted-foreground text-sm">
           {t("candidateSettingsPage.unable-load-profile")}
         </p>
@@ -18,7 +18,7 @@ const BasicInfoPage = async () => {
   }
 
   return (
-    <main className="rounded-2xl bg-white p-6">
+    <main className="rounded-2xl bg-white p-2 md:p-6">
       <BasicInfoForm profile={mapCandidateProfileToSettingsProfile(profile)} />
     </main>
   );
