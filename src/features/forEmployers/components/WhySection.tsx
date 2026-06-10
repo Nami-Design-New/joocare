@@ -27,11 +27,11 @@ export default async function WhySection({
               />
             </div>
 
-            <h2 className="my-5 text-4xl font-bold text-[#1C2628] sm:text-5xl ">
+            <h2 className="my-5 text-3xl font-bold text-[#1C2628] md:text-5xl ">
               {title}
             </h2>
 
-            <p className="mb-8 text-xl text-[#1C2628] lg:text-justify">
+            <p className="mb-8 text-base md:text-xl text-[#1C2628] lg:text-justify">
               {description}
             </p>
 

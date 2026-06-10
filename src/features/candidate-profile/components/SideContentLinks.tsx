@@ -16,10 +16,10 @@ const CandidateSideContentLinks = ({ isCompleted }: { isCompleted?: boolean | nu
       <SidebarLinks links={translatedLinks} />
 
       {!isCompleted && <section className="mt-2 flex flex-col gap-3 rounded-2xl bg-[#DC26260D] px-4 py-3 lg:mt-auto">
-        <h3 className="text-destructive text-xl font-semibold">
+        <h3 className="text-destructive text-lg md:text-xl font-semibold">
           {t("candidatePage.sidebar.complete-details-title")}
         </h3>
-        <p className="text-muted-foreground text-base">
+        <p className="text-muted-foreground text-sm md:text-base">
           {t("candidatePage.sidebar.complete-details-description")}
         </p>
 

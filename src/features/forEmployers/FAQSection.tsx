@@ -24,7 +24,7 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
               <CircleQuestionMark size={60} />
             </div>
 
-            <h2 className="text-secondary text-4xl leading-tight font-bold sm:text-5xl">
+            <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
               {title}
             </h2>
           </div>

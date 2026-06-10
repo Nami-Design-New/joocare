@@ -23,12 +23,12 @@ export default function PositionCard({
         alt={t("companyPage.postJob.review.companyLogoAlt")}
         width={96}
         height={86}
-        className="rounded-2xl w-24 h-22"
+        className="rounded-2xl w-18 md:w-24 h-18 md:h-22"
       />
       <div>
-        <h6 className="text-foreground text-2xl font-semibold mb-1">{title}</h6>
+        <h6 className="text-foreground text-base md:text-2xl font-semibold mb-1">{title}</h6>
         <p className="flex max-sm:flex-col items-start sm:items-center gap-2">
-          <span className="text-muted-foreground text-base font-normal">
+          <span className="text-muted-foreground text-sm md:text-base font-normal">
             {t("companyPage.postJob.review.at")} {company}
           </span>
           <Badge size="sm" className="bg-[#0BA02C] rounded-[3px] font-semibold max-sm:text-[10px]">

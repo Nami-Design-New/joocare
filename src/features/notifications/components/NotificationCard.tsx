@@ -36,13 +36,13 @@ export default function NotificationCard({
         className="h-11 w-11 rounded-full object-contain"
       />
       <div className="min-w-0 flex-1">
-        <h6 className="text-foreground text-md leading-7 font-medium">
+        <h6 className="text-foreground text-sm md:text-base leading-7 font-medium">
           {title}
         </h6>
-        <p className="text-muted-foreground mt-1 text-sm break-words">
+        <p className="text-muted-foreground mt-1 text-xs md:text-sm break-words">
           {message}
         </p>
-        <p className="text-muted-foreground mt-2 text-sm">
+        <p className="text-muted-foreground mt-2 text-xs md:text-sm">
           {createdAt}
         </p>
       </div>

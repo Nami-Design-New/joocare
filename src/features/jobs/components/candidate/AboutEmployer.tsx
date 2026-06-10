@@ -8,7 +8,7 @@ import { getTranslations } from "next-intl/server";
 export default async function AboutEmployer({ employer }: { employer: CompanyDetails | null }) {
   const t = await getTranslations();
   return (
-    <div className="card font-noto-sans col-span-2 rounded-2xl bg-white p-7 text-[#212529]">
+    <div className="card font-noto-sans col-span-2 rounded-2xl bg-white p-4 md:p-7 text-[#212529]">
       <h3 className="text-foreground mb-4 text-xl font-bold">
         {t("jobDetailsPage.about-the-employer")}
       </h3>

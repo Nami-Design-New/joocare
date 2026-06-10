@@ -15,8 +15,8 @@ export function FeatureItem({ title, desc }: FeatureItemProps) {
         </div>
 
         <div className="min-w-0">
-          <h3 className="text-lg font-semibold text-secondary">{title}</h3>
-          <p className="mt-1 text-sm leading-relaxed text-pretty text-gray-600">
+          <h3 className="text-base md:text-lg font-semibold text-secondary">{title}</h3>
+          <p className="mt-1 text-xs md:text-sm leading-relaxed text-pretty text-gray-600">
             {desc}
           </p>
         </div>

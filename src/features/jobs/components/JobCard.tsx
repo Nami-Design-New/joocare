@@ -147,10 +147,10 @@ export default function JobCard({ resumeMatch,
             className="rounded-2xl w-14 h-12"
           />
           <div className="flex grow flex-col gap-1">
-            <h6 className="text-secondary text-lg font-semibold group-hover:text-primary">
+            <h6 className="text-secondary text-sm md:text-lg font-semibold group-hover:text-primary">
               {title}
             </h6>
-            <p className="text-foreground text-md font-normal">{company}</p>
+            <p className="text-foreground text-sm md:text-base font-normal">{company}</p>
             <time className="text-muted-foreground text-xs font-normal">
               {!["draft", "open"].includes(normalizedStatus) && postedAtLabel}
               {(normalizedStatus === "open") && statusDate}
@@ -228,28 +228,28 @@ export default function JobCard({ resumeMatch,
         </CardHeader>
         <CardContent className="max-lg:px-2">
           <div className=" flex flex-col gap-4  ">
-            <ul className="items-cente flex gap-2">
-              <li className="text-secondary flex items-start gap-1 text-sm font-normal">
+            <ul className="items-cente flex flex-wrap gap-2">
+              <li className="text-secondary flex items-start gap-1 text-xs md:text-sm font-normal">
                 <MapPin size={16} color="var(--muted-foreground)" className="shrink-0" />
                 {location}
               </li>
-              <li className="text-secondary flex items-start gap-1 text-sm font-normal">
+              <li className="text-secondary flex items-start gap-1 text-xs md:text-sm font-normal">
                 <Briefcase size={16} color="var(--muted-foreground)" className="shrink-0" />
                 {category}
               </li>
-              <li className="text-secondary flex items-start gap-1 text-sm font-normal">
+              <li className="text-secondary flex items-start gap-1 text-xs md:text-sm font-normal">
                 <CircleDollarSign size={16} color="var(--muted-foreground)" className="shrink-0" />
                 {job.has_salary ? salary : t("jobsPage.not-specified")}
               </li>
             </ul>
             <ul className="items-cente flex gap-2">
-              <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
+              <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] md:text-xs font-normal">
                 {experience}
               </li>
-              <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
+              <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] md:text-xs font-normal">
                 {employmentType}
               </li>
-              <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-xs font-normal">
+              <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] md:text-xs font-normal">
                 {specialty}
               </li>
             </ul>
@@ -262,7 +262,7 @@ export default function JobCard({ resumeMatch,
                   `<p>${t("jobsPage.no-description-available")}</p>`,
               }}
             /> */}
-            <div className="prose prose-sm max-w-none mt-3">
+            <div className="prose prose-sm max-w-none mt-3 text-sm md:text-base">
               {excerpt || t("jobsPage.no-description-available")}
             </div>
           </div>

@@ -29,7 +29,7 @@ export default function EmptyDataState({
         className="h-auto w-full max-w-55"
         priority={false}
       />
-      <h3 className="mt-6 text-lg font-semibold text-secondary">{t(title)}</h3>
+      <h3 className="mt-6 text-base md:text-lg font-semibold text-secondary">{t(title)}</h3>
       {description ? (
         <p className="text-muted-foreground mt-2 max-w-md text-sm">{description}</p>
       ) : null}

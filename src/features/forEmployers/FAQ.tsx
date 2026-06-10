@@ -48,7 +48,7 @@ export default function FAQ() {
               </div> */}
             </div>
 
-            <h2 className="text-secondary text-4xl leading-tight font-bold sm:text-5xl">
+            <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
               Frequently Asked
               <br />
               Questions

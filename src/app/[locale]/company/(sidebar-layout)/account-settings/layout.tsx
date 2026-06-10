@@ -13,7 +13,7 @@ const AccountSettingLayout = async ({ children }: { children: ReactNode }) => {
     }));
 
     return (
-        <main className="flex flex-col space-y-6 bg-body-bg">
+        <main className="flex flex-col space-y-6">
             <HeaderLayout navLinks={translatedNavLinks} />
 
             {children}

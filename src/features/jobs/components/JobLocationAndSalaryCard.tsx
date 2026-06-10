@@ -6,7 +6,7 @@ import { getTranslations } from "next-intl/server";
 export default async function JobLocationAndSalaryCard({ job }: { job: JobDetails }) {
   const t = await getTranslations();
   return (
-    <div className="card border-border shadow-card flex min-h-36 items-start justify-around rounded-2xl border-2 bg-white  py-8 px-4 xl:p-8">
+    <div className="card border-border shadow-card flex min-h-36 items-start justify-around rounded-2xl border-2 bg-white  py-8 px-2 md:px-4 xl:p-8">
       <div className="flex flex-col items-center justify-center gap-2">
         <div className="flex items-center justify-center p-1 rounded-full border-3 border-primary">
           <Image

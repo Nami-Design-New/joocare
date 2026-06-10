@@ -11,26 +11,14 @@ const CompanyLayout = ({ children }: { children: React.ReactNode }) => {
 
         {/* Sidebar */}
         <aside
-          className="
-            col-span-12 
-            lg:col-span-3 
-            xl:col-span-2
-            lg:block
-          "
+          className="col-span-12 lg:col-span-3 xl:col-span-2 lg:block "
         >
           <CompanySidebar />
         </aside>
 
         {/* Content */}
         <section
-          className="
-            col-span-12 
-            lg:col-span-9 
-            xl:col-span-10
-            px-4 pt-6 pb-8 
-            md:px-7 md:pt-12
-             bg-body-bg
-          "
+          className="col-span-12 lg:col-span-9 xl:col-span-10 px-3 pt-6 pb-8 md:px-7 md:pt-12 bg-body-bg "
         >
           {children}
         </section>

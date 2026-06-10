@@ -8,12 +8,12 @@ export default async function JobDescriptionCard({ job }: { job: JobDetails }) {
 
 
   return (
-    <div className="card font-noto-sans col-span-2 rounded-2xl bg-white p-7 text-[#212529]">
+    <div className="card font-noto-sans col-span-2 rounded-2xl bg-white  p-4 md:p-7 text-[#212529]">
       <h3 className="text-primary mb-4 text-xl font-bold">{t("jobDetailsPage.job-description")}</h3>
 
       <DescriptionSection title={t("jobDetailsPage.qualifications")}>
         <div
-          className="prose prose-sm max-w-none border-b pb-5"
+          className="prose prose-sm max-w-none border-b pb-5 text-sm md:text-base"
           dangerouslySetInnerHTML={{
             __html:
               job.description ||

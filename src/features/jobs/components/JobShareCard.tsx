@@ -17,7 +17,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
   const encodedTitle = encodeURIComponent(title || t("jobDetailsPage.check-out-this-job"));
 
   return (
-    <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-8">
+    <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-4 md:p-8">
       <h2 className="text-foreground mb-4 text-lg font-semibold">
         {t("jobDetailsPage.share-this-job")}
       </h2>
