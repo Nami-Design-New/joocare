@@ -109,7 +109,6 @@ const OneEducationSection = ({
         cancelLabel={t("candidatePage.common.back")}
         onConfirm={handleDeleteEducation}
         isLoading={isDeleting}
-        responsiveText
       />
     </>
   );
