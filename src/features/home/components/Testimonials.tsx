@@ -27,7 +27,7 @@ export const TestimonialCard = ({
   <div className="bg-card flex flex-col  gap-3 rounded-tl-4xl rounded-br-4xl p-6 h-full w-full">
     <div className="flex justify-between">
       <div>
-        <h5 className="text-secondary text-xl font-normal">{name}</h5>
+        <h5 className="text-secondary text-lg md:text-xl font-normal">{name}</h5>
         <p className="text-muted-foreground text-xs">{date}</p>
       </div>
       <div className="mb-4 flex gap-1">
@@ -43,7 +43,7 @@ export const TestimonialCard = ({
         })}
       </div>
     </div>
-    <p className="text-muted-foreground leading-tight">{text}</p>
+    <p className="text-muted-foreground text-sm md:text-base leading-tight">{text}</p>
   </div>
 );
 

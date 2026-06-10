@@ -263,7 +263,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   };
 
   return (
-    <section className="bg-body-bg">
+    <section className="bg-body-bg mb-8">
       <GpuFixClient />
       <Breadcrumb
         title={t('header.jobs')}
@@ -302,7 +302,7 @@ export default async function Page({ params, searchParams }: PageProps) {
               salaryTypeOptions={filtersData.salaryTypes}
             />
           </div>
-          <section className="mt-4 rounded-2xl bg-white p-4 lg:mt-6">
+          <section className="mt-4 rounded-2xl bg-white p-0 md:p-4 lg:mt-6">
             {/* ── Mobile / Tablet filter trigger ──────────────────────────── */}
 
             <div className="grid grid-cols-4 lg:gap-6">
