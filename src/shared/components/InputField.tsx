@@ -34,9 +34,27 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
   ) => {
     const locale = useLocale();
     const [showPassword, setShowPassword] = React.useState(false);
+    const [useSafariPasswordMask, setUseSafariPasswordMask] =
+      React.useState(false);
 
     const isPassword = type === "password";
-    const inputType = isPassword && showPassword ? "text" : type;
+
+    React.useEffect(() => {
+      const userAgent = navigator.userAgent;
+      const isIOSWebKit =
+        /iPad|iPhone|iPod/.test(userAgent) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const isSafari =
+        /Safari/.test(userAgent) &&
+        !/Chrome|Chromium|CriOS|FxiOS|EdgiOS|OPiOS|Android/.test(userAgent);
+
+      setUseSafariPasswordMask(isIOSWebKit || isSafari);
+    }, []);
+
+    const shouldUseSafariMask =
+      isPassword && useSafariPasswordMask && !showPassword;
+    const inputType =
+      isPassword && (showPassword || shouldUseSafariMask) ? "text" : type;
 
     return (
       <div className={cn("flex w-full flex-col", containerStyles)}>
@@ -59,7 +77,18 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             type={inputType}
             aria-invalid={!!error}
             disabled={disabled}
-            className={cn(isPassword && "pr-10", className)}
+            className={cn(
+              isPassword && "pr-10",
+              shouldUseSafariMask && "safari-password-mask",
+              className,
+            )}
+            {...(isPassword
+              ? {
+                  autoCapitalize: "none",
+                  autoCorrect: "off",
+                  spellCheck: false,
+                }
+              : {})}
             {...props}
           />
 

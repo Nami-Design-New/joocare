@@ -201,13 +201,36 @@
     display: none;
   }
 
-  input[type="password"]::-webkit-credentials-auto-fill-button,
-  input[type="password"]::-webkit-textfield-decoration-container {
-    display: none !important;
-    visibility: hidden;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
+  /* iOS Safari can fail to paint masked characters when a custom web font or
+     its private password-decoration pseudo-elements are overridden. */
+  input[type="password"] {
+    color: var(--foreground);
+    -webkit-text-fill-color: var(--foreground);
+    font-family: Arial, Helvetica, sans-serif;
+    opacity: 1;
+  }
+
+  input[type="password"]::placeholder {
+    color: var(--muted-foreground);
+    -webkit-text-fill-color: var(--muted-foreground);
+    opacity: 1;
+  }
+
+  /* WebKit fallback used by InputField when Safari does not paint the native
+     password glyphs. The real value remains visually masked. */
+  .safari-password-mask {
+    color: var(--foreground);
+    -webkit-text-fill-color: var(--foreground);
+    -webkit-text-security: disc;
+    font-family: Arial, Helvetica, sans-serif;
+    opacity: 1;
+  }
+
+  .safari-password-mask::placeholder {
+    color: var(--muted-foreground);
+    -webkit-text-fill-color: var(--muted-foreground);
+    -webkit-text-security: none;
+    opacity: 1;
   }
 }
 
