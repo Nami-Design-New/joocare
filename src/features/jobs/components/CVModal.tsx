@@ -24,7 +24,7 @@ export default function CVModal({
   pdfUrl,
 }: ConfirmDialogProps) {
   const t = useTranslations();
-  // console.log("pdfUrl", pdfUrl);
+  console.log("pdfUrl", pdfUrl);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="mb-25 max-w-175 rounded-2xl text-center p-8">

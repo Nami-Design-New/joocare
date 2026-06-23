@@ -23,7 +23,7 @@ export default function ApplicantRow({
   currentPage?: number;
 }) {
   const t = useTranslations();
-  console.log("applic", applicant);
+  // console.log("applic", applicant);
 
   return (
     <TableRow className="odd:bg-muted border-border border-b bg-white transition-colors">
