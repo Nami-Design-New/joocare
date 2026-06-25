@@ -11,7 +11,7 @@ import {
 import { RefreshCw } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { isPdfFileName } from "../validation/cv-schema";
+import { isPreviewableCvFileName } from "../validation/cv-schema";
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -37,7 +37,7 @@ export default function CVModal({
   isUploading = false,
 }: ConfirmDialogProps) {
   const t = useTranslations();
-  const isPdf = isPdfFileName(fileName);
+  const canPreview = isPreviewableCvFileName(fileName);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -62,8 +62,8 @@ export default function CVModal({
           </Button>
         </DialogHeader>
 
-        {isPdf && url ? (
-          <PdfViewer url={url} />
+        {canPreview && url ? (
+          <PdfViewer url={url} fileName={fileName} />
         ) : (
           <div className="text-muted-foreground flex min-h-60 items-center justify-center rounded-2xl border border-dashed p-6 text-sm">
             {t("candidatePage.profile.pdf-preview-only")}

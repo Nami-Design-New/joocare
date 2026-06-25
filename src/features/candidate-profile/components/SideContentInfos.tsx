@@ -57,7 +57,7 @@ const SideContentInfos = ({
         {profile?.hiring_readiness_score === 0 && (
           <div className="flex items-center gap-2">
             <CircleAlert className="text-primary h-4 w-4" />
-            <span className="text-muted-foreground max-w-62 text-[12px]">
+            <span className="text-muted-foreground max-w-62 text-[12px] flex flex-wrap">
               {t("candidatePage.profile.hiring-readiness-help")}
             </span>
           </div>
@@ -65,7 +65,7 @@ const SideContentInfos = ({
         {(readinessScore > 0 && readinessScore < 100) && (
           <div className="flex items-center gap-2">
             <CircleAlert className="text-primary h-4 w-4" />
-            <span className="text-muted-foreground max-w-62 text-[12px]">
+            <span className="text-muted-foreground max-w-62 text-[12px] flex flex-wrap">
               {t('candidatePage.profile.missing-score-items')}{profile?.missing_score_items.map((item, index) => <span className="mx-0.5" key={index}>{item}</span>)}            </span>
           </div>
         )}

@@ -40,3 +40,12 @@ export type CvFormData = z.infer<typeof cvSchema>;
 export function isPdfFileName(fileName: string) {
   return fileName.toLowerCase().endsWith(".pdf");
 }
+
+export function isDocxFileName(fileName: string) {
+  return fileName.toLowerCase().endsWith(".docx");
+}
+
+export function isPreviewableCvFileName(fileName: string) {
+  const lowerName = fileName.toLowerCase();
+  return lowerName.endsWith(".pdf") || lowerName.endsWith(".docx");
+}
