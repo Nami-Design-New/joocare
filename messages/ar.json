@@ -723,7 +723,36 @@
       "complete-now": "أكمل الآن",
       "post-job": "نشر وظيفة",
       "post-job-tooltip-line-1": "يرجى استكمال بيانات حسابك أولاً",
-      "post-job-tooltip-line-2": "لنشر وظيفة."
+      "post-job-tooltip-line-2": "لنشر وظيفة.",
+      "groups": {
+        "workspace": "مساحة العمل",
+        "manage-talent": "إدارة المواهب",
+        "administration": "الإدارة",
+        "more": "المزيد"
+      },
+      "hiring-management": "إدارة التوظيف",
+      "jobs": "الوظائف",
+      "projects": "المشاريع",
+      "assessments": "التقييمات",
+      "assessments-results": "نتائج التقييمات",
+      "talent-database": "قاعدة بيانات المواهب",
+      "admin-roles": "أدوار المشرفين",
+      "users": "المستخدمون",
+      "roles-and-permissions": "الأدوار والصلاحيات",
+      "recruiter-activity": "نشاط مسؤولي التوظيف",
+      "post-job-card-title": "كوّن فريقك القادم",
+      "post-job-card-subtitle": "انشر وظيفة واعثر على الشخص المناسب بشكل أسرع."
+    },
+    "pages": {
+      "projects": "المشاريع",
+      "assessments": "التقييمات",
+      "assessments-results": "نتائج التقييمات",
+      "talent-database": "قاعدة بيانات المواهب",
+      "users": "المستخدمون",
+      "roles-and-permissions": "الأدوار والصلاحيات",
+      "recruiter-activity": "نشاط مسؤولي التوظيف",
+      "coming-soon": "قريبًا",
+      "placeholder-description": "نعمل على تجهيز هذه الصفحة. يُرجى العودة قريبًا."
     },
     "postJob": {
       "common": {

@@ -723,7 +723,36 @@
       "complete-now": "Complete Now",
       "post-job": "Post a Job",
       "post-job-tooltip-line-1": "Please complete your account details first",
-      "post-job-tooltip-line-2": "to post a job."
+      "post-job-tooltip-line-2": "to post a job.",
+      "groups": {
+        "workspace": "Workspace",
+        "manage-talent": "Manage Talent",
+        "administration": "Administration",
+        "more": "More"
+      },
+      "hiring-management": "Hiring Management",
+      "jobs": "Jobs",
+      "projects": "Projects",
+      "assessments": "Assessments",
+      "assessments-results": "Assessments Results",
+      "talent-database": "Talent Database",
+      "admin-roles": "Admin Roles",
+      "users": "Users",
+      "roles-and-permissions": "Roles and Permissions",
+      "recruiter-activity": "Recruiter Activity",
+      "post-job-card-title": "Build your next team",
+      "post-job-card-subtitle": "Post a role and find the right fit faster."
+    },
+    "pages": {
+      "projects": "Projects",
+      "assessments": "Assessments",
+      "assessments-results": "Assessments Results",
+      "talent-database": "Talent Database",
+      "users": "Users",
+      "roles-and-permissions": "Roles and Permissions",
+      "recruiter-activity": "Recruiter Activity",
+      "coming-soon": "Coming soon",
+      "placeholder-description": "This page is being prepared. Check back soon."
     },
     "postJob": {
       "common": {
