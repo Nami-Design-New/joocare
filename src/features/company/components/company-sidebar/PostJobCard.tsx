@@ -54,7 +54,7 @@ export default function PostJobCard({ canPostJob }: PostJobCardProps) {
           <span
             id="post-job-disabled-tooltip"
             role="tooltip"
-            className="pointer-events-none absolute bottom-full start-1/2 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded bg-foreground px-3 py-1 text-xs text-background group-hover/post-job:block"
+            className="pointer-events-none absolute bottom-full start-1/2 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-popover px-3 py-1 text-xs text-popover-foreground shadow-md group-hover/post-job:block"
           >
             {tooltip}
           </span>
