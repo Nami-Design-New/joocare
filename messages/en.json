@@ -754,6 +754,13 @@
       "coming-soon": "Coming soon",
       "placeholder-description": "This page is being prepared. Check back soon."
     },
+    "roles": {
+      "title": "Roles",
+      "roleName": "Role Name",
+      "members": "Number of Members",
+      "actions": "Actions",
+      "showPermissions": "Show Permissions"
+    },
     "postJob": {
       "common": {
         "other": "Other"

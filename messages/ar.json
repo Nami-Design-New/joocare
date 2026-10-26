@@ -754,6 +754,13 @@
       "coming-soon": "قريبًا",
       "placeholder-description": "نعمل على تجهيز هذه الصفحة. يُرجى العودة قريبًا."
     },
+    "roles": {
+      "title": "الأدوار",
+      "roleName": "اسم الدور",
+      "members": "عدد الأعضاء",
+      "actions": "الإجراءات",
+      "showPermissions": "عرض الصلاحيات"
+    },
     "postJob": {
       "common": {
         "other": "أخرى"

@@ -75,11 +75,11 @@ export function getCompanySidebarGroups(
           children: [
             {
               label: "companyPage.sidebar.users",
-              href: "/company/admin-roles/users",
+              href: "/company/users",
             },
             {
               label: "companyPage.sidebar.roles-and-permissions",
-              href: "/company/admin-roles/roles-and-permissions",
+              href: "/company/roles-and-permissions",
             },
           ],
         },
