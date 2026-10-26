@@ -759,7 +759,17 @@
       "roleName": "Role Name",
       "members": "Number of Members",
       "actions": "Actions",
-      "showPermissions": "Show Permissions"
+      "showPermissions": "Show Permissions",
+      "permissions": {
+        "title": "Role permissions",
+        "description": "Review the permissions assigned to this role.",
+        "viewBadge": "Permission view",
+        "groups": "Permission groups",
+        "groupCount": "{count, plural, one {# group} other {# groups}}",
+        "readOnly": "Permissions cannot be changed in this view.",
+        "close": "Close",
+        "unavailable": "Permission details are not available for this role."
+      }
     },
     "postJob": {
       "common": {

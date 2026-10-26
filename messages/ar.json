@@ -759,7 +759,17 @@
       "roleName": "اسم الدور",
       "members": "عدد الأعضاء",
       "actions": "الإجراءات",
-      "showPermissions": "عرض الصلاحيات"
+      "showPermissions": "عرض الصلاحيات",
+      "permissions": {
+        "title": "صلاحيات الدور",
+        "description": "راجع الصلاحيات الممنوحة لهذا الدور.",
+        "viewBadge": "عرض الصلاحيات",
+        "groups": "مجموعات الصلاحيات",
+        "groupCount": "{count, plural, zero {لا توجد مجموعات} one {مجموعة واحدة} two {مجموعتان} few {# مجموعات} many {# مجموعة} other {# مجموعة}}",
+        "readOnly": "لا يمكن تغيير الصلاحيات في هذا العرض.",
+        "close": "إغلاق",
+        "unavailable": "تفاصيل الصلاحيات غير متاحة لهذا الدور."
+      }
     },
     "postJob": {
       "common": {
