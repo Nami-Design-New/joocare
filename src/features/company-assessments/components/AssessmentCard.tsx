@@ -25,11 +25,11 @@ export default function AssessmentCard({
   const title = assessment.title;
   const pausedDate = assessment.pausedAt
     ? format.dateTime(new Date(assessment.pausedAt), {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      timeZone: 'UTC',
-    })
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'UTC',
+      })
     : null;
 
   return (
@@ -45,9 +45,7 @@ export default function AssessmentCard({
         <div className="min-w-0 flex-1 space-y-1 self-center">
           <h2 className="text-secondary text-sm font-semibold">{title}</h2>
           <p className="text-muted-foreground text-xs">
-            {source === 'joocare'
-              ? t('admin')
-              : 'created on Apr 02, 2025'}{' '}
+            {source === 'joocare' ? t('admin') : 'created on Apr 02, 2025'}{' '}
           </p>
         </div>
         {source === 'company' ? (

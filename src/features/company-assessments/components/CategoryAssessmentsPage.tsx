@@ -2,7 +2,6 @@
 
 import { Plus, Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
 import { InputField } from '@/shared/components/InputField';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
@@ -115,7 +114,6 @@ export default function CategoryAssessmentsPage({
           className="md:justify-start"
         />
       ) : null}
- 
     </div>
   );
 }

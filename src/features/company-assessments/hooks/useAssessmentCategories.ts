@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { useAssessmentCatalog } from './useAssessmentCatalog';
+import { categorySeeds } from '../constants/assessment-data';
 import type {
   AssessmentCategory,
   CategoryFormValues,
@@ -11,7 +11,7 @@ import type {
 
 export function useAssessmentCategories() {
   const t = useTranslations('companyPage.assessments');
-  const { categories, saveCategory, deleteCategory } = useAssessmentCatalog();
+  const [categories, setCategories] = useState(categorySeeds);
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
   const [modal, setModal] = useState<{
     category: AssessmentCategory | null;
@@ -24,7 +24,25 @@ export function useAssessmentCategories() {
 
   function save(values: CategoryFormValues) {
     try {
-      saveCategory(values, modal?.category?.id);
+      if (modal?.category) {
+        setCategories((current) =>
+          current.map((category) =>
+            category.id === modal.category?.id
+              ? { ...category, ...values }
+              : category,
+          ),
+        );
+      } else {
+        setCategories((current) => [
+          {
+            ...values,
+            id: `company-${crypto.randomUUID()}`,
+            source: 'company',
+            assessmentCount: 0,
+          },
+          ...current,
+        ]);
+      }
       toast.success(
         t(modal?.category ? 'category-updated' : 'category-created'),
       );
@@ -39,7 +57,9 @@ export function useAssessmentCategories() {
 
   function confirmDelete() {
     if (!deletingCategory) return;
-    deleteCategory(deletingCategory.id);
+    setCategories((current) =>
+      current.filter((category) => category.id !== deletingCategory.id),
+    );
     if (selectedCategoryId === deletingCategory.id) setSelectedCategoryId('');
     toast.success(t('category-deleted'));
     setDeletingCategory(null);

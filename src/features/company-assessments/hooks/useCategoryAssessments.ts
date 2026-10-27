@@ -4,14 +4,13 @@ import { useMemo, useState } from 'react';
 import {
   ASSESSMENT_PAGE_SIZE,
   assessmentSeeds,
+  categorySeeds,
 } from '../constants/assessment-data';
-import { useAssessmentCatalog } from './useAssessmentCatalog';
 
 export function useCategoryAssessments(categoryId: string) {
-  const { categories } = useAssessmentCatalog();
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const category = categories.find((item) => item.id === categoryId);
+  const category = categorySeeds.find((item) => item.id === categoryId);
   const filtered = useMemo(() => {
     const normalized = search.trim().toLocaleLowerCase();
     return assessmentSeeds.filter(

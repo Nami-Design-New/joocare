@@ -38,6 +38,7 @@ export default function AssessmentCategoriesPage() {
         </Button>
       </header>
 
+      {/* filter */}
       <AssessmentFilter onReset={() => catalog.setSelectedCategoryId('')}>
         <SelectInputField
           id="assessment-category-filter"
@@ -61,6 +62,7 @@ export default function AssessmentCategoriesPage() {
         />
       </AssessmentFilter>
 
+      {/* category libraries */}
       <CategoryLibrary
         title={t('joocare-library')}
         categories={catalog.joocareCategories}
@@ -78,6 +80,8 @@ export default function AssessmentCategoriesPage() {
         onDelete={catalog.requestDelete}
       />
 
+      
+      {/* modals */}
       {catalog.modal ? (
         <CategoryFormModal
           key={catalog.modal.category?.id ?? 'new-category'}
