@@ -1326,6 +1326,38 @@
         "medical-expiry-date-future": "Medical license expiry date must be today or later",
         "medical-expiry-after-issue": "Medical license expiry date must be after issue date"
       }
+    },
+    "usersManagement": {
+      "title": "Members",
+      "addNewMember": "Add New Member",
+      "searchPlaceholder": "Search by email / name",
+      "roleFilter": "Role",
+      "allRoles": "All roles",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirmationTitle": "Remove Team Member?",
+      "deleteConfirmationDescription": "Removing this team member will immediately deactivate their platform access and revoke all assigned permissions. The member will no longer be able to sign in or access any platform features. This action cannot be undone.",
+      "confirm": "Confirm",
+      "editMember": "Edit Member",
+      "selectRole": "Select role",
+      "save": "Save",
+      "cancel": "Cancel",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "date": "Date",
+        "role": "Role",
+        "displayedRoleName": "Displayed Role Name",
+        "actions": "Actions"
+      },
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "role": "Role",
+        "displayedRoleName": "Displayed Role Name"
+      }
     }
   },
   "footer": {

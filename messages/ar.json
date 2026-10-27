@@ -1326,6 +1326,38 @@
         "medical-expiry-date-future": "يجب أن يكون تاريخ انتهاء الترخيص الطبي اليوم أو بعد ذلك",
         "medical-expiry-after-issue": "يجب أن يكون تاريخ انتهاء الترخيص الطبي بعد تاريخ الإصدار"
       }
+    },
+    "usersManagement": {
+      "title": "الأعضاء",
+      "addNewMember": "إضافة عضو جديد",
+      "searchPlaceholder": "ابحث بالبريد أو الاسم",
+      "roleFilter": "الدور",
+      "allRoles": "كل الأدوار",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "deleteConfirmationTitle": "إزالة عضو من الفريق؟",
+      "deleteConfirmationDescription": "ستؤدي إزالة عضو الفريق إلى إلغاء تفعيل وصوله إلى المنصة وإلغاء جميع الصلاحيات الممنوحة له فورًا. لن يتمكن العضو بعد ذلك من تسجيل الدخول أو استخدام ميزات المنصة. لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "تأكيد",
+      "editMember": "تعديل العضو",
+      "selectRole": "اختر الدور",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "columns": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "date": "التاريخ",
+        "role": "الدور",
+        "displayedRoleName": "اسم الدور المعروض",
+        "actions": "الإجراءات"
+      },
+      "fields": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "role": "الدور",
+        "displayedRoleName": "اسم الدور المعروض"
+      }
     }
   },
   "footer": {

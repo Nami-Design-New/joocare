@@ -10,9 +10,7 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { VariantProps } from "class-variance-authority";
-import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import { useRef } from "react";
-import animationData from "../../../../public/assets/lottie/delete.json";
+import Image from "next/image";
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -38,7 +36,6 @@ export default function DeleteModal({
   onCancel,
   isLoading = false,
 }: ConfirmDialogProps) {
-  const lottieRef = useRef<LottieRefCurrentProps>(null);
   const handleCancel = () => {
     onCancel?.();
     onOpenChange(false);
@@ -46,15 +43,14 @@ export default function DeleteModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-150 rounded-2xl p-8 text-center">
-        <div className="mt-15 mb-12 flex w-full items-center justify-center">
+        <div className="flex w-full items-center justify-center">
           <div className="h-50 w-50">
-            <Lottie
-              lottieRef={lottieRef}
-              animationData={animationData}
-              height={200}
+            <Image
+              src="/assets/gif/trash-icon.gif"
+              alt=""
               width={200}
-              autoplay={true}
-              loop={true}
+              height={200}
+              className="h-full w-full object-contain"
             />
           </div>
         </div>

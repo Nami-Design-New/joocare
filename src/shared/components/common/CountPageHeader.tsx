@@ -13,7 +13,7 @@ type CountPageHeaderProps = {
   className?: string;
 };
 
-export default function CountPageHeader({
+export default function               CountPageHeader({
   count,
   title,
   action,

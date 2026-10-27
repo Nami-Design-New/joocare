@@ -27,6 +27,7 @@ type SelectInputFieldProps = {
   id: string;
   error?: string | boolean;
   containerStyles?: string;
+  'aria-label'?: string;
   options: Option[];
   placeholder?: string;
   value?: string;

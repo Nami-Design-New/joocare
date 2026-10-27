@@ -1,5 +1,5 @@
-import RolesPage from "@/features/company-admin-roles/components/RolesPage";
+import CompanyUsersPage from '@/features/company-admin-users/components/CompanyUsersPage';
 
 export default function Page() {
-  return <RolesPage />;
+  return <CompanyUsersPage />;
 }
