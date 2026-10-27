@@ -36,3 +36,4 @@ Before reporting a task as done, confirm:
 ## Note
 
 These rules guide the work. Automated checks only enforce what the current Prettier, ESLint and TypeScript configs cover. Everything else depends on following this file and RULES.md.
+            
