@@ -3,16 +3,14 @@
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/shared/components/ui/button";
 import {
-  DialogClose,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from "@/shared/components/ui/dialog";
-import { Check, Sparkles, X } from "lucide-react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import animationData from "../../../../public/assets/lottie/successfully.json";
 
 type SuccessModalAction = {

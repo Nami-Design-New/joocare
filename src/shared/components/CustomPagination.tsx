@@ -9,6 +9,7 @@ import {
   PaginationPrevious,
 } from "@/shared/components/ui/pagination";
 import { useLocale, useTranslations } from "next-intl";
+import { cn } from "@/shared/lib/utils";
 
 type CustomPaginationProps = {
   currentPage: number;
@@ -16,6 +17,8 @@ type CustomPaginationProps = {
   pageSize?: number;
   onPageChange: (page: number) => void;
   getHref?: (page: number) => string;
+  className?: string;
+  statusPosition?: "start" | "end";
 };
 
 function getVisiblePages(currentPage: number, totalPages: number) {
@@ -46,6 +49,8 @@ export function CustomPagination({
   pageSize = 10,
   onPageChange,
   getHref,
+  className,
+  statusPosition = "end",
 }: CustomPaginationProps) {
   const t = useTranslations();
   const locale = useLocale();
@@ -65,9 +70,14 @@ export function CustomPagination({
   };
 
   return (
-    <div className="flex w-full flex-wrap items-center justify-center gap-2 md:gap-8">
+    <div className={cn("flex w-full flex-wrap items-center justify-center gap-2 md:gap-8", className)}>
       {/* Status */}
-      <div className="text-muted-foreground order-2 text-sm font-medium md:order-1">
+      <div
+        className={cn(
+          "text-muted-foreground order-2 text-sm font-medium md:order-1",
+          statusPosition === "start" && "order-first md:order-first",
+        )}
+      >
         {t("faqPage.pagination-show")}{" "}
         <span className="font-semibold">
           {start} - {end}
