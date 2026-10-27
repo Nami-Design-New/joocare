@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
-import type { AssessmentCategory } from '../types/assessment.types';
+import type { AssessmentCategory } from '../../types/assessment.types';
 
 type CategoryCardProps = {
   category: AssessmentCategory;

@@ -7,7 +7,7 @@ import CategoryFormModal from './CategoryFormModal';
 import type {
   AssessmentCategory,
   CategoryFormValues,
-} from '../types/assessment.types';
+} from '../../types/assessment.types';
 
 export default function AssessmentCategoriesHeader({
   count,

@@ -5,19 +5,24 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
 import { Card } from '@/shared/components/ui/card';
-import { useAssessmentActions } from '../hooks/useAssessmentActions';
-import type { Assessment, AssessmentSource } from '../types/assessment.types';
+import { useAssessmentActions } from '../../hooks/useAssessmentActions';
+import type {
+  Assessment,
+  AssessmentSource,
+} from '../../types/assessment.types';
 import AssessmentStats from './AssessmentStats';
 import AssessmentActions from './AssessmentActions';
 
 type AssessmentCardProps = {
   assessment: Assessment;
   source: AssessmentSource;
+  href?: string;
 };
 
 export default function AssessmentCard({
   assessment,
   source,
+  href,
 }: AssessmentCardProps) {
   const t = useTranslations('companyPage.assessments');
   const format = useFormatter();
@@ -45,7 +50,16 @@ export default function AssessmentCard({
         <div className="min-w-0 flex-1 space-y-1 self-center">
           <h2 className="text-secondary text-sm font-semibold">{title}</h2>
           <p className="text-muted-foreground text-xs">
-            {source === 'joocare' ? t('admin') : 'created on Apr 02, 2025'}{' '}
+            {source === 'joocare'
+              ? t('admin')
+              : t('created-on', {
+                  date: format.dateTime(new Date(assessment.createdAt), {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    timeZone: 'UTC',
+                  }),
+                })}
           </p>
         </div>
         {source === 'company' ? (
@@ -78,7 +92,11 @@ export default function AssessmentCard({
         </p>
       )}
       <AssessmentStats assessment={assessment} />
-      <AssessmentActions assessment={assessment} source={source} />
+      <AssessmentActions
+        assessment={assessment}
+        source={source}
+        previewHref={href}
+      />
     </Card>
   );
 }

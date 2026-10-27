@@ -1,0 +1,116 @@
+'use client';
+
+import { useState } from 'react';
+import { Eye } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import { CustomPagination } from '@/shared/components/CustomPagination';
+import DataTable, {
+  type DataTableColumn,
+} from '@/shared/components/common/DataTable';
+import { Button } from '@/shared/components/ui/button';
+import { Card } from '@/shared/components/ui/card';
+import { useAssessmentActions } from '../../hooks/useAssessmentActions';
+import type { AssessmentQuestion } from '../../types/assessment.types';
+
+const QUESTION_PAGE_SIZE = 10;
+
+export default function AssessmentQuestionsOverview({
+  questions,
+}: {
+  questions: AssessmentQuestion[];
+}) {
+  const t = useTranslations('companyPage.assessments.details');
+  const locale = useLocale();
+  const { showComingSoon } = useAssessmentActions();
+  const [page, setPage] = useState(1);
+  const pageCount = Math.max(
+    1,
+    Math.ceil(questions.length / QUESTION_PAGE_SIZE),
+  );
+  const currentPage = Math.min(page, pageCount);
+  const pageStart = (currentPage - 1) * QUESTION_PAGE_SIZE;
+  const visibleQuestions = questions.slice(
+    pageStart,
+    currentPage * QUESTION_PAGE_SIZE,
+  );
+  const columns: DataTableColumn<AssessmentQuestion>[] = [
+    {
+      id: 'number',
+      header: '#',
+      headerClassName: 'w-12 text-start text-[10px] px-2 py-2',
+      cellClassName:
+        'text-primary w-12 text-start text-[10px] font-semibold px-2 py-2',
+      renderCell: (_question, index) => `Q${pageStart + index + 1}`,
+    },
+    {
+      id: 'question',
+      header: t('question-text'),
+      headerClassName: 'text-start text-[10px] px-2 py-2',
+      cellClassName: 'max-w-[420px] truncate text-start text-[10px] px-2 py-2',
+      renderCell: (question) => question.questionText,
+    },
+    {
+      id: 'type',
+      header: t('question-type'),
+      headerClassName: 'text-start text-[10px] px-2 py-2',
+      cellClassName: 'text-start text-[10px] px-2 py-2',
+      renderCell: (question) => question.type,
+    },
+    {
+      id: 'score',
+      header: t('score'),
+      headerClassName: 'text-start text-[10px] px-2 py-2',
+      cellClassName:
+        'text-success text-start text-[10px] font-semibold px-2 py-2',
+      renderCell: (question) => `${question.score}%`,
+    },
+    {
+      id: 'actions',
+      header: '',
+      headerClassName: 'w-10 px-2 py-2',
+      cellClassName: 'w-10 px-2 py-2',
+      renderCell: (_question, index) => (
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          aria-label={t('view-question', { number: pageStart + index + 1 })}
+          className="bg-success hover:bg-success/80 rounded-full text-white hover:text-white"
+          onClick={showComingSoon}
+        >
+          <Eye aria-hidden="true" />
+        </Button>
+      ),
+    },
+  ];
+
+  return (
+    <Card
+      id="questions-overview"
+      className="gap-3 rounded-2xl border-0 px-4 py-4 shadow-none md:px-5"
+    >
+      <h2 className="border-border border-b pb-2 text-xs font-semibold">
+        {t('questions-overview')}
+      </h2>
+      <DataTable
+        columns={columns}
+        data={visibleQuestions}
+        getRowKey={(question) => question.id}
+        dir={locale === 'ar' ? 'rtl' : 'ltr'}
+        ariaLabel={t('questions-overview')}
+        containerClassName="rounded-lg"
+        className="min-w-[640px]"
+        headerRowClassName="hover:bg-transparent"
+        rowClassName="hover:bg-muted/40"
+      />
+      <CustomPagination
+        currentPage={currentPage}
+        totalItems={questions.length}
+        pageSize={QUESTION_PAGE_SIZE}
+        onPageChange={setPage}
+        getHref={() => '#questions-overview'}
+        statusPosition="start"
+        className="md:justify-between"
+      />
+    </Card>
+  );
+}

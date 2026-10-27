@@ -1,4 +1,4 @@
-import CategoryAssessmentsPage from '@/features/company-assessments/components/CategoryAssessmentsPage';
+import CategoryAssessmentsPage from '@/features/company-assessments/components/assessments/CategoryAssessmentsPage';
 
 export default async function Page({
   params,

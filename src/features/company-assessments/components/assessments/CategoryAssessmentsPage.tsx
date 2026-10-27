@@ -7,9 +7,9 @@ import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import HttpStatusState from '@/shared/components/HttpStatusState';
 import { Button } from '@/shared/components/ui/button';
-import { useCategoryAssessments } from '../hooks/useCategoryAssessments';
-import { useAssessmentActions } from '../hooks/useAssessmentActions';
-import AssessmentFilter from './AssessmentFilter';
+import { useCategoryAssessments } from '../../hooks/useCategoryAssessments';
+import { useAssessmentActions } from '../../hooks/useAssessmentActions';
+import AssessmentFilter from '../shared/AssessmentFilter';
 import AssessmentCard from './AssessmentCard';
 
 export default function CategoryAssessmentsPage({
@@ -84,6 +84,7 @@ export default function CategoryAssessmentsPage({
             key={assessment.id}
             assessment={assessment}
             source={category.source}
+            href={`/company/assessments/${category.id}/${assessment.id}`}
           />
         ))}
         {listing.total === 0 ? (

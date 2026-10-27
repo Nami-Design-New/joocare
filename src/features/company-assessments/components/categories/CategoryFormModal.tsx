@@ -14,11 +14,11 @@ import {
   DialogClose,
   DialogContent,
 } from '@/shared/components/ui/dialog';
-import { createCategorySchema } from '../validation/category-schema';
+import { createCategorySchema } from '../../validation/category-schema';
 import type {
   AssessmentCategory,
   CategoryFormValues,
-} from '../types/assessment.types';
+} from '../../types/assessment.types';
 
 type CategoryFormModalProps = {
   category: AssessmentCategory | null;

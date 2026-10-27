@@ -5,8 +5,8 @@ import { Minus, Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import { Button } from '@/shared/components/ui/button';
-import { CATEGORY_PREVIEW_SIZE } from '../constants/assessment-data';
-import type { AssessmentCategory } from '../types/assessment.types';
+import { CATEGORY_PREVIEW_SIZE } from '../../constants/assessment-data';
+import type { AssessmentCategory } from '../../types/assessment.types';
 import CategoryCard from './CategoryCard';
 
 type CategoryLibraryProps = {

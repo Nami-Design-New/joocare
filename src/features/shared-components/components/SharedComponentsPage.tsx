@@ -16,14 +16,11 @@ import type {
   Assessment,
   AssessmentCategory,
 } from '@/features/company-assessments/types/assessment.types';
-import AssessmentActions from '@/features/company-assessments/components/AssessmentActions';
-import AssessmentCard from '@/features/company-assessments/components/AssessmentCard';
-import AssessmentCategoriesHeader from '@/features/company-assessments/components/AssessmentCategoriesHeader';
-import AssessmentFilter from '@/features/company-assessments/components/AssessmentFilter';
-import AssessmentStats from '@/features/company-assessments/components/AssessmentStats';
-import AssessmentsLoading from '@/features/company-assessments/components/AssessmentsLoading';
-import CategoryCard from '@/features/company-assessments/components/CategoryCard';
-import CategoryLibrary from '@/features/company-assessments/components/CategoryLibrary';
+import AssessmentCard from '@/features/company-assessments/components/assessments/AssessmentCard';
+import AssessmentCategoriesHeader from '@/features/company-assessments/components/categories/AssessmentCategoriesHeader';
+import CategoryCard from '@/features/company-assessments/components/categories/CategoryCard';
+import CategoryLibrary from '@/features/company-assessments/components/categories/CategoryLibrary';
+import AssessmentFilter from '@/features/company-assessments/components/shared/AssessmentFilter';
 import { SelectInputField } from '@/shared/components/SelectInputField';
 import { toast } from 'sonner';
 
@@ -245,8 +242,6 @@ export default function SharedComponentsPage() {
           <ComponentPreview>
             <AssessmentCard assessment={exampleAssessment} source="company" />
           </ComponentPreview>
-
-
         </div>
       </section>
     </main>

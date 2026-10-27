@@ -1428,7 +1428,34 @@
       "category-deleted": "Category deleted.",
       "cancel": "Cancel",
       "edit-action": "Edit",
-      "delete-action": "Delete"
+      "delete-action": "Delete",
+      "details": {
+        "paused": "Paused",
+        "created-on": "Created on {date}",
+        "delete": "Delete",
+        "unpause": "Unpause",
+        "pause": "Pause",
+        "edit-assessment": "Edit Assessment",
+        "share": "Share",
+        "paused-title": "This assessment is paused since {date}.",
+        "paused-description": "{count} candidates have already completed it and keep their results. New candidates cannot open it and are asked to contact your company. Sharing and job links are disabled until you unpause it.",
+        "summary": "Assessment Summary",
+        "total-questions": "Total Questions",
+        "passing-score": "Passing Score",
+        "time-limit": "Time Limit",
+        "maximum-attempts": "Maximum Attempts",
+        "allowed-question-types": "Allowed Question Types",
+        "minutes": "{count} Minutes",
+        "questions-overview": "Questions Overview",
+        "question-text": "Question Text",
+        "question-type": "Type",
+        "score": "Score %",
+        "view-question": "View question {number}",
+        "created-by": "Created By",
+        "back-to-assessments": "Back to assessments",
+        "not-found": "Assessment not found",
+        "not-found-description": "This assessment is unavailable. Return to the category to choose another assessment."
+      }
     }
   },
   "footer": {

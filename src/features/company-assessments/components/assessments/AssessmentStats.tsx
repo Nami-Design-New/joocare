@@ -2,7 +2,7 @@
 
 import { Clock3, FileQuestion, Target } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
-import type { Assessment } from '../types/assessment.types';
+import type { Assessment } from '../../types/assessment.types';
 
 export default function AssessmentStats({
   assessment,

@@ -2,18 +2,24 @@
 
 import { Eye, SquareArrowOutUpRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
-import { useAssessmentActions } from '../hooks/useAssessmentActions';
-import type { Assessment, AssessmentSource } from '../types/assessment.types';
+import { useAssessmentActions } from '../../hooks/useAssessmentActions';
+import type {
+  Assessment,
+  AssessmentSource,
+} from '../../types/assessment.types';
 
 type AssessmentActionsProps = {
   assessment: Assessment;
   source: AssessmentSource;
+  previewHref?: string;
 };
 
 export default function AssessmentActions({
   assessment,
   source,
+  previewHref,
 }: AssessmentActionsProps) {
   const t = useTranslations('companyPage.assessments');
   const { showComingSoon } = useAssessmentActions();
@@ -38,6 +44,7 @@ export default function AssessmentActions({
         </Button>
       ) : null}
       <Button
+        asChild={Boolean(previewHref)}
         variant="ghost"
         className={
           isCompany
@@ -45,10 +52,19 @@ export default function AssessmentActions({
             : 'bg-muted text-secondary h-9 flex-1 gap-2 rounded-full px-3 text-xs'
         }
         aria-label={t('preview-assessment', { name: title })}
-        onClick={showComingSoon}
+        onClick={previewHref ? undefined : showComingSoon}
       >
-        <Eye aria-hidden="true" className="size-4" />
-        {!isCompany ? t('preview') : null}
+        {previewHref ? (
+          <Link href={previewHref}>
+            <Eye aria-hidden="true" className="size-4" />
+            {!isCompany ? t('preview') : null}
+          </Link>
+        ) : (
+          <>
+            <Eye aria-hidden="true" className="size-4" />
+            {!isCompany ? t('preview') : null}
+          </>
+        )}
       </Button>
       <Button
         variant="ghost"

@@ -1428,7 +1428,34 @@
       "category-deleted": "تم حذف التصنيف.",
       "cancel": "إلغاء",
       "edit-action": "تعديل",
-      "delete-action": "حذف"
+      "delete-action": "حذف",
+      "details": {
+        "paused": "متوقف",
+        "created-on": "أُنشئ في {date}",
+        "delete": "حذف",
+        "unpause": "إعادة التفعيل",
+        "pause": "إيقاف",
+        "edit-assessment": "تعديل التقييم",
+        "share": "مشاركة",
+        "paused-title": "تم إيقاف هذا التقييم منذ {date}.",
+        "paused-description": "أكمل {count} مرشحًا التقييم واحتفظوا بنتائجهم. لا يمكن للمرشحين الجدد فتحه ويُطلب منهم التواصل مع شركتك. تم تعطيل المشاركة وروابط الوظائف حتى إعادة تفعيله.",
+        "summary": "ملخص التقييم",
+        "total-questions": "إجمالي الأسئلة",
+        "passing-score": "نسبة النجاح",
+        "time-limit": "الوقت المحدد",
+        "maximum-attempts": "أقصى عدد للمحاولات",
+        "allowed-question-types": "أنواع الأسئلة المسموح بها",
+        "minutes": "{count} دقيقة",
+        "questions-overview": "نظرة عامة على الأسئلة",
+        "question-text": "نص السؤال",
+        "question-type": "النوع",
+        "score": "الدرجة %",
+        "view-question": "عرض السؤال {number}",
+        "created-by": "أنشأه",
+        "back-to-assessments": "العودة إلى التقييمات",
+        "not-found": "التقييم غير موجود",
+        "not-found-description": "هذا التقييم غير متاح. ارجع إلى التصنيف لاختيار تقييم آخر."
+      }
     }
   },
   "footer": {

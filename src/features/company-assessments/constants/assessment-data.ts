@@ -53,8 +53,8 @@ export const assessmentSeeds: Assessment[] = categorySeeds.flatMap((category) =>
     associatedJobs: index % 4 === 2 ? 0 : 12,
     externalInvitations: index % 4 === 2 ? 0 : 8,
     pausedAt:
-      category.source === 'company' && index % 4 === 3
-        ? '2025-09-21T09:00:00Z'
+      category.source === 'company' && index % 4 === 0
+        ? '2026-09-21T09:00:00Z'
         : null,
   })),
 );
