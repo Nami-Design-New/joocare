@@ -1,6 +1,10 @@
-#  Next.js Project
+# Joo Care
 
-A simple Next.js project using npm.
+Next.js (App Router) web app for Joo Care, built with TypeScript, Tailwind CSS v4, shadcn/ui, TanStack Query, React Hook Form + Zod, NextAuth and next-intl (Arabic / English).
+
+- [Getting Started](#getting-started)
+- [Scripts](#scripts)
+- [Coding Rules](#coding-rules)
 
 ---
 
@@ -12,87 +16,48 @@ A simple Next.js project using npm.
 npm install
 ```
 
----
+### 2. Environment variables
 
-##  Environment Variables
-
-This project uses environment variables for configuration.
-
-### 1. Create your env file
-
-Copy the example file:
+Copy the example file, then fill in the values:
 
 ```bash
 cp .env.example .env.local
 ```
 
----
+`.env.example` lists every required key (API base URLs, NextAuth, Google / LinkedIn OAuth, request logging flags).
 
-### 2. Update values
+> **Important**
+>
+> - Do NOT commit `.env.local`.
+> - Keep secrets private. Never paste them into code, logs or issues.
+> - Restart the dev server after changing environment variables.
 
-Open `.env.local` and fill in the required values:
-
-
-```
-
- **Important:**
-
-* Do NOT commit `.env.local`
-* Keep your secrets private
-
----
-
-## Running the Project
-
-### Start development server
+### 3. Run the app
 
 ```bash
 npm run dev
 ```
 
-Then open:
-  http://localhost:3000
+Then open <http://localhost:3000>.
 
 ---
 
-### Build for production
+## Scripts
 
 ```bash
-npm run build
+npm run dev       # Run development server
+npm run build     # Create production build
+npm run start     # Run production server
+npm run preview   # Build, then start the production server
+npm run lint      # Run ESLint
+npx tsc --noEmit  # Type-check the project
 ```
 
----
+There is no test runner configured yet, so there is no `npm test`.
 
-### Start production server
-
-```bash
-npm run start
-```
 
 ---
 
-### Run linter
+## Coding Rules
 
-```bash
-npm run lint
-```
-
----
-
-## Scripts Summary
-
-```bash
-npm run dev      # Run development server
-npm run build    # Create production build
-npm run start    # Run production server
-npm run lint     # Run code linter
-```
-
----
-
-##  Notes
-
-* Make sure `.env.local` exists before running the app
-* Restart the server after changing environment variables
-
----
+Everyone who writes code in this project (developers and AI agents) must follow [RULES.md](RULES.md): architecture and folder structure, clean code, component boundaries, design system, API, forms, localization and the finish checklist.

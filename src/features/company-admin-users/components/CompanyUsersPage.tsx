@@ -1,29 +1,25 @@
 'use client';
 
-import { Plus } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import CountPageHeader from '@/shared/components/common/CountPageHeader';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import { companyMemberRoles } from '../data/members.data';
 import { useCompanyMembers } from '../hooks/useCompanyMembers';
 import CompanyMemberDialogs from './CompanyMemberDialogs';
 import MembersFilters from './MembersFilters';
 import MembersTable from './MembersTable';
+import CompanyUsersHeader from './CompanyUsersHeader';
 
 export default function CompanyUsersPage() {
-  const t = useTranslations('companyPage.usersManagement');
   const members = useCompanyMembers();
 
   return (
     <div className="flex flex-col gap-6 lg:mt-4">
-      <CountPageHeader
+      <CompanyUsersHeader
         count={Math.min(members.filteredMembers.length, members.pageSize)}
-        title={t('title')}
-        action={{
-          label: t('addNewMember'),
-          icon: <Plus className="size-4" />,
-          onClick: members.openAddMember,
-        }}
+        onAdd={members.openAddMember}
+        memberModalOpen={members.memberModalOpen}
+        editingMember={members.editingMember}
+        onCloseModal={members.closeMemberForm}
+        onSaveMember={members.saveMember}
       />
 
       <MembersFilters
@@ -53,11 +49,7 @@ export default function CompanyUsersPage() {
       />
 
       <CompanyMemberDialogs
-        memberModalOpen={members.memberModalOpen}
-        editingMember={members.editingMember}
         deletingMember={members.deletingMemberId !== null}
-        onCloseMemberForm={members.closeMemberForm}
-        onSaveMember={members.saveMember}
         onCloseDeleteModal={members.closeDeleteModal}
         onConfirmDelete={members.confirmDeleteMember}
       />

@@ -3,12 +3,12 @@
 import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import CountPageHeader from '@/shared/components/common/CountPageHeader';
 import { sampleCompanyRoles } from '../data/roles.data';
 import { rolePermissions } from '../data/permissions.data';
 import type { CompanyRole } from '../types/role.types';
 import RolePermissionsModals from './modals/RolePermissionsModals';
 import RolesTable from './RolesTable';
+import RolesPageHeader from './RolesPageHeader';
 
 export default function RolesPage() {
   const t = useTranslations('companyPage.roles');
@@ -36,7 +36,7 @@ export default function RolesPage() {
 
   return (
     <div className="flex flex-col gap-6 lg:mt-4">
-      <CountPageHeader count={sampleCompanyRoles.length} title={t('title')} />
+      <RolesPageHeader count={sampleCompanyRoles.length} />
       <RolesTable
         roles={sampleCompanyRoles}
         onShowPermissions={handleShowPermissions}
