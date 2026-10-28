@@ -7,8 +7,8 @@ import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import HttpStatusState from '@/shared/components/HttpStatusState';
 import { Button } from '@/shared/components/ui/button';
+import { Link } from '@/i18n/navigation';
 import { useCategoryAssessments } from '../../hooks/useCategoryAssessments';
-import { useAssessmentActions } from '../../hooks/useAssessmentActions';
 import AssessmentFilter from '../shared/AssessmentFilter';
 import AssessmentCard from './AssessmentCard';
 
@@ -19,7 +19,6 @@ export default function CategoryAssessmentsPage({
 }) {
   const t = useTranslations('companyPage.assessments');
   const listing = useCategoryAssessments(categoryId);
-  const { showComingSoon } = useAssessmentActions();
   const { category } = listing;
 
   if (!category) {
@@ -46,12 +45,11 @@ export default function CategoryAssessmentsPage({
           </p>
         </div>
         {category.source === 'company' ? (
-          <Button
-            className="h-10 gap-2 rounded-full px-5"
-            onClick={showComingSoon}
-          >
-            <Plus aria-hidden="true" className="size-4" />
-            {t('create-assessment')}
+          <Button className="h-10 gap-2 rounded-full px-5" asChild>
+            <Link href={`/company/assessments/${category.id}/create`}>
+              <Plus aria-hidden="true" className="size-4" />
+              {t('create-assessment')}
+            </Link>
           </Button>
         ) : null}
       </header>

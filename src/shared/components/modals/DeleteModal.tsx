@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button, buttonVariants } from "@/shared/components/ui/button";
+import { Button, buttonVariants } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,9 +8,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { VariantProps } from "class-variance-authority";
-import Image from "next/image";
+} from '@/shared/components/ui/dialog';
+import { VariantProps } from 'class-variance-authority';
+import Image from 'next/image';
+import { cn } from '@/shared/lib/utils';
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -19,22 +20,24 @@ type ConfirmDialogProps = {
   description: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  confirmButtonVariant?: VariantProps<typeof buttonVariants>["variant"];
+  confirmButtonVariant?: VariantProps<typeof buttonVariants>['variant'];
   onConfirm: () => void;
   onCancel?: () => void;
   isLoading?: boolean;
+  className?: string;
 };
 export default function DeleteModal({
   open,
   onOpenChange,
   title,
   description,
-  confirmLabel = "Confirm deletion",
-  cancelLabel = "Back",
+  confirmLabel = 'Confirm deletion',
+  cancelLabel = 'Back',
   onConfirm,
-  confirmButtonVariant = "destructive",
+  confirmButtonVariant = 'destructive',
   onCancel,
   isLoading = false,
+  className,
 }: ConfirmDialogProps) {
   const handleCancel = () => {
     onCancel?.();
@@ -42,7 +45,9 @@ export default function DeleteModal({
   };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-150 rounded-2xl p-8 text-center">
+      <DialogContent
+        className={cn('max-w-150 rounded-2xl p-8 text-center', className)}
+      >
         <div className="flex w-full items-center justify-center">
           <div className="h-50 w-50">
             <Image
@@ -71,7 +76,7 @@ export default function DeleteModal({
               size="pill"
               className="grow"
             >
-              {isLoading ? "Saving..." : confirmLabel}
+              {isLoading ? 'Saving...' : confirmLabel}
             </Button>
             <Button
               type="button"
