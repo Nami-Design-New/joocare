@@ -1,8 +1,8 @@
 'use client';
 
-import { Pencil, Play, Share2, Trash2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/components/ui/button';
+import { EyeOff, Pencil, RefreshCw, Share2, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useAssessmentActions } from '../../hooks/useAssessmentActions';
 
 export default function AssessmentDetailsActions({
@@ -26,11 +26,19 @@ export default function AssessmentDetailsActions({
       </Button>
       <Button
         size="sm"
-        variant="secondary"
-        className="bg-success hover:bg-success/90 rounded-full px-4 text-white"
+        variant={isPaused ? 'secondary' : 'ghost'}
+        className={
+          isPaused
+            ? 'bg-success hover:bg-success/90 rounded-full px-4 text-white'
+            : 'bg-warning/20 text-warning-foreground hover:bg-warning/30 rounded-full px-4'
+        }
         onClick={showComingSoon}
       >
-        <Play aria-hidden="true" className="size-3.5" />
+        {isPaused ? (
+          <RefreshCw aria-hidden="true" className="size-3.5" />
+        ) : (
+          <EyeOff aria-hidden="true" className="size-3.5" />
+        )}
         {isPaused ? t('unpause') : t('pause')}
       </Button>
       <Button

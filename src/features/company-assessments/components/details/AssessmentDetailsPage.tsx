@@ -54,11 +54,7 @@ export default function AssessmentDetailsPage({
 
   return (
     <div className="flex flex-col gap-4 lg:mt-1">
-      <AssessmentDetailsHeader
-        assessment={assessment}
-        isPaused={isPaused}
-        showActions={category.source === 'company'}
-      />
+      <AssessmentDetailsHeader assessment={assessment} isPaused={isPaused} />
       {isPaused ? (
         <AssessmentPausedNotice
           date={pausedDate}
@@ -67,7 +63,7 @@ export default function AssessmentDetailsPage({
       ) : null}
       <AssessmentSummary assessment={assessment} detail={detail} />
       <AssessmentQuestionsOverview questions={detail.questions} />
-      <AssessmentCreatorCard categoryId={categoryId} creator={detail.creator} />
+      <AssessmentCreatorCard creator={detail.creator} />
     </div>
   );
 }

@@ -29,39 +29,37 @@ export default function AssessmentQuestionsOverview({
   );
   const currentPage = Math.min(page, pageCount);
   const pageStart = (currentPage - 1) * QUESTION_PAGE_SIZE;
-  const visibleQuestions = questions.slice(
-    pageStart,
-    currentPage * QUESTION_PAGE_SIZE,
-  );
+  // The Figma detail view presents five preview rows while pagination keeps
+  // the assessment's ten-question page range.
+  const visibleQuestions = questions.slice(pageStart, pageStart + 5);
   const columns: DataTableColumn<AssessmentQuestion>[] = [
     {
       id: 'number',
       header: '#',
-      headerClassName: 'w-12 text-start text-[10px] px-2 py-2',
+      headerClassName: 'w-12 text-start text-[11px] px-2 py-2',
       cellClassName:
-        'text-primary w-12 text-start text-[10px] font-semibold px-2 py-2',
+        'text-primary w-12 text-start text-xs font-semibold px-2 py-2',
       renderCell: (_question, index) => `Q${pageStart + index + 1}`,
     },
     {
       id: 'question',
       header: t('question-text'),
-      headerClassName: 'text-start text-[10px] px-2 py-2',
-      cellClassName: 'max-w-[420px] truncate text-start text-[10px] px-2 py-2',
+      headerClassName: 'text-start text-[11px] px-2 py-2',
+      cellClassName: 'max-w-[420px] truncate text-start text-xs px-2 py-2',
       renderCell: (question) => question.questionText,
     },
     {
       id: 'type',
       header: t('question-type'),
-      headerClassName: 'text-start text-[10px] px-2 py-2',
-      cellClassName: 'text-start text-[10px] px-2 py-2',
+      headerClassName: 'text-start text-[11px] px-2 py-2',
+      cellClassName: 'text-start text-xs px-2 py-2',
       renderCell: (question) => question.type,
     },
     {
       id: 'score',
-      header: t('score'),
-      headerClassName: 'text-start text-[10px] px-2 py-2',
-      cellClassName:
-        'text-success text-start text-[10px] font-semibold px-2 py-2',
+      header: t('question-score'),
+      headerClassName: 'text-start text-[11px] px-2 py-2',
+      cellClassName: 'text-success text-start text-xs font-semibold px-2 py-2',
       renderCell: (question) => `${question.score}%`,
     },
     {
@@ -88,7 +86,7 @@ export default function AssessmentQuestionsOverview({
       id="questions-overview"
       className="gap-3 rounded-2xl border-0 px-4 py-4 shadow-none md:px-5"
     >
-      <h2 className="border-border border-b pb-2 text-xs font-semibold">
+      <h2 className="border-border border-b pb-2 text-[13px] font-semibold">
         {t('questions-overview')}
       </h2>
       <DataTable
@@ -97,10 +95,10 @@ export default function AssessmentQuestionsOverview({
         getRowKey={(question) => question.id}
         dir={locale === 'ar' ? 'rtl' : 'ltr'}
         ariaLabel={t('questions-overview')}
-        containerClassName="rounded-lg"
+        containerClassName="overflow-hidden rounded-lg border border-border"
         className="min-w-[640px]"
-        headerRowClassName="hover:bg-transparent"
-        rowClassName="hover:bg-muted/40"
+        headerRowClassName="bg-muted hover:bg-muted"
+        rowClassName="bg-card odd:bg-muted/50 hover:bg-muted"
       />
       <CustomPagination
         currentPage={currentPage}
@@ -109,7 +107,7 @@ export default function AssessmentQuestionsOverview({
         onPageChange={setPage}
         getHref={() => '#questions-overview'}
         statusPosition="start"
-        className="md:justify-between"
+        className="justify-start"
       />
     </Card>
   );
