@@ -10,6 +10,7 @@ import {
   DialogTitle
 } from "@/shared/components/ui/dialog";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
+import type { ReactNode } from "react";
 import { useRef } from "react";
 import animationData from "../../../../public/assets/lottie/successfully.json";
 
@@ -25,6 +26,7 @@ type ConfirmDialogProps = {
   title: string;
   description: string;
   variant?: "default" | "submitted";
+  visual?: ReactNode;
   primaryAction?: SuccessModalAction;
   secondaryAction?: SuccessModalAction;
 };
@@ -35,6 +37,7 @@ export default function SuccessModal({
   title,
   description,
   variant = "default",
+  visual,
   primaryAction,
   secondaryAction,
 }: ConfirmDialogProps) {
@@ -91,14 +94,16 @@ export default function SuccessModal({
 
         <div className="mt-15 mb-12 flex w-full items-center justify-center">
           <div className="h-50 w-50">
-            <Lottie
-              lottieRef={lottieRef}
-              animationData={animationData}
-              height={200}
-              width={200}
-              autoplay={true}
-              loop={true}
-            />
+            {visual ?? (
+              <Lottie
+                lottieRef={lottieRef}
+                animationData={animationData}
+                height={200}
+                width={200}
+                autoplay={true}
+                loop={true}
+              />
+            )}
           </div>
         </div>
         <DialogHeader>
