@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import { EyeOff, Pencil, RefreshCw, Share2, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
 import { Link } from '@/i18n/navigation';
 import { useRouter } from '@/i18n/navigation';
 import AlertModal from '@/shared/components/modals/AlertModal';
 import DeleteModal from '@/shared/components/modals/DeleteModal';
 import { Button } from '@/shared/components/ui/button';
+import AssignAssessmentDialog from '../shared/AssignAssessmentDialog';
 
 export default function AssessmentDetailsActions({
   isPaused,
@@ -28,6 +28,7 @@ export default function AssessmentDetailsActions({
   const router = useRouter();
   const [pauseOpen, setPauseOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [assignOpen, setAssignOpen] = useState(false);
   const editHref = `/company/assessments/${categoryId}/create?assessmentId=${assessmentId}`;
 
   return (
@@ -73,7 +74,7 @@ export default function AssessmentDetailsActions({
         size="icon-sm"
         aria-label={t('share')}
         disabled={isPaused}
-        onClick={() => toast.info(assessmentT('coming-soon'))}
+        onClick={() => setAssignOpen(true)}
       >
         <Share2 aria-hidden="true" className="size-4" />
       </Button>
@@ -108,6 +109,12 @@ export default function AssessmentDetailsActions({
           setDeleteOpen(false);
           router.push(`/company/assessments/${categoryId}`);
         }}
+      />
+      <AssignAssessmentDialog
+        open={assignOpen}
+        onOpenChange={setAssignOpen}
+        assessmentTitle={assessmentTitle}
+        statusHref={`/company/assessments/${categoryId}/${assessmentId}/external-invitations`}
       />
     </div>
   );

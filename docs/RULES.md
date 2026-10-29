@@ -46,18 +46,18 @@ features/<feature-name>/
 
 Code that is used by more than one feature. Check here before you build something new.
 
-| Folder | What lives there |
-| --- | --- |
-| `components/ui` | shadcn/ui primitives: `button`, `dialog`, `sheet`, `drawer`, `input`, `select`, `combobox`, `table`, `pagination`, `skeleton`, ... |
-| `components/` (root) | Form fields: `InputField`, `TextareaField`, `SelectInputField`, `MultiSelectInputField`, `PhoneInputCode`, `YearPicker`, `LabelCheckbox`, `FilepondUpload`, `StoredFilepondUpload`. States: `EmptyDataState`, `HttpStatusState`, `RouteErrorFallback`. Other: `CustomPagination`, `Breadcrumb`, `LanguageToggle`, `PdfViewer` |
-| `components/common` | `DataTable`, `CountPageHeader` |
-| `components/modals` | `AlertModal`, `DeleteModal`, `SuccessModal`, `LoginAlertModal`, `ModalHeading` |
-| `components/header`, `components/sidebar-nav` | App shell |
-| `hooks` | Lookup hooks (`useGetCountries`, `useGetSkills`, ...), `useInfiniteLookup`, `useUploadImage` |
-| `lib` | `fetch-manager.ts` (`apiFetch`), `api-endpoints.ts`, `http-error.ts`, `typed-zod-resolver.ts`, `utils.ts` (`cn`) |
-| `services` | Shared API calls (uploads, settings, job titles) |
-| `providers` | Redux, TanStack Query and NextAuth providers |
-| `types` | Global / API types |
+| Folder                                        | What lives there                                                                                                                                                                                                                                                                                                              |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `components/ui`                               | shadcn/ui primitives: `button`, `dialog`, `sheet`, `drawer`, `input`, `select`, `combobox`, `table`, `pagination`, `skeleton`, ...                                                                                                                                                                                            |
+| `components/` (root)                          | Form fields: `InputField`, `TextareaField`, `SelectInputField`, `MultiSelectInputField`, `PhoneInputCode`, `YearPicker`, `LabelCheckbox`, `FilepondUpload`, `StoredFilepondUpload`. States: `EmptyDataState`, `HttpStatusState`, `RouteErrorFallback`. Other: `CustomPagination`, `Breadcrumb`, `LanguageToggle`, `PdfViewer` |
+| `components/common`                           | `DataTable`, `CountPageHeader`                                                                                                                                                                                                                                                                                                |
+| `components/modals`                           | `AlertModal`, `DeleteModal`, `SuccessModal`, `LoginAlertModal`, `ModalHeading`                                                                                                                                                                                                                                                |
+| `components/header`, `components/sidebar-nav` | App shell                                                                                                                                                                                                                                                                                                                     |
+| `hooks`                                       | Lookup hooks (`useGetCountries`, `useGetSkills`, ...), `useInfiniteLookup`, `useUploadImage`                                                                                                                                                                                                                                  |
+| `lib`                                         | `fetch-manager.ts` (`apiFetch`), `api-endpoints.ts`, `http-error.ts`, `typed-zod-resolver.ts`, `utils.ts` (`cn`)                                                                                                                                                                                                              |
+| `services`                                    | Shared API calls (uploads, settings, job titles)                                                                                                                                                                                                                                                                              |
+| `providers`                                   | Redux, TanStack Query and NextAuth providers                                                                                                                                                                                                                                                                                  |
+| `types`                                       | Global / API types                                                                                                                                                                                                                                                                                                            |
 
 Only move something into `shared` when a second feature actually needs it.
 
@@ -73,11 +73,11 @@ Only move something into `shared` when a second feature actually needs it.
 
 Copy these patterns, not the older code:
 
-| Need | Look at |
-| --- | --- |
-| Page with table, filters, pagination and dialogs (logic in one hook, presentational children) | `features/company-admin-users`: `CompanyUsersPage` + `useCompanyMembers` + `MembersTable` + `CompanyMemberDialogs` |
-| Form + validation + mutation | `features/candidate-settings`: `change-password/ChangePasswordForm.tsx` + `hooks/useChangePassword.tsx` + `validation/change-password-schema.ts` |
-| Server-rendered page with mapped API data | `features/candidate-profile/services/profile-service.ts` (API types mapped to a view model) |
+| Need                                                                                          | Look at                                                                                                                                          |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Page with table, filters, pagination and dialogs (logic in one hook, presentational children) | `features/company-admin-users`: `CompanyUsersPage` + `useCompanyMembers` + `MembersTable` + `CompanyMemberDialogs`                               |
+| Form + validation + mutation                                                                  | `features/candidate-settings`: `change-password/ChangePasswordForm.tsx` + `hooks/useChangePassword.tsx` + `validation/change-password-schema.ts` |
+| Server-rendered page with mapped API data                                                     | `features/candidate-profile/services/profile-service.ts` (API types mapped to a view model)                                                      |
 
 Avoid copying very large "do everything" components such as `jobs/components/JobPostStepOne.tsx` or `candidate-settings/components/basic-info/BasicInfoForm.tsx`. They are examples of what to split.
 
@@ -113,16 +113,16 @@ Avoid copying very large "do everything" components such as `jobs/components/Job
 
 ### Naming
 
-| Thing | Convention | Example |
-| --- | --- | --- |
-| Components | `PascalCase.tsx`, `export default function X` | `CompanyMemberDialogs.tsx` |
-| Hooks | `useX.ts` (`.tsx` only if it returns JSX) | `useCompanyMembers.ts` |
-| Services | `kebab-case-service.ts` | `upload-image-service.ts` |
-| Server actions | `<domain>-actions.ts` | `license-actions.ts` |
-| Zod schemas | `<name>-schema.ts` | `change-password-schema.ts` |
-| Types | `<domain>.types.ts` | `member.types.ts` |
-| Constants | `constants/index.ts` | |
-| New folders | `kebab-case` | `company-admin-roles/` |
+| Thing          | Convention                                    | Example                     |
+| -------------- | --------------------------------------------- | --------------------------- |
+| Components     | `PascalCase.tsx`, `export default function X` | `CompanyMemberDialogs.tsx`  |
+| Hooks          | `useX.ts` (`.tsx` only if it returns JSX)     | `useCompanyMembers.ts`      |
+| Services       | `kebab-case-service.ts`                       | `upload-image-service.ts`   |
+| Server actions | `<domain>-actions.ts`                         | `license-actions.ts`        |
+| Zod schemas    | `<name>-schema.ts`                            | `change-password-schema.ts` |
+| Types          | `<domain>.types.ts`                           | `member.types.ts`           |
+| Constants      | `constants/index.ts`                          |                             |
+| New folders    | `kebab-case`                                  | `company-admin-roles/`      |
 
 In existing folders, follow the local file pattern. Spell names correctly, because typos in file names spread through imports.
 
@@ -137,12 +137,15 @@ In existing folders, follow the local file pattern. Spell names correctly, becau
 - `apiFetch` never throws. It returns `{ ok, data, statusCode, message }`. Services check `ok` and throw on failure:
 
   ```ts
-  const { ok, data, message } = await apiFetch(`${getUserApiUrl()}/user-educations`, {
-    method: 'POST',
-    locale,
-    token,
-    body,
-  });
+  const { ok, data, message } = await apiFetch(
+    `${getUserApiUrl()}/user-educations`,
+    {
+      method: 'POST',
+      locale,
+      token,
+      body,
+    },
+  );
   if (!ok) throw new Error(message || 'Failed to add education.');
   return data;
   ```
@@ -177,12 +180,21 @@ In existing folders, follow the local file pattern. Spell names correctly, becau
 - Schemas go in `validation/<name>-schema.ts` and use the message-factory pattern, so messages are translated:
 
   ```ts
-  export const createChangePasswordSchema = (messages: ChangePasswordMessages) =>
-    z.object({ currentPassword: z.string().min(1, messages.currentPasswordRequired) });
-  export type TChangePasswordSchema = z.infer<ReturnType<typeof createChangePasswordSchema>>;
+  export const createChangePasswordSchema = (
+    messages: ChangePasswordMessages,
+  ) =>
+    z.object({
+      currentPassword: z.string().min(1, messages.currentPasswordRequired),
+    });
+  export type TChangePasswordSchema = z.infer<
+    ReturnType<typeof createChangePasswordSchema>
+  >;
 
   // In the component:
-  const schema = useMemo(() => createChangePasswordSchema({ currentPasswordRequired: t('...') }), [t]);
+  const schema = useMemo(
+    () => createChangePasswordSchema({ currentPasswordRequired: t('...') }),
+    [t],
+  );
   ```
 
 - Reset a form when a dialog opens by giving the form component a `key` (as in `CompanyMemberDialogs`), not with a `useEffect`.
@@ -221,3 +233,7 @@ In existing folders, follow the local file pattern. Spell names correctly, becau
 - [ ] Query keys and cache invalidation are correct.
 - [ ] `npm run lint` and `npx tsc --noEmit` pass for the files you changed (if something fails outside your change, mention it).
 - [ ] UI changes were checked in **Arabic and English** and on **mobile**.
+
+create same desgin typical in figma depond on same system design and same folder structure
+
+and after finish can check wiht browser controller and check on everey thing

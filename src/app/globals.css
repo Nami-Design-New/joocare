@@ -54,6 +54,23 @@
   --color-soft-overlay: var(--soft-overlay);
   --color-body-bg: var(--body-bg);
   --color-assessment-primary: var(--assessment-primary);
+  --color-assessment-action: var(--assessment-action);
+  --color-assessment-border: var(--assessment-border);
+  --color-assessment-surface: var(--assessment-surface);
+  --color-assessment-control: var(--assessment-control);
+  --color-assessment-heading: var(--assessment-heading);
+  --color-assessment-muted: var(--assessment-muted);
+  --color-assessment-info: var(--assessment-info);
+  --color-assessment-info-icon: var(--assessment-info-icon);
+  --color-assessment-info-border: var(--assessment-info-border);
+  --color-assessment-copy: var(--assessment-copy);
+  --color-assessment-close: var(--assessment-close);
+  --color-assessment-outline: var(--assessment-outline);
+  --color-assessment-warning: var(--assessment-warning);
+  --color-assessment-error: var(--assessment-error);
+  --color-assessment-dark: var(--assessment-dark);
+  --color-assessment-main: var(--assessment-main);
+  --color-assessment-absent: var(--assessment-absent);
   --bg-primary-gradient: var(--primary-gradient);
   --color-card-hover: var(--card-hover);
 }
@@ -62,6 +79,23 @@
    LIGHT MODE — Joo Care Brand Theme
 ════════════════════════════════════════ */
 :root {
+  --assessment-action: #007300;
+  --assessment-border: #dde2e6;
+  --assessment-surface: #f9fafb;
+  --assessment-control: #f3f5f8;
+  --assessment-heading: #11171d;
+  --assessment-muted: #636a71;
+  --assessment-info: #eef6ef;
+  --assessment-info-icon: #ddeedf;
+  --assessment-info-border: #cfe3d2;
+  --assessment-copy: #4b5563;
+  --assessment-close: #eef0f2;
+  --assessment-outline: #c4cad0;
+  --assessment-warning: #f59e0b;
+  --assessment-error: #dc2626;
+  --assessment-dark: #0d0d0d;
+  --assessment-main: #1c2629;
+  --assessment-absent: #6b7375;
   --assessment-primary: #076914;
   --assessment-primary-bg: #07691414;
   --radius: 0.75rem;
