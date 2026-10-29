@@ -130,7 +130,11 @@ export function useAssessmentBuilder({
     next,
     submit,
     reset,
-    isDirty: !success && (form.formState.isDirty || questions.length > 0),
+    isDirty:
+      !success &&
+      (form.formState.isDirty ||
+        JSON.stringify(questions) !==
+          JSON.stringify(initialDraft?.questions ?? [])),
     previous: () => setStep((current) => Math.max(0, current - 1)),
     confirmDelete: () => {
       setQuestions((current) =>

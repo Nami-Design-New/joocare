@@ -31,6 +31,7 @@ export type AssessmentDraft = {
 
 export type AssessmentBuilderProps = {
   categoryId: string;
+  isEditing?: boolean;
   category?: AssessmentCategory;
   initialDraft?: AssessmentDraft;
   onSubmit?: (draft: AssessmentDraft) => Promise<void>;

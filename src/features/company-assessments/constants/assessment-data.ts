@@ -1,4 +1,9 @@
 import type { Assessment, CategorySeed } from '../types/assessment.types';
+import type {
+  AssessmentDraft,
+  BuilderQuestion,
+} from '../types/assessment-builder.types';
+import { assessmentDetailSeeds } from './assessment-detail-data';
 
 export const CATEGORY_PREVIEW_SIZE = 3;
 export const ASSESSMENT_PAGE_SIZE = 4;
@@ -58,3 +63,51 @@ export const assessmentSeeds: Assessment[] = categorySeeds.flatMap((category) =>
         : null,
   })),
 );
+
+export function createAssessmentDraft(assessment: Assessment): AssessmentDraft {
+  const detail = assessmentDetailSeeds.find(
+    (item) => item.assessmentId === assessment.id,
+  );
+  const questions: BuilderQuestion[] = Array.from(
+    { length: assessment.questionCount },
+    (_, index) => {
+      const isYesNo = detail?.questions[index]?.type === 'Yes / No';
+      const optionId = `option-${assessment.id}-${index}`;
+      const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'].map(
+        (text, optionIndex) => ({
+          id: `${optionId}-${optionIndex}`,
+          text,
+        }),
+      );
+      const score =
+        index === assessment.questionCount - 1
+          ? 100 - Number((100 / assessment.questionCount).toFixed(2)) * index
+          : Number((100 / assessment.questionCount).toFixed(2));
+      return {
+        id:
+          detail?.questions[index]?.id ??
+          `question-${assessment.id}-${index + 1}`,
+        type: isYesNo ? 'yes-no' : 'single-choice',
+        score: score.toFixed(2),
+        questionText:
+          detail?.questions[index]?.questionText ??
+          `Question ${index + 1}: ${assessment.title}`,
+        options,
+        correctAnswers: isYesNo ? ['yes'] : [options[0].id],
+        attachmentEnabled: false,
+        attachment: null,
+      };
+    },
+  );
+
+  return {
+    categoryId: assessment.categoryId,
+    configuration: {
+      title: assessment.title,
+      description: assessment.description,
+      passScore: String(assessment.passScore),
+      durationMinutes: String(assessment.durationMinutes),
+    },
+    questions,
+  };
+}

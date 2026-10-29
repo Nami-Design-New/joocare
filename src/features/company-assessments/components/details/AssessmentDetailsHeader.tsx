@@ -8,9 +8,11 @@ import AssessmentDetailsActions from './AssessmentDetailsActions';
 export default function AssessmentDetailsHeader({
   assessment,
   isPaused,
+  onPauseToggle,
 }: {
   assessment: Assessment;
   isPaused: boolean;
+  onPauseToggle: () => void;
 }) {
   const t = useTranslations('companyPage.assessments.details');
   const format = useFormatter();
@@ -34,7 +36,13 @@ export default function AssessmentDetailsHeader({
           {t('created-on', { date: createdDate })}
         </p>
       </div>
-      <AssessmentDetailsActions isPaused={isPaused} />
+      <AssessmentDetailsActions
+        isPaused={isPaused}
+        assessmentId={assessment.id}
+        assessmentTitle={assessment.title}
+        categoryId={assessment.categoryId}
+        onPauseToggle={onPauseToggle}
+      />
     </header>
   );
 }

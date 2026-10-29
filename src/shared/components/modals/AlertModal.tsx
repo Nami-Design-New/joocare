@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Dialog,
@@ -7,21 +7,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { Button, buttonVariants } from "../ui/button";
-import { useRef } from "react";
-import animationData from "../../../../public/assets/lottie/warning.json";
-import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import { VariantProps } from "class-variance-authority";
+} from '@/shared/components/ui/dialog';
+import { Button, buttonVariants } from '../ui/button';
+import { useRef } from 'react';
+import animationData from '../../../../public/assets/lottie/warning.json';
+import Lottie, { LottieRefCurrentProps } from 'lottie-react';
+import { VariantProps } from 'class-variance-authority';
 
 type ConfirmDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
-  description: string;
+  description?: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  confirmButtonVariant?: VariantProps<typeof buttonVariants>["variant"];
+  confirmButtonVariant?: VariantProps<typeof buttonVariants>['variant'];
   hasCancelButton?: boolean;
   onConfirm: () => void;
   onCancel?: () => void;
@@ -33,10 +33,11 @@ export default function AlertModal({
   onOpenChange,
   title,
   description,
-  confirmLabel = "Confirm",
-  cancelLabel = "Back",
+  confirmLabel = 'Confirm',
+  cancelLabel = 'Back',
   onConfirm,
-  confirmButtonVariant = "default", hasCancelButton = true,
+  confirmButtonVariant = 'default',
+  hasCancelButton = true,
   onCancel,
   isLoading = false,
 }: ConfirmDialogProps) {
@@ -49,7 +50,7 @@ export default function AlertModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-150 rounded-2xl p-8 text-center">
         <div className="mt-15 mb-12 flex w-full items-center justify-center">
-          <div className="h-40 sm:h-50 w-40 sm:w-50">
+          <div className="h-40 w-40 sm:h-50 sm:w-50">
             <Lottie
               lottieRef={lottieRef}
               animationData={animationData}
@@ -64,9 +65,11 @@ export default function AlertModal({
           <DialogTitle className="text-foreground text-center text-3xl font-bold">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-foreground text-center text-lg leading-tight mt-2">
-            {description}
-          </DialogDescription>
+          {description ? (
+            <DialogDescription className="text-foreground mt-2 text-center text-lg leading-tight">
+              {description}
+            </DialogDescription>
+          ) : null}
         </DialogHeader>
         <DialogFooter>
           <div className="mt-6 flex w-full gap-2">
@@ -75,20 +78,22 @@ export default function AlertModal({
               disabled={isLoading}
               variant={confirmButtonVariant}
               size="pill"
-              className="max-sm:w-auto max-sm:text-xs max-sm:px-2 grow"
+              className="grow max-sm:w-auto max-sm:px-2 max-sm:text-xs"
             >
-              {isLoading ? "Saving..." : confirmLabel}
+              {isLoading ? 'Saving...' : confirmLabel}
             </Button>
-            {hasCancelButton && <Button
-              type="button"
-              variant="outline"
-              size="pill"
-              onClick={handleCancel}
-              disabled={isLoading}
-              className="max-sm:w-auto max-sm:text-xs max-sm:px-2 grow"
-            >
-              {cancelLabel}
-            </Button>}
+            {hasCancelButton && (
+              <Button
+                type="button"
+                variant="outline"
+                size="pill"
+                onClick={handleCancel}
+                disabled={isLoading}
+                className="grow max-sm:w-auto max-sm:px-2 max-sm:text-xs"
+              >
+                {cancelLabel}
+              </Button>
+            )}
           </div>
         </DialogFooter>
       </DialogContent>

@@ -83,6 +83,8 @@ export default function CategoryAssessmentsPage({
             assessment={assessment}
             source={category.source}
             href={`/company/assessments/${category.id}/${assessment.id}`}
+            onPause={() => listing.togglePaused(assessment.id)}
+            onDelete={() => listing.deleteAssessment(assessment.id)}
           />
         ))}
         {listing.total === 0 ? (

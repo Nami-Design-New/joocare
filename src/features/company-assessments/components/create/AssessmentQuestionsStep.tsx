@@ -1,9 +1,15 @@
 'use client';
 
-import { Files, Plus } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { CustomPagination } from '@/shared/components/CustomPagination';
 import { Button } from '@/shared/components/ui/button';
-import { MIN_ASSESSMENT_QUESTIONS } from '../../constants/assessment-builder';
+import { Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import {
+  ASSESSMENT_QUESTIONS_PAGE_SIZE,
+  MIN_ASSESSMENT_QUESTIONS,
+} from '../../constants/assessment-builder';
 import type { BuilderQuestion } from '../../types/assessment-builder.types';
 import AssessmentQuestionCard from './AssessmentQuestionCard';
 
@@ -21,6 +27,18 @@ export default function AssessmentQuestionsStep({
   onDelete,
 }: AssessmentQuestionsStepProps) {
   const t = useTranslations('companyPage.assessments.builder');
+  const [page, setPage] = useState(1);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(questions.length / ASSESSMENT_QUESTIONS_PAGE_SIZE),
+  );
+  const currentPage = Math.min(page, totalPages);
+  const startIndex = (currentPage - 1) * ASSESSMENT_QUESTIONS_PAGE_SIZE;
+  const visibleQuestions = questions.slice(
+    startIndex,
+    startIndex + ASSESSMENT_QUESTIONS_PAGE_SIZE,
+  );
+
   return (
     <section
       className="bg-card space-y-6 rounded-2xl p-5 md:p-8"
@@ -28,9 +46,13 @@ export default function AssessmentQuestionsStep({
     >
       {!questions.length ? (
         <div className="flex flex-col items-center py-10 text-center">
-          <Files
+          <Image
+            src="/assets/icons/files.svg"
+            alt=""
+            height={120}
+            width={120}
             aria-hidden="true"
-            className="text-secondary mb-5 size-20 stroke-1"
+            className="mb-5 size-25"
           />
           <h2 className="text-xl font-semibold">{t('empty-title')}</h2>
           <p className="text-muted-foreground mt-3 text-sm leading-6">
@@ -40,15 +62,25 @@ export default function AssessmentQuestionsStep({
           </p>
         </div>
       ) : (
-        questions.map((question, index) => (
+        visibleQuestions.map((question, index) => (
           <AssessmentQuestionCard
             key={question.id}
             question={question}
-            number={index + 1}
+            number={startIndex + index + 1}
             onEdit={() => onEdit(question)}
             onDelete={() => onDelete(question)}
           />
         ))
+      )}
+      {questions.length > ASSESSMENT_QUESTIONS_PAGE_SIZE && (
+        <CustomPagination
+          currentPage={currentPage}
+          totalItems={questions.length}
+          pageSize={ASSESSMENT_QUESTIONS_PAGE_SIZE}
+          onPageChange={setPage}
+          statusPosition="start"
+          className="justify-start gap-2 md:gap-4"
+        />
       )}
       <Button
         type="button"

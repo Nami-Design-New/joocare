@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useFormatter, useTranslations } from 'next-intl';
 import HttpStatusState from '@/shared/components/HttpStatusState';
 import {
@@ -29,6 +30,7 @@ export default function AssessmentDetailsPage({
   const detail =
     assessmentDetailSeeds.find((item) => item.assessmentId === assessmentId) ??
     assessmentDetailSeeds[0];
+  const [pausedAt, setPausedAt] = useState(assessment?.pausedAt ?? null);
 
   if (!assessment || !category || !detail) {
     return (
@@ -42,9 +44,9 @@ export default function AssessmentDetailsPage({
     );
   }
 
-  const isPaused = Boolean(assessment.pausedAt);
-  const pausedDate = assessment.pausedAt
-    ? format.dateTime(new Date(assessment.pausedAt), {
+  const isPaused = Boolean(pausedAt);
+  const pausedDate = pausedAt
+    ? format.dateTime(new Date(pausedAt), {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
@@ -54,7 +56,13 @@ export default function AssessmentDetailsPage({
 
   return (
     <div className="flex flex-col gap-4 lg:mt-1">
-      <AssessmentDetailsHeader assessment={assessment} isPaused={isPaused} />
+      <AssessmentDetailsHeader
+        assessment={assessment}
+        isPaused={isPaused}
+        onPauseToggle={() =>
+          setPausedAt((current) => (current ? null : new Date().toISOString()))
+        }
+      />
       {isPaused ? (
         <AssessmentPausedNotice
           date={pausedDate}

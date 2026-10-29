@@ -10,15 +10,16 @@ import {
 export function useCategoryAssessments(categoryId: string) {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [assessments, setAssessments] = useState(assessmentSeeds);
   const category = categorySeeds.find((item) => item.id === categoryId);
   const filtered = useMemo(() => {
     const normalized = search.trim().toLocaleLowerCase();
-    return assessmentSeeds.filter(
+    return assessments.filter(
       (assessment) =>
         assessment.categoryId === categoryId &&
         assessment.title.toLocaleLowerCase().includes(normalized),
     );
-  }, [categoryId, search]);
+  }, [assessments, categoryId, search]);
   const currentPage = Math.min(
     page,
     Math.max(1, Math.ceil(filtered.length / ASSESSMENT_PAGE_SIZE)),
@@ -39,5 +40,22 @@ export function useCategoryAssessments(categoryId: string) {
       (currentPage - 1) * ASSESSMENT_PAGE_SIZE,
       currentPage * ASSESSMENT_PAGE_SIZE,
     ),
+    togglePaused: (assessmentId: string) => {
+      setAssessments((current) =>
+        current.map((assessment) =>
+          assessment.id === assessmentId
+            ? {
+                ...assessment,
+                pausedAt: assessment.pausedAt ? null : new Date().toISOString(),
+              }
+            : assessment,
+        ),
+      );
+    },
+    deleteAssessment: (assessmentId: string) => {
+      setAssessments((current) =>
+        current.filter((assessment) => assessment.id !== assessmentId),
+      );
+    },
   };
 }

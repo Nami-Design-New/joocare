@@ -9,10 +9,29 @@ import DataTable, {
 } from '@/shared/components/common/DataTable';
 import { Button } from '@/shared/components/ui/button';
 import { Card } from '@/shared/components/ui/card';
-import { useAssessmentActions } from '../../hooks/useAssessmentActions';
+import type { BuilderQuestion } from '../../types/assessment-builder.types';
 import type { AssessmentQuestion } from '../../types/assessment.types';
+import AssessmentQuestionModal from '../create/AssessmentQuestionModal';
 
 const QUESTION_PAGE_SIZE = 10;
+
+function toBuilderQuestion(question: AssessmentQuestion): BuilderQuestion {
+  const isYesNo = question.type === 'Yes / No';
+  const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'].map(
+    (text, index) => ({ id: `${question.id}-option-${index + 1}`, text }),
+  );
+
+  return {
+    id: question.id,
+    type: isYesNo ? 'yes-no' : 'single-choice',
+    score: String(question.score),
+    questionText: question.questionText,
+    options,
+    correctAnswers: isYesNo ? ['yes'] : [options[0].id],
+    attachmentEnabled: false,
+    attachment: null,
+  };
+}
 
 export default function AssessmentQuestionsOverview({
   questions,
@@ -21,8 +40,11 @@ export default function AssessmentQuestionsOverview({
 }) {
   const t = useTranslations('companyPage.assessments.details');
   const locale = useLocale();
-  const { showComingSoon } = useAssessmentActions();
   const [page, setPage] = useState(1);
+  const [selectedQuestion, setSelectedQuestion] = useState<{
+    question: AssessmentQuestion;
+    number: number;
+  } | null>(null);
   const pageCount = Math.max(
     1,
     Math.ceil(questions.length / QUESTION_PAGE_SIZE),
@@ -67,13 +89,18 @@ export default function AssessmentQuestionsOverview({
       header: '',
       headerClassName: 'w-10 px-2 py-2',
       cellClassName: 'w-10 px-2 py-2',
-      renderCell: (_question, index) => (
+      renderCell: (question, index) => (
         <Button
           variant="ghost"
           size="icon-xs"
           aria-label={t('view-question', { number: pageStart + index + 1 })}
           className="bg-success hover:bg-success/80 rounded-full text-white hover:text-white"
-          onClick={showComingSoon}
+          onClick={() =>
+            setSelectedQuestion({
+              question,
+              number: pageStart + index + 1,
+            })
+          }
         >
           <Eye aria-hidden="true" />
         </Button>
@@ -109,6 +136,15 @@ export default function AssessmentQuestionsOverview({
         statusPosition="start"
         className="justify-start"
       />
+      {selectedQuestion ? (
+        <AssessmentQuestionModal
+          key={selectedQuestion.question.id}
+          question={toBuilderQuestion(selectedQuestion.question)}
+          readOnly
+          onClose={() => setSelectedQuestion(null)}
+          onSave={() => undefined}
+        />
+      ) : null}
     </Card>
   );
 }

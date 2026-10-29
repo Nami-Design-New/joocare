@@ -7,6 +7,7 @@ import type {
 export const MIN_ASSESSMENT_QUESTIONS = 2;
 export const MAX_QUESTION_OPTIONS = 5;
 export const QUESTION_REVIEW_PAGE_SIZE = 10;
+export const ASSESSMENT_QUESTIONS_PAGE_SIZE = 2;
 export const MAX_ATTACHMENT_BYTES = 2 * 1024 * 1024;
 export const QUESTION_TYPES: QuestionType[] = [
   'yes-no',

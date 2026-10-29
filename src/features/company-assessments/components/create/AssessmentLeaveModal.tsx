@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import deleteAnimation from '../../../../../public/assets/lottie/delete.json';
+import Image from 'next/image';
 
 type AssessmentLeaveModalProps = {
   open: boolean;
@@ -44,8 +45,14 @@ export default function AssessmentLeaveModal({
             <X className="size-5" />
           </Button>
         </DialogClose>
-        <div className="mx-auto my-5 size-44 sm:my-10 sm:size-50">
-          <Lottie animationData={deleteAnimation} loop autoplay />
+        <div className="mx-auto size-44  sm:size-60">
+          <Image
+            src="/assets/icons/delete-file-icon.svg"
+            alt=""
+            width={200}
+            height={200}
+            className="h-full w-full object-contain"
+          />
         </div>
         <div className="space-y-3 text-center">
           <DialogTitle className="text-2xl font-bold sm:text-[30px]">
