@@ -6,6 +6,13 @@ import { ASSESSMENT_ASSETS } from './assessment-invitations';
 
 export const ANSWER_REVIEW_PAGE_SIZE = 6;
 
+export const assessmentAnswerAttemptSeed = {
+  sentAt: '2026-09-10T09:00:00Z',
+  startedAt: '2026-09-11T10:12:00Z',
+  finishedAt: '2026-09-11T10:34:14Z',
+  durationSeconds: 1334,
+};
+
 // Raw preview content, replaced by the candidate answers API when available.
 const questionExamples: Omit<AssessmentAnswerQuestion, 'id' | 'number'>[] = [
   {

@@ -1698,6 +1698,8 @@
         "candidate": "المرشح",
         "candidate-result": "{name} · الدرجة {score} ({status})",
         "no-score": "—",
+        "no-results-title": "لا توجد نتائج تقييم مطابقة.",
+        "no-results-description": "جرّب تعديل البحث أو الحالة أو المشروع أو درجات التقييم.",
         "status": {
           "passed": "ناجح",
           "failed": "راسب",

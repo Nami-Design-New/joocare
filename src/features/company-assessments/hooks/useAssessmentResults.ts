@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import {
   candidateLinkTargets,
   assessmentResultAssessments,
+  assessmentResultCategories,
 } from '../constants/assessment-results';
 import type {
   AssessmentResultCandidate,
@@ -20,6 +21,16 @@ export function useAssessmentResults(initialAssessmentId?: string) {
     initialAssessment?.categoryId ?? '',
   );
   const [assessmentId, setAssessmentId] = useState(initialAssessment?.id ?? '');
+  const selectedAssessment = assessmentResultAssessments.find(
+    (assessment) => assessment.id === assessmentId,
+  );
+  const categoryOptions = assessmentResultCategories.map((category) => ({
+    value: category.id,
+    label: category.name,
+  }));
+  const assessmentOptions = assessmentResultAssessments
+    .filter((assessment) => assessment.categoryId === categoryId)
+    .map((assessment) => ({ value: assessment.id, label: assessment.name }));
   const [linkKind, setLinkKind] = useState<CandidateLinkKind | null>(null);
   const [linkCandidate, setLinkCandidate] =
     useState<AssessmentResultCandidate | null>(null);
@@ -70,6 +81,9 @@ export function useAssessmentResults(initialAssessmentId?: string) {
 
   return {
     invitations,
+    selectedAssessment,
+    categoryOptions,
+    assessmentOptions,
     categoryId,
     setCategoryId: (value: string) => {
       setCategoryId(value);

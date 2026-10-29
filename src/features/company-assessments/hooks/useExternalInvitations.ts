@@ -1,7 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { externalInvitationSeeds } from '../constants/assessment-invitations';
+import {
+  externalInvitationSeeds,
+  externalInvitationSummary,
+  EXTERNAL_INVITATIONS_PAGE_SIZE,
+  EXTERNAL_INVITATIONS_TOTAL,
+} from '../constants/assessment-invitations';
+import type { ExternalInvitation } from '../types/assessment-invitation.types';
 
 export function useExternalInvitations() {
   const [search, setSearch] = useState('');
@@ -11,6 +17,8 @@ export function useExternalInvitations() {
   const [maxScore, setMaxScore] = useState('');
   const [page, setPage] = useState(1);
   const [assignOpen, setAssignOpen] = useState(false);
+  const [inspectedCandidate, setInspectedCandidate] =
+    useState<ExternalInvitation | null>(null);
   const rows = externalInvitationSeeds.filter((candidate) => {
     const matchesSearch = `${candidate.name} ${candidate.email}`
       .toLowerCase()
@@ -45,5 +53,10 @@ export function useExternalInvitations() {
     setAssignOpen,
     rows,
     hasFilters,
+    inspectedCandidate,
+    setInspectedCandidate,
+    summary: externalInvitationSummary,
+    pageSize: EXTERNAL_INVITATIONS_PAGE_SIZE,
+    totalItems: hasFilters ? rows.length : EXTERNAL_INVITATIONS_TOTAL,
   };
 }

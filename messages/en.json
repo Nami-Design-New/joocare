@@ -1698,6 +1698,8 @@
         "candidate": "Candidate",
         "candidate-result": "{name} · Score {score} ({status})",
         "no-score": "—",
+        "no-results-title": "No matching assessment results.",
+        "no-results-description": "Try adjusting the search, status, project or score filters.",
         "status": {
           "passed": "Passed",
           "failed": "Failed",

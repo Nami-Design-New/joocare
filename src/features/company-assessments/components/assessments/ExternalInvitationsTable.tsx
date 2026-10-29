@@ -14,7 +14,10 @@ import {
 } from '@/shared/components/ui/dropdown-menu';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/shared/lib/utils';
-import { ASSESSMENT_ASSETS } from '../../constants/assessment-invitations';
+import {
+  ASSESSMENT_ASSETS,
+  EXTERNAL_INVITATIONS_PAGE_SIZE,
+} from '../../constants/assessment-invitations';
 import type { ExternalInvitation } from '../../types/assessment-invitation.types';
 
 type ExternalInvitationsTableProps = {
@@ -43,7 +46,8 @@ export default function ExternalInvitationsTable({
       id: 'number',
       header: '#',
       headerClassName: 'w-[4%]',
-      renderCell: (_, index) => format.number((page - 1) * 10 + index + 1),
+      renderCell: (_, index) =>
+        format.number((page - 1) * EXTERNAL_INVITATIONS_PAGE_SIZE + index + 1),
     },
     {
       id: 'name',

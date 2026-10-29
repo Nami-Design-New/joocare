@@ -1,5 +1,8 @@
 import { assessmentSeeds } from '../constants/assessment-data';
-import { assessmentAnswerQuestions } from '../constants/assessment-answers';
+import {
+  assessmentAnswerQuestions,
+  assessmentAnswerAttemptSeed,
+} from '../constants/assessment-answers';
 import { externalInvitationSeeds } from '../constants/assessment-invitations';
 import { assessmentResultAssessments } from '../constants/assessment-results';
 import type {
@@ -37,10 +40,7 @@ export function getCandidateAssessmentResult({
     backHref: categoryId
       ? `/company/assessments/${categoryId}/${assessmentId}/external-invitations`
       : `/company/assessments-results?assessment=${assessmentId}`,
-    sentAt: '2026-09-10T09:00:00Z',
-    startedAt: '2026-09-11T10:12:00Z',
-    finishedAt: '2026-09-11T10:34:14Z',
-    durationSeconds: 1334,
+    ...assessmentAnswerAttemptSeed,
     questions: assessmentAnswerQuestions,
   };
 }

@@ -1,22 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormatter, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/components/ui/button';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import HttpStatusState from '@/shared/components/HttpStatusState';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from '@/shared/components/ui/dialog';
-import { cn } from '@/shared/lib/utils';
 import { assessmentSeeds } from '../../constants/assessment-data';
-import { externalInvitationSummary } from '../../constants/assessment-invitations';
 import { useExternalInvitations } from '../../hooks/useExternalInvitations';
-import type { ExternalInvitation } from '../../types/assessment-invitation.types';
+import AssessmentCandidateSummary from '../shared/AssessmentCandidateSummary';
+import CandidatePreviewDialog from '../shared/CandidatePreviewDialog';
 import AssignAssessmentDialog from '../shared/AssignAssessmentDialog';
 import ExternalInvitationFilters from './ExternalInvitationFilters';
 import ExternalInvitationsTable from './ExternalInvitationsTable';
@@ -31,10 +23,7 @@ export default function ExternalInvitationsPage({
   assessmentId,
 }: ExternalInvitationsPageProps) {
   const t = useTranslations('companyPage.assessments.invitations');
-  const format = useFormatter();
   const listing = useExternalInvitations();
-  const [inspectedCandidate, setInspectedCandidate] =
-    useState<ExternalInvitation | null>(null);
   const assessment = assessmentSeeds.find(
     (item) => item.id === assessmentId && item.categoryId === categoryId,
   );
@@ -82,31 +71,12 @@ export default function ExternalInvitationsPage({
           maxScore={listing.maxScore}
           onMaxScore={listing.setMaxScore}
         />
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
-          {externalInvitationSummary.map((stat) => (
-            <div
-              key={stat.key}
-              className="bg-card flex flex-col items-center gap-2 rounded-xl p-5 text-center"
-            >
-              <p className="text-muted-foreground text-[13px] leading-[normal] font-semibold uppercase">
-                {t(stat.key)}
-              </p>
-              <p
-                className={cn(
-                  'text-assessment-dark text-[28px] leading-[normal] font-bold',
-                  stat.className,
-                )}
-              >
-                {format.number(stat.count)}
-              </p>
-            </div>
-          ))}
-        </div>
+        <AssessmentCandidateSummary summary={listing.summary} />
         <section className="bg-card rounded-xl p-3" aria-label={t('title')}>
           <ExternalInvitationsTable
             rows={listing.rows}
             page={listing.page}
-            onInspect={setInspectedCandidate}
+            onInspect={listing.setInspectedCandidate}
             getScoreHref={(candidate) => `${statusHref}/${candidate.id}`}
           />
           {!listing.rows.length ? (
@@ -117,8 +87,8 @@ export default function ExternalInvitationsPage({
           ) : (
             <CustomPagination
               currentPage={listing.page}
-              totalItems={listing.hasFilters ? listing.rows.length : 52}
-              pageSize={10}
+              totalItems={listing.totalItems}
+              pageSize={listing.pageSize}
               onPageChange={listing.setPage}
               className="py-4"
             />
@@ -131,27 +101,12 @@ export default function ExternalInvitationsPage({
         assessmentTitle={assessment.title}
         statusHref={statusHref}
       />
-      <Dialog
-        open={Boolean(inspectedCandidate)}
+      <CandidatePreviewDialog
+        candidate={listing.inspectedCandidate}
         onOpenChange={(open) => {
-          if (!open) setInspectedCandidate(null);
+          if (!open) listing.setInspectedCandidate(null);
         }}
-      >
-        <DialogContent className="max-w-md rounded-2xl">
-          <DialogTitle>{inspectedCandidate?.name}</DialogTitle>
-          <DialogDescription>{inspectedCandidate?.email}</DialogDescription>
-          {inspectedCandidate ? (
-            <div className="flex justify-between text-sm">
-              <span>{t(inspectedCandidate.status)}</span>
-              <span>
-                {inspectedCandidate.score === null
-                  ? '—'
-                  : `${format.number(inspectedCandidate.score)}%`}
-              </span>
-            </div>
-          ) : null}
-        </DialogContent>
-      </Dialog>
+      />
     </div>
   );
 }
