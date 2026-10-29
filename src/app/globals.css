@@ -70,6 +70,7 @@
   --color-assessment-close: var(--assessment-close);
   --color-assessment-outline: var(--assessment-outline);
   --color-assessment-warning: var(--assessment-warning);
+  --color-assessment-missing: var(--assessment-missing);
   --color-assessment-error: var(--assessment-error);
   --color-assessment-dark: var(--assessment-dark);
   --color-assessment-main: var(--assessment-main);
@@ -98,6 +99,7 @@
   --assessment-close: #eef0f2;
   --assessment-outline: #c4cad0;
   --assessment-warning: #f59e0b;
+  --assessment-missing: rgb(217 119 6);
   --assessment-error: #dc2626;
   --assessment-dark: #0d0d0d;
   --assessment-main: #1c2629;

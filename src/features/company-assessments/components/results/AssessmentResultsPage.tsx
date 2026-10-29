@@ -23,12 +23,16 @@ import type { AssessmentResultCandidate } from '../../types/assessment-results.t
 import ExternalInvitationFilters from '../assessments/ExternalInvitationFilters';
 import ExternalInvitationsTable from '../assessments/ExternalInvitationsTable';
 import CandidateLinkDialog from './CandidateLinkDialog';
-import CandidateLinkedSuccessDialog from './CandidateLinkedSuccessDialog';
+import SuccessModal from '@/shared/components/modals/SuccessModal';
 
-export default function AssessmentResultsPage() {
+type AssessmentResultsPageProps = { initialAssessmentId?: string };
+
+export default function AssessmentResultsPage({
+  initialAssessmentId,
+}: AssessmentResultsPageProps) {
   const t = useTranslations('companyPage.assessments.results');
   const format = useFormatter();
-  const results = useAssessmentResults();
+  const results = useAssessmentResults(initialAssessmentId);
   const [inspectedCandidate, setInspectedCandidate] =
     useState<AssessmentResultCandidate | null>(null);
   const selectedAssessment = assessmentResultAssessments.find(
@@ -136,6 +140,9 @@ export default function AssessmentResultsPage() {
               rows={results.invitations.rows}
               page={results.invitations.page}
               onInspect={setInspectedCandidate}
+              getScoreHref={(candidate) =>
+                `/company/assessments-results/${results.assessmentId}/${candidate.id}`
+              }
               tableLabel={t('title')}
               onLinkJob={(candidate) =>
                 results.openLinkDialog('job', candidate)
@@ -174,8 +181,14 @@ export default function AssessmentResultsPage() {
         }}
         onConfirm={results.confirmLink}
       />
-      <CandidateLinkedSuccessDialog
-        kind={results.successKind}
+      <SuccessModal
+        open={results.successKind !== null}
+        title={
+          results.successKind === 'job'
+            ? t('candidate-linked-to-job')
+            : t('candidate-linked-to-project')
+        }
+        description={t('link-success-description')}
         onOpenChange={(open) => {
           if (!open) results.closeSuccessDialog();
         }}

@@ -107,6 +107,7 @@ export default function ExternalInvitationsPage({
             rows={listing.rows}
             page={listing.page}
             onInspect={setInspectedCandidate}
+            getScoreHref={(candidate) => `${statusHref}/${candidate.id}`}
           />
           {!listing.rows.length ? (
             <EmptyDataState

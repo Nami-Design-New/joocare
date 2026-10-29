@@ -21,6 +21,7 @@ type ExternalInvitationsTableProps = {
   rows: ExternalInvitation[];
   page: number;
   onInspect: (candidate: ExternalInvitation) => void;
+  getScoreHref: (candidate: ExternalInvitation) => string;
   onLinkJob?: (candidate: ExternalInvitation) => void;
   onLinkProject?: (candidate: ExternalInvitation) => void;
   tableLabel?: string;
@@ -30,6 +31,7 @@ export default function ExternalInvitationsTable({
   rows,
   page,
   onInspect,
+  getScoreHref,
   onLinkJob,
   onLinkProject,
   tableLabel,
@@ -136,19 +138,23 @@ export default function ExternalInvitationsTable({
           '—'
         ) : (
           <Button
-            onClick={() => onInspect(candidate)}
-            aria-label={t('view-score', { name: candidate.name })}
+            asChild
             className="bg-assessment-main h-8 gap-2 rounded-full py-1 ps-3 pe-1 text-sm"
           >
-            <span>{format.number(candidate.score)}%</span>
-            <span className="bg-card flex size-6 items-center justify-center rounded-full">
-              <Image
-                src={`${ASSESSMENT_ASSETS}/score-eye.svg`}
-                width={16}
-                height={16}
-                alt=""
-              />
-            </span>
+            <Link
+              href={getScoreHref(candidate)}
+              aria-label={t('view-score', { name: candidate.name })}
+            >
+              <span>{format.number(candidate.score)}%</span>
+              <span className="bg-card flex size-6 items-center justify-center rounded-full">
+                <Image
+                  src={`${ASSESSMENT_ASSETS}/score-eye.svg`}
+                  width={16}
+                  height={16}
+                  alt=""
+                />
+              </span>
+            </Link>
           </Button>
         ),
     },

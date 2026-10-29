@@ -1,17 +1,25 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { candidateLinkTargets } from '../constants/assessment-results';
+import {
+  candidateLinkTargets,
+  assessmentResultAssessments,
+} from '../constants/assessment-results';
 import type {
   AssessmentResultCandidate,
   CandidateLinkKind,
 } from '../types/assessment-results.types';
 import { useExternalInvitations } from './useExternalInvitations';
 
-export function useAssessmentResults() {
+export function useAssessmentResults(initialAssessmentId?: string) {
   const invitations = useExternalInvitations();
-  const [categoryId, setCategoryId] = useState('');
-  const [assessmentId, setAssessmentId] = useState('');
+  const initialAssessment = assessmentResultAssessments.find(
+    (item) => item.id === initialAssessmentId,
+  );
+  const [categoryId, setCategoryId] = useState(
+    initialAssessment?.categoryId ?? '',
+  );
+  const [assessmentId, setAssessmentId] = useState(initialAssessment?.id ?? '');
   const [linkKind, setLinkKind] = useState<CandidateLinkKind | null>(null);
   const [linkCandidate, setLinkCandidate] =
     useState<AssessmentResultCandidate | null>(null);
