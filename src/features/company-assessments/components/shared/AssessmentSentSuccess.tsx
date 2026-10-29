@@ -97,13 +97,13 @@ export default function AssessmentSentSuccess({
         <Button
           variant="outline"
           onClick={onAssignAnother}
-          className="border-assessment-outline text-assessment-main h-[52px] flex-1 rounded-full border-[1.5px] px-4 text-base font-semibold"
+          className="border-assessment-outline text-assessment-main h-13 flex-1 rounded-full border-[1.5px] px-4 text-base font-semibold"
         >
           {t('assign-another')}
         </Button>
         <Button
           asChild
-          className="bg-assessment-primary h-[52px] flex-1 gap-2.5 rounded-full px-4 text-base font-semibold"
+          className="bg-assessment-primary h-13 flex-1 gap-2.5 rounded-full px-4 text-base font-semibold"
         >
           <Link href={statusHref} onClick={onClose}>
             {t('view-status')}

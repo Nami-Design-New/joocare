@@ -237,7 +237,7 @@ export default function AssignAssessmentDialog({
               <Button
                 disabled={!assignment.totalRecipients}
                 onClick={() => assignment.setAssigned(true)}
-                className="bg-assessment-action h-[52px] w-full rounded-2xl text-base font-semibold"
+                className="bg-assessment-action h-13 w-full rounded-2xl text-base font-semibold"
               >
                 {t('title')}
               </Button>

@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -63,6 +63,9 @@
   --color-assessment-info: var(--assessment-info);
   --color-assessment-info-icon: var(--assessment-info-icon);
   --color-assessment-info-border: var(--assessment-info-border);
+  --color-assessment-link-info: var(--assessment-link-info);
+  --color-assessment-link-info-border: var(--assessment-link-info-border);
+  --color-assessment-link-info-text: var(--assessment-link-info-text);
   --color-assessment-copy: var(--assessment-copy);
   --color-assessment-close: var(--assessment-close);
   --color-assessment-outline: var(--assessment-outline);
@@ -88,6 +91,9 @@
   --assessment-info: #eef6ef;
   --assessment-info-icon: #ddeedf;
   --assessment-info-border: #cfe3d2;
+  --assessment-link-info: #eff6ff;
+  --assessment-link-info-border: #2563eb;
+  --assessment-link-info-text: #2563eb;
   --assessment-copy: #4b5563;
   --assessment-close: #eef0f2;
   --assessment-outline: #c4cad0;
@@ -233,21 +239,21 @@
     @apply text-secondary font-semibold;
   }
 
-  input[type="password"]::-ms-reveal,
-  input[type="password"]::-ms-clear {
+  input[type='password']::-ms-reveal,
+  input[type='password']::-ms-clear {
     display: none;
   }
 
   /* iOS Safari can fail to paint masked characters when a custom web font or
      its private password-decoration pseudo-elements are overridden. */
-  input[type="password"] {
+  input[type='password'] {
     color: var(--foreground);
     -webkit-text-fill-color: var(--foreground);
     font-family: Arial, Helvetica, sans-serif;
     opacity: 1;
   }
 
-  input[type="password"]::placeholder {
+  input[type='password']::placeholder {
     color: var(--muted-foreground);
     -webkit-text-fill-color: var(--muted-foreground);
     opacity: 1;
@@ -321,7 +327,7 @@
   .dashed-list {
     list-style: none;
     li::marker {
-      content: "-   ";
+      content: '-   ';
     }
   }
 }
@@ -332,13 +338,13 @@
 }
 
 .bg-before::before {
-  content: "";
+  content: '';
   position: absolute;
 
   min-width: 24px;
   height: 100%;
   inset-inline-start: 0;
-  background-image: url("../../public/assets/footer2.svg");
+  background-image: url('../../public/assets/footer2.svg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -347,12 +353,12 @@
 }
 
 .bg-container {
-  background-image: url("../../public/assets/container.svg");
+  background-image: url('../../public/assets/container.svg');
   background-color: var(--color-primary);
 }
 .bg-container-gray {
   /* background-image: url("../../public/assets/why.svg"); */
-  background-image: url("../../public/assets/why.png");
+  background-image: url('../../public/assets/why.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -360,7 +366,7 @@
 }
 .bg-container-gray-ar {
   /* background-image: url("../../public/assets/why.svg"); */
-  background-image: url("../../public/assets/why-ar.png");
+  background-image: url('../../public/assets/why-ar.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -369,7 +375,7 @@
 @media (max-width: 1024px) {
   .bg-container-gray,
   .bg-container-gray-ar {
-    background-image: url("../../public/assets/why-vertical.png");
+    background-image: url('../../public/assets/why-vertical.png');
   }
 }
 
@@ -494,7 +500,7 @@
 .bg-container,
 .bg-container-gray,
 .bg-container-gray-ar,
-[class*="gradient"] {
+[class*='gradient'] {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
   backface-visibility: hidden;

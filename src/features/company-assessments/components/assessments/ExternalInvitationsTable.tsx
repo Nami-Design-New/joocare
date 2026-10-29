@@ -21,12 +21,18 @@ type ExternalInvitationsTableProps = {
   rows: ExternalInvitation[];
   page: number;
   onInspect: (candidate: ExternalInvitation) => void;
+  onLinkJob?: (candidate: ExternalInvitation) => void;
+  onLinkProject?: (candidate: ExternalInvitation) => void;
+  tableLabel?: string;
 };
 
 export default function ExternalInvitationsTable({
   rows,
   page,
   onInspect,
+  onLinkJob,
+  onLinkProject,
+  tableLabel,
 }: ExternalInvitationsTableProps) {
   const t = useTranslations('companyPage.assessments.invitations');
   const format = useFormatter();
@@ -225,12 +231,24 @@ export default function ExternalInvitationsTable({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link href="/company/job-management">{t('link-job')}</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/company/projects">{t('link-project')}</Link>
-            </DropdownMenuItem>
+            {onLinkJob ? (
+              <DropdownMenuItem onSelect={() => onLinkJob(candidate)}>
+                {t('link-job')}
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem asChild>
+                <Link href="/company/job-management">{t('link-job')}</Link>
+              </DropdownMenuItem>
+            )}
+            {onLinkProject ? (
+              <DropdownMenuItem onSelect={() => onLinkProject(candidate)}>
+                {t('link-project')}
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem asChild>
+                <Link href="/company/projects">{t('link-project')}</Link>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       ),
@@ -248,10 +266,10 @@ export default function ExternalInvitationsTable({
       }))}
       data={rows}
       getRowKey={(candidate) => candidate.id}
-      ariaLabel={t('title')}
+      ariaLabel={tableLabel ?? t('title')}
       className="min-w-[1004px] table-fixed"
       headerRowClassName="bg-muted border-b border-border hover:bg-muted"
-      rowClassName="h-[60px] border-b border-border hover:bg-muted/20"
+      rowClassName="h-15 border-b border-border hover:bg-muted/20"
     />
   );
 }
