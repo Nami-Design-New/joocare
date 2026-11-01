@@ -23,6 +23,11 @@ type SuccessModalAction = {
   variant?: 'default' | 'outline' | 'link';
 };
 
+type SuccessModalCallout = {
+  title: string;
+  description: string;
+};
+
 type ConfirmDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -30,6 +35,9 @@ type ConfirmDialogProps = {
   description: string;
   variant?: 'default' | 'submitted';
   visual?: ReactNode;
+  visualClassName?: string;
+  visualWrapperClassName?: string;
+  callout?: SuccessModalCallout;
   primaryAction?: SuccessModalAction;
   secondaryAction?: SuccessModalAction;
   className?: string;
@@ -43,6 +51,9 @@ export default function SuccessModal({
   description,
   variant = 'default',
   visual,
+  visualClassName,
+  visualWrapperClassName,
+  callout,
   primaryAction,
   secondaryAction,
   className,
@@ -95,8 +106,13 @@ export default function SuccessModal({
         showCloseButton={!isSubmittedVariant}
         className={cn('max-w-150 rounded-2xl p-8 text-center', className)}
       >
-        <div className="mt-15 mb-12 flex w-full items-center justify-center">
-          <div className="h-50 w-50">
+        <div
+          className={cn(
+            'mt-15 mb-12 flex w-full items-center justify-center',
+            visualWrapperClassName,
+          )}
+        >
+          <div className={cn('h-50 w-50', visualClassName)}>
             {visual ?? (
               <Lottie
                 lottieRef={lottieRef}
@@ -117,6 +133,16 @@ export default function SuccessModal({
             {description}
           </DialogDescription>
         </DialogHeader>{' '}
+        {callout ? (
+          <div className="bg-primary/10 mt-6 rounded-2xl p-4 text-start">
+            <h3 className="text-foreground text-sm font-semibold">
+              {callout.title}
+            </h3>
+            <p className="text-muted-foreground mt-1 text-sm leading-6">
+              {callout.description}
+            </p>
+          </div>
+        ) : null}
         {primaryAction || secondaryAction ? (
           <div
             className={cn(
