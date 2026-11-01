@@ -33,9 +33,12 @@ export default function AssessmentActions({
     <div className="border-border flex flex-wrap items-center gap-2 border-t pt-3">
       <Button
         className="h-9 flex-1 rounded-full px-3 text-xs"
-        onClick={showComingSoon}
       >
-        {t('associated-jobs', { count: assessment.associatedJobs })}
+        <Link
+          href={`/company/job-management`}
+        >
+          {t('associated-jobs', { count: assessment.associatedJobs })}
+        </Link>
       </Button>
       {isCompany ? (
         <Button

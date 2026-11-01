@@ -274,10 +274,10 @@ export default function JobCard({ resumeMatch,
                 className={` grow ${buttonVariants({
                   variant: "secondary",
                   size: "pill",
-                })} lg:w-2/3`}
+                })} md:w-1/2`}
                 href={`/company/job/candidates/${job.id}`}
               >
-                {t("companyPage.jobs.card.view-candidates")} {job.applications_count}
+                {t("companyPage.jobs.card.received-applications")} {job.applications_count}
               </Link>
             )}
             <Link
@@ -286,10 +286,10 @@ export default function JobCard({ resumeMatch,
                   variant: "default",
                   size: "pill",
                 },
-              )} lg:w-1/3`}
+              )} md:w-1/2`}
               href={`/company/job/${job.id}`}
             >
-              {t("companyPage.jobs.card.view-details")}
+              {t("companyPage.jobs.card.job-details")}
               {locale === 'ar' ? (
                 <ArrowLeft size={18} strokeWidth={1.5} className="size-5" />
               ) : (

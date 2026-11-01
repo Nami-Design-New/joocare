@@ -1092,6 +1092,8 @@
       "card": {
         "resume-match": "تطابق السيرة الذاتية",
         "view-candidates": "عرض المرشحين",
+        "received-applications": "التطبيقات المستلمة",
+        "job-details": "تفاصيل الوظيفة",
         "view-details": "عرض التفاصيل",
         "modals": {
           "close": {

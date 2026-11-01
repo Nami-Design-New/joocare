@@ -1092,6 +1092,8 @@
       "card": {
         "resume-match": "Resume Match",
         "view-candidates": "View Candidates",
+        "received-applications": "Received Applications",
+        "job-details": "Job Details",
         "view-details": "View Details",
         "modals": {
           "close": {
