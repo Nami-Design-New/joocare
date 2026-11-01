@@ -22,7 +22,7 @@ export default function ProjectsPage() {
     null;
 
   return (
-    <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-6">
+    <div className="mx-auto flex w-full  flex-col gap-6">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_240px]">
         <label className="relative block">
           <Search

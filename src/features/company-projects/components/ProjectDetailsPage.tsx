@@ -20,7 +20,7 @@ export default function ProjectDetailsPage({
   if (!preview.project) return null;
 
   return (
-    <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-6">
+    <div className="mx-auto flex w-full flex-col gap-6">
       <ProjectDetailsHeader
         project={preview.project}
         candidateCount={preview.totalCandidates}
