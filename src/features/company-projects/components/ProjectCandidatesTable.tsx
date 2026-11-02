@@ -15,11 +15,13 @@ import type {
 } from '../types/company-projects.types';
 
 type ProjectCandidatesTableProps = {
+  projectId: string;
   candidates: ProjectCandidate[];
   rowOffset: number;
   direction: 'ltr' | 'rtl';
   onAction: (action: NonNullable<CandidateAction>) => void;
   onViewNote: (candidateId: string) => void;
+  onDownloadCv: (candidate: ProjectCandidate) => void;
 };
 
 function getStatusClass(status: ProjectCandidate['status']) {
@@ -44,11 +46,11 @@ function getAssessmentLabelKey(assessment: ProjectCandidate['assessment']) {
 
 function CandidateIdentity({
   candidate,
-  onView,
+  profileHref,
   onViewNote,
 }: {
   candidate: ProjectCandidate;
-  onView: () => void;
+  profileHref: string;
   onViewNote: () => void;
 }) {
   const t = useTranslations('companyPage.projects');
@@ -68,13 +70,12 @@ function CandidateIdentity({
         className="size-[35px] shrink-0 rounded-full object-cover"
       />
       <div className="min-w-0">
-        <button
-          type="button"
-          onClick={onView}
-          className="text-foreground block max-w-full truncate font-medium underline underline-offset-2"
+        <Link
+          href={profileHref}
+          className="text-foreground hover:text-primary block max-w-full truncate font-medium underline underline-offset-2"
         >
           {candidate.name}
-        </button>
+        </Link>
         <span
           className={cn(
             'mt-1 inline-flex rounded-full px-3 py-1 text-xs font-medium',
@@ -167,14 +168,17 @@ function AssessmentCell({
 function CandidateActions({
   candidate,
   onAction,
+  onDownloadCv,
 }: {
   candidate: ProjectCandidate;
   onAction: ProjectCandidatesTableProps['onAction'];
+  onDownloadCv: ProjectCandidatesTableProps['onDownloadCv'];
 }) {
   const t = useTranslations('companyPage.projects');
   const actions = [
     {
-      type: 'share' as const,
+      key: 'share',
+      onClick: () => onAction({ type: 'share', candidateId: candidate.id }),
       label: t('share-candidate'),
       icon: (
         <Image
@@ -187,8 +191,9 @@ function CandidateActions({
       variant: 'default' as const,
     },
     {
-      type: 'cv' as const,
-      label: t('preview-cv'),
+      key: 'download-cv',
+      onClick: () => onDownloadCv(candidate),
+      label: t('download-cv'),
       icon: (
         <Image
           src="/assets/company-projects/candidate-pdf.svg"
@@ -200,8 +205,9 @@ function CandidateActions({
       variant: 'secondary' as const,
     },
     {
-      type: 'profile' as const,
-      label: t('view-candidate'),
+      key: 'view-cv',
+      onClick: () => onAction({ type: 'view-cv', candidateId: candidate.id }),
+      label: t('view-cv'),
       icon: (
         <Image
           src="/assets/company-projects/candidate-view.svg"
@@ -213,7 +219,8 @@ function CandidateActions({
       variant: 'outline' as const,
     },
     {
-      type: 'remove' as const,
+      key: 'remove',
+      onClick: () => onAction({ type: 'remove', candidateId: candidate.id }),
       label: t('remove-candidate'),
       icon: (
         <Image
@@ -231,18 +238,17 @@ function CandidateActions({
     <div className="flex items-center justify-center gap-1">
       {actions.map((action) => (
         <Button
-          key={action.type}
+          key={action.key}
           type="button"
           variant={action.variant}
           size="default"
           aria-label={action.label}
-          onClick={() =>
-            onAction({ type: action.type, candidateId: candidate.id })
-          }
+          title={action.label}
+          onClick={action.onClick}
           className={cn(
             'h-[30px] w-[45.25px] rounded-full border-0 px-0 py-0',
-            action.type === 'profile' && 'border-secondary bg-card border',
-            action.type === 'remove' &&
+            action.key === 'view-cv' && 'border-secondary bg-card border',
+            action.key === 'remove' &&
               'bg-destructive/10 text-destructive hover:bg-destructive/20',
           )}
         >
@@ -254,11 +260,13 @@ function CandidateActions({
 }
 
 export default function ProjectCandidatesTable({
+  projectId,
   candidates,
   rowOffset,
   direction,
   onAction,
   onViewNote,
+  onDownloadCv,
 }: ProjectCandidatesTableProps) {
   const t = useTranslations('companyPage.projects');
   const columns: DataTableColumn<ProjectCandidate>[] = [
@@ -277,9 +285,7 @@ export default function ProjectCandidatesTable({
       renderCell: (candidate) => (
         <CandidateIdentity
           candidate={candidate}
-          onView={() =>
-            onAction({ type: 'profile', candidateId: candidate.id })
-          }
+          profileHref={`/company/projects/${projectId}/candidates/${candidate.id}`}
           onViewNote={() => onViewNote(candidate.id)}
         />
       ),
@@ -327,7 +333,11 @@ export default function ProjectCandidatesTable({
       headerClassName: 'min-w-40 text-center',
       cellClassName: 'min-w-40 text-center',
       renderCell: (candidate) => (
-        <CandidateActions candidate={candidate} onAction={onAction} />
+        <CandidateActions
+          candidate={candidate}
+          onAction={onAction}
+          onDownloadCv={onDownloadCv}
+        />
       ),
     },
   ];

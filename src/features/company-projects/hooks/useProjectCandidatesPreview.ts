@@ -5,7 +5,13 @@ import {
   projectCandidatePreviewData,
   projectPreviewData,
 } from '../constants/project-preview-data';
-import type { CandidateAction } from '../types/company-projects.types';
+import { candidateCvFileUrl } from '../constants/candidate-cv-preview-data';
+import type {
+  CandidateAction,
+  ProjectCandidate,
+} from '../types/company-projects.types';
+import { getCandidateCvFileName } from '../utils/candidate-preview';
+import { downloadFile } from '../utils/download-file';
 
 const CANDIDATE_PAGE_SIZE = 4;
 
@@ -66,6 +72,10 @@ export function useProjectCandidatesPreview(projectId: string) {
     setAction({ type: 'note', candidateId });
   };
 
+  const downloadCandidateCv = (candidate: ProjectCandidate) => {
+    downloadFile(candidateCvFileUrl, getCandidateCvFileName(candidate));
+  };
+
   const closeAction = () => setAction(null);
   const openAction = (nextAction: NonNullable<CandidateAction>) => {
     setAction(nextAction);
@@ -85,6 +95,7 @@ export function useProjectCandidatesPreview(projectId: string) {
     openAction,
     closeAction,
     openCandidateNote,
+    downloadCandidateCv,
     setPage,
     updateSearch,
     updateStatus,

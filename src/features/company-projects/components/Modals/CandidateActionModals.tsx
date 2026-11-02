@@ -4,8 +4,8 @@ import type {
   CandidateAction,
   ProjectCandidate,
 } from '../../types/company-projects.types';
+import CandidateCvModal from './CandidateCvModal';
 import CandidateInterviewModal from './CandidateInterviewModal';
-import CandidatePreviewModal from './CandidatePreviewModal';
 import CandidateRemoveModal from './CandidateRemoveModal';
 import CandidateShareModal from './CandidateShareModal';
 
@@ -15,6 +15,7 @@ type CandidateActionModalsProps = {
   projectName: string;
   onClose: () => void;
   onRemove: (candidateId: string) => void;
+  onDownloadCv: (candidate: ProjectCandidate) => void;
 };
 
 export default function CandidateActionModals({
@@ -23,39 +24,37 @@ export default function CandidateActionModals({
   projectName,
   onClose,
   onRemove,
+  onDownloadCv,
 }: CandidateActionModalsProps) {
   if (!action || !candidate) return null;
 
-  if (action.type === 'share') {
-    return <CandidateShareModal candidate={candidate} onClose={onClose} />;
+  switch (action.type) {
+    case 'share':
+      return <CandidateShareModal candidate={candidate} onClose={onClose} />;
+    case 'remove':
+      return (
+        <CandidateRemoveModal
+          candidate={candidate}
+          projectName={projectName}
+          onClose={onClose}
+          onConfirm={onRemove}
+        />
+      );
+    case 'note':
+      return (
+        <CandidateInterviewModal
+          candidate={candidate}
+          projectName={projectName}
+          onClose={onClose}
+        />
+      );
+    case 'view-cv':
+      return (
+        <CandidateCvModal
+          candidate={candidate}
+          onClose={onClose}
+          onDownload={onDownloadCv}
+        />
+      );
   }
-
-  if (action.type === 'remove') {
-    return (
-      <CandidateRemoveModal
-        candidate={candidate}
-        projectName={projectName}
-        onClose={onClose}
-        onConfirm={onRemove}
-      />
-    );
-  }
-
-  if (action.type === 'note') {
-    return (
-      <CandidateInterviewModal
-        candidate={candidate}
-        projectName={projectName}
-        onClose={onClose}
-      />
-    );
-  }
-
-  return (
-    <CandidatePreviewModal
-      type={action.type}
-      candidate={candidate}
-      onClose={onClose}
-    />
-  );
 }

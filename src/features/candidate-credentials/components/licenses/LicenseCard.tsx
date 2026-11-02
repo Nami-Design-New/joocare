@@ -1,20 +1,26 @@
-"use client";
+'use client';
 
-import { Edit, Trash2 } from "lucide-react";
-import Image from "next/image";
-import { useQueryClient } from "@tanstack/react-query";
-import { useState, useTransition } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { toast } from "sonner";
+import { Edit, Trash2 } from 'lucide-react';
+import Image from 'next/image';
+import { useQueryClient } from '@tanstack/react-query';
+import { useState, useTransition } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
-import DeleteModal from "@/shared/components/modals/DeleteModal";
-import { deleteLicenseAction } from "../../actions/license-actions";
-import { licensesQueryKeyPrefix } from "../../hooks/useGetLicenses";
-import { removeInfiniteItem } from "../../services/infinite-query-cache";
-import type { LicenseViewModel } from "../../types/license.types";
-import { LicenseModal } from "./LicenseModal";
+import DeleteModal from '@/shared/components/modals/DeleteModal';
+import { deleteLicenseAction } from '../../actions/license-actions';
+import { licensesQueryKeyPrefix } from '../../hooks/useGetLicenses';
+import { removeInfiniteItem } from '../../services/infinite-query-cache';
+import type { LicenseViewModel } from '../../types/license.types';
+import { LicenseModal } from './LicenseModal';
 
-export default function LicenseCard({ license }: { license: LicenseViewModel }) {
+export default function LicenseCard({
+  license,
+  readOnly = false,
+}: {
+  license: LicenseViewModel;
+  readOnly?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [deleteLicense, setDeleteLicense] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -27,8 +33,14 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
       queryKey: licensesQueryKeyPrefix(locale),
     });
 
-    queryClient.setQueriesData({ queryKey: licensesQueryKeyPrefix(locale) }, (current) =>
-      removeInfiniteItem<LicenseViewModel>(current, ["user_licenses", "licenses"], license.id),
+    queryClient.setQueriesData(
+      { queryKey: licensesQueryKeyPrefix(locale) },
+      (current) =>
+        removeInfiniteItem<LicenseViewModel>(
+          current,
+          ['user_licenses', 'licenses'],
+          license.id,
+        ),
     );
 
     startTransition(async () => {
@@ -38,7 +50,9 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
           locale,
         });
 
-        toast.success(response.message ?? t("candidatePage.toasts.license-deleted"));
+        toast.success(
+          response.message ?? t('candidatePage.toasts.license-deleted'),
+        );
         setDeleteLicense(false);
         await queryClient.invalidateQueries({
           queryKey: licensesQueryKeyPrefix(locale),
@@ -48,7 +62,10 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
           queryClient.setQueryData(queryKey, data);
         });
 
-        const message = error instanceof Error ? error.message : t("candidatePage.toasts.license-delete-failed");
+        const message =
+          error instanceof Error
+            ? error.message
+            : t('candidatePage.toasts.license-delete-failed');
         toast.error(message);
       }
     });
@@ -62,7 +79,7 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
             className="h-full w-full rounded-sm object-cover"
             width={400}
             height={264}
-            src={license.image ?? "/assets/credentials.svg"}
+            src={license.image ?? '/assets/credentials.svg'}
             alt="credentials"
           />
         </div>
@@ -70,47 +87,54 @@ export default function LicenseCard({ license }: { license: LicenseViewModel }) 
           <h2 className="text-lg font-semibold text-black">{license.title}</h2>
           <div className="flex w-full items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">{license.number}</p>
-              <p className="text-sm text-muted-foreground">
-                {license.countryName ?? t("candidatePage.profile.country-not-provided")}
+              <p className="text-muted-foreground text-sm">{license.number}</p>
+              <p className="text-muted-foreground text-sm">
+                {license.countryName ??
+                  t('candidatePage.profile.country-not-provided')}
               </p>
             </div>
-            <div className="flex items-center gap-3">
-              <Edit
-                onClick={() => setOpen(true)}
-                width={22}
-                height={22}
-                className="text-muted-foreground cursor-pointer"
-              />
-              <Trash2
-                onClick={() => setDeleteLicense(true)}
-                width={22}
-                height={22}
-                className="cursor-pointer text-red-400"
-              />
-            </div>
+            {!readOnly && (
+              <div className="flex items-center gap-3">
+                <Edit
+                  onClick={() => setOpen(true)}
+                  width={22}
+                  height={22}
+                  className="text-muted-foreground cursor-pointer"
+                />
+                <Trash2
+                  onClick={() => setDeleteLicense(true)}
+                  width={22}
+                  height={22}
+                  className="cursor-pointer text-red-400"
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       {open && (
         <LicenseModal
-          label={t("candidatePage.credentials.edit-license")}
+          label={t('candidatePage.credentials.edit-license')}
           open={open}
           onOpenChange={setOpen}
           license={license}
         />
       )}
 
-      <DeleteModal
-        open={deleteLicense}
-        onOpenChange={setDeleteLicense}
-        title={t("candidatePage.credentials.delete-license-title")}
-        description={t("candidatePage.credentials.delete-license-description")}
-        cancelLabel={t("candidatePage.common.back")}
-        onConfirm={handleDeleteLicense}
-        isLoading={isPending}
-      />
+      {!readOnly && (
+        <DeleteModal
+          open={deleteLicense}
+          onOpenChange={setDeleteLicense}
+          title={t('candidatePage.credentials.delete-license-title')}
+          description={t(
+            'candidatePage.credentials.delete-license-description',
+          )}
+          cancelLabel={t('candidatePage.common.back')}
+          onConfirm={handleDeleteLicense}
+          isLoading={isPending}
+        />
+      )}
     </>
   );
 }

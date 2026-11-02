@@ -1,5 +1,15 @@
 'use client';
 
+import {
+  ArrowUpRight,
+  CheckCheck,
+  CircleEllipsis,
+  Folder,
+  SquarePen,
+  Trash2,
+  UserRound,
+} from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/shared/components/ui/card';
@@ -9,18 +19,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
-import { cn } from '@/shared/lib/utils';
 import {
-  Ellipsis,
-  Folder,
-  CircleCheck,
-  Pencil,
-  Share2,
-  Trash2,
-  UserRound,
-} from 'lucide-react';
-import { useTranslations } from 'next-intl';
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/shared/components/ui/tooltip';
+import { cn } from '@/shared/lib/utils';
 import type { CompanyProject } from '../types/company-projects.types';
+import ProjectShareIcon from './ProjectShareIcon';
 
 type ProjectCardProps = {
   project: CompanyProject;
@@ -32,11 +38,13 @@ type ProjectCardProps = {
 };
 
 const avatarColors = [
-  'bg-emerald-100 text-emerald-700',
-  'bg-orange-100 text-orange-700',
-  'bg-slate-100 text-slate-600',
-  'bg-green-100 text-green-700',
+  'bg-avatar-teal-bg text-avatar-teal',
+  'bg-avatar-amber-bg text-avatar-amber',
+  'bg-avatar-slate-bg text-avatar-slate',
+  'bg-avatar-green-bg text-avatar-green',
 ];
+
+const menuItemClassName = 'gap-3 px-3 py-2.5 text-base font-semibold';
 
 export default function ProjectCard({
   project,
@@ -51,79 +59,90 @@ export default function ProjectCard({
   const lastShare = project.shareLogs[0];
 
   return (
-    <Card className="group bg-card hover:shadow-card gap-4 rounded-[24px] border-0 px-3 py-3 shadow-none transition-shadow sm:px-4">
+    <Card className="bg-card gap-4 rounded-[24px] border-0 p-3 shadow-none">
       <CardContent className="flex flex-col gap-4 px-0">
         <div className="flex items-start gap-3">
-          <span className="bg-primary/10 text-primary flex size-12 shrink-0 items-center justify-center rounded-full">
-            <Folder className="size-6" strokeWidth={1.8} />
+          <span className="bg-accent text-primary flex size-12 shrink-0 items-center justify-center rounded-full">
+            <Folder className="size-6" strokeWidth={1.67} />
           </span>
-          <div className="min-w-0 flex-1">
-            <h2 className="text-foreground line-clamp-2 min-h-6 text-base leading-6 font-semibold">
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
+            <h2 className="text-foreground line-clamp-2 text-lg leading-[23px] font-semibold">
               {project.name}
             </h2>
-            <p className="text-muted-foreground mt-1 text-xs">
-              {project.createdAt}
-            </p>
+            <p className="text-muted-foreground text-sm">{project.createdAt}</p>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
+              <button
+                type="button"
                 aria-label={t('project-actions', { name: project.name })}
-                className="text-muted-foreground mt-1 rounded-full"
+                className="text-muted-foreground hover:text-foreground mt-3 shrink-0 rounded-full transition-colors"
               >
-                <Ellipsis className="size-5" />
-              </Button>
+                <CircleEllipsis className="size-6" strokeWidth={1.5} />
+              </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onSelect={onRename}>
-                <Pencil /> {t('edit-name')}
+            <DropdownMenuContent
+              align="end"
+              className="min-w-50 rounded-xl p-1"
+            >
+              <DropdownMenuItem
+                onSelect={onRename}
+                className={menuItemClassName}
+              >
+                <SquarePen className="size-5" /> {t('edit-name')}
               </DropdownMenuItem>
               <DropdownMenuItem
                 disabled={project.isClosed}
                 onSelect={onCloseProject}
+                className={menuItemClassName}
               >
-                <CircleCheck /> {t('close-project')}
+                <CheckCheck className="size-5" /> {t('close-project')}
               </DropdownMenuItem>
               {shareCount > 0 ? (
-                <DropdownMenuItem
-                  disabled
-                  className="text-destructive focus:text-destructive"
-                >
-                  <span
-                    className="flex w-full items-center gap-2"
-                    title={t('shared-project-delete-tooltip')}
-                  >
-                    <Trash2 /> {t('delete-project')}
-                  </span>
-                </DropdownMenuItem>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <DropdownMenuItem
+                        disabled
+                        variant="destructive"
+                        className={menuItemClassName}
+                      >
+                        <Trash2 className="size-5" /> {t('delete-project')}
+                      </DropdownMenuItem>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    {t('shared-project-delete-tooltip')}
+                  </TooltipContent>
+                </Tooltip>
               ) : (
                 <DropdownMenuItem
                   onSelect={onDelete}
-                  className="text-destructive focus:text-destructive"
+                  variant="destructive"
+                  className={menuItemClassName}
                 >
-                  <Trash2 /> {t('delete-project')}
+                  <Trash2 className="size-5" /> {t('delete-project')}
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-        <p className="text-foreground flex items-center gap-2 text-xs">
+        <p className="flex items-center gap-1.5 text-sm">
           <UserRound
             aria-hidden="true"
             className="text-secondary size-4 shrink-0"
+            strokeWidth={1.5}
           />
-          <span>
-            {t('created-by')}{' '}
-            <strong className="font-semibold">{project.createdBy}</strong>
+          <span className="text-muted-foreground">{t('created-by')}</span>
+          <span className="text-secondary truncate font-medium">
+            {project.createdBy}
           </span>
         </p>
 
-        <div className="flex min-h-8 items-center">
+        <div className="flex items-center gap-2">
           <div
-            className="flex -space-x-2"
+            className="flex -space-x-2 rtl:space-x-reverse"
             aria-label={t('candidate-count', {
               count:
                 project.additionalCandidates + project.candidateInitials.length,
@@ -133,7 +152,7 @@ export default function ProjectCard({
               <span
                 key={`${project.id}-${initials}-${index}`}
                 className={cn(
-                  'border-card flex size-8 items-center justify-center rounded-full border-2 text-[10px] font-medium',
+                  'flex size-8 items-center justify-center rounded-full text-xs',
                   avatarColors[index % avatarColors.length],
                 )}
               >
@@ -141,13 +160,13 @@ export default function ProjectCard({
               </span>
             ))}
           </div>
-          <span className="text-muted-foreground ms-2 text-xs">
+          <span className="text-gray-45 text-sm">
             +{project.additionalCandidates} {t('more')}
           </span>
         </div>
 
-        <div className="border-border bg-body-bg flex min-h-9 items-center gap-2 rounded-xl border px-3 text-xs">
-          <Share2 className="text-primary size-4 shrink-0" />
+        <div className="border-border bg-body-bg flex min-h-[34px] items-center gap-2 rounded-xl border px-3 py-2 text-[13px] leading-4">
+          <ProjectShareIcon className="text-primary size-4 shrink-0" />
           {shareCount ? (
             <>
               <span className="text-muted-foreground min-w-0 flex-1 truncate">
@@ -169,13 +188,20 @@ export default function ProjectCard({
       </CardContent>
 
       <CardFooter className="gap-2 px-0 pt-0">
-        <Button asChild className="h-10 flex-1 rounded-full font-semibold">
+        <Button
+          asChild
+          className="h-10 flex-1 gap-1.5 rounded-full text-base font-semibold"
+        >
           <Link href={`/company/projects/${project.id}`}>
-            {t('open-project')} <span aria-hidden="true">↗</span>
+            {t('open-project')}
+            <ArrowUpRight
+              aria-hidden="true"
+              className="size-4 rtl:-scale-x-100"
+            />
           </Link>
         </Button>
         {project.isClosed ? (
-          <span className="bg-destructive flex h-10 items-center rounded-full px-4 text-xs font-semibold text-white">
+          <span className="bg-destructive text-primary-foreground flex h-10 items-center rounded-full px-4 text-xs font-semibold">
             {t('closed')}
           </span>
         ) : (
@@ -185,9 +211,9 @@ export default function ProjectCard({
             size="icon"
             aria-label={t('share-project')}
             onClick={onShare}
-            className="border-border bg-body-bg text-primary hover:bg-primary/10 size-10 rounded-full"
+            className="border-border bg-muted text-primary hover:bg-accent size-10 shrink-0 rounded-full"
           >
-            <Share2 className="size-4" />
+            <ProjectShareIcon className="size-5" />
           </Button>
         )}
       </CardFooter>

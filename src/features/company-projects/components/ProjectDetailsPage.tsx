@@ -34,11 +34,13 @@ export default function ProjectDetailsPage({
       />
 
       <ProjectCandidatesTable
+        projectId={projectId}
         candidates={preview.candidates}
         rowOffset={(preview.page - 1) * preview.pageSize}
         direction={direction}
         onAction={preview.openAction}
         onViewNote={preview.openCandidateNote}
+        onDownloadCv={preview.downloadCandidateCv}
       />
 
       {preview.filteredCount > 0 && (
@@ -58,6 +60,7 @@ export default function ProjectDetailsPage({
         projectName={preview.project.name}
         onClose={preview.closeAction}
         onRemove={preview.removeCandidate}
+        onDownloadCv={preview.downloadCandidateCv}
       />
     </div>
   );

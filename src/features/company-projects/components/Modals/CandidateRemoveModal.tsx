@@ -29,7 +29,7 @@ export default function CandidateRemoveModal({
         project: projectName,
       })}
       confirmLabel={t('remove')}
-      cancelLabel={t('cancel  ')}
+      cancelLabel={t('cancel')}
       onConfirm={() => onConfirm(candidate.id)}
     />
   );

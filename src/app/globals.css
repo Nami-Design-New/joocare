@@ -77,6 +77,15 @@
   --color-assessment-absent: var(--assessment-absent);
   --bg-primary-gradient: var(--primary-gradient);
   --color-card-hover: var(--card-hover);
+  --color-gray-45: var(--gray-45);
+  --color-avatar-teal: var(--avatar-teal);
+  --color-avatar-teal-bg: var(--avatar-teal-bg);
+  --color-avatar-amber: var(--avatar-amber);
+  --color-avatar-amber-bg: var(--avatar-amber-bg);
+  --color-avatar-slate: var(--avatar-slate);
+  --color-avatar-slate-bg: var(--avatar-slate-bg);
+  --color-avatar-green: var(--avatar-green);
+  --color-avatar-green-bg: var(--avatar-green-bg);
 }
 
 /* ════════════════════════════════════════
@@ -133,6 +142,16 @@
   --muted: oklch(0.089 0 0 / 5%); /* #0d0d0d0d — input-bg */
   --muted-foreground: oklch(0.089 0 0 / 65%); /* #0d0d0da6 — gray */
   --gray-45: #0d0d0d73; /*  — grayLight */
+
+  /* Avatar initials — candidate avatar stacks */
+  --avatar-teal: #197d6d;
+  --avatar-teal-bg: #dcf7f0;
+  --avatar-amber: #e78b30;
+  --avatar-amber-bg: #ffeecd;
+  --avatar-slate: #6a727e;
+  --avatar-slate-bg: #edf0f4;
+  --avatar-green: #21914e;
+  --avatar-green-bg: #d8fae0;
 
   /* Accent — lighter green tint for hover/active states */
   --accent: oklch(0.468 0.148 145 / 8%); /* second-color08 */

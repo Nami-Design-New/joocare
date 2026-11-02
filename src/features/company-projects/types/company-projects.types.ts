@@ -39,7 +39,7 @@ export type ProjectCandidate = {
 };
 
 export type CandidateAction = {
-  type: 'share' | 'cv' | 'profile' | 'remove' | 'result' | 'note';
+  type: 'share' | 'view-cv' | 'remove' | 'note';
   candidateId: string;
 } | null;
 
