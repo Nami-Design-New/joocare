@@ -17,6 +17,7 @@ import animationData from '../../../../public/assets/lottie/successfully.json';
 
 type SuccessModalAction = {
   label: string;
+  icon?: ReactNode;
   href?: string;
   onClick?: () => void;
   closeOnClick?: boolean;
@@ -32,7 +33,7 @@ type ConfirmDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
-  description: string;
+  description: ReactNode;
   variant?: 'default' | 'submitted';
   visual?: ReactNode;
   visualClassName?: string;
@@ -42,6 +43,7 @@ type ConfirmDialogProps = {
   secondaryAction?: SuccessModalAction;
   className?: string;
   actionsClassName?: string;
+  children?: ReactNode;
 };
 
 export default function SuccessModal({
@@ -58,6 +60,7 @@ export default function SuccessModal({
   secondaryAction,
   className,
   actionsClassName,
+  children,
 }: ConfirmDialogProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const isSubmittedVariant = variant === 'submitted';
@@ -72,10 +75,11 @@ export default function SuccessModal({
           asChild
           variant={action.variant ?? buttonVariant}
           size="pill"
-          className="h-11 flex-1"
+          className="h-11 flex-1 gap-2"
         >
           <Link href={action.href} onClick={() => onOpenChange(false)}>
             {action.label}
+            {action.icon}
           </Link>
         </Button>
       );
@@ -87,7 +91,7 @@ export default function SuccessModal({
         variant={action.variant ?? buttonVariant}
         size="pill"
         className={cn(
-          'h-11 flex-1',
+          'h-11 flex-1 gap-2',
           action.variant === 'link' && 'h-auto min-h-8 p-0 underline',
         )}
         onClick={() => {
@@ -96,6 +100,7 @@ export default function SuccessModal({
         }}
       >
         {action.label}
+        {action.icon}
       </Button>
     );
   };
@@ -143,6 +148,7 @@ export default function SuccessModal({
             </p>
           </div>
         ) : null}
+        {children}
         {primaryAction || secondaryAction ? (
           <div
             className={cn(

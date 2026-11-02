@@ -10,6 +10,7 @@ type TextareaFieldProps = {
   error?: string | boolean;
   containerStyles?: string;
   disabled?: boolean;
+  hint?: string;
 } & React.ComponentProps<"textarea">;
 
 export const TextareaField = React.forwardRef<
@@ -17,7 +18,7 @@ export const TextareaField = React.forwardRef<
   TextareaFieldProps
 >(
   (
-    { label, id, className, error, containerStyles, disabled = false, ...props },
+    { label, id, className, error, containerStyles, disabled = false, hint, ...props },
     ref
   ) => {
     return (
@@ -25,6 +26,11 @@ export const TextareaField = React.forwardRef<
         {label && (
           <label htmlFor={id} className="mx-1 mb-1 font-semibold">
             {label}
+            {hint && (
+              <span className="text-muted-foreground ms-2 text-[13px] font-normal">
+                {hint}
+              </span>
+            )}
           </label>
         )}
 

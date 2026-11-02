@@ -8,7 +8,6 @@ import {
   FileText,
   FolderPlus,
   Link as LinkIcon,
-  MessageSquare,
   Star,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -121,7 +120,7 @@ export default function TalentCandidatesTable({
               className={cn(
                 'text-muted-foreground size-6',
                 favorites.includes(candidate.id) &&
-                  'text-warning fill-warning',
+                'text-warning fill-warning',
               )}
             />
           </button>
@@ -206,7 +205,12 @@ export default function TalentCandidatesTable({
             onClick={() => onMessage(candidate.id)}
             className="h-8 w-16 rounded-full p-0"
           >
-            <MessageSquare aria-hidden className="size-4" />
+            <Image
+              src="/assets/company-projects/candidate-share.svg"
+              alt=""
+              width={14}
+              height={14}
+            />
           </Button>
           <Button
             asChild

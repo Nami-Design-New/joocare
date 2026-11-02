@@ -1,9 +1,9 @@
 'use client';
 
-import { MessageSquare } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 type TalentResultsHeaderProps = {
   count: number;
@@ -36,7 +36,12 @@ export default function TalentResultsHeader({
           disabled={!selectedCount}
           className="h-11 shrink-0 gap-2 rounded-full bg-primary px-5 text-sm font-medium disabled:bg-[#83b7aa] disabled:text-white disabled:opacity-100"
         >
-          <MessageSquare aria-hidden className="size-5" />
+          <Image
+            src="/assets/company-projects/candidate-share.svg"
+            alt=""
+            width={14}
+            height={14}
+          />
           {t('message-selected', { count: selectedCount })}
         </Button>
         <form

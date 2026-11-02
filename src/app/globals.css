@@ -48,6 +48,7 @@
   --color-warning: var(--warning);
   --color-warning-bg: var(--warning-bg);
   --color-warning-foreground: var(--warning-foreground);
+  --color-warning-strong: var(--warning-strong);
   --shadow-header: 0 12px 24px 0 oklch(0 0 0 / 5%);
   --shadow-card: 0 12px 20px 0 oklch(0 0 0 / 5%);
   --shadow-soft: 0 0 20px var(--shadow-soft);
@@ -172,6 +173,7 @@
   --warning: oklch(0.748 0.157 66); /* #f59e0b */
   --warning-bg: #f59e0b0d;
   --warning-foreground: oklch(0.089 0 0);
+  --warning-strong: #b45309;
 
   /* Sidebar */
   --sidebar: oklch(1 0 0);
@@ -229,6 +231,7 @@
   --warning: oklch(0.8 0.16 66);
   --warning-bg: #f59e0b0d;
   --warning-foreground: oklch(0.089 0 0);
+  --warning-strong: #f59e0b;
 
   --sidebar: oklch(0.17 0 0);
   --sidebar-foreground: oklch(0.95 0 0);
@@ -250,6 +253,36 @@
   }
   body {
     @apply text-foreground;
+  }
+  /* Tailwind v4 no longer sets a pointer cursor on interactive elements. */
+  :is(
+      a[href],
+      button,
+      summary,
+      select,
+      label[for],
+      input[type='checkbox'],
+      input[type='radio'],
+      input[type='file'],
+      [role='button'],
+      [role='option'],
+      [role='menuitem'],
+      [role='menuitemcheckbox'],
+      [role='menuitemradio'],
+      [role='tab'],
+      [role='radio'],
+      [role='checkbox'],
+      [role='switch'],
+      [role='combobox']
+    ):not(:disabled, [aria-disabled='true'], [data-disabled]) {
+    cursor: pointer;
+  }
+  :is(button, [role='button'], [role='option'], [role='menuitem']):is(
+      :disabled,
+      [aria-disabled='true'],
+      [data-disabled]
+    ) {
+    cursor: not-allowed;
   }
   h1 {
     font-size: clamp(1.5rem, 4vw, 3rem);
