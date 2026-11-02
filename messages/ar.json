@@ -1058,7 +1058,21 @@
       "cv": {
         "title": "عرض السيرة الذاتية",
         "close": "إغلاق",
-        "download": "تحميل"
+        "download": "تحميل",
+        "professional-summary": "الملخص المهني",
+        "skills": "التخصصات والمهارات السريرية",
+        "experience": "الخبرة المهنية",
+        "publications": "الأبحاث والمنشورات",
+        "conferences": "التطوير المهني والمؤتمرات",
+        "highlights": "أبرز النقاط",
+        "certifications": "الشهادات والتدريب",
+        "education": "التعليم",
+        "languages": "اللغات",
+        "additional-info": "معلومات إضافية",
+        "nationality": "الجنسية",
+        "year-of-birth": "سنة الميلاد",
+        "marital-status": "الحالة الاجتماعية",
+        "open-link": "فتح {title}"
       },
       "candidate-profile": {
         "profile-image": "صورة {name} الشخصية",

@@ -1,5 +1,7 @@
 'use client';
 
+import { FileDown, X } from 'lucide-react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/components/ui/button';
 import {
@@ -9,8 +11,9 @@ import {
   DialogHeader as ModalHeader,
   DialogTitle as ModalTitle,
 } from '@/shared/components/ui/dialog';
-import { candidateCvFileUrl } from '../../constants/candidate-cv-preview-data';
 import type { ProjectCandidate } from '../../types/company-projects.types';
+import { getProjectCandidateCv } from '../../utils/candidate-preview';
+import CandidateCvDocument from '../candidate-cv/CandidateCvDocument';
 
 type CandidateCvModalProps = {
   candidate: ProjectCandidate;
@@ -24,32 +27,52 @@ export default function CandidateCvModal({
   onDownload,
 }: CandidateCvModalProps) {
   const t = useTranslations('companyPage.projects.cv');
+  const cv = getProjectCandidateCv(candidate);
 
   return (
     <Modal open onOpenChange={(open) => !open && onClose()}>
-      <ModalContent className="flex h-[min(90vh,900px)] w-[calc(100%-2rem)] max-w-4xl flex-col gap-4 rounded-[24px] p-5 sm:p-7">
-        <ModalHeader className="text-start">
-          <ModalTitle className="text-xl font-bold">{t('title')}</ModalTitle>
-          <ModalDescription>{candidate.name}</ModalDescription>
-        </ModalHeader>
+      <ModalContent
+        showCloseButton={false}
+        className="bg-card flex max-h-[92dvh] w-[calc(100%-2rem)] max-w-[1024px] flex-col gap-0 overflow-hidden rounded-[24px] p-0 sm:max-w-[1024px]"
+      >
+        <div className="bg-body-bg flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-6 py-8">
+          <ModalHeader className="flex-row items-center justify-between gap-4 text-start">
+            <ModalTitle className="text-foreground text-[28px] leading-[35px] font-semibold">
+              {t('title')}
+            </ModalTitle>
+            <ModalDescription className="sr-only">{cv.name}</ModalDescription>
+            <div className="flex items-center gap-4">
+              <Image
+                src="/assets/company-projects/cv-watermark.svg"
+                alt=""
+                width={46}
+                height={48}
+                className="pointer-events-none"
+              />
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label={t('close')}
+                className="text-foreground hover:text-primary rounded-full transition-colors"
+              >
+                <X className="size-7" strokeWidth={1.5} />
+              </button>
+            </div>
+          </ModalHeader>
 
-        <iframe
-          title={`${candidate.name} — ${t('title')}`}
-          src={candidateCvFileUrl}
-          className="min-h-0 w-full flex-1 rounded-xl border"
-        />
+          <CandidateCvDocument cv={cv} />
 
-        <div className="flex justify-end gap-3">
-          <Button type="button" variant="outline" size="pill" onClick={onClose}>
-            {t('close')}
-          </Button>
-          <Button
-            type="button"
-            size="pill"
-            onClick={() => onDownload(candidate)}
-          >
-            {t('download')}
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              type="button"
+              size="sm"
+              onClick={() => onDownload(candidate)}
+              className="h-8 gap-1 rounded-full px-3 text-xs font-normal"
+            >
+              <FileDown className="size-4" strokeWidth={1.5} />
+              {t('download')}
+            </Button>
+          </div>
         </div>
       </ModalContent>
     </Modal>

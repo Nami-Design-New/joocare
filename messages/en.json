@@ -1058,7 +1058,21 @@
       "cv": {
         "title": "View CV",
         "close": "Close",
-        "download": "Download"
+        "download": "Download",
+        "professional-summary": "Professional Summary",
+        "skills": "Clinical Specialties & Skills",
+        "experience": "Professional Experience",
+        "publications": "Research & Publications",
+        "conferences": "CPD & Conferences",
+        "highlights": "Key Highlights",
+        "certifications": "Certifications & Training",
+        "education": "Education",
+        "languages": "Languages",
+        "additional-info": "Additional Information",
+        "nationality": "Nationality",
+        "year-of-birth": "Year of Birth",
+        "marital-status": "Marital Status",
+        "open-link": "Open {title}"
       },
       "candidate-profile": {
         "profile-image": "{name} profile photo",
