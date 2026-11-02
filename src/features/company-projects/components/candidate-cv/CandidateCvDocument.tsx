@@ -54,13 +54,7 @@ export default function CandidateCvDocument({ cv }: CandidateCvDocumentProps) {
         </div>
 
         <aside className="divide-border lg:border-border relative flex flex-col divide-y lg:border-s lg:ps-5 [&>*]:py-6 [&>*:first-child]:pt-0">
-          <Image
-            src="/assets/company-projects/cv-watermark.svg"
-            alt=""
-            width={46}
-            height={48}
-            className="pointer-events-none absolute end-0 top-16"
-          />
+
           <CvHighlights title={t('highlights')} highlights={cv.highlights} />
           <CvCertifications
             title={t('certifications')}

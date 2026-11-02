@@ -67,7 +67,7 @@ export default function CandidateCvModal({
               type="button"
               size="sm"
               onClick={() => onDownload(candidate)}
-              className="h-8 gap-1 rounded-full px-3 text-xs font-normal"
+              className="lg:w-1/3! h-8 gap-1 rounded-full px-3 text-xs font-normal"
             >
               <FileDown className="size-4" strokeWidth={1.5} />
               {t('download')}
