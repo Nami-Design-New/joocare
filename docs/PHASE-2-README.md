@@ -47,7 +47,7 @@ MORE             Recruiter Activity · Account Settings
 CTA              "Build your next team" → Post a Job
 ```
 
-موجود في [features/company/constants/index.ts](../src/features/company/constants/index.ts). **`/company/talent-database` و`/company/recruiter-activity` مالهمش صفحات لسه (404).**
+موجود في [features/company/constants/index.ts](../src/features/company/constants/index.ts). **`/company/talent-database` متاحة كـ UI preview؛ `/company/recruiter-activity` لسه 404.**
 
 ### 2.2 الـ Flow الأساسي (Hiring loop)
 
@@ -156,7 +156,7 @@ Widgets في `employer/dashboard/full`: Active Job Listings · Total Application
 | E2 | Complete account / Business verification | `company/complete-account`, `features/complete-account` | ✅ | — | `account-settings/business-verification` 10086:88005 |
 | E3 | Account settings (basic info, verification, password) | `company/account-settings/*`, `features/accout-settings` | ✅ | — | 10086:88132, 10086:88279 |
 | E4 | Company profile | `company/company-profile`, `features/company-profile` | ✅ | — | `employer/company-profile` 10086:88409 |
-| E5 | Sidebar (new IA) | `features/company/components/company-sidebar` | ✅ | لينكات Talent DB / Recruiter Activity بتودي 404 | `Sidebar-New` 10688:61903 |
+| E5 | Sidebar (new IA) | `features/company/components/company-sidebar` | ✅ | Recruiter Activity بتودي 404؛ Talent DB متاحة كـ UI preview | `Sidebar-New` 10688:61903 |
 | E6 | Dashboard | `company/dashboard`, `features/company-dashboard` | 🟠 | Recent activity, Time to fill, Brand reach, Talent intake, Critical hiring alerts, Jobs overview, Export (coming soon), tooltips/empty states | `dashboard/full` 10086:90549, `dashboard/active-jobs` 10086:90913 |
 | E7 | Job management list + status (open/closed/draft/paused) | `company/job-management`, `company/job/[slug]`, `features/jobs` | 🟠 | Filters: has assessment / has questions / recruiter / date range؛ Pin؛ Sections الـ Assessment والأسئلة في Job details؛ Created by | `job-listings/grid-02` 10527:40433, `job-details/*-status` |
 | E8 | Post job 3 steps (basic) | `company/post-job`, `features/jobs/components/PostJobForm.tsx` | ✅ | — | 10086:87354, 10086:87426, 10086:87709 |
@@ -175,7 +175,7 @@ Widgets في `employer/dashboard/full`: Active Job Listings · Total Application
 | E21 | Users / Members | `company/users`, `features/company-admin-users` | 🟡 | API؛ Invite flow + statuses؛ Deactivate؛ Account Owner badge | `admin-roles/members` 10086:86573, `add-new-team-member` 10086:89090, `edit-team-member` 10086:89185 |
 | E22 | Member first login (change password) | — | 🔴 | كله | `member-first-login/change-password` 11531:118182, `modal/password-changed-successfully` 11661:97135 |
 | E23 | **Recruiter Activity** | — (route مش موجودة) | 🔴 | كله | `employer/recruiters` 10086:86774 |
-| E24 | **Talent Database / CV Search** | — (route مش موجودة) | 🔴 / ⏸ | كله | `talent-database-search` 10086:87237, 11531:95756, `cv-search/results` 10086:87021, `cv-search-full` 10086:88726, `results-download-list` 10086:90396, `modal/ai-filter` 10086:89070, `employer/candidate-profile-preview` 10086:86891 |
+| E24 | **Talent Database / CV Search** | `company/talent-database`, `features/company-talent-database` | 🟡 / ⏸ | UI preview: collapsible search filters, results, download list, reused candidate profile, selected-candidate messaging + existing success modal/Lottie. Pending: API, real delivery, scope/consent/plans. AI Filter and CV Search modals excluded by user. | `talent-database-search` 10086:87237, 11531:95756, `cv-search/results` 10086:87021, `results-download-list` 10086:90396, `employer/candidate-profile-preview` 10086:86891, `send-message-to-selected-candidates` 11531:118106, `message-sent-successfully` 11661:97171 |
 | E25 | **Employer Inbox / Chat** | — | 🔴 / ⏸ | كله | `employer/inbox` 10086:86069, `chat-view` 10086:85956, + 5 states |
 | E26 | Notifications drawer | `shared/components/header`, `features/notifications` | ✅ | أنواع إشعارات Phase 2 (assessment invite, feedback…) لما الـ API يجهز | `notification-drawer` 10086:89215 |
 | E27 | Emergency Hiring | — | ⏸ | متتعملش لحد ما تتعرف | `section-label/emergency-hiring` |
@@ -326,5 +326,6 @@ Account settings (basic info, business verification, change password) · Company
 | --- | --- |
 | company-assessments | `constants/assessment-data.ts`, `assessment-detail-data.ts`, `assessment-answers.ts`, `assessment-results.ts`, `assessment-invitations.ts` |
 | company-projects | `constants/project-preview-data.ts` (+ hooks `useCompanyProjectsPreview`, `useProjectCandidatesPreview`) |
+| company-talent-database | `constants/talent-preview-data.ts`, `hooks/useTalentDatabasePreview.ts` (search and messaging are local previews; message success does not represent delivery) |
 | company-admin-roles | `data/roles.data.ts`, `data/permissions.data.ts` |
 | company-admin-users | `data/members.data.ts` |

@@ -131,12 +131,16 @@ Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `wLe47UwWPf7
 - [ ] Table: Open / Closed / Draft jobs · Screening progress · AI match · Projects
 - [ ] Clicking a count opens filtered Jobs / Projects
 
-## 12. Talent Database / CV Search 🔴
-- [ ] Route `/company/talent-database` (sidebar link is a 404 today)
-- [ ] Search filter sections (Occupational · Experience · Licensing · Languages · Mobility) — `10086:87237`, `11531:95756`
-- [ ] Results + download list — `10086:87021`, `10086:90396`
-- [ ] AI filter modal — `10086:89070`
-- [ ] Candidate profile preview — `10086:86891`
+## 12. Talent Database / CV Search 🔌
+- [x] Route `/company/talent-database`
+- [x] Search filter sections (Occupational · Experience · Licensing · Languages · Mobility), collapsible — `10086:87237`, `11531:95756`
+- [x] Results + download list (local preview data) — `10086:87021`, `10086:90396`
+- [x] Candidate profile preview, reusing the existing read-only profile — `10086:86891`
+- [x] Send Message to Selected: recipient removal + message validation — `11531:118106`
+- [x] Message success: existing `SuccessModal` + existing Lottie, dynamic recipient count — `11661:97171`
+- [ ] API integration, real message delivery, and finalized Talent Database scope / consent / plans (QA 56)
+
+User scope update: AI Filter modal and CV Search modal are excluded. Messaging and search currently run as UI previews; no messages are delivered.
 
 ## 13. Inbox / Chat 🔴
 - [ ] Inbox list + chat view — `10086:86069`, `10086:85956`

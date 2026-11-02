@@ -285,7 +285,7 @@ export default function ProjectCandidatesTable({
       renderCell: (candidate) => (
         <CandidateIdentity
           candidate={candidate}
-          profileHref={`/company/projects/${projectId}/candidates/${candidate.id}`}
+          profileHref={`/company/candidate-profile?candidateId=${candidate.id}&projectId=${projectId}`}
           onViewNote={() => onViewNote(candidate.id)}
         />
       ),

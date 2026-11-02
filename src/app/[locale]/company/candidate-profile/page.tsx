@@ -1,0 +1,54 @@
+import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
+import ProjectCandidateProfilePage from '@/features/company-projects/components/candidate-profile/ProjectCandidateProfilePage';
+import { projectPreviewData } from '@/features/company-projects/constants/project-preview-data';
+import { getProjectCandidateProfile } from '@/features/company-projects/utils/candidate-preview';
+import { getTalentCandidateProfile } from '@/features/company-talent-database/utils/candidate-profile';
+import Header from '@/shared/components/header/Header';
+
+type PageProps = {
+  searchParams: Promise<{
+    candidateId?: string;
+    projectId?: string;
+    source?: string;
+  }>;
+};
+
+export default async function Page({ searchParams }: PageProps) {
+  const { candidateId, projectId, source } = await searchParams;
+  if (!candidateId) notFound();
+
+  const isTalentDatabaseProfile = source === 'talent-database';
+  const hasProject = projectId
+    ? projectPreviewData.some((project) => project.id === projectId)
+    : false;
+  const candidate = isTalentDatabaseProfile
+    ? getTalentCandidateProfile(candidateId)
+    : hasProject
+      ? getProjectCandidateProfile(candidateId)
+      : null;
+
+  if (!candidate) notFound();
+
+  const t = isTalentDatabaseProfile
+    ? await getTranslations('companyPage.talent-database')
+    : null;
+
+  return (
+    <main className="bg-body-bg min-h-dvh">
+      <Header />
+      {isTalentDatabaseProfile && t ? (
+        <div className="layout-container pt-6">
+          <Link
+            href="/company/talent-database"
+            className="text-primary text-sm underline"
+          >
+            {t('back-to-database')}
+          </Link>
+        </div>
+      ) : null}
+      <ProjectCandidateProfilePage candidate={candidate} />
+    </main>
+  );
+}
