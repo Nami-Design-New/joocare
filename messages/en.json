@@ -1,5 +1,20 @@
 {
   "common": {
+    "password-validation": {
+      "title": "Your password must contain:",
+      "length": "At least 8 characters",
+      "case": "One uppercase and one lowercase letter",
+      "number": "At least one number",
+      "special": "At least one special character (!@#$%)",
+      "met": "Requirement met",
+      "unmet": "Requirement not met",
+      "minimum-error": "Password must be at least 8 characters",
+      "invalid": "Include an uppercase letter, a lowercase letter, a number, and a special character",
+      "show-password": "Show password",
+      "hide-password": "Hide password",
+      "changed-successfully": "Password changed successfully",
+      "change-failed": "Unable to change your password. Please try again."
+    },
     "back-to-home": "Back to home",
     "save": "Save",
     "saved": "Saved",
@@ -386,10 +401,9 @@
       "email-invalid": "Not valid email",
       "email-invalid-detailed": "Please enter a valid email address",
       "password-required": "Password is required",
-      "password-min": "Password must be at least 6 characters",
+      "password-min": "Password is required",
       "password-max": "Password must be at most 15 characters",
       "password-less-than-max": "Password must be less than 15 characters",
-      "password-pattern": "Password can include English, Arabic, numbers, special characters, or any mix of them",
       "confirm-password-required": "Confirm password is required",
       "passwords-do-not-match": "Passwords do not match",
       "code-required": "Code is required",
@@ -1669,7 +1683,10 @@
         "license": "License Status",
         "reset": "Reset Filters",
         "orders": { "newest": "Newest", "oldest": "Oldest" },
-        "licenses": { "valid": "With Medical License", "none": "Without Medical License" }
+        "licenses": {
+          "valid": "With Medical License",
+          "none": "Without Medical License"
+        }
       },
       "filters-page": {
         "back": "Back to Pipeline Candidates",
@@ -2273,7 +2290,10 @@
         "list-description": "Assessments assigned to {name}.",
         "candidate": "Candidate",
         "assessments-count": "Assessments ({count})",
-        "source": { "job": "Attached to this job", "manual": "Shared manually" },
+        "source": {
+          "job": "Attached to this job",
+          "manual": "Shared manually"
+        },
         "sent": "Sent {date}",
         "view-result": "View result",
         "view-all": "View all ({count})",

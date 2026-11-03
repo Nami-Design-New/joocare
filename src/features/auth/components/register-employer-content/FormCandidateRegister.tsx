@@ -5,6 +5,7 @@ import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
 import { InputField } from "@/shared/components/InputField";
+import PasswordRequirements from "@/shared/components/PasswordRequirements";
 import LabelCheckbox from "@/shared/components/LabelCheckbox";
 import { SelectInputField } from "@/shared/components/SelectInputField";
 import { Button } from "@/shared/components/ui/button";
@@ -62,8 +63,9 @@ const FormCandidateRegister = () => {
         countryRequired: t("authPage.validation.country-required"),
         cityRequired: t("authPage.validation.city-required"),
         passwordRequired: t("authPage.validation.password-required"),
-        passwordMin: t("authPage.validation.password-min"),
+        passwordMin: t("common.password-validation.minimum-error"),
         passwordMax: t("authPage.validation.password-max"),
+        passwordRules: t("common.password-validation.invalid"),
         cvRequired: t("authPage.validation.cv-required"),
         otherJobTitleRequired: t("authPage.validation.other-job-title-required"),
         licenseCountryRequired: t("authPage.validation.license-country-required"),
@@ -87,6 +89,7 @@ const FormCandidateRegister = () => {
   const { cities, hasNextPage: cityHasNextPage, fetchNextPage: cityFetchNextPage, isFetchingNextPage: cityIsFetchingNextPage } = useGetCitiesByCountryId(Number(countryId));
 
   const confirmRegisterValue = useWatch({ control, name: "confirmRegister" });
+  const createPassword = useWatch({ control, name: "createPassword" });
   const isOtherJobTitle = selectedJobTitle === OTHER_JOB_TITLE_VALUE;
   const jobTitleOptions = [
     { label: t("authPage.common.other"), value: OTHER_JOB_TITLE_VALUE },
@@ -308,10 +311,17 @@ const FormCandidateRegister = () => {
       <InputField
         id="createPassword"
         type="password"
+        hidePasswordErrorMessage
+        aria-describedby="createPassword-password-rules"
         label={t("authPage.common.create-password")}
         placeholder="******"
         {...register("createPassword")}
         error={errors.createPassword?.message}
+      />
+      <PasswordRequirements
+        id="createPassword-password-rules"
+        value={createPassword ?? ""}
+        hasError={!!errors.createPassword}
       />
 
       {/* Upload CV */}

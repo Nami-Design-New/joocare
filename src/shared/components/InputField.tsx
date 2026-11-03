@@ -1,10 +1,10 @@
-"use client";
-import * as React from "react";
+'use client';
+import * as React from 'react';
 
-import { Input } from "./ui/input";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { cn } from "../lib/utils";
-import { useLocale } from "next-intl";
+import { Input } from './ui/input';
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { cn } from '../lib/utils';
+import { useTranslations } from 'next-intl';
 
 type InputFieldProps = {
   label?: string;
@@ -13,37 +13,55 @@ type InputFieldProps = {
   containerStyles?: string;
   disable?: boolean;
   hint?: string;
-  icon?: React.ReactNode
-} & React.ComponentProps<"input">;
+  icon?: React.ReactNode;
+  hidePasswordErrorMessage?: boolean;
+} & React.ComponentProps<'input'>;
 
 export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
   (
     {
       label,
       id,
-      type = "text",
+      type = 'text',
       className,
       error,
       containerStyles,
       disabled = false,
       hint,
       icon,
+      hidePasswordErrorMessage = false,
+      value,
+      defaultValue,
+      onChange,
+      onInput,
+      'aria-describedby': describedBy,
       ...props
     },
     ref,
   ) => {
-    const locale = useLocale();
+    const t = useTranslations('common.password-validation');
     const [showPassword, setShowPassword] = React.useState(false);
     const [useSafariPasswordMask, setUseSafariPasswordMask] =
       React.useState(false);
 
-    const isPassword = type === "password";
+    const isPassword = type === 'password';
+    const showInlineError = Boolean(
+      error && !(isPassword && hidePasswordErrorMessage),
+    );
+    const errorId = `${id}-error`;
+    const inputDescription =
+      [
+        describedBy,
+        showInlineError && errorId,
+      ]
+        .filter(Boolean)
+        .join(' ') || undefined;
 
     React.useEffect(() => {
       const userAgent = navigator.userAgent;
       const isIOSWebKit =
         /iPad|iPhone|iPod/.test(userAgent) ||
-        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       const isSafari =
         /Safari/.test(userAgent) &&
         !/Chrome|Chromium|CriOS|FxiOS|EdgiOS|OPiOS|Android/.test(userAgent);
@@ -54,17 +72,17 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     const shouldUseSafariMask =
       isPassword && useSafariPasswordMask && !showPassword;
     const inputType =
-      isPassword && (showPassword || shouldUseSafariMask) ? "text" : type;
+      isPassword && (showPassword || shouldUseSafariMask) ? 'text' : type;
 
     return (
-      <div className={cn("flex w-full flex-col", containerStyles)}>
+      <div className={cn('flex w-full flex-col', containerStyles)}>
         {label && (
           <label htmlFor={id} className="mx-1 mb-1 font-semibold">
-            {label}{" "}
+            {label}{' '}
             {hint && (
               <span className="text-muted-foreground text-sm font-normal">
-                {" "}
-                {hint}{" "}
+                {' '}
+                {hint}{' '}
               </span>
             )}
           </label>
@@ -78,25 +96,36 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
             aria-invalid={!!error}
             disabled={disabled}
             className={cn(
-              isPassword && "pr-10",
-              shouldUseSafariMask && "safari-password-mask",
+              isPassword && 'pe-10',
+              shouldUseSafariMask && 'safari-password-mask',
               className,
             )}
             {...(isPassword
               ? {
-                  autoCapitalize: "none",
-                  autoCorrect: "off",
+                  autoCapitalize: 'none',
+                  autoCorrect: 'off',
                   spellCheck: false,
                 }
               : {})}
             {...props}
+            value={value}
+            defaultValue={defaultValue}
+            aria-describedby={inputDescription}
+            onChange={(event) => {
+              onChange?.(event);
+            }}
+            onInput={(event) => {
+              onInput?.(event);
+            }}
           />
 
           {isPassword && (
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className={`text-muted-foreground absolute top-1/2 -translate-y-1/2 ${locale === 'ar' ? "left-3" : "right-3"}`}
+              aria-label={t(showPassword ? 'hide-password' : 'show-password')}
+              aria-pressed={showPassword}
+              className="text-muted-foreground absolute end-3 top-1/2 -translate-y-1/2"
             >
               {showPassword ? (
                 <EyeOffIcon className="h-4 w-4" />
@@ -105,17 +134,21 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               )}
             </button>
           )}
-          {icon && <div className={`absolute top-1/2 -translate-y-1/2 ${locale === 'ar' ? "left-3" : "right-3"}`}>
-            {icon}
-          </div>}
+          {icon && (
+            <div className="absolute end-3 top-1/2 -translate-y-1/2">
+              {icon}
+            </div>
+          )}
         </div>
 
-        {error && (
-          <span className="mt-1 text-[12px] text-red-500">{error}</span>
+        {showInlineError && (
+          <span id={errorId} className="text-destructive mt-1 text-xs">
+            {error}
+          </span>
         )}
       </div>
     );
   },
 );
 
-InputField.displayName = "InputField";
+InputField.displayName = 'InputField';

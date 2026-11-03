@@ -10,8 +10,7 @@ type CreateLoginCandidateSchemaOptions = {
 export const createLoginCandidateSchema = ({
   fieldRequired = "This field is required",
   emailInvalid = "Not valid email",
-  passwordMin = "Password must be at least 6 characters",
-  passwordMax = "Password must be at most 15 characters",
+  passwordMin = "Password is required",
 }: CreateLoginCandidateSchemaOptions = {}) =>
   z.object({
     email: z
@@ -20,8 +19,7 @@ export const createLoginCandidateSchema = ({
       .email({ message: emailInvalid }),
     password: z
       .string()
-      .min(6, { message: passwordMin })
-      .max(15, { message: passwordMax }),
+      .min(1, { message: passwordMin })
   });
 
 export const loginCandidateSchema = createLoginCandidateSchema();
