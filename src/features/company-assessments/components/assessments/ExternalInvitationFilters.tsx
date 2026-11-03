@@ -1,8 +1,8 @@
 'use client';
 
-import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { InputField } from '@/shared/components/InputField';
+import SearchInput from '@/shared/components/SearchInput';
 import { SelectInputField } from '@/shared/components/SelectInputField';
 
 type ExternalInvitationFiltersProps = {
@@ -45,17 +45,15 @@ export default function ExternalInvitationFilters({
   ];
   return (
     <div className="bg-secondary/4 grid grid-cols-2 gap-2.5 rounded-3xl p-3 lg:grid-cols-[minmax(230px,300fr)_170fr_200fr_145fr_145fr]">
-      <div className="relative col-span-2 lg:col-span-1">
-        <Search className="text-assessment-primary pointer-events-none absolute start-4 top-1/2 z-10 size-[18px] -translate-y-1/2" />
-        <InputField
-          id="invitation-search"
-          aria-label={t('search')}
-          placeholder={t('search')}
-          value={search}
-          onChange={(event) => onSearch(event.target.value)}
-          className="bg-card placeholder:text-muted-foreground/60 h-13 border-none ps-11 text-base shadow-none"
-        />
-      </div>
+      <SearchInput
+        id="invitation-search"
+        placeholder={t('search')}
+        value={search}
+        onChange={(event) => onSearch(event.target.value)}
+        containerClassName="col-span-2 lg:col-span-1"
+        iconClassName="text-assessment-primary size-4.5"
+        className="placeholder:text-muted-foreground/60 ps-11 text-base"
+      />
       <SelectInputField
         id="invitation-status"
         aria-label={t('all-statuses')}

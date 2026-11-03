@@ -10,7 +10,7 @@ import useGetCompanyJobs from "../hooks/useGetCompanyJobs";
 import { useJobListingPreview } from "../hooks/useJobListingPreview";
 import JobCard from "./JobCard";
 import JobRecruiterFilter from "./JobRecruiterFilter";
-import JobSearchInput from "./JobSearchInput";
+import SearchInput from "@/shared/components/SearchInput";
 import JobCardSkeleton from "@/features/shared-company-profile/components/JobCardSkeleton";
 import EmptyDataState from "@/shared/components/EmptyDataState";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
@@ -69,9 +69,12 @@ export default function JobManagementSection() {
         <div className="flex flex-col gap-2">
             <header className="flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="grid min-w-0 flex-1 grid-cols-1 gap-4 md:grid-cols-[1.7fr_1fr_1fr]">
-                    <JobSearchInput
+                    <SearchInput
                         value={listing.search}
-                        onChange={handleSearchChange}
+                        onChange={(event) => handleSearchChange(event.currentTarget.value)}
+                        placeholder={t("companyPage.jobs.listing.search-placeholder")}
+                        iconClassName="size-4.5"
+                        className="ps-11"
                     />
                     <JobFilter
                         value={selectedStatus}

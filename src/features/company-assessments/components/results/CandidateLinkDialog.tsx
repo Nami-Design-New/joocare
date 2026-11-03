@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormatter, useTranslations } from 'next-intl';
-import { Info, Search, X } from 'lucide-react';
+import { Info, X } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from '@/shared/components/ui/dialog';
-import { InputField } from '@/shared/components/InputField';
+import SearchInput from '@/shared/components/SearchInput';
 import { cn } from '@/shared/lib/utils';
 import type {
   AssessmentResultCandidate,
@@ -73,24 +73,15 @@ export default function CandidateLinkDialog({
         <DialogDescription className="sr-only">
           {kind === 'job' ? t('link-job-title') : t('link-project-title')}
         </DialogDescription>
-        <div className="relative pb-3">
-          <Search
-            aria-hidden="true"
-            className="text-assessment-primary pointer-events-none absolute start-4 top-1/2 z-10 size-5 -translate-y-1/2"
-          />
-          <InputField
-            id="candidate-link-search"
-            aria-label={
-              kind === 'job' ? t('search-jobs') : t('search-projects')
-            }
-            placeholder={
-              kind === 'job' ? t('search-jobs') : t('search-projects')
-            }
-            value={search}
-            onChange={(event) => onSearchChange(event.target.value)}
-            className="border-assessment-border bg-card h-13 rounded-full ps-11 text-sm shadow-none"
-          />
-        </div>
+        <SearchInput
+          id="candidate-link-search"
+          placeholder={kind === 'job' ? t('search-jobs') : t('search-projects')}
+          value={search}
+          onChange={(event) => onSearchChange(event.target.value)}
+          containerClassName="mb-3"
+          iconClassName="text-assessment-primary"
+          className="border-assessment-border border ps-11 text-sm"
+        />
         <div className="flex max-h-[310px] flex-col gap-3 overflow-y-auto py-1">
           {targets.map((target) => {
             const isSelected = target.id === selectedTargetId;

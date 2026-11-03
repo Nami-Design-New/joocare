@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
+import SearchInput from '@/shared/components/SearchInput';
 import { SelectInputField } from '@/shared/components/SelectInputField';
-import { Input } from '@/shared/components/ui/input';
 import { projectRecruiters } from '../constants/project-preview-data';
 import { useCompanyProjectsPreview } from '../hooks/useCompanyProjectsPreview';
 import type { ProjectAction } from '../types/company-projects.types';
@@ -22,22 +21,13 @@ export default function ProjectsPage() {
     null;
 
   return (
-    <div className="mx-auto flex w-full  flex-col gap-6">
+    <div className="mx-auto flex w-full flex-col gap-6">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_240px]">
-        <label className="relative block">
-          <Search
-            aria-hidden="true"
-            className="text-primary absolute top-1/2 left-4 size-5 -translate-y-1/2"
-          />
-          <Input
-            type="search"
-            value={preview.search}
-            onChange={(event) => preview.setSearch(event.currentTarget.value)}
-            placeholder={t('search-placeholder')}
-            aria-label={t('search-placeholder')}
-            className="bg-card h-[52px] rounded-full border-0 pl-12 shadow-none"
-          />
-        </label>
+        <SearchInput
+          value={preview.search}
+          onChange={(event) => preview.setSearch(event.currentTarget.value)}
+          placeholder={t('search-placeholder')}
+        />
         <SelectInputField
           id="projects-recruiter-filter"
           aria-label={t('recruiter-filter')}

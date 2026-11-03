@@ -1,11 +1,11 @@
 'use client';
 
-import { Plus, Search } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { InputField } from '@/shared/components/InputField';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import HttpStatusState from '@/shared/components/HttpStatusState';
+import SearchInput from '@/shared/components/SearchInput';
 import { Button } from '@/shared/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import { useCategoryAssessments } from '../../hooks/useCategoryAssessments';
@@ -55,21 +55,14 @@ export default function CategoryAssessmentsPage({
       </header>
 
       <AssessmentFilter onReset={() => listing.setSearch('')}>
-        <div className="relative">
-          <Search
-            aria-hidden="true"
-            className="text-primary pointer-events-none absolute start-4 top-1/2 z-10 size-5 -translate-y-1/2"
-          />
-          <InputField
-            id="assessment-search"
-            type="search"
-            aria-label={t('search')}
-            placeholder={t('search-placeholder')}
-            value={listing.search}
-            onChange={(event) => listing.setSearch(event.target.value)}
-            className="bg-card h-13 border-none ps-12 text-sm shadow-none"
-          />
-        </div>
+        <SearchInput
+          id="assessment-search"
+          aria-label={t('search')}
+          placeholder={t('search-placeholder')}
+          value={listing.search}
+          onChange={(event) => listing.setSearch(event.target.value)}
+          className="text-sm"
+        />
       </AssessmentFilter>
 
       <section

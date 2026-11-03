@@ -1,8 +1,7 @@
 'use client';
 
-import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { InputField } from '@/shared/components/InputField';
+import SearchInput from '@/shared/components/SearchInput';
 import { SelectInputField } from '@/shared/components/SelectInputField';
 
 type MembersFiltersProps = {
@@ -25,17 +24,14 @@ export default function MembersFilters({
 
   return (
     <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_214px]">
-      <div className="relative">
-        <Search className="text-primary absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-        <InputField
-          id="company-members-search"
-          aria-label={t('searchPlaceholder')}
-          placeholder={t('searchPlaceholder')}
-          value={search}
-          onChange={(event) => onSearchChange(event.target.value)}
-          className="h-10 border-0 bg-white pl-10 shadow-none focus-visible:ring-1"
-        />
-      </div>
+      <SearchInput
+        id="company-members-search"
+        placeholder={t('searchPlaceholder')}
+        value={search}
+        onChange={(event) => onSearchChange(event.target.value)}
+        iconClassName="start-3 size-4"
+        className="h-10 bg-white ps-10 focus-visible:ring-1"
+      />
       <SelectInputField
         id="company-members-role-filter"
         aria-label={t('roleFilter')}
