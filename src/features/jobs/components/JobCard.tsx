@@ -34,6 +34,7 @@ import {
   MapPin,
   Trash2
 } from "lucide-react";
+import { cn } from "@/shared/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 import { JobListItem } from "../types/jobs.types";
@@ -54,6 +55,8 @@ type JobCardProps = {
   appliedAtLabel?: string;
   onSavedChange?: (nextSavedState: boolean) => void;
   resumeMatch?: boolean
+  isPinned?: boolean;
+  onTogglePin?: () => void;
 };
 
 
@@ -62,8 +65,9 @@ export default function JobCard({ resumeMatch,
   href = "",
   appliedBadge,
   appliedAtLabel,
-  onSavedChange
-
+  onSavedChange,
+  isPinned = false,
+  onTogglePin,
 }: JobCardProps) {
   const t = useTranslations();
   const locale = useLocale()
@@ -157,6 +161,29 @@ export default function JobCard({ resumeMatch,
               { }
             </time>
           </div>
+          {onTogglePin && (
+            <button
+              type="button"
+              onClick={onTogglePin}
+              aria-pressed={isPinned}
+              aria-label={t(
+                isPinned
+                  ? "companyPage.jobs.listing.unpin-job"
+                  : "companyPage.jobs.listing.pin-job",
+              )}
+              className="group/pin flex size-6 shrink-0 items-center justify-center"
+            >
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "size-5 transition-colors [mask:url(/assets/icons/pin-icon.svg)_center/contain_no-repeat]",
+                  isPinned
+                    ? "bg-primary"
+                    : "bg-muted-foreground group-hover/pin:bg-foreground",
+                )}
+              />
+            </button>
+          )}
           {/* Dropdown menu for job actions  or resume match*/}
 
           {!resumeMatch ? (

@@ -7,7 +7,10 @@ import { buttonVariants } from "@/shared/components/ui/button";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import useGetCompanyJobs from "../hooks/useGetCompanyJobs";
+import { useJobListingPreview } from "../hooks/useJobListingPreview";
 import JobCard from "./JobCard";
+import JobRecruiterFilter from "./JobRecruiterFilter";
+import JobSearchInput from "./JobSearchInput";
 import JobCardSkeleton from "@/features/shared-company-profile/components/JobCardSkeleton";
 import EmptyDataState from "@/shared/components/EmptyDataState";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
@@ -18,6 +21,7 @@ export default function JobManagementSection() {
     const t = useTranslations();
     const [page, setPage] = useState(1);
     const [selectedStatus, setSelectedStatus] = useState("");
+    const listing = useJobListingPreview();
 
     const { data: session } = useSession();
     const token = session?.accessToken as string;
@@ -33,6 +37,8 @@ export default function JobManagementSection() {
         token,
         page,
         status: selectedStatus,
+        search: listing.debouncedSearch,
+        recruiter: listing.recruiter,
     });
 
     const handlePageChange = (newPage: number) => {
@@ -45,32 +51,39 @@ export default function JobManagementSection() {
         setPage(1);
     };
 
+    const handleSearchChange = (value: string) => {
+        listing.setSearch(value);
+        setPage(1);
+    };
+
+    const handleRecruiterChange = (value: string) => {
+        listing.updateRecruiter(value);
+        setPage(1);
+    };
+
     const displayedJobs = data?.data ?? jobs ?? [];
     const displayedTotal = data?.total ?? total;
     const displayedPerPage = data?.per_page ?? perPage;
 
     return (
         <div className="flex flex-col gap-2">
-            <header className="flex w-full items-center justify-between gap-2">
-                <div className="w-full md:w-52">
+            <header className="flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="grid min-w-0 flex-1 grid-cols-1 gap-4 md:grid-cols-[1.7fr_1fr_1fr]">
+                    <JobSearchInput
+                        value={listing.search}
+                        onChange={handleSearchChange}
+                    />
                     <JobFilter
                         value={selectedStatus}
                         onStatusChange={handleStatusChange}
                     />
+                    <JobRecruiterFilter
+                        value={listing.recruiter}
+                        onChange={handleRecruiterChange}
+                    />
                 </div>
 
-                {/* <Link
-                    className={` ${buttonVariants({
-                        variant: "default",
-                        size: "pill",
-                    })} md:min-w-52 
-                    ${companyProfileData?.status !== "Approved" ? "pointer-events-none opacity-50" : ""}`}
-                    href="/company/post-job"
-                >
-                    Post a Job
-                </Link> */}
-
-                <div className="relative group mt-auto order-3">
+                <div className="relative group mt-auto order-3 shrink-0 max-lg:self-end">
                     <Link
                         className={` ${buttonVariants({
                             variant: "default",
@@ -101,6 +114,8 @@ export default function JobManagementSection() {
                                 href={`/jobs/${eachJob?.job_title?.id}`}
                                 appliedBadge
                                 appliedAtLabel={eachJob.created_at}
+                                isPinned={listing.isPinned(eachJob.id)}
+                                onTogglePin={() => listing.togglePin(eachJob.id)}
                             />
                         ))}
 

@@ -1,7 +1,7 @@
 # Employer — Phase 2 TODO
 
 Checklist of what is missing on the Employer side compared to Figma. Tick `[x]` as items are done.
-Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `wLe47UwWPf7BWy7Un84RM3` (page "Joocare Platform — Phase 2").
+Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `2MqpRGApcnGRWlH5RdUHHo` (page "Joocare Platform — Phase 2").
 
 **Legend:** 🔴 Not built · 🟠 Built, incomplete · 🔌 UI ready, needs API
 
@@ -19,12 +19,25 @@ Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `wLe47UwWPf7
 - [ ] Reports & Data Export (Coming soon)
 - [ ] Tooltip + empty state for every widget
 
-## 2. Job listings 🟠 — `10086:84376`, `10527:40433`
-- [ ] Search by job title
-- [ ] Recruiter, Domain and Date range filters
-- [ ] Has assessment / Has screening questions filters
-- [ ] Card buttons: AI Talent Match · Ai Filter · View Applicants
-- [ ] Pin from the actions menu
+## 2. Job listings 🟠 — `10086:84376` (admin, with Recruiter filter + pin), `10527:40433` (no Recruiter filter, no pin)
+**Toolbar**
+- [x] Search by job title — UI done, sent as `search` param (debounced) 🔌 backend
+- [x] Recruiter filter (All recruiters + names) — UI done with preview names, sent as `recruiter` param 🔌 backend + recruiters list
+- [ ] Status placeholder "Status" (today "Filter by status") + way to clear it
+- [ ] Pagination: "Show 1 - 10 from N" first, pages after, aligned to start
+
+**Card** (r16 · p16 · gap16)
+- [x] Pin icon next to ⋯ (green = pinned, gray = not) — UI done, local state only 🔌
+- [ ] ⋯ menu on every status, incl. Closed. Open: Edit · Close · Pause · Delete — Paused: Edit · Close · Reactivate · Delete — Draft/Closed: Edit · Complete · Pause · Delete (Figma copy for Closed looks copy-pasted — confirm)
+- [ ] Logo in a 52×46 green-tint box
+- [ ] Description: 14px muted, 2-line clamp (today black prose, no clamp)
+- [ ] Divider above the buttons
+- [ ] Buttons 34px high, 14px regular; count in bold after "Received Applications"
+- [ ] Draft card: no buttons
+- [ ] Status bar 24px high, 14px label, date at end in 11px (hidden for Open)
+- [ ] Location / category / salary on one line
+- Hidden in Figma for now (don't build): AI Talent Match · Ai Filter · View Applicants
+- [ ] Has assessment / Has screening questions filters, Domain and Date range filters (older scope, not in these frames)
 
 ## 3. Job details 🟠 — `10086:84578` (+ closed / draft / paused)
 - [ ] "Screening questions & assessment attached to this job" section (question count · required + assessment name)
@@ -75,6 +88,8 @@ Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `wLe47UwWPf7
 - [ ] 🔴 Success: linked to job / linked to project / message sent — `11661:97147`, `11661:97159`, `11661:97171`
 
 ## 7. Projects 🔌
+- [x] Project card per Figma — `11531:105811`
+- [x] Candidate name → profile page · PDF icon downloads CV · eye icon opens CV modal — `10086:86891`, `11791:116227`
 - [ ] API (list, details, candidates, all actions)
 - [ ] Recruiter + Created date range filters — `10086:101678`
 - [ ] "Shared N× · last <date>" + "+N more"
@@ -113,10 +128,11 @@ Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `wLe47UwWPf7
 - [ ] Score as `earned / max`
 - [ ] Sidebar counter
 
-## 9. Hiring Manager review 🔴 (new)
-- [ ] Shared candidates review ("Shared with you by … · submit your decisions") — `10164:39865`
-- [ ] Schedule interviews — `12163:105704`
-- [ ] Decisions submitted modal — `11661:116783`
+## 9. Hiring Manager review 🔌 — route `/company/shared-projects/[projectId]`
+- [x] Shared candidates review ("Shared with you by … · submit your decisions") — `10164:39865`
+- [x] Schedule interviews — `12163:105704`
+- [x] Decisions submitted modal — `11661:116783`
+- [ ] API (shared project, decisions, interviews) — runs on local preview data today
 
 ## 10. Admin Roles 🔌
 - [ ] Roles API (permissions come from the backend)
