@@ -6,7 +6,10 @@ import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import SearchInput from '@/shared/components/SearchInput';
 import { SelectInputField } from '@/shared/components/SelectInputField';
-import { projectRecruiters } from '../constants/project-preview-data';
+import {
+  ALL_PROJECT_RECRUITERS_VALUE,
+  projectRecruiters,
+} from '../constants/project-preview-data';
 import { useCompanyProjectsPreview } from '../hooks/useCompanyProjectsPreview';
 import type { ProjectAction } from '../types/company-projects.types';
 import ProjectActionModals from './Modals/ProjectActionModals';
@@ -19,6 +22,15 @@ export default function ProjectsPage() {
   const activeProject =
     preview.projects.find((project) => project.id === action?.projectId) ??
     null;
+  // A recruiter can arrive from the URL (e.g. Recruiter Activity) before it is in the list.
+  const recruiters =
+    preview.recruiter && !projectRecruiters.includes(preview.recruiter)
+      ? [...projectRecruiters, preview.recruiter]
+      : projectRecruiters;
+  const recruiterOptions = [
+    { value: ALL_PROJECT_RECRUITERS_VALUE, label: t('all-recruiters') },
+    ...recruiters.map((name) => ({ value: name, label: name })),
+  ];
 
   return (
     <div className="mx-auto flex w-full flex-col gap-6">
@@ -31,15 +43,12 @@ export default function ProjectsPage() {
         <SelectInputField
           id="projects-recruiter-filter"
           aria-label={t('recruiter-filter')}
-          options={projectRecruiters.map((name) => ({
-            value: name,
-            label: name,
-          }))}
+          options={recruiterOptions}
           value={preview.recruiter}
           onChange={preview.setRecruiter}
           placeholder={t('recruiter-filter')}
           allowDeselect
-          className="border-border bg-card h-[52px]"
+          className="border-border bg-card h-13"
         />
       </div>
 

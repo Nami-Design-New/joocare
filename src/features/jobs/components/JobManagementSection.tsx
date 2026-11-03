@@ -5,9 +5,8 @@ import { Link } from "@/i18n/navigation";
 import { CustomPagination } from "@/shared/components/CustomPagination";
 import { buttonVariants } from "@/shared/components/ui/button";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import useGetCompanyJobs from "../hooks/useGetCompanyJobs";
-import { useJobListingPreview } from "../hooks/useJobListingPreview";
+import { useJobListingFilters } from "../hooks/useJobListingFilters";
 import JobCard from "./JobCard";
 import JobRecruiterFilter from "./JobRecruiterFilter";
 import SearchInput from "@/shared/components/SearchInput";
@@ -19,9 +18,7 @@ import { useTranslations } from "next-intl";
 
 export default function JobManagementSection() {
     const t = useTranslations();
-    const [page, setPage] = useState(1);
-    const [selectedStatus, setSelectedStatus] = useState("");
-    const listing = useJobListingPreview();
+    const listing = useJobListingFilters();
 
     const { data: session } = useSession();
     const token = session?.accessToken as string;
@@ -35,30 +32,15 @@ export default function JobManagementSection() {
         isPending,
     } = useGetCompanyJobs({
         token,
-        page,
-        status: selectedStatus,
-        search: listing.debouncedSearch,
+        page: listing.page,
+        status: listing.status,
+        search: listing.search,
         recruiter: listing.recruiter,
     });
 
     const handlePageChange = (newPage: number) => {
         if (newPage < 1 || newPage > lastPage) return;
-        setPage(newPage);
-    };
-
-    const handleStatusChange = (status: string) => {
-        setSelectedStatus(status);
-        setPage(1);
-    };
-
-    const handleSearchChange = (value: string) => {
-        listing.setSearch(value);
-        setPage(1);
-    };
-
-    const handleRecruiterChange = (value: string) => {
-        listing.updateRecruiter(value);
-        setPage(1);
+        listing.setPage(newPage);
     };
 
     const displayedJobs = data?.data ?? jobs ?? [];
@@ -70,19 +52,19 @@ export default function JobManagementSection() {
             <header className="flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="grid min-w-0 flex-1 grid-cols-1 gap-4 md:grid-cols-[1.7fr_1fr_1fr]">
                     <SearchInput
-                        value={listing.search}
-                        onChange={(event) => handleSearchChange(event.currentTarget.value)}
+                        value={listing.searchInput}
+                        onChange={(event) => listing.setSearchInput(event.currentTarget.value)}
                         placeholder={t("companyPage.jobs.listing.search-placeholder")}
                         iconClassName="size-4.5"
                         className="ps-11"
                     />
                     <JobFilter
-                        value={selectedStatus}
-                        onStatusChange={handleStatusChange}
+                        value={listing.status}
+                        onStatusChange={listing.updateStatus}
                     />
                     <JobRecruiterFilter
                         value={listing.recruiter}
-                        onChange={handleRecruiterChange}
+                        onChange={listing.updateRecruiter}
                     />
                 </div>
 
@@ -143,7 +125,7 @@ export default function JobManagementSection() {
                 <CustomPagination
                     totalItems={displayedTotal}
                     pageSize={displayedPerPage}
-                    currentPage={page}
+                    currentPage={listing.page}
                     onPageChange={handlePageChange}
                 />
             )}

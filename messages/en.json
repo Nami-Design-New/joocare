@@ -1149,7 +1149,8 @@
         "submitted-to-recruiter": "Submitted to Recruiter",
         "success-notice": "The recruitment team has been notified and will proceed with the next steps based on your decisions.",
         "log-out": "Log Out"
-      }
+      },
+      "all-recruiters": "All recruiters"
     },
     "roles": {
       "title": "Roles",
@@ -2151,6 +2152,29 @@
         "not-found": "Assessment not found",
         "not-found-description": "This assessment is unavailable. Return to the category to choose another assessment."
       }
+    },
+    "recruiter-activity": {
+      "title": "Recruiters",
+      "recruiter-filter": "Recruiter",
+      "all-recruiters": "All recruiters",
+      "table-label": "Recruiter activity",
+      "columns": {
+        "name": "Name",
+        "open": "Open Jobs",
+        "closed": "Closed Jobs",
+        "draft": "Draft Jobs",
+        "projects": "Projects"
+      },
+      "open": "Open",
+      "closed": "Closed",
+      "draft": "Draft",
+      "projects": "Projects",
+      "deleted": "Deleted",
+      "open-jobs-of": "{count} open jobs by {name}",
+      "closed-jobs-of": "{count} closed jobs by {name}",
+      "draft-jobs-of": "{count} draft jobs by {name}",
+      "empty-title": "No recruiters found",
+      "empty-description": "No recruiters match the selected filter."
     }
   },
   "footer": {

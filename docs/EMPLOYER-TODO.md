@@ -142,10 +142,12 @@ Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `2MqpRGApcnG
 - [ ] 🔴 First login: Create your password + rules — `11531:118182`
 - [ ] 🔴 Password changed modal — `11661:97135`
 
-## 11. Recruiter Activity 🔴 — `10086:86774`
-- [ ] Route `/company/recruiter-activity` (sidebar link is a 404 today)
-- [ ] Table: Open / Closed / Draft jobs · Screening progress · AI match · Projects
-- [ ] Clicking a count opens filtered Jobs / Projects
+## 11. Recruiter Activity 🔌 — `10086:86774`
+- [x] Route `/company/recruiter-activity` + Recruiter filter (in URL)
+- [x] Table: Name (+ Deleted badge) · Open / Closed / Draft jobs · Projects — local preview data
+- [x] Clicking a count opens Jobs (`?status=&recruiter=`) / Projects (`?recruiter=`) pre-filtered
+- [ ] API (recruiter activity counts + recruiters list); jobs `recruiter` param currently sends the name, should become an id
+- Not in this frame (older scope): Screening progress · AI match
 
 ## 12. Talent Database / CV Search 🔌
 - [x] Route `/company/talent-database`

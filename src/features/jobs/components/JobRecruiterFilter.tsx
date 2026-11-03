@@ -14,9 +14,14 @@ export default function JobRecruiterFilter({
   onChange,
 }: JobRecruiterFilterProps) {
   const t = useTranslations('companyPage.jobs.listing');
+  // A recruiter can arrive from the URL (e.g. Recruiter Activity) before it is in the list.
+  const recruiters =
+    value && !RECRUITER_FILTER_PREVIEW.includes(value)
+      ? [...RECRUITER_FILTER_PREVIEW, value]
+      : RECRUITER_FILTER_PREVIEW;
   const options = [
     { value: ALL_RECRUITERS_VALUE, label: t('all-recruiters') },
-    ...RECRUITER_FILTER_PREVIEW.map((name) => ({ value: name, label: name })),
+    ...recruiters.map((name) => ({ value: name, label: name })),
   ];
 
   return (

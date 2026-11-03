@@ -1149,7 +1149,8 @@
         "submitted-to-recruiter": "تم الإرسال إلى مسؤول التوظيف",
         "success-notice": "تم إشعار فريق التوظيف وسيتابع الخطوات التالية بناءً على قراراتك.",
         "log-out": "تسجيل الخروج"
-      }
+      },
+      "all-recruiters": "كل مسؤولي التوظيف"
     },
     "roles": {
       "title": "الأدوار",
@@ -2151,6 +2152,29 @@
         "not-found": "التقييم غير موجود",
         "not-found-description": "هذا التقييم غير متاح. ارجع إلى التصنيف لاختيار تقييم آخر."
       }
+    },
+    "recruiter-activity": {
+      "title": "مسؤولو التوظيف",
+      "recruiter-filter": "مسؤول التوظيف",
+      "all-recruiters": "كل مسؤولي التوظيف",
+      "table-label": "نشاط مسؤولي التوظيف",
+      "columns": {
+        "name": "الاسم",
+        "open": "الوظائف المفتوحة",
+        "closed": "الوظائف المغلقة",
+        "draft": "الوظائف المسودة",
+        "projects": "المشاريع"
+      },
+      "open": "مفتوحة",
+      "closed": "مغلقة",
+      "draft": "مسودة",
+      "projects": "مشاريع",
+      "deleted": "محذوف",
+      "open-jobs-of": "{count} وظائف مفتوحة بواسطة {name}",
+      "closed-jobs-of": "{count} وظائف مغلقة بواسطة {name}",
+      "draft-jobs-of": "{count} وظائف مسودة بواسطة {name}",
+      "empty-title": "لا يوجد مسؤولو توظيف",
+      "empty-description": "لا يوجد مسؤولو توظيف يطابقون الفلتر المختار."
     }
   },
   "footer": {

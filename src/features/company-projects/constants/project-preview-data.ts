@@ -238,8 +238,9 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
   },
 ];
 
+export const ALL_PROJECT_RECRUITERS_VALUE = 'all';
+
 export const projectRecruiters = [
-  "All",
   'Sara Al-Qahtani',
   'Omar Farouk',
   'Nora Al-Otaibi',

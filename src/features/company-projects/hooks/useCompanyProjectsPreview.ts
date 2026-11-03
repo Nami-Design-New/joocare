@@ -1,14 +1,20 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { projectPreviewData } from '../constants/project-preview-data';
+import { useUrlFilters } from '@/shared/hooks/useUrlFilters';
+import {
+  ALL_PROJECT_RECRUITERS_VALUE,
+  projectPreviewData,
+} from '../constants/project-preview-data';
 import type { CompanyProject } from '../types/company-projects.types';
 
 export function useCompanyProjectsPreview() {
+  const url = useUrlFilters();
   const [projects, setProjects] = useState(projectPreviewData);
-  const [search, setSearch] = useState('');
-  const [recruiter, setRecruiter] = useState('');
-  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState(url.get('search'));
+  const recruiter = url.get('recruiter');
+  const page = url.getPage();
+  const setPage = (nextPage: number) => url.update({ page: nextPage });
   const pageSize = 6;
 
   const filteredProjects = useMemo(() => {
@@ -45,9 +51,7 @@ export function useCompanyProjectsPreview() {
       (project) => project.id !== id,
     ).length;
     setProjects((current) => current.filter((project) => project.id !== id));
-    setPage((current) =>
-      Math.min(current, Math.max(1, Math.ceil(remainingCount / pageSize))),
-    );
+    setPage(Math.min(page, Math.max(1, Math.ceil(remainingCount / pageSize))));
   };
 
   const shareProject = (id: string, manager: string) => {
@@ -79,13 +83,14 @@ export function useCompanyProjectsPreview() {
     search,
     setSearch: (value: string) => {
       setSearch(value);
-      setPage(1);
+      url.update({ search: value.trim(), page: null });
     },
     recruiter,
-    setRecruiter: (value: string) => {
-      setRecruiter(value);
-      setPage(1);
-    },
+    setRecruiter: (value: string) =>
+      url.update({
+        recruiter: value === ALL_PROJECT_RECRUITERS_VALUE ? '' : value,
+        page: null,
+      }),
     page,
     setPage,
     pageSize,
