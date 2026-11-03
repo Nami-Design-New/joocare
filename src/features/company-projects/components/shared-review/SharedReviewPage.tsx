@@ -9,15 +9,19 @@ import SharedReviewHeader from './SharedReviewHeader';
 
 type SharedReviewPageProps = {
   projectId: string;
+  experience?: 'company' | 'hiring-manager';
 };
 
-export default function SharedReviewPage({ projectId }: SharedReviewPageProps) {
+export default function SharedReviewPage({
+  projectId,
+  experience = 'company',
+}: SharedReviewPageProps) {
   const review = useSharedProjectReview(projectId);
   if (!review.project || !review.share) return null;
 
   return (
     <div className="bg-body-bg min-h-dvh">
-      <SharedReviewHeader />
+      <SharedReviewHeader experience={experience} />
 
       <main className="mx-auto w-full max-w-360 px-4 pt-10 pb-14 md:px-7 md:pt-14.5 lg:px-13">
         {review.step === 'review' ? (
@@ -61,6 +65,7 @@ export default function SharedReviewPage({ projectId }: SharedReviewPageProps) {
           projectName={review.project.name}
           recruiter={review.share.sharedBy}
           summary={review.summary}
+          experience={experience}
         />
       ) : null}
     </div>

@@ -9,18 +9,26 @@ type PasswordRequirementsProps = {
   id: string;
   value: string;
   hasError?: boolean;
+  className?: string;
 };
 
 export default function PasswordRequirements({
   id,
   value,
   hasError = false,
+  className,
 }: PasswordRequirementsProps) {
   const t = useTranslations('common.password-validation');
   const rules = getPasswordRules(value);
 
   return (
-    <div id={id} className="w-full mt-4 flex flex-col gap-2 text-start text-sm">
+    <div
+      id={id}
+      className={cn(
+        'mt-4 flex w-full flex-col gap-2 text-start text-sm',
+        className,
+      )}
+    >
       <p className="text-secondary font-medium">{t('title')}</p>
       <ul aria-live="polite" className="flex flex-col gap-2">
         {PASSWORD_RULE_KEYS.map((key) => (

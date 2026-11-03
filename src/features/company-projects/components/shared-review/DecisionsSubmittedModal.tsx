@@ -8,17 +8,20 @@ import { cn } from '@/shared/lib/utils';
 import type { SharedReviewSummary } from '../../types/shared-review.types';
 
 const EMPLOYER_LANDING_HREF = '/for-employers';
+const HIRING_MANAGER_START_HREF = '/hiring-manager/create-password';
 
 type DecisionsSubmittedModalProps = {
   projectName: string;
   recruiter: string;
   summary: SharedReviewSummary;
+  experience?: 'company' | 'hiring-manager';
 };
 
 export default function DecisionsSubmittedModal({
   projectName,
   recruiter,
   summary,
+  experience = 'company',
 }: DecisionsSubmittedModalProps) {
   const t = useTranslations('companyPage.projects.shared-review');
   const { logout } = useLogout();
@@ -59,7 +62,13 @@ export default function DecisionsSubmittedModal({
         label: t('log-out'),
         icon: <LogOut className="size-5 rtl:rotate-180" />,
         closeOnClick: false,
-        onClick: () => logout({ redirectTo: EMPLOYER_LANDING_HREF }),
+        onClick: () =>
+          logout({
+            redirectTo:
+              experience === 'hiring-manager'
+                ? HIRING_MANAGER_START_HREF
+                : EMPLOYER_LANDING_HREF,
+          }),
       }}
       actionsClassName="mt-5"
     >

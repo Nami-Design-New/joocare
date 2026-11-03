@@ -322,6 +322,15 @@
       "contact-person-phone-number": "Contact person phone number"
     },
     "pages": {
+      "create-password": {
+        "title": "Create your password",
+        "welcome": "Hi {name}, this is your first sign-in to the {workspace} workspace. Create your password to continue.",
+        "member-name": "Ahmed",
+        "workspace-name": "Riyadh Care Hospital",
+        "required-step": "This step is required. You can’t access the rest of the workspace until you set a new password",
+        "password-placeholder": "••••••••",
+        "continue": "Confirm Password & Continue"
+      },
       "candidate-login": {
         "title": "Welcome Back!",
         "subtitle": "Discover opportunities that match your ambitions."

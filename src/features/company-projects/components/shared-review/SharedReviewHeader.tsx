@@ -12,14 +12,27 @@ import { Button } from '@/shared/components/ui/button';
 const EMPLOYER_LANDING_HREF = '/for-employers';
 const EMPLOYER_LOGIN_HREF = '/auth/employer/login';
 
-export default function SharedReviewHeader() {
+type SharedReviewHeaderProps = {
+  experience?: 'company' | 'hiring-manager';
+};
+
+export default function SharedReviewHeader({
+  experience = 'company',
+}: SharedReviewHeaderProps) {
   const t = useTranslations('companyPage.projects.shared-review');
   const { logout } = useLogout();
+  const isHiringManager = experience === 'hiring-manager';
+  const homeHref = isHiringManager
+    ? '/hiring-manager/create-password'
+    : EMPLOYER_LANDING_HREF;
+  const logoutHref = isHiringManager
+    ? '/hiring-manager/create-password'
+    : EMPLOYER_LOGIN_HREF;
 
   return (
     <header className="layout-shell shadow-header sticky top-0 z-30 flex h-19 w-full items-center bg-white py-4">
       <div className="layout-content flex items-center justify-between">
-        <Link href={EMPLOYER_LANDING_HREF} aria-label={t('home')}>
+        <Link href={homeHref} aria-label={t('home')}>
           <Image
             src="/assets/new-logo-dot.svg"
             alt={t('logo-alt')}
@@ -39,7 +52,7 @@ export default function SharedReviewHeader() {
           <Button
             type="button"
             variant="outline"
-            onClick={() => logout({ redirectTo: EMPLOYER_LOGIN_HREF })}
+            onClick={() => logout({ redirectTo: logoutHref })}
             className="h-10 gap-2 rounded-full px-5 text-sm font-normal"
           >
             <LogOut className="size-5 rtl:rotate-180" strokeWidth={1.5} />

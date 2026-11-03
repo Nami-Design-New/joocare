@@ -147,9 +147,9 @@ Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `2MqpRGApcnG
 - [ ] Members API + email invite
 - [ ] Statuses: Verified / Invited · Pending / Deactivated + Account Owner badge
 - [ ] Deactivate instead of Delete
-- [ ] 🔴 First login: Create your password + rules — `11531:118182`
+- [x] First login: Create your password + rules — `11531:118182` — standalone hiring-manager UI at `/hiring-manager/create-password`, then `/hiring-manager/shared-projects/[projectId]`; invitation/password setup API is deferred
 - [x] Password changed modal — `11661:97135` — shared success modal after successful change/reset, then returns to the existing destination
-- [x] Real-time password requirements in shared `InputField` — `11531:118200` — 8+ characters, uppercase/lowercase, number, special character; enforced for registration/change/reset, with existing-password login preserved
+- [x] Real-time password requirements — `11531:118200` — standalone checklist appears after confirmation, tracks only Create/New Password, updates in real time, and enforces 8+ characters, uppercase/lowercase, number, and special character across registration/change/reset; login remains unchanged
 
 ## 11. Recruiter Activity 🔌 — `10086:86774`
 - [x] Route `/company/recruiter-activity` + Recruiter filter (in URL)
