@@ -3,9 +3,9 @@ import { ReactNode } from "react";
 import { JobActionButtons } from "./JobActionButtons";
 import JobStatusBadge from "./JobStatusBadge";
 import { JobStatus } from "../types/index.types";
-import PositionCard, { positionCardProps } from "./PositionCard";
+import PositionCard, { type PositionCardProps } from "./PositionCard";
 
-type JobHeaderProps = positionCardProps & {
+type JobHeaderProps = PositionCardProps & {
   status: JobStatus;
   closingDate: string;
   actions?: ReactNode;

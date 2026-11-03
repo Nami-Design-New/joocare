@@ -1,6 +1,6 @@
 "use client";
 
-import PdfViewer from "@/shared/components/PdfViewer";
+import dynamic from 'next/dynamic';
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
@@ -10,6 +10,10 @@ import {
 } from "@/shared/components/ui/dialog";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+
+const PdfViewer = dynamic(() => import('@/shared/components/PdfViewer'), {
+  ssr: false,
+});
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -24,7 +28,6 @@ export default function CVModal({
   pdfUrl,
 }: ConfirmDialogProps) {
   const t = useTranslations();
-  console.log("pdfUrl", pdfUrl);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="mb-25 max-w-175 rounded-2xl text-center p-8">

@@ -4,7 +4,11 @@ import { Link } from '@/i18n/navigation';
 import ProjectCandidateProfilePage from '@/features/company-projects/components/candidate-profile/ProjectCandidateProfilePage';
 import { projectPreviewData } from '@/features/company-projects/constants/project-preview-data';
 import { getProjectCandidateProfile } from '@/features/company-projects/utils/candidate-preview';
-import { getTalentCandidateProfile } from '@/features/company-talent-database/utils/candidate-profile';
+import {
+  getTalentCandidateProfile,
+  TALENT_PROFILE_SOURCE,
+} from '@/features/company-talent-database/utils/candidate-profile';
+import { getAiTalentMatchHref } from '@/features/jobs/utils';
 import Header from '@/shared/components/header/Header';
 
 type PageProps = {
@@ -12,14 +16,15 @@ type PageProps = {
     candidateId?: string;
     projectId?: string;
     source?: string;
+    jobId?: string;
   }>;
 };
 
 export default async function Page({ searchParams }: PageProps) {
-  const { candidateId, projectId, source } = await searchParams;
+  const { candidateId, projectId, source, jobId } = await searchParams;
   if (!candidateId) notFound();
 
-  const isTalentDatabaseProfile = source === 'talent-database';
+  const isTalentDatabaseProfile = source === TALENT_PROFILE_SOURCE;
   const hasProject = projectId
     ? projectPreviewData.some((project) => project.id === projectId)
     : false;
@@ -41,10 +46,10 @@ export default async function Page({ searchParams }: PageProps) {
       {isTalentDatabaseProfile && t ? (
         <div className="layout-container pt-6">
           <Link
-            href="/company/talent-database"
+            href={jobId ? getAiTalentMatchHref(jobId) : '/company/talent-database'}
             className="text-primary text-sm underline"
           >
-            {t('back-to-database')}
+            {t(jobId ? 'back-to-ai-match' : 'back-to-database')}
           </Link>
         </div>
       ) : null}

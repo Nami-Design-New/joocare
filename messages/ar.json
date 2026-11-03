@@ -21,7 +21,18 @@
     "loading-document": "جارٍ تحميل المستند...",
     "failed-load-document": "تعذر تحميل المستند.",
     "placeholder-image-alt": "صورة افتراضية",
-    "sidebar-navigation": "التنقل في الشريط الجانبي"
+    "sidebar-navigation": "التنقل في الشريط الجانبي",
+    "candidate-row": {
+      "favorite": "تمييز {name}",
+      "candidate-actions": "إجراءات {name}",
+      "create-project": "إنشاء مشروع",
+      "link-project": "إضافة إلى مشروع",
+      "message-candidate": "إرسال رسالة إلى {name}",
+      "download-cv": "تحميل السيرة الذاتية لـ {name}",
+      "downloading-cv": "جارٍ تحميل السيرة الذاتية لـ {name}",
+      "view-cv": "عرض السيرة الذاتية لـ {name}",
+      "view-profile": "عرض الملف الشخصي لـ {name}"
+    }
   },
   "header": {
     "home": "الرئيسية",
@@ -1150,7 +1161,28 @@
         "success-notice": "تم إشعار فريق التوظيف وسيتابع الخطوات التالية بناءً على قراراتك.",
         "log-out": "تسجيل الخروج"
       },
-      "all-recruiters": "كل مسؤولي التوظيف"
+      "all-recruiters": "كل مسؤولي التوظيف",
+      "candidate-projects": {
+        "create-title": "إنشاء مشروع",
+        "create-description": "أنشئ مشروعًا للمرشح {name}.",
+        "project-name": "اسم المشروع",
+        "project-name-placeholder": "أدخل اسم المشروع",
+        "name-required": "أدخل اسم المشروع.",
+        "name-too-long": "يجب ألا يتجاوز اسم المشروع 100 حرف.",
+        "create-submit": "إنشاء مشروع",
+        "creating": "جارٍ الإنشاء...",
+        "created-toast": "تم إنشاء {project} للمرشح {name}.",
+        "link-title": "إضافة المرشح إلى مشروع",
+        "link-description": "اختر المشاريع التي تريد إضافة {name} إليها.",
+        "search-projects": "ابحث عن المشاريع...",
+        "projects-list": "المشاريع",
+        "candidates-count": "{count} مرشحين",
+        "no-projects-title": "لم يتم العثور على مشاريع",
+        "no-projects-description": "جرّب بحثًا آخر أو أنشئ مشروعًا أولًا.",
+        "adding": "جارٍ الإضافة...",
+        "link-submit": "إضافة إلى المشروع",
+        "linked-toast": "تمت إضافة {name} إلى {count, plural, one {مشروع واحد} other {# مشاريع}}."
+      }
     },
     "roles": {
       "title": "الأدوار",
@@ -1575,6 +1607,116 @@
       "pdf-icon-alt": "أيقونة PDF",
       "toasts": {
         "download-cv-failed": "فشل تحميل السيرة الذاتية"
+      },
+      "tabs": {
+        "label": "طرق عرض مرشحي الوظيفة",
+        "pipeline": "المرشحون للوظيفة",
+        "ai-match": "مطابقة المواهب بالذكاء الاصطناعي"
+      },
+      "pipeline": {
+        "count": "{count, plural, one {مرشح واحد} other {# مرشحين}}",
+        "filtered-count": "{count} من أصل {total} مرشحًا",
+        "quick-message": "رسالة سريعة ({count})",
+        "filters": "الفلاتر",
+        "active-filters-count": "{count} فلاتر مفعّلة",
+        "select-all": "تحديد كل المرشحين في هذه الصفحة",
+        "select-candidate": "تحديد {name}",
+        "added-by": "أضافه {name}",
+        "table-label": "مرشحو الوظيفة",
+        "columns": {
+          "name": "الاسم",
+          "email": "البريد الإلكتروني",
+          "applied-on": "تاريخ التقديم",
+          "ai-match": "درجة مطابقة الذكاء الاصطناعي",
+          "cv-message": "السيرة الذاتية والرسالة",
+          "assessment": "التقييم"
+        },
+        "load-error": "تعذر تحميل المرشحين.",
+        "retry": "حاول مرة أخرى",
+        "no-matches-title": "لم يتم العثور على مرشحين",
+        "no-matches-description": "جرّب تغيير عوامل التصفية أو مسحها.",
+        "message-success": "تم إرسال الرسالة بنجاح إلى {count, plural, one {مرشح واحد} other {# مرشحين}}",
+        "chips": {
+          "label": "الفلاتر المفعّلة:",
+          "chip": "{name}: {value}",
+          "remove": "إزالة {filter}",
+          "clear-all": "مسح الكل",
+          "starred": "المرشحون المميزون فقط",
+          "range": "{min}–{max}",
+          "with-license": "حاصل على ترخيص طبي",
+          "without-license": "بدون ترخيص طبي",
+          "names": {
+            "search": "الاسم",
+            "email": "البريد الإلكتروني",
+            "country": "الدولة",
+            "nationality": "الجنسية",
+            "medical_license": "الترخيص",
+            "recruiter": "مسؤول التوظيف",
+            "starred": "مميز",
+            "min_score": "درجة مطابقة الذكاء الاصطناعي",
+            "max_score": "درجة مطابقة الذكاء الاصطناعي",
+            "assessment_status": "حالة التقييم",
+            "assessment_id": "التقييم",
+            "min_assessment_score": "درجة التقييم",
+            "max_assessment_score": "درجة التقييم"
+          }
+        }
+      },
+      "ai-match": {
+        "search-placeholder": "ابحث بالاسم...",
+        "order": "ترتيب التقديم",
+        "location": "الموقع الحالي",
+        "license": "حالة الترخيص",
+        "reset": "إعادة ضبط الفلاتر",
+        "orders": { "newest": "الأحدث", "oldest": "الأقدم" },
+        "licenses": { "valid": "حاصل على ترخيص طبي", "none": "بدون ترخيص طبي" }
+      },
+      "filters-page": {
+        "back": "العودة إلى مرشحي الوظيفة",
+        "title": "تصفية المرشحين",
+        "description": "ضيّق نطاق البحث من بين {count} متقدمًا لوظيفة {job}. ستظهر الفلاتر المطبقة في صفحة المرشحين.",
+        "unknown-job": "هذه الوظيفة",
+        "candidate-details": "تفاصيل المرشح",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "country": "الدولة (الموقع)",
+        "nationality": "الجنسية",
+        "license-status": "حالة الترخيص",
+        "recruiter": "مسؤول التوظيف",
+        "search-name": "ابحث باسم المرشح",
+        "search-email": "ابحث بالبريد الإلكتروني",
+        "select-country": "اختر الدولة",
+        "search-countries": "ابحث عن الدول",
+        "select-nationality": "اختر الجنسية",
+        "select-license-status": "اختر حالة الترخيص",
+        "select-recruiter": "اختر مسؤول التوظيف",
+        "starred-only": "عرض المرشحين المميزين فقط",
+        "with-license": "حاصل على ترخيص طبي",
+        "without-license": "بدون ترخيص طبي",
+        "ai-match-score": "درجة مطابقة الذكاء الاصطناعي",
+        "score-description": "عرض المرشحين الذين تقع درجة مطابقتهم ضمن هذا النطاق",
+        "min-score": "أقل درجة (%)",
+        "max-score": "أعلى درجة (%)",
+        "score-min-placeholder": "مثال: 60",
+        "score-max-placeholder": "مثال: 100",
+        "assessment": "التقييم",
+        "assessment-status": "حالة التقييم",
+        "assessment-name": "التقييم",
+        "all-assessment-statuses": "ناجح، راسب، غائب، ضمن فترة السماح",
+        "all-assessments": "كل التقييمات",
+        "min-assessment-score": "أقل درجة تقييم (%)",
+        "max-assessment-score": "أعلى درجة تقييم (%)",
+        "assessment-min-placeholder": "مثال: 50",
+        "assessment-max-placeholder": "مثال: 100",
+        "reset-all": "مسح الكل",
+        "apply": "تطبيق الفلاتر",
+        "assessment-statuses": {
+          "passed": "ناجح",
+          "failed": "راسب",
+          "absent": "غائب",
+          "grace-period": "ضمن فترة السماح",
+          "not-assigned": "غير معيّن"
+        }
       }
     },
     "accountSettings": {
@@ -2151,6 +2293,43 @@
         "back-to-assessments": "العودة إلى التقييمات",
         "not-found": "التقييم غير موجود",
         "not-found-description": "هذا التقييم غير متاح. ارجع إلى التصنيف لاختيار تقييم آخر."
+      },
+      "candidate-assessments": {
+        "close": "إغلاق",
+        "list-title": "تقييمات المرشح",
+        "list-description": "التقييمات المعيّنة للمرشح {name}.",
+        "candidate": "المرشح",
+        "assessments-count": "التقييمات ({count})",
+        "source": { "job": "مرتبط بهذه الوظيفة", "manual": "تمت مشاركته يدويًا" },
+        "sent": "أُرسل في {date}",
+        "view-result": "عرض النتيجة",
+        "view-all": "عرض الكل ({count})",
+        "due": "موعد التسليم {date}",
+        "time-expired": "انتهى الوقت – لم يتم إجراؤه",
+        "share-assessment": "مشاركة التقييم",
+        "assign-another": "مشاركة تقييم آخر",
+        "assign-title": "تعيين تقييم",
+        "assign-description": "عيّن تقييمًا للمرشح {name}.",
+        "category": "الفئة",
+        "category-placeholder": "اختر فئة",
+        "category-required": "اختر فئة.",
+        "assessment": "التقييم",
+        "assessment-placeholder": "اختر تقييمًا",
+        "assessment-required": "اختر تقييمًا.",
+        "choose-category-first": "اختر فئة أولًا",
+        "assessment-option": "{title} · {questions} سؤال · {minutes} دقيقة",
+        "how-it-works": "آلية العمل",
+        "how-it-works-description": "ستتم مشاركة التقييم مع {name}.",
+        "send": "مشاركة التقييم",
+        "sending": "جارٍ المشاركة...",
+        "assigned-toast": "تمت مشاركة التقييم مع {name}.",
+        "status": {
+          "passed": "ناجح",
+          "failed": "راسب",
+          "absent": "غائب",
+          "grace-period": "ضمن فترة السماح",
+          "not-assigned": "غير معيّن"
+        }
       }
     },
     "recruiter-activity": {

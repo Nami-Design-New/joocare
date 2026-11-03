@@ -1,163 +1,90 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
-import {
-  ChevronDown,
-  Eye,
-  FileText,
-  FolderPlus,
-  Link as LinkIcon,
-  Star,
-} from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import CandidateNameCell from '@/shared/components/candidates/CandidateNameCell';
+import CandidateRowActions from '@/shared/components/candidates/CandidateRowActions';
+import CandidateScoreCircle from '@/shared/components/candidates/CandidateScoreCircle';
 import DataTable, {
   type DataTableColumn,
 } from '@/shared/components/common/DataTable';
-import { Button } from '@/shared/components/ui/button';
 import { Checkbox } from '@/shared/components/ui/checkbox';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/shared/components/ui/dropdown-menu';
-import { cn } from '@/shared/lib/utils';
 import type { TalentCandidate } from '../types/talent-database.types';
+
+type TalentCandidateSelection = {
+  selectedIds: string[];
+  onToggle: (id: string) => void;
+  onToggleAll: () => void;
+};
 
 type TalentCandidatesTableProps = {
   candidates: TalentCandidate[];
-  selectedIds: string[];
   pageOffset: number;
-  onToggle: (id: string) => void;
-  onToggleAll: () => void;
-  onMessage: (id: string) => void;
+  // Omit to hide the checkbox column (e.g. AI Talent Match).
+  selection?: TalentCandidateSelection;
+  getProfileHref: (candidate: TalentCandidate) => string;
+  onMessage: (candidate: TalentCandidate) => void;
+  onViewCv?: (candidate: TalentCandidate) => void;
+  onCreateProject: (candidate: TalentCandidate) => void;
+  onLinkProject: (candidate: TalentCandidate) => void;
 };
 
 export default function TalentCandidatesTable({
   candidates,
-  selectedIds,
   pageOffset,
-  onToggle,
-  onToggleAll,
+  selection,
+  getProfileHref,
   onMessage,
+  onViewCv,
+  onCreateProject,
+  onLinkProject,
 }: TalentCandidatesTableProps) {
   const t = useTranslations('companyPage.talent-database');
   const [favorites, setFavorites] = useState<string[]>([]);
-  const selectedOnPage = candidates.filter((candidate) =>
-    selectedIds.includes(candidate.id),
-  ).length;
+  const toggleFavorite = (id: string) =>
+    setFavorites((current) =>
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id],
+    );
+
+  const numberColumn: DataTableColumn<TalentCandidate> = selection
+    ? getSelectionColumn(candidates, pageOffset, selection, {
+        selectAll: t('select-all'),
+        selectCandidate: (name) => t('select-candidate', { name }),
+      })
+    : {
+        id: 'number',
+        header: '#',
+        headerClassName: 'w-[6%] text-start',
+        cellClassName: 'w-[6%] px-4 text-start',
+        renderCell: (_candidate, index) => `#${pageOffset + index + 1}`,
+      };
+
   const columns: DataTableColumn<TalentCandidate>[] = [
-    {
-      id: 'selection',
-      header: (
-        <div className="flex items-center gap-2">
-          <Checkbox
-            aria-label={t('select-all')}
-            checked={
-              selectedOnPage === candidates.length && candidates.length > 0
-                ? true
-                : selectedOnPage
-                  ? 'indeterminate'
-                  : false
-            }
-            onCheckedChange={onToggleAll}
-            className="border-primary-foreground bg-card size-6 rounded-[3px]"
-          />
-          <span>#</span>
-        </div>
-      ),
-      headerClassName: 'w-[9%] text-start',
-      cellClassName: 'w-[9%] px-4 text-start',
-      renderCell: (candidate, index) => (
-        <div className="flex items-center gap-2">
-          <Checkbox
-            checked={selectedIds.includes(candidate.id)}
-            onCheckedChange={() => onToggle(candidate.id)}
-            aria-label={t('select-candidate', { name: candidate.name })}
-            className="size-6 rounded-[3px]"
-          />
-          <span>{pageOffset + index + 1}</span>
-        </div>
-      ),
-    },
+    numberColumn,
     {
       id: 'name',
       header: t('name'),
-      headerClassName: 'w-[18%] text-start',
-      cellClassName: 'w-[18%] text-start',
+      headerClassName: 'w-[25%] text-start',
+      cellClassName: 'w-[25%] text-start',
       renderCell: (candidate) => (
-        <div className="flex min-w-0 items-center gap-2">
-          <Image
-            src={candidate.image}
-            alt=""
-            width={36}
-            height={36}
-            className="size-9 shrink-0 rounded-full object-cover"
-          />
-          <Link
-            href={`/company/candidate-profile?candidateId=${candidate.id}&source=talent-database`}
-            className="min-w-0 max-w-[70px] truncate underline underline-offset-2"
-            title={candidate.name}
-          >
-            {candidate.name}
-          </Link>
-          <button
-            type="button"
-            aria-label={t('favorite', { name: candidate.name })}
-            aria-pressed={favorites.includes(candidate.id)}
-            onClick={() =>
-              setFavorites((current) =>
-                current.includes(candidate.id)
-                  ? current.filter((id) => id !== candidate.id)
-                  : [...current, candidate.id],
-              )
-            }
-            className="shrink-0 rounded p-0.5 focus-visible:outline-2"
-          >
-            <Star
-              className={cn(
-                'text-muted-foreground size-6',
-                favorites.includes(candidate.id) &&
-                'text-warning fill-warning',
-              )}
-            />
-          </button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                aria-label={t('candidate-actions', { name: candidate.name })}
-                className="group size-6 rounded-full bg-muted p-0 text-muted-foreground data-[state=open]:bg-primary data-[state=open]:text-primary-foreground"
-              >
-                <ChevronDown
-                  aria-hidden
-                  className="size-4 transition-transform group-data-[state=open]:rotate-180"
-                />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="min-w-40 rounded-xl">
-              <DropdownMenuItem>
-                <FolderPlus aria-hidden className="size-4" />
-                {t('create-project')}
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <LinkIcon aria-hidden className="size-4" />
-                {t('link-project')}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <CandidateNameCell
+          name={candidate.name}
+          image={candidate.image}
+          href={getProfileHref(candidate)}
+          isStarred={favorites.includes(candidate.id)}
+          onToggleStar={() => toggleFavorite(candidate.id)}
+          onCreateProject={() => onCreateProject(candidate)}
+          onLinkProject={() => onLinkProject(candidate)}
+        />
       ),
     },
     {
       id: 'nationality',
       header: t('fields.nationality'),
-      headerClassName: 'w-[14%]',
-      cellClassName: 'w-[14%]',
+      headerClassName: 'w-[11%]',
+      cellClassName: 'w-[11%]',
       renderCell: (candidate) =>
         t(`options.${candidate.attributes.nationality}`),
     },
@@ -184,62 +111,26 @@ export default function TalentCandidatesTable({
     {
       id: 'score',
       header: t('ai-score'),
-      headerClassName: 'w-[12%]',
-      cellClassName: 'w-[12%]',
+      headerClassName: 'w-[10%]',
+      cellClassName: 'w-[10%]',
       renderCell: (candidate) => (
-        <span className="border-primary text-primary mx-auto flex size-12 items-center justify-center rounded-full border-2 text-sm">
-          {candidate.score}%
-        </span>
+        <CandidateScoreCircle score={candidate.score} />
       ),
     },
     {
       id: 'cv',
       header: t('cv'),
-      headerClassName: 'w-[20%]',
-      cellClassName: 'w-[20%]',
+      headerClassName: 'w-[18%]',
+      cellClassName: 'w-[18%]',
       renderCell: (candidate) => (
-        <div className="flex items-center justify-center gap-1.5">
-          <Button
-            size="sm"
-            aria-label={t('message-candidate', { name: candidate.name })}
-            onClick={() => onMessage(candidate.id)}
-            className="h-8 w-16 rounded-full p-0"
-          >
-            <Image
-              src="/assets/company-projects/candidate-share.svg"
-              alt=""
-              width={14}
-              height={14}
-            />
-          </Button>
-          <Button
-            asChild
-            variant="secondary"
-            size="sm"
-            className="h-8 w-16 min-w-0 rounded-full p-0"
-          >
-            <a
-              href={candidate.cv}
-              download={`${candidate.name} CV.pdf`}
-              aria-label={t('download-cv', { name: candidate.name })}
-            >
-              <FileText aria-hidden className="size-4" />
-            </a>
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            size="sm"
-            className="h-8 w-16 rounded-full p-0"
-          >
-            <Link
-              href={`/company/candidate-profile?candidateId=${candidate.id}&source=talent-database`}
-              aria-label={t('view-profile', { name: candidate.name })}
-            >
-              <Eye aria-hidden className="size-4" />
-            </Link>
-          </Button>
-        </div>
+        <CandidateRowActions
+          name={candidate.name}
+          onMessage={() => onMessage(candidate)}
+          downloadHref={candidate.cv}
+          viewHref={onViewCv ? undefined : getProfileHref(candidate)}
+          onView={onViewCv ? () => onViewCv(candidate) : undefined}
+          viewKind={onViewCv ? 'cv' : 'profile'}
+        />
       ),
     },
   ];
@@ -250,10 +141,55 @@ export default function TalentCandidatesTable({
         data={candidates}
         getRowKey={(candidate) => candidate.id}
         ariaLabel={t('results-table')}
-        className="min-w-[1028px] table-fixed"
+        className="min-w-257 table-fixed"
         headerRowClassName="bg-primary hover:bg-primary [&_th]:text-primary-foreground"
         rowClassName="bg-body-bg h-[92px] border-border"
       />
     </div>
   );
+}
+
+function getSelectionColumn(
+  candidates: TalentCandidate[],
+  pageOffset: number,
+  { selectedIds, onToggle, onToggleAll }: TalentCandidateSelection,
+  labels: { selectAll: string; selectCandidate: (name: string) => string },
+): DataTableColumn<TalentCandidate> {
+  const selectedOnPage = candidates.filter((candidate) =>
+    selectedIds.includes(candidate.id),
+  ).length;
+
+  return {
+    id: 'selection',
+    header: (
+      <div className="flex items-center gap-2">
+        <Checkbox
+          aria-label={labels.selectAll}
+          checked={
+            selectedOnPage === candidates.length && candidates.length > 0
+              ? true
+              : selectedOnPage
+                ? 'indeterminate'
+                : false
+          }
+          onCheckedChange={onToggleAll}
+          className="border-primary-foreground bg-card size-6 rounded-[3px]"
+        />
+        <span>#</span>
+      </div>
+    ),
+    headerClassName: 'w-[9%] text-start',
+    cellClassName: 'w-[9%] px-4 text-start',
+    renderCell: (candidate, index) => (
+      <div className="flex items-center gap-2">
+        <Checkbox
+          checked={selectedIds.includes(candidate.id)}
+          onCheckedChange={() => onToggle(candidate.id)}
+          aria-label={labels.selectCandidate(candidate.name)}
+          className="size-6 rounded-[3px]"
+        />
+        <span>{pageOffset + index + 1}</span>
+      </div>
+    ),
+  };
 }

@@ -51,7 +51,7 @@ export default function RecruiterActivityPage() {
             />
           ) : (
             <EmptyDataState
-              title={t('empty-title')}
+              title="companyPage.recruiter-activity.empty-title"
               description={t('empty-description')}
             />
           )}

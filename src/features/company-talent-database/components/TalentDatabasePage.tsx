@@ -1,9 +1,12 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
+import CandidateProjectModals from '@/features/company-projects/components/Modals/CandidateProjectModals';
+import { useCandidateProjectActions } from '@/features/company-projects/hooks/useCandidateProjectActions';
+import CVModal from '@/features/jobs/components/CVModal';
 import SuccessModal from '@/shared/components/modals/SuccessModal';
 import { TALENT_PAGE_SIZE } from '../constants/talent-filters';
 import { useTalentDatabasePreview } from '../hooks/useTalentDatabasePreview';
@@ -11,10 +14,14 @@ import TalentSearchForm from './TalentSearchForm';
 import TalentResultsHeader from './TalentResultsHeader';
 import TalentCandidatesTable from './TalentCandidatesTable';
 import TalentMessageDialog from './TalentMessageDialog';
+import { getTalentProfileHref } from '../utils/candidate-profile';
+import type { TalentCandidate } from '../types/talent-database.types';
 
 export default function TalentDatabasePage() {
   const t = useTranslations('companyPage.talent-database');
   const preview = useTalentDatabasePreview();
+  const projectActions = useCandidateProjectActions();
+  const [cvCandidate, setCvCandidate] = useState<TalentCandidate | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,11 +54,17 @@ export default function TalentDatabasePage() {
         <>
           <TalentCandidatesTable
             candidates={preview.visible}
-            selectedIds={preview.selectedIds}
             pageOffset={(preview.page - 1) * TALENT_PAGE_SIZE}
-            onToggle={preview.toggleCandidate}
-            onToggleAll={preview.toggleAll}
-            onMessage={preview.messageCandidate}
+            selection={{
+              selectedIds: preview.selectedIds,
+              onToggle: preview.toggleCandidate,
+              onToggleAll: preview.toggleAll,
+            }}
+            getProfileHref={(candidate) => getTalentProfileHref(candidate.id)}
+            onViewCv={setCvCandidate}
+            onMessage={(candidate) => preview.messageCandidate(candidate.id)}
+            onCreateProject={projectActions.openCreate}
+            onLinkProject={projectActions.openLink}
           />
           <CustomPagination
             totalItems={preview.filtered.length}
@@ -76,6 +89,15 @@ export default function TalentDatabasePage() {
           onSend={preview.previewSendMessage}
         />
       )}
+      <CandidateProjectModals actions={projectActions} />
+      <CVModal
+        open={!!cvCandidate}
+        onOpenChange={(open) => {
+          if (!open) setCvCandidate(null);
+        }}
+        title={cvCandidate?.name ?? ''}
+        pdfUrl={cvCandidate?.cv}
+      />
       <SuccessModal
         open={preview.sentCount > 0}
         onOpenChange={(open) => {

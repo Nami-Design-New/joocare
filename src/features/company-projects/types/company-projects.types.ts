@@ -47,3 +47,20 @@ export type ProjectAction = {
   type: 'share' | 'edit' | 'close' | 'delete' | 'log';
   projectId: string;
 } | null;
+
+// Minimal candidate info the project modals need, whichever page opens them.
+export type ProjectCandidateRef = {
+  id: string;
+  name: string;
+};
+
+export type CandidateProjectAction = {
+  type: 'create' | 'link';
+  candidate: ProjectCandidateRef;
+} | null;
+
+export type ProjectOption = {
+  id: string;
+  name: string;
+  candidateCount: number;
+};

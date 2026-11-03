@@ -35,7 +35,7 @@ export default function MainProviders({
   );
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages} timeZone="UTC">
       <TanstackQueryProvider>
         <NextAuthProvider>
           <Provider store={store}>

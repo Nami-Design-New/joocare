@@ -19,3 +19,6 @@ export type TalentCandidate = {
 };
 
 export type TalentMessageValues = { message: string };
+
+// The message dialog only needs these, so other candidate lists can reuse it.
+export type MessageRecipient = Pick<TalentCandidate, 'id' | 'name'>;

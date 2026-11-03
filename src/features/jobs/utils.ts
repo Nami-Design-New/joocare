@@ -284,3 +284,29 @@ export function stripHtml(html: string) {
   if (!html) return '';
   return html.replace(/<[^>]*>/g, '');
 }
+
+export function getCvDownloadFileName(name: string, cvUrl: string) {
+  const urlPath = cvUrl.split('?')[0];
+  const extension = urlPath.includes('.')
+    ? `.${urlPath.split('.').pop() ?? 'pdf'}`
+    : '.pdf';
+  // eslint-disable-next-line no-control-regex
+  const safeName = name
+    .replace(/[<>:"/\|?*\x00-\x1F]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return `${safeName || 'candidate-cv'}${extension}`;
+}
+
+export function getJobCandidatesHref(jobId: string | number) {
+  return `/company/job/candidates/${jobId}`;
+}
+
+export function getAiTalentMatchHref(jobId: string | number) {
+  return `${getJobCandidatesHref(jobId)}?tab=ai-match`;
+}
+
+export function getPipelineFiltersHref(jobId: string | number, query = '') {
+  return `${getJobCandidatesHref(jobId)}/filters${query ? `?${query}` : ''}`;
+}

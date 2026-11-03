@@ -15,13 +15,13 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import type {
-  TalentCandidate,
+  MessageRecipient,
   TalentMessageValues,
 } from '../types/talent-database.types';
 import { createTalentMessageSchema } from '../validation/talent-message-schema';
 
 type TalentMessageDialogProps = {
-  candidates: TalentCandidate[];
+  candidates: MessageRecipient[];
   onRemove: (id: string) => void;
   onClose: () => void;
   onSend: (values: TalentMessageValues) => Promise<void>;

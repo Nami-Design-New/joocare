@@ -1,13 +1,4 @@
 export type JobStatus = 'open' | 'closed' | 'paused' | 'draft';
-export type Applicant = {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  date: string;
-  cvUrl: string | null;
-};
-
 // Candidate jobs
 
 export type JobsFilterOption = {

@@ -30,3 +30,15 @@ export function getTalentCandidateProfile(
     },
   };
 }
+
+export const TALENT_PROFILE_SOURCE = 'talent-database';
+
+// `jobId` makes the profile's back link return to that job's AI Talent Match.
+export function getTalentProfileHref(candidateId: string, jobId?: string) {
+  const params = new URLSearchParams({
+    candidateId,
+    source: TALENT_PROFILE_SOURCE,
+  });
+  if (jobId) params.set('jobId', jobId);
+  return `/company/candidate-profile?${params.toString()}`;
+}

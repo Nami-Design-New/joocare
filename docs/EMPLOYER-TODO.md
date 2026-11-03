@@ -73,19 +73,27 @@ Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `2MqpRGApcnG
 - [ ] Screening questions + Assessment sections (Added / Not added + Edit link) — `10086:87709`
 - [ ] Job screening questions modal — `11661:114959`
 
-## 6. Pipeline candidates 🟠 (biggest gap) — `10086:85598`, `12388:106758`
-- [ ] Job header (title · company · type)
-- [ ] Pipeline Candidates / AI Talent Match tabs — `11661:115970`, `10086:86250`
-- [ ] Candidate count + Quick Message (n)
-- [ ] Columns: Email · AI Match Score · Assessment status
-- [ ] Assessment states: Passed % · Failed · View result · In grace period (Due) · Time expired – not taken · Not assigned + Share assessment
-- [ ] Project chips + Create Project + "View all (n)"
-- [ ] "Added by …"
-- [ ] Filters page + applied filters — `11531:111386`, `11531:113387`
-- [ ] Profile popup — `11531:114589`
+## 6. Pipeline candidates 🟠 — `10086:85598`, `12388:106758`
+- [x] Job header (title · company · type)
+- [x] Pipeline Candidates / AI Talent Match tabs — `11661:115970`, `10086:86250` — AI Talent Match uses preview data 🔌
+- [x] Candidate count + Quick Message (n) — message dialog ready; delivery is preview only 🔌
+- [x] Columns: Email · AI Match Score · Assessment status — optional API fields supported; backend data still required 🔌
+- [x] Assessment states: Passed % · Failed · View result · In grace period (Due) · Time expired – not taken · Not assigned + Share assessment — UI ready 🔌
+- [ ] Project chips + "View all (n)"
+- [x] Create Project action + modal — UI preview; needs API 🔌
+- [x] "Added by …" — displayed when supplied by the API
+- [x] Filters page + applied filters — `11531:111386`, `11531:113387` — URL/API params wired; backend behavior needs verification 🔌
+- [x] Candidate name links to the existing candidate profile page (`candidateId=talent-5&source=talent-database`) — user scope: page navigation
 - [ ] 🔴 Screening answers + summary scores — `10086:89120`
-- [ ] 🔴 Modals: link to job `11531:114326` · link to project `11531:116277` · candidate assessments `11531:117890` · send message to selected `11531:118106` · share assessment (single) `11531:116724`
-- [ ] 🔴 Success: linked to job / linked to project / message sent — `11661:97147`, `11661:97159`, `11661:97171`
+- [ ] 🔴 Modal: link to job — `11531:114326`
+- [x] Modal: link to project — `11531:116277` — UI preview; needs API 🔌
+- [x] Modal: candidate assessments — `11531:117890`
+- [x] Modal: send message to selected — `11531:118106` — UI preview; no delivery 🔌
+- [x] Modal: share assessment (single) — `11531:116724` — UI preview; needs API 🔌
+- [ ] 🔴 Success modal: linked to job — `11661:97147`
+- [ ] 🔴 Success modal: linked to project — `11661:97159` — currently a toast
+- [x] Success modal: message sent — `11661:97171` — UI preview 🔌
+- [ ] API completion: AI Talent Match, favorite persistence, project creation/linking, assessment invitations, message delivery, and verification of pipeline filters/optional fields with real job data
 
 ## 7. Projects 🔌
 - [x] Project card per Figma — `11531:105811`
@@ -93,8 +101,8 @@ Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `2MqpRGApcnG
 - [ ] API (list, details, candidates, all actions)
 - [ ] Recruiter + Created date range filters — `10086:101678`
 - [ ] "Shared N× · last <date>" + "+N more"
-- [ ] 🔴 Create project modal — `10086:123881`
-- [ ] 🔴 Add candidate to project modal — `10086:123817`
+- [x] Create project modal — `10086:123881` — reusable candidate action UI ready; needs API 🔌
+- [x] Add candidate to project modal — `10086:123817` — reusable candidate action UI ready; needs API 🔌
 - [ ] Internal note when adding a candidate
 
 ## 8. Assessments 🔌
@@ -154,6 +162,7 @@ Logic and details: [PHASE-2-README.md](PHASE-2-README.md) · Figma: `2MqpRGApcnG
 - [x] Search filter sections (Occupational · Experience · Licensing · Languages · Mobility), collapsible — `10086:87237`, `11531:95756`
 - [x] Results + download list (local preview data) — `10086:87021`, `10086:90396`
 - [x] Candidate profile preview, reusing the existing read-only profile — `10086:86891`
+- [x] Eye icon opens the selected candidate's CV modal; candidate name links to the profile page
 - [x] Send Message to Selected: recipient removal + message validation — `11531:118106`
 - [x] Message success: existing `SuccessModal` + existing Lottie, dynamic recipient count — `11661:97171`
 - [ ] API integration, real message delivery, and finalized Talent Database scope / consent / plans (QA 56)

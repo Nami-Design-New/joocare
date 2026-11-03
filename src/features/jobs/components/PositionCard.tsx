@@ -1,8 +1,8 @@
-import { Badge } from "@/shared/components/ui/badge";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import { Badge } from '@/shared/components/ui/badge';
 
-export type positionCardProps = {
+export type PositionCardProps = {
   logoSrc: string;
   title: string;
   company: string;
@@ -14,24 +14,31 @@ export default function PositionCard({
   company,
   title,
   employmentType,
-}: positionCardProps) {
+}: PositionCardProps) {
   const t = useTranslations();
   return (
     <div className="flex items-center gap-6">
-      <Image
-        src={logoSrc}
-        alt={t("companyPage.postJob.review.companyLogoAlt")}
-        width={96}
-        height={86}
-        className="rounded-2xl w-24 h-22"
-      />
+      <div className="bg-primary-bg flex h-22 w-24 shrink-0 items-center justify-center rounded-2xl p-2">
+        <Image
+          src={logoSrc}
+          alt={t('companyPage.postJob.review.companyLogoAlt')}
+          width={96}
+          height={86}
+          className="size-full object-contain"
+        />
+      </div>
       <div>
-        <h6 className="text-foreground text-2xl font-semibold mb-1">{title}</h6>
-        <p className="flex max-sm:flex-col items-start sm:items-center gap-2">
+        <h1 className="text-foreground mb-1 text-2xl font-semibold">
+          {title}
+        </h1>
+        <p className="flex items-start gap-2 max-sm:flex-col sm:items-center">
           <span className="text-muted-foreground text-base font-normal">
-            {t("companyPage.postJob.review.at")} {company}
+            {t('companyPage.postJob.review.at')} {company}
           </span>
-          <Badge size="sm" className="bg-[#0BA02C] rounded-[3px] font-semibold max-sm:text-[10px]">
+          <Badge
+            size="sm"
+            className="bg-job-type rounded-[3px] font-semibold uppercase max-sm:text-[10px]"
+          >
             {employmentType}
           </Badge>
         </p>
