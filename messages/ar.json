@@ -1803,15 +1803,7 @@
         "view-assessment": "عرض التقييم",
         "dialog-title": "أسئلة الفرز ({count})",
         "close": "إغلاق",
-        "required": "مطلوب",
-        "type-label": "نوع السؤال",
-        "options-label": "خيارات الإجابة",
-        "correct-answer": "الإجابة الصحيحة",
-        "types": {
-          "single": "اختيار واحد",
-          "multi": "اختيارات متعددة",
-          "yes-no": "نعم / لا"
-        }
+        "required": "مطلوب"
       },
       "postedBy": {
         "label": "نُشر بواسطة",

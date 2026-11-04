@@ -17,7 +17,7 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import type { ScreeningQuestion } from '../types/job-steps.types';
-import ScreeningQuestionDetails from './post-job/ScreeningQuestionDetails';
+import ScreeningQuestionPreview from './post-job/ScreeningQuestionPreview';
 
 type JobScreeningQuestionsModalProps = {
   open: boolean;
@@ -77,7 +77,7 @@ export default function JobScreeningQuestionsModal({
                 </span>
               </AccordionTrigger>
               <AccordionContent className="ps-13 pb-4">
-                <ScreeningQuestionDetails question={question} />
+                <ScreeningQuestionPreview question={question} />
               </AccordionContent>
             </AccordionItem>
           ))}

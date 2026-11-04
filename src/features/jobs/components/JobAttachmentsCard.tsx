@@ -1,7 +1,12 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
-import { CheckCircle2, ChevronRight, FileText, MessageSquare } from 'lucide-react';
+import {
+  CheckCircle2,
+  ChevronRight,
+  FileText,
+  MessageSquare,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import AssessmentPreviewDialog from '@/features/company-assessments/components/details/AssessmentPreviewDialog';
 import { Link } from '@/i18n/navigation';
@@ -30,7 +35,9 @@ export default function JobAttachmentsCard({
   const [previewId, setPreviewId] = useState<string | null>(null);
   if (!questions.length && !assessment) return null;
 
-  const requiredCount = questions.filter((question) => question.required).length;
+  const requiredCount = questions.filter(
+    (question) => question.required,
+  ).length;
   const linkContent = (label: string) => (
     <>
       {label}
@@ -45,14 +52,23 @@ export default function JobAttachmentsCard({
           <FileText aria-hidden="true" className="size-5" />
         </span>
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-          <h3 className="text-foreground text-base font-semibold">{t('title')}</h3>
+          <h3 className="text-foreground text-base font-semibold">
+            {t('title')}
+          </h3>
           {questions.length ? (
             <AttachmentRow
               icon={<MessageSquare aria-hidden="true" className="size-4.5" />}
               label={t('questions')}
-              meta={t('questions-count', { total: questions.length, required: requiredCount })}
+              meta={t('questions-count', {
+                total: questions.length,
+                required: requiredCount,
+              })}
               link={
-                <button type="button" onClick={() => setQuestionsOpen(true)} className={LINK_CLASS}>
+                <button
+                  type="button"
+                  onClick={() => setQuestionsOpen(true)}
+                  className={LINK_CLASS}
+                >
                   {linkContent(t('view-questions'))}
                 </button>
               }
@@ -65,7 +81,11 @@ export default function JobAttachmentsCard({
               meta={assessment.title}
               link={
                 previewAssessment ? (
-                  <button type="button" onClick={() => setPreviewId(String(assessment.id))} className={LINK_CLASS}>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewId(String(assessment.id))}
+                    className={LINK_CLASS}
+                  >
                     {linkContent(t('view-assessment'))}
                   </button>
                 ) : (
@@ -87,7 +107,10 @@ export default function JobAttachmentsCard({
         questions={questions}
       />
       {previewAssessment ? (
-        <AssessmentPreviewDialog assessmentId={previewId} onClose={() => setPreviewId(null)} />
+        <AssessmentPreviewDialog
+          assessmentId={previewId}
+          onClose={() => setPreviewId(null)}
+        />
       ) : null}
     </>
   );

@@ -1803,15 +1803,7 @@
         "view-assessment": "View assessment",
         "dialog-title": "Screening Questions ({count})",
         "close": "Close",
-        "required": "Required",
-        "type-label": "Question type",
-        "options-label": "Answer options",
-        "correct-answer": "Correct answer",
-        "types": {
-          "single": "Single Select",
-          "multi": "Multi Select",
-          "yes-no": "Yes / No"
-        }
+        "required": "Required"
       },
       "postedBy": {
         "label": "Posted by",
