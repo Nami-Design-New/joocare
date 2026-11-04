@@ -4,7 +4,7 @@ import { ChevronDown, Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/lib/utils';
 import type { ScreeningQuestion } from '../../types/job-steps.types';
-import ScreeningQuestionDetails from './ScreeningQuestionDetails';
+import ScreeningQuestionPreview from './ScreeningQuestionPreview';
 
 type ScreeningQuestionCardProps = {
   question: ScreeningQuestion;
@@ -80,7 +80,7 @@ export default function ScreeningQuestionCard({
       </div>
       {isExpanded ? (
         <div className="mt-4">
-          <ScreeningQuestionDetails question={question} />
+          <ScreeningQuestionPreview question={question} />
         </div>
       ) : null}
     </article>
