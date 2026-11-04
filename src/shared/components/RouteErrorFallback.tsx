@@ -1,20 +1,26 @@
-"use client";
+'use client';
 
-import { Button } from "@/shared/components/ui/button";
+import { Button } from '@/shared/components/ui/button';
 import {
   getHttpErrorMessage,
   getHttpStatusCode,
   getHttpStatusMeta,
-} from "@/shared/lib/http-error";
+} from '@/shared/lib/http-error';
 
 type RouteErrorFallbackProps = {
   error: Error & { digest?: string };
   reset: () => void;
+  title?: string;
+  description?: string;
+  retryLabel?: string;
 };
 
 export default function RouteErrorFallback({
   error,
   reset,
+  title,
+  description,
+  retryLabel = 'Try again',
 }: RouteErrorFallbackProps) {
   const statusCode = getHttpStatusCode(error) ?? 500;
   const meta = getHttpStatusMeta(statusCode, getHttpErrorMessage(error));
@@ -24,14 +30,14 @@ export default function RouteErrorFallback({
       <div className="bg-card w-full max-w-2xl rounded-3xl border p-8 text-center shadow-sm">
         <p className="text-primary text-sm font-semibold">{statusCode}</p>
         <h1 className="text-foreground mt-3 text-3xl font-semibold">
-          {meta.title}
+          {title ?? meta.title}
         </h1>
         <p className="text-muted-foreground mt-4 text-base">
-          {meta.description}
+          {description ?? meta.description}
         </p>
         <div className="mt-8 flex justify-center">
           <Button size="pill" onClick={reset}>
-            Try again
+            {retryLabel}
           </Button>
         </div>
       </div>

@@ -339,11 +339,18 @@ Code: `post-job/page.tsx`, `PostJobForm`, `JobPostStepOne/Two`, `JobReviewPanel`
 
 User scope update: AI Filter modal and CV Search modal are excluded. Messaging and search currently run as UI previews; no messages are delivered.
 
-## 13. Inbox / Chat 🔴
-- [ ] Inbox list + chat view — `10086:86069`, `10086:85956`
-- [ ] Menu open / chat closed / image & reply — `11531:118930`, `11535:119505`, `11535:120111`
-- [ ] Already contacted alert — `11535:122389`
-- [ ] Super admin view — `11535:122801`
+## 13. Chat 🟢 (design complete)
+- [x] Conversation list + active chat window - `10086:86069`
+- [x] Menu open / chat closed / image & reply - `11531:118930`, `11535:119505`, `11535:120111`
+- [x] Already contacted alert + empty conversation - `11535:122389`
+- [x] Super Admin view: recruiter attribution, send, close and reopen - `11535:122801`
+- [x] Original Figma photos/icons, desktop + mobile list/conversation navigation, Arabic/English UI. Candidate names, job titles and message data are not translated.
+- [ ] API integration: conversation list/history, real message delivery, attachment storage/downloads, unread updates, and server role/permission checks.
+
+Code: `src/features/chat`; route: `/en/company/chat`.
+Design previews: `?scenario=image-and-reply&conversation=emily`, `?scenario=already-contacted&conversation=emily`, `?scenario=closed&conversation=emily`, `?view=super-admin`.
+These parameters only select local design fixtures; they do not grant permissions or send messages. The original PDF file is not provided in Figma; its download action shows a preview notice. User-selected attachments can be previewed/downloaded locally.
+User decisions: name = Chat; preserve current header/sidebar; old standalone `10086:85956` and its suggested replies are excluded; use the final seven screens instead of QA58 additions.
 
 ## 14. Minor copy
 - [ ] Edit online profile: title + placeholders `ex: linkedin.com/in/username` — `10086:88688`

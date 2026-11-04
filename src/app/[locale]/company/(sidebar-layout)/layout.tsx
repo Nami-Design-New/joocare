@@ -1,31 +1,6 @@
-import CompanySidebar from "@/features/company/components/company-sidebar/CompanySidebar";
-import Header from "@/shared/components/header/Header";
-import React from "react";
+import type { ReactNode } from 'react';
+import CompanyWorkspaceLayout from '@/features/company/components/CompanyWorkspaceLayout';
 
-const CompanyLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <>
-      <Header />
-
-      <main className="grid grid-cols-12 lg:min-h-dvh">
-
-        {/* Sidebar */}
-        <aside
-          className="col-span-12 lg:col-span-3 xl:col-span-2 lg:block"
-        >
-          <CompanySidebar />
-        </aside>
-
-        {/* Content */}
-        <section
-          className="col-span-12 lg:col-span-9 xl:col-span-10 px-4 pt-6 pb-8 md:px-7 md:pt-12 bg-body-bg"
-        >
-          {children}
-        </section>
-
-      </main>
-    </>
-  );
-};
-
-export default CompanyLayout;
+export default function CompanyLayout({ children }: { children: ReactNode }) {
+  return <CompanyWorkspaceLayout>{children}</CompanyWorkspaceLayout>;
+}

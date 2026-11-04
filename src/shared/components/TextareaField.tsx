@@ -1,8 +1,8 @@
-"use client";
-import * as React from "react";
+'use client';
+import * as React from 'react';
 
-import { cn } from "../lib/utils";
-import { Textarea } from "./ui/textarea";
+import { cn } from '../lib/utils';
+import { Textarea } from './ui/textarea';
 
 type TextareaFieldProps = {
   label?: string;
@@ -11,18 +11,27 @@ type TextareaFieldProps = {
   containerStyles?: string;
   disabled?: boolean;
   hint?: string;
-} & React.ComponentProps<"textarea">;
+} & React.ComponentProps<'textarea'>;
 
 export const TextareaField = React.forwardRef<
   HTMLTextAreaElement,
   TextareaFieldProps
 >(
   (
-    { label, id, className, error, containerStyles, disabled = false, hint, ...props },
-    ref
+    {
+      label,
+      id,
+      className,
+      error,
+      containerStyles,
+      disabled = false,
+      hint,
+      ...props
+    },
+    ref,
   ) => {
     return (
-      <div className={cn("flex flex-col w-full", containerStyles)}>
+      <div className={cn('flex w-full flex-col', containerStyles)}>
         {label && (
           <label htmlFor={id} className="mx-1 mb-1 font-semibold">
             {label}
@@ -44,11 +53,11 @@ export const TextareaField = React.forwardRef<
         />
 
         {error && (
-          <span className="mt-1 text-[12px] text-red-500">{error}</span>
+          <span className="text-destructive mt-1 text-[12px]">{error}</span>
         )}
       </div>
     );
-  }
+  },
 );
 
-TextareaField.displayName = "TextareaField";
+TextareaField.displayName = 'TextareaField';

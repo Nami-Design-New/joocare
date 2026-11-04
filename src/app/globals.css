@@ -5,6 +5,18 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-chat-primary: var(--chat-primary);
+  --color-chat-list: var(--chat-list);
+  --color-chat-surface: var(--chat-surface);
+  --color-chat-heading: var(--chat-heading);
+  --color-chat-search: var(--chat-search);
+  --color-chat-muted: var(--chat-muted);
+  --color-chat-danger: var(--chat-danger);
+  --color-chat-danger-bg: var(--chat-danger-bg);
+  --color-chat-warning: var(--chat-warning);
+  --color-chat-warning-bg: var(--chat-warning-bg);
+  --color-chat-warning-border: var(--chat-warning-border);
+  --color-chat-dashed: var(--chat-dashed);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-outfit: var(--font-outfit);
@@ -95,6 +107,18 @@
    LIGHT MODE — Joo Care Brand Theme
 ════════════════════════════════════════ */
 :root {
+  --chat-primary: #076914;
+  --chat-list: #f3f4f5;
+  --chat-surface: #f3f4f6;
+  --chat-heading: #191c1d;
+  --chat-search: #6e7979;
+  --chat-muted: #4b5563;
+  --chat-danger: #dc2626;
+  --chat-danger-bg: #fef2f2;
+  --chat-warning: #92400e;
+  --chat-warning-bg: #fffbeb;
+  --chat-warning-border: #f59e0b;
+  --chat-dashed: #c4cad0;
   --assessment-action: #007300;
   --assessment-border: #dde2e6;
   --assessment-surface: #f9fafb;

@@ -17,6 +17,7 @@ import { LanguageToggle } from "../LanguageToggle";
 import { Button, buttonVariants } from "../ui/button";
 import { DrawerScrollableContent } from "./DrawerScrollableContent";
 import UserDropDown from "./UserDropDown";
+import HeaderChatLink from "./HeaderChatLink";
 import { useLocale, useTranslations } from "next-intl";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import useGetCandidateProfile from "@/features/candidate-profile/hooks/useGetCandidateProfile";
@@ -140,6 +141,8 @@ function HeaderActionsButtons({
             </Button>
           </>
         )}
+
+        {isAuthed && companyHeader && <HeaderChatLink />}
 
         {/* Authenticated */}
         {!isLoading && isAuthed && (
