@@ -11,7 +11,8 @@ import {
 } from "../services/company-job-status-service";
 
 type UseUpdateCompanyJobStatusOptions = {
-  onSuccess?: () => void;
+  onSuccess?: (status: CompanyJobStatus) => void;
+  showSuccessToast?: boolean | ((status: CompanyJobStatus) => boolean);
 };
 
 export function useUpdateCompanyJobStatus(
@@ -22,7 +23,7 @@ export function useUpdateCompanyJobStatus(
   const router = useRouter();
   const locale = useLocale();
   const { data: session } = useSession();
-  const { onSuccess } = options;
+  const { onSuccess, showSuccessToast = true } = options;
 
   const mutation = useMutation({
     mutationFn: async (status: CompanyJobStatus) => {
@@ -42,9 +43,14 @@ export function useUpdateCompanyJobStatus(
       });
     },
     onSuccess: (response, status) => {
-      toast.success(response.message || `Job status updated to ${status}.`);
+      const shouldToast = typeof showSuccessToast === 'function'
+        ? showSuccessToast(status)
+        : showSuccessToast;
+      if (shouldToast) toast.success(response.message || `Job status updated to ${status}.`);
       void queryClient.invalidateQueries({ queryKey: ["company-jobs"] });
-      onSuccess?.();
+      void queryClient.invalidateQueries({ queryKey: ["company-job", locale, jobId] });
+      router.refresh();
+      onSuccess?.(status);
     },
     onError: (error) => {
       toast.error(error.message || "Failed to update job status.");

@@ -27,9 +27,10 @@ import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
 import useGetEmploymentTypes from "@/shared/hooks/useGetEmploymentTypes";
 import type { Option } from "@/shared/components/SelectInputField";
 import { JobDetails } from "../types/jobs.types";
+import { OTHER_OPTION_VALUE } from "../constants";
+import JobAssessmentFields from "./post-job/JobAssessmentFields";
 
 const CUSTOM_CERTIFICATION_PREFIX = "__custom__:";
-const OTHER_OPTION_VALUE = "__other__";
 
 type LookupOptionItem = {
   id?: number | string;
@@ -728,6 +729,7 @@ function JobPostStepOneContent({
                 {...field}
                 id="category"
                 label={t("companyPage.postJob.fields.jobCategory.label")}
+                placeholder={t("companyPage.postJob.fields.jobCategory.placeholder")}
                 error={
                   translateMessage(errors.category?.message) ??
                   (categoriesError instanceof Error
@@ -899,6 +901,7 @@ function JobPostStepOneContent({
                   {...field}
                   id="seniority-level"
                   label={t("companyPage.postJob.fields.seniorityLevel.label")}
+                  hint={t("companyPage.postJob.fields.seniorityLevel.optional")}
                   placeholder={t("common.select")}
                   className="bg-white"
                   error={
@@ -1228,6 +1231,7 @@ function JobPostStepOneContent({
           </div>
         </div>
       </div>
+      <JobAssessmentFields translateError={translateMessage} />
     </div>
   );
 }

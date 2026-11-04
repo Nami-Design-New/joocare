@@ -3,11 +3,12 @@
 import React from "react";
 import { JobFormData } from "../validation/job-post-schema";
 import Image from "next/image";
-import { Badge } from "@/shared/components/ui/badge";
 import { JobDetails } from "../types/jobs.types";
-import { getJobSalary } from "../utils";
+import { getJobSalary, getLinkedAssessment } from "../utils";
 import JobOverviewItem from "./JobOverviewItem";
 import { useTranslations } from "next-intl";
+import JobAttachmentsCard from "./JobAttachmentsCard";
+import PositionCard from "./PositionCard";
 
 type JobPreviewLabels = Partial<{
   title: string;
@@ -581,30 +582,15 @@ export default function JobReviewPanel({
 
   return (
     <section>
-      <div className="mt-5 flex items-center gap-6 p-4">
-        <Image
-          src="/assets/new-logo-dot.svg"
-          alt={tPostJob("review.companyLogoAlt")}
-          width={96}
-          height={86}
-          className="h-16 md:h-20 w-16 md:w-20"
+      <div className="mt-5 p-4">
+        <PositionCard
+          logoSrc={job?.company?.image || "/assets/new-logo-dot.svg"}
+          title={preview?.title ?? job?.title ?? job?.job_title?.title ?? data.title}
+          company={job?.company?.name ?? tPostJob("review.companyFallback")}
+          employmentType={
+            preview?.employmentType ?? job?.employment_type?.title ?? tPostJob("review.na")
+          }
         />
-
-        <div>
-          <h6 className="text-foreground text-base md:text-2xl font-semibold mb-2">
-            {preview?.title ?? job?.title ?? job?.job_title?.title ?? data.title}
-          </h6>
-          <div className="flex items-start sm:items-center gap-2 max-sm:flex-col">
-            <span className="text-muted-foreground text-sm md:text-lg font-normal">
-              {tPostJob("review.at")} {job?.company?.name ?? tPostJob("review.companyFallback")}
-            </span>{" "}
-            <Badge size="md" className="rounded-[3px] bg-[#0BA02C] max-sm:text-[10px]">
-              {preview?.employmentType?.toUpperCase() ??
-                job?.employment_type?.title?.toUpperCase() ??
-                tPostJob("review.na")}
-            </Badge>{" "}
-          </div>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 max-lg:gap-y-5 lg:gap-5 lg:p-7 lg:grid-cols-3">
@@ -631,6 +617,13 @@ export default function JobReviewPanel({
               ))}
               {skills.length === 0 && <li>{tPostJob("review.noSkillsSelected")}</li>}
             </ul>
+            <div className="mt-6">
+              <JobAttachmentsCard
+                questions={data.screeningQuestions}
+                assessment={getLinkedAssessment(data.assessmentEnabled ? data.assessmentId : undefined)}
+                previewAssessment
+              />
+            </div>
           </div>
         </div>
 

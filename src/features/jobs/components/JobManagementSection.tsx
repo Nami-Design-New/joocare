@@ -14,11 +14,14 @@ import JobCardSkeleton from "@/features/shared-company-profile/components/JobCar
 import EmptyDataState from "@/shared/components/EmptyDataState";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import { useTranslations } from "next-intl";
+import { useJobStatusActions } from "../hooks/useJobStatusActions";
+import JobStatusModals from "./status/JobStatusModals";
 
 
 export default function JobManagementSection() {
     const t = useTranslations();
     const listing = useJobListingFilters();
+    const statusActions = useJobStatusActions();
 
     const { data: session } = useSession();
     const token = session?.accessToken as string;
@@ -96,11 +99,9 @@ export default function JobManagementSection() {
                             <JobCard
                                 key={eachJob.id}
                                 job={eachJob}
-                                href={`/jobs/${eachJob?.job_title?.id}`}
-                                appliedBadge
-                                appliedAtLabel={eachJob.created_at}
                                 isPinned={listing.isPinned(eachJob.id)}
                                 onTogglePin={() => listing.togglePin(eachJob.id)}
+                                onAction={statusActions.open}
                             />
                         ))}
 
@@ -119,7 +120,6 @@ export default function JobManagementSection() {
                     </div>
                 )}
             </section>
-            {/* <JobsList /> */}
             {displayedJobs.length > 0 && (
 
                 <CustomPagination
@@ -127,8 +127,13 @@ export default function JobManagementSection() {
                     pageSize={displayedPerPage}
                     currentPage={listing.page}
                     onPageChange={handlePageChange}
+                    statusPosition="start"
+                    align="start"
+                    tone="strong"
+                    showLastPage={false}
                 />
             )}
+            <JobStatusModals actions={statusActions} />
         </div>
     )
 }

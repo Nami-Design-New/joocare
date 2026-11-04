@@ -47,7 +47,9 @@
       "downloading-cv": "Downloading CV for {name}",
       "view-cv": "View CV for {name}",
       "view-profile": "View profile for {name}"
-    }
+    },
+    "cancel": "Cancel",
+    "close": "Close"
   },
   "header": {
     "home": "Home",
@@ -1229,13 +1231,13 @@
         "other": "Other"
       },
       "steps": {
-        "jobDetails": "Job Details",
-        "jobDescriptionRequirements": "Job Description & Requirements",
-        "jobPreview": "Job Preview"
+        "jobDetails": "Basic Details",
+        "jobDescriptionRequirements": "Requirements & Content",
+        "jobPreview": "Preview"
       },
       "loadingJobData": "Loading job data...",
       "actions": {
-        "saveAsDraft": "Save as Draft",
+        "saveAsDraft": "Save as draft",
         "prev": "Prev",
         "next": "Next",
         "posting": "Posting...",
@@ -1244,21 +1246,39 @@
         "add": "Add",
         "addNew": "Add new"
       },
+      "assessment": {
+        "title": "Assessment",
+        "link-label": "Link Assessment to this Job",
+        "library-label": "Assessment Library",
+        "library-joocare": "JooCare Library",
+        "library-company": "My Assessments",
+        "category-label": "Assessment Category",
+        "assessment-label": "Assessment",
+        "preview": "Preview assessment",
+        "fit-title": "Is this assessment the right fit for this job?",
+        "fit-description": "Candidates applying for this job will be asked to take “{title}” ({count} questions). Make sure it matches the job’s specialty and seniority level before you continue.",
+        "fit-confirm": "Yes, continue",
+        "fit-cancel": "Cancel"
+      },
       "modals": {
-        "saveDraft": {
-          "title": "Save as draft",
-          "description": "All entered information will be saved in the Drafts section. The job posting will not be published until you complete the details and choose to publish.",
-          "confirm": "Save as draft"
-        },
         "savedSuccessfully": {
-          "title": "Saved successfully",
-          "description": "The job details have been saved. You can continue editing and publish the posting at any time from Job Management."
+          "title": "Saved Successfully!",
+          "description": "The job details have been saved. You can continue editing and publish the posting at any time from Job Management.",
+          "callout-title": "What’s next?",
+          "callout-description": "You can review, make changes, or publish this job when you’re ready from the Job Management section.",
+          "go-to-management": "Go to Job Management",
+          "continue-editing": "Continue Editing"
         },
         "postSuccess": {
           "updatedTitle": "Job updated successfully!",
-          "publishedTitle": "Your advertisement has been successfully published!",
           "updatedDescription": "Your changes have been saved and the job listing has been updated.",
-          "publishedDescription": "The job posting has been activated and is open to applicants. All applications, engagement activity, and performance insights are available in the dashboard."
+          "publishedDescription": "Your vacancy is now live and visible to qualified candidates.\nYou can view and manage applications anytime from your dashboard.",
+          "callout-title": "Your job is now live",
+          "callout-description": "Candidates can now find and apply for this position.",
+          "go-to-dashboard": "Go to Dashboard",
+          "view-job": "View Job Posting",
+          "congrats-title": "Congratulations!",
+          "published-subtitle": "Your job has been successfully published."
         }
       },
       "sections": {
@@ -1292,7 +1312,7 @@
         },
         "professionalLicense": {
           "label": "Professional License",
-          "placeholder": "ex: DHA License",
+          "placeholder": "ex: Without Medical license",
           "options": {
             "withMedicalLicense": "With medical license",
             "withoutMedicalLicense": "Without medical license"
@@ -1307,11 +1327,12 @@
           "placeholder": "Choose"
         },
         "jobCategory": {
-          "label": "Job Category"
+          "label": "Job Category",
+          "placeholder": "ex: Cardiology"
         },
         "specialty": {
           "label": "Specialty",
-          "placeholder": "ex: specialty"
+          "placeholder": "ex: Cardiology"
         },
         "otherCategory": {
           "label": "Other category",
@@ -1326,7 +1347,8 @@
           "placeholder": "ex: Clinical"
         },
         "seniorityLevel": {
-          "label": "Seniority Level"
+          "label": "Seniority Level",
+          "optional": "(optional)"
         },
         "country": {
           "label": "Country",
@@ -1365,7 +1387,12 @@
         },
         "skills": {
           "label": "Skills",
-          "placeholder": "ex: Improvement"
+          "placeholder": "ex: Improvement",
+          "recommended": "Recommended Skills",
+          "selected": "Selected Skills",
+          "show-more": "show more",
+          "add": "Add {name}",
+          "remove": "Remove {name}"
         }
       },
       "review": {
@@ -1376,8 +1403,8 @@
         "at": "at",
         "companyFallback": "Company",
         "na": "N/A",
-        "jobDescriptionTitle": "Job description",
-        "skillsTitle": "Skills",
+        "jobDescriptionTitle": "Job Description",
+        "skillsTitle": "Skills:",
         "noSkillsSelected": "No skills selected.",
         "salary": "Salary",
         "jobLocation": "Job Location",
@@ -1419,7 +1446,145 @@
         "salaryTypeRequired": "Salary type is required",
         "currencyRequired": "Currency is required",
         "descriptionRequired": "Description is required",
-        "atLeastOneSkillRequired": "At least one skill is required"
+        "atLeastOneSkillRequired": "At least one skill is required",
+        "assessmentLibraryRequired": "Select an assessment library.",
+        "assessmentCategoryRequired": "Select an assessment category.",
+        "assessmentRequired": "Select an assessment."
+      },
+      "editor": {
+        "normal-text": "Normal text",
+        "heading-one": "Heading 1",
+        "heading-two": "Heading 2",
+        "heading-three": "Heading 3"
+      },
+      "aiBuilder": {
+        "button": "AI JD Builder",
+        "badge": "COMING SOON",
+        "title": "AI JD Builder is coming soon",
+        "description": "Write and polish job descriptions with AI in seconds. This feature will be available with the Joocare AI plans — you can keep writing your description manually for now.",
+        "got-it": "Got it",
+        "notify": "Notify me when it’s live",
+        "notify-toast": "We’ll let you know when it’s live",
+        "panel-title": "AI JD Builder",
+        "close-panel": "Close AI JD Builder",
+        "you-label": "Hiring Team (You)",
+        "ai-label": "AI JD Builder",
+        "ask-placeholder": "Ask anything",
+        "attach": "Attach a file",
+        "send": "Send",
+        "copy": "Copy message",
+        "edit": "Edit message",
+        "copied-toast": "Message copied",
+        "copy-failed": "Couldn’t copy the message",
+        "insight-title": "Professional Insight",
+        "apply": "Apply",
+        "applied-toast": "Suggestion added to the job description",
+        "file-size": "{size} KB",
+        "download-file": "Download {name}",
+        "remove-attachment": "Remove {name}"
+      },
+      "questions": {
+        "title": "Questions",
+        "templates-title": "Question Templates",
+        "templates-helper": "Click any template to quickly add a pre-configured screening question.",
+        "question-type": "Question Type",
+        "templates-hint": "Templates are Yes / No only",
+        "yes-no": "Yes / No",
+        "yes": "Yes",
+        "no": "No",
+        "choose-correct": "Choose the correct answer",
+        "requirement-title": "Is this question required?",
+        "requirement-description": "Candidates must answer required questions to submit",
+        "required": "Required",
+        "optional": "(Optional)",
+        "add-question": "Add to questions",
+        "show-more": "Show More",
+        "show-less": "Show Less",
+        "custom-title": "Custom Question",
+        "custom-subtitle": "Create a custom screening question tailored to your hiring needs.",
+        "count": "{count} questions added",
+        "empty-title": "No screening questions yet",
+        "empty-description": "Pick a ready-made question from Question Templates or create your own custom question.",
+        "empty-optional": "Screening questions are (Optional) — you can skip this and continue.",
+        "custom-button": "Custom Question",
+        "added-toast": "Question added successfully",
+        "delete-question": "Delete question {number}",
+        "delete-title": "Delete this question?",
+        "delete-description": "This question will be removed from the job’s screening questions and can’t be restored.",
+        "delete-confirm": "Confirm deletion",
+        "template-labels": {
+          "education": "Education",
+          "professional-license": "Professional License",
+          "medical-license": "Medical License",
+          "years-experience": "Years of Experience",
+          "board-certification": "Board Certification",
+          "specialty": "Specialty",
+          "hospital-experience": "Hospital Experience",
+          "icu-experience": "ICU Experience",
+          "emergency-experience": "Emergency Experience",
+          "surgery-experience": "Surgery Experience",
+          "language": "Language",
+          "english-proficiency": "English Proficiency",
+          "arabic-proficiency": "Arabic Proficiency",
+          "availability": "Availability",
+          "night-shift": "Night Shift",
+          "weekend-shift": "Weekend Shift",
+          "relocation": "Relocation",
+          "current-location": "Current Location",
+          "work-authorization": "Work Authorization",
+          "visa-status": "Visa Status",
+          "background-check": "Background Check",
+          "drug-test": "Drug Test",
+          "reference-check": "Reference Check",
+          "drivers-license": "Driver’s License",
+          "computer-skills": "Computer Skills",
+          "communication-skills": "Communication Skills"
+        },
+        "builder": {
+          "create-title": "Create Screening Question",
+          "question-type": "Question Type",
+          "single": "Single Select",
+          "multi": "Multi Select",
+          "yes-no": "Yes / No",
+          "text": "Input Text",
+          "mark": "Mark",
+          "question-label": "Question",
+          "question-placeholder": "Your Question",
+          "answer-options": "Answer Options",
+          "options-counter": "{count} of 5 options · minimum 2",
+          "option-label": "Option {letter}",
+          "option-placeholder": "Enter an answer option",
+          "remove-option": "Remove option {letter}",
+          "add-option": "Add Option",
+          "correct-one": "Correct Answer · select one",
+          "correct-many": "Correct Answers · select one or more",
+          "correct-answer": "Correct Answer",
+          "yes": "Yes",
+          "no": "No",
+          "answer-placeholder": "Your Answer",
+          "requirement-title": "Is this question required?",
+          "requirement-description": "Candidates must answer required questions to submit",
+          "required": "Required",
+          "optional": "(Optional)",
+          "submit": "Submit",
+          "close": "Close",
+          "invalid-question": "Enter a question and a positive mark.",
+          "invalid-single": "Enter a question, a positive mark, 2–5 unique options and one correct answer.",
+          "invalid-multi": "Enter a question, a positive mark, 2–5 unique options and at least one correct answer.",
+          "choose-exactly-one": "Choose exactly one correct answer before saving.",
+          "choose-at-least-one": "Choose at least one correct answer before saving.",
+          "answer-required": "Enter a reference answer.",
+          "question-required": "Enter a question",
+          "mark-positive": "Mark must be a positive number",
+          "option-required": "Enter this option",
+          "option-duplicate": "Options must be unique",
+          "cancel": "Cancel",
+          "save-changes": "Save Changes"
+        },
+        "cancel": "Cancel",
+        "updated-toast": "Question updated successfully",
+        "expand-question": "Edit question {number}",
+        "collapse-question": "Collapse question {number}"
       }
     },
     "dashboard": {
@@ -1533,14 +1698,17 @@
         "closed": "Closed",
         "paused": "Paused",
         "draft": "Draft",
-        "placeholder": "Filter by status"
+        "placeholder": "Status",
+        "all": "All statuses"
       },
       "actions": {
         "close": "Close",
         "pause": "Pause",
         "resume": "Resume",
         "delete": "Delete",
-        "complete-post": "Complete Post"
+        "complete-post": "Complete Post",
+        "reactivate": "Reactivate",
+        "edit": "Edit"
       },
       "card": {
         "resume-match": "Resume Match",
@@ -1552,24 +1720,53 @@
           "close": {
             "title": "Has this position been successfully filled?",
             "description": "Closing this job posting will archive the role and remove it from visibility to medical professionals. Please ensure all relevant applicant details have been saved before proceeding.",
-            "confirm": "Yes, close the advertisement"
+            "confirm": "Yes, close the advertisement",
+            "cancel": "Cancel",
+            "panel-title": "Before you close, make sure you have:",
+            "item-one": "Reviewed all relevant applications",
+            "item-two": "Saved important applicant details",
+            "item-three": "Completed any ongoing communication"
           },
           "reactivate": {
-            "title": "Would you like to resume accepting applications?",
-            "description": "Reactivating this job posting will make it visible in search results and allow qualified medical professionals to apply immediately. All applicant activity will resume according to your previous posting settings.",
-            "confirm": "Yes, activate now"
+            "title": "Resume Applications for This Position?",
+            "description": "Reactivating this job posting will make it visible to qualified medical professionals and allow new applications to be submitted. The vacancy will become searchable and continue using its previous posting settings.",
+            "confirm": "Reactivate Vacancy",
+            "cancel": "Keep Paused",
+            "cancel-closed": "Cancel",
+            "panel-title": "Once reactivated:",
+            "item-one": "New applications will be accepted",
+            "item-two": "The vacancy will appear in search results",
+            "item-three": "Candidate notifications and visibility will resume",
+            "item-four": "Existing applications and workflow data will remain unchanged"
           },
           "pause": {
-            "title": "Would you like to pause applications for this position?",
-            "description": "Pausing this job posting will stop new applications from being submitted. The role will no longer appear in search results until it is reactivated.",
-            "confirm": "Yes, stop the advertisement"
+            "title": "Pause Applications for This Position?",
+            "description": "This will temporarily stop new applications from being submitted. The vacancy will no longer appear in search results until it is reactivated.",
+            "confirm": "Pause Vacancy",
+            "cancel": "Keep Active",
+            "panel-title": "While paused:",
+            "item-one": "No new applications will be accepted",
+            "item-two": "The vacancy will not appear in candidate search results",
+            "item-three": "Existing applications will remain accessible",
+            "item-four": "You can reactivate the vacancy at any time"
           },
           "delete": {
             "title": "Do you want to delete this advertisement?",
             "description": "The advertisement will be permanently deleted from your account and you will not be able to recover it later. Please ensure before proceeding, as this action cannot be undone.",
-            "confirm": "Confirm Deletion"
+            "confirm": "Confirm deletion"
+          },
+          "closed-success": {
+            "title": "Job Posting Closed Successfully",
+            "description": "The announcement has been successfully closed. The role has been archived and is no longer visible to medical professionals.",
+            "back": "Back to Job Postings"
+          },
+          "resumed-success": {
+            "title": "Applications Resumed Successfully",
+            "description": "The announcement has been successfully reposted. Your vacancy is live again, searchable, and open to new applications.",
+            "back": "Back to Job Postings"
           }
-        }
+        },
+        "actions-menu": "Actions for {title}"
       },
       "modals": {
         "close": {
@@ -1599,6 +1796,30 @@
         "all-recruiters": "All recruiters",
         "pin-job": "Pin job",
         "unpin-job": "Unpin job"
+      },
+      "attachments": {
+        "title": "Screening questions & assessment attached to this job",
+        "questions": "Screening questions",
+        "questions-count": "{total} questions · {required} required",
+        "view-questions": "View questions",
+        "assessment": "Assessment",
+        "view-assessment": "View assessment",
+        "dialog-title": "Screening Questions ({count})",
+        "close": "Close",
+        "required": "Required",
+        "type-label": "Question type",
+        "options-label": "Answer options",
+        "correct-answer": "Correct answer",
+        "types": {
+          "single": "Single Select",
+          "multi": "Multi Select",
+          "yes-no": "Yes / No",
+          "text": "Input Text"
+        }
+      },
+      "postedBy": {
+        "label": "Posted by",
+        "created-on": "Created on"
       }
     },
     "candidates": {
@@ -1691,7 +1912,10 @@
         "location": "Current Location",
         "license": "License Status",
         "reset": "Reset Filters",
-        "orders": { "newest": "Newest", "oldest": "Oldest" },
+        "orders": {
+          "newest": "Newest",
+          "oldest": "Oldest"
+        },
         "licenses": {
           "valid": "With Medical License",
           "none": "Without Medical License"
@@ -2358,7 +2582,14 @@
         "created-by": "Created By",
         "back-to-assessments": "Back to assessments",
         "not-found": "Assessment not found",
-        "not-found-description": "This assessment is unavailable. Return to the category to choose another assessment."
+        "not-found-description": "This assessment is unavailable. Return to the category to choose another assessment.",
+        "preview-title": "Assessment Preview",
+        "preview-subtitle": "Review the assessment structure, scoring criteria and questions before linking it to this job.",
+        "preview-close": "Close preview",
+        "preview-summary": "Assessment Summary",
+        "preview-assessment-title": "Assessment Title",
+        "preview-passing-score": "Passing Score",
+        "preview-structure": "Assessment Structure"
       }
     },
     "recruiter-activity": {

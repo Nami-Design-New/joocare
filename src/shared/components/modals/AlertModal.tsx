@@ -13,6 +13,7 @@ import { useRef } from 'react';
 import animationData from '../../../../public/assets/lottie/warning.json';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import { VariantProps } from 'class-variance-authority';
+import { useTranslations } from 'next-intl';
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -41,6 +42,7 @@ export default function AlertModal({
   onCancel,
   isLoading = false,
 }: ConfirmDialogProps) {
+  const t = useTranslations();
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const handleCancel = () => {
     onCancel?.();
@@ -80,7 +82,7 @@ export default function AlertModal({
               size="pill"
               className="grow max-sm:w-auto max-sm:px-2 max-sm:text-xs"
             >
-              {isLoading ? 'Saving...' : confirmLabel}
+              {isLoading ? t('common.saving') : confirmLabel}
             </Button>
             {hasCancelButton && (
               <Button

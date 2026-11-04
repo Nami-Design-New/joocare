@@ -50,6 +50,7 @@
   --color-warning-foreground: var(--warning-foreground);
   --color-warning-strong: var(--warning-strong);
   --color-job-type: var(--job-type);
+  --color-caution: var(--caution);
   --shadow-header: 0 12px 24px 0 oklch(0 0 0 / 5%);
   --shadow-card: 0 12px 20px 0 oklch(0 0 0 / 5%);
   --shadow-soft: 0 0 20px var(--shadow-soft);
@@ -176,6 +177,7 @@
   --warning-foreground: oklch(0.089 0 0);
   --warning-strong: #b45309;
   --job-type: #0ba02c;
+  --caution: #da4d01;
 
   /* Sidebar */
   --sidebar: oklch(1 0 0);
@@ -235,6 +237,7 @@
   --warning-foreground: oklch(0.089 0 0);
   --warning-strong: #f59e0b;
   --job-type: #22c55e;
+  --caution: #f97316;
 
   --sidebar: oklch(0.17 0 0);
   --sidebar-foreground: oklch(0.95 0 0);

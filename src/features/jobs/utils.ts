@@ -1,7 +1,8 @@
 import { formatDistanceToNowStrict } from 'date-fns';
 
 import { getBaseApiUrl } from '@/shared/lib/api-endpoints';
-import { JobDetails, JobListItem } from './types/jobs.types';
+import { assessmentSeeds } from '@/features/company-assessments/constants/assessment-data';
+import { JobDetails, JobLinkedAssessment, JobListItem } from './types/jobs.types';
 import { JobsSearchFilters, JobStatus } from './types/index.types';
 
 function getSingleParam(
@@ -290,7 +291,6 @@ export function getCvDownloadFileName(name: string, cvUrl: string) {
   const extension = urlPath.includes('.')
     ? `.${urlPath.split('.').pop() ?? 'pdf'}`
     : '.pdf';
-  // eslint-disable-next-line no-control-regex
   const safeName = name
     .replace(/[<>:"/\|?*\x00-\x1F]/g, ' ')
     .replace(/\s+/g, ' ')
@@ -309,4 +309,50 @@ export function getAiTalentMatchHref(jobId: string | number) {
 
 export function getPipelineFiltersHref(jobId: string | number, query = '') {
   return `${getJobCandidatesHref(jobId)}/filters${query ? `?${query}` : ''}`;
+}
+
+// "21 December 2026, 4:00 AM" in the active locale; returns '' for missing/invalid dates.
+export function formatJobDateTime(value: string | null | undefined, locale: string) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(date);
+}
+
+export function getEditJobHref(jobId: string | number) {
+  return `/company/post-job?editId=${jobId}`;
+}
+
+// Opens a draft in the wizard (it starts at step 2, as in Figma).
+export function getCompletePostHref(jobId: string | number) {
+  return `/company/post-job?jobId=${jobId}`;
+}
+
+// "A", "B", … for answer options.
+export function getOptionLetter(index: number) {
+  return String.fromCharCode(65 + index);
+}
+
+export function getInitials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase();
+}
+
+// Linked assessment shown in the wizard preview (preview seeds until the assessments API exists).
+export function getLinkedAssessment(assessmentId?: string): JobLinkedAssessment | null {
+  const assessment = assessmentSeeds.find((item) => item.id === assessmentId);
+  return assessment
+    ? { id: assessment.id, title: assessment.title, category_id: assessment.categoryId }
+    : null;
 }

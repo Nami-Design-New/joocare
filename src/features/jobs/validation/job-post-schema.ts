@@ -35,6 +35,10 @@ export const step1Schema = z
     //   }),
 
     addSalary: z.boolean().default(false),
+    assessmentEnabled: z.boolean().default(false),
+    assessmentSource: z.string().optional(),
+    assessmentCategoryId: z.string().optional(),
+    assessmentId: z.string().optional(),
 
     salary: z
       .object({
@@ -72,6 +76,17 @@ export const step1Schema = z
     availability: z.string().min(1, "companyPage.postJob.validation.availabilityRequired"),
     otherAvailabilityTitle: z.string().optional(),
   }).superRefine((data, ctx) => {
+    if (data.assessmentEnabled) {
+      if (!data.assessmentSource) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "companyPage.postJob.validation.assessmentLibraryRequired", path: ["assessmentSource"] });
+      }
+      if (!data.assessmentCategoryId) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "companyPage.postJob.validation.assessmentCategoryRequired", path: ["assessmentCategoryId"] });
+      }
+      if (!data.assessmentId) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "companyPage.postJob.validation.assessmentRequired", path: ["assessmentId"] });
+      }
+    }
     // ── Other job title ──
     if (data.title === "__other__" && !data.otherJobTitle?.trim()) {
       ctx.addIssue({
@@ -182,6 +197,19 @@ export const step2Schema = z.object({
   // SelectInputField stores a single string value per selection.
   // If you later switch to a multi-select, change to z.array(z.string())
   skills: z.array(z.string()).min(1, "companyPage.postJob.validation.atLeastOneSkillRequired"),
+  // Screening questions remain client preview data until the backend accepts this field.
+  screeningQuestions: z.array(z.object({
+    id: z.string(),
+    source: z.enum(['template', 'custom']),
+    templateId: z.string().optional(),
+    type: z.enum(['single', 'multi', 'yes-no', 'text']),
+    question: z.string(),
+    mark: z.number().int().positive(),
+    options: z.array(z.object({ id: z.string(), text: z.string() })),
+    correctOptionIds: z.array(z.string()),
+    correctText: z.string().optional(),
+    required: z.boolean(),
+  })).default([]),
 });
 
 // ─────────────────────────────────────────────
@@ -209,6 +237,10 @@ export const jobFormDefaults: Partial<JobFormData> = {
   otherJobTitle: "",
   license: "",
   addSalary: false,
+  assessmentEnabled: false,
+  assessmentSource: "",
+  assessmentCategoryId: "",
+  assessmentId: "",
   salary: { min: undefined, max: undefined, type: "", currency: "" },
   category: "",
   otherCategoryTitle: "",
@@ -227,4 +259,5 @@ export const jobFormDefaults: Partial<JobFormData> = {
   // step 2
   description: "",
   skills: [],
+  screeningQuestions: [],
 };

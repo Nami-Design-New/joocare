@@ -2,8 +2,8 @@
 
 import WizardProgress from "@/features/complete-account/components/wizard-progress";
 import AlertModal from "@/shared/components/modals/AlertModal";
-import SuccessModal from "@/shared/components/modals/SuccessModal";
 import { Button } from "@/shared/components/ui/button";
+import { cn } from "@/shared/lib/utils";
 import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
 import { useEffect, useMemo, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -28,10 +28,13 @@ import { JobDetails } from "../types/jobs.types";
 import JobPostStepOne from "./JobPostStepOne";
 import JobPostStepTwo from "./JobPostStepTwo";
 import JobReviewPanel from "./JobReviewPanel";
-import { useRouter } from "@/i18n/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Option } from "@/shared/components/SelectInputField";
 import { useTranslations } from "next-intl";
+import { OTHER_OPTION_VALUE } from "../constants";
+import { categorySeeds } from "@/features/company-assessments/constants/assessment-data";
+import { assessmentSeeds } from "@/features/company-assessments/constants/assessment-data";
+import PostJobResultModals from "./post-job/PostJobResultModals";
 
 // ─── Form mode ──────────────────────────────────────────
 // create  → fresh form, step-by-step, saves each step
@@ -61,7 +64,6 @@ type JobPreviewLabels = Partial<{
 
 const LAST_STEP = 2;
 const CUSTOM_CERTIFICATION_PREFIX = "__custom__:";
-const OTHER_OPTION_VALUE = "__other__";
 
 function normalizeMandatoryCertificationValue(value: string) {
   return value.startsWith(CUSTOM_CERTIFICATION_PREFIX)
@@ -109,7 +111,6 @@ function toOptionalNumber(value: string | number | null | undefined) {
 
 
 function getJobStatus(job: JobDetails) {
-  console.log("job status:", job.current_status?.status, job.status, job);
   return job.status?.toLowerCase() ?? "";
 }
 
@@ -122,7 +123,6 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
     job.experience_title?.trim() || job.experience?.title || "";
   const customAvailabilityTitle =
     job.availability_title?.trim() || job.availability?.title || "";
-  console.log("job destias", job);
 
   return {
     title: job.title ? OTHER_OPTION_VALUE : String(job.job_title_id ?? ""),
@@ -134,6 +134,12 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
     otherCategoryTitle: job.category_id == null ? customCategoryTitle : "",
     license: job.professional_license ?? "",
     addSalary: hasSalary,
+    assessmentEnabled: Boolean(job.assessment),
+    assessmentSource: job.assessment
+      ? categorySeeds.find((category) => category.id === String(job.assessment?.category_id))?.source ?? ""
+      : "",
+    assessmentCategoryId: job.assessment ? String(job.assessment.category_id) : "",
+    assessmentId: job.assessment ? String(job.assessment.id) : "",
     salary: hasSalary
       ? {
         min: toOptionalNumber(job.min_salary),
@@ -200,7 +206,7 @@ export default function PostJobForm() {
   } = useGetCompanyJob(existingJobId);
 
   // ─── State ─────────────────────────────────────────────
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(jobIdParam ? 1 : 0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createdJobId, setCreatedJobId] = useState<number | null>(null);
   const [reviewJob, setReviewJob] = useState<JobDetails | null>(null);
@@ -213,7 +219,6 @@ export default function PostJobForm() {
 
   const { data: session } = useSession();
   const token = session?.accessToken || "";
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   const steps = useMemo(
@@ -233,9 +238,12 @@ export default function PostJobForm() {
   const { mutateAsync: updateJob, isPending: isUpdatingJob } = useUpdateJob({ token });
 
   // ─── Modals ────────────────────────────────────────────
-  const [saveDraftOpen, setSaveDraftOpen] = useState(false);
   const [saveSuccessOpen, setSaveSuccessOpen] = useState(false);
   const [postSuccess, setPostSuccess] = useState(false);
+  const [assessmentFitOpen, setAssessmentFitOpen] = useState(false);
+  const [aiPanelOpen, setAiPanelOpen] = useState(false);
+  // Figma 10086:87585: the wizard widens to fit the AI JD Builder panel.
+  const isWideStep = currentStep === 1 && aiPanelOpen;
 
   // ─── Form ──────────────────────────────────────────────
   const methods = useForm<JobFormData>({
@@ -353,12 +361,8 @@ export default function PostJobForm() {
   const handleSaveDraft = async () => {
     try {
       await submitStepThreeStatus("draft");
-      setSaveDraftOpen(false);
       setSaveSuccessOpen(true);
       queryClient.refetchQueries({ queryKey: ['company-jobs'] });
-      setTimeout(() => {
-        router.push("/company/job-management");
-      }, 3000);
     } catch {
       // errors are already handled in mutation onError toast
     }
@@ -373,6 +377,8 @@ export default function PostJobForm() {
       title: data.title === OTHER_OPTION_VALUE ? data.otherJobTitle?.trim() ?? "" : undefined,
       professional_license: data.license,
       has_salary: hasSalary,
+      // Pending backend support; use assessment preview seed IDs until the API is available.
+      assessment_id: data.assessmentEnabled ? data.assessmentId : undefined,
       category_id:
         data.category === OTHER_OPTION_VALUE ? undefined : Number(data.category),
       category_title:
@@ -427,6 +433,8 @@ export default function PostJobForm() {
       title: data.title === OTHER_OPTION_VALUE ? data.otherJobTitle?.trim() ?? "" : undefined,
       professional_license: data.license,
       has_salary: data.addSalary ? 1 : 0,
+      // Pending backend support; preserve the selected preview assessment on edits.
+      assessment_id: data.assessmentEnabled ? data.assessmentId : undefined,
       category_id:
         data.category === OTHER_OPTION_VALUE ? undefined : Number(data.category),
       category_title:
@@ -460,10 +468,9 @@ export default function PostJobForm() {
           ? data.otherAvailabilityTitle?.trim() ?? ""
           : undefined,
       description: data.description,
-      skills: (data.skills ?? []).map((s) => {
-        // console.log(s)
-        return Number(s)
-      }),
+      skills: (data.skills ?? []).map((skillId) => Number(skillId)),
+      // Pending backend support until job update accepts screening_questions.
+      screening_questions: data.screeningQuestions,
       status: "open",
     };
 
@@ -484,7 +491,7 @@ export default function PostJobForm() {
   // Edit mode: validate → advance (no API calls)
   // Create/Complete mode: validate → call step API → advance
   // ──────────────────────────────────────────────────────────
-  const handleNext = async () => {
+  const runNext = async () => {
     const fields = Object.keys(
       stepSchemas[currentStep as StepIndex].shape,
     ) as (keyof JobFormData)[];
@@ -573,6 +580,7 @@ export default function PostJobForm() {
         payload: {
           description: data.description,
           skills: (data.skills ?? []).map((skillId) => Number(skillId)),
+          screening_questions: data.screeningQuestions,
         },
       });
       const nextReviewJob = getJobFromMutationResponse(stepTwoResponse.data);
@@ -582,6 +590,25 @@ export default function PostJobForm() {
     }
 
     setCurrentStep((s) => s + 1);
+  };
+
+  const handleNext = () => {
+    const values = getValues();
+    const assessmentChanged =
+      String(existingJob?.assessment?.id ?? "") !== String(values.assessmentId ?? "");
+    const selectedAssessment = assessmentSeeds.find(
+      (assessment) => assessment.id === values.assessmentId,
+    );
+    if (
+      currentStep === 0 &&
+      values.assessmentEnabled &&
+      selectedAssessment &&
+      (mode !== "edit" || assessmentChanged)
+    ) {
+      setAssessmentFitOpen(true);
+      return;
+    }
+    void runNext();
   };
 
   const handleBack = () => {
@@ -598,9 +625,6 @@ export default function PostJobForm() {
     try {
       await submitStepThreeStatus("open");
       setPostSuccess(true);
-      setTimeout(() => {
-        router.push("/company/job-management");
-      }, 3000);
       queryClient.invalidateQueries({ queryKey: ['company-jobs'] });
     } catch {
       // errors are already handled in mutation onError toast
@@ -617,9 +641,6 @@ export default function PostJobForm() {
       const payload = buildUpdatePayload(data);
       await updateJob({ jobId: existingJobId, payload });
       setPostSuccess(true);
-      setTimeout(() => {
-        router.push("/company/job-management");
-      }, 3000);
       queryClient.invalidateQueries({ queryKey: ['company-job', existingJobId] });
     } catch {
       // errors are already handled in mutation onError toast
@@ -631,7 +652,7 @@ export default function PostJobForm() {
   // ─── Loading gate test ────────────────────
   if (mode === "complete" && isLoadingJob) {
     return (
-      <section className="h-min-dvh mx-auto max-w-7xl py-12">
+      <section className="h-min-dvh mx-auto max-w-255 py-12">
         <div className="flex h-full items-center justify-center rounded-2xl bg-white p-6">
           <div className="flex flex-col items-center gap-4">
             <svg
@@ -676,7 +697,7 @@ export default function PostJobForm() {
   //  UNIFIED WIZARD — same UI for create, complete & edit
   // ═══════════════════════════════════════════════════════
   return (
-    <section className="h-min-dvh mx-auto max-w-7xl py-12">
+    <section className={cn("h-min-dvh mx-auto py-12 max-w-7xl")}>
       <div className="h-full rounded-2xl bg-white shadow-lg p-6">
         <div className="flex max-sm:flex-col max-sm:mb-6 sm:gap-6">
           <WizardProgress step={currentStep} steps={steps} />
@@ -686,7 +707,7 @@ export default function PostJobForm() {
               variant="outline"
               size="pill"
               hoverStyle="slidePrimary"
-              onClick={() => setSaveDraftOpen(true)}
+              onClick={handleSaveDraft}
             >
               {t("companyPage.postJob.actions.saveAsDraft")}
             </Button>
@@ -709,6 +730,8 @@ export default function PostJobForm() {
                 <JobPostStepTwo
                   onPreviewLabelChange={handlePreviewLabelChange}
                   existingJob={existingJob}
+                  aiPanelOpen={aiPanelOpen}
+                  onAiPanelOpenChange={setAiPanelOpen}
                 />
               )}
               {currentStep === 2 && (
@@ -776,34 +799,29 @@ export default function PostJobForm() {
       </div>
 
       <AlertModal
-        open={saveDraftOpen}
-        onOpenChange={setSaveDraftOpen}
-        title={t("companyPage.postJob.modals.saveDraft.title")}
-        description={t("companyPage.postJob.modals.saveDraft.description")}
-        confirmLabel={t("companyPage.postJob.modals.saveDraft.confirm")}
-        cancelLabel={t("common.back")}
-        onConfirm={handleSaveDraft}
-        isLoading={isPostingStepThree}
+        open={assessmentFitOpen}
+        onOpenChange={setAssessmentFitOpen}
+        title={t("companyPage.postJob.assessment.fit-title")}
+        description={t("companyPage.postJob.assessment.fit-description", {
+          title: assessmentSeeds.find((assessment) => assessment.id === getValues("assessmentId"))?.title ?? "",
+          count: assessmentSeeds.find((assessment) => assessment.id === getValues("assessmentId"))?.questionCount ?? 0,
+        })}
+        confirmLabel={t("companyPage.postJob.assessment.fit-confirm")}
+        cancelLabel={t("companyPage.postJob.assessment.fit-cancel")}
+        onConfirm={() => {
+          setAssessmentFitOpen(false);
+          void runNext();
+        }}
+        onCancel={() => setAssessmentFitOpen(false)}
+        isLoading={isSubmitting}
       />
-      <SuccessModal
-        open={saveSuccessOpen}
-        onOpenChange={setSaveSuccessOpen}
-        title={t("companyPage.postJob.modals.savedSuccessfully.title")}
-        description={t("companyPage.postJob.modals.savedSuccessfully.description")}
-      />
-      <SuccessModal
-        open={postSuccess}
-        onOpenChange={setPostSuccess}
-        title={
-          isEditMode
-            ? t("companyPage.postJob.modals.postSuccess.updatedTitle")
-            : t("companyPage.postJob.modals.postSuccess.publishedTitle")
-        }
-        description={
-          isEditMode
-            ? t("companyPage.postJob.modals.postSuccess.updatedDescription")
-            : t("companyPage.postJob.modals.postSuccess.publishedDescription")
-        }
+      <PostJobResultModals
+        savedOpen={saveSuccessOpen}
+        onSavedOpenChange={setSaveSuccessOpen}
+        publishedOpen={postSuccess}
+        onPublishedOpenChange={setPostSuccess}
+        isEditMode={isEditMode}
+        jobId={resolveJobId() ?? existingJobId}
       />
     </section>
   );

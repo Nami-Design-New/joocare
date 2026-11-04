@@ -12,6 +12,7 @@ import {
 import { VariantProps } from 'class-variance-authority';
 import Image from 'next/image';
 import { cn } from '@/shared/lib/utils';
+import { useTranslations } from 'next-intl';
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -39,6 +40,7 @@ export default function DeleteModal({
   isLoading = false,
   className,
 }: ConfirmDialogProps) {
+  const t = useTranslations();
   const handleCancel = () => {
     onCancel?.();
     onOpenChange(false);
@@ -76,7 +78,7 @@ export default function DeleteModal({
               size="pill"
               className="grow"
             >
-              {isLoading ? 'Saving...' : confirmLabel}
+              {isLoading ? t('common.saving') : confirmLabel}
             </Button>
             <Button
               type="button"

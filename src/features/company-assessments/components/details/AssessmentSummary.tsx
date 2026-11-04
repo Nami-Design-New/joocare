@@ -8,17 +8,27 @@ import type {
   AssessmentDetail,
 } from '../../types/assessment.types';
 
+type AssessmentSummaryLabels = Partial<{
+  summary: string;
+  titleLabel: string;
+  score: string;
+  questionTypes: string;
+}>;
+
 export default function AssessmentSummary({
   assessment,
   detail,
+  labels = {},
 }: {
   assessment: Assessment;
   detail: AssessmentDetail;
+  // Lets the job-linking preview use its own wording.
+  labels?: AssessmentSummaryLabels;
 }) {
   const t = useTranslations('companyPage.assessments.details');
   const metrics = [
     { label: t('questions'), value: detail.totalQuestions },
-    { label: t('score'), value: `${assessment.passScore}%` },
+    { label: labels.score ?? t('score'), value: `${assessment.passScore}%` },
     {
       label: t('assessment-duration'),
       value: t('minutes', { count: detail.timeLimitMinutes }),
@@ -29,9 +39,12 @@ export default function AssessmentSummary({
   return (
     <Card className="gap-3 rounded-2xl border-0 px-4 py-4 shadow-none md:px-5">
       <h2 className="border-border border-b pb-2 text-[13px] font-semibold">
-        {t('summary')}
+        {labels.summary ?? t('summary')}
       </h2>
       <div>
+        {labels.titleLabel ? (
+          <p className="text-muted-foreground text-[10px]">{labels.titleLabel}</p>
+        ) : null}
         <h3 className="text-[13px] font-semibold">{detail.summaryTitle}</h3>
         <p className="text-muted-foreground mt-1 text-xs leading-5">
           {detail.summary}
@@ -49,7 +62,7 @@ export default function AssessmentSummary({
       </dl>
       <div>
         <p className="text-muted-foreground mb-1.5 text-[10px] uppercase">
-          {t('allowed-question-types')}
+          {labels.questionTypes ?? t('allowed-question-types')}
         </p>
         <div className="flex flex-wrap gap-1.5">
           {detail.allowedQuestionTypes.map((type) => (

@@ -1,3 +1,4 @@
+import type { ScreeningQuestion } from './job-steps.types';
 // ==============================
 // BASE / SHARED ENTITIES
 // ==============================
@@ -253,6 +254,23 @@ export type JobDetails = {
 
   created_at: string;
   updated_at: string;
+  // Pending backend fields; the UI renders them only when present.
+  screening_questions?: ScreeningQuestion[];
+  assessment?: JobLinkedAssessment | null;
+  created_by?: JobCreator | null;
+};
+
+export type JobLinkedAssessment = {
+  id: number | string;
+  title: string;
+  category_id: number | string;
+};
+
+export type JobCreator = {
+  name: string;
+  role: string;
+  email: string;
+  image?: string | null;
 };
 
 // ==============================

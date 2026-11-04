@@ -19,14 +19,17 @@ type CustomPaginationProps = {
   getHref?: (page: number) => string;
   className?: string;
   statusPosition?: "start" | "end";
+  align?: "center" | "start";
+  tone?: "default" | "strong";
+  showLastPage?: boolean;
 };
 
-function getVisiblePages(currentPage: number, totalPages: number) {
+function getVisiblePages(currentPage: number, totalPages: number, showLastPage = true) {
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, index) => index + 1);
   }
 
-  const pages = new Set([1, totalPages, currentPage - 1, currentPage, currentPage + 1]);
+  const pages = new Set([1, ...(showLastPage ? [totalPages] : []), currentPage - 1, currentPage, currentPage + 1]);
 
   if (currentPage <= 3) {
     pages.add(2);
@@ -51,6 +54,9 @@ export function CustomPagination({
   getHref,
   className,
   statusPosition = "end",
+  align = "center",
+  tone = "default",
+  showLastPage = true,
 }: CustomPaginationProps) {
   const t = useTranslations();
   const locale = useLocale();
@@ -60,7 +66,7 @@ export function CustomPagination({
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, totalItems);
-  const pages = getVisiblePages(currentPage, totalPages);
+  const pages = getVisiblePages(currentPage, totalPages, showLastPage);
   const isPreviousDisabled = currentPage <= 1;
   const isNextDisabled = currentPage >= totalPages;
 
@@ -70,11 +76,11 @@ export function CustomPagination({
   };
 
   return (
-    <div className={cn("flex w-full flex-wrap items-center justify-center gap-2 md:gap-8", className)}>
+    <div className={cn("flex w-full flex-wrap items-center gap-2 md:gap-8", align === "start" ? "justify-start" : "justify-center", className)}>
       {/* Status */}
       <div
         className={cn(
-          "text-muted-foreground order-2 text-sm font-medium md:order-1",
+          cn("order-2 text-sm md:order-1", tone === "strong" ? "text-foreground font-semibold" : "text-muted-foreground font-medium"),
           statusPosition === "start" && "order-first md:order-first",
         )}
       >
@@ -129,7 +135,7 @@ export function CustomPagination({
                     href={getHref ? getHref(page) : undefined}
                     isActive={page === currentPage}
                     onClick={() => handleChange(page)}
-                    className={`h-8 w-8 rounded-full border-none ${page === currentPage ? "bg-primary text-white" : "text-muted-foreground"
+                    className={`h-8 w-8 rounded-full border-none ${page === currentPage ? "bg-primary text-white" : tone === "strong" ? "text-foreground font-semibold" : "text-muted-foreground"
                       }`}
                   >
                     {page}
