@@ -67,7 +67,14 @@ export default function ScreeningQuestionForm({
     : errors.correctOptionIds?.message;
 
   return (
-    <form onSubmit={submit} noValidate className="flex flex-col gap-6">
+    <form
+      onSubmit={(event) => {
+        event.stopPropagation();
+        void submit(event);
+      }}
+      noValidate
+      className="flex flex-col gap-6"
+    >
       <div className="flex flex-col gap-6">
         <SelectInputField
           id={`${idPrefix}-type`}

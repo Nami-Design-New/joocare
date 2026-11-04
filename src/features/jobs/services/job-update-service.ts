@@ -1,7 +1,10 @@
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import type { ScreeningQuestion } from '../types/job-steps.types';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
 export type UpdateJobPayload = {
-  _method: "put";
+  _method: 'put';
+  assessment_id?: string | number | null;
+  screening_questions?: ScreeningQuestion[];
   professional_license?: string;
   min_salary?: number;
   max_salary?: number;
@@ -36,40 +39,73 @@ export type UpdateJobPayload = {
 export async function updateJobService(
   jobId: number | string,
   payload: UpdateJobPayload,
-  { token }: { token: string }
+  { token }: { token: string },
 ) {
   const formData = new FormData();
+  if (payload.assessment_id !== undefined) {
+    formData.append(
+      'assessment_id',
+      payload.assessment_id == null ? '' : String(payload.assessment_id),
+    );
+  }
+
+  if (payload.screening_questions !== undefined) {
+    formData.append(
+      'screening_questions',
+      JSON.stringify(payload.screening_questions),
+    );
+  }
 
   // _method is required for Laravel PUT spoofing
-  formData.append("_method", "put");
+  formData.append('_method', 'put');
 
-  if (payload.title !== undefined) formData.append("title", payload.title);
-  if (payload.job_title_id !== undefined) formData.append("job_title_id", String(payload.job_title_id));
-  if (payload.professional_license !== undefined) formData.append("professional_license", payload.professional_license);
-  if (payload.has_salary !== undefined) formData.append("has_salary", String(payload.has_salary));
-  if (payload.min_salary !== undefined) formData.append("min_salary", String(payload.min_salary));
-  if (payload.max_salary !== undefined) formData.append("max_salary", String(payload.max_salary));
-  if (payload.currency_id !== undefined) formData.append("currency_id", String(payload.currency_id));
-  if (payload.salary_type_id !== undefined) formData.append("salary_type_id", String(payload.salary_type_id));
-  if (payload.category_id !== undefined) formData.append("category_id", String(payload.category_id));
-  if (payload.category_title !== undefined) formData.append("category_title", payload.category_title);
-  if (payload.specialty_title !== undefined) formData.append("specialty_title", String(payload.specialty_title));
-  if (payload.employment_type_id !== undefined) formData.append("employment_type_id", String(payload.employment_type_id));
-  if (payload.role_category_id !== undefined) formData.append("role_category_id", String(payload.role_category_id));
-  if (payload.seniority_level_id !== undefined) formData.append("seniority_level_id", String(payload.seniority_level_id));
-  if (payload.country_id !== undefined) formData.append("country_id", String(payload.country_id));
-  if (payload.city_id !== undefined) formData.append("city_id", String(payload.city_id));
-  if (payload.experience_id !== undefined) formData.append("experience_id", String(payload.experience_id));
-  if (payload.experience_title !== undefined) formData.append("experience_title", payload.experience_title);
+  if (payload.title !== undefined) formData.append('title', payload.title);
+  if (payload.job_title_id !== undefined)
+    formData.append('job_title_id', String(payload.job_title_id));
+  if (payload.professional_license !== undefined)
+    formData.append('professional_license', payload.professional_license);
+  if (payload.has_salary !== undefined)
+    formData.append('has_salary', String(payload.has_salary));
+  if (payload.min_salary !== undefined)
+    formData.append('min_salary', String(payload.min_salary));
+  if (payload.max_salary !== undefined)
+    formData.append('max_salary', String(payload.max_salary));
+  if (payload.currency_id !== undefined)
+    formData.append('currency_id', String(payload.currency_id));
+  if (payload.salary_type_id !== undefined)
+    formData.append('salary_type_id', String(payload.salary_type_id));
+  if (payload.category_id !== undefined)
+    formData.append('category_id', String(payload.category_id));
+  if (payload.category_title !== undefined)
+    formData.append('category_title', payload.category_title);
+  if (payload.specialty_title !== undefined)
+    formData.append('specialty_title', String(payload.specialty_title));
+  if (payload.employment_type_id !== undefined)
+    formData.append('employment_type_id', String(payload.employment_type_id));
+  if (payload.role_category_id !== undefined)
+    formData.append('role_category_id', String(payload.role_category_id));
+  if (payload.seniority_level_id !== undefined)
+    formData.append('seniority_level_id', String(payload.seniority_level_id));
+  if (payload.country_id !== undefined)
+    formData.append('country_id', String(payload.country_id));
+  if (payload.city_id !== undefined)
+    formData.append('city_id', String(payload.city_id));
+  if (payload.experience_id !== undefined)
+    formData.append('experience_id', String(payload.experience_id));
+  if (payload.experience_title !== undefined)
+    formData.append('experience_title', payload.experience_title);
   if (payload.education_levels) {
     payload.education_levels.forEach((educationLevelId, index) => {
       formData.append(`education_levels[${index}]`, String(educationLevelId));
     });
   }
-  if (payload.availability_id !== undefined) formData.append("availability_id", String(payload.availability_id));
-  if (payload.availability_title !== undefined) formData.append("availability_title", payload.availability_title);
-  if (payload.description !== undefined) formData.append("description", payload.description);
-  if (payload.status !== undefined) formData.append("status", payload.status);
+  if (payload.availability_id !== undefined)
+    formData.append('availability_id', String(payload.availability_id));
+  if (payload.availability_title !== undefined)
+    formData.append('availability_title', payload.availability_title);
+  if (payload.description !== undefined)
+    formData.append('description', payload.description);
+  if (payload.status !== undefined) formData.append('status', payload.status);
 
   if (payload.skills) {
     payload.skills.forEach((skillId, index) => {
@@ -89,14 +125,14 @@ export async function updateJobService(
   const response = await apiFetch(
     `${process.env.NEXT_PUBLIC_BASE_COMPANY_URL}/jobs/${jobId}`,
     {
-      method: "POST",
+      method: 'POST',
       body: formData,
       token,
-    }
+    },
   );
 
   if (!response.ok) {
-    throw new Error(response.message ?? "Failed to update job");
+    throw new Error(response.message ?? 'Failed to update job');
   }
 
   return response;
