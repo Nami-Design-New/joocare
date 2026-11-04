@@ -19,15 +19,15 @@ export default function SegmentedPills<T extends string>({
   className,
 }: SegmentedPillsProps<T>) {
   return (
-    <div role="radiogroup" aria-label={label} className={cn('grid grid-cols-2 gap-2', className)}>
+    <div role="radiogroup" aria-label={label} className={cn('bg-foreground/5 grid grid-cols-2 gap-2 rounded-full p-2', className)}>
       {options.map((option) => {
         const checked = option.value === value;
         return (
           <label
             key={option.value}
             className={cn(
-              'flex h-11 cursor-pointer items-center justify-center rounded-full text-sm transition-colors has-focus-visible:ring-2 has-focus-visible:ring-ring',
-              checked ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/70',
+              'flex h-11 cursor-pointer items-center justify-center rounded-full px-2 text-base transition-colors has-focus-visible:ring-2 has-focus-visible:ring-ring',
+              checked ? 'bg-primary text-primary-foreground' : 'bg-foreground/8 text-foreground/65 hover:bg-foreground/12',
             )}
           >
             <input

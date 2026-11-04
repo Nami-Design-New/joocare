@@ -17,12 +17,19 @@ export function useScreeningQuestions() {
   const t = useTranslations('companyPage.postJob.questions');
   const { setValue, watch } = useFormContext<JobFormData>();
   const questions = watch('screeningQuestions') ?? [];
-  const [openSections, setOpenSections] = useState<string[]>([TEMPLATES_SECTION]);
-  const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
+  const [openSections, setOpenSections] = useState<string[]>([
+    TEMPLATES_SECTION,
+  ]);
+  const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(
+    null,
+  );
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [builderOpen, setBuilderOpen] = useState(false);
+  // Editing a custom question always opens the modal (pencil button); the
+  // card's own expand/collapse only ever shows a read-only preview.
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!highlightedId) return;
@@ -31,7 +38,10 @@ export function useScreeningQuestions() {
   }, [highlightedId]);
 
   const save = (next: ScreeningQuestion[]) =>
-    setValue('screeningQuestions', next, { shouldDirty: true, shouldTouch: true });
+    setValue('screeningQuestions', next, {
+      shouldDirty: true,
+      shouldTouch: true,
+    });
 
   const add = (question: ScreeningQuestion) => {
     save([...questions, question]);
@@ -54,14 +64,22 @@ export function useScreeningQuestions() {
     previewTemplate,
     previewTemplateId,
     setPreviewTemplateId,
-    addedTemplateIds: questions.flatMap((question) => question.templateId ?? []),
+    addedTemplateIds: questions.flatMap(
+      (question) => question.templateId ?? [],
+    ),
     expandedId,
-    toggleExpanded: (id: string) => setExpandedId((current) => (current === id ? null : id)),
+    toggleExpanded: (id: string) =>
+      setExpandedId((current) => (current === id ? null : id)),
     highlightedId,
     deleteId,
     setDeleteId,
     builderOpen,
     setBuilderOpen,
+    editingId,
+    editingQuestion:
+      questions.find((question) => question.id === editingId) ?? null,
+    openEdit: (id: string) => setEditingId(id),
+    closeEdit: () => setEditingId(null),
     addCustom: add,
     addTemplate: (answer: string, required: boolean) => {
       if (!previewTemplate) return;
@@ -82,8 +100,10 @@ export function useScreeningQuestions() {
       setPreviewTemplateId(null);
     },
     update: (question: ScreeningQuestion) => {
-      save(questions.map((item) => (item.id === question.id ? question : item)));
-      setExpandedId(null);
+      save(
+        questions.map((item) => (item.id === question.id ? question : item)),
+      );
+      setEditingId(null);
       toast.success(t('updated-toast'));
     },
     confirmDelete: () => {

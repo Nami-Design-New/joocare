@@ -111,7 +111,7 @@ export const JOB_STATUS_MODAL_IMAGES = {
 // Screening question builder (Figma handoff 12795:114262).
 export const SCREENING_OPTION_LIMITS = { min: 2, max: 5, initial: 3 } as const;
 export const YES_NO_OPTION_IDS: readonly string[] = ['yes', 'no'];
-export const SCREENING_QUESTION_TYPES = ['single', 'multi', 'yes-no', 'text'] as const;
+export const SCREENING_QUESTION_TYPES = ['single', 'multi', 'yes-no'] as const;
 export const TEMPLATES_PREVIEW_COUNT = 11;
 
 // "panel" = AI JD Builder chat (Figma 10086:87585); "coming-soon" = modal (11531:110531).

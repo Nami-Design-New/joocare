@@ -1546,45 +1546,42 @@
           "single": "اختيار واحد",
           "multi": "اختيارات متعددة",
           "yes-no": "نعم / لا",
-          "text": "إجابة نصية",
-          "mark": "الدرجة",
           "question-label": "السؤال",
           "question-placeholder": "اكتب سؤالك",
           "answer-options": "خيارات الإجابة",
-          "options-counter": "{count} من 5 خيارات · الحد الأدنى خياران",
           "option-label": "الخيار {letter}",
-          "option-placeholder": "اكتب خيار الإجابة",
+          "option-placeholder": "أضف خيارًا",
           "remove-option": "حذف الخيار {letter}",
           "add-option": "إضافة خيار",
-          "correct-one": "الإجابة الصحيحة · اختر واحدة",
           "correct-many": "الإجابات الصحيحة · اختر واحدة أو أكثر",
           "correct-answer": "الإجابة الصحيحة",
           "yes": "نعم",
           "no": "لا",
-          "answer-placeholder": "اكتب إجابة مرجعية",
           "requirement-title": "هل هذا السؤال مطلوب؟",
           "requirement-description": "يجب على المرشحين الإجابة عن الأسئلة المطلوبة لإرسال الطلب",
           "required": "مطلوب",
           "optional": "(اختياري)",
           "submit": "إرسال",
           "close": "إغلاق",
-          "invalid-question": "أدخل السؤال ودرجة موجبة.",
-          "invalid-single": "أدخل سؤالًا ودرجة موجبة وخيارين إلى خمسة خيارات فريدة وإجابة صحيحة واحدة.",
-          "invalid-multi": "أدخل سؤالًا ودرجة موجبة وخيارين إلى خمسة خيارات فريدة وإجابة صحيحة واحدة على الأقل.",
+          "invalid-question": "أدخل السؤال واختر الإجابة الصحيحة.",
+          "invalid-single": "أدخل سؤالًا وخيارين إلى خمسة خيارات فريدة وإجابة صحيحة واحدة.",
+          "invalid-multi": "أدخل سؤالًا وخيارين إلى خمسة خيارات فريدة وإجابة صحيحة واحدة على الأقل.",
           "choose-exactly-one": "اختر إجابة صحيحة واحدة قبل الحفظ.",
           "choose-at-least-one": "اختر إجابة صحيحة واحدة على الأقل قبل الحفظ.",
-          "answer-required": "أدخل إجابة مرجعية.",
           "question-required": "أدخل السؤال",
-          "mark-positive": "يجب أن تكون الدرجة رقمًا موجبًا",
           "option-required": "أدخل هذا الخيار",
           "option-duplicate": "يجب ألا تتكرر الخيارات",
           "cancel": "إلغاء",
-          "save-changes": "حفظ التغييرات"
+          "save-changes": "حفظ التغييرات",
+          "options-limit": "· حتى 5 خيارات (A–E)",
+          "select-answer": "اختر الإجابة الصحيحة",
+          "edit-title": "تعديل سؤال الفرز"
         },
         "cancel": "إلغاء",
         "updated-toast": "تم تحديث السؤال بنجاح",
-        "expand-question": "تعديل السؤال {number}",
-        "collapse-question": "طي السؤال {number}"
+        "expand-question": "عرض السؤال {number}",
+        "collapse-question": "طي السؤال {number}",
+        "edit-question": "تعديل السؤال {number}"
       }
     },
     "dashboard": {
@@ -1813,8 +1810,7 @@
         "types": {
           "single": "اختيار واحد",
           "multi": "اختيارات متعددة",
-          "yes-no": "نعم / لا",
-          "text": "إجابة نصية"
+          "yes-no": "نعم / لا"
         }
       },
       "postedBy": {

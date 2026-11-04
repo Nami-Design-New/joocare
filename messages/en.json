@@ -1546,45 +1546,42 @@
           "single": "Single Select",
           "multi": "Multi Select",
           "yes-no": "Yes / No",
-          "text": "Input Text",
-          "mark": "Mark",
           "question-label": "Question",
           "question-placeholder": "Your Question",
           "answer-options": "Answer Options",
-          "options-counter": "{count} of 5 options · minimum 2",
           "option-label": "Option {letter}",
-          "option-placeholder": "Enter an answer option",
+          "option-placeholder": "Add option",
           "remove-option": "Remove option {letter}",
           "add-option": "Add Option",
-          "correct-one": "Correct Answer · select one",
           "correct-many": "Correct Answers · select one or more",
           "correct-answer": "Correct Answer",
           "yes": "Yes",
           "no": "No",
-          "answer-placeholder": "Your Answer",
           "requirement-title": "Is this question required?",
           "requirement-description": "Candidates must answer required questions to submit",
           "required": "Required",
           "optional": "(Optional)",
           "submit": "Submit",
           "close": "Close",
-          "invalid-question": "Enter a question and a positive mark.",
-          "invalid-single": "Enter a question, a positive mark, 2–5 unique options and one correct answer.",
-          "invalid-multi": "Enter a question, a positive mark, 2–5 unique options and at least one correct answer.",
+          "invalid-question": "Enter a question and choose the correct answer.",
+          "invalid-single": "Enter a question, 2–5 unique options and one correct answer.",
+          "invalid-multi": "Enter a question, 2–5 unique options and at least one correct answer.",
           "choose-exactly-one": "Choose exactly one correct answer before saving.",
           "choose-at-least-one": "Choose at least one correct answer before saving.",
-          "answer-required": "Enter a reference answer.",
           "question-required": "Enter a question",
-          "mark-positive": "Mark must be a positive number",
           "option-required": "Enter this option",
           "option-duplicate": "Options must be unique",
           "cancel": "Cancel",
-          "save-changes": "Save Changes"
+          "save-changes": "Save Changes",
+          "options-limit": "· Up to 5 options (A–E)",
+          "select-answer": "Select the correct answer",
+          "edit-title": "Edit Screening Question"
         },
         "cancel": "Cancel",
         "updated-toast": "Question updated successfully",
-        "expand-question": "Edit question {number}",
-        "collapse-question": "Collapse question {number}"
+        "expand-question": "Expand question {number}",
+        "collapse-question": "Collapse question {number}",
+        "edit-question": "Edit question {number}"
       }
     },
     "dashboard": {
@@ -1813,8 +1810,7 @@
         "types": {
           "single": "Single Select",
           "multi": "Multi Select",
-          "yes-no": "Yes / No",
-          "text": "Input Text"
+          "yes-no": "Yes / No"
         }
       },
       "postedBy": {

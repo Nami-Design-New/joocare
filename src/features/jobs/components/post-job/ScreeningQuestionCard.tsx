@@ -1,10 +1,10 @@
 'use client';
 
-import { ChevronDown, Trash2 } from 'lucide-react';
+import { ChevronDown, Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/lib/utils';
 import type { ScreeningQuestion } from '../../types/job-steps.types';
-import ScreeningQuestionForm from './ScreeningQuestionForm';
+import ScreeningQuestionDetails from './ScreeningQuestionDetails';
 
 type ScreeningQuestionCardProps = {
   question: ScreeningQuestion;
@@ -12,19 +12,21 @@ type ScreeningQuestionCardProps = {
   isExpanded: boolean;
   isHighlighted: boolean;
   onToggle: () => void;
+  onEdit: () => void;
   onDelete: () => void;
-  onSave: (question: ScreeningQuestion) => void;
 };
 
-// Added question card: closed (11073:44432) / expanded inline edit (11073:44433).
+// Added question card: closed (11073:44432) / expanded read-only preview
+// (11073:44433). Editing always opens ScreeningQuestionModal — the preview
+// itself is never editable in place.
 export default function ScreeningQuestionCard({
   question,
   number,
   isExpanded,
   isHighlighted,
   onToggle,
+  onEdit,
   onDelete,
-  onSave,
 }: ScreeningQuestionCardProps) {
   const t = useTranslations('companyPage.postJob.questions');
 
@@ -44,34 +46,41 @@ export default function ScreeningQuestionCard({
         </p>
         <button
           type="button"
+          onClick={onToggle}
+          aria-expanded={isExpanded}
+          aria-label={t(isExpanded ? 'collapse-question' : 'expand-question', {
+            number,
+          })}
+          className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-full"
+        >
+          <ChevronDown
+            aria-hidden="true"
+            className={cn(
+              'size-5 transition-transform',
+              isExpanded && 'rotate-180',
+            )}
+          />
+        </button>
+        <button
+          type="button"
+          onClick={onEdit}
+          aria-label={t('edit-question', { number })}
+          className="border-border flex size-10 shrink-0 items-center justify-center rounded-full border"
+        >
+          <Pencil aria-hidden="true" className="size-4.5" />
+        </button>
+        <button
+          type="button"
           onClick={onDelete}
           aria-label={t('delete-question', { number })}
           className="bg-destructive flex size-10 shrink-0 items-center justify-center rounded-full text-white"
         >
           <Trash2 aria-hidden="true" className="size-4.5" />
         </button>
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-expanded={isExpanded}
-          aria-label={t(isExpanded ? 'collapse-question' : 'expand-question', { number })}
-          className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-full"
-        >
-          <ChevronDown
-            aria-hidden="true"
-            className={cn('size-5 transition-transform', isExpanded && 'rotate-180')}
-          />
-        </button>
       </div>
       {isExpanded ? (
         <div className="mt-4">
-          <ScreeningQuestionForm
-            idPrefix={`screening-question-${question.id}`}
-            question={question}
-            variant="edit"
-            onCancel={onToggle}
-            onSubmit={onSave}
-          />
+          <ScreeningQuestionDetails question={question} />
         </div>
       ) : null}
     </article>

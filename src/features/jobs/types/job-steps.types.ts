@@ -36,12 +36,11 @@ export type ScreeningQuestion = {
     id: string;
     source: 'template' | 'custom';
     templateId?: string;
-    type: 'single' | 'multi' | 'yes-no' | 'text';
+    type: 'single' | 'multi' | 'yes-no';
     question: string;
     mark: number;
     options: ScreeningQuestionOption[];
     correctOptionIds: string[];
-    correctText?: string;
     required: boolean;
 };
 

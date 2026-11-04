@@ -202,12 +202,11 @@ export const step2Schema = z.object({
     id: z.string(),
     source: z.enum(['template', 'custom']),
     templateId: z.string().optional(),
-    type: z.enum(['single', 'multi', 'yes-no', 'text']),
+    type: z.enum(['single', 'multi', 'yes-no']),
     question: z.string(),
     mark: z.number().int().positive(),
     options: z.array(z.object({ id: z.string(), text: z.string() })),
     correctOptionIds: z.array(z.string()),
-    correctText: z.string().optional(),
     required: z.boolean(),
   })).default([]),
 });

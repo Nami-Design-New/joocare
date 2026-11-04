@@ -34,7 +34,11 @@ export default function ScreeningQuestionsSection() {
         onValueChange={state.setOpenSections}
         className="flex flex-col gap-4"
       >
-        <StepSectionCard value={TEMPLATES_SECTION} title={t('templates-title')} mutedBody>
+        <StepSectionCard
+          value={TEMPLATES_SECTION}
+          title={t('templates-title')}
+          mutedBody
+        >
           <div className="flex flex-col gap-5">
             {state.previewTemplate ? (
               <TemplateQuestionPreview
@@ -53,12 +57,21 @@ export default function ScreeningQuestionsSection() {
           </div>
         </StepSectionCard>
 
-        <StepSectionCard value={CUSTOM_SECTION} title={t('custom-title')} mutedBody>
+        <StepSectionCard
+          value={CUSTOM_SECTION}
+          title={t('custom-title')}
+          mutedBody
+        >
           <div className="flex flex-col gap-4">
-            <p className="text-muted-foreground text-xs">{t('custom-subtitle')}</p>
+            <p className="text-muted-foreground text-xs">
+              {t('custom-subtitle')}
+            </p>
             {questions.length ? (
               <>
-                <p className="text-foreground text-sm font-semibold" aria-live="polite">
+                <p
+                  className="text-foreground text-sm font-semibold"
+                  aria-live="polite"
+                >
                   {t('count', { count: questions.length })}
                 </p>
                 <div className="flex flex-col gap-3">
@@ -70,17 +83,26 @@ export default function ScreeningQuestionsSection() {
                       isExpanded={state.expandedId === question.id}
                       isHighlighted={state.highlightedId === question.id}
                       onToggle={() => state.toggleExpanded(question.id)}
+                      onEdit={() => state.openEdit(question.id)}
                       onDelete={() => state.setDeleteId(question.id)}
-                      onSave={state.update}
                     />
                   ))}
                 </div>
               </>
             ) : (
               <div className="flex flex-col items-center gap-2 px-4 py-6 text-center">
-                <Image src="/assets/icons/files.svg" alt="" width={120} height={120} />
-                <h3 className="text-secondary text-xl font-semibold">{t('empty-title')}</h3>
-                <p className="text-muted-foreground max-w-xl">{t('empty-description')}</p>
+                <Image
+                  src="/assets/icons/files.svg"
+                  alt=""
+                  width={100}
+                  height={100}
+                />
+                <h3 className="text-secondary text-xl font-semibold">
+                  {t('empty-title')}
+                </h3>
+                <p className="text-muted-foreground max-w-xl">
+                  {t('empty-description')}
+                </p>
                 <p className="text-muted-foreground">{t('empty-optional')}</p>
               </div>
             )}
@@ -100,6 +122,12 @@ export default function ScreeningQuestionsSection() {
         open={state.builderOpen}
         onOpenChange={state.setBuilderOpen}
         onSubmit={state.addCustom}
+      />
+      <ScreeningQuestionModal
+        open={state.editingId !== null}
+        onOpenChange={(open) => !open && state.closeEdit()}
+        question={state.editingQuestion}
+        onSubmit={state.update}
       />
       <DeleteModal
         open={state.deleteId !== null}
