@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isDifferentFromPreviousPassword } from '@/shared/lib/password-rules';
 import { createPasswordSchema } from '@/shared/validation/password-schema';
 
 type CreateChangePasswordSchemaOptions = {
@@ -8,6 +9,7 @@ type CreateChangePasswordSchemaOptions = {
     newPasswordMin: string;
     newPasswordMax: string;
     passwordRules: string;
+    newPasswordSameAsCurrent: string;
     confirmNewPasswordRequired: string;
     passwordsDoNotMatch: string;
   };
@@ -18,12 +20,10 @@ export const createChangePasswordSchema = ({
 }: CreateChangePasswordSchemaOptions = {}) =>
   z
     .object({
-      currentPassword: z
-        .string()
-        .min(1, {
-          message:
-            messages?.currentPasswordRequired ?? 'Current password is required',
-        }),
+      currentPassword: z.string().min(1, {
+        message:
+          messages?.currentPasswordRequired ?? 'Current password is required',
+      }),
       newPassword: createPasswordSchema({
         required: messages?.newPasswordRequired,
         min: messages?.newPasswordMin,
@@ -36,6 +36,16 @@ export const createChangePasswordSchema = ({
           'Confirm new password is required',
       }),
     })
+    .refine(
+      (data) =>
+        isDifferentFromPreviousPassword(data.newPassword, data.currentPassword),
+      {
+        message:
+          messages?.newPasswordSameAsCurrent ??
+          'New password must be different from your previous password',
+        path: ['newPassword'],
+      },
+    )
     .refine((data) => data.newPassword === data.confirmNewPassword, {
       message: messages?.passwordsDoNotMatch ?? 'Passwords do not match',
       path: ['confirmNewPassword'],

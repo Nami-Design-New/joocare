@@ -1,7 +1,9 @@
+import AboutCommitmentSection from "@/features/about/components/AboutCommitmentSection";
 import AboutHeroSection from "@/features/about/components/AboutHeroSection";
 import AboutMissionSection from "@/features/about/components/AboutMissionSection";
 import AboutVisionSection from "@/features/about/components/AboutVisionSection";
 import CorePillarsSection from "@/features/about/components/CorePillarsSection";
+import { ABOUT_COMMITMENT_PREVIEW_DATA } from "@/features/about/constants/commitment-preview-data";
 import { getAboutPageData } from "@/features/about/services/about-service";
 import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
 import { getTranslations } from "next-intl/server";
@@ -54,6 +56,11 @@ export default async function AboutPage({
           />
         </div>
       </div>
+      <AboutCommitmentSection
+        title={ABOUT_COMMITMENT_PREVIEW_DATA.title}
+        description={ABOUT_COMMITMENT_PREVIEW_DATA.description}
+        images={ABOUT_COMMITMENT_PREVIEW_DATA.images}
+      />  
     </>
   );
 }

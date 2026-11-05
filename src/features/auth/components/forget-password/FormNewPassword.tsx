@@ -134,6 +134,7 @@ const FormNewPassword = () => {
           id="newPassword-password-rules"
           value={newPassword ?? ''}
           hasError={!!errors.newPassword}
+          showPreviousPasswordRule
         />
         <Button
           variant={'secondary'}
@@ -143,8 +144,8 @@ const FormNewPassword = () => {
           disabled={isSubmitting || !resetContext || successOpen}
         >
           {isSubmitting
-            ? t('authPage.common.sending')
-            : t('authPage.common.send')}
+            ? t('authPage.common.confirming')
+            : t('authPage.common.confirm')}
         </Button>
       </form>
       <PasswordChangedModal

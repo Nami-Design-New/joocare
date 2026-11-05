@@ -19,3 +19,12 @@ export function getPasswordRules(value: string) {
 export function meetsPasswordRequirements(value: string) {
   return Object.values(getPasswordRules(value)).every(Boolean);
 }
+
+export const PREVIOUS_PASSWORD_RULE_KEY = 'different';
+
+export function isDifferentFromPreviousPassword(
+  value: string,
+  previousPassword: string,
+) {
+  return value.length > 0 && value !== previousPassword;
+}

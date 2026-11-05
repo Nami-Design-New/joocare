@@ -148,6 +148,8 @@ export type JobListItem = {
 
   is_applied: boolean;
   is_saved: boolean;
+  // AI resume match (0-100). Pending backend field.
+  match_score?: number | null;
 
   created_at: string;
   updated_at: string;
@@ -251,6 +253,8 @@ export type JobDetails = {
 
   is_applied: boolean;
   is_saved: boolean;
+  // AI resume match (0-100). Pending backend field.
+  match_score?: number | null;
 
   created_at: string;
   updated_at: string;

@@ -41,6 +41,9 @@ const ChangePasswordForm = () => {
         newPasswordMin: t('common.password-validation.minimum-error'),
         newPasswordMax: t('authPage.validation.password-max'),
         passwordRules: t('common.password-validation.invalid'),
+        newPasswordSameAsCurrent: t(
+          'common.password-validation.same-as-previous',
+        ),
         confirmPasswordRequired: t(
           'authPage.validation.confirm-password-required',
         ),
@@ -53,6 +56,7 @@ const ChangePasswordForm = () => {
     register,
     control,
     trigger,
+    getValues,
     handleSubmit,
     reset,
     formState: { errors },
@@ -60,12 +64,17 @@ const ChangePasswordForm = () => {
     resolver: zodResolver(schema),
     mode: 'onChange',
   });
+  const currentPassword = useWatch({ control, name: 'currentPassword' });
   const newPassword = useWatch({ control, name: 'newPassword' });
   const confirmNewPassword = useWatch({ control, name: 'confirmNewPassword' });
 
   useEffect(() => {
     if (confirmNewPassword) void trigger('confirmNewPassword');
   }, [confirmNewPassword, newPassword, trigger]);
+
+  useEffect(() => {
+    if (getValues('newPassword')) void trigger('newPassword');
+  }, [currentPassword, getValues, trigger]);
 
   const onSubmit: SubmitHandler<TChangePasswordSchema> = (data) => {
     changePassword(
@@ -124,6 +133,8 @@ const ChangePasswordForm = () => {
           id="newPassword-password-rules"
           value={newPassword ?? ''}
           hasError={!!errors.newPassword}
+          showPreviousPasswordRule
+          previousPassword={currentPassword ?? ''}
         />
         <Button
           variant={'secondary'}

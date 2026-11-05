@@ -113,6 +113,17 @@
   --color-avatar-slate-bg: var(--avatar-slate-bg);
   --color-avatar-green: var(--avatar-green);
   --color-avatar-green-bg: var(--avatar-green-bg);
+  --color-why-bg: var(--why-bg);
+  --color-why-bg-glow: var(--why-bg-glow);
+  --color-why-bg-mid: var(--why-bg-mid);
+  --color-why-ink: var(--why-ink);
+  --color-why-ink-muted: var(--why-ink-muted);
+  --color-why-line: var(--why-line);
+  --color-why-mint: var(--why-mint);
+  --color-why-green: var(--why-green);
+  --color-why-green-light: var(--why-green-light);
+  --color-legacy-accent: var(--legacy-accent);
+  --color-legacy-accent-light: var(--legacy-accent-light);
 }
 
 /* ════════════════════════════════════════
@@ -204,6 +215,20 @@
   --avatar-slate-bg: #edf0f4;
   --avatar-green: #21914e;
   --avatar-green-bg: #d8fae0;
+
+  /* Home "Why Joocare" — dark AI engine section */
+  --why-bg: #0b1012;
+  --why-bg-glow: #17211f;
+  --why-bg-mid: #111819;
+  --why-ink: #e9f1ec;
+  --why-ink-muted: rgba(233, 241, 236, 0.68);
+  --why-line: rgba(206, 243, 213, 0.12);
+  --why-grid: rgba(206, 243, 213, 0.045);
+  --why-mint: #cef3d5;
+  --why-green: #1fad36;
+  --why-green-light: #61d174;
+  --legacy-accent: #c9806f;
+  --legacy-accent-light: #de9886;
 
   /* Accent — lighter green tint for hover/active states */
   --accent: oklch(0.468 0.148 145 / 8%); /* second-color08 */
@@ -424,6 +449,18 @@
 @layer utilities {
   .bg-primary-gradient {
     background: var(--bg-primary-gradient);
+  }
+  .bg-why-grid {
+    background-image:
+      linear-gradient(var(--why-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--why-grid) 1px, transparent 1px);
+    background-size: 44px 44px;
+    background-position: center;
+    mask-image: radial-gradient(
+      ellipse 80% 75% at 50% 55%,
+      black 35%,
+      rgb(0 0 0 / 50%) 100%
+    );
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;

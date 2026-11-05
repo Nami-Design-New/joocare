@@ -72,7 +72,7 @@ export function normalizeJobsSearchParams(
     maxSalary: getSingleParam(searchParams, 'max_salary'),
     roleCategories: normalizedRoleCategories,
     seniorityLevels: normalizedSeniorityLevels,
-    // specialties: getArrayParam(searchParams, "specialties[]", "specialties"),
+    specialties: getArrayParam(searchParams, 'specialties[]', 'specialties'),
     experiences: getArrayParam(searchParams, 'experiences[]', 'experiences'),
     availabilities: getArrayParam(
       searchParams,
@@ -96,7 +96,7 @@ export function buildJobsQueryString(filters: JobsSearchFilters) {
     ['role_categories[]', filters.roleCategories],
     ['domains[]', filters.domains],
     ['seniority_levels[]', filters.seniorityLevels],
-    // ["specialties[]", filters.specialties],
+    ['specialties[]', filters.specialties],
     ['experiences[]', filters.experiences],
     ['availabilities[]', filters.availabilities],
     ['salary_types[]', filters.salaryTypes],

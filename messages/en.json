@@ -13,7 +13,9 @@
       "show-password": "Show password",
       "hide-password": "Hide password",
       "changed-successfully": "Password changed successfully",
-      "change-failed": "Unable to change your password. Please try again."
+      "change-failed": "Unable to change your password. Please try again.",
+      "different": "Different from your previous password",
+      "same-as-previous": "New password must be different from your previous password"
     },
     "back-to-home": "Back to home",
     "save": "Save",
@@ -106,14 +108,46 @@
         "3": "Better Hiring Decisions"
       },
       "steps": {
-        "1": { "l1": "CV", "l2": "Analysis", "status": "Analyzing CVs" },
-        "2": { "l1": "Qualification", "l2": "Review", "status": "Reviewing qualifications" },
-        "3": { "l1": "Credential", "l2": "Verification", "status": "Verifying credentials" },
-        "4": { "l1": "Assessment", "l2": "Insights", "status": "Building assessment insights" },
-        "5": { "l1": "Talent", "l2": "Matching", "status": "Matching talent to roles" },
-        "6": { "l1": "Talent", "l2": "Ranking", "status": "Ranking talent" },
-        "7": { "l1": "Smart", "l2": "Shortlisting", "status": "Shortlisting the best fit" },
-        "8": { "l1": "Hiring", "l2": "Insights", "status": "Delivering hiring insights" }
+        "1": {
+          "l1": "CV",
+          "l2": "Analysis",
+          "status": "Analyzing CVs"
+        },
+        "2": {
+          "l1": "Qualification",
+          "l2": "Review",
+          "status": "Reviewing qualifications"
+        },
+        "3": {
+          "l1": "Credential",
+          "l2": "Verification",
+          "status": "Verifying credentials"
+        },
+        "4": {
+          "l1": "Assessment",
+          "l2": "Insights",
+          "status": "Building assessment insights"
+        },
+        "5": {
+          "l1": "Talent",
+          "l2": "Matching",
+          "status": "Matching talent to roles"
+        },
+        "6": {
+          "l1": "Talent",
+          "l2": "Ranking",
+          "status": "Ranking talent"
+        },
+        "7": {
+          "l1": "Smart",
+          "l2": "Shortlisting",
+          "status": "Shortlisting the best fit"
+        },
+        "8": {
+          "l1": "Hiring",
+          "l2": "Insights",
+          "status": "Delivering hiring insights"
+        }
       }
     },
     "top-employers": "Top Employers",
@@ -140,7 +174,9 @@
     "vision-image-alt": "Vision image",
     "search-jobs": "Search jobs",
     "credentialing-ai": "Credentialing AI",
-    "verified-doctors": "Verified Doctors"
+    "verified-doctors": "Verified Doctors",
+    "our-commitment": "Our Commitment",
+    "commitment-image-alt": "Commitment image"
   },
   "faqPage": {
     "pagination-show": "Show",
@@ -182,13 +218,15 @@
       "min": "Min",
       "max": "Max",
       "apply-filters": "Apply Filters",
-      "reset": "Reset"
+      "reset": "Reset",
+      "specialty": "Specialty"
     },
     "toasts": {
       "job-link-copied": "Job link copied successfully.",
       "unable-copy-job-link": "Unable to copy the job link.",
       "unable-share-job-link": "Unable to share the job link."
-    }
+    },
+    "resume-match": "Resume Match"
   },
   "jobDetailsPage": {
     "breadcrumb-title": "Job Details",
@@ -514,7 +552,11 @@
       "professional-credentials": "Professional Credentials",
       "profile-settings": "Profile Settings",
       "complete-details-title": "Please complete your details.",
-      "complete-details-description": "Please complete your account details so you can use the platform normally and benefit from all its features."
+      "complete-details-description": "Please complete your account details so you can use the platform normally and benefit from all its features.",
+      "cv-match-ats": "CV match with ATS",
+      "build-cv": "Build Your Professional CV",
+      "ai-job-match": "AI Job Match",
+      "profile-insights": "View Profile Insights"
     },
     "settings": {
       "basic-info": "Basic Info",
@@ -591,7 +633,7 @@
       "select-job-title": "Select job title",
       "search-job-titles": "Search job titles...",
       "enter-job-title": "Enter your job title",
-      "organization-name": "Organization Name",
+      "organization-name": "Organization/Hospital Name",
       "organization-placeholder": "ex: health care",
       "currently-work-here": "I currently work here",
       "responsibilities": "Responsibilities",
@@ -628,7 +670,15 @@
       "missing-score-items": "Complete missing score items",
       "location": "Location",
       "phone": "Phone",
-      "age": "Age"
+      "age": "Age",
+      "employment-type": "Employment Type",
+      "employment-type-placeholder": "Select employment type",
+      "loading-employment-types": "Loading employment types...",
+      "search-employment-types": "Search employment types...",
+      "city": "City",
+      "loading-cities": "Loading cities...",
+      "add-responsibility": "Add responsibility",
+      "remove-responsibility": "Remove responsibility"
     },
     "toasts": {
       "session-expired": "Your session has expired. Please log in again.",
@@ -705,10 +755,14 @@
     "placeholders": {
       "job-title": "ex: Consultant Internist",
       "search-job-titles": "Search job titles...",
-      "specialty": "ex: Cardiology",
+      "specialty": "e.g. ICU",
       "years-of-experience": "ex: 3-5 years",
       "search-experience": "Search experience...",
-      "search-cities": "Search cities..."
+      "search-cities": "Search cities...",
+      "subspecialty": "ex: Cardiology",
+      "choose": "Choose",
+      "search-domains": "Search domains...",
+      "search-categories": "Search categories..."
     },
     "toasts": {
       "invalid-phone": "Please enter a valid phone number.",
@@ -724,7 +778,19 @@
       "only-one-file": "Only one file is allowed.",
       "profile-image-invalid-type": "Profile image must be JPG or PNG.",
       "profile-image-invalid-size": "Profile image size must not exceed 2MB."
-    }
+    },
+    "basic-info": {
+      "title": "Basic Information",
+      "subtitle": "Update your personal details and professional information."
+    },
+    "change-password": {
+      "title": "Change Password",
+      "subtitle": "Keep your account secure by using a strong password."
+    },
+    "subspecialty": "Subspecialty",
+    "category": "Category",
+    "optional": "(Optional)",
+    "current-cv": "Current CV"
   },
   "candidateValidation": {
     "organization-min": "Organization Name must be at least 3 characters.",

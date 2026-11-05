@@ -1,62 +1,27 @@
-import SectionTitle from "@/features/home/components/SectionTitle";
-import Image from "next/image";
-import type { AboutImage } from "../types/about.types";
-import { getTranslations } from "next-intl/server";
+import { getTranslations } from 'next-intl/server';
+import type { AboutContentSection } from '../types/about.types';
+import AboutImageTextBlock from './AboutImageTextBlock';
+
+type AboutVisionSectionProps = AboutContentSection;
 
 export default async function AboutVisionSection({
   title,
   description,
   images,
-}: {
-  title: string;
-  description: string;
-  images: AboutImage[];
-}) {
-  const primaryImage = images[0];
-  const secondaryImage = images[1];
-  const t = await getTranslations();
+}: AboutVisionSectionProps) {
+  const t = await getTranslations('aboutPage');
 
   return (
-    <section className="my-14 py-16 bg-background">
+    <section className="bg-background my-14 py-16">
       <div className="layout-shell">
         <div className="layout-content">
-          <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 xl:grid-cols-5 xl:gap-16 xl:px-0 justify-center items-center">
-            <div className="xl:col-span-3">
-              <div className="mb-2">
-                <SectionTitle sectionTitle={t("aboutPage.our-vision")} textColor="text-dark" />
-              </div>
-
-              <h2 className="text-secondary my-7 text-3xl leading-tight font-bold sm:text-4xl xl:text-5xl">
-                {title}
-              </h2>
-
-              <p className="text-muted-foreground my-7 max-w-4xl text-left text-sm whitespace-pre-line sm:text-xl xl:text-justify">
-                {description}
-              </p>
-            </div>
-
-            <div className="xl:col-span-2">
-              <div className="relative mx-auto h-[420px] w-full max-w-[340px] sm:h-[520px] sm:max-w-[520px] xl:max-w-none">
-                <div className="absolute top-0 right-0 h-[100%] w-[80%] overflow-hidden rounded-[30px] sm:rounded-[40px]">
-                  <Image
-                    src={primaryImage?.image ?? "/assets/about/doctor2.jpg"}
-                    alt={primaryImage?.alt ?? t("aboutPage.vision-image-alt")}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-
-                <div className="absolute top-[29.5%] left-0 h-[50%] w-1/2 overflow-hidden rounded-[22px] border-8 border-white shadow-xl sm:rounded-[30px] sm:border-[12px]">
-                  <Image
-                    src={secondaryImage?.image ?? "/assets/about/doctor1.jpg"}
-                    alt={secondaryImage?.alt ?? t("aboutPage.vision-image-alt")}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <AboutImageTextBlock
+            eyebrow={t('our-vision')}
+            title={title}
+            description={description}
+            images={images}
+            fallbackImageAlt={t('vision-image-alt')}
+          />
         </div>
       </div>
     </section>

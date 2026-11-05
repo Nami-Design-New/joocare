@@ -1,75 +1,21 @@
-"use client";
+'use client';
 
-import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
-import { Minus, Plus } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Controller, type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { useLocale, useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
-import { useRouter } from "@/i18n/navigation";
-import { InputField } from "@/shared/components/InputField";
-import LabelCheckbox from "@/shared/components/LabelCheckbox";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { Button } from "@/shared/components/ui/button";
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
-import {
-  createExperience,
-  updateExperience,
-} from "../../services/experience-client-service";
-import type { CandidateExperienceViewModel } from "../../types/profile.types";
-import { createExperienceModalSchema, FormData } from "../../validation/experience-modal-schema";
+} from '@/shared/components/ui/dialog';
+import type { CandidateExperienceViewModel } from '../../types/profile.types';
+import ExperienceForm from './ExperienceForm';
 
-interface ExperienceModalProps {
+type ExperienceModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   label: string;
   experience?: CandidateExperienceViewModel | null;
-}
-
-const EMPTY_FORM: FormData = {
-  jobTitle: "",
-  otherJobTitle: "",
-  organizationOrHospitalName: "",
-  startDate: "",
-  endDate: "",
-  workHere: false,
-  responsibilities: [{ value: "" }],
 };
-
-function toFormState(
-  experience?: CandidateExperienceViewModel | null,
-  jobTitles?: Array<{ id: string | number; title?: string | null }>,
-): FormData {
-  if (!experience) {
-    return EMPTY_FORM;
-  }
-
-  const normalizedExperienceTitle = experience.title.trim().toLowerCase();
-  const matchedJobTitle = jobTitles?.find(
-    (jobTitle) => jobTitle.title?.trim().toLowerCase() === normalizedExperienceTitle,
-  );
-
-  return {
-    jobTitle: matchedJobTitle ? String(matchedJobTitle.id) : "__other__",
-    otherJobTitle: matchedJobTitle ? "" : experience.title,
-    organizationOrHospitalName: experience.organization ?? "",
-    startDate: experience.startDate ?? "",
-    endDate: experience.endDate ?? "",
-    workHere: experience.isCurrent,
-    responsibilities:
-      experience.bullets.length > 0
-        ? experience.bullets.map((bullet) => ({ value: bullet }))
-        : [{ value: "" }],
-  };
-}
 
 export function ExperienceModal({
   open,
@@ -77,278 +23,24 @@ export function ExperienceModal({
   label,
   experience,
 }: ExperienceModalProps) {
-  const t = useTranslations();
-  const router = useRouter();
-  const locale = useLocale();
-  const { data: session } = useSession();
-  const [isSaving, setIsSaving] = useState(false);
-  const defaultValues = useMemo(() => toFormState(experience), [experience]);
-  const experienceSchema = useMemo(
-    () =>
-      createExperienceModalSchema({
-        jobTitleRequired: t("authPage.validation.job-title-required"),
-        organizationMin: t("candidateValidation.organization-min"),
-        organizationMax: t("candidateValidation.organization-max"),
-        startDateRequired: t("candidateValidation.start-date-required"),
-        responsibilityMin: t("candidateValidation.responsibility-min"),
-        responsibilityMax: t("candidateValidation.responsibility-max"),
-        responsibilitiesMin: t("candidateValidation.responsibilities-min"),
-        otherJobTitleRequired: t("authPage.validation.other-job-title-required"),
-        startDatePast: t("candidateValidation.start-date-past"),
-        endDateRequired: t("candidateValidation.end-date-required"),
-        endDateAfterStart: t("candidateValidation.end-date-after-start"),
-      }),
-    [t],
-  );
-  const [jobTitleSearch, setJobTitleSearch] = useState("");
-  const {
-    control,
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: typedZodResolver(experienceSchema),
-    defaultValues,
-  });
-  const [dialogContentElement, setDialogContentElement] = useState<HTMLDivElement | null>(null);
-  const {
-    jobTitles,
-    isLoading: isJobTitlesLoading,
-    error: jobTitlesError,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
-  } = useGetJobTitles(jobTitleSearch);
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "responsibilities",
-  });
-
-  const workHere = watch("workHere");
-  const selectedJobTitle = watch("jobTitle");
-  const isOtherJobTitle = selectedJobTitle === "__other__";
-  const jobTitlesKey = useMemo(
-    () => jobTitles.map((jobTitle) => `${jobTitle.id}:${jobTitle.title ?? ""}`).join("|"),
-    [jobTitles],
-  );
-
-  const jobTitleOptions = useMemo(() => {
-    const mappedOptions = jobTitles
-      .map((jobTitle) => ({
-        label: String(jobTitle.title ?? ""),
-        value: String(jobTitle.id ?? ""),
-      }))
-      .filter((jobTitle) => jobTitle.label);
-
-    return [
-      { label: t("authPage.common.other"), value: "__other__" },
-      ...mappedOptions,
-    ];
-  }, [jobTitles, t]);
-
-  useEffect(() => {
-    if (open) {
-      reset(toFormState(experience, jobTitles));
-    }
-  }, [experience, jobTitlesKey, open, reset]);
-
-  useEffect(() => {
-    if (workHere) {
-      setValue("endDate", "");
-    }
-  }, [setValue, workHere]);
-
-  useEffect(() => {
-    if (!isOtherJobTitle) {
-      setValue("otherJobTitle", "");
-    }
-  }, [isOtherJobTitle, setValue]);
-
-  const handleDialogContentRef = useCallback((node: HTMLDivElement | null) => {
-    setDialogContentElement(node);
-  }, []);
-
-  const onSubmit: SubmitHandler<FormData> = async (form) => {
-    if (!session?.accessToken) {
-      toast.error(t("candidatePage.toasts.session-expired"));
-      return;
-    }
-
-    try {
-      setIsSaving(true);
-
-      const payload = {
-        title:
-          form.jobTitle === "__other__"
-            ? form.otherJobTitle?.trim() ?? ""
-            : undefined,
-        jobTitleId:
-          form.jobTitle !== "__other__"
-            ? form.jobTitle
-            : undefined,
-        company: form.organizationOrHospitalName.trim(),
-        startDate: form.startDate,
-        endDate: form.workHere ? undefined : form.endDate?.trim(),
-        isCurrent: Boolean(form.workHere),
-        responsibilities: form.responsibilities.map((item) => item.value.trim()),
-        locale,
-        token: session.accessToken,
-      };
-
-      const response = experience?.id
-        ? await updateExperience(experience.id, payload)
-        : await createExperience(payload);
-
-      toast.success(
-        response?.message ??
-        (experience?.id
-          ? t("candidatePage.toasts.experience-updated")
-          : t("candidatePage.toasts.experience-added")),
-      );
-      reset(EMPTY_FORM);
-      onOpenChange(false);
-      router.refresh();
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : t("candidatePage.toasts.experience-save-failed");
-      toast.error(message);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  const [dialogContentElement, setDialogContentElement] =
+    useState<HTMLDivElement | null>(null);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent ref={handleDialogContentRef} className="max-w-175">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-          <DialogHeader>
-            <DialogTitle className="text-[28px] text-black">{label}</DialogTitle>
-          </DialogHeader>
+      <DialogContent ref={setDialogContentElement} className="max-w-175 gap-5">
+        <DialogHeader>
+          <DialogTitle className="text-foreground text-[28px]">
+            {label}
+          </DialogTitle>
+        </DialogHeader>
 
-          <Controller
-            name="jobTitle"
-            control={control}
-            render={({ field }) => (
-              <SelectInputField
-                id="jobTitle"
-                label={t("authPage.common.job-title")}
-                placeholder={isJobTitlesLoading ? t("candidatePage.profile.loading-job-titles") : t("candidatePage.profile.select-job-title")}
-                options={jobTitleOptions}
-                value={field.value}
-                onChange={field.onChange}
-                disabled={isJobTitlesLoading}
-                withSearchInput
-                searchPlaceholder={t("candidatePage.profile.search-job-titles")}
-                portalContainer={dialogContentElement}
-                onReachEnd={() => void fetchNextPage()}
-                hasNextPage={!!hasNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-                onSearchChange={setJobTitleSearch}
-                error={
-                  errors.jobTitle?.message ??
-                  (jobTitlesError instanceof Error ? jobTitlesError.message : undefined)
-                }
-              />
-            )}
-          />
-
-          {isOtherJobTitle && (
-            <InputField
-              id="otherJobTitle"
-              label={t("authPage.common.other-job-title")}
-              placeholder={t("candidatePage.profile.enter-job-title")}
-              {...register("otherJobTitle")}
-              error={errors.otherJobTitle?.message}
-            />
-          )}
-
-          <InputField
-            id="organizationOrHospitalName"
-            label={t("candidatePage.profile.organization-name")}
-            placeholder={t("candidatePage.profile.organization-placeholder")}
-            {...register("organizationOrHospitalName")}
-            error={errors.organizationOrHospitalName?.message}
-          />
-
-          <div className="flex gap-2 max-md:flex-col">
-            <InputField
-              id="startDate"
-              label={t("candidatePage.profile.start-date")}
-              type="date"
-              {...register("startDate")}
-              error={errors.startDate?.message}
-            />
-
-            <InputField
-              id="endDate"
-              label={t("candidatePage.profile.end-date")}
-              type="date"
-              disabled={workHere}
-              {...register("endDate")}
-              error={errors.endDate?.message}
-            />
-          </div>
-
-          <Controller
-            name="workHere"
-            control={control}
-            render={({ field }) => (
-              <LabelCheckbox
-                id="workHere"
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                error={errors.workHere?.message}
-              >
-                {t("candidatePage.profile.currently-work-here")}
-              </LabelCheckbox>
-            )}
-          />
-
-          <div className="flex flex-col gap-3">
-            <label className="text-sm font-medium">{t("candidatePage.profile.responsibilities")}</label>
-
-            {fields.map((field, index) => (
-              <div key={field.id} className="flex items-end gap-2">
-                <InputField
-                  id={`responsibilities-${index}`}
-                  placeholder={t("candidatePage.profile.responsibilities-placeholder")}
-                  {...register(`responsibilities.${index}.value`)}
-                  error={errors.responsibilities?.[index]?.value?.message}
-                />
-
-                {index === fields.length - 1 && (
-                  <button
-                    type="button"
-                    onClick={() => append({ value: "" })}
-                    className="flex h-13 w-15 items-center justify-center rounded-full bg-secondary text-white"
-                  >
-                    <Plus />
-                  </button>
-                )}
-
-                {fields.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => remove(index)}
-                    className="border-muted text-secondary flex h-13 w-15 items-center justify-center rounded-full border bg-muted"
-                  >
-                    <Minus />
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <DialogFooter className="flex items-center justify-center!">
-            <Button className="w-1/3 hover:bg-primary/70" size="pill" type="submit" disabled={isSaving}>
-              {isSaving ? t("candidatePage.common.saving") : experience?.id ? t("common.save") : t("candidatePage.common.add")}
-            </Button>
-          </DialogFooter>
-        </form>
+        <ExperienceForm
+          key={experience?.id ?? 'new'}
+          experience={experience}
+          portalContainer={dialogContentElement}
+          onSaved={() => onOpenChange(false)}
+        />
       </DialogContent>
     </Dialog>
   );

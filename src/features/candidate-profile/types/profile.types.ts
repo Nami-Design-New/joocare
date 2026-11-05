@@ -24,6 +24,9 @@ export type CandidateProfileApiExperience = {
   }
   job_title_id: number | null;
   company: string | null;
+  employment_type_id?: number | null;
+  country_id?: number | null;
+  city_id?: number | null;
   start_date: string | null;
   end_date: string | null;
   is_current: boolean;
@@ -73,6 +76,9 @@ export type CandidateProfileApiUser = {
   specialty_id: number | null;
   specialty: CandidateProfileApiLookup | null;
   specialty_title: string | null;
+  subspecialty_title?: string | null;
+  domain_id?: number | null;
+  category_id?: number | null;
   cv: string | null;
   image: string | null;
   experience_id: number | null;
@@ -109,6 +115,9 @@ export type CandidateProfileViewModel = {
   unread_notifications_count: number;
   jobTitleId?: string | null;
   specialty_title?: string | null;
+  subspecialtyTitle?: string | null;
+  domainId?: string | null;
+  categoryId?: string | null;
   experienceId?: string | null;
   countryId?: string | null;
   cityId?: string | null;
@@ -150,10 +159,34 @@ export type CandidateExperienceViewModel = {
   id: string;
   title: string;
   organization: string | null;
+  employmentTypeId?: string | null;
+  countryId?: string | null;
+  cityId?: string | null;
   startDate: string | null;
   endDate: string | null;
   startDateLabel: string | null;
   endDateLabel: string | null;
   isCurrent: boolean;
   bullets: string[];
+};
+
+export type ExperiencePayload = {
+  title?: string;
+  jobTitleId?: string;
+  company: string;
+  employmentTypeId?: string;
+  countryId?: string;
+  cityId?: string;
+  startDate: string;
+  endDate?: string;
+  isCurrent: boolean;
+  responsibilities: string[];
+  locale?: string;
+  token: string;
+};
+
+export type LookupOptionSource = {
+  id: number | string;
+  title?: string | null;
+  name?: string | null;
 };

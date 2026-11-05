@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isDifferentFromPreviousPassword } from '@/shared/lib/password-rules';
 import { createPasswordSchema } from '@/shared/validation/password-schema';
 
 type ChangePasswordMessages = {
@@ -7,6 +8,7 @@ type ChangePasswordMessages = {
   newPasswordMin: string;
   newPasswordMax: string;
   passwordRules: string;
+  newPasswordSameAsCurrent: string;
   confirmPasswordRequired: string;
   passwordsMismatch: string;
 };
@@ -27,20 +29,19 @@ export const createChangePasswordSchema = (messages: ChangePasswordMessages) =>
         .string(messages.confirmPasswordRequired)
         .min(1, { message: messages.confirmPasswordRequired }),
     })
+    .refine(
+      (data) =>
+        isDifferentFromPreviousPassword(data.newPassword, data.currentPassword),
+      {
+        message: messages.newPasswordSameAsCurrent,
+        path: ['newPassword'],
+      },
+    )
     .refine((data) => data.newPassword === data.confirmNewPassword, {
       message: messages.passwordsMismatch,
       path: ['confirmNewPassword'],
     });
 
-export const ChangePasswordSchema = createChangePasswordSchema({
-  currentPasswordRequired: 'current password is required',
-  newPasswordRequired: 'new password is required',
-  newPasswordMin: 'new password must be at least 8 characters',
-  newPasswordMax: 'new password is must be at most 15 characters',
-  passwordRules:
-    'Include an uppercase letter, a lowercase letter, a number, and a special character',
-  confirmPasswordRequired: 'confirm new password is required',
-  passwordsMismatch: 'Passwords do not match',
-});
-
-export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>;
+export type TChangePasswordSchema = z.infer<
+  ReturnType<typeof createChangePasswordSchema>
+>;

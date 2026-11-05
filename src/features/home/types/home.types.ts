@@ -31,6 +31,8 @@ export type HomeWhyModel = {
   icon?: string;
 };
 
+export type HomeWhyTone = 'legacy' | 'model';
+
 export type HomeEmployer = {
   id: string;
   image: string | null;

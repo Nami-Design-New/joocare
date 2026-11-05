@@ -1,72 +1,73 @@
-"use client";
+'use client';
 
-import { InputField } from "@/shared/components/InputField";
-import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
-import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
-import useGetCountries from "@/shared/hooks/useGetCountries";
-import useGetExperiences from "@/shared/hooks/useGetExperiences";
-import useGetJobTitles from "@/shared/hooks/useGetJobTitles";
-import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
-import { Button } from "@/shared/components/ui/button";
+import { InputField } from '@/shared/components/InputField';
+import { PhoneInputCode } from '@/shared/components/PhoneInputCode';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import { StoredFilepondUpload } from '@/shared/components/StoredFilepondUpload';
+import useGetCitiesByCountryId from '@/shared/hooks/useGetCitiesByCountryId';
+import useGetCountries from '@/shared/hooks/useGetCountries';
+import useGetExperiences from '@/shared/hooks/useGetExperiences';
+import useGetJobTitles from '@/shared/hooks/useGetJobTitles';
+import { Button } from '@/shared/components/ui/button';
 import {
   getCountryCodeByPhoneCode,
   getNationalPhoneValue,
   parsePhoneWithCode,
-} from "@/shared/lib/phone";
-import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
-import { useLocale, useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+} from '@/shared/lib/phone';
+import { typedZodResolver } from '@/shared/lib/typed-zod-resolver';
+import { useLocale, useTranslations } from 'next-intl';
+import { useSession } from 'next-auth/react';
+import { useRouter } from '@/i18n/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Controller,
   type SubmitHandler,
   useForm,
   useWatch,
-} from "react-hook-form";
-import { toast } from "sonner";
+} from 'react-hook-form';
+import { toast } from 'sonner';
 import {
   storeUploadedFileAction,
   updateCandidateBasicInfoAction,
-} from "../../actions/basic-info-actions";
-import type { CandidateSettingsProfile } from "../../services/basic-info-service";
+} from '../../actions/basic-info-actions';
+import type { CandidateSettingsProfile } from '../../services/basic-info-service';
 import {
   createSettingBasicInfoSchema,
   type TSettingBasicInfoSchema,
-} from "../../validation/basic-info-schema";
-import ProfileImage from "./ProfileImage";
-import { useQueryClient } from "@tanstack/react-query";
-import { useDeleteImageUser } from "../../hooks/useDeleteImageUser";
+} from '../../validation/basic-info-schema';
+import ProfileImage from './ProfileImage';
+import ProfessionalInfoFields from './ProfessionalInfoFields';
+import { useQueryClient } from '@tanstack/react-query';
+import { useDeleteImageUser } from '../../hooks/useDeleteImageUser';
+import {
+  CV_ACCEPTED_FILE_TYPES,
+  CV_MAX_FILE_SIZE,
+  OTHER_JOB_TITLE_VALUE,
+} from '../../constants';
 
-interface BasicInfoFormProps {
+type BasicInfoFormProps = {
   profile: CandidateSettingsProfile;
-}
-
-const OTHER_JOB_TITLE_VALUE = "__other__";
-const CV_ACCEPTED_FILE_TYPES = [
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-];
+};
 
 const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
   const { data: session } = useSession();
-  const token = session?.accessToken ?? "";
+  const token = session?.accessToken ?? '';
   const [isSaving, setIsSaving] = useState(false);
-  const [jobTitleSearch, setJobTitleSearch] = useState("");
-  // const [specialtySearch, setSpecialtySearch] = useState("");
-  const [experienceSearch, setExperienceSearch] = useState("");
-  const [countrySearch, setCountrySearch] = useState("");
-  const [citySearch, setCitySearch] = useState("");
-  const [uploadedImagePath, setUploadedImagePath] = useState<string | null>(null);
+  const [jobTitleSearch, setJobTitleSearch] = useState('');
+  const [experienceSearch, setExperienceSearch] = useState('');
+  const [countrySearch, setCountrySearch] = useState('');
+  const [citySearch, setCitySearch] = useState('');
+  const [uploadedImagePath, setUploadedImagePath] = useState<string | null>(
+    null,
+  );
   const [uploadedCvPath, setUploadedCvPath] = useState<string | null>(null);
   const [isImageUploading, setIsImageUploading] = useState(false);
-  const [showExistingProfileImage, setShowExistingProfileImage] = useState(Boolean(profile.image));
+  const [showExistingProfileImage, setShowExistingProfileImage] = useState(
+    Boolean(profile.image),
+  );
   const [showExistingCv, setShowExistingCv] = useState(Boolean(profile.cv));
   const imageUploadRequestIdRef = useRef(0);
   const defaultValues = useMemo<TSettingBasicInfoSchema>(
@@ -74,9 +75,13 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       fullName: profile.name,
       email: profile.email,
       phoneNumber: getNationalPhoneValue(profile.phone, profile.phoneCode),
-      jobTitle: profile.jobTitleId || (profile.jobTitle ? OTHER_JOB_TITLE_VALUE : ""),
-      otherJobTitle: profile.jobTitleId ? "" : profile.jobTitle,
+      jobTitle:
+        profile.jobTitleId || (profile.jobTitle ? OTHER_JOB_TITLE_VALUE : ''),
+      otherJobTitle: profile.jobTitleId ? '' : profile.jobTitle,
       specialty: profile.specialty_title,
+      subspecialty: profile.subspecialtyTitle,
+      domain: profile.domainId,
+      category: profile.categoryId,
       yearsOfExperience: profile.experienceId,
       country: profile.countryId,
       city: profile.cityId,
@@ -89,31 +94,37 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   const basicInfoSchema = useMemo(
     () =>
       createSettingBasicInfoSchema({
-        requireCv: !(profile.cv && showExistingCv),
         messages: {
-          fullNameMin: t("candidateSettingsPage.validation.full-name-min"),
-          fullNameMax: t("candidateSettingsPage.validation.full-name-max"),
-          emailRequired: t("authPage.validation.email-required"),
-          emailInvalid: t("authPage.validation.email-invalid"),
-          phoneRequired: t("authPage.validation.phone-required"),
-          jobTitleRequired: t("authPage.validation.job-title-required"),
-          countryRequired: t("authPage.validation.country-required"),
-          cityRequired: t("authPage.validation.city-required"),
-          ageMin: t("candidateSettingsPage.validation.age-min"),
-          profileImageRequired: t("candidateSettingsPage.validation.profile-image-required"),
-          onlyOneFileAllowed: t("candidateSettingsPage.validation.only-one-file"),
-          profileImageInvalidType: t("candidateSettingsPage.validation.profile-image-invalid-type"),
-          profileImageInvalidSize: t("candidateSettingsPage.validation.profile-image-invalid-size"),
-          cvRequired: t("authPage.validation.cv-required"),
-          cvInvalidType: t("authPage.validation.cv-invalid-type"),
-          cvInvalidSize: t("authPage.validation.max-file-size-5mb"),
-          otherJobTitleRequired: t("authPage.validation.other-job-title-required"),
+          fullNameMin: t('candidateSettingsPage.validation.full-name-min'),
+          fullNameMax: t('candidateSettingsPage.validation.full-name-max'),
+          emailRequired: t('authPage.validation.email-required'),
+          emailInvalid: t('authPage.validation.email-invalid'),
+          phoneRequired: t('authPage.validation.phone-required'),
+          jobTitleRequired: t('authPage.validation.job-title-required'),
+          countryRequired: t('authPage.validation.country-required'),
+          cityRequired: t('authPage.validation.city-required'),
+          ageMin: t('candidateSettingsPage.validation.age-min'),
+          onlyOneFileAllowed: t(
+            'candidateSettingsPage.validation.only-one-file',
+          ),
+          profileImageInvalidType: t(
+            'candidateSettingsPage.validation.profile-image-invalid-type',
+          ),
+          profileImageInvalidSize: t(
+            'candidateSettingsPage.validation.profile-image-invalid-size',
+          ),
+          cvInvalidType: t('authPage.validation.cv-invalid-type'),
+          cvInvalidSize: t('authPage.validation.max-file-size-5mb'),
+          otherJobTitleRequired: t(
+            'authPage.validation.other-job-title-required',
+          ),
         },
       }),
-    [profile.cv, showExistingCv, t],
+    [t],
   );
-  const queryClient = useQueryClient()
-  const { mutateAsync: deleteImageUser, isPending: isDeletingImage } = useDeleteImageUser({ token });
+  const queryClient = useQueryClient();
+  const { mutateAsync: deleteImageUser, isPending: isDeletingImage } =
+    useDeleteImageUser({ token });
   const {
     register,
     control,
@@ -125,12 +136,12 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     formState: { errors },
   } = useForm<TSettingBasicInfoSchema>({
     resolver: typedZodResolver(basicInfoSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues,
   });
 
-  const selectedCountryId = useWatch({ control, name: "country" });
-  const selectedJobTitle = useWatch({ control, name: "jobTitle" });
+  const selectedCountryId = useWatch({ control, name: 'country' });
+  const selectedJobTitle = useWatch({ control, name: 'jobTitle' });
   const previousCountryId = useRef<string | undefined>(profile.countryId);
   const {
     jobTitles,
@@ -140,14 +151,6 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     fetchNextPage: fetchMoreJobTitles,
     isFetchingNextPage: isFetchingMoreJobTitles,
   } = useGetJobTitles(jobTitleSearch);
-  // const {
-  //   specialties,
-  //   isLoading: isSpecialtiesLoading,
-  //   error: specialtiesError,
-  //   hasNextPage: hasMoreSpecialties,
-  //   fetchNextPage: fetchMoreSpecialties,
-  //   isFetchingNextPage: isFetchingMoreSpecialties,
-  // } = useGetSpecialties(specialtySearch);
   const {
     experiences,
     isLoading: isExperiencesLoading,
@@ -179,13 +182,13 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
   useEffect(() => {
     if (!selectedCountryId) {
-      setValue("city", "");
+      setValue('city', '');
     }
   }, [selectedCountryId, setValue]);
 
   useEffect(() => {
     if (selectedJobTitle !== OTHER_JOB_TITLE_VALUE) {
-      setValue("otherJobTitle", "");
+      setValue('otherJobTitle', '');
     }
   }, [selectedJobTitle, setValue]);
 
@@ -202,20 +205,26 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       return null;
     }
 
+    const fallbackLabel = t('candidateSettingsPage.current-cv');
+
     try {
       const pathname = new URL(profile.cv).pathname;
-      return decodeURIComponent(pathname.split("/").filter(Boolean).pop() ?? "Current CV");
+      return decodeURIComponent(
+        pathname.split('/').filter(Boolean).pop() ?? fallbackLabel,
+      );
     } catch {
-      return decodeURIComponent(profile.cv.split("/").filter(Boolean).pop() ?? "Current CV");
+      return decodeURIComponent(
+        profile.cv.split('/').filter(Boolean).pop() ?? fallbackLabel,
+      );
     }
-  }, [profile.cv]);
+  }, [profile.cv, t]);
 
   const jobTitleOptions = useMemo(
     () => [
-      { label: t("authPage.common.other"), value: OTHER_JOB_TITLE_VALUE },
+      { label: t('authPage.common.other'), value: OTHER_JOB_TITLE_VALUE },
       ...jobTitles
         .map((jobTitle) => ({
-          label: String(jobTitle.title ?? ""),
+          label: String(jobTitle.title ?? ''),
           value: String(jobTitle.id),
         }))
         .filter((jobTitle) => jobTitle.label),
@@ -231,8 +240,8 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
       selectedCountryId &&
       previousCountryId.current !== selectedCountryId
     ) {
-      setValue("city", "");
-      setCitySearch("");
+      setValue('city', '');
+      setCitySearch('');
     }
 
     previousCountryId.current = selectedCountryId;
@@ -242,44 +251,53 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
     const parsedPhone = parsePhoneWithCode(data.phoneNumber, profile.phoneCode);
 
     if (!parsedPhone) {
-      toast.error(t("candidateSettingsPage.toasts.invalid-phone"));
+      toast.error(t('candidateSettingsPage.toasts.invalid-phone'));
       return;
     }
 
     try {
       setIsSaving(true);
       const formData = new FormData();
-      formData.append("name", data.fullName.trim());
-      formData.append("phone", parsedPhone.nationalNumber ?? "");
-      formData.append("phone_code", `+${parsedPhone.countryCallingCode ?? ""}`);
+      formData.append('name', data.fullName.trim());
+      formData.append('phone', parsedPhone.nationalNumber ?? '');
+      formData.append('phone_code', `+${parsedPhone.countryCallingCode ?? ''}`);
       if (data.jobTitle === OTHER_JOB_TITLE_VALUE) {
-        formData.append("title", data.otherJobTitle.trim());
+        formData.append('title', data.otherJobTitle.trim());
       } else {
-        formData.append("job_title_id", data.jobTitle);
+        formData.append('job_title_id', data.jobTitle);
       }
-      formData.append("specialty_title", data.specialty);
-      formData.append("country_id", data.country);
-      formData.append("city_id", data.city);
-      formData.append("experience_id", data.yearsOfExperience);
-      formData.append("birth_date", data.dateOfBirth);
+      formData.append('specialty_title', data.specialty);
+      formData.append('subspecialty_title', data.subspecialty);
+      if (data.domain) {
+        formData.append('domain_id', data.domain);
+      }
+      if (data.category) {
+        formData.append('category_id', data.category);
+      }
+      formData.append('country_id', data.country);
+      formData.append('city_id', data.city);
+      formData.append('experience_id', data.yearsOfExperience);
+      formData.append('birth_date', data.dateOfBirth);
 
       if (uploadedImagePath !== null) {
-        formData.append("image", uploadedImagePath);
+        formData.append('image', uploadedImagePath);
       }
 
       if (uploadedCvPath) {
-        formData.append("cv", uploadedCvPath);
+        formData.append('cv', uploadedCvPath);
       }
 
       const response = await updateCandidateBasicInfoAction(formData, locale);
-      toast.success(response.message ?? t("candidateSettingsPage.toasts.profile-updated"));
-      queryClient.invalidateQueries({ queryKey: ['candidate-profile'] })
-      router.push("/candidate/profile");
+      toast.success(
+        response.message ?? t('candidateSettingsPage.toasts.profile-updated'),
+      );
+      queryClient.invalidateQueries({ queryKey: ['candidate-profile'] });
+      router.push('/candidate/profile');
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : t("candidateSettingsPage.toasts.profile-update-failed");
+          : t('candidateSettingsPage.toasts.profile-update-failed');
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -287,12 +305,11 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="mt-6 flex flex-col gap-5"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <div className="flex w-full flex-col">
-        <h3 className="mx-1 mb-1 text-base font-semibold">{t("candidateSettingsPage.profile-picture")}</h3>
+        <h3 className="mx-1 mb-1 text-base font-semibold">
+          {t('candidateSettingsPage.profile-picture')}
+        </h3>
         <Controller
           name="profileImage"
           control={control}
@@ -319,13 +336,16 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                 const requestId = imageUploadRequestIdRef.current + 1;
                 imageUploadRequestIdRef.current = requestId;
                 setShowExistingProfileImage(false);
-                clearErrors("profileImage");
+                clearErrors('profileImage');
                 setIsImageUploading(true);
 
                 try {
                   const uploadFormData = new FormData();
-                  uploadFormData.append("image", imageFile);
-                  const result = await storeUploadedFileAction(uploadFormData, locale);
+                  uploadFormData.append('image', imageFile);
+                  const result = await storeUploadedFileAction(
+                    uploadFormData,
+                    locale,
+                  );
 
                   if (imageUploadRequestIdRef.current !== requestId) {
                     return;
@@ -338,10 +358,14 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                   }
 
                   const message =
-                    error instanceof Error ? error.message : t("candidateSettingsPage.toasts.upload-profile-image-failed");
+                    error instanceof Error
+                      ? error.message
+                      : t(
+                          'candidateSettingsPage.toasts.upload-profile-image-failed',
+                        );
                   setUploadedImagePath(null);
-                  setError("profileImage", {
-                    type: "server",
+                  setError('profileImage', {
+                    type: 'server',
                     message,
                   });
                 } finally {
@@ -354,16 +378,20 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                 imageUploadRequestIdRef.current += 1;
                 setIsImageUploading(false);
                 const shouldDeleteExistingImage =
-                  showExistingProfileImage && Boolean(profile.image) && !field.value?.length;
+                  showExistingProfileImage &&
+                  Boolean(profile.image) &&
+                  !field.value?.length;
 
                 if (shouldDeleteExistingImage) {
                   deleteImageUser()
                     .then(() => {
                       setShowExistingProfileImage(false);
-                      setUploadedImagePath("");
+                      setUploadedImagePath('');
                       field.onChange([]);
-                      clearErrors("profileImage");
-                      queryClient.invalidateQueries({ queryKey: ["candidate-profile"] });
+                      clearErrors('profileImage');
+                      queryClient.invalidateQueries({
+                        queryKey: ['candidate-profile'],
+                      });
                     })
                     .catch(() => {
                       // The mutation hook already shows the error toast.
@@ -373,9 +401,9 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                 }
 
                 setShowExistingProfileImage(false);
-                setUploadedImagePath("");
+                setUploadedImagePath('');
                 field.onChange([]);
-                clearErrors("profileImage");
+                clearErrors('profileImage');
               }}
               error={errors.profileImage?.message}
               isUploading={isImageUploading || isDeletingImage}
@@ -386,26 +414,26 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       <InputField
         id="fullName"
-        label={t("authPage.common.full-name")}
+        label={t('authPage.common.full-name')}
         type="text"
-        placeholder={t("authPage.placeholders.full-name")}
-        {...register("fullName")}
+        placeholder={t('authPage.placeholders.full-name')}
+        {...register('fullName')}
         error={errors.fullName?.message}
       />
 
       <InputField
         id="email"
         type="email"
-        label={t("authPage.common.email")}
-        placeholder={t("authPage.placeholders.email")}
+        label={t('authPage.common.email')}
+        placeholder={t('authPage.placeholders.email')}
         disabled
-        {...register("email")}
+        {...register('email')}
         error={errors.email?.message}
       />
 
       <div>
         <label htmlFor="phoneNumber" className="mx-1 mb-1 block font-semibold">
-          {t("authPage.common.phone-number")}
+          {t('authPage.common.phone-number')}
         </label>
         <Controller
           name="phoneNumber"
@@ -415,7 +443,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
               defaultCountry={getCountryCodeByPhoneCode(profile.phoneCode)}
               id="phoneNumber"
               className="w-full"
-              placeholder={t("authPage.placeholders.phone-number")}
+              placeholder={t('authPage.placeholders.phone-number')}
               value={field.value}
               onChange={(value) => field.onChange(value)}
               error={Boolean(errors.phoneNumber?.message)}
@@ -423,7 +451,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           )}
         />
         {errors.phoneNumber ? (
-          <span className="mt-1 text-[12px] text-red-500">
+          <span className="text-destructive mt-1 text-[12px]">
             {errors.phoneNumber.message}
           </span>
         ) : null}
@@ -435,10 +463,12 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         render={({ field }) => (
           <SelectInputField
             id="jobTitle"
-            label={t("authPage.common.job-title")}
-            placeholder={t("candidateSettingsPage.placeholders.job-title")}
+            label={t('authPage.common.job-title')}
+            placeholder={t('candidateSettingsPage.placeholders.job-title')}
             withSearchInput
-            searchPlaceholder={t("candidateSettingsPage.placeholders.search-job-titles")}
+            searchPlaceholder={t(
+              'candidateSettingsPage.placeholders.search-job-titles',
+            )}
             {...field}
             error={
               errors.jobTitle?.message ??
@@ -460,89 +490,67 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         <InputField
           id="otherJobTitle"
           type="text"
-          label={t("authPage.common.other-job-title")}
-          placeholder={t("candidateSettingsPage.placeholders.job-title")}
-          {...register("otherJobTitle")}
+          label={t('authPage.common.other-job-title')}
+          placeholder={t('candidateSettingsPage.placeholders.job-title')}
+          {...register('otherJobTitle')}
           error={errors.otherJobTitle?.message}
         />
       )}
 
-      <div className="flex flex-col items-center gap-2 lg:flex-row">
-        {/* <Controller
-          name="specialty"
-          control={control}
-          render={({ field }) => (
-            <SelectInputField
-              label="Specialty"
-              id="specialty"
-              placeholder="ex: Cardiology"
-              withSearchInput
-              searchPlaceholder="Search specialties..."
-              {...field}
-              error={
-                errors.specialty?.message ??
-                (specialtiesError instanceof Error
-                  ? specialtiesError.message
-                  : undefined)
-              }
-              options={specialties.map((specialty) => ({
-                label: specialty.title,
-                value: String(specialty.id),
-              }))}
-              disabled={isSpecialtiesLoading}
-              onReachEnd={() => fetchMoreSpecialties()}
-              hasNextPage={Boolean(hasMoreSpecialties)}
-              isFetchingNextPage={isFetchingMoreSpecialties}
-              onSearchChange={setSpecialtySearch}
-            />
-          )}
-        /> */}
-        <InputField
-          id="specialty"
-          label={t("jobDetailsPage.specialty")}
-          type={"text"}
-          placeholder={t("candidateSettingsPage.placeholders.specialty")}
-          // className="bg-white"
-          {...register("specialty")}
-          error={errors.specialty?.message?.toString()}
-        />
-        <Controller
-          name="yearsOfExperience"
-          control={control}
-          render={({ field }) => (
-            <SelectInputField
-              label={t("candidateSettingsPage.years-of-experience")}
-              id="yearsOfExperience"
-              placeholder={t("candidateSettingsPage.placeholders.years-of-experience")}
-              withSearchInput
-              searchPlaceholder={t("candidateSettingsPage.placeholders.search-experience")}
-              {...field}
-              error={
-                errors.yearsOfExperience?.message ??
-                (experiencesError instanceof Error
-                  ? experiencesError.message
-                  : undefined)
-              }
-              options={experiences.map((experience) => ({
-                label: experience.title,
-                value: String(experience.id),
-              }))}
-              disabled={isExperiencesLoading}
-              onReachEnd={() => fetchMoreExperiences()}
-              hasNextPage={Boolean(hasMoreExperiences)}
-              isFetchingNextPage={isFetchingMoreExperiences}
-              onSearchChange={setExperienceSearch}
-            />
-          )}
-        />
-      </div>
+      <Controller
+        name="yearsOfExperience"
+        control={control}
+        render={({ field }) => (
+          <SelectInputField
+            label={t('candidateSettingsPage.years-of-experience')}
+            id="yearsOfExperience"
+            placeholder={t(
+              'candidateSettingsPage.placeholders.years-of-experience',
+            )}
+            withSearchInput
+            searchPlaceholder={t(
+              'candidateSettingsPage.placeholders.search-experience',
+            )}
+            {...field}
+            error={
+              errors.yearsOfExperience?.message ??
+              (experiencesError instanceof Error
+                ? experiencesError.message
+                : undefined)
+            }
+            options={experiences.map((experience) => ({
+              label: experience.title,
+              value: String(experience.id),
+            }))}
+            disabled={isExperiencesLoading}
+            onReachEnd={() => fetchMoreExperiences()}
+            hasNextPage={Boolean(hasMoreExperiences)}
+            isFetchingNextPage={isFetchingMoreExperiences}
+            onSearchChange={setExperienceSearch}
+          />
+        )}
+      />
+
+      <InputField
+        id="dateOfBirth"
+        type="date"
+        label={t('candidateSettingsPage.date-of-birth')}
+        {...register('dateOfBirth')}
+        error={errors.dateOfBirth?.message}
+      />
+
+      <ProfessionalInfoFields
+        control={control}
+        register={register}
+        errors={errors}
+      />
 
       <div>
         <label htmlFor="country" className="mx-1 mb-2 block font-semibold">
-          {t("authPage.common.current-location")}
+          {t('authPage.common.current-location')}
         </label>
         <div className="flex items-center gap-2">
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <Controller
               name="country"
               control={control}
@@ -550,9 +558,11 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                 <SelectInputField
                   id="country"
                   className="w-full"
-                  placeholder={t("authPage.common.country-lower")}
+                  placeholder={t('authPage.common.country-lower')}
                   withSearchInput
-                  searchPlaceholder={t("candidatePage.profile.search-countries")}
+                  searchPlaceholder={t(
+                    'candidatePage.profile.search-countries',
+                  )}
                   {...field}
                   error={
                     errors.country?.message ??
@@ -574,7 +584,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
             />
           </div>
 
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <Controller
               name="city"
               control={control}
@@ -582,10 +592,10 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
                 <SelectInputField
                   id="city"
                   className="w-full"
-                  placeholder={t("authPage.common.city-lower")}
+                  placeholder={t('authPage.common.city-lower')}
                   withSearchInput
                   searchPlaceholder={t(
-                    "candidateSettingsPage.placeholders.search-cities"
+                    'candidateSettingsPage.placeholders.search-cities',
                   )}
                   {...field}
                   error={
@@ -610,46 +620,38 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         </div>
       </div>
 
-      <InputField
-        id="dateOfBirth"
-        type="date"
-        label={t("candidateSettingsPage.date-of-birth")}
-        {...register("dateOfBirth")}
-        error={errors.dateOfBirth?.message}
-      />
-
       <Controller
         name="uploadCV"
         control={control}
         render={({ field }) => (
           <StoredFilepondUpload
-            label={t("jobDetailsPage.upload-cv")}
+            label={t('jobDetailsPage.upload-cv')}
             files={field.value}
             onChange={field.onChange}
-            required={!(profile.cv && showExistingCv)}
+            hint={t('candidateSettingsPage.optional')}
             allowImagePreview={false}
             acceptedFileTypes={CV_ACCEPTED_FILE_TYPES}
-            invalidTypeMessage={t("authPage.validation.cv-invalid-type")}
-            maxSize={5 * 1024 * 1024}
+            invalidTypeMessage={t('authPage.validation.cv-invalid-type')}
+            maxSize={CV_MAX_FILE_SIZE}
             processFile={async (file) => {
               const uploadFormData = new FormData();
-              uploadFormData.append("image", file);
+              uploadFormData.append('image', file);
               return storeUploadedFileAction(uploadFormData, locale);
             }}
             onStoredPathChange={(path) => {
               setUploadedCvPath(path);
               if (path) {
-                clearErrors("uploadCV");
+                clearErrors('uploadCV');
               }
             }}
             onUploadError={(message) => {
               if (!message) {
-                clearErrors("uploadCV");
+                clearErrors('uploadCV');
                 return;
               }
 
-              setError("uploadCV", {
-                type: "server",
+              setError('uploadCV', {
+                type: 'server',
                 message,
               });
             }}
@@ -659,7 +661,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
               setShowExistingCv(false);
               setUploadedCvPath(null);
               field.onChange([]);
-              clearErrors("uploadCV");
+              clearErrors('uploadCV');
             }}
             allowMultiple={false}
             maxFiles={1}
@@ -670,20 +672,20 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
 
       <div className="flex items-center justify-center">
         <Button
-          variant={"secondary"}
-          hoverStyle={"slidePrimary"}
-          size={"pill"}
+          variant={'secondary'}
+          hoverStyle={'slidePrimary'}
+          size={'pill'}
           className="w-1/3 md:w-56"
           type="submit"
           disabled={isSaving || isImageUploading || isDeletingImage}
         >
           {isSaving
-            ? t("candidatePage.common.saving")
+            ? t('candidatePage.common.saving')
             : isImageUploading
-              ? t("candidateSettingsPage.common.uploading-image")
+              ? t('candidateSettingsPage.common.uploading-image')
               : isDeletingImage
-                ? t("candidateSettingsPage.common.deleting-image")
-                : t("common.save")}
+                ? t('candidateSettingsPage.common.deleting-image')
+                : t('common.save')}
         </Button>
       </div>
     </form>

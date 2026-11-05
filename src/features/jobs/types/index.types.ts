@@ -25,7 +25,7 @@ export interface FilterState {
   roleCategories: string[];
   seniorityLevels: string[];
   domains: string[];
-  // specialties: string[];
+  specialties: string[];
   experiences: string[];
   availabilities: string[];
   categories: string[];
@@ -55,7 +55,7 @@ export type JobsSearchFilters = {
   maxSalary: string;
   roleCategories: string[];
   seniorityLevels: string[];
-  // specialties: string[];
+  specialties: string[];
   experiences: string[];
   availabilities: string[];
   salaryTypes: string[];

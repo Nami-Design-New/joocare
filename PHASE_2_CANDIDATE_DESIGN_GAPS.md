@@ -128,58 +128,81 @@ No rebuild is needed. These match the design except for the small gaps listed ab
 | `popup/email-verification/step-2` | `step-1` | The two frames are identical; it is one modal. |
 | `group/basic-info` (Basic Info / Business Verification / Change password) | Employer account-settings tabs | Already built for employers; nothing needed on the candidate side. |
 
----
+--- 
 
-## 6. Unclear Designs / Questions
+## 6. Decisions (answered 2026-11-05)
+
+The open questions from the Figma review have been answered. **General rule:** where the API isn't ready, build the design with mock data. Mock data is not translated (it will arrive translated from the API); only static UI copy goes in `messages/en.json` and `ar.json`.
 
 **Global / navigation**
-1. Several candidate frames (who-viewed-profile, the CV wizard, ATS analyzing/results) use the **logged-out header** (Login / Join Now). Should they use the logged-in candidate header? 
-2. Sidebar hidden items (**Inbox, Compliance, "who review profile ?"**): are they out of scope? Is the inbox reached only from the header icon?
-3. Breadcrumbs show placeholder "Home > Jobs" on many candidate frames. Confirm the final breadcrumbs.
-4. The footer **"Career Resources"** link has no designed page. What is its destination?
-5. The **employer header** variant has no "Jobs" nav link and no "Message" button, though employer chat exists. Is that intended or outdated? Hidden "Services" and "Sign up" links, and the "Applications" avatar-menu item: are they planned?
-6. Are mobile/responsive frames expected? `main-layout/responsive` and the `header-section/*` frames are only canvas labels.
+1. **Header on candidate pages:** keep the existing behaviour. A logged-in user doesn't see Login / Join Now, and sees the candidate menu as today. The logged-out header in these frames is ignored.
+2. **Hidden sidebar items** (Inbox, Compliance, "who review profile ?"): out of scope. The inbox is reached from the header Message icon only.
+3. **Breadcrumbs:** `Home > {page name}`.
+4. **Footer "Career Resources":** postponed until a page is designed. Not added now.
+5. **Candidate chat:** new route `/candidate/inbox` with a thin `CandidateChatPage.tsx`. It reuses the existing `src/features/chat` components (same design as the company chat), with a `role: 'company' | 'candidate'` prop:
+   - No close/reopen or admin actions for candidates.
+   - A conversation closed by the company is shown **read-only** (closed badge + notice, no Reopen).
+   - The header Message link points to the inbox for the current role.
+6. **Mobile:** responsive, following the existing site patterns.
 
 **Public pages and auth**
-7. `for-employers-landing` **v1 vs v2** differ only in the "Why joocare?" paragraph. Which is final? This is CMS copy, not a layout change.
-8. About **Vision / Mission** paragraphs repeat the Commitment text. What is the final copy?
-9. Registration shows the label "**Organization Location**" (looks copied from the employer form), and the side-panel text has leftover edit text. Confirm the copy.
-10. Should the new password rule "**Different from your previous password**" apply only to reset, or also to registration and change-password?
+
+7. **For Employers:** the new section is built as a static design with static data until the API is ready.
+8. **About:** add the Commitment section as design only (static/mock data) until the API is ready.
+9. **Registration:** follow Figma (labels and side-panel copy as drawn).
+10. **"Different from your previous password" rule:** shown on Reset Password and Change Password only.
 
 **Jobs and apply**
-11. `explore-jobs/grid` vs `/list` both show the same 2-column grid. Is a **list view or a grid/list toggle** intended?
-12. The jobs **filter set** in Figma (role category, Experience Level, Employer Type; no Category or Employment type) differs from the site, and its option lists look like placeholders. Confirm the final filters.
-13. Hidden "**Complete Your Profile**" sidebar card and card-level Active, date and Resume Match layers on explore-jobs: are they in scope?
-14. `modal/application-submitted-successfully` (11993:77042) actually says "**Your CV has been saved successfully** – continue editing from your dashboard". Is it for the CV builder's "Save & Continue Later" or the profile CV upload?
-15. Should candidates see the job-details **attachments** and **Posted by** cards at all?
+
+11. **Explore jobs:** follow Figma, a 2-column grid only. No list view.
+12. **Jobs filters:** keep the existing filters and enable the **Speciality** filter, as drawn in Figma (currently commented out in `jobs/page.tsx`).
+13. **Hidden explore-jobs layers** (Complete Your Profile card, Active, date, Resume Match): out of scope. Only the visible match % badge is added.
+14. **"Your CV has been saved successfully" modal (11993:77042):** shown after **Save & Continue Later** in the CV Builder.
+15. **Attachments and Posted by cards:** hidden on the candidate job-details page.
 
 **Profile and settings**
-16. `profile-overview` vs `/expanded`: which **card order, tabs and Hiring Readiness visibility** is final, and what goes in the profile's **Additional Information** tab?
-17. Experience modal: are Country/City **only in Add** (not Edit) on purpose? Should Job Title be **free text or a lookup**?
-18. Settings tab labels: edit-form shows "Basic Info | Change Password" (Additional Information hidden), while full-form shows "**Home** | Additional Information". Confirm the final tab set.
-19. Certificates: the modal's image upload is **hidden** while the cards show images, and the cards show a **country** the modal doesn't collect. Licenses: the modal has a **single country** but the cards show multiple. Confirm both.
-20. Additional Information **Certifications / Professional License** fields: do they pick from existing credential records or store separate data?
-21. Applications hidden layers (sort Newest / Oldest / Last 7 Days, "Active", the Resume Match %), the hidden Current/Previous Job Title fields in Basic Info, and the hidden "Forget password?" link in Change Password: are any of these in scope?
-22. **Who viewed profile**: the title and breadcrumb say "who review profile ?" while the sidebar says "View Profile Insights". What is the final title?
+
+16. **Profile:** use the **expanded** variant: Home / Additional Information tabs, current card order, Hiring Readiness visible. The profile's Additional Information tab shows the settings Additional Information data read-only.
+17. **Experience modal:** Country + City in both Add and Edit. Job Title stays a dropdown with "Other".
+18. **Settings tabs:** follow Figma (Basic Info, Change Password, Additional Information).
+19. **Certificates / licenses:** follow Figma visually, using mock data until the API returns it:
+    - The certificate card shows the image and the country.
+    - The license card shows "Issued in" chips.
+20. **Additional Information, Certifications / License fields:** follow Figma (design only, mock data).
+21. **Hidden settings / applications layers** (sorting, Active, Resume Match %, Current/Previous Job Title, Forget password link): out of scope.
+22. **Who viewed profile page:** title **"Profile Insights"**, route `/candidate/profile-insights`.
 
 **AI Job Match, preferences, ATS**
-23. Assumption to confirm: **`modal/job-preferences/*` is what "Edit your preferences" / "Set Preferences" opens** on AI Job Match (the CTAs "Find Jobs" and "Update Matches" suggest so). Where else are saved preferences shown?
-24. Job preferences: should Location be single or multiple countries? There is a stray "1–3 Year" text in the layer.
-25. AI match cards have hidden layers (AI INSIGHT, Missing skill, Improve Match, Applied state). Are they in scope? "Not Aligned" appears in the legend but on no card.
-26. **ATS**: does Phase 2 ship the full intro → analyzing → results flow or only the **Coming Soon** modal? No CV selection step is designed (is the profile CV used?). Does "**Create CV**" go to the CV builder? A hidden "Enhance CV" button also exists.
+
+23. **Job Preferences modal:** opened from AI Job Match only:
+    - "Add" from the empty state (Set Preferences).
+    - "Edit" from the results page.
+24. **Preferences Location:** multi-select (several countries). The stray "1–3 Year" text is dropped.
+25. **Hidden AI-match card layers** (AI INSIGHT, Missing skill, Improve Match, Applied): out of scope. "Not Aligned" stays in the legend.
+26. **ATS:** build **both**:
+    - The full flow (intro → analyzing → results, mock data, profile CV, "Create CV" → CV Builder).
+    - The **Coming Soon** modal, shown while the feature is gated by a flag.
 
 **CV builder**
-27. The build-cv intro pages are titled "**CV match with ATS**" while the active sidebar item is "Build Your Professional CV". Confirm the title and route.
-28. Nine **CV-view variants** with different action sets (Download/Edit/Apply, Delete/Update/Download, Download only), with or without a photo, single page or paginated; 11858:53774 also uses a different layout. Which one is final? What does "Apply" do from the CV view?
-29. Wizard footers: step-1 variants show "Save & Continue Later" in one and "Delete Draft" in the other, and the step-7 variants have no "Save & Continue Later". Confirm the footer for new vs draft mode.
-30. Placeholder content in the wizard:
-    - Step 4: the summary field is labeled "Email", and the source of the suggested summary is not specified.
-    - Step 6: the image dropzone shows a PDF.
-    - Step 8: has a stray "Responsibilities" label.
-    - Step 10: the toggle reuses the publications question.
-    - Fresh graduate: is the prefilled text editable?
-    - The stepper misspells "Certifactes".
+
+27. **Page title:** "Build Your Professional CV". Route `/candidate/build-cv`.
+28. **Candidate CV view:** with photo, actions **Download / Edit / Apply**.
+    - Apply returns to the job they were applying to, or `/jobs` if there is none.
+    - The employer view (Download only, no photo) stays as is; share the CV document component.
+29. **Wizard footer:** depends on mode, on every step. A new CV shows **Save & Continue Later**; a draft shows **Delete Draft**.
+30. **Placeholder fixes:**
+    - Step 4: label "Professional Summary", with a mock suggested summary.
+    - Step 6: accepts an image or PDF.
+    - Step 8: remove the stray "Responsibilities" label.
+    - Step 10: the toggle reads "Do you have CPD or conferences?".
+    - Fresh graduate: the prefilled text is editable.
+    - Stepper: "Certificates".
 
 **Assessments**
-31. Time rules conflict: "72-Hour Limit", the Time Limit card says "1000 Minutes", and the timer reads 70:12:05. "Passing Score" and the 3-step stepper are hidden, and **no Review & Submit screen** is designed. Only single-select questions are designed, although the rules mention text answers. The final-question frame still reads "Question 5 of 37". Where does "Later" go?
-32. The submitted modal says candidates can follow the **assessment status from Applied Jobs**, but no assessment status is designed on the applications page.
+
+31. **Assessment flow:**
+    - **Time:** 72 hours = link validity, and Time Limit = test duration. Values come from the data.
+    - **Questions:** single-select only.
+    - **Out of scope:** Review & Submit screen and Passing Score.
+    - **"Later":** goes to Applied Jobs.
+32. **Applied Jobs card:** add a small assessment status badge (Pending / Completed / Expired). Pending also shows a "Take Assessment" link.

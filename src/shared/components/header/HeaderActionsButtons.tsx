@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   notificationsQueryKey,
   useNotificationsInfinite,
@@ -21,9 +21,13 @@ import HeaderChatLink from "./HeaderChatLink";
 import { useLocale, useTranslations } from "next-intl";
 import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
 import useGetCandidateProfile from "@/features/candidate-profile/hooks/useGetCandidateProfile";
-import { useEffect, useState } from "react";
 
 let hasRequestedNotificationPermissionAfterAuth = false;
+
+const CHAT_HREF = {
+  company: "/company/chat",
+  candidate: "/candidate/chat",
+} as const;
 
 function LanguageToggleSkeleton() {
   return (
@@ -50,6 +54,7 @@ function HeaderActionsButtons({
   const role = session?.authRole;
 
   const isEmployer = session?.authRole === "employer" || companyHeader;
+  const isCandidate = role === "candidate" && !companyHeader;
   const token = session?.accessToken || "";
 
   const { data: companyProfileData } = useGetCompanyProfile({
@@ -68,6 +73,12 @@ function HeaderActionsButtons({
 
   const isLoading = status === "loading";
   const isAuthed = status === "authenticated";
+  const chatHref = companyHeader
+    ? CHAT_HREF.company
+    : isCandidate
+      ? CHAT_HREF.candidate
+      : null;
+
   useNotificationsInfinite(role, token, {
     enabled: isAuthed,
   });
@@ -142,7 +153,7 @@ function HeaderActionsButtons({
           </>
         )}
 
-        {isAuthed && companyHeader && <HeaderChatLink />}
+        {isAuthed && chatHref && <HeaderChatLink href={chatHref} />}
 
         {/* Authenticated */}
         {!isLoading && isAuthed && (

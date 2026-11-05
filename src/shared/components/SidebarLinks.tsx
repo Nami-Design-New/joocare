@@ -1,163 +1,184 @@
-"use client";
+'use client';
 
-import { LucideIcon } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode } from "swiper/modules";
-import "swiper/css";
-import { TCompanyProfile } from "@/features/company-profile/types";
-import { useTranslations } from "next-intl";
+import type { CSSProperties } from 'react';
+import { cva } from 'class-variance-authority';
+import { useTranslations } from 'next-intl';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import { Link, usePathname } from '@/i18n/navigation';
+import { cn } from '@/shared/lib/utils';
+import type { SidebarLinkItem } from '@/shared/types/sidebar-link.types';
+import { isSidebarNavLinkActive } from './sidebar-nav/utils';
 
-interface ILinkItem {
-  label: string;
-  href: string;
-  icon?: LucideIcon;
-  image?: string;
+type SidebarLinkVariant = 'pill' | 'menu';
+
+type SidebarLinksProps = {
+  links: readonly SidebarLinkItem[];
+  /** Links pinned to the bottom of the desktop sidebar. */
+  bottomLinks?: readonly SidebarLinkItem[];
+};
+
+type SidebarLinkProps = {
+  link: SidebarLinkItem;
+  isActive: boolean;
+  variant: SidebarLinkVariant;
+};
+
+type SidebarLinkListProps = {
+  links: readonly SidebarLinkItem[];
+  pathname: string;
+  className?: string;
+};
+
+const sidebarLinkVariants = cva(
+  'group flex items-center font-semibold transition-colors',
+  {
+    variants: {
+      variant: {
+        pill: 'gap-2 rounded-full border px-4 py-2 text-sm whitespace-nowrap',
+        menu: 'gap-3 rounded-2xl py-1 ps-1 pe-2 text-base',
+      },
+      active: {
+        true: 'bg-primary-bg text-primary',
+        false: 'text-muted-foreground hover:bg-primary-bg hover:text-primary',
+      },
+    },
+    compoundVariants: [
+      { variant: 'pill', active: true, className: 'border-primary' },
+      {
+        variant: 'pill',
+        active: false,
+        className: 'border-border hover:border-primary',
+      },
+    ],
+  },
+);
+
+const sidebarLinkIconBoxVariants = cva(
+  'flex shrink-0 items-center justify-center transition-colors',
+  {
+    variants: {
+      variant: {
+        pill: 'size-4',
+        menu: 'size-9 rounded-xl',
+      },
+      active: {
+        true: '',
+        false: '',
+      },
+    },
+    compoundVariants: [
+      {
+        variant: 'menu',
+        active: true,
+        className: 'bg-primary text-primary-foreground',
+      },
+      {
+        variant: 'menu',
+        active: false,
+        className:
+          'bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground',
+      },
+    ],
+  },
+);
+
+const getMaskStyle = (image: string): CSSProperties => ({
+  WebkitMaskImage: `url(${image})`,
+  maskImage: `url(${image})`,
+});
+
+function SidebarLink({ link, isActive, variant }: SidebarLinkProps) {
+  const { href, label, image, icon: Icon } = link;
+  const glyphClassName = variant === 'menu' ? 'size-5' : 'size-4';
+
+  return (
+    <Link
+      href={href}
+      aria-current={isActive ? 'page' : undefined}
+      className={sidebarLinkVariants({ variant, active: isActive })}
+    >
+      <span
+        aria-hidden="true"
+        className={sidebarLinkIconBoxVariants({ variant, active: isActive })}
+      >
+        {image ? (
+          <span
+            className={cn(
+              'block bg-current mask-contain mask-center mask-no-repeat',
+              glyphClassName,
+            )}
+            style={getMaskStyle(image)}
+          />
+        ) : Icon ? (
+          <Icon className={glyphClassName} />
+        ) : null}
+      </span>
+      <span>{label}</span>
+    </Link>
+  );
 }
 
-interface ILinksProps {
-  links: ILinkItem[];
-  companyProfileData?: TCompanyProfile | undefined
-
+function SidebarLinkList({ links, pathname, className }: SidebarLinkListProps) {
+  return (
+    <ul className={cn('flex flex-col gap-5', className)}>
+      {links.map((link) => (
+        <li key={link.href}>
+          <SidebarLink
+            link={link}
+            variant="menu"
+            isActive={isSidebarNavLinkActive(link, pathname)}
+          />
+        </li>
+      ))}
+    </ul>
+  );
 }
 
-const SidebarLinks = ({ links, companyProfileData }: ILinksProps) => {
-  const t = useTranslations();
+export default function SidebarLinks({
+  links,
+  bottomLinks = [],
+}: SidebarLinksProps) {
+  const t = useTranslations('common');
   const pathname = usePathname();
-  const normalizedPathname = pathname.replace(/^\/[a-z]{2}/, "");
-
-  // Conditionally modify Account Settings link based on company profile status
-  const modifiedLinks = links.map((link) => {
-    if (
-      link.href.startsWith("/company/account-settings") &&
-      companyProfileData?.status === "Draft"
-    ) {
-      return {
-        ...link,
-        href: "/company/account-settings/change-password",
-      };
-    }
-    return link;
-  });
+  const allLinks = [...links, ...bottomLinks];
 
   return (
     <>
-      {/* ── Mobile / Tablet — horizontal scroll strip ─────────────────────── */}
-      <nav aria-label={t("common.sidebar-navigation")} className="lg:hidden">
+      <nav aria-label={t('sidebar-navigation')} className="lg:hidden">
         <Swiper
           modules={[FreeMode]}
           spaceBetween={8}
           slidesPerView="auto"
-          freeMode={true}
+          freeMode
           className="pb-1"
         >
-          {modifiedLinks.map(({ label, href, image, icon: Icon }) => {
-            const isActive = normalizedPathname === href;
-
-            const iconBgClass = isActive
-              ? "bg-primary"
-              : "bg-black group-hover:bg-primary";
-
-            return (
-              <SwiperSlide key={href} className="!w-auto">
-                <li className="shrink-0 list-none">
-                  <Link
-                    href={href}
-                    className={`group flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold whitespace-nowrap transition-all ${isActive
-                      ? "border-primary bg-primary-bg text-primary"
-                      : "border-border text-muted-foreground hover:border-primary hover:bg-primary-bg hover:text-primary"
-                      }`}
-                  >
-                    {image && (
-                      <div
-                        className={`h-4 w-4 shrink-0 transition-colors ${iconBgClass}`}
-                        style={{
-                          WebkitMaskImage: `url(${image})`,
-                          WebkitMaskRepeat: "no-repeat",
-                          WebkitMaskPosition: "center",
-                          WebkitMaskSize: "contain",
-                          maskImage: `url(${image})`,
-                          maskRepeat: "no-repeat",
-                          maskPosition: "center",
-                          maskSize: "contain",
-                        }}
-                      />
-                    )}
-
-                    {Icon && (
-                      <Icon
-                        className={`size-4 shrink-0 transition-colors ${isActive
-                          ? "text-primary"
-                          : "text-muted-foreground group-hover:text-primary"
-                          }`}
-                      />
-                    )}
-
-                    <span>{label}</span>
-                  </Link>
-                </li>
-              </SwiperSlide>
-            );
-          })}
+          {allLinks.map((link) => (
+            <SwiperSlide key={link.href} className="w-auto!">
+              <SidebarLink
+                link={link}
+                variant="pill"
+                isActive={isSidebarNavLinkActive(link, pathname)}
+              />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </nav>
-      {/* ── Desktop — original vertical sidebar ───────────────────────────── */}
+
       <nav
-        aria-label={t("common.sidebar-navigation")}
-        className="hidden lg:block "
+        aria-label={t('sidebar-navigation')}
+        className="hidden flex-1 flex-col justify-between gap-5 lg:flex"
       >
-        <ul className="flex flex-col gap-5">
-          {modifiedLinks.map(({ label, href, image, icon: Icon }) => {
-            const isActive = normalizedPathname === href;
-
-            const iconBgClass = isActive
-              ? "bg-primary"
-              : "bg-black group-hover:bg-primary";
-
-            return (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className={`group flex items-center gap-3 rounded-full border-l-2 px-4 py-2 text-lg font-semibold transition-all ${isActive
-                    ? "border-primary bg-primary-bg text-primary"
-                    : "text-muted-foreground hover:border-primary hover:bg-primary-bg hover:text-primary border-transparent"
-                    }`}
-                >
-                  {image && (
-                    <div
-                      className={`h-5 w-5 transition-colors ${iconBgClass}`}
-                      style={{
-                        WebkitMaskImage: `url(${image})`,
-                        WebkitMaskRepeat: "no-repeat",
-                        WebkitMaskPosition: "center",
-                        WebkitMaskSize: "contain",
-                        maskImage: `url(${image})`,
-                        maskRepeat: "no-repeat",
-                        maskPosition: "center",
-                        maskSize: "contain",
-                      }}
-                    />
-                  )}
-
-                  {Icon && (
-                    <Icon
-                      className={`size-5 shrink-0 transition-colors ${isActive
-                        ? "text-primary"
-                        : "text-muted-foreground group-hover:text-primary"
-                        }`}
-                    />
-                  )}
-
-                  <span>{label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <SidebarLinkList links={links} pathname={pathname} />
+        {bottomLinks.length > 0 && (
+          <SidebarLinkList
+            links={bottomLinks}
+            pathname={pathname}
+            className="gap-2"
+          />
+        )}
       </nav>
     </>
   );
-};
-
-export default SidebarLinks;
+}
