@@ -92,8 +92,30 @@
   "home": {
     "how-it-work": "How it work",
     "why-joocare": "Why Joocare",
-    "joocare-model": "The Joocare Model",
-    "legacy-model": "the legacy model",
+    "joocare-model": "Joocare Model",
+    "legacy-model": "Legacy Workflow",
+    "why-eyebrow": "Healthcare Hiring Intelligence",
+    "why-subtitle": "Leverage AI-powered workforce intelligence to evaluate qualifications, validate credentials, assess clinical and psychometric capabilities, identify professional expertise, and support faster, more confident hiring decisions.",
+    "ai-engine": {
+      "top-label": "JOOCARE INTELLIGENCE",
+      "core-label": "AI ENGINE",
+      "aria-title": "Joocare AI engine. Joocare intelligence feeds an AI cell that works through eight hiring steps: CV analysis, qualification review, credential verification, assessment insights, talent matching, talent ranking, smart shortlisting and hiring insights, leading from workforce complexity to better hiring decisions.",
+      "footer": {
+        "1": "Workforce Complexity",
+        "2": "Hiring Intelligence",
+        "3": "Better Hiring Decisions"
+      },
+      "steps": {
+        "1": { "l1": "CV", "l2": "Analysis", "status": "Analyzing CVs" },
+        "2": { "l1": "Qualification", "l2": "Review", "status": "Reviewing qualifications" },
+        "3": { "l1": "Credential", "l2": "Verification", "status": "Verifying credentials" },
+        "4": { "l1": "Assessment", "l2": "Insights", "status": "Building assessment insights" },
+        "5": { "l1": "Talent", "l2": "Matching", "status": "Matching talent to roles" },
+        "6": { "l1": "Talent", "l2": "Ranking", "status": "Ranking talent" },
+        "7": { "l1": "Smart", "l2": "Shortlisting", "status": "Shortlisting the best fit" },
+        "8": { "l1": "Hiring", "l2": "Insights", "status": "Delivering hiring insights" }
+      }
+    },
     "top-employers": "Top Employers",
     "proven-hiring-impact": "Proven Hiring Impact",
     "recent-jobs": "Recent Jobs",
