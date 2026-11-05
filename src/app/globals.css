@@ -24,6 +24,18 @@
   --color-chat-search: var(--chat-search);
   --color-chat-muted: var(--chat-muted);
   --color-chat-link: var(--chat-link);
+  --color-match-high: var(--match-high);
+  --color-match-high-text: var(--match-high-text);
+  --color-match-good: var(--match-good);
+  --color-match-good-text: var(--match-good-text);
+  --color-match-review: var(--match-review);
+  --color-match-review-text: var(--match-review-text);
+  --color-match-limited: var(--match-limited);
+  --color-match-limited-text: var(--match-limited-text);
+  --color-match-low: var(--match-low);
+  --color-match-low-text: var(--match-low-text);
+  --color-match-primary: var(--match-primary);
+  --color-match-check: var(--match-check);
   --color-chat-danger: var(--chat-danger);
   --color-chat-danger-bg: var(--chat-danger-bg);
   --color-chat-warning: var(--chat-warning);
@@ -151,6 +163,19 @@
   --chat-search: #6e7979;
   --chat-muted: #4b5563;
   --chat-link: #1f6dd8;
+  /* AI job match levels (dot / border = base, label = text) */
+  --match-high: #047828;
+  --match-high-text: #046422;
+  --match-good: #7ac143;
+  --match-good-text: #3e821e;
+  --match-review: #f2c200;
+  --match-review-text: #8a6d00;
+  --match-limited: #f28c1b;
+  --match-limited-text: #a85a00;
+  --match-low: #e53935;
+  --match-low-text: #b3261e;
+  --match-primary: var(--assessment-primary);
+  --match-check: #10b981;
   --chat-danger: #dc2626;
   --chat-danger-bg: #fef2f2;
   --chat-warning: #92400e;

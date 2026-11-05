@@ -724,6 +724,77 @@
       "closed-notice-title": "أغلقت {company} هذه المحادثة",
       "closed-notice-description": "لا يمكنك إرسال رسائل جديدة، لكن يمكنك عرض سجل المحادثة وملف الشركة.",
       "view-company-profile": "عرض ملف {company}"
+    },
+    "aiJobMatch": {
+      "title": "أفضل الوظائف المطابقة لك",
+      "subtitle": "بناءً على ملفك الشخصي وخبرتك وتفضيلاتك",
+      "edit-preferences": "تعديل تفضيلاتك",
+      "match-level": "مستوى المطابقة:",
+      "level-range": "{min}–{max}%",
+      "match-score": "نسبة المطابقة بالذكاء الاصطناعي",
+      "levels": {
+        "high": "موصى بها بشدة",
+        "good": "موصى بها",
+        "review": "تستحق المراجعة",
+        "limited": "مطابقة محدودة",
+        "low": "غير متوافقة"
+      },
+      "apply": "تقدّم",
+      "view-job": "عرض الوظيفة",
+      "no-matches-title": "لا توجد وظائف عالية المطابقة بعد",
+      "no-matches-description": "أوقف خيار \"عرض الوظائف عالية المطابقة فقط\" أو حدّث تفضيلاتك لعرض وظائف أكثر.",
+      "preferences-saved": "تم حفظ تفضيلاتك.",
+      "matches-updated": "تم تحديث الوظائف المطابقة.",
+      "empty": {
+        "title": "وظائف موصى بها لك",
+        "subtitle": "بناءً على ملفك الشخصي ومهاراتك وخبرتك وتفضيلاتك المهنية.",
+        "set-your-preferences": "حدد تفضيلاتك",
+        "heading": "حدد تفضيلاتك الوظيفية",
+        "description": "أخبرنا بما تبحث عنه، وسنرشح لك أنسب الفرص بناءً على أهدافك المهنية وموقعك المفضل وتخصصك وخبرتك.",
+        "set-preferences": "تحديد التفضيلات",
+        "benefits": {
+          "location": {
+            "title": "الموقع المفضل",
+            "description": "احصل على ترشيحات وظائف في الموقع الذي تريده."
+          },
+          "role": {
+            "title": "الدور المستهدف",
+            "description": "طابق الفرص المتوافقة مع أهدافك المهنية."
+          },
+          "industry": {
+            "title": "المجال والتخصص",
+            "description": "اكتشف فرصاً تناسب مهنتك ومجال خبرتك."
+          },
+          "accuracy": {
+            "title": "دقة مطابقة أفضل",
+            "description": "حسّن ملاءمة وجودة الوظائف الموصى بها لك."
+          }
+        }
+      },
+      "preferences": {
+        "add-title": "أضف تفضيلاتك",
+        "edit-title": "عدّل تفضيلاتك",
+        "preferred-domain": "المجال المفضل",
+        "job-function": "الوظيفة",
+        "both": "كلاهما",
+        "job-title": "المسمى الوظيفي",
+        "job-title-placeholder": "اختر المسمى الوظيفي",
+        "preferred-companies": "الشركات المفضلة",
+        "companies-placeholder": "اختر الشركات",
+        "location": "الموقع",
+        "country-placeholder": "الدولة",
+        "seniority-level": "المستوى الوظيفي",
+        "seniority-placeholder": "اختر المستوى الوظيفي",
+        "choose-job-function-first": "اختر الوظيفة أولاً",
+        "match-preference": "تفضيل المطابقة",
+        "high-match-only": "عرض الوظائف عالية المطابقة فقط",
+        "high-match-description": "عرض الوظائف التي تبلغ نسبة مطابقتها {threshold}% أو أكثر فقط.",
+        "save-and-find": "احفظ التفضيلات وابحث عن وظائف",
+        "update-matches": "تحديث النتائج",
+        "loading": "جارٍ التحميل...",
+        "search": "ابحث...",
+        "remove": "إزالة {name}"
+      }
     }
   },
   "legalPages": {

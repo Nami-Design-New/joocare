@@ -724,6 +724,77 @@
       "closed-notice-title": "This conversation has been closed by {company}",
       "closed-notice-description": "You can't send new messages. You can still view the chat history and the company profile.",
       "view-company-profile": "View {company} profile"
+    },
+    "aiJobMatch": {
+      "title": "Top Job Matches for You",
+      "subtitle": "Based on your profile, experience, and preferences",
+      "edit-preferences": "Edit your preferences",
+      "match-level": "Match level:",
+      "level-range": "{min}–{max}%",
+      "match-score": "AI match score",
+      "levels": {
+        "high": "Highly Recommended",
+        "good": "Recommended",
+        "review": "Worth Reviewing",
+        "limited": "Limited Match",
+        "low": "Not Aligned"
+      },
+      "apply": "Apply",
+      "view-job": "View Job",
+      "no-matches-title": "No high-match jobs yet",
+      "no-matches-description": "Turn off \"Show only high-match jobs\" or update your preferences to see more jobs.",
+      "preferences-saved": "Your preferences have been saved.",
+      "matches-updated": "Your matches have been updated.",
+      "empty": {
+        "title": "Recommended Jobs for You",
+        "subtitle": "Based on your profile, skills, experience, and career preferences.",
+        "set-your-preferences": "Set Your Preferences",
+        "heading": "Set Your Job Preferences",
+        "description": "Tell us what you're looking for, and we'll recommend the most relevant opportunities based on your career goals, preferred location, specialization, and experience.",
+        "set-preferences": "Set Preferences",
+        "benefits": {
+          "location": {
+            "title": "Preferred Location",
+            "description": "Receive job recommendations in your desired location."
+          },
+          "role": {
+            "title": "Target Role",
+            "description": "Match with opportunities aligned with your career goals."
+          },
+          "industry": {
+            "title": "Industry & Specialty",
+            "description": "Discover opportunities relevant to your profession and area of expertise."
+          },
+          "accuracy": {
+            "title": "Better Match Accuracy",
+            "description": "Improve the relevance and quality of your recommended jobs."
+          }
+        }
+      },
+      "preferences": {
+        "add-title": "Add your preferences",
+        "edit-title": "Edit your preferences",
+        "preferred-domain": "Preferred Domain",
+        "job-function": "Job Function",
+        "both": "Both",
+        "job-title": "Job Title",
+        "job-title-placeholder": "Select job title",
+        "preferred-companies": "Preferred Companies",
+        "companies-placeholder": "Select companies",
+        "location": "Location",
+        "country-placeholder": "Country",
+        "seniority-level": "Seniority Level",
+        "seniority-placeholder": "Select seniority level",
+        "choose-job-function-first": "Choose a job function first",
+        "match-preference": "Match Preference",
+        "high-match-only": "Show only high-match jobs",
+        "high-match-description": "Only show jobs with a match score of {threshold}% or higher.",
+        "save-and-find": "Save preferences & Find Jobs",
+        "update-matches": "Update Matches",
+        "loading": "Loading...",
+        "search": "Search...",
+        "remove": "Remove {name}"
+      }
     }
   },
   "legalPages": {
