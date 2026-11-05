@@ -10,3 +10,7 @@ export const CHAT_ACCEPTED_TYPES = [
   'application/pdf',
 ];
 export const CHAT_ASSET_PATH = '/assets/chat';
+export const CHAT_ROUTES = {
+  company: '/company/chat',
+  candidate: '/candidate/chat',
+} as const;

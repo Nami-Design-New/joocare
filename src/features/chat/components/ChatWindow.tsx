@@ -4,6 +4,7 @@ import type {
   ChatAttachment,
   ChatConversation,
   ChatMessage,
+  ChatRole,
   SendChatMessage,
 } from '../types/chat.types';
 import ChatWindowHeader from './ChatWindowHeader';
@@ -13,12 +14,14 @@ import ChatContactWarning from './ChatContactWarning';
 import ChatClosedNotice from './ChatClosedNotice';
 
 type ChatWindowProps = {
+  role: ChatRole;
   initialReplyMessage?: ChatMessage;
   conversation: ChatConversation;
   mobileConversationOpen: boolean;
   onBack: () => void;
-  onClose: () => void;
-  onReopen: () => void;
+  /** Company only: close / reopen the conversation. */
+  onClose?: () => void;
+  onReopen?: () => void;
   onSend: (message: SendChatMessage) => void;
   onDismissWarning: () => void;
   onPreview: (attachment: ChatAttachment) => void;
@@ -27,6 +30,7 @@ type ChatWindowProps = {
 };
 
 export default function ChatWindow({
+  role,
   initialReplyMessage,
   conversation,
   mobileConversationOpen,
@@ -49,12 +53,14 @@ export default function ChatWindow({
       )}
     >
       <ChatWindowHeader
+        role={role}
         conversation={conversation}
         onBack={onBack}
         onClose={onClose}
         onReopen={onReopen}
       />
       <ChatTimeline
+        role={role}
         mobileConversationOpen={mobileConversationOpen}
         conversation={conversation}
         onReply={replyToMessage}
@@ -66,7 +72,11 @@ export default function ChatWindow({
         className="shrink-0 space-y-3 px-4 pt-2 pb-5 md:px-6"
       >
         {conversation.closedAt ? (
-          <ChatClosedNotice name={conversation.name} onReopen={onReopen} />
+          <ChatClosedNotice
+            role={role}
+            conversation={conversation}
+            onReopen={onReopen}
+          />
         ) : (
           <>
             {conversation.alreadyContacted && (

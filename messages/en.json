@@ -714,6 +714,16 @@
       "certificate-added": "Certificate added successfully.",
       "certificate-updated": "Certificate updated successfully.",
       "certificate-save-failed": "Failed to save certificate."
+    },
+    "chat": {
+      "title": "Chat",
+      "list-title": "Message",
+      "search-placeholder": "Search companies or recruiters...",
+      "conversation-closed": "Conversation closed",
+      "closed-by-company": "Conversation closed by {company} · {date}",
+      "closed-notice-title": "This conversation has been closed by {company}",
+      "closed-notice-description": "You can't send new messages. You can still view the chat history and the company profile.",
+      "view-company-profile": "View {company} profile"
     }
   },
   "legalPages": {

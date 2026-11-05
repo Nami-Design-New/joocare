@@ -1,16 +1,19 @@
 import { Fragment, useEffect, useRef } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import EmptyDataState from '@/shared/components/EmptyDataState';
+import { cn } from '@/shared/lib/utils';
 import type {
   ChatAttachment,
   ChatConversation,
   ChatMessage,
+  ChatRole,
 } from '../types/chat.types';
-import { formatChatDate } from '../utils/chat-format';
+import { useChatCopy } from '../hooks/useChatCopy';
 import ChatIcon from './ChatIcon';
 import ChatMessageItem from './ChatMessageItem';
 
 type ChatTimelineProps = {
+  role: ChatRole;
   mobileConversationOpen: boolean;
   conversation: ChatConversation;
   onReply: (message: ChatMessage) => void;
@@ -19,6 +22,7 @@ type ChatTimelineProps = {
 };
 
 export default function ChatTimeline({
+  role,
   mobileConversationOpen,
   conversation,
   onReply,
@@ -26,7 +30,7 @@ export default function ChatTimeline({
   onDownload,
 }: ChatTimelineProps) {
   const t = useTranslations('companyPage.chat');
-  const locale = useLocale();
+  const copy = useChatCopy(role);
   const scrollArea = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const area = scrollArea.current;
@@ -75,10 +79,15 @@ export default function ChatTimeline({
             </Fragment>
           ))}
           {conversation.closedAt && (
-            <p className="bg-chat-surface text-chat-muted mx-auto w-fit rounded-full px-3 py-1 text-center text-xs leading-4">
-              {t('closed-by-you', {
-                date: formatChatDate(conversation.closedAt, locale),
-              })}
+            <p
+              className={cn(
+                'mx-auto w-fit rounded-full px-3 py-1 text-center text-xs leading-4',
+                role === 'candidate'
+                  ? 'bg-chat-danger-bg text-chat-danger font-medium'
+                  : 'bg-chat-surface text-chat-muted',
+              )}
+            >
+              {copy.closedTimeline(conversation)}
             </p>
           )}
         </div>

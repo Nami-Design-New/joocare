@@ -4,6 +4,9 @@ import type {
   ChatScenario,
 } from '../types/chat.types';
 
+const candidateProfileHref = (candidateId: string) =>
+  `/company/candidate-profile?candidateId=${candidateId}&source=talent-database`;
+
 // Local design fixtures. No messages are sent to a server by this UI preview.
 export function createChatPreview(scenario: ChatScenario): ChatConversation[] {
   const emily = 'Dr. Emily Watson';
@@ -76,7 +79,7 @@ export function createChatPreview(scenario: ChatScenario): ChatConversation[] {
   return [
     {
       id: 'emily',
-      candidateId: 'talent-5',
+      profileHref: candidateProfileHref('talent-5'),
       name: emily,
       jobTitle: 'ICU Nurse Practitioner',
       avatar: '/assets/chat/emily.png',
@@ -96,7 +99,7 @@ export function createChatPreview(scenario: ChatScenario): ChatConversation[] {
     },
     {
       id: 'ahmed',
-      candidateId: 'talent-2',
+      profileHref: candidateProfileHref('talent-2'),
       name: 'Ahmed Khalid',
       jobTitle: 'Senior Neurosurgeon',
       avatar: '/assets/chat/ahmed.png',
@@ -118,7 +121,7 @@ export function createChatPreview(scenario: ChatScenario): ChatConversation[] {
     },
     {
       id: 'sarah',
-      candidateId: 'talent-3',
+      profileHref: candidateProfileHref('talent-3'),
       name: 'Sarah Jenkins',
       jobTitle: 'Oncology Nurse',
       avatar: '/assets/chat/sarah.png',
@@ -136,7 +139,7 @@ export function createChatPreview(scenario: ChatScenario): ChatConversation[] {
     },
     {
       id: 'marcus',
-      candidateId: 'talent-4',
+      profileHref: candidateProfileHref('talent-4'),
       name: 'Dr. Marcus Thorne',
       jobTitle: 'Chief of Medicine',
       avatar: '/assets/chat/marcus.png',

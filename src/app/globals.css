@@ -23,6 +23,7 @@
   --color-chat-heading: var(--chat-heading);
   --color-chat-search: var(--chat-search);
   --color-chat-muted: var(--chat-muted);
+  --color-chat-link: var(--chat-link);
   --color-chat-danger: var(--chat-danger);
   --color-chat-danger-bg: var(--chat-danger-bg);
   --color-chat-warning: var(--chat-warning);
@@ -149,6 +150,7 @@
   --chat-heading: #191c1d;
   --chat-search: #6e7979;
   --chat-muted: #4b5563;
+  --chat-link: #1f6dd8;
   --chat-danger: #dc2626;
   --chat-danger-bg: #fef2f2;
   --chat-warning: #92400e;

@@ -24,11 +24,16 @@ export type ChatMessage = {
   fixedLines?: boolean;
 };
 
+export type ChatRole = 'company' | 'candidate';
+
 export type ChatConversation = {
   id: string;
-  candidateId: string;
+  /** Profile of the other party: the candidate for companies, the company for candidates. */
+  profileHref: string;
   name: string;
   jobTitle: string;
+  /** Candidate conversations only: the employer the recruiter works for. */
+  companyName?: string;
   avatar: string;
   lastMessage: string;
   updatedAt: string;

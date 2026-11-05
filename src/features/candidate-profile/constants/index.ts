@@ -12,7 +12,28 @@ export const CANDIDATE_ROUTES = {
   profileInsights: '/candidate/profile-insights',
   settings: '/candidate/settings',
   basicInfo: '/candidate/settings/basic-info',
+  chat: '/candidate/chat',
 } as const;
+
+// Breadcrumb title per candidate section (keys under `candidatePage`), matched by path prefix.
+export const CANDIDATE_PAGE_TITLES: readonly { path: string; label: string }[] =
+  [
+    { path: CANDIDATE_ROUTES.profile, label: 'sidebar.my-profile' },
+    { path: CANDIDATE_ROUTES.applications, label: 'sidebar.job-applications' },
+    {
+      path: CANDIDATE_ROUTES.credentials,
+      label: 'sidebar.professional-credentials',
+    },
+    { path: CANDIDATE_ROUTES.cvMatchAts, label: 'sidebar.cv-match-ats' },
+    { path: CANDIDATE_ROUTES.buildCv, label: 'sidebar.build-cv' },
+    { path: CANDIDATE_ROUTES.aiJobMatch, label: 'sidebar.ai-job-match' },
+    {
+      path: CANDIDATE_ROUTES.profileInsights,
+      label: 'sidebar.profile-insights',
+    },
+    { path: CANDIDATE_ROUTES.settings, label: 'sidebar.profile-settings' },
+    { path: CANDIDATE_ROUTES.chat, label: 'chat.title' },
+  ];
 
 export const CANDIDATE_SIDEBAR_LINKS: readonly SidebarLinkItem[] = [
   {

@@ -3,32 +3,37 @@ import { useLocale, useTranslations } from 'next-intl';
 import SearchInput from '@/shared/components/SearchInput';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import { cn } from '@/shared/lib/utils';
-import type { ChatConversation } from '../types/chat.types';
+import { useChatCopy } from '../hooks/useChatCopy';
+import type { ChatConversation, ChatRole } from '../types/chat.types';
 import { formatChatDate } from '../utils/chat-format';
 import ChatIcon from './ChatIcon';
 import ChatClosedBadge from './ChatClosedBadge';
 
 type ChatConversationListProps = {
+  role: ChatRole;
   conversations: ChatConversation[];
   activeId?: string;
   search: string;
-  superAdmin: boolean;
+  superAdmin?: boolean;
   mobileConversationOpen: boolean;
   onSearch: (value: string) => void;
   onSelect: (id: string) => void;
 };
 
 export default function ChatConversationList({
+  role,
   conversations,
   activeId,
   search,
-  superAdmin,
+  superAdmin = false,
   mobileConversationOpen,
   onSearch,
   onSelect,
 }: ChatConversationListProps) {
   const t = useTranslations('companyPage.chat');
   const locale = useLocale();
+  const copy = useChatCopy(role);
+  const isCandidate = role === 'candidate';
   return (
     <aside
       aria-label={t('conversations')}
@@ -39,12 +44,12 @@ export default function ChatConversationList({
     >
       <div className="space-y-4 px-6 pt-6 pb-4">
         <h1 className="text-chat-heading text-2xl leading-8 font-extrabold">
-          {t('inbox')}
+          {copy.listTitle}
         </h1>
         <SearchInput
           value={search}
           onChange={(event) => onSearch(event.target.value)}
-          placeholder={t('search-placeholder')}
+          placeholder={copy.searchPlaceholder}
           className="placeholder:text-chat-search h-10.25 rounded-[14px] ps-10 pe-3 text-sm"
           icon={<ChatIcon name="search" width={14} height={14} />}
         />
@@ -55,6 +60,14 @@ export default function ChatConversationList({
       >
         {conversations.map((conversation) => {
           const active = conversation.id === activeId;
+          const closed = Boolean(conversation.closedAt);
+          const subtitle = [conversation.jobTitle, conversation.companyName]
+            .filter(Boolean)
+            .join(' · ');
+          const preview =
+            isCandidate && closed
+              ? copy.closedLabel
+              : conversation.lastMessage || t('no-messages');
           return (
             <button
               key={conversation.id}
@@ -107,9 +120,9 @@ export default function ChatConversationList({
                       active ? 'text-chat-primary' : 'text-muted-foreground',
                     )}
                   >
-                    <bdi>{conversation.jobTitle}</bdi>
+                    <bdi>{subtitle}</bdi>
                   </span>
-                  {conversation.closedAt && <ChatClosedBadge />}
+                  {closed && !isCandidate && <ChatClosedBadge role={role} />}
                 </span>
                 <span
                   className={cn(
@@ -118,7 +131,7 @@ export default function ChatConversationList({
                     active && 'italic',
                   )}
                 >
-                  <bdi>{conversation.lastMessage || t('no-messages')}</bdi>
+                  <bdi>{preview}</bdi>
                 </span>
                 {superAdmin && (
                   <span className="text-chat-muted flex items-center gap-1 text-[11px] leading-4.5">

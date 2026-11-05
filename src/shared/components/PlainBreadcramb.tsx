@@ -1,18 +1,14 @@
 import { Link } from "@/i18n/navigation";
-import { Locale } from "ckeditor5";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getLocale } from "next-intl/server";
+import { ChevronRight } from "lucide-react";
 
 type Crumb = {
   label: string;
   href?: string;
 };
 
-export default async function PlainBreadcrumb({ items }: { items: Crumb[] }) {
-  const locale = await getLocale()
+export default function PlainBreadcrumb({ items }: { items: Crumb[] }) {
   const last = items.length - 1;
   const title = items[last]?.label || "";
-  console.log(locale);
 
   return (
     <div className="layout-shell border-b border-[#e6e6e6] bg-[#0D0D0D0D] py-2">
@@ -42,11 +38,11 @@ export default async function PlainBreadcrumb({ items }: { items: Crumb[] }) {
 
                   {idx < last && (
                     <span className="mx-2 text-[#0D0D0DA6]">
-                      {locale === 'ar' ? (
-                        <ChevronLeft width={20} hanging={20} />
-                      ) : (
-                        <ChevronRight width={20} hanging={20} />
-                      )}
+                      <ChevronRight
+                        width={20}
+                        height={20}
+                        className="rtl:rotate-180"
+                      />
                     </span>
                   )}
                 </li>

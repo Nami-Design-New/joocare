@@ -714,6 +714,16 @@
       "certificate-added": "تمت إضافة الشهادة بنجاح.",
       "certificate-updated": "تم تحديث الشهادة بنجاح.",
       "certificate-save-failed": "فشل حفظ الشهادة."
+    },
+    "chat": {
+      "title": "المحادثات",
+      "list-title": "الرسائل",
+      "search-placeholder": "ابحث عن شركة أو مسؤول توظيف...",
+      "conversation-closed": "المحادثة مغلقة",
+      "closed-by-company": "أغلقت {company} المحادثة · {date}",
+      "closed-notice-title": "أغلقت {company} هذه المحادثة",
+      "closed-notice-description": "لا يمكنك إرسال رسائل جديدة، لكن يمكنك عرض سجل المحادثة وملف الشركة.",
+      "view-company-profile": "عرض ملف {company}"
     }
   },
   "legalPages": {
