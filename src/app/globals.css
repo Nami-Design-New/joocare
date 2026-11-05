@@ -36,6 +36,18 @@
   --color-match-low-text: var(--match-low-text);
   --color-match-primary: var(--match-primary);
   --color-match-check: var(--match-check);
+  --color-question-card-surface: var(--question-card-surface);
+  --color-question-card-border: var(--question-card-border);
+  --color-question-card-title: var(--question-card-title);
+  --color-question-card-text: var(--question-card-text);
+  --color-question-card-hint: var(--question-card-hint);
+  --color-question-card-icon-bg: var(--question-card-icon-bg);
+  --color-question-card-accent: var(--question-card-accent);
+  --color-question-card-radio: var(--question-card-radio);
+  --color-question-card-chip: var(--question-card-chip);
+  --color-job-status-open: var(--job-status-open);
+  --color-job-status-active: var(--job-status-active);
+  --color-job-status-passive: var(--job-status-passive);
   --color-chat-danger: var(--chat-danger);
   --color-chat-danger-bg: var(--chat-danger-bg);
   --color-chat-warning: var(--chat-warning);
@@ -176,6 +188,20 @@
   --match-low-text: #b3261e;
   --match-primary: var(--assessment-primary);
   --match-check: #10b981;
+  /* Yes / no question card (mobility: relocation, driving license) */
+  --question-card-surface: #fdfefe;
+  --question-card-border: #edf0f5;
+  --question-card-title: #0b1025;
+  --question-card-text: #63738f;
+  --question-card-hint: #77869f;
+  --question-card-icon-bg: #ddefe7;
+  --question-card-accent: #00743e;
+  --question-card-radio: #c7d1e0;
+  --question-card-chip: #e4f2ec;
+  /* Candidate job search status badge dots */
+  --job-status-open: #047857;
+  --job-status-active: #2563eb;
+  --job-status-passive: #6b7280;
   --chat-danger: #dc2626;
   --chat-danger-bg: #fef2f2;
   --chat-warning: #92400e;

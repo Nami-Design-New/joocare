@@ -51,7 +51,13 @@
       "view-profile": "View profile for {name}"
     },
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "remove-item": "Remove {name}",
+    "add": "Add",
+    "selected-count": "{count} selected",
+    "yes": "Yes",
+    "no": "No",
+    "clear": "Clear"
   },
   "header": {
     "home": "Home",
@@ -792,8 +798,160 @@
         "save-and-find": "Save preferences & Find Jobs",
         "update-matches": "Update Matches",
         "loading": "Loading...",
-        "search": "Search...",
-        "remove": "Remove {name}"
+        "search": "Search..."
+      }
+    },
+    "profile-tabs": {
+      "home": "Home",
+      "additional-info": "Additional Information"
+    },
+    "additional-info": {
+      "title": "Additional Information",
+      "subtitle": "Complete your profile to improve your visibility to employers.",
+      "cancel": "Cancel",
+      "save": "Save Changes",
+      "saved": "Your additional information has been saved",
+      "errors": {
+        "invalid-amount": "Enter a valid amount",
+        "salary-range": "Maximum salary must be greater than the minimum"
+      },
+      "completion": {
+        "label": "Profile completion",
+        "title": "Great progress!",
+        "description": "Complete the remaining details to strengthen your profile.",
+        "done-title": "Your profile is complete!",
+        "done-description": "Employers can now see your full profile.",
+        "item-done": "(completed)",
+        "item-pending": "(not completed)"
+      },
+      "sections": {
+        "qualifications": {
+          "title": "Qualifications & Expertise",
+          "description": "Add your clinical qualifications and licensing details."
+        },
+        "languages": {
+          "title": "Languages",
+          "description": "Add up to 3 languages and your proficiency level."
+        },
+        "mobility": {
+          "title": "Mobility",
+          "description": "Tell us about your mobility options."
+        },
+        "career": {
+          "title": "Career Preferences",
+          "description": "Help us match you with the right opportunities."
+        },
+        "professional": {
+          "title": "Professional Information",
+          "description": "Add your clinical privileges and other relevant professional details."
+        },
+        "personal": {
+          "title": "Personal Details",
+          "description": "Share some personal information."
+        },
+        "salary": {
+          "title": "Salary Details",
+          "description": "Enter your salary information."
+        }
+      },
+      "qualifications": {
+        "experience": "Experience & Seniority",
+        "licensing": "Qualifications & Licensing"
+      },
+      "fields": {
+        "years-in-role": "Years in Current Role",
+        "seniority-level": "Seniority Level",
+        "education-level": "Highest Education Level",
+        "certifications": "Certifications",
+        "professional-license": "Professional License",
+        "license-country": "License Country",
+        "license-status": "License Status",
+        "verification-status": "Verification Status",
+        "language": "Language",
+        "proficiency": "Proficiency Level",
+        "designations": "Desired Designations",
+        "work-locations": "Preferred Work Locations",
+        "industries": "Desired Industries",
+        "notice-period": "Notice Period / Availability",
+        "clinical-privileges": "Clinical Privileges",
+        "nationality": "Nationality",
+        "current-country": "Current Country",
+        "visa-status": "Visa Status",
+        "gender": "Gender",
+        "current-city": "Current City",
+        "sponsorship": "Sponsorship Requirements",
+        "marital-status": "Marital Status",
+        "current-salary": "Current Salary",
+        "expected-salary": "Expected Salary Range",
+        "currency": "Currency"
+      },
+      "placeholders": {
+        "select": "Select",
+        "select-years": "Select years",
+        "select-seniority": "Select seniority",
+        "select-education": "Select highest level",
+        "add-certifications": "Add certifications",
+        "select-license": "Select license",
+        "select-country": "Select country",
+        "select-country-first": "Select a country first",
+        "select-status": "Select status",
+        "select-language": "Select language",
+        "select-marital-status": "Select marital status",
+        "search-titles": "Search titles",
+        "search-countries": "Search countries",
+        "search-industries": "Search industries",
+        "privilege": "ex: Endoscopy",
+        "current-salary": "Current Salary",
+        "expectedMin": "Min",
+        "expectedMax": "Max"
+      },
+      "mobility": {
+        "relocation-title": "Relocation Preference",
+        "relocation-description": "Are you willing to relocate to another city or country for a job opportunity?",
+        "relocation-countries": "Preferred Work Country(s)",
+        "relocation-hint": "Select locations where you would be willing to work.",
+        "driving-title": "Driving License",
+        "driving-description": "Do you hold a valid driving license?",
+        "driving-countries": "License Issuing Country(s)",
+        "driving-hint": "Select all countries where your driving license is valid.",
+        "search-countries": "Search and select countries"
+      },
+      "career": {
+        "job-search-status": "Job Search Status",
+        "job-search-status-hint": "shown to employers as a badge on your profile",
+        "statuses": {
+          "open-to-work": "Open to Work",
+          "actively-looking": "Actively Looking",
+          "open-to-opportunities": "Open to Opportunities"
+        }
+      },
+      "professional": {
+        "privileges-hint": "Add each privilege separately — every entry is used as a separate keyword in AI job matching"
+      },
+      "options": {
+        "valid": "Valid",
+        "expired": "Expired",
+        "pending": "Pending",
+        "verified": "Verified",
+        "not-verified": "Not Verified",
+        "basic": "Basic",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "fluent": "Fluent",
+        "native": "Native",
+        "male": "Male",
+        "female": "Female",
+        "single": "Single",
+        "married": "Married",
+        "divorced": "Divorced",
+        "widowed": "Widowed",
+        "citizen": "Citizen",
+        "resident": "Resident",
+        "work-visa": "Work Visa",
+        "visit-visa": "Visit Visa",
+        "no-visa": "No Visa",
+        "required": "Required",
+        "not-required": "Not Required"
       }
     }
   },
@@ -911,16 +1069,11 @@
   },
   "companyPage": {
     "talent-database": {
-      "add": "Add",
-      "remove-keyword": "Remove keyword {keyword}",
       "title": "Talent Database",
       "choose": "choose",
       "search": "Search",
       "search-options": "Search options...",
       "search-countries": "Search and select countries",
-      "yes": "Yes",
-      "no": "No",
-      "clear": "Clear",
       "reset": "Reset filters",
       "current-title-placeholder": "e.g. Registered Nurse",
       "previous-title-placeholder": "e.g. ER Nurse",

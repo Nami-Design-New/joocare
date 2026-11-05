@@ -39,7 +39,11 @@ export default function TalentSearchForm({
   );
   const form = useForm<TalentFilterValues>({
     resolver: zodResolver(schema),
-    defaultValues: values,
+    defaultValues: {
+      relocation: 'yes',
+      'driving-license': 'yes',
+      ...values,
+    },
   });
   return (
     <FormProvider {...form}>

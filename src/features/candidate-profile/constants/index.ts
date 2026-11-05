@@ -3,6 +3,7 @@ import type { SidebarLinkItem } from '@/shared/types/sidebar-link.types';
 
 export const CANDIDATE_ROUTES = {
   profile: '/candidate/profile',
+  profileAdditionalInfo: '/candidate/profile/additional-info',
   applications: '/candidate/applications',
   credentials: '/candidate/credentials',
   qualifications: '/candidate/credentials/qualifications',
@@ -34,6 +35,15 @@ export const CANDIDATE_PAGE_TITLES: readonly { path: string; label: string }[] =
     { path: CANDIDATE_ROUTES.settings, label: 'sidebar.profile-settings' },
     { path: CANDIDATE_ROUTES.chat, label: 'chat.title' },
   ];
+
+// Profile page tabs (keys under the root of messages).
+export const PROFILE_TAB_LINKS = [
+  { href: CANDIDATE_ROUTES.profile, label: 'candidatePage.profile-tabs.home' },
+  {
+    href: CANDIDATE_ROUTES.profileAdditionalInfo,
+    label: 'candidatePage.profile-tabs.additional-info',
+  },
+] as const;
 
 export const CANDIDATE_SIDEBAR_LINKS: readonly SidebarLinkItem[] = [
   {

@@ -6,7 +6,7 @@ import type { Control } from 'react-hook-form';
 import useGetJobTitles from '@/shared/hooks/useGetJobTitles';
 import { toLookupOptions } from '@/features/candidate-profile/utils/lookup-options';
 import type { TJobPreferencesSchema } from '../../validation/job-preferences-schema';
-import PreferenceMultiSelectField from './PreferenceMultiSelectField';
+import MultiSelectChipsField from '@/shared/components/MultiSelectChipsField';
 
 type JobTitlesFieldProps = {
   control: Control<TJobPreferencesSchema>;
@@ -29,7 +29,7 @@ export default function JobTitlesField({
   const options = useMemo(() => toLookupOptions(jobTitles), [jobTitles]);
 
   return (
-    <PreferenceMultiSelectField
+    <MultiSelectChipsField
       control={control}
       name="jobTitleIds"
       label={t('job-title')}

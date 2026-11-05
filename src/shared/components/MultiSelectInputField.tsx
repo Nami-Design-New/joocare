@@ -37,6 +37,8 @@ type MultiSelectInputFieldProps = {
   preloadOptions?: Option[];
   // Show only the placeholder in the trigger when the page renders the selection itself.
   hideSelectedChips?: boolean;
+  // Badge shown next to the placeholder when chips are hidden, e.g. "2 selected".
+  selectedCountLabel?: string;
 };
 
 export const MultiSelectInputField = React.forwardRef<
@@ -65,6 +67,7 @@ export const MultiSelectInputField = React.forwardRef<
       portalContainer,
       preloadOptions = [],
       hideSelectedChips = false,
+      selectedCountLabel,
       ...props
     },
     ref,
@@ -248,8 +251,15 @@ export const MultiSelectInputField = React.forwardRef<
                 ))}
               </span>
             ) : (
-              <span className="text-muted-foreground">
-                {placeholder || "Select options"}
+              <span className="flex min-w-0 flex-1 items-center justify-between gap-2">
+                <span className="text-muted-foreground truncate">
+                  {placeholder || "Select options"}
+                </span>
+                {hideSelectedChips && selectedCountLabel && selectedOptions.length > 0 && (
+                  <span className="bg-primary text-primary-foreground shrink-0 rounded-full px-2 py-0.5 text-xs font-medium">
+                    {selectedCountLabel}
+                  </span>
+                )}
               </span>
             )}
           </ComboboxTrigger>

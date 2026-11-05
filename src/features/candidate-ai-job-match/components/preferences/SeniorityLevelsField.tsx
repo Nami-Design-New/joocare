@@ -8,7 +8,7 @@ import useGetSeniorityLevels from '@/shared/hooks/useGetSeniorityLevels';
 import { toLookupOptions } from '@/features/candidate-profile/utils/lookup-options';
 import { JOB_FUNCTION_BOTH } from '../../constants';
 import type { TJobPreferencesSchema } from '../../validation/job-preferences-schema';
-import PreferenceMultiSelectField from './PreferenceMultiSelectField';
+import MultiSelectChipsField from '@/shared/components/MultiSelectChipsField';
 
 type SeniorityLevelsFieldProps = {
   control: Control<TJobPreferencesSchema>;
@@ -46,7 +46,7 @@ export default function SeniorityLevelsField({
   const needsJobFunction = roleCategoryIds.length === 0;
 
   return (
-    <PreferenceMultiSelectField
+    <MultiSelectChipsField
       control={control}
       name="seniorityLevelIds"
       label={t('seniority-level')}

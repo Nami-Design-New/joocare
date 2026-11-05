@@ -6,7 +6,7 @@ import type { Control } from 'react-hook-form';
 import useGetCountries from '@/shared/hooks/useGetCountries';
 import { toLookupOptions } from '@/features/candidate-profile/utils/lookup-options';
 import type { TJobPreferencesSchema } from '../../validation/job-preferences-schema';
-import PreferenceMultiSelectField from './PreferenceMultiSelectField';
+import MultiSelectChipsField from '@/shared/components/MultiSelectChipsField';
 
 type PreferredCountriesFieldProps = {
   control: Control<TJobPreferencesSchema>;
@@ -29,7 +29,7 @@ export default function PreferredCountriesField({
   const options = useMemo(() => toLookupOptions(countries), [countries]);
 
   return (
-    <PreferenceMultiSelectField
+    <MultiSelectChipsField
       control={control}
       name="countryIds"
       label={t('location')}

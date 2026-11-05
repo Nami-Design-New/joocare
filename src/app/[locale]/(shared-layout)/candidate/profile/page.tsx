@@ -1,4 +1,5 @@
 import AboutSection from "@/features/candidate-profile/components/about/AboutSection";
+import ProfileTabs from "@/features/candidate-profile/components/ProfileTabs";
 import EducationSection from "@/features/candidate-profile/components/education/EducationSection";
 import { ExperienceSectionData } from "@/features/candidate-profile/components/experience/ExperienceSectionData";
 import SideContentInfos from "@/features/candidate-profile/components/SideContentInfos";
@@ -11,6 +12,7 @@ const CandidateProfilePage = async () => {
   return (
     <main className="grid w-full grid-cols-12 items-start gap-4">
       <section className="col-span-12 flex flex-col gap-4 lg:col-span-8">
+        <ProfileTabs />
         <AboutSection profile={profile} />
         <EducationSection profile={profile} />
         <SkillsSection profile={profile} />

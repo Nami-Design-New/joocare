@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import type { Control } from 'react-hook-form';
 import { PREFERRED_COMPANY_OPTIONS } from '../../constants/ai-job-match-preview-data';
 import type { TJobPreferencesSchema } from '../../validation/job-preferences-schema';
-import PreferenceMultiSelectField from './PreferenceMultiSelectField';
+import MultiSelectChipsField from '@/shared/components/MultiSelectChipsField';
 
 type PreferredCompaniesFieldProps = {
   control: Control<TJobPreferencesSchema>;
@@ -18,7 +18,7 @@ export default function PreferredCompaniesField({
   const t = useTranslations('candidatePage.aiJobMatch.preferences');
 
   return (
-    <PreferenceMultiSelectField
+    <MultiSelectChipsField
       control={control}
       name="companyIds"
       label={t('preferred-companies')}

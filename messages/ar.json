@@ -51,7 +51,13 @@
       "view-profile": "عرض الملف الشخصي لـ {name}"
     },
     "cancel": "إلغاء",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "remove-item": "إزالة {name}",
+    "add": "إضافة",
+    "selected-count": "{count} محدد",
+    "yes": "نعم",
+    "no": "لا",
+    "clear": "مسح"
   },
   "header": {
     "home": "الرئيسية",
@@ -792,8 +798,160 @@
         "save-and-find": "احفظ التفضيلات وابحث عن وظائف",
         "update-matches": "تحديث النتائج",
         "loading": "جارٍ التحميل...",
-        "search": "ابحث...",
-        "remove": "إزالة {name}"
+        "search": "ابحث..."
+      }
+    },
+    "profile-tabs": {
+      "home": "الرئيسية",
+      "additional-info": "معلومات إضافية"
+    },
+    "additional-info": {
+      "title": "معلومات إضافية",
+      "subtitle": "أكمل ملفك الشخصي لتزيد من ظهورك لأصحاب العمل.",
+      "cancel": "إلغاء",
+      "save": "حفظ التغييرات",
+      "saved": "تم حفظ معلوماتك الإضافية",
+      "errors": {
+        "invalid-amount": "أدخل مبلغًا صحيحًا",
+        "salary-range": "يجب أن يكون الحد الأقصى للراتب أكبر من الحد الأدنى"
+      },
+      "completion": {
+        "label": "اكتمال الملف الشخصي",
+        "title": "تقدّم رائع!",
+        "description": "أكمل التفاصيل المتبقية لتقوية ملفك الشخصي.",
+        "done-title": "ملفك الشخصي مكتمل!",
+        "done-description": "يمكن لأصحاب العمل الآن رؤية ملفك الشخصي كاملًا.",
+        "item-done": "(مكتمل)",
+        "item-pending": "(غير مكتمل)"
+      },
+      "sections": {
+        "qualifications": {
+          "title": "المؤهلات والخبرات",
+          "description": "أضف مؤهلاتك السريرية وتفاصيل الترخيص."
+        },
+        "languages": {
+          "title": "اللغات",
+          "description": "أضف حتى 3 لغات ومستوى إتقانك لكل منها."
+        },
+        "mobility": {
+          "title": "التنقل",
+          "description": "أخبرنا عن خيارات التنقل المتاحة لك."
+        },
+        "career": {
+          "title": "التفضيلات المهنية",
+          "description": "ساعدنا في مطابقتك مع الفرص المناسبة."
+        },
+        "professional": {
+          "title": "المعلومات المهنية",
+          "description": "أضف امتيازاتك السريرية والتفاصيل المهنية الأخرى ذات الصلة."
+        },
+        "personal": {
+          "title": "البيانات الشخصية",
+          "description": "شارك بعض المعلومات الشخصية."
+        },
+        "salary": {
+          "title": "تفاصيل الراتب",
+          "description": "أدخل معلومات راتبك."
+        }
+      },
+      "qualifications": {
+        "experience": "الخبرة والمستوى الوظيفي",
+        "licensing": "المؤهلات والترخيص"
+      },
+      "fields": {
+        "years-in-role": "سنوات الخبرة في الوظيفة الحالية",
+        "seniority-level": "المستوى الوظيفي",
+        "education-level": "أعلى مستوى تعليمي",
+        "certifications": "الشهادات",
+        "professional-license": "الترخيص المهني",
+        "license-country": "دولة الترخيص",
+        "license-status": "حالة الترخيص",
+        "verification-status": "حالة التحقق",
+        "language": "اللغة",
+        "proficiency": "مستوى الإتقان",
+        "designations": "المسميات الوظيفية المرغوبة",
+        "work-locations": "أماكن العمل المفضلة",
+        "industries": "القطاعات المرغوبة",
+        "notice-period": "فترة الإشعار / الإتاحة",
+        "clinical-privileges": "الامتيازات السريرية",
+        "nationality": "الجنسية",
+        "current-country": "الدولة الحالية",
+        "visa-status": "حالة التأشيرة",
+        "gender": "النوع",
+        "current-city": "المدينة الحالية",
+        "sponsorship": "متطلبات الكفالة",
+        "marital-status": "الحالة الاجتماعية",
+        "current-salary": "الراتب الحالي",
+        "expected-salary": "نطاق الراتب المتوقع",
+        "currency": "العملة"
+      },
+      "placeholders": {
+        "select": "اختر",
+        "select-years": "اختر عدد السنوات",
+        "select-seniority": "اختر المستوى الوظيفي",
+        "select-education": "اختر أعلى مستوى",
+        "add-certifications": "أضف الشهادات",
+        "select-license": "اختر الترخيص",
+        "select-country": "اختر الدولة",
+        "select-country-first": "اختر الدولة أولًا",
+        "select-status": "اختر الحالة",
+        "select-language": "اختر اللغة",
+        "select-marital-status": "اختر الحالة الاجتماعية",
+        "search-titles": "ابحث عن المسميات",
+        "search-countries": "ابحث عن الدول",
+        "search-industries": "ابحث عن القطاعات",
+        "privilege": "مثال: المناظير",
+        "current-salary": "الراتب الحالي",
+        "expectedMin": "الحد الأدنى",
+        "expectedMax": "الحد الأقصى"
+      },
+      "mobility": {
+        "relocation-title": "الاستعداد للانتقال",
+        "relocation-description": "هل أنت مستعد للانتقال إلى مدينة أو دولة أخرى من أجل فرصة عمل؟",
+        "relocation-countries": "دول العمل المفضلة",
+        "relocation-hint": "اختر الأماكن التي ترغب في العمل بها.",
+        "driving-title": "رخصة القيادة",
+        "driving-description": "هل تحمل رخصة قيادة سارية؟",
+        "driving-countries": "دول إصدار الرخصة",
+        "driving-hint": "اختر كل الدول التي تسري فيها رخصة القيادة الخاصة بك.",
+        "search-countries": "ابحث واختر الدول"
+      },
+      "career": {
+        "job-search-status": "حالة البحث عن عمل",
+        "job-search-status-hint": "تظهر لأصحاب العمل كشارة على ملفك الشخصي",
+        "statuses": {
+          "open-to-work": "متاح للعمل",
+          "actively-looking": "أبحث بنشاط",
+          "open-to-opportunities": "منفتح على الفرص"
+        }
+      },
+      "professional": {
+        "privileges-hint": "أضف كل امتياز على حدة — كل إدخال يُستخدم ككلمة مفتاحية مستقلة في مطابقة الوظائف بالذكاء الاصطناعي"
+      },
+      "options": {
+        "valid": "سارية",
+        "expired": "منتهية",
+        "pending": "قيد المراجعة",
+        "verified": "تم التحقق",
+        "not-verified": "لم يتم التحقق",
+        "basic": "مبتدئ",
+        "intermediate": "متوسط",
+        "advanced": "متقدم",
+        "fluent": "طليق",
+        "native": "لغة أم",
+        "male": "ذكر",
+        "female": "أنثى",
+        "single": "أعزب",
+        "married": "متزوج",
+        "divorced": "مطلق",
+        "widowed": "أرمل",
+        "citizen": "مواطن",
+        "resident": "مقيم",
+        "work-visa": "تأشيرة عمل",
+        "visit-visa": "تأشيرة زيارة",
+        "no-visa": "بدون تأشيرة",
+        "required": "مطلوبة",
+        "not-required": "غير مطلوبة"
       }
     }
   },
@@ -911,16 +1069,11 @@
   },
   "companyPage": {
     "talent-database": {
-      "add": "إضافة",
-      "remove-keyword": "إزالة الكلمة المفتاحية {keyword}",
       "title": "قاعدة المواهب",
       "choose": "اختر",
       "search": "بحث",
       "search-options": "ابحث في الخيارات...",
       "search-countries": "ابحث واختر الدول",
-      "yes": "نعم",
-      "no": "لا",
-      "clear": "مسح",
       "reset": "إعادة ضبط الفلاتر",
       "current-title-placeholder": "مثال: ممرض مسجل",
       "previous-title-placeholder": "مثال: ممرض طوارئ",
