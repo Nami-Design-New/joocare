@@ -5,6 +5,18 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-dashboard-primary: var(--dashboard-primary);
+  --color-dashboard-stat-bg: var(--dashboard-stat-bg);
+  --color-dashboard-teal: var(--dashboard-teal);
+  --color-dashboard-heading: var(--dashboard-heading);
+  --color-dashboard-delta: var(--dashboard-delta);
+  --color-dashboard-delta-bg: var(--dashboard-delta-bg);
+  --color-dashboard-danger: var(--dashboard-danger);
+  --color-dashboard-danger-bg: var(--dashboard-danger-bg);
+  --color-dashboard-coming: var(--dashboard-coming);
+  --color-dashboard-category-blue: var(--dashboard-category-blue);
+  --color-dashboard-category-green: var(--dashboard-category-green);
+  --color-dashboard-category-orange: var(--dashboard-category-orange);
   --color-chat-primary: var(--chat-primary);
   --color-chat-list: var(--chat-list);
   --color-chat-surface: var(--chat-surface);
@@ -107,6 +119,19 @@
    LIGHT MODE — Joo Care Brand Theme
 ════════════════════════════════════════ */
 :root {
+  --dashboard-primary: var(--assessment-primary);
+  --dashboard-activity-fill: #09760a;
+  --dashboard-stat-bg: #f7faf7;
+  --dashboard-teal: #006565;
+  --dashboard-heading: #3e4949;
+  --dashboard-delta: #0d9488;
+  --dashboard-delta-bg: #f0fdfa;
+  --dashboard-danger: #93000a;
+  --dashboard-danger-bg: #ffdad6;
+  --dashboard-coming: #b54808;
+  --dashboard-category-blue: #427ab3;
+  --dashboard-category-green: #8dae69;
+  --dashboard-category-orange: #e68c2b;
   --chat-primary: #076914;
   --chat-list: #f3f4f5;
   --chat-surface: #f3f4f6;

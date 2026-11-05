@@ -13,6 +13,9 @@ export default function CompanyWorkspaceLayout({
 }: CompanyWorkspaceLayoutProps) {
   const pathname = usePathname();
   const isChat = pathname === '/company/chat';
+  const isDashboard =
+    pathname === '/company/dashboard' ||
+    pathname.startsWith('/company/dashboard/');
   return (
     <>
       <Header />
@@ -22,7 +25,7 @@ export default function CompanyWorkspaceLayout({
         <aside
           className={cn(
             'col-span-12 lg:col-span-3 lg:block xl:col-span-2',
-            isChat && 'hidden',
+            (isChat || isDashboard) && 'hidden',
           )}
         >
           <CompanySidebar />

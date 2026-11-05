@@ -1,78 +1,100 @@
-"use client";
+'use client';
 
-import TextSkeleton from "@/features/company-profile/components/TextSkeleton";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
-const COLORS = ["#4F7CAC", "#7BAE7F", "#F4A259", "#FF8042", "#A28EFF"];
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { useLocale } from 'next-intl';
+import { DASHBOARD_CATEGORY_COLORS } from '../constants/dashboard-preview';
+import type { DashboardCategory } from '../index.type';
 
-const renderInsideLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-}: {
+type ChartLabelProps = {
   cx: number;
   cy: number;
   midAngle: number;
   innerRadius: number;
   outerRadius: number;
   percent: number;
-}) => {
-  const RADIAN = Math.PI / 180;
-
-  // Position label in the middle of the donut ring
-  const radius = innerRadius + (outerRadius - innerRadius) / 2;
-
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      textAnchor="middle"
-      dominantBaseline="central"
-      className="fill-white text-xs font-semibold"
-    >
-      {(percent * 100).toFixed(0)}%
-    </text>
-  );
 };
 
-export function ChartPieDonut({ isPending, companyDashboardData }: { isPending?: boolean, companyDashboardData: any }) {
+function renderChartLabel(
+  { cx, cy, midAngle, innerRadius, outerRadius, percent }: ChartLabelProps,
+  locale: string,
+) {
+  const radius = innerRadius + (outerRadius - innerRadius) / 2;
+  const radian = Math.PI / 180;
   return (
-    <div className="flex max-sm:flex-col gap-3 items-center justify-between pb-0">
-      <div className="aspect-square w-full max-w-[160px]">
+    <text
+      x={cx + radius * Math.cos(-midAngle * radian)}
+      y={cy + radius * Math.sin(-midAngle * radian)}
+      textAnchor="middle"
+      dominantBaseline="central"
+      className="fill-primary-foreground text-xs font-semibold"
+    >
+      {new Intl.NumberFormat(locale, {
+        style: 'percent',
+        maximumFractionDigits: 0,
+      }).format(percent)}
+    </text>
+  );
+}
+
+export function ChartPieDonut({
+  categories,
+}: {
+  categories: DashboardCategory[];
+}) {
+  const locale = useLocale();
+  const chartCategories = categories.map((category, index) => ({
+    ...category,
+    color: DASHBOARD_CATEGORY_COLORS[index % DASHBOARD_CATEGORY_COLORS.length],
+  }));
+  const chartOrder = [
+    ...chartCategories.slice(0, 1),
+    ...chartCategories.slice(1).reverse(),
+  ];
+  return (
+    <div className="flex min-h-71.5 flex-col items-center gap-6 pt-10">
+      <div className="size-41.25 shrink-0" dir="ltr">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
-              data={companyDashboardData?.categories_percentage}
+              data={chartOrder}
+              nameKey="category_title"
               dataKey="percentage"
               cx="50%"
               cy="50%"
               innerRadius={50}
-              outerRadius={75}
-              label={renderInsideLabel}
+              outerRadius={82}
+              startAngle={90}
+              endAngle={-270}
+              label={(props) => renderChartLabel(props, locale)}
               labelLine={false}
+              isAnimationActive={false}
+              stroke="var(--card)"
+              strokeWidth={1}
             >
-              {companyDashboardData?.categories_percentage.map(
-                (_: any, index: number) => (
-                  <Cell
-                    key={index}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                )
-              )}
+              {chartOrder.map((category) => (
+                <Cell key={category.category_title} fill={category.color} />
+              ))}
             </Pie>
+            <Tooltip formatter={(value) => String(value) + '%'} />
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="space-y-3">
-        {companyDashboardData?.categories_percentage.map((item: any, index: number) => (
-          <div key={index} className="flex items-center gap-2">
-            <span className="h-3 w-3" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-            {isPending ? <TextSkeleton /> : <span className="text-muted-foreground text-sm">{item.category_title}</span>}
+      <div className="flex w-full flex-wrap items-center justify-center gap-x-2.5 gap-y-2">
+        {categories.map((category, index) => (
+          <div
+            key={category.category_title}
+            className="flex items-center gap-1.5 text-sm leading-4.5 font-semibold"
+          >
+            <span
+              className="size-4 shrink-0"
+              style={{
+                backgroundColor:
+                  DASHBOARD_CATEGORY_COLORS[
+                    index % DASHBOARD_CATEGORY_COLORS.length
+                  ],
+              }}
+            />
+            <bdi>{category.category_title}</bdi>
           </div>
         ))}
       </div>
