@@ -305,8 +305,7 @@
       "questions": {
         "description": "Answer the employer's {count, plural, one {question} other {# questions}} below, then continue to upload your CV",
         "optional": "(Optional)",
-        "required-error": "This answer is required",
-        "text-placeholder": "Type your answer"
+        "required-error": "This answer is required"
       },
       "cv": {
         "title": "Choose the CV to send with your application",
@@ -1327,7 +1326,7 @@
         "rules-title": "Important Assessment Rules",
         "rules": {
           "time-limit": "<strong>{hours}-Hour Limit</strong>: You have {hours} hours from the time this link was emailed to complete all questions.",
-          "questions": "<strong>{count, plural, one {# Question} other {# Questions}}</strong>: All questions are single-select.",
+          "questions": "<strong>{count, plural, one {# Question} other {# Questions}}</strong>: A mix of yes/no, single-select and multi-select questions.",
           "no-going-back": "<strong>No Going Back</strong>: Once you click \"Next\", your answer is locked. Previous questions cannot be re-visited.",
           "continuous-session": "<strong>Continuous Session</strong>: Recommended to complete in one setting, but progress is saved if you need to resume.",
           "passing-criteria": "<strong>Passing Criteria</strong>: Achieve <highlight>{score}%</highlight> or higher to pass to the interview round."

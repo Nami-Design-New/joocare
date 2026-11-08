@@ -10,9 +10,12 @@ export type CandidateAssessmentOption = {
   text: string;
 };
 
-// Assessments only use single-select questions.
+// Assessments only use these 3 question types; no short-answer / text-input type.
+export type CandidateAssessmentQuestionType = 'yes-no' | 'single' | 'multi';
+
 export type CandidateAssessmentQuestion = {
   id: string;
+  type: CandidateAssessmentQuestionType;
   text: string;
   options: CandidateAssessmentOption[];
 };
@@ -39,5 +42,5 @@ export type CandidateAssessment = {
   submission?: CandidateAssessmentSubmission;
 };
 
-/** Picked option id per question id. */
-export type CandidateAssessmentAnswers = Record<string, string>;
+/** Picked option ids per question id (single/yes-no hold at most one). */
+export type CandidateAssessmentAnswers = Record<string, string[]>;

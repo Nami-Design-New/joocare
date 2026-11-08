@@ -45,14 +45,22 @@ export function useCandidateAssessment(assessment: CandidateAssessment) {
 
   const start = () => setStartedAt(Date.now());
 
-  const selectAnswer = (optionId: string) => {
+  const toggleOption = (optionId: string) => {
     if (!question) return;
-    setAnswers((current) => ({ ...current, [question.id]: optionId }));
+    setAnswers((current) => {
+      const picked = current[question.id] ?? [];
+      if (question.type !== 'multi')
+        return { ...current, [question.id]: [optionId] };
+      const next = picked.includes(optionId)
+        ? picked.filter((id) => id !== optionId)
+        : [...picked, optionId];
+      return { ...current, [question.id]: next };
+    });
   };
 
   // "No going back": the answer is locked once the candidate moves on.
   const next = () => {
-    if (!question || !answers[question.id]) return;
+    if (!question || !answers[question.id]?.length) return;
     if (isLastQuestion) submit();
     else setIndex((current) => current + 1);
   };
@@ -67,13 +75,13 @@ export function useCandidateAssessment(assessment: CandidateAssessment) {
     progress: total
       ? Math.round((Object.keys(answers).length / total) * 100)
       : 0,
-    selectedOptionId: question ? answers[question.id] : undefined,
+    selectedOptionIds: (question ? answers[question.id] : undefined) ?? [],
     isLastQuestion,
     remainingSeconds,
     isSubmittedModalOpen,
     setSubmittedModalOpen,
     start,
-    selectAnswer,
+    toggleOption,
     next,
   };
 }

@@ -20,6 +20,7 @@ const PREVIEW_ASSESSMENT: Omit<
   questions: [
     {
       id: 'q-1',
+      type: 'single',
       text: 'Which clinical metric is most critical when verifying automated triage algorithms for acute chest pain?',
       options: [
         {
@@ -42,6 +43,7 @@ const PREVIEW_ASSESSMENT: Omit<
     },
     {
       id: 'q-2',
+      type: 'single',
       text: 'What is the first nursing action for a patient with suspected sepsis and low blood pressure?',
       options: [
         {
@@ -55,16 +57,16 @@ const PREVIEW_ASSESSMENT: Omit<
     },
     {
       id: 'q-3',
-      text: 'Which finding best confirms correct placement of a nasogastric tube before feeding?',
+      type: 'yes-no',
+      text: 'True or False: A nasogastric tube position should be confirmed with a chest X-ray before starting feeds.',
       options: [
-        { id: 'a', text: 'Chest X-ray confirmation of the tube position' },
-        { id: 'b', text: 'The patient does not cough during insertion' },
-        { id: 'c', text: 'Air is heard over the abdomen only' },
-        { id: 'd', text: 'The tube is taped securely to the nose' },
+        { id: 'true', text: 'True' },
+        { id: 'false', text: 'False' },
       ],
     },
     {
       id: 'q-4',
+      type: 'single',
       text: 'A patient on heparin infusion has an aPTT far above the target range. What should the nurse do first?',
       options: [
         {
@@ -78,6 +80,18 @@ const PREVIEW_ASSESSMENT: Omit<
     },
     {
       id: 'q-5',
+      type: 'multi',
+      text: 'Which of the following are classic signs of digoxin toxicity? (Select all that apply)',
+      options: [
+        { id: 'a', text: 'Nausea and vomiting' },
+        { id: 'b', text: 'Visual disturbances (yellow-green halos)' },
+        { id: 'c', text: 'Bradycardia' },
+        { id: 'd', text: 'Hypertension' },
+      ],
+    },
+    {
+      id: 'q-6',
+      type: 'single',
       text: 'What is the primary diagnostic indicator of chronic heart failure in a routine echocardiogram?',
       options: [
         { id: 'a', text: 'Reduced left ventricular ejection fraction (LVEF)' },

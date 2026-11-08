@@ -13,7 +13,7 @@ type CandidateAssessmentPageProps = {
   assessment: CandidateAssessment;
 };
 
-// Candidate's assessment page (72h link validity, time limit, single-select questions).
+// Candidate's assessment page (72h link validity, time limit, yes/no, single and multi-select questions).
 export default function CandidateAssessmentPage({
   assessment,
 }: CandidateAssessmentPageProps) {
@@ -49,9 +49,9 @@ export default function CandidateAssessmentPage({
         total={attempt.total}
         progress={attempt.progress}
         remainingSeconds={attempt.remainingSeconds}
-        selectedOptionId={attempt.selectedOptionId}
+        selectedOptionIds={attempt.selectedOptionIds}
         isLastQuestion={attempt.isLastQuestion}
-        onSelect={attempt.selectAnswer}
+        onToggleOption={attempt.toggleOption}
         onNext={attempt.next}
       />
     );

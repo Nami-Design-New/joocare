@@ -1,19 +1,15 @@
 import type { ScreeningQuestion } from './job-steps.types';
 
-// Screening question as the candidate answers it (the employer's correct answers aren't needed here).
+// Screening question as the candidate answers it (the employer's correct answers aren't needed
+// here). Only yes/no, single-select and multi-select exist — no short-answer type.
 export type ApplyScreeningQuestion = Pick<
   ScreeningQuestion,
-  'id' | 'question' | 'options' | 'required'
-> & {
-  type: ScreeningQuestion['type'] | 'text';
-  placeholder?: string;
-};
+  'id' | 'question' | 'type' | 'options' | 'required'
+>;
 
-// Choice questions fill `selected` (option ids); short-answer questions fill `text`.
 export type ScreeningAnswer = {
   questionId: string;
   selected: string[];
-  text: string;
 };
 
 export type ScreeningAnswersFormValues = {

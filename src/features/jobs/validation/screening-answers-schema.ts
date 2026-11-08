@@ -8,10 +8,9 @@ type ScreeningAnswersMessages = {
 const answerSchema = z.object({
   questionId: z.string(),
   selected: z.array(z.string()),
-  text: z.string(),
 });
 
-// Required questions need a picked option (or text for short answers).
+// Required questions need at least one picked option.
 export const createScreeningAnswersSchema = (
   questions: ApplyScreeningQuestion[],
   messages: ScreeningAnswersMessages,
@@ -21,15 +20,10 @@ export const createScreeningAnswersSchema = (
     .superRefine(({ answers }, ctx) => {
       questions.forEach((question, index) => {
         if (!question.required) return;
-        const answer = answers[index];
-        const isText = question.type === 'text';
-        const isEmpty = isText
-          ? !answer?.text.trim()
-          : !answer?.selected.length;
-        if (!isEmpty) return;
+        if (answers[index]?.selected.length) return;
         ctx.addIssue({
           code: 'custom',
-          path: ['answers', index, isText ? 'text' : 'selected'],
+          path: ['answers', index, 'selected'],
           message: messages.required,
         });
       });

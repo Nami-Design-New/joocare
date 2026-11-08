@@ -2,7 +2,6 @@
 
 import { useTranslations } from 'next-intl';
 import { type Control, Controller } from 'react-hook-form';
-import { InputField } from '@/shared/components/InputField';
 import ChoiceOptionCard from '@/shared/components/questions/ChoiceOptionCard';
 import QuestionHeading from '@/shared/components/questions/QuestionHeading';
 import { cn } from '@/shared/lib/utils';
@@ -17,7 +16,7 @@ type ScreeningQuestionFieldProps = {
   control: Control<ScreeningAnswersFormValues>;
 };
 
-// One employer question: yes / no, single choice, multiple choice or short answer.
+// One employer question: yes/no, single choice or multiple choice.
 export default function ScreeningQuestionField({
   question,
   index,
@@ -26,36 +25,6 @@ export default function ScreeningQuestionField({
   const t = useTranslations('jobDetailsPage.apply.questions');
   const headingId = `screening-question-${question.id}`;
   const errorId = `${headingId}-error`;
-  const heading = (
-    <QuestionHeading
-      id={headingId}
-      badge={String(index + 1)}
-      title={question.question}
-      note={question.required ? undefined : t('optional')}
-    />
-  );
-
-  if (question.type === 'text') {
-    return (
-      <Controller
-        control={control}
-        name={`answers.${index}.text`}
-        render={({ field, fieldState }) => (
-          <div className="flex flex-col gap-3">
-            {heading}
-            <InputField
-              {...field}
-              id={`${headingId}-input`}
-              aria-labelledby={headingId}
-              placeholder={question.placeholder ?? t('text-placeholder')}
-              error={fieldState.error?.message}
-            />
-          </div>
-        )}
-      />
-    );
-  }
-
   const isMulti = question.type === 'multi';
 
   return (
@@ -78,7 +47,12 @@ export default function ScreeningQuestionField({
             aria-describedby={fieldState.error ? errorId : undefined}
             className="flex flex-col gap-3"
           >
-            {heading}
+            <QuestionHeading
+              id={headingId}
+              badge={String(index + 1)}
+              title={question.question}
+              note={question.required ? undefined : t('optional')}
+            />
             <div
               className={cn(
                 'grid gap-3',

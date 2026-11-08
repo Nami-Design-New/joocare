@@ -25,7 +25,6 @@ export function useScreeningAnswersForm(questions: ApplyScreeningQuestion[]) {
       answers: questions.map((question) => ({
         questionId: question.id,
         selected: [],
-        text: '',
       })),
     },
     reValidateMode: 'onChange',
