@@ -57,7 +57,12 @@
     "selected-count": "{count} محدد",
     "yes": "نعم",
     "no": "لا",
-    "clear": "مسح"
+    "clear": "مسح",
+    "cv-file": {
+      "download": "تحميل",
+      "pdf-icon-alt": "أيقونة PDF",
+      "no-cv": "لا توجد سيرة ذاتية متاحة."
+    }
   },
   "header": {
     "home": "الرئيسية",
@@ -581,7 +586,8 @@
       "cv-match-ats": "مطابقة السيرة الذاتية مع ATS",
       "build-cv": "أنشئ سيرتك الذاتية الاحترافية",
       "ai-job-match": "مطابقة الوظائف بالذكاء الاصطناعي",
-      "profile-insights": "عرض إحصاءات الملف الشخصي"
+      "profile-insights": "عرض إحصاءات الملف الشخصي",
+      "create-cv": "إنشاء السيرة الذاتية"
     },
     "settings": {
       "basic-info": "المعلومات الأساسية",
@@ -994,6 +1000,228 @@
         "description": "سيتم حذف كل المعلومات التي أدخلتها في مسودة سيرتك الذاتية نهائيًا. لا يمكن التراجع عن هذا الإجراء.",
         "confirm": "حذف المسودة",
         "cancel": "إلغاء"
+      },
+      "common": {
+        "choose": "اختر",
+        "optional": "(اختياري)"
+      },
+      "errors": {
+        "required": "هذا الحقل مطلوب",
+        "invalid-email": "أدخل بريدًا إلكترونيًا صحيحًا",
+        "invalid-url": "أدخل رابطًا صحيحًا يبدأ بـ https://"
+      },
+      "steps": {
+        "personal": "البيانات الشخصية",
+        "contact": "بيانات التواصل",
+        "job-profile": "الملف المهني",
+        "summary": "الملخص المهني",
+        "education": "التعليم",
+        "certificates": "الشهادات",
+        "experience": "الخبرة العملية",
+        "skills": "المهارات",
+        "research": "الأبحاث والمنشورات",
+        "conferences": "التطوير المهني والمؤتمرات"
+      },
+      "wizard": {
+        "steps-label": "خطوات السيرة الذاتية",
+        "save-later": "حفظ والمتابعة لاحقًا",
+        "delete-draft": "حذف المسودة",
+        "prev": "السابق",
+        "next": "التالي",
+        "preview-cv": "معاينة السيرة الذاتية",
+        "add": "إضافة"
+      },
+      "item": {
+        "collapse": "طيّ {title}",
+        "expand": "توسيع {title}",
+        "remove": "حذف {title}"
+      },
+      "personal": {
+        "title": "البيانات الشخصية",
+        "description": "أكمل بياناتك الشخصية لإنشاء سيرة ذاتية احترافية وعرض ملفك بشكل فعّال أمام أصحاب العمل.",
+        "photo": "الصورة الشخصية",
+        "optional": "(اختياري)",
+        "full-name": "الاسم الكامل",
+        "full-name-placeholder": "مثال: أحمد علي",
+        "nationality": "الجنسية",
+        "year-of-birth": "سنة الميلاد",
+        "marital-status": "الحالة الاجتماعية",
+        "country": "الدولة",
+        "country-placeholder": "مثال: مصر",
+        "city": "المدينة",
+        "city-placeholder": "مثال: القاهرة"
+      },
+      "languages": {
+        "title": "إضافة لغة",
+        "description": "أبرز مهاراتك اللغوية ومستوى إتقانك لكل لغة.",
+        "language": "اللغة",
+        "proficiency": "مستوى الإتقان",
+        "add": "إضافة لغة",
+        "remove": "حذف اللغة"
+      },
+      "contact": {
+        "title": "بيانات التواصل",
+        "description": "تأكد من أن بيانات التواصل صحيحة ومحدّثة حتى يتمكن أصحاب العمل من التواصل معك بسهولة بخصوص الفرص المناسبة.",
+        "email": "البريد الإلكتروني",
+        "email-placeholder": "مثال: mail@mail.com",
+        "phone": "رقم الهاتف",
+        "linkedin": "رابط حساب LinkedIn",
+        "linkedin-placeholder": "مثال: https://www.linkedin.com"
+      },
+      "job-profile": {
+        "title": "الملف المهني",
+        "description": "حدّد تركيزك المهني باختيار مسماك الوظيفي الحالي ومجال خبرتك، ليظهر ملفك بدقة ويتوافق مع الفرص المناسبة.",
+        "job-title": "المسمى الوظيفي الحالي",
+        "job-title-placeholder": "مثال: أخصائي أشعة",
+        "years": "سنوات الخبرة",
+        "years-placeholder": "مثال: 12",
+        "specialty": "التخصص",
+        "specialty-placeholder": "مثال: أمراض القلب",
+        "subspecialty": "التخصص الدقيق",
+        "subspecialty-placeholder": "مثال: قسطرة القلب",
+        "license": "الترخيص المهني",
+        "license-description": "هل لديك ترخيص مهني ساري؟ (نعم / لا)",
+        "available": "متاح الآن",
+        "available-description": "هل يمكنك البدء فورًا؟ (نعم / لا)"
+      },
+      "summary": {
+        "title": "الملخص المهني",
+        "description": "لخّص خبراتك ومجالات تميّزك وأبرز إنجازاتك لتُظهر قيمتك المهنية وتتميّز عن غيرك من المرشحين.",
+        "label": "الملخص المهني",
+        "placeholder": "• مدير تسويق بخبرة تزيد عن 6 سنوات في مساعدة العلامات التجارية على النمو من خلال استراتيجيات ذكية وحملات مبتكرة.",
+        "suggestion-label": "ملخص مقترح",
+        "refresh": "تحديث",
+        "apply": "تطبيق"
+      },
+      "education": {
+        "title": "التعليم",
+        "description": "اعرض مؤهلاتك الأكاديمية وخلفيتك التعليمية لتوضيح المعرفة والشهادات التي تدعم خبرتك المهنية.",
+        "item": "التعليم {number}",
+        "degree": "الدرجة العلمية",
+        "degree-placeholder": "مثال: بكالوريوس الطب والجراحة",
+        "university": "الجامعة",
+        "university-placeholder": "مثال: جامعة عين شمس - كلية الطب",
+        "country": "الدولة",
+        "country-placeholder": "مثال: مصر",
+        "start-date": "تاريخ البداية",
+        "end-date": "تاريخ النهاية",
+        "add": "إضافة تعليم",
+        "add-title": "إضافة تعليم"
+      },
+      "certificates": {
+        "title": "الشهادات",
+        "description": "أبرز الشهادات المهنية والبرامج التدريبية التي تُظهر خبرتك ومعرفتك المتخصصة والتزامك بالتطوير المهني المستمر.",
+        "item": "الشهادة {number}",
+        "name": "اسم الشهادة",
+        "name-placeholder": "مثال: دبلوم مكافحة العدوى",
+        "organization": "الجهة المانحة",
+        "organization-placeholder": "مثال: جمعية القلب الأمريكية",
+        "start-date": "تاريخ البداية",
+        "end-date": "تاريخ النهاية",
+        "add": "إضافة شهادة",
+        "add-title": "إضافة شهادات"
+      },
+      "experience": {
+        "title": "الخبرة العملية",
+        "description": "أبرز خبرتك المهنية ومسؤولياتك الرئيسية وإنجازاتك لتوضيح خبرتك وتطورك الوظيفي وأثرك في الأدوار السابقة.",
+        "fresh-graduate": "حديث التخرج",
+        "fresh-graduate-description": "أنا حديث التخرج وليس لدي خبرة عملية مهنية.",
+        "profile-label": "الملف المهني ونقاط القوة",
+        "item": "الخبرة {number}",
+        "job-title": "المسمى الوظيفي",
+        "job-title-placeholder": "اختر المسمى الوظيفي",
+        "other-job-title": "حدّد مسماك الوظيفي",
+        "other-job-title-placeholder": "مثال: أخصائي علاج تنفسي",
+        "organization": "اسم المنشأة / المستشفى",
+        "organization-placeholder": "مثال: رعاية صحية",
+        "employment-type": "نوع التوظيف",
+        "employment-type-placeholder": "اختر نوع التوظيف",
+        "start-date": "تاريخ البداية",
+        "end-date": "تاريخ النهاية",
+        "currently-working": "أعمل هنا حاليًا",
+        "responsibilities": "المسؤوليات",
+        "responsibilities-placeholder": "صف مسؤولياتك",
+        "add-responsibility": "إضافة مسؤولية",
+        "remove-responsibility": "حذف المسؤولية",
+        "add": "إضافة خبرة",
+        "add-title": "إضافة خبرة"
+      },
+      "skills": {
+        "title": "المهارات",
+        "description": "اعرض المهارات التي تمثّل قدراتك المهنية. تحديث مهاراتك يساعد أصحاب العمل على التعرّف على خبرتك وترشيحك للفرص المناسبة.",
+        "recommended": "مهارات مقترحة",
+        "add-skill": "إضافة {skill}",
+        "show-more": "عرض المزيد",
+        "show-less": "عرض أقل",
+        "selected": "المهارات المختارة",
+        "add-placeholder": "أضف مهارة أخرى",
+        "add": "إضافة مهارة",
+        "remove-skill": "حذف {skill}"
+      },
+      "research": {
+        "title": "الأبحاث والمنشورات",
+        "description": "أضف أبحاثك ومنشوراتك لإبراز إسهاماتك الأكاديمية وخبرتك السريرية.",
+        "toggle": "الأبحاث والمنشورات",
+        "toggle-description": "هل لديك أبحاث أو منشورات؟ (نعم / لا)",
+        "subject": "الموضوع (العنوان)",
+        "subject-placeholder": "مثال: أثر التدخل المبكر في الأمراض المزمنة",
+        "link": "الرابط",
+        "link-placeholder": "مثال: https://journal.com/article",
+        "country": "الدولة",
+        "country-placeholder": "مثال: الإمارات",
+        "year": "السنة",
+        "year-placeholder": "مثال: 2021",
+        "add": "إضافة منشور آخر",
+        "remove": "حذف المنشور"
+      },
+      "conferences": {
+        "title": "التطوير المهني والمؤتمرات",
+        "description": "أضف المؤتمرات وبرامج التطوير المهني المستمر (CPD) التي حضرتها.",
+        "toggle": "التطوير المهني والمؤتمرات",
+        "toggle-description": "هل لديك برامج تطوير مهني أو مؤتمرات؟ (نعم / لا)",
+        "name": "اسم المؤتمر",
+        "name-placeholder": "مثال: مؤتمر الصحة العربي",
+        "location": "المكان",
+        "location-placeholder": "مثال: دبي، الإمارات",
+        "date": "التاريخ",
+        "add": "إضافة مؤتمر آخر",
+        "remove": "حذف المؤتمر"
+      },
+      "saved-modal": {
+        "title": "تم حفظ سيرتك الذاتية بنجاح",
+        "description": "يمكنك متابعة تعديلها في أي وقت من لوحة التحكم."
+      },
+      "view": {
+        "title": "عرض السيرة الذاتية",
+        "close": "إغلاق",
+        "download": "تحميل السيرة الذاتية",
+        "edit": "تعديل",
+        "apply": "تقديم"
+      },
+      "document": {
+        "present": "حتى الآن",
+        "fresh-graduate": "حديث التخرج",
+        "professional-profile": "الملف المهني",
+        "professional-strengths": "نقاط القوة المهنية",
+        "years-of-experience": "خبرة {value}",
+        "specialty": "التخصص: {value}",
+        "subspecialty": "التخصص الدقيق: {value}",
+        "licensed": "ترخيص مهني",
+        "available-now": "متاح الآن",
+        "professional-summary": "الملخص المهني",
+        "skills": "التخصصات والمهارات السريرية",
+        "experience": "الخبرة المهنية",
+        "publications": "الأبحاث والمنشورات",
+        "conferences": "التطوير المهني والمؤتمرات",
+        "highlights": "أبرز النقاط",
+        "certifications": "الشهادات والتدريب",
+        "education": "التعليم",
+        "languages": "اللغات",
+        "additional-info": "معلومات إضافية",
+        "nationality": "الجنسية",
+        "year-of-birth": "سنة الميلاد",
+        "marital-status": "الحالة الاجتماعية",
+        "open-link": "فتح {title}"
       }
     }
   },
@@ -1456,25 +1684,6 @@
       "candidate-table-title": "مرشحو المشروع",
       "download-cv": "تحميل السيرة الذاتية",
       "view-cv": "عرض السيرة الذاتية",
-      "cv": {
-        "title": "عرض السيرة الذاتية",
-        "close": "إغلاق",
-        "download": "تحميل",
-        "professional-summary": "الملخص المهني",
-        "skills": "التخصصات والمهارات السريرية",
-        "experience": "الخبرة المهنية",
-        "publications": "الأبحاث والمنشورات",
-        "conferences": "التطوير المهني والمؤتمرات",
-        "highlights": "أبرز النقاط",
-        "certifications": "الشهادات والتدريب",
-        "education": "التعليم",
-        "languages": "اللغات",
-        "additional-info": "معلومات إضافية",
-        "nationality": "الجنسية",
-        "year-of-birth": "سنة الميلاد",
-        "marital-status": "الحالة الاجتماعية",
-        "open-link": "فتح {title}"
-      },
       "candidate-profile": {
         "profile-image": "صورة {name} الشخصية",
         "open-to-work": "متاح للعمل",
@@ -2265,10 +2474,8 @@
         "downloading": "جارٍ التحميل..."
       },
       "cv-modal": {
-        "title": "عرض السيرة الذاتية",
-        "no-cv": "لا توجد سيرة ذاتية متاحة."
+        "title": "عرض السيرة الذاتية"
       },
-      "pdf-icon-alt": "أيقونة PDF",
       "toasts": {
         "download-cv-failed": "فشل تحميل السيرة الذاتية"
       },

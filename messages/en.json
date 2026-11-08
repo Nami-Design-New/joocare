@@ -57,7 +57,12 @@
     "selected-count": "{count} selected",
     "yes": "Yes",
     "no": "No",
-    "clear": "Clear"
+    "clear": "Clear",
+    "cv-file": {
+      "download": "Download",
+      "pdf-icon-alt": "PDF icon",
+      "no-cv": "No CV available."
+    }
   },
   "header": {
     "home": "Home",
@@ -581,7 +586,8 @@
       "cv-match-ats": "CV match with ATS",
       "build-cv": "Build Your Professional CV",
       "ai-job-match": "AI Job Match",
-      "profile-insights": "View Profile Insights"
+      "profile-insights": "View Profile Insights",
+      "create-cv": "Create cv"
     },
     "settings": {
       "basic-info": "Basic Info",
@@ -994,6 +1000,228 @@
         "description": "All the information you entered in your CV draft will be permanently deleted. This action can’t be undone.",
         "confirm": "Delete draft",
         "cancel": "Cancel"
+      },
+      "common": {
+        "choose": "choose",
+        "optional": "(Optional)"
+      },
+      "errors": {
+        "required": "This field is required",
+        "invalid-email": "Enter a valid email address",
+        "invalid-url": "Enter a valid link starting with https://"
+      },
+      "steps": {
+        "personal": "Personal details",
+        "contact": "Contact Info",
+        "job-profile": "Job Profile",
+        "summary": "Professional summary",
+        "education": "Education",
+        "certificates": "Certificates",
+        "experience": "Work Experience",
+        "skills": "Skills",
+        "research": "Research & Publications",
+        "conferences": "CPD & Conferences"
+      },
+      "wizard": {
+        "steps-label": "CV steps",
+        "save-later": "Save & Continue Later",
+        "delete-draft": "Delete Draft",
+        "prev": "Prev",
+        "next": "Next",
+        "preview-cv": "Preview CV",
+        "add": "Add"
+      },
+      "item": {
+        "collapse": "Collapse {title}",
+        "expand": "Expand {title}",
+        "remove": "Remove {title}"
+      },
+      "personal": {
+        "title": "Personal details",
+        "description": "Complete your personal details to build a professional CV and present your profile effectively to potential employers.",
+        "photo": "Profile Photo",
+        "optional": "(Optional)",
+        "full-name": "Full Name",
+        "full-name-placeholder": "ex: Ahmed Ali",
+        "nationality": "Nationality",
+        "year-of-birth": "Year Of Birth",
+        "marital-status": "Marital status",
+        "country": "Country",
+        "country-placeholder": "ex: Egypt",
+        "city": "City",
+        "city-placeholder": "ex: Cairo"
+      },
+      "languages": {
+        "title": "Add Language",
+        "description": "Highlight your language skills and proficiency levels.",
+        "language": "Language",
+        "proficiency": "Proficiency Level",
+        "add": "Add language",
+        "remove": "Remove language"
+      },
+      "contact": {
+        "title": "Contact Information",
+        "description": "Ensure your contact information is accurate and up to date so potential employers can easily connect with you regarding relevant career opportunities.",
+        "email": "Email",
+        "email-placeholder": "ex: mail@mail.com",
+        "phone": "Phone Number",
+        "linkedin": "LinkedIn Profile URL",
+        "linkedin-placeholder": "ex: https://www.linkedin.com"
+      },
+      "job-profile": {
+        "title": "Job Profile",
+        "description": "Define your professional focus by selecting your current job title and area of expertise. This helps position your profile accurately and align it with relevant career opportunities.",
+        "job-title": "Current Job Title",
+        "job-title-placeholder": "ex: Radiographer",
+        "years": "Years of Experience",
+        "years-placeholder": "ex: 12",
+        "specialty": "Specialty",
+        "specialty-placeholder": "ex: Cardiology",
+        "subspecialty": "Subspecialty",
+        "subspecialty-placeholder": "ex: Interventional Cardiology",
+        "license": "Professional License",
+        "license-description": "Do you hold a valid professional license? (Yes / No)",
+        "available": "Available Now",
+        "available-description": "Are you available to start immediately? (Yes / No)"
+      },
+      "summary": {
+        "title": "Professional Summary",
+        "description": "Summarize your experience, expertise, and career highlights to showcase your professional value and differentiate yourself from other candidates.",
+        "label": "Professional Summary",
+        "placeholder": "• Marketing manager with 6+ years of experience helping brands grow through smart strategy and creative campaigns.",
+        "suggestion-label": "Suggested summary",
+        "refresh": "Refresh",
+        "apply": "Apply"
+      },
+      "education": {
+        "title": "Education",
+        "description": "Showcase your academic qualifications and educational background to demonstrate the knowledge and credentials that support your professional experience.",
+        "item": "Education {number}",
+        "degree": "Degree",
+        "degree-placeholder": "ex: Bachelor's degree, Medicine and Surgery",
+        "university": "University",
+        "university-placeholder": "ex: Ain Shams University - Faculty of Medicine",
+        "country": "Country",
+        "country-placeholder": "ex: Egypt",
+        "start-date": "Start date",
+        "end-date": "End date",
+        "add": "Add education",
+        "add-title": "Add Education"
+      },
+      "certificates": {
+        "title": "Certificate",
+        "description": "Highlight professional certifications and training programs that demonstrate your expertise, specialized knowledge, and commitment to continuous professional development.",
+        "item": "Certificate {number}",
+        "name": "Certificate Name",
+        "name-placeholder": "ex: Infection Control Diploma",
+        "organization": "Issuing Organization",
+        "organization-placeholder": "ex: American Heart Association",
+        "start-date": "Start date",
+        "end-date": "End date",
+        "add": "Add certificate",
+        "add-title": "Add Certificates"
+      },
+      "experience": {
+        "title": "Work Experience",
+        "description": "Highlight your professional experience, key responsibilities, and accomplishments to demonstrate your expertise, career progression, and impact across previous roles.",
+        "fresh-graduate": "Fresh Graduate",
+        "fresh-graduate-description": "I am a fresh graduate with no professional work experience.",
+        "profile-label": "Professional profile and strengths",
+        "item": "Experience {number}",
+        "job-title": "Job Title",
+        "job-title-placeholder": "Select job title",
+        "other-job-title": "Specify your job title",
+        "other-job-title-placeholder": "ex: Respiratory Therapist",
+        "organization": "Organization/Hospital Name",
+        "organization-placeholder": "ex: health care",
+        "employment-type": "Employment Type",
+        "employment-type-placeholder": "Select employment type",
+        "start-date": "Start Date",
+        "end-date": "End Date",
+        "currently-working": "I currently work here",
+        "responsibilities": "Responsibilities",
+        "responsibilities-placeholder": "Describe your responsibility",
+        "add-responsibility": "Add responsibility",
+        "remove-responsibility": "Remove responsibility",
+        "add": "Add Experience",
+        "add-title": "Add Experience"
+      },
+      "skills": {
+        "title": "Skills",
+        "description": "Showcase the skills that best represent your professional capabilities. Keeping your skills up to date helps employers identify your expertise and match you with relevant opportunities.",
+        "recommended": "Recommended Skills",
+        "add-skill": "Add {skill}",
+        "show-more": "show more",
+        "show-less": "show less",
+        "selected": "Selected Skills",
+        "add-placeholder": "Add another skill",
+        "add": "Add skill",
+        "remove-skill": "Remove {skill}"
+      },
+      "research": {
+        "title": "Research & Publications",
+        "description": "Add your research papers and publications to highlight your academic contributions and clinical expertise.",
+        "toggle": "Research & Publications",
+        "toggle-description": "Do you have research or publications? (Yes / No)",
+        "subject": "Subject (Title)",
+        "subject-placeholder": "ex: The Impact of Early Intervention in Chronic Disease",
+        "link": "Link",
+        "link-placeholder": "ex: https://journal.com/article",
+        "country": "Country",
+        "country-placeholder": "ex: UAE",
+        "year": "Year",
+        "year-placeholder": "ex: 2021",
+        "add": "Add another publication",
+        "remove": "Remove publication"
+      },
+      "conferences": {
+        "title": "CPD & Conferences",
+        "description": "Add the conferences and continuing professional development (CPD) programs you have attended.",
+        "toggle": "CPD & Conferences",
+        "toggle-description": "Do you have CPD or conferences? (Yes / No)",
+        "name": "Conference Name",
+        "name-placeholder": "ex: Arab Health Conference",
+        "location": "Location",
+        "location-placeholder": "ex: Dubai, UAE",
+        "date": "Date",
+        "add": "Add another conference",
+        "remove": "Remove conference"
+      },
+      "saved-modal": {
+        "title": "Your CV has been saved successfully",
+        "description": "You can continue editing it anytime from your dashboard."
+      },
+      "view": {
+        "title": "View CV",
+        "close": "Close",
+        "download": "Download CV",
+        "edit": "Edit",
+        "apply": "Apply"
+      },
+      "document": {
+        "present": "Present",
+        "fresh-graduate": "Fresh Graduate",
+        "professional-profile": "Professional Profile",
+        "professional-strengths": "Professional Strengths",
+        "years-of-experience": "{value} Experience",
+        "specialty": "Specialty: {value}",
+        "subspecialty": "Subspecialty: {value}",
+        "licensed": "Professional License",
+        "available-now": "Available Now",
+        "professional-summary": "Professional Summary",
+        "skills": "Clinical Specialties & Skills",
+        "experience": "Professional Experience",
+        "publications": "Research & Publications",
+        "conferences": "CPD & Conferences",
+        "highlights": "Key Highlights",
+        "certifications": "Certifications & Training",
+        "education": "Education",
+        "languages": "Languages",
+        "additional-info": "Additional Information",
+        "nationality": "Nationality",
+        "year-of-birth": "Year of Birth",
+        "marital-status": "Marital Status",
+        "open-link": "Open {title}"
       }
     }
   },
@@ -1456,25 +1684,6 @@
       "candidate-table-title": "Project candidates",
       "download-cv": "Download CV",
       "view-cv": "View CV",
-      "cv": {
-        "title": "View CV",
-        "close": "Close",
-        "download": "Download",
-        "professional-summary": "Professional Summary",
-        "skills": "Clinical Specialties & Skills",
-        "experience": "Professional Experience",
-        "publications": "Research & Publications",
-        "conferences": "CPD & Conferences",
-        "highlights": "Key Highlights",
-        "certifications": "Certifications & Training",
-        "education": "Education",
-        "languages": "Languages",
-        "additional-info": "Additional Information",
-        "nationality": "Nationality",
-        "year-of-birth": "Year of Birth",
-        "marital-status": "Marital Status",
-        "open-link": "Open {title}"
-      },
       "candidate-profile": {
         "profile-image": "{name} profile photo",
         "open-to-work": "Open to Work",
@@ -2265,10 +2474,8 @@
         "downloading": "Downloading..."
       },
       "cv-modal": {
-        "title": "View CV",
-        "no-cv": "No CV available."
+        "title": "View CV"
       },
-      "pdf-icon-alt": "PDF icon",
       "toasts": {
         "download-cv-failed": "Failed to download CV"
       },

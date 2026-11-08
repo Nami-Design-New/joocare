@@ -9,6 +9,7 @@ export const CANDIDATE_ROUTES = {
   qualifications: '/candidate/credentials/qualifications',
   cvMatchAts: '/candidate/cv-match-ats',
   buildCv: '/candidate/build-cv',
+  buildCvCreate: '/candidate/build-cv/create',
   aiJobMatch: '/candidate/ai-job-match',
   profileInsights: '/candidate/profile-insights',
   settings: '/candidate/settings',
@@ -26,6 +27,7 @@ export const CANDIDATE_PAGE_TITLES: readonly { path: string; label: string }[] =
       label: 'sidebar.professional-credentials',
     },
     { path: CANDIDATE_ROUTES.cvMatchAts, label: 'sidebar.cv-match-ats' },
+    { path: CANDIDATE_ROUTES.buildCvCreate, label: 'sidebar.create-cv' },
     { path: CANDIDATE_ROUTES.buildCv, label: 'sidebar.build-cv' },
     { path: CANDIDATE_ROUTES.aiJobMatch, label: 'sidebar.ai-job-match' },
     {
@@ -35,6 +37,11 @@ export const CANDIDATE_PAGE_TITLES: readonly { path: string; label: string }[] =
     { path: CANDIDATE_ROUTES.settings, label: 'sidebar.profile-settings' },
     { path: CANDIDATE_ROUTES.chat, label: 'chat.title' },
   ];
+
+// Candidate pages shown full width, without the sidebar.
+export const CANDIDATE_FULL_WIDTH_ROUTES: readonly string[] = [
+  CANDIDATE_ROUTES.buildCvCreate,
+];
 
 // Profile page tabs (keys under the root of messages).
 export const PROFILE_TAB_LINKS = [

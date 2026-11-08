@@ -2,6 +2,7 @@ import type {
   InterviewMethod,
   SharedReviewCandidate,
 } from '../types/shared-review.types';
+import { SAMPLE_CV_URL } from './project-preview-data';
 
 export const SHARED_REVIEW_PAGE_SIZE = 9;
 
@@ -14,7 +15,7 @@ export const INTERVIEW_METHODS = [
 
 const CANDIDATE_IMAGE = '/assets/company-projects/candidate-profile.png';
 
-const reviewCandidates: Omit<SharedReviewCandidate, 'id' | 'image'>[] = [
+const reviewCandidates: Omit<SharedReviewCandidate, 'id' | 'image' | 'cv'>[] = [
   {
     name: 'Amira Mansour',
     specialty: 'Emergency Physician',
@@ -115,6 +116,7 @@ export const sharedReviewCandidatesPreview: SharedReviewCandidate[] = [
     ...candidate,
     id: `review-candidate-${round}-${index + 1}`,
     image: CANDIDATE_IMAGE,
+    cv: SAMPLE_CV_URL,
     status: round === 1 ? candidate.status : 'Under review',
   })),
 );

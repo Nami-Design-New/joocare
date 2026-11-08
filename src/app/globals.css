@@ -40,6 +40,10 @@
   --color-cv-builder-draft: var(--cv-builder-draft);
   --color-cv-builder-danger: var(--cv-builder-danger);
   --color-cv-builder-tag-border: var(--cv-builder-tag-border);
+  --color-cv-builder-edit: var(--cv-builder-edit);
+  --color-cv-builder-skill-surface: var(--cv-builder-skill-surface);
+  --color-cv-builder-skill-text: var(--cv-builder-skill-text);
+  --color-cv-builder-skill-border: var(--cv-builder-skill-border);
   --color-question-card-surface: var(--question-card-surface);
   --color-question-card-border: var(--question-card-border);
   --color-question-card-title: var(--question-card-title);
@@ -199,6 +203,10 @@
   --cv-builder-draft: #b54708;
   --cv-builder-danger: #d92e21;
   --cv-builder-tag-border: #2e90a61a;
+  --cv-builder-edit: #0654c9;
+  --cv-builder-skill-surface: #eaf6ed;
+  --cv-builder-skill-text: #075e1b;
+  --cv-builder-skill-border: #087b22;
   /* Yes / no question card (mobility: relocation, driving license) */
   --question-card-surface: #fdfefe;
   --question-card-border: #edf0f5;

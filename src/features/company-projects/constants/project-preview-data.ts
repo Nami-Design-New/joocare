@@ -3,6 +3,9 @@ import type {
   ProjectCandidate,
 } from '../types/company-projects.types';
 
+// Sample CV file until the projects API returns each candidate's `cv`.
+export const SAMPLE_CV_URL = '/assets/company-projects/sample-cv.pdf';
+
 export const projectPreviewData: CompanyProject[] = [
   {
     id: 'emergency-hiring',
@@ -169,6 +172,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     nationality: 'Egyptian',
     email: 'Ahmed.abdulmajeed@mail.com',
     phone: '966 5462123331',
+    cv: SAMPLE_CV_URL,
     status: 'Rejected',
     assessment: 'Passed',
     score: 86,
@@ -179,6 +183,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     nationality: 'Egyptian',
     email: 'Ahmed.abdulmajeed@mail.com',
     phone: '966 5462123331',
+    cv: SAMPLE_CV_URL,
     status: 'Shortlist',
     assessment: 'Failed',
     score: 42,
@@ -196,6 +201,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     nationality: 'Egyptian',
     email: 'Ahmed.abdulmajeed@mail.com',
     phone: '966 5462123331',
+    cv: SAMPLE_CV_URL,
     status: 'Under review',
     assessment: 'Passed',
     score: 78,
@@ -206,6 +212,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     nationality: 'Egyptian',
     email: 'Ahmed.abdulmajeed@mail.com',
     phone: '966 5462123331',
+    cv: SAMPLE_CV_URL,
     status: 'Rejected',
     assessment: 'Not assigned',
   },
@@ -215,6 +222,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     nationality: 'Egyptian',
     email: 'mohamed.tarek@mail.com',
     phone: '966 5531047862',
+    cv: SAMPLE_CV_URL,
     status: 'Shortlist',
     assessment: 'Passed',
     score: 91,
@@ -232,6 +240,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     nationality: 'Egyptian',
     email: 'nourhan.mostafa@mail.com',
     phone: '966 5598712046',
+    cv: null,
     status: 'Under review',
     assessment: 'Passed',
     score: 78,

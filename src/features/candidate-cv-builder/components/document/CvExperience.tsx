@@ -1,5 +1,5 @@
 import { BriefcaseBusiness } from 'lucide-react';
-import type { CandidateCvExperience } from '../../types/candidate-cv.types';
+import type { CandidateCvExperience } from '../../types/cv-document.types';
 import CvSectionTitle from './CvSectionTitle';
 
 type CvExperienceProps = {
@@ -28,12 +28,16 @@ export default function CvExperience({
               <h4 className="text-foreground text-base font-semibold">
                 {experience.title}
               </h4>
-              <p className="text-secondary mt-1 text-sm leading-[22px]">
-                {experience.description}
-              </p>
-              <h5 className="text-foreground mt-4 text-sm font-semibold">
-                {experience.strengthsTitle}
-              </h5>
+              {experience.description && (
+                <p className="text-secondary mt-1 text-sm leading-[22px]">
+                  {experience.description}
+                </p>
+              )}
+              {experience.strengthsTitle && (
+                <h5 className="text-foreground mt-4 text-sm font-semibold">
+                  {experience.strengthsTitle}
+                </h5>
+              )}
               <ul className="mt-2 flex list-disc flex-col gap-1 ps-4">
                 {experience.strengths.map((strength) => (
                   <li

@@ -6,7 +6,7 @@ import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import CandidateProjectModals from '@/features/company-projects/components/Modals/CandidateProjectModals';
 import { useCandidateProjectActions } from '@/features/company-projects/hooks/useCandidateProjectActions';
-import CVModal from '@/features/jobs/components/CVModal';
+import CvFileModal from '@/shared/components/modals/CvFileModal';
 import SuccessModal from '@/shared/components/modals/SuccessModal';
 import { TALENT_PAGE_SIZE } from '../constants/talent-filters';
 import { useTalentDatabasePreview } from '../hooks/useTalentDatabasePreview';
@@ -90,7 +90,7 @@ export default function TalentDatabasePage() {
         />
       )}
       <CandidateProjectModals actions={projectActions} />
-      <CVModal
+      <CvFileModal
         open={!!cvCandidate}
         onOpenChange={(open) => {
           if (!open) setCvCandidate(null);

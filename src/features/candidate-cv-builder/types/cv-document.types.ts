@@ -54,6 +54,8 @@ export type CandidateCvDetail = {
 
 export type CandidateCv = {
   name: string;
+  /** Profile photo, shown in the candidate's own CV view. */
+  photo?: string;
   jobTitle: string;
   contact: CandidateCvContact;
   summary: string;

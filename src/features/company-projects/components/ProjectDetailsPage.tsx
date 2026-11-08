@@ -60,7 +60,6 @@ export default function ProjectDetailsPage({
         projectName={preview.project.name}
         onClose={preview.closeAction}
         onRemove={preview.removeCandidate}
-        onDownloadCv={preview.downloadCandidateCv}
       />
     </div>
   );

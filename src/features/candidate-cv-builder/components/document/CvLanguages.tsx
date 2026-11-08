@@ -1,6 +1,6 @@
 import { Globe } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
-import type { CandidateCvLanguage } from '../../types/candidate-cv.types';
+import type { CandidateCvLanguage } from '../../types/cv-document.types';
 import CvSectionTitle from './CvSectionTitle';
 
 const LANGUAGE_RATING_MAX = 5;

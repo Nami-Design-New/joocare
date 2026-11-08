@@ -1,17 +1,16 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { downloadFile } from '@/shared/lib/download-file';
 import {
   projectCandidatePreviewData,
   projectPreviewData,
 } from '../constants/project-preview-data';
-import { candidateCvFileUrl } from '../constants/candidate-cv-preview-data';
 import type {
   CandidateAction,
   ProjectCandidate,
 } from '../types/company-projects.types';
 import { getCandidateCvFileName } from '../utils/candidate-preview';
-import { downloadFile } from '../utils/download-file';
 
 const CANDIDATE_PAGE_SIZE = 4;
 
@@ -73,7 +72,8 @@ export function useProjectCandidatesPreview(projectId: string) {
   };
 
   const downloadCandidateCv = (candidate: ProjectCandidate) => {
-    downloadFile(candidateCvFileUrl, getCandidateCvFileName(candidate));
+    if (candidate.cv)
+      downloadFile(candidate.cv, getCandidateCvFileName(candidate));
   };
 
   const closeAction = () => setAction(null);

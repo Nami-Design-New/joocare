@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { candidateCvFileUrl } from '../constants/candidate-cv-preview-data';
+import { downloadFile } from '@/shared/lib/download-file';
 import { projectPreviewData } from '../constants/project-preview-data';
 import {
   ALL_STATUSES_VALUE,
@@ -16,7 +16,6 @@ import type {
   SharedReviewSummary,
 } from '../types/shared-review.types';
 import { getCandidateCvFileName } from '../utils/candidate-preview';
-import { downloadFile } from '../utils/download-file';
 
 export function useSharedProjectReview(projectId: string) {
   const project =
@@ -92,7 +91,8 @@ export function useSharedProjectReview(projectId: string) {
   };
 
   const downloadCandidateCv = (candidate: ProjectCandidate) => {
-    downloadFile(candidateCvFileUrl, getCandidateCvFileName(candidate));
+    if (candidate.cv)
+      downloadFile(candidate.cv, getCandidateCvFileName(candidate));
   };
 
   return {

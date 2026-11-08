@@ -1,5 +1,5 @@
 import { Award } from 'lucide-react';
-import type { CandidateCvCertification } from '../../types/candidate-cv.types';
+import type { CandidateCvCertification } from '../../types/cv-document.types';
 import CvCheckIcon from './CvCheckIcon';
 import CvSectionTitle from './CvSectionTitle';
 

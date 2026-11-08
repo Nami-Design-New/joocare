@@ -175,10 +175,12 @@ function CandidateActions({
   onDownloadCv: ProjectCandidatesTableProps['onDownloadCv'];
 }) {
   const t = useTranslations('companyPage.projects');
+  const hasCv = Boolean(candidate.cv);
   const actions = [
     {
       key: 'share',
       onClick: () => onAction({ type: 'share', candidateId: candidate.id }),
+      disabled: false,
       label: t('share-candidate'),
       icon: (
         <Image
@@ -193,6 +195,7 @@ function CandidateActions({
     {
       key: 'download-cv',
       onClick: () => onDownloadCv(candidate),
+      disabled: !hasCv,
       label: t('download-cv'),
       icon: (
         <Image
@@ -207,6 +210,7 @@ function CandidateActions({
     {
       key: 'view-cv',
       onClick: () => onAction({ type: 'view-cv', candidateId: candidate.id }),
+      disabled: !hasCv,
       label: t('view-cv'),
       icon: (
         <Image
@@ -221,6 +225,7 @@ function CandidateActions({
     {
       key: 'remove',
       onClick: () => onAction({ type: 'remove', candidateId: candidate.id }),
+      disabled: false,
       label: t('remove-candidate'),
       icon: (
         <Image
@@ -245,6 +250,7 @@ function CandidateActions({
           aria-label={action.label}
           title={action.label}
           onClick={action.onClick}
+          disabled={action.disabled}
           className={cn(
             'h-[30px] w-[45.25px] rounded-full border-0 px-0 py-0',
             action.key === 'view-cv' && 'border-secondary bg-card border',

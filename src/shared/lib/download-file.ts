@@ -1,3 +1,4 @@
+// Downloads a file URL under the given name (same-origin or CORS-enabled URLs).
 export function downloadFile(url: string, fileName: string) {
   const link = document.createElement('a');
   link.href = url;

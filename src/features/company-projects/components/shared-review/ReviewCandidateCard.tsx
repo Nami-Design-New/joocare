@@ -19,7 +19,7 @@ type ReviewCandidateCardProps = {
 };
 
 const CV_ACTION_CLASS =
-  'bg-muted text-foreground hover:bg-secondary/10 flex h-8 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-semibold transition-colors';
+  'bg-muted text-foreground hover:bg-secondary/10 flex h-8 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50';
 
 export default function ReviewCandidateCard({
   candidate,
@@ -80,6 +80,7 @@ export default function ReviewCandidateCard({
           <button
             type="button"
             onClick={() => onPreviewCv(candidate)}
+            disabled={!candidate.cv}
             className={CV_ACTION_CLASS}
           >
             <Eye aria-hidden="true" className="size-3.5" />
@@ -88,6 +89,7 @@ export default function ReviewCandidateCard({
           <button
             type="button"
             onClick={() => onDownloadCv(candidate)}
+            disabled={!candidate.cv}
             className={CV_ACTION_CLASS}
           >
             <Download aria-hidden="true" className="size-3.5" />

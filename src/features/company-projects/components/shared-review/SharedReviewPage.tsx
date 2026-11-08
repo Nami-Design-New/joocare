@@ -1,7 +1,7 @@
 'use client';
 
+import CvFileModal from '@/shared/components/modals/CvFileModal';
 import { useSharedProjectReview } from '../../hooks/useSharedProjectReview';
-import CandidateCvModal from '../Modals/CandidateCvModal';
 import DecisionsSubmittedModal from './DecisionsSubmittedModal';
 import ReviewCandidatesStep from './ReviewCandidatesStep';
 import ScheduleInterviewsStep from './ScheduleInterviewsStep';
@@ -53,10 +53,11 @@ export default function SharedReviewPage({
       </main>
 
       {review.cvCandidate ? (
-        <CandidateCvModal
-          candidate={review.cvCandidate}
-          onClose={review.closeCv}
-          onDownload={review.downloadCandidateCv}
+        <CvFileModal
+          open
+          onOpenChange={(open) => !open && review.closeCv()}
+          title={review.cvCandidate.name}
+          pdfUrl={review.cvCandidate.cv}
         />
       ) : null}
 

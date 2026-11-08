@@ -9,7 +9,7 @@ import { getTalentProfileHref } from '@/features/company-talent-database/utils/c
 import { useRouter } from '@/i18n/navigation';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
-import CVModal from '../CVModal';
+import CvFileModal from '@/shared/components/modals/CvFileModal';
 import { AI_TALENT_MATCH_PAGE_SIZE, COMPANY_INBOX_PATH } from '../../constants';
 import { useAiTalentMatchPreview } from '../../hooks/useAiTalentMatchPreview';
 import AiTalentMatchFilters from './AiTalentMatchFilters';
@@ -59,7 +59,7 @@ export default function AiTalentMatchTab({ jobId }: AiTalentMatchTabProps) {
         <EmptyDataState title="companyPage.candidates.pipeline.no-matches-title" />
       )}
       <CandidateProjectModals actions={projectActions} />
-      <CVModal
+      <CvFileModal
         open={!!cvCandidate}
         onOpenChange={(open) => {
           if (!open) setCvCandidate(null);

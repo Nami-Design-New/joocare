@@ -1,10 +1,10 @@
 'use client';
 
+import CvFileModal from '@/shared/components/modals/CvFileModal';
 import type {
   CandidateAction,
   ProjectCandidate,
 } from '../../types/company-projects.types';
-import CandidateCvModal from './CandidateCvModal';
 import CandidateInterviewModal from './CandidateInterviewModal';
 import CandidateRemoveModal from './CandidateRemoveModal';
 import CandidateShareModal from './CandidateShareModal';
@@ -15,7 +15,6 @@ type CandidateActionModalsProps = {
   projectName: string;
   onClose: () => void;
   onRemove: (candidateId: string) => void;
-  onDownloadCv: (candidate: ProjectCandidate) => void;
 };
 
 export default function CandidateActionModals({
@@ -24,7 +23,6 @@ export default function CandidateActionModals({
   projectName,
   onClose,
   onRemove,
-  onDownloadCv,
 }: CandidateActionModalsProps) {
   if (!action || !candidate) return null;
 
@@ -50,10 +48,11 @@ export default function CandidateActionModals({
       );
     case 'view-cv':
       return (
-        <CandidateCvModal
-          candidate={candidate}
-          onClose={onClose}
-          onDownload={onDownloadCv}
+        <CvFileModal
+          open
+          onOpenChange={(open) => !open && onClose()}
+          title={candidate.name}
+          pdfUrl={candidate.cv}
         />
       );
   }

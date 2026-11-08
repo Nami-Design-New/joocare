@@ -26,6 +26,8 @@ export type ProjectCandidate = {
   email: string;
   phone: string;
   nationality: string;
+  /** CV file URL (`cv` from the API, as in received applications). */
+  cv: string | null;
   status: 'Rejected' | 'Shortlist' | 'Under review';
   assessment: 'Passed' | 'Failed' | 'Not assigned';
   score?: number;

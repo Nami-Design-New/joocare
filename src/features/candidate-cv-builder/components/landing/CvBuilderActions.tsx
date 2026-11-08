@@ -3,7 +3,11 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
-import { CV_BUILDER_ICONS, CV_BUILDER_ROUTES } from '../../constants';
+import {
+  CV_BUILDER_ICONS,
+  CV_BUILDER_MODE_BY_STATE,
+  CV_BUILDER_ROUTES,
+} from '../../constants';
 import type { CvBuilderState } from '../../types/cv-builder.types';
 
 const actionVariants = cva('h-12.5 gap-2 px-8 text-sm font-semibold', {
@@ -20,29 +24,34 @@ const actionVariants = cva('h-12.5 gap-2 px-8 text-sm font-semibold', {
 
 type CvBuilderActionsProps = {
   state: CvBuilderState;
+  onShowCv: () => void;
   onDeleteDraft: () => void;
 };
 
 // Landing buttons for each CV builder state.
 export default function CvBuilderActions({
   state,
+  onShowCv,
   onDeleteDraft,
 }: CvBuilderActionsProps) {
   const t = useTranslations('candidatePage.buildCv');
+  const mode = CV_BUILDER_MODE_BY_STATE[state];
+  const createHref =
+    mode === 'new'
+      ? CV_BUILDER_ROUTES.create
+      : `${CV_BUILDER_ROUTES.create}?mode=${mode}`;
 
   return (
     <div className="flex flex-wrap items-center gap-3">
       {state === 'exists' && (
         <Button
-          asChild
           variant="outline"
           size="pill"
+          onClick={onShowCv}
           className={actionVariants({ tone: 'outline' })}
         >
-          <Link href={CV_BUILDER_ROUTES.preview}>
-            <Image src={CV_BUILDER_ICONS.eye} alt="" width={20} height={20} />
-            {t('show-cv')}
-          </Link>
+          <Image src={CV_BUILDER_ICONS.eye} alt="" width={20} height={20} />
+          {t('show-cv')}
         </Button>
       )}
       {state === 'draft' && (
@@ -61,9 +70,7 @@ export default function CvBuilderActions({
         size="pill"
         className={actionVariants({ tone: 'primary' })}
       >
-        <Link href={CV_BUILDER_ROUTES.create}>
-          {t(`primary-action.${state}`)}
-        </Link>
+        <Link href={createHref}>{t(`primary-action.${state}`)}</Link>
       </Button>
     </div>
   );

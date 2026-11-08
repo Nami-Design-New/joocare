@@ -1,7 +1,5 @@
-import { candidateCvPreview } from '../constants/candidate-cv-preview-data';
 import { candidateProfilePreview } from '../constants/candidate-profile-preview-data';
 import { projectCandidatePreviewData } from '../constants/project-preview-data';
-import type { CandidateCv } from '../types/candidate-cv.types';
 import type { ProjectCandidateProfile } from '../types/candidate-profile.types';
 import type { ProjectCandidate } from '../types/company-projects.types';
 
@@ -32,20 +30,6 @@ export function getProjectCandidateProfile(
           return { ...detail, value: candidate.phone };
         return detail;
       }),
-    },
-  };
-}
-
-export function getProjectCandidateCv(
-  candidate: ProjectCandidate,
-): CandidateCv {
-  return {
-    ...candidateCvPreview,
-    name: candidate.name,
-    contact: {
-      ...candidateCvPreview.contact,
-      email: candidate.email,
-      phone: candidate.phone,
     },
   };
 }

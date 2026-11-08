@@ -1,5 +1,5 @@
 import { GraduationCap } from 'lucide-react';
-import type { CandidateCvEducation } from '../../types/candidate-cv.types';
+import type { CandidateCvEducation } from '../../types/cv-document.types';
 import CvSectionTitle from './CvSectionTitle';
 
 type CvEducationProps = {

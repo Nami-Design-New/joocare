@@ -11,6 +11,7 @@ import CvStatusLine from './CvStatusLine';
 type CvBuilderHeroProps = {
   state: CvBuilderState;
   summary: CvBuilderSummary;
+  onShowCv: () => void;
   onDeleteDraft: () => void;
 };
 
@@ -18,6 +19,7 @@ type CvBuilderHeroProps = {
 export default function CvBuilderHero({
   state,
   summary,
+  onShowCv,
   onDeleteDraft,
 }: CvBuilderHeroProps) {
   const t = useTranslations('candidatePage.buildCv');
@@ -49,7 +51,11 @@ export default function CvBuilderHero({
           {state !== 'intro' && (
             <CvStatusLine state={state} summary={summary} />
           )}
-          <CvBuilderActions state={state} onDeleteDraft={onDeleteDraft} />
+          <CvBuilderActions
+            state={state}
+            onShowCv={onShowCv}
+            onDeleteDraft={onDeleteDraft}
+          />
         </div>
       </div>
     </section>

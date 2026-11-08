@@ -1,5 +1,5 @@
 import { Info } from 'lucide-react';
-import type { CandidateCvDetail } from '../../types/candidate-cv.types';
+import type { CandidateCvDetail } from '../../types/cv-document.types';
 import CvSectionTitle from './CvSectionTitle';
 
 type CvAdditionalInfoProps = {

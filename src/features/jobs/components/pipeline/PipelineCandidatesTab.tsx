@@ -18,7 +18,7 @@ import { COMPANY_INBOX_PATH, JOB_CANDIDATES_PAGE_SIZE } from '../../constants';
 import { usePipelineCandidates } from '../../hooks/usePipelineCandidates';
 import type { PipelineCandidate } from '../../types/job-candidates.types';
 import { getPipelineFiltersHref } from '../../utils';
-import CVModal from '../CVModal';
+import CvFileModal from '@/shared/components/modals/CvFileModal';
 import PipelineActiveFilters from './PipelineActiveFilters';
 import PipelineCandidatesTable from './PipelineCandidatesTable';
 import PipelineToolbar from './PipelineToolbar';
@@ -154,7 +154,7 @@ export default function PipelineCandidatesTab({
         visualClassName="aspect-square h-auto w-75 max-w-full"
         visualWrapperClassName="mt-16 mb-2"
       />
-      <CVModal
+      <CvFileModal
         open={!!pipeline.cvCandidate}
         onOpenChange={(open) => {
           if (!open) pipeline.setCvCandidate(null);

@@ -1,5 +1,5 @@
 import { ExternalLink, type LucideIcon } from 'lucide-react';
-import type { CandidateCvEntry } from '../../types/candidate-cv.types';
+import type { CandidateCvEntry } from '../../types/cv-document.types';
 import CvSectionTitle from './CvSectionTitle';
 
 type CvEntryListProps = {
