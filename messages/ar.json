@@ -540,6 +540,25 @@
     }
   },
   "candidatePage": {
+    "applications": {
+      "tabs-label": "طلبات التوظيف",
+      "saved": "المحفوظة",
+      "applied": "تم التقديم",
+      "search-placeholder": "ابحث بالمسمى الوظيفي",
+      "no-results": "لا توجد طلبات مطابقة",
+      "no-results-description": "جرّب البحث بمسمى وظيفي آخر.",
+      "no-applications": "لا توجد طلبات توظيف بعد",
+      "no-applications-description": "ستظهر هنا الوظائف التي تتقدم إليها.",
+      "no-saved": "لا توجد وظائف محفوظة بعد",
+      "no-saved-description": "احفظ الوظائف لتجدها هنا لاحقًا.",
+      "assessment-pending": "التقييم قيد الانتظار",
+      "assessment-completed": "تم إكمال التقييم",
+      "assessment-expired": "انتهت صلاحية التقييم",
+      "take-assessment": "بدء التقييم",
+      "error-title": "تعذر تحميل وظائفك",
+      "error-description": "حاول مرة أخرى لعرض الوظائف المحفوظة وطلبات التوظيف.",
+      "retry": "حاول مرة أخرى"
+    },
     "overview": "نظرة عامة",
     "common": {
       "saving": "جارٍ الحفظ...",

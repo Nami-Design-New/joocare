@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { CandidateApplicationItem } from "@/features/jobs/types/jobs.types";
-import { buildCandidateApplicationsPagePath } from "@/features/jobs/utils";
-import { CustomPagination } from "@/shared/components/CustomPagination";
-import EmptyDataState from "@/shared/components/EmptyDataState";
-import CandidateJobCard from "./CandidateJobCard";
-import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl';
+import EmptyDataState from '@/shared/components/EmptyDataState';
+import type { CandidateApplicationItem } from '../../types/jobs.types';
+import { buildCandidateApplicationsPagePath } from '../../utils';
+import ApplicationJobCard from './ApplicationJobCard';
+import ApplicationsPagination from './ApplicationsPagination';
 
 type CandidateApplicationsListProps = {
   applications: CandidateApplicationItem[];
@@ -13,6 +13,7 @@ type CandidateApplicationsListProps = {
   totalItems: number;
   pageSize: number;
   locale: string;
+  search?: string;
 };
 
 export default function CandidateApplicationsList({
@@ -21,43 +22,43 @@ export default function CandidateApplicationsList({
   totalItems,
   pageSize,
   locale,
+  search = '',
 }: CandidateApplicationsListProps) {
-  const t = useTranslations()
-  const buildPageHref = (page: number) =>
-    buildCandidateApplicationsPagePath(locale, page);
+  const t = useTranslations('candidatePage.applications');
 
   return (
     <>
-      <section className="grid grid-cols-1 gap-4 py-4 lg:grid-cols-2">
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         {applications.length > 0 ? (
           applications.map((application) => (
-            <CandidateJobCard
+            <ApplicationJobCard
               key={application.id}
               job={application.job}
-              href={`/jobs/${application.job.id}`}
-              appliedBadge
-              appliedAtLabel={application.created_at}
+              application={{
+                appliedAt: application.created_at,
+                assessment: application.assessment,
+              }}
             />
           ))
         ) : (
           <EmptyDataState
-            title={t('jobsPage.empty-title')}
-            description="You have not submitted any applications yet."
+            titleText={t(search ? 'no-results' : 'no-applications')}
+            description={t(
+              search ? 'no-results-description' : 'no-applications-description',
+            )}
+            className="col-span-full min-h-64"
           />
         )}
       </section>
 
-      {currentPage > 1 || totalItems > pageSize ? (
-        <section className="mt-4 w-full">
-          <CustomPagination
-            currentPage={currentPage}
-            totalItems={totalItems}
-            pageSize={pageSize}
-            onPageChange={() => undefined}
-            getHref={buildPageHref}
-          />
-        </section>
-      ) : null}
+      <ApplicationsPagination
+        currentPage={currentPage}
+        totalItems={totalItems}
+        pageSize={pageSize}
+        getHref={(page) =>
+          buildCandidateApplicationsPagePath(locale, page, search)
+        }
+      />
     </>
   );
 }

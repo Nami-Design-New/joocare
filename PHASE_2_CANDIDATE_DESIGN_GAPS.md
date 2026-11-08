@@ -9,6 +9,16 @@ Every finding was checked against the Figma frames (text, including hidden layer
 
 ## 1. New Pages & Features
 
+### Job Applications implementation update — 2026-11-05
+
+- [x] Saved / Applied navigation inside `/candidate/applications`, based on `10086:83598` and `10086:83623`.
+- [x] Applied title search (debounced, kept in `?search=`), View Job action, full-width Applied/date strip and pagination. The search is sent to the applications API as `search`; filtering waits for the backend.
+- [x] Saved tab uses the same Job Applications card, without search or pagination. All saved pages are loaded in parallel.
+- [x] `/jobs/saved` redirects to `/candidate/applications?tab=saved`; existing menu links remain valid.
+- [ ] Assessment status badge on the Applied card (Pending / Completed / Expired + Take Assessment): built in `ApplicationStatus`, hidden until the API returns each application's assessment.
+- [ ] Backend: support `search` on `/applications`, and return each application's assessment (status + URL).
+
+
 | Figma screen | Current website status | Class | Required changes |
 |---|---|---|---|
 | `candidate/apply-with-questions/step-1-questions`, `step-2-upload-cv` | Applying is a single CV dialog (`src/features/jobs/components/ApplyNowModal.tsx`). Screening questions exist only on the employer side (post-job authoring, `JobScreeningQuestionsModal`). | New | A 2-step "Apply for {job}" wizard with a stepper. **Step 1** shows the employer's numbered questions as Yes/No cards, single choice, multiple choice ("select all that apply") and short answer, with error states and Next. **Step 2** lets the candidate choose the profile CV (radio card + Preview) or "Upload a different CV" (this application only; PDF/Word, max 5 MB), then Back / Submit Application. |

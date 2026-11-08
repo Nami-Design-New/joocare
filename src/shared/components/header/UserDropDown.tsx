@@ -171,7 +171,7 @@ export default function UserDropDown({
                 className="text-muted-foreground group-hover:text-primary"
                 strokeWidth={2.5}
               />
-              <Link href={"/jobs/saved"} onClick={() => toggleOpen()}>
+              <Link href={"/candidate/applications?tab=saved"} onClick={() => toggleOpen()}>
                 {t("header.saved")}
               </Link>
             </DropdownMenuItem>

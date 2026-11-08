@@ -123,7 +123,7 @@ export default function UserProfileCard({
             <Bookmark className="text-muted-foreground group-hover:text-muted-foreground h-5 w-5" />
             <Link
               onClick={() => setToggleSideMenu(false)}
-              href="/jobs/saved">{t("header.saved")}</Link>
+              href="/candidate/applications?tab=saved">{t("header.saved")}</Link>
           </li>
         )}
       </ul>

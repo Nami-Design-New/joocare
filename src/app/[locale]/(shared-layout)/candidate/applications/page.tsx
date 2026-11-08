@@ -1,34 +1,26 @@
-import CandidateApplicationsList from "@/features/jobs/components/candidate/CandidateApplicationsList";
-import { getApplications } from "@/features/jobs/services/applications-service";
+import CandidateJobApplicationsPage from '@/features/jobs/components/candidate/CandidateJobApplicationsPage';
+
+type CandidateApplicationsPageProps = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{
+    tab?: string;
+    page?: string;
+    search?: string;
+  }>;
+};
 
 export default async function CandidateApplicationsPage({
   params,
   searchParams,
-}: {
-  params: Promise<{ locale: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  const { locale } = await params;
-  const resolvedSearchParams = await searchParams;
-  const pageParam = resolvedSearchParams.page;
-  const page =
-    typeof pageParam === "string"
-      ? Number.parseInt(pageParam, 10)
-      : Array.isArray(pageParam) && pageParam[0]
-        ? Number.parseInt(pageParam[0], 10)
-        : 1;
-  const applications = await getApplications(
-    Number.isNaN(page) || page < 1 ? 1 : page,
-    locale,
-  );
-
+}: CandidateApplicationsPageProps) {
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
+  const page = Number(query.page);
   return (
-    <CandidateApplicationsList
-      applications={applications.data}
-      currentPage={applications.current_page}
-      totalItems={applications.total}
-      pageSize={applications.per_page}
+    <CandidateJobApplicationsPage
       locale={locale}
+      tab={query.tab === 'saved' ? 'saved' : 'applied'}
+      page={Number.isInteger(page) && page > 0 ? page : 1}
+      search={query.search?.trim() ?? ''}
     />
   );
 }

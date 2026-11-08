@@ -540,6 +540,25 @@
     }
   },
   "candidatePage": {
+    "applications": {
+      "tabs-label": "Job Applications",
+      "saved": "Saved",
+      "applied": "Applied",
+      "search-placeholder": "Search by job title",
+      "no-results": "No matching applications",
+      "no-results-description": "Try searching for another job title.",
+      "no-applications": "No applications yet",
+      "no-applications-description": "Jobs you apply for will appear here.",
+      "no-saved": "No saved jobs yet",
+      "no-saved-description": "Save jobs to find them here later.",
+      "assessment-pending": "Assessment pending",
+      "assessment-completed": "Assessment completed",
+      "assessment-expired": "Assessment expired",
+      "take-assessment": "Take Assessment",
+      "error-title": "Couldn’t load your jobs",
+      "error-description": "Please try again to view your saved jobs and applications.",
+      "retry": "Try again"
+    },
     "overview": "Overview",
     "common": {
       "saving": "Saving...",

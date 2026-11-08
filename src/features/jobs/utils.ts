@@ -141,23 +141,13 @@ export function buildJobsPagePath(locale: string, filters: JobsSearchFilters) {
   return `/${locale}/jobs${queryString ? `?${queryString}` : ''}`;
 }
 
-export function buildSavedJobsPagePath(locale: string, page: number) {
-  const params = new URLSearchParams();
-
-  if (page > 1) {
-    params.set('page', String(page));
-  }
-
-  const queryString = params.toString();
-
-  return `/${locale}/jobs/saved${queryString ? `?${queryString}` : ''}`;
-}
-
 export function buildCandidateApplicationsPagePath(
   locale: string,
   page: number,
+  search = '',
 ) {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams({ tab: 'applied' });
+  if (search) params.set('search', search);
 
   if (page > 1) {
     params.set('page', String(page));

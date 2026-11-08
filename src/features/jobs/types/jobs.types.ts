@@ -1,4 +1,5 @@
 import type { ScreeningQuestion } from './job-steps.types';
+import type { ApplicationAssessment } from './candidate-applications.types';
 // ==============================
 // BASE / SHARED ENTITIES
 // ==============================
@@ -288,6 +289,7 @@ export type SimilarJob = JobListItem
 // ==============================
 
 export type CandidateApplicationItem = {
+  assessment?: ApplicationAssessment;
   id: number;
   user_id: number;
   job_id: number;

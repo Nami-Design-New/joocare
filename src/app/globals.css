@@ -81,6 +81,7 @@
   --color-secondary-08: var(--secondary-08);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-application-primary: var(--application-primary);
   --color-primary-bg: var(--primary-bg);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
@@ -156,6 +157,7 @@
 ════════════════════════════════════════ */
 :root {
   --dashboard-primary: var(--assessment-primary);
+  --application-primary: var(--assessment-primary);
   --dashboard-activity-fill: #09760a;
   --dashboard-stat-bg: #f7faf7;
   --dashboard-teal: #006565;
