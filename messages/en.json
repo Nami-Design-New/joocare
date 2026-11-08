@@ -289,6 +289,49 @@
       "upload-cv-first": "Please upload your CV first before applying.",
       "application-submitted": "Application submitted successfully.",
       "failed-submit-application": "Failed to submit your application."
+    },
+    "apply": {
+      "title": "Apply for",
+      "description": "Answer the employer's questions, then choose the CV to send with your application.",
+      "close": "Close",
+      "back": "Back",
+      "next": "Next",
+      "submit": "Submit Application",
+      "submitting": "Submitting...",
+      "steps": {
+        "questions": "Custom Questions",
+        "cv": "Upload CV"
+      },
+      "questions": {
+        "description": "Answer the employer's {count, plural, one {question} other {# questions}} below, then continue to upload your CV",
+        "optional": "(Optional)",
+        "required-error": "This answer is required",
+        "text-placeholder": "Type your answer"
+      },
+      "cv": {
+        "title": "Choose the CV to send with your application",
+        "description": "Use the CV saved on your Joocare profile or upload a different one (PDF or Word, max 5 MB).",
+        "profile-cv": "Your Joocare profile CV",
+        "preview": "Preview",
+        "upload-title": "Upload a different CV",
+        "upload-description": "The uploaded file is used for this application only"
+      },
+      "leave": {
+        "title": "Leave without applying?",
+        "description": "Your answers won't be saved and your application for {job} won't be submitted. You can apply again later from the job page.",
+        "confirm": "Leave without applying",
+        "cancel": "Continue applying"
+      },
+      "submitted-with-assessment": {
+        "title": "Application submitted – assessment required",
+        "description": "Your application has been submitted successfully. However, it will remain incomplete until you successfully complete the required assessment for this job post",
+        "notice-title": "Assessment link valid for {hours} hours only",
+        "notice-sent-to": "Sent to <email></email> on {sentAt} – expires {expiresAt}.",
+        "notice-sent": "Sent on {sentAt} – expires {expiresAt}.",
+        "notice-later": "Choosing “Later” takes you to Applied Jobs, where you can open the assessment until the link expires.",
+        "take-now": "Take Assessment Now",
+        "later": "Later"
+      }
     }
   },
   "contactPage": {
@@ -587,7 +630,8 @@
       "build-cv": "Build Your Professional CV",
       "ai-job-match": "AI Job Match",
       "profile-insights": "View Profile Insights",
-      "create-cv": "Create cv"
+      "create-cv": "Create cv",
+      "assessment": "Assessment"
     },
     "settings": {
       "basic-info": "Basic Info",
@@ -1274,6 +1318,69 @@
         "notify": "Notify Me When Available",
         "notify-toast": "We'll let you know as soon as CV Analysis is available.",
         "footnote": "Be the first to know when this feature launches!"
+      }
+    },
+    "assessment": {
+      "intro": {
+        "sent-by": "Sent by",
+        "scope": "Assessment Scope",
+        "rules-title": "Important Assessment Rules",
+        "rules": {
+          "time-limit": "<strong>{hours}-Hour Limit</strong>: You have {hours} hours from the time this link was emailed to complete all questions.",
+          "questions": "<strong>{count, plural, one {# Question} other {# Questions}}</strong>: All questions are single-select.",
+          "no-going-back": "<strong>No Going Back</strong>: Once you click \"Next\", your answer is locked. Previous questions cannot be re-visited.",
+          "continuous-session": "<strong>Continuous Session</strong>: Recommended to complete in one setting, but progress is saved if you need to resume.",
+          "passing-criteria": "<strong>Passing Criteria</strong>: Achieve <highlight>{score}%</highlight> or higher to pass to the interview round."
+        },
+        "time-limit": "Time Limit",
+        "total-questions": "Total Questions",
+        "max-attempts": "Max Attempts",
+        "minutes": "{count, plural, one {# Minute} other {# Minutes}}",
+        "questions": "{count, plural, one {# Question} other {# Questions}}",
+        "attempts": "{count, plural, one {# Attempt} other {# Attempts}}",
+        "later": "Later",
+        "start": "Start Assessment"
+      },
+      "question": {
+        "counter": "Question {current} of {total}",
+        "progress-label": "Assessment progress",
+        "complete": "{progress}% Complete",
+        "remaining": "remaining",
+        "time-running-out": "left – time is almost up",
+        "badge": "Q{number}",
+        "next": "Next Question",
+        "submit": "Submit Assessment"
+      },
+      "status": {
+        "browse-jobs": "Browse Jobs",
+        "go-to-applied-jobs": "Go to Applied Jobs",
+        "expired": {
+          "title": "This assessment link has expired",
+          "description": "The link to “<title></title>” was valid for {hours} hours from the time it was emailed to you. It can no longer be opened.",
+          "sent-on": "Email sent on",
+          "expired-on": "Link expired on"
+        },
+        "taken": {
+          "title": "You’ve already taken this assessment",
+          "description": "You submitted “<title></title>” on {date}. Each assessment can only be taken once – your answers have been sent to the hiring team at <company></company>.",
+          "submitted-on": "Submitted on",
+          "time-taken": "Time taken",
+          "status": "Status",
+          "under-review": "Under review by employer",
+          "duration": "{minutes}m {seconds}s"
+        },
+        "unavailable": {
+          "title": "This assessment is currently unavailable",
+          "description": "<company></company> has paused “<title></title>”. Please contact the hiring team at <email></email> for more information",
+          "email-team": "Email the hiring team",
+          "close": "Close"
+        }
+      },
+      "submitted": {
+        "title": "Assessment Submitted Successfully",
+        "description": "Your answers have been sent to the hiring team at <company></company>. You can follow your assessment and application status anytime from Applied Jobs",
+        "go-to-applied-jobs": "Go to Applied Jobs",
+        "browse-jobs": "Browse more jobs"
       }
     }
   },

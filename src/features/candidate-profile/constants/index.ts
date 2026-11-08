@@ -15,6 +15,7 @@ export const CANDIDATE_ROUTES = {
   settings: '/candidate/settings',
   basicInfo: '/candidate/settings/basic-info',
   chat: '/candidate/chat',
+  assessment: '/candidate/assessment',
 } as const;
 
 // Breadcrumb title per candidate section (keys under `candidatePage`), matched by path prefix.
@@ -36,11 +37,13 @@ export const CANDIDATE_PAGE_TITLES: readonly { path: string; label: string }[] =
     },
     { path: CANDIDATE_ROUTES.settings, label: 'sidebar.profile-settings' },
     { path: CANDIDATE_ROUTES.chat, label: 'chat.title' },
+    { path: CANDIDATE_ROUTES.assessment, label: 'sidebar.assessment' },
   ];
 
-// Candidate pages shown full width, without the sidebar.
+// Candidate pages (and their sub-pages) shown full width, without the sidebar.
 export const CANDIDATE_FULL_WIDTH_ROUTES: readonly string[] = [
   CANDIDATE_ROUTES.buildCvCreate,
+  CANDIDATE_ROUTES.assessment,
 ];
 
 // Profile page tabs (keys under the root of messages).

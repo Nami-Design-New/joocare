@@ -33,7 +33,7 @@ export default function CvViewModal({
   values,
   onOpenChange,
   onEdit,
-  applyHref = '/jobs',
+  applyHref = '/candidate/build-cv',
 }: CvViewModalProps) {
   const t = useTranslations('candidatePage.buildCv.view');
   const cv = useCvDocument(values);

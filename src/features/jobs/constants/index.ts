@@ -144,3 +144,17 @@ export const AI_JD_BUILDER_PREVIEW_MESSAGES = [
     attachments: [{ id: 'preview-file', name: 'ICU_Nurse_Requirements.pdf', size: 245760, kind: 'file' }],
   },
 ] satisfies AiChatMessage[];
+
+// Apply flow: preview screening questions + linked assessment until the job details API
+// returns them (design review). Set to false to rely on the API data only.
+export const JOB_APPLY_PREVIEW_ENABLED = true;
+export const APPLY_STEP_KEYS = ['questions', 'cv'] as const;
+export const APPLY_CV_ACCEPTED_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
+export const CANDIDATE_CV_PROFILE_QUERY_KEY = 'candidate-cv-profile';
+export const CANDIDATE_PROFILE_HREF = '/candidate/profile';
+export const CANDIDATE_APPLICATIONS_HREF = '/candidate/applications';
+export const JOBS_HREF = '/jobs';

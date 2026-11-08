@@ -11,6 +11,7 @@ type JobDetailsHeaderProps = {
 
 export default async function JobDetailsHeader({ job }: JobDetailsHeaderProps) {
   const t = await getTranslations();
+  const jobTitle = job?.title ?? job?.job_title?.title ?? '';
 
   return (
     <section className="bg-card flex flex-col justify-between rounded-2xl p-4 lg:flex-row lg:items-center">
@@ -25,7 +26,7 @@ export default async function JobDetailsHeader({ job }: JobDetailsHeaderProps) {
         <div>
           <div className="flex items-center gap-4">
             <h6 className="text-foreground text-2xl font-semibold max-md:text-base">
-              {job?.title === null ? job?.job_title?.title : job?.title}
+              {jobTitle}
             </h6>
             <JobMatchBadge score={job?.match_score} />
           </div>
@@ -50,8 +51,11 @@ export default async function JobDetailsHeader({ job }: JobDetailsHeaderProps) {
 
       <CandidateJobDetailsCardActions
         jobId={job?.id}
+        jobTitle={jobTitle}
         initialIsSaved={job?.is_saved}
         isApplied={job?.is_applied}
+        screeningQuestions={job?.screening_questions}
+        assessment={job?.assessment}
       />
     </section>
   );

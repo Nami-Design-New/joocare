@@ -15,8 +15,11 @@ export default function CandidateLayoutColumns({
   children,
 }: CandidateLayoutColumnsProps) {
   const pathname = usePathname();
+  const isFullWidth = CANDIDATE_FULL_WIDTH_ROUTES.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  );
 
-  if (CANDIDATE_FULL_WIDTH_ROUTES.includes(pathname)) {
+  if (isFullWidth) {
     return <section className="mt-4 lg:mt-6">{children}</section>;
   }
 
