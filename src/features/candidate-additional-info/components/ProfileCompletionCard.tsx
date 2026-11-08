@@ -2,7 +2,7 @@ import { Check, Minus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/lib/utils';
 import type { CompletionItem } from '../types/additional-info.types';
-import ProgressRing from './ProgressRing';
+import ProgressRing from '@/shared/components/ProgressRing';
 
 type ProfileCompletionCardProps = {
   percent: number;

@@ -2,6 +2,7 @@
 
 import { useRouter } from "@/i18n/navigation";
 import LoginAlertModal from "@/shared/components/modals/LoginAlertModal";
+import { getFileNameFromUrl } from "@/shared/lib/file-name";
 import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
 import { storeUploadedFile } from "@/shared/services/store-uploaded-file-service";
 import { Button } from "@/shared/components/ui/button";
@@ -31,13 +32,7 @@ interface ApplyNowModalProps {
   onApplySuccess?: () => void;
 }
 function getCvFileName(path: string | null) {
-  if (!path) {
-    return "";
-  }
-
-  const normalizedPath = path.split("?")[0] ?? path;
-
-  return decodeURIComponent(normalizedPath.split("/").pop() || "CV");
+  return path ? getFileNameFromUrl(path) || "CV" : "";
 }
 
 function resolveStoredFileUrl(path: string | null) {

@@ -46,7 +46,6 @@ export const CV_BUILDER_STEPS: readonly CvBuilderStep[] = [
 export const CV_BUILDER_HERO_IMAGE = '/assets/build-cv/hero.png';
 
 export const CV_BUILDER_ICONS = {
-  sparkle: '/assets/build-cv/sparkle.svg',
   checkCircle: '/assets/build-cv/check-circle.svg',
   clock: '/assets/build-cv/clock.svg',
   eye: '/assets/build-cv/eye.svg',

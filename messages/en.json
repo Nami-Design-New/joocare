@@ -1223,6 +1223,58 @@
         "marital-status": "Marital Status",
         "open-link": "Open {title}"
       }
+    },
+    "cvMatchAts": {
+      "tagline": "AI‑Driven CV Analysis",
+      "title": "A Complete Profile Boosts Your Visibility and Hiring Success",
+      "image-alt": "Sample CVs checked for ATS compatibility",
+      "features": {
+        "ats-compliance": {
+          "title": "ATS Compliance",
+          "description": "Ensure your CV format and keywords align with global Applicant Tracking Systems, improving your chances of passing initial screenings"
+        },
+        "skills-gap": {
+          "title": "Skills Gap Analysis",
+          "description": "AI identifies missing skills in your profile by comparing it with job requirements, helping you stay competitive"
+        },
+        "improvement-tips": {
+          "title": "Instant Improvement Tips",
+          "description": "Get tailored recommendations to enhance your profile and improve your competitive positioning"
+        }
+      },
+      "analyze": "CV Analysis",
+      "analyzing": "Analyzing your CV…",
+      "results": {
+        "score-label": "ATS score",
+        "optimization-points": "Optimization Points",
+        "create-cv": "Create CV"
+      },
+      "coming-soon": {
+        "badge": "Coming soon",
+        "title": "AI CV Analysis & ATS Matching",
+        "description": "Our upcoming AI-powered CV Analysis will evaluate your resume against ATS standards, identify strengths and improvement areas, assess job match potential, and provide personalized recommendations to help you stand out to employers and recruiters.",
+        "features": {
+          "ats-compatibility": {
+            "title": "ATS Compatibility",
+            "description": "Check how well your CV passes ATS scans"
+          },
+          "skill-gap": {
+            "title": "Skill Gap Analysis",
+            "description": "Discover missing skills to boost your profile"
+          },
+          "job-match": {
+            "title": "Job Match Insights",
+            "description": "See how well your CV matches relevant jobs"
+          },
+          "personalized-tips": {
+            "title": "Personalized Tips",
+            "description": "Get tailored recommendations for improvement"
+          }
+        },
+        "notify": "Notify Me When Available",
+        "notify-toast": "We'll let you know as soon as CV Analysis is available.",
+        "footnote": "Be the first to know when this feature launches!"
+      }
     }
   },
   "legalPages": {

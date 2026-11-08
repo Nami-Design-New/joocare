@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { CV_BUILDER_HERO_IMAGE, CV_BUILDER_ICONS } from '../../constants';
+import FeatureTagline from '@/shared/components/FeatureTagline';
+import { CV_BUILDER_HERO_IMAGE } from '../../constants';
 import type {
   CvBuilderState,
   CvBuilderSummary,
@@ -36,10 +37,7 @@ export default function CvBuilderHero({
       />
 
       <div className="flex flex-col gap-4">
-        <span className="bg-soft-overlay border-cv-builder-tag-border text-foreground flex w-fit items-center gap-2.5 rounded-xl border px-4 py-2">
-          <Image src={CV_BUILDER_ICONS.sparkle} alt="" width={16} height={16} />
-          {t('badge')}
-        </span>
+        <FeatureTagline>{t('badge')}</FeatureTagline>
         <h1 className="text-secondary text-3xl leading-tight font-bold xl:text-[38px] xl:leading-12">
           {t('title')}
         </h1>

@@ -38,6 +38,8 @@ type IllustratedModalProps = {
   // Panels / callouts between the text and the buttons.
   children?: ReactNode;
   actions: IllustratedModalAction[];
+  // Small note under the buttons.
+  footnote?: ReactNode;
   // Overrides what the X does (default: close).
   onCloseClick?: () => void;
   isBusy?: boolean;
@@ -55,6 +57,7 @@ export default function IllustratedModal({
   badge,
   children,
   actions,
+  footnote,
   onCloseClick,
   isBusy = false,
   closePosition = 'end',
@@ -125,6 +128,9 @@ export default function IllustratedModal({
             />
           ))}
         </div>
+        {footnote ? (
+          <p className="text-muted-foreground -mt-1 text-sm">{footnote}</p>
+        ) : null}
       </DialogContent>
     </Dialog>
   );

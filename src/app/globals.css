@@ -39,7 +39,10 @@
   --color-cv-builder-primary: var(--cv-builder-primary);
   --color-cv-builder-draft: var(--cv-builder-draft);
   --color-cv-builder-danger: var(--cv-builder-danger);
-  --color-cv-builder-tag-border: var(--cv-builder-tag-border);
+  --color-tagline-border: var(--tagline-border);
+  --color-ats-primary: var(--ats-primary);
+  --color-ats-icon-surface: var(--ats-icon-surface);
+  --color-ats-badge: var(--ats-badge);
   --color-cv-builder-edit: var(--cv-builder-edit);
   --color-cv-builder-skill-surface: var(--cv-builder-skill-surface);
   --color-cv-builder-skill-text: var(--cv-builder-skill-text);
@@ -202,7 +205,11 @@
   --cv-builder-primary: var(--assessment-primary);
   --cv-builder-draft: #b54708;
   --cv-builder-danger: #d92e21;
-  --cv-builder-tag-border: #2e90a61a;
+  --tagline-border: #2e90a61a;
+  /* CV match with ATS */
+  --ats-primary: var(--assessment-primary);
+  --ats-icon-surface: #ddeedf;
+  --ats-badge: #d5ebd9;
   --cv-builder-edit: #0654c9;
   --cv-builder-skill-surface: #eaf6ed;
   --cv-builder-skill-text: #075e1b;
