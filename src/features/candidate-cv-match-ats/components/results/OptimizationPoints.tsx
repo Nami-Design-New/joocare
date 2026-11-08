@@ -27,8 +27,12 @@ export default function OptimizationPoints({
               className="text-foreground flex gap-0.5 text-base leading-5 font-semibold"
             >
               <span className="shrink-0">{index + 1}-</span>
+              {/* One isolate for the whole mock sentence: two separate bdi runs around
+                  a loose ": " get visually reordered by the bidi algorithm in RTL. */}
               <p>
-                <bdi>{point.title}</bdi>: <bdi>{point.text}</bdi>
+                <bdi>
+                  {point.title}: {point.text}
+                </bdi>
               </p>
             </li>
           ))}
