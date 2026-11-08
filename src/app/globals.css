@@ -36,6 +36,10 @@
   --color-match-low-text: var(--match-low-text);
   --color-match-primary: var(--match-primary);
   --color-match-check: var(--match-check);
+  --color-cv-builder-primary: var(--cv-builder-primary);
+  --color-cv-builder-draft: var(--cv-builder-draft);
+  --color-cv-builder-danger: var(--cv-builder-danger);
+  --color-cv-builder-tag-border: var(--cv-builder-tag-border);
   --color-question-card-surface: var(--question-card-surface);
   --color-question-card-border: var(--question-card-border);
   --color-question-card-title: var(--question-card-title);
@@ -190,6 +194,11 @@
   --match-low-text: #b3261e;
   --match-primary: var(--assessment-primary);
   --match-check: #10b981;
+  /* CV builder (landing states + wizard) */
+  --cv-builder-primary: var(--assessment-primary);
+  --cv-builder-draft: #b54708;
+  --cv-builder-danger: #d92e21;
+  --cv-builder-tag-border: #2e90a61a;
   /* Yes / no question card (mobility: relocation, driving license) */
   --question-card-surface: #fdfefe;
   --question-card-border: #edf0f5;

@@ -972,6 +972,29 @@
         "required": "Required",
         "not-required": "Not Required"
       }
+    },
+    "buildCv": {
+      "badge": "Smart CV Builder",
+      "title": "Build a professional CV that highlights your strengths and helps you stand out to employers",
+      "description": "Transform your professional journey into a well-structured CV through a guided process that captures your experience, organizes key details, and ensures a clear, professional presentation.",
+      "hero-alt": "Preview of a professional CV being built",
+      "primary-action": {
+        "intro": "Create Your CV",
+        "exists": "Edit CV",
+        "draft": "Continue CV"
+      },
+      "show-cv": "Show CV",
+      "delete-draft": "Delete Draft",
+      "status": {
+        "ready": "Your CV is ready · last updated {date}",
+        "draft": "Your CV is a draft · {completed} of {total} steps completed · last saved {date}"
+      },
+      "delete-modal": {
+        "title": "Delete your CV draft?",
+        "description": "All the information you entered in your CV draft will be permanently deleted. This action can’t be undone.",
+        "confirm": "Delete draft",
+        "cancel": "Cancel"
+      }
     }
   },
   "legalPages": {

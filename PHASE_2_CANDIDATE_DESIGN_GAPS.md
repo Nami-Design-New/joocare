@@ -14,7 +14,7 @@ Every finding was checked against the Figma frames (text, including hidden layer
 - [x] Saved / Applied navigation inside `/candidate/applications`, based on `10086:83598` and `10086:83623`.
 - [x] Applied title search (debounced, kept in `?search=`), View Job action, full-width Applied/date strip and pagination. The search is sent to the applications API as `search`; filtering waits for the backend.
 - [x] Saved tab uses the same Job Applications card, without search or pagination. All saved pages are loaded in parallel.
-- [x] `/jobs/saved` redirects to `/candidate/applications?tab=saved`; existing menu links remain valid.
+- [x] `/jobs/saved` removed; the header links open `/candidate/applications?tab=saved`.
 - [ ] Assessment status badge on the Applied card (Pending / Completed / Expired + Take Assessment): built in `ApplicationStatus`, hidden until the API returns each application's assessment.
 - [ ] Backend: support `search` on `/applications`, and return each application's assessment (status + URL).
 
