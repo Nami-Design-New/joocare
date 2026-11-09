@@ -221,6 +221,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
           size="pill"
           onClick={handleUploadClick}
           disabled={isUploading}
+          className="border-secondary text-secondary w-full text-base font-semibold"
         >
           {isUploading ? t("candidatePage.common.uploading") : t("jobDetailsPage.upload-cv")}
         </Button>

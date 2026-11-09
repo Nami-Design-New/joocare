@@ -1,6 +1,9 @@
 'use client';
 
 import { useCandidateAssessment } from '../hooks/useCandidateAssessment';
+import AssessmentLeaveModal from '@/features/company-assessments/components/create/AssessmentLeaveModal';
+import { useAssessmentLeaveGuard } from '@/features/company-assessments/hooks/useAssessmentLeaveGuard';
+import { CANDIDATE_ASSESSMENT_ROUTES } from '../constants';
 import type { CandidateAssessment } from '../types/candidate-assessment.types';
 import AssessmentSubmittedModal from './AssessmentSubmittedModal';
 import AssessmentIntro from './intro/AssessmentIntro';
@@ -18,6 +21,11 @@ export default function CandidateAssessmentPage({
   assessment,
 }: CandidateAssessmentPageProps) {
   const attempt = useCandidateAssessment(assessment);
+  const leave = useAssessmentLeaveGuard(
+    attempt.hasStarted && !attempt.submission && assessment.state === 'available',
+    CANDIDATE_ASSESSMENT_ROUTES.appliedJobs,
+    true,
+  );
 
   const renderContent = () => {
     if (assessment.state === 'expired')
@@ -60,6 +68,12 @@ export default function CandidateAssessmentPage({
   return (
     <>
       {renderContent()}
+      <AssessmentLeaveModal
+        open={leave.leaveOpen}
+        onOpenChange={leave.setLeaveOpen}
+        onConfirm={leave.confirmLeave}
+        translationNamespace="candidatePage.assessment.leave"
+      />
       <AssessmentSubmittedModal
         open={attempt.isSubmittedModalOpen}
         onOpenChange={attempt.setSubmittedModalOpen}

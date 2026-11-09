@@ -1,17 +1,22 @@
-"use client";
+'use client';
 
-import PdfViewer from "@/shared/components/PdfViewer";
-import { Button } from "@/shared/components/ui/button";
+import dynamic from 'next/dynamic';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { RefreshCw } from "lucide-react";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
-import { isPreviewableCvFileName } from "../validation/cv-schema";
+} from '@/shared/components/ui/dialog';
+import { RefreshCw } from 'lucide-react';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import { isPreviewableCvFileName } from '../validation/cv-schema';
+
+// pdf.js needs browser APIs (DOMMatrix), so it must not load during server rendering.
+const PdfViewer = dynamic(() => import('@/shared/components/PdfViewer'), {
+  ssr: false,
+});
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -41,7 +46,7 @@ export default function CVModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="mb-25 w-[calc(100vw-1rem)] max-w-175 rounded-2xl text-center sm:max-w-175 p-8">
+      <DialogContent className="mb-25 w-[calc(100vw-1rem)] max-w-175 rounded-2xl p-8 text-center sm:max-w-175">
         <DialogHeader className="-mt-5 flex flex-row items-center justify-between pe-2">
           <DialogTitle className="text-foreground text-xl font-bold">
             {title}
@@ -56,9 +61,9 @@ export default function CVModal({
               src="/assets/icons/pdf-icon.svg"
               width={14}
               height={14}
-              alt={t("candidatePage.profile.pdf-icon")}
+              alt={t('candidatePage.profile.pdf-icon')}
             />
-            {t("candidatePage.common.download")}
+            {t('candidatePage.common.download')}
           </Button>
         </DialogHeader>
 
@@ -66,11 +71,11 @@ export default function CVModal({
           <PdfViewer url={url} fileName={fileName} />
         ) : (
           <div className="text-muted-foreground flex min-h-60 items-center justify-center rounded-2xl border border-dashed p-6 text-sm">
-            {t("candidatePage.profile.pdf-preview-only")}
+            {t('candidatePage.profile.pdf-preview-only')}
           </div>
         )}
 
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex items-center justify-center gap-2">
           {/* <Button
             size="sm"
             variant="destructive"
@@ -84,15 +89,16 @@ export default function CVModal({
           <Button
             size="sm"
             variant="default"
-            className="flex items-center gap-1.5 rounded-full px-4 h-10"
+            className="flex h-10 items-center gap-1.5 rounded-full px-4"
             onClick={() => handleUploadClick()}
             disabled={isUploading || isDeleting}
           >
             <RefreshCw className="h-4 w-4" />
-            {isUploading ? t("candidatePage.common.updating") : t("candidatePage.common.update")}
+            {isUploading
+              ? t('candidatePage.common.updating')
+              : t('candidatePage.common.update')}
           </Button>
         </div>
-
       </DialogContent>
     </Dialog>
   );

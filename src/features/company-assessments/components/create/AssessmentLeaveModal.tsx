@@ -1,6 +1,5 @@
 'use client';
 
-import Lottie from 'lottie-react';
 import { TriangleAlert, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/shared/components/ui/button';
@@ -11,21 +10,24 @@ import {
   DialogDescription,
   DialogTitle,
 } from '@/shared/components/ui/dialog';
-import deleteAnimation from '../../../../../public/assets/lottie/delete.json';
 import Image from 'next/image';
 
 type AssessmentLeaveModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
+  translationNamespace?:
+    | 'companyPage.assessments.builder'
+    | 'candidatePage.assessment.leave';
 };
 
 export default function AssessmentLeaveModal({
   open,
   onOpenChange,
   onConfirm,
+  translationNamespace = 'companyPage.assessments.builder',
 }: AssessmentLeaveModalProps) {
-  const t = useTranslations('companyPage.assessments.builder');
+  const t = useTranslations(translationNamespace);
   const locale = useLocale();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

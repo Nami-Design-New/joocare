@@ -27,9 +27,9 @@ const SkillsSection = ({
 
   return (
     <>
-      <section className="flex flex-col gap-5 rounded-2xl border bg-white p-4">
+      <section className="border-border flex flex-col gap-4 rounded-2xl border bg-white p-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold">
+          <h3 className="text-[21px] leading-6.5 font-semibold">
             {t('candidatePage.profile.skills')}
           </h3>
 

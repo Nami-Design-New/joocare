@@ -21,7 +21,7 @@ export type CandidateProfileApiExperience = {
   title: string;
   job_title: {
     title: string;
-  }
+  };
   job_title_id: number | null;
   company: string | null;
   employment_type_id?: number | null;
@@ -66,8 +66,8 @@ export type CandidateProfileApiUser = {
   unread_notifications_count?: number;
   job_title_id: number | null;
   job_title: {
-    title: string
-  }
+    title: string;
+  };
   title: CandidateProfileApiLookup | string | null;
   country_id: number | null;
   country: CandidateProfileApiLookup | null;
@@ -135,6 +135,23 @@ export type CandidateProfileViewModel = {
   experiences: CandidateExperienceViewModel[];
   hiring_readiness_score?: number | null;
   missing_score_items: string[];
+  // Pending backend fields (Figma profile side panel); shown as "-" until the profile API
+  // returns them.
+  isVerified?: boolean;
+  gender?: string | null;
+  religion?: string | null;
+  maritalStatus?: string | null;
+  languages?: string[];
+  drivingLicense?: boolean | null;
+  licenseCountries?: string[];
+};
+
+// Specialty / domain rows of the profile side panel (domain / category names come from their lookups).
+export type CandidateProfessionalProfile = {
+  specialty: string | null;
+  subspecialty: string | null;
+  domain: string | null;
+  category: string | null;
 };
 
 export type CandidateSkillViewModel = {

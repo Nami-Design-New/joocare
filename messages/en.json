@@ -752,7 +752,19 @@
       "city": "City",
       "loading-cities": "Loading cities...",
       "add-responsibility": "Add responsibility",
-      "remove-responsibility": "Remove responsibility"
+      "remove-responsibility": "Remove responsibility",
+      "verified": "Verified",
+      "specialty": "Specialty",
+      "subspecialty": "Subspecialty",
+      "domain": "Domain",
+      "category": "Category",
+      "email": "Email",
+      "gender": "Gender",
+      "religion": "Religion",
+      "marital-status": "Marital Status",
+      "languages-known": "Languages Known",
+      "driving-license": "Driving License",
+      "issuing-countries": "Issuing Countries"
     },
     "toasts": {
       "session-expired": "Your session has expired. Please log in again.",
@@ -1320,6 +1332,15 @@
       }
     },
     "assessment": {
+      "leave": {
+        "close": "Close",
+        "leave-title": "Leave Assessment?",
+        "leave-description": "You are about to exit the assessment. Leaving or going back will end your attempt immediately, and you will not be able to return to it.",
+        "leave-warning-title": "Your attempt will end now",
+        "leave-warning-description": "Only your locked answers will be submitted. Unanswered questions will be marked as not answered. No Going Back: Answers are locked once you click \"Next\", and previous questions cannot be re-visited.",
+        "continue-creating": "Continue Assessment",
+        "discard-leave": "Leave & End Attempt"
+      },
       "intro": {
         "sent-by": "Sent by",
         "scope": "Assessment Scope",

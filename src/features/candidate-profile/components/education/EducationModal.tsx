@@ -1,29 +1,32 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
-import useGetCountries from "@/shared/hooks/useGetCountries";
-import { InputField } from "@/shared/components/InputField";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { Button } from "@/shared/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
+import useGetCountries from '@/shared/hooks/useGetCountries';
+import { InputField } from '@/shared/components/InputField';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { useRouter } from "@/i18n/navigation";
-import { createEducation, updateEducation } from "../../services/education-client-service";
-import type { CandidateEducationViewModel } from "../../types/profile.types";
+} from '@/shared/components/ui/dialog';
+import { useRouter } from '@/i18n/navigation';
+import {
+  createEducation,
+  updateEducation,
+} from '../../services/education-client-service';
+import type { CandidateEducationViewModel } from '../../types/profile.types';
 import {
   createEducationModalSchema,
   type EducationModalFormData,
-} from "../../validation/education-modal-schema";
+} from '../../validation/education-modal-schema';
 
 interface EducationModalProps {
   open: boolean;
@@ -33,12 +36,12 @@ interface EducationModalProps {
 }
 
 const EMPTY_FORM: EducationModalFormData = {
-  degree: "",
-  university: "",
-  gpa: "",
-  countryId: "",
-  startDate: "",
-  endDate: "",
+  degree: '',
+  university: '',
+  gpa: '',
+  countryId: '',
+  startDate: '',
+  endDate: '',
 };
 
 function toFormState(
@@ -49,12 +52,12 @@ function toFormState(
   }
 
   return {
-    degree: education.degree ?? "",
+    degree: education.degree ?? '',
     university: education.university,
-    gpa: education.gpa ?? "",
-    countryId: education.countryId ?? "",
-    startDate: education.startDate ?? "",
-    endDate: education.endDate ?? "",
+    gpa: education.gpa ?? '',
+    countryId: education.countryId ?? '',
+    startDate: education.startDate ?? '',
+    endDate: education.endDate ?? '',
   };
 }
 
@@ -68,22 +71,23 @@ export function EducationModal({
   const router = useRouter();
   const locale = useLocale();
   const { data: session } = useSession();
-  const [dialogContentElement, setDialogContentElement] = useState<HTMLDivElement | null>(null);
-  const [countrySearch, setCountrySearch] = useState("");
+  const [dialogContentElement, setDialogContentElement] =
+    useState<HTMLDivElement | null>(null);
+  const [countrySearch, setCountrySearch] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const educationSchema = useMemo(
     () =>
       createEducationModalSchema({
-        degreeMin: t("candidateValidation.degree-min"),
-        degreeMax: t("candidateValidation.degree-max"),
-        universityMin: t("candidateValidation.university-min"),
-        universityMax: t("candidateValidation.university-max"),
-        countryRequired: t("authPage.validation.country-required"),
-        startDateRequired: t("candidateValidation.start-date-required"),
-        gpaRequired: t("candidateValidation.gpa-required"),
-        gpaInvalid: t("candidateValidation.gpa-invalid"),
-        startDatePast: t("candidateValidation.start-date-past"),
-        endDateAfterStart: t("candidateValidation.end-date-after-start"),
+        degreeMin: t('candidateValidation.degree-min'),
+        degreeMax: t('candidateValidation.degree-max'),
+        universityMin: t('candidateValidation.university-min'),
+        universityMax: t('candidateValidation.university-max'),
+        countryRequired: t('authPage.validation.country-required'),
+        startDateRequired: t('candidateValidation.start-date-required'),
+        gpaRequired: t('candidateValidation.gpa-required'),
+        gpaInvalid: t('candidateValidation.gpa-invalid'),
+        startDatePast: t('candidateValidation.start-date-past'),
+        endDateAfterStart: t('candidateValidation.end-date-after-start'),
       }),
     [t],
   );
@@ -107,7 +111,7 @@ export function EducationModal({
 
   const countryOptions = countries
     .map((country) => ({
-      label: String(country.title ?? country.name ?? ""),
+      label: String(country.title ?? country.name ?? ''),
       value: String(country.id),
     }))
     .filter((country) => country.label);
@@ -115,7 +119,7 @@ export function EducationModal({
   useEffect(() => {
     if (open) {
       reset(toFormState(education));
-      setCountrySearch("");
+      setCountrySearch('');
     }
   }, [education, open, reset]);
 
@@ -125,7 +129,7 @@ export function EducationModal({
 
   const onSubmit: SubmitHandler<EducationModalFormData> = async (form) => {
     if (!session?.accessToken) {
-      toast.error(t("candidatePage.toasts.session-expired"));
+      toast.error(t('candidatePage.toasts.session-expired'));
       return;
     }
 
@@ -149,16 +153,18 @@ export function EducationModal({
 
       toast.success(
         response?.message ??
-        (education?.id
-          ? t("candidatePage.toasts.education-updated")
-          : t("candidatePage.toasts.education-added")),
+          (education?.id
+            ? t('candidatePage.toasts.education-updated')
+            : t('candidatePage.toasts.education-added')),
       );
       reset(EMPTY_FORM);
       onOpenChange(false);
       router.refresh();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : t("candidatePage.toasts.education-save-failed");
+        error instanceof Error
+          ? error.message
+          : t('candidatePage.toasts.education-save-failed');
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -170,34 +176,36 @@ export function EducationModal({
       <DialogContent ref={handleDialogContentRef} className="max-w-175">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <DialogHeader>
-            <DialogTitle className="text-[28px] text-black">{label}</DialogTitle>
+            <DialogTitle className="text-[28px] text-black">
+              {label}
+            </DialogTitle>
           </DialogHeader>
 
           <InputField
             id="degree"
-            label={t("candidatePage.profile.degree")}
+            label={t('candidatePage.profile.degree')}
             type="text"
-            placeholder={t("candidatePage.profile.degree-placeholder")}
-            {...register("degree")}
+            placeholder={t('candidatePage.profile.degree-placeholder')}
+            {...register('degree')}
             error={errors.degree?.message}
           />
 
           <InputField
             id="university"
-            label={t("candidatePage.profile.university")}
+            label={t('candidatePage.profile.university')}
             type="text"
-            placeholder={t("candidatePage.profile.university-placeholder")}
-            {...register("university")}
+            placeholder={t('candidatePage.profile.university-placeholder')}
+            {...register('university')}
             error={errors.university?.message}
           />
 
           <InputField
             id="gpa"
-            label={t("candidatePage.profile.gpa")}
+            label={t('candidatePage.profile.gpa')}
             type="text"
             inputMode="decimal"
-            placeholder={t("candidatePage.profile.gpa-placeholder")}
-            {...register("gpa")}
+            placeholder={t('candidatePage.profile.gpa-placeholder')}
+            {...register('gpa')}
             error={errors.gpa?.message}
           />
 
@@ -207,14 +215,18 @@ export function EducationModal({
             render={({ field }) => (
               <SelectInputField
                 id="country"
-                label={t("candidatePage.profile.country")}
-                placeholder={isLoading ? t("candidatePage.profile.loading-countries") : t("candidatePage.profile.country-placeholder")}
+                label={t('candidatePage.profile.country')}
+                placeholder={
+                  isLoading
+                    ? t('candidatePage.profile.loading-countries')
+                    : t('candidatePage.profile.country-placeholder')
+                }
                 options={countryOptions}
                 value={field.value}
                 disabled={isLoading}
                 portalContainer={dialogContentElement}
                 withSearchInput
-                searchPlaceholder={t("candidatePage.profile.search-countries")}
+                searchPlaceholder={t('candidatePage.profile.search-countries')}
                 onSearchChange={setCountrySearch}
                 onChange={field.onChange}
                 onReachEnd={() => void fetchNextPage()}
@@ -228,25 +240,33 @@ export function EducationModal({
           <div className="flex items-center justify-between gap-2 max-md:flex-col">
             <InputField
               id="startDate"
-              label={t("candidatePage.profile.start-date")}
+              label={t('candidatePage.profile.start-date')}
               type="date"
-              {...register("startDate")}
+              {...register('startDate')}
               error={errors.startDate?.message}
             />
 
             <InputField
               id="endDate"
-              label={t("candidatePage.profile.end-date")}
+              label={t('candidatePage.profile.end-date')}
               type="date"
-
-              {...register("endDate")}
+              {...register('endDate')}
               error={errors.endDate?.message}
             />
           </div>
 
           <DialogFooter className="flex items-center justify-center!">
-            <Button className="w-1/3" size={"pill"} type="submit" disabled={isSaving}>
-              {isSaving ? t("candidatePage.common.saving") : education?.id ? t("common.save") : t("candidatePage.common.add")}
+            <Button
+              className="w-1/3"
+              size={'pill'}
+              type="submit"
+              disabled={isSaving}
+            >
+              {isSaving
+                ? t('candidatePage.common.saving')
+                : education?.id
+                  ? t('common.save')
+                  : t('candidatePage.common.add')}
             </Button>
           </DialogFooter>
         </form>

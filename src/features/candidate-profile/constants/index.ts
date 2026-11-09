@@ -102,3 +102,9 @@ export const CANDIDATE_SIDEBAR_BOTTOM_LINKS: readonly SidebarLinkItem[] = [
     icon: Settings,
   },
 ];
+
+// Figma icons with no lucide equivalent (profile side panel info list).
+export const PROFILE_INFO_ICONS = {
+  religion: '/assets/candidate-profile/religion.svg',
+  domain: '/assets/candidate-profile/domain.svg',
+} as const;

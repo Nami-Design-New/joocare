@@ -56,6 +56,9 @@
   --color-question-card-accent: var(--question-card-accent);
   --color-question-card-radio: var(--question-card-radio);
   --color-question-card-chip: var(--question-card-chip);
+  --color-profile-accent: var(--profile-accent);
+  --color-profile-online: var(--profile-online);
+  --color-profile-verified: var(--profile-verified);
   --color-job-status-open: var(--job-status-open);
   --color-job-status-active: var(--job-status-active);
   --color-job-status-passive: var(--job-status-passive);
@@ -224,6 +227,10 @@
   --question-card-accent: #00743e;
   --question-card-radio: #c7d1e0;
   --question-card-chip: #e4f2ec;
+  /* Candidate profile side panel (avatar ring, online dot, verified badge) */
+  --profile-accent: #29b89e;
+  --profile-online: #17993d;
+  --profile-verified: #e5f2e8;
   /* Candidate job search status badge dots */
   --job-status-open: #047857;
   --job-status-active: #2563eb;

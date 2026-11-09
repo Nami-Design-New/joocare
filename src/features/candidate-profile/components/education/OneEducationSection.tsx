@@ -59,9 +59,9 @@ const OneEducationSection = ({
 
   return (
     <>
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-start justify-start gap-2">
-          <div className="bg-accent rounded-full p-2">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start justify-start gap-2 p-3">
+          <div className="bg-assessment-primary/8 flex size-11 shrink-0 items-center justify-center rounded-full">
             <Image
               src={'/assets/building-office-2.svg'}
               alt={t('candidatePage.profile.building-image')}
