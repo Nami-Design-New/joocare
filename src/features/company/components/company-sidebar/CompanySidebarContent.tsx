@@ -16,8 +16,8 @@ const CompanySidebarContent = () => {
   const groups = getCompanySidebarGroups(companyProfileData?.status);
 
   return (
-    <aside className="no-scrollbar flex flex-col gap-4 overflow-y-auto bg-white px-3 py-6 lg:h-[calc(100vh-87px)]">
-      <div className="order-2 flex flex-col gap-4 lg:order-1">
+    <aside className="no-scrollbar flex flex-col gap-4 overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow lg:h-[calc(100vh-87px)] lg:rounded-none lg:shadow-none">
+      <div className="order-2 flex flex-col gap-4 empty:hidden lg:order-1">
         {companyProfileData?.status === "Pending" && (
           <AccountUnderReview companyProfileData={companyProfileData} />
         )}
@@ -32,7 +32,10 @@ const CompanySidebarContent = () => {
         <SidebarNav groups={groups} />
       </div>
 
-      <PostJobCard canPostJob={companyProfileData?.status === "Approved"} />
+      {/* Desktop only: on mobile the sidebar is just the pills row (+ account status). */}
+      <div className="hidden lg:contents">
+        <PostJobCard canPostJob={companyProfileData?.status === "Approved"} />
+      </div>
     </aside>
   );
 };
