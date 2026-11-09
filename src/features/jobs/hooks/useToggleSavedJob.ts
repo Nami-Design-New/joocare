@@ -35,6 +35,8 @@ function patchInfiniteJobsSavedState(
 type UseToggleSavedJobOptions = {
   onSavedChange?: (nextSavedState: boolean) => void;
   onAuthRequired?: () => void;
+  /** Called once the API confirms the job was saved (not on unsave). */
+  onSaved?: () => void;
 };
 
 export function useToggleSavedJob(
@@ -46,7 +48,7 @@ export function useToggleSavedJob(
   const { data: session, status } = useSession();
   const locale = useLocale();
   const [isSaved, setIsSaved] = useState(initialIsSaved);
-  const { onSavedChange, onAuthRequired } = options;
+  const { onSavedChange, onAuthRequired, onSaved } = options;
 
   const mutation = useMutation({
     mutationFn: async (nextSavedState: boolean) => {
@@ -80,6 +82,9 @@ export function useToggleSavedJob(
         previousIsSaved: !nextSavedState,
         snapshots,
       };
+    },
+    onSuccess: (nextSavedState) => {
+      if (nextSavedState) onSaved?.();
     },
     onError: (error, _nextSavedState, context) => {
       setIsSaved(context?.previousIsSaved ?? initialIsSaved);

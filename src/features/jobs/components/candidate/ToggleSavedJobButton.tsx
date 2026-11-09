@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import { Button } from '@/shared/components/ui/button';
 import LoginAlertModal from '@/shared/components/modals/LoginAlertModal';
+import SuccessModal from '@/shared/components/modals/SuccessModal';
 import { useToggleSavedJob } from '../../hooks/useToggleSavedJob';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/lib/utils';
@@ -54,13 +55,26 @@ export default function ToggleSavedJobButton({
 }: ToggleSavedJobButtonProps) {
   const t = useTranslations();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [savedModalOpen, setSavedModalOpen] = useState(false);
   const { isSaved, toggleSaved, isPending } = useToggleSavedJob(
     jobId,
     initialIsSaved,
     {
       onSavedChange,
       onAuthRequired: () => setLoginModalOpen(true),
+      onSaved: () => setSavedModalOpen(true),
     },
+  );
+
+
+  // "Saved successfully" confirmation (close only) after saving a job.
+  const savedModal = (
+    <SuccessModal
+      open={savedModalOpen}
+      onOpenChange={setSavedModalOpen}
+      title={t('common.job-saved-modal.title')}
+      description={t('common.job-saved-modal.description')}
+    />
   );
 
   if (variant === 'icon') {
@@ -70,6 +84,7 @@ export default function ToggleSavedJobButton({
           open={loginModalOpen}
           onOpenChange={setLoginModalOpen}
         />
+        {savedModal}
         <Button
           type="button"
           size="icon"
@@ -92,6 +107,7 @@ export default function ToggleSavedJobButton({
   return (
     <>
       <LoginAlertModal open={loginModalOpen} onOpenChange={setLoginModalOpen} />
+        {savedModal}
       <Button
         type="button"
         variant="outline"

@@ -62,6 +62,10 @@
       "download": "Download",
       "pdf-icon-alt": "PDF icon",
       "no-cv": "No CV available."
+    },
+    "job-saved-modal": {
+      "title": "Saved Successfully!",
+      "description": "The job has been added to your saved jobs. You can find it anytime under Job Applications › Saved."
     }
   },
   "header": {
@@ -406,7 +410,7 @@
       "for-candidate": "For Candidate",
       "email": "Email",
       "password": "Password",
-      "forgot-password": "Forgot password?",
+      "forgot-password": "Forget password?",
       "logging-in": "Logging...",
       "register": "Register",
       "registering": "Registering...",

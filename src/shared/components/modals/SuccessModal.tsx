@@ -11,7 +11,7 @@ import {
 } from '@/shared/components/ui/dialog';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import type { ReactNode } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { cn } from '@/shared/lib/utils';
 import animationData from '../../../../public/assets/lottie/successfully.json';
 
@@ -44,7 +44,11 @@ type ConfirmDialogProps = {
   className?: string;
   actionsClassName?: string;
   children?: ReactNode;
+  /** Closes the modal by itself after this many ms; `false` keeps it open until closed. */
+  autoCloseMs?: number | false;
 };
+
+const DEFAULT_AUTO_CLOSE_MS = 3000;
 
 export default function SuccessModal({
   open,
@@ -61,9 +65,22 @@ export default function SuccessModal({
   className,
   actionsClassName,
   children,
+  autoCloseMs = DEFAULT_AUTO_CLOSE_MS,
 }: ConfirmDialogProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const isSubmittedVariant = variant === 'submitted';
+  // Latest handler, so a re-render while open doesn't restart the timer.
+  const onOpenChangeRef = useRef(onOpenChange);
+
+  useEffect(() => {
+    onOpenChangeRef.current = onOpenChange;
+  }, [onOpenChange]);
+
+  useEffect(() => {
+    if (!open || autoCloseMs === false) return;
+    const timer = setTimeout(() => onOpenChangeRef.current(false), autoCloseMs);
+    return () => clearTimeout(timer);
+  }, [open, autoCloseMs]);
 
   const renderAction = (
     action: SuccessModalAction,
