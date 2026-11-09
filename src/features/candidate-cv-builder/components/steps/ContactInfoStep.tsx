@@ -10,6 +10,7 @@ import CvStepCard from '../wizard/CvStepCard';
 // Step 2: email, phone and LinkedIn.
 export default function ContactInfoStep() {
   const t = useTranslations('candidatePage.buildCv');
+  const tAuth = useTranslations('authPage.placeholders');
   const phone = useController<CvBuilderValues, 'contact.phone'>({
     name: 'contact.phone',
   });
@@ -34,7 +35,7 @@ export default function ContactInfoStep() {
           <PhoneInputCode
             id="contact-phone"
             defaultCountry="SA"
-            international
+            placeholder={tAuth('phone-number')}
             value={phone.field.value}
             onChange={phone.field.onChange}
             onBlur={phone.field.onBlur}

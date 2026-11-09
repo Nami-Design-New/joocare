@@ -8,7 +8,7 @@ const addButtonVariants = cva(
   {
     variants: {
       variant: {
-        /** Green round "+" at the end of an item card (education, certificates). */
+        /** Green round "+" under the item cards (education, certificates). */
         round:
           'bg-cv-builder-primary hover:bg-cv-builder-primary/90 text-primary-foreground h-13 w-21 self-end rounded-full',
         /** Dark round "+" next to an input (responsibilities, skills). */

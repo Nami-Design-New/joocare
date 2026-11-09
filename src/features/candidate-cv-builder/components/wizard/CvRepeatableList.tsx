@@ -15,7 +15,7 @@ type CvRepeatableListProps<N extends CvListName> = {
   addTitle: string;
   createItem: () => FieldArray<CvBuilderValues, N>;
   renderFields: (index: number) => ReactNode;
-  /** Add button at the end of the last card; it opens the add modal. */
+  /** Add button under the cards; it opens the add modal. */
   renderAdd: (openAdd: () => void) => ReactNode;
   /** Replaces the generic add modal (e.g. the shared Education modal). Rendered while open. */
   renderAddModal?: (props: {
@@ -54,9 +54,10 @@ export default function CvRepeatableList<N extends CvListName>({
           }
         >
           {renderFields(index)}
-          {index === fields.length - 1 && renderAdd(() => setAdding(true))}
         </CvRepeatableItem>
       ))}
+      {/* Outside the cards, so it stays visible when the last card is collapsed. */}
+      {renderAdd(() => setAdding(true))}
       {adding &&
         (renderAddModal ? (
           renderAddModal({
