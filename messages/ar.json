@@ -1063,7 +1063,8 @@
       "errors": {
         "required": "هذا الحقل مطلوب",
         "invalid-email": "أدخل بريدًا إلكترونيًا صحيحًا",
-        "invalid-url": "أدخل رابطًا صحيحًا يبدأ بـ https://"
+        "invalid-url": "أدخل رابطًا صحيحًا يبدأ بـ https://",
+        "invalid-gpa": "يجب أن يكون المعدل التراكمي رقمًا بين 0 و 4."
       },
       "steps": {
         "personal": "البيانات الشخصية",
@@ -1160,6 +1161,8 @@
         "country-placeholder": "مثال: مصر",
         "start-date": "تاريخ البداية",
         "end-date": "تاريخ النهاية",
+        "gpa": "المعدل التراكمي",
+        "gpa-placeholder": "مثال: 3.75",
         "add": "إضافة تعليم",
         "add-title": "إضافة تعليم"
       },
@@ -1271,6 +1274,7 @@
         "highlights": "أبرز النقاط",
         "certifications": "الشهادات والتدريب",
         "education": "التعليم",
+        "gpa": "المعدل التراكمي: {value}",
         "languages": "اللغات",
         "additional-info": "معلومات إضافية",
         "nationality": "الجنسية",

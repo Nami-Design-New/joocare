@@ -14,6 +14,7 @@ export const emptyEducation = (): Values<'educations'>[number] => ({
   country: '',
   startDate: '',
   endDate: '',
+  gpa: '',
 });
 
 export const emptyCertificate = (): Values<'certificates'>[number] => ({

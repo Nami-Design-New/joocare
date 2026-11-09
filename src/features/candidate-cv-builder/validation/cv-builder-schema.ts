@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isValidGpa } from '@/shared/lib/gpa';
 
 const URL_PATTERN = /^https?:\/\/\S+\.\S+$/;
 
@@ -6,6 +7,7 @@ type CvBuilderSchemaMessages = {
   required: string;
   invalidEmail: string;
   invalidUrl: string;
+  invalidGpa: string;
 };
 
 // One schema for the whole wizard; each step validates its own key (see CV_BUILDER_STEPS).
@@ -24,6 +26,7 @@ export function createCvBuilderSchema(messages: CvBuilderSchemaMessages) {
     country: optional,
     startDate: optional,
     endDate: optional,
+    gpa: required.refine(isValidGpa, messages.invalidGpa),
   });
   const certificate = z.object({
     name: required,

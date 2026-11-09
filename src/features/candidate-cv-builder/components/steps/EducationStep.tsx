@@ -35,6 +35,12 @@ export default function EducationStep() {
               label={t('university')}
               placeholder={t('university-placeholder')}
             />
+            <CvTextField
+              name={`educations.${index}.gpa`}
+              label={t('gpa')}
+              placeholder={t('gpa-placeholder')}
+              inputMode="decimal"
+            />
             <CvSelectField
               name={`educations.${index}.country`}
               label={t('country')}

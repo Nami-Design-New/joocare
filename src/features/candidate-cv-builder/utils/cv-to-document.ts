@@ -162,6 +162,7 @@ export function toCvDocument(
         degree: item.degree,
         institution: join([item.university, item.country]),
         period: formatPeriod(item.startDate, item.endDate),
+        gpa: item.gpa,
       })),
     languages: personal.languages
       .filter((item) => item.language)
