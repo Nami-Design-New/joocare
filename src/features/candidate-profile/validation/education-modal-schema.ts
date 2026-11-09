@@ -26,9 +26,9 @@ export const createEducationModalSchema = (messages: EducationSchemaMessages) =>
       .trim()
       .min(3, messages.universityMin)
       .max(100, messages.universityMax),
-    countryId: z.string().trim().min(1, messages.countryRequired),
+    country: z.string().trim().min(1, messages.countryRequired),
     startDate: z.string().min(1, messages.startDateRequired),
-    endDate: z.string().optional(),
+    endDate: z.string(),
     gpa: z
       .string()
       .trim()

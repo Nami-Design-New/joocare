@@ -1,38 +1,22 @@
+import {
+  EMPTY_EXPERIENCE_FORM,
+  type ExperienceFormValues,
+} from '@/shared/components/modals/ExperienceFormModal';
 import { OTHER_JOB_TITLE_VALUE } from '../constants/experience';
 import type {
   CandidateExperienceViewModel,
   ExperiencePayload,
-  LookupOptionSource,
 } from '../types/profile.types';
-import type { ExperienceModalFormData } from '../validation/experience-modal-schema';
 
-type PayloadContext = Pick<ExperiencePayload, 'locale' | 'token'>;
+type PayloadContext = Pick<
+  ExperiencePayload,
+  'locale' | 'token' | 'countryId' | 'cityId'
+>;
 
-export const EMPTY_EXPERIENCE_FORM: ExperienceModalFormData = {
-  jobTitle: '',
-  otherJobTitle: '',
-  organizationOrHospitalName: '',
-  employmentTypeId: '',
-  countryId: '',
-  cityId: '',
-  startDate: '',
-  endDate: '',
-  workHere: false,
-  responsibilities: [{ value: '' }],
-};
-
-export function findJobTitleId(title: string, jobTitles: LookupOptionSource[]) {
-  const normalizedTitle = title.trim().toLowerCase();
-  const matchedJobTitle = jobTitles.find(
-    (jobTitle) => jobTitle.title?.trim().toLowerCase() === normalizedTitle,
-  );
-
-  return matchedJobTitle ? String(matchedJobTitle.id) : null;
-}
-
+// The saved title is free text; the modal switches it to the matching job title option once loaded.
 export function toExperienceFormState(
   experience?: CandidateExperienceViewModel | null,
-): ExperienceModalFormData {
+): ExperienceFormValues {
   if (!experience) {
     return EMPTY_EXPERIENCE_FORM;
   }
@@ -40,13 +24,11 @@ export function toExperienceFormState(
   return {
     jobTitle: OTHER_JOB_TITLE_VALUE,
     otherJobTitle: experience.title,
-    organizationOrHospitalName: experience.organization ?? '',
-    employmentTypeId: experience.employmentTypeId ?? '',
-    countryId: experience.countryId ?? '',
-    cityId: experience.cityId ?? '',
+    organization: experience.organization ?? '',
+    employmentType: experience.employmentTypeId ?? '',
     startDate: experience.startDate ?? '',
     endDate: experience.endDate ?? '',
-    workHere: experience.isCurrent,
+    currentlyWorking: experience.isCurrent,
     responsibilities:
       experience.bullets.length > 0
         ? experience.bullets.map((bullet) => ({ value: bullet }))
@@ -55,21 +37,19 @@ export function toExperienceFormState(
 }
 
 export function toExperiencePayload(
-  form: ExperienceModalFormData,
+  form: ExperienceFormValues,
   context: PayloadContext,
 ): ExperiencePayload {
   const isOtherJobTitle = form.jobTitle === OTHER_JOB_TITLE_VALUE;
 
   return {
-    title: isOtherJobTitle ? form.otherJobTitle?.trim() : undefined,
+    title: isOtherJobTitle ? form.otherJobTitle.trim() : undefined,
     jobTitleId: isOtherJobTitle ? undefined : form.jobTitle,
-    company: form.organizationOrHospitalName.trim(),
-    employmentTypeId: form.employmentTypeId || undefined,
-    countryId: form.countryId || undefined,
-    cityId: form.cityId || undefined,
+    company: form.organization.trim(),
+    employmentTypeId: form.employmentType || undefined,
     startDate: form.startDate,
-    endDate: form.workHere ? undefined : form.endDate?.trim(),
-    isCurrent: Boolean(form.workHere),
+    endDate: form.currentlyWorking ? undefined : form.endDate.trim(),
+    isCurrent: form.currentlyWorking,
     responsibilities: form.responsibilities.map((item) => item.value.trim()),
     ...context,
   };

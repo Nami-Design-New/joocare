@@ -21,18 +21,16 @@ export const createExperienceModalSchema = (
   z
     .object({
       jobTitle: z.string().trim().min(1, messages.jobTitleRequired),
-      otherJobTitle: z.string().trim().optional(),
-      organizationOrHospitalName: z
+      otherJobTitle: z.string().trim(),
+      organization: z
         .string()
         .trim()
         .min(3, messages.organizationMin)
         .max(100, messages.organizationMax),
-      employmentTypeId: z.string().optional(),
-      countryId: z.string().optional(),
-      cityId: z.string().optional(),
+      employmentType: z.string(),
       startDate: z.string().min(1, messages.startDateRequired),
-      endDate: z.string().optional(),
-      workHere: z.boolean().default(false),
+      endDate: z.string(),
+      currentlyWorking: z.boolean(),
       responsibilities: z
         .array(
           z.object({
@@ -61,13 +59,13 @@ export const createExperienceModalSchema = (
         path: ['startDate'],
       },
     )
-    .refine((data) => data.workHere || Boolean(data.endDate), {
+    .refine((data) => data.currentlyWorking || Boolean(data.endDate), {
       message: messages.endDateRequired,
       path: ['endDate'],
     })
     .refine(
       (data) =>
-        data.workHere || !data.endDate || data.endDate >= data.startDate,
+        data.currentlyWorking || !data.endDate || data.endDate >= data.startDate,
       {
         message: messages.endDateAfterStart,
         path: ['endDate'],
