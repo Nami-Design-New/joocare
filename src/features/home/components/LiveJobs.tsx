@@ -23,8 +23,8 @@ export const LiveJobs = ({
       <div className="layout-shell">
         <div className="layout-content">
 
-          <header className="mb-10 flex items-end justify-between">
-            <div className="space-y-4">
+          <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between md:mb-10">
+            <div className="min-w-0 space-y-4">
               <SectionTitle sectionTitle={t('home.recent-jobs')} />
               <h2 id="recent-jobs-title">{title}</h2>
             </div>
@@ -36,7 +36,7 @@ export const LiveJobs = ({
                   size: "pill",
                   hoverStyle: "slidehorizontalPrimary",
                 }) +
-                " text-muted-foreground text-sm md:text-base group flex items-center gap-2 border-none font-normal"
+                " text-muted-foreground text-sm md:text-base group flex shrink-0 items-center gap-2 self-end whitespace-nowrap border-none font-normal sm:self-auto"
               }
             >
               {t('home.explore-more')}
