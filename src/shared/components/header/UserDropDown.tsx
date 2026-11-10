@@ -73,7 +73,7 @@ export default function UserDropDown({
     fallbackImage
   );
   const itemClass =
-    "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
+    "group cursor-pointer  flex items-center gap-2 text-base font-semibold text-muted-foreground " +
     "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +
     "hover:text-primary focus:text-primary transition-colors";
 
@@ -113,7 +113,7 @@ export default function UserDropDown({
               />
               <div>
                 <p className="text-lg font-semibold text-black">{displayName as string}</p>
-                <p className="text-md text-muted-foreground font-normal">
+                <p className="text-base text-muted-foreground font-normal">
                   {subtitle}
                 </p>
               </div>
@@ -199,7 +199,7 @@ export default function UserDropDown({
         {/* Logout */}
         <DropdownMenuGroup>
           <DropdownMenuItem
-            className="group text-md text-destructive hover:text-destructive/80 flex cursor-pointer items-center gap-2 bg-transparent font-semibold transition-colors hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent"
+            className="group text-base text-destructive hover:text-destructive/80 flex cursor-pointer items-center gap-2 bg-transparent font-semibold transition-colors hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent"
             onClick={async () => {
               toggleOpen();
               await logout();

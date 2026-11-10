@@ -180,7 +180,7 @@ export const SelectInputField = React.forwardRef<
                 <span>{selectedOption.label}</span>
               </>
             ) : (
-              <span className="text-muted-foreground flex gap-1">
+              <span className="text-muted-foreground flex gap-1 text-xs md:text-sm">
                 {showPlaceholderImage && (
                   <Image
                     src={showPlaceholderImage}

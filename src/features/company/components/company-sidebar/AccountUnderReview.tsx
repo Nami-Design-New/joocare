@@ -18,10 +18,10 @@ const AccountUnderReview = ({ companyProfileData }: { companyProfileData: TCompa
                     className="rounded-full w-15 h-15 object-contain"
                 />
                 <div>
-                    <p className="text-black font-semibold text-md">
+                    <p className="text-black font-semibold text-base">
                         {companyProfileData?.name}
                     </p>
-                    <p className="text-md font-normal mt-1">
+                    <p className="text-base font-normal mt-1">
                         {companyProfileData?.domain?.title}
                     </p>
                 </div>

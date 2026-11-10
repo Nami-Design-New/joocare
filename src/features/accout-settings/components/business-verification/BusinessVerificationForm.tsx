@@ -184,7 +184,7 @@ export default function BusinessVerificationForm() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
-            <div className="bg-input p-5 rounded-2xl flex flex-col justify-between gap-y-5">
+            <div className="bg-input p-2 md:p-5 rounded-2xl flex flex-col justify-between gap-y-5">
                 <h2 className="text-lg text-disabled font-semibold text-start mt-2">
                     {t("companyPage.accountSettings.businessVerification.sections.commercial-registration")}
                 </h2>
@@ -334,7 +334,7 @@ export default function BusinessVerificationForm() {
 
             </div>
 
-            <div className="bg-input p-5 rounded-2xl flex flex-col justify-between gap-y-5">
+            <div className="bg-input p-3 md:p-5 rounded-2xl flex flex-col justify-between gap-y-5">
                 <h2 className="text-lg text-disabled font-semibold text-start mt-2">
                     {t("companyPage.accountSettings.businessVerification.sections.medical-license")}
                 </h2>

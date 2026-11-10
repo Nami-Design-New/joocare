@@ -65,7 +65,7 @@ export default function UserProfileCard({
   );
 
   const itemClass =
-    "group cursor-pointer  flex items-center gap-2 text-md font-semibold text-muted-foreground " +
+    "group cursor-pointer  flex items-center gap-2 text-base font-semibold text-muted-foreground " +
     "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +
     "hover:text-primary focus:text-primary transition-colors";
   return (
@@ -79,8 +79,8 @@ export default function UserProfileCard({
           className="rounded-full h-14 w-14"
         />
         <div>
-          <p className="text-md font-semibold text-black">{displayName as string}</p>
-          <p className="text-md text-muted-foreground font-normal">{subtitle}</p>
+          <p className="text-base font-semibold text-black">{displayName as string}</p>
+          <p className="text-base text-muted-foreground font-normal">{subtitle}</p>
           <Link
             href={profileHref}
             className="text-secondary text-normal flex items-center gap-1 font-normal"

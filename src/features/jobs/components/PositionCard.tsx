@@ -28,12 +28,10 @@ export default function PositionCard({
         />
       </div>
       <div>
-        <h1 className="text-foreground mb-1 text-2xl font-semibold">
-          {title}
-        </h1>
-        <p className="flex items-start gap-2 max-sm:flex-col sm:items-center">
-          <span className="text-muted-foreground text-base font-normal">
-            {t('companyPage.postJob.review.at')} {company}
+        <h6 className="text-foreground text-base md:text-2xl font-semibold mb-1">{title}</h6>
+        <p className="flex max-sm:flex-col items-start sm:items-center gap-2">
+          <span className="text-muted-foreground text-sm md:text-base font-normal">
+            {t("companyPage.postJob.review.at")} {company}
           </span>
           <Badge
             size="sm"

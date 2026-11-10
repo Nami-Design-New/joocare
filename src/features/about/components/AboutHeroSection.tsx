@@ -25,7 +25,7 @@ export default function AboutHeroSection({
   const t = useTranslations();
 
   return (
-    <section className="pt-6 xl:pt-14 xl:pt-18 xl:gap-16 xl:px-0 bg-background">
+    <section className="pt-6 xl:pt-14 xl:gap-16 px-2 xl:px-0 bg-background">
       <div className="layout-shell ">
         <div className="layout-content">
 
@@ -38,11 +38,11 @@ export default function AboutHeroSection({
                 />
               </div>
 
-              <h2 className="text-secondary max-w-lg mb-3 text-3xl leading-tight font-bold xl:text-3xl xl:mb-2 xl:text-4xl">
+              <h2 className="text-secondary max-w-lg mb-3 text-xl md:text-3xl xl:text-4xl leading-tight font-bold xl:mb-2 ">
                 {title}
               </h2>
 
-              <p className="mb-8 max-w-4xl text-left text-xl:leading-relaxed whitespace-pre-line text-gray-600 xl:text-base xl:text-justify">
+              <p className="mb-8 max-w-4xl text-left text-xl:leading-relaxed whitespace-pre-line text-gray-600 text-sm md:text-base xl:text-justify">
                 {description}
               </p>
 
@@ -89,7 +89,7 @@ export default function AboutHeroSection({
           {/* setting impact */}
           <div className="w-full grid grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
             <div className="flex flex-col items-center justify-start p-8 text-center transition-all ">
-              <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
+              <span className="text-foreground flex items-center gap-2 text-xl  font-bold md:text-4xl ">
                 <Plus
                   color="var(--primary)"
                   size={20}
@@ -98,12 +98,12 @@ export default function AboutHeroSection({
                 />
                 {settings?.verified_healthcare_professionals}
               </span>
-              <p className="text-muted-foreground mt-2 text-xl:font-medium">
+              <p className="text-muted-foreground mt-2 text-sm md:text-base md:text-xl:font-medium">
                 {t("home.verified-healthcare-professionals")}
               </p>
             </div>
             <div className="flex flex-col items-center justify-start p-8 text-center transition-all ">
-              <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
+              <span className="text-foreground flex items-center gap-2 text-xl  font-bold md:text-4xl ">
                 <Plus
                   color="var(--primary)"
                   size={20}
@@ -112,12 +112,12 @@ export default function AboutHeroSection({
                 />
                 {settings?.active_job_opportunities}
               </span>
-              <p className="text-muted-foreground mt-2 text-xl:font-medium">
+              <p className="text-muted-foreground mt-2 text-sm md:text-base text-xl:font-medium">
                 {t("home.active-job-opportunities")}
               </p>
             </div>
             <div className="flex flex-col items-center justify-start p-8 text-center transition-all ">
-              <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
+              <span className="text-foreground flex items-center gap-2 text-xl  font-bold md:text-4xl ">
                 <Plus
                   color="var(--primary)"
                   size={20}
@@ -126,15 +126,15 @@ export default function AboutHeroSection({
                 />
                 {settings?.healthcare_specializations_covered}
               </span>
-              <p className="text-muted-foreground mt-2 text-xl:font-medium">
+              <p className="text-muted-foreground mt-2 text-sm md:text-base text-xl:font-medium">
                 {t("home.healthcare-specializations-covered")}
               </p>
             </div>
             <div className="flex flex-col items-center justify-start p-8 text-center transition-all ">
-              <span className="text-foreground flex items-center gap-2 text-2xl font-bold md:text-4xl ">
+              <span className="text-foreground flex items-center gap-2 text-xl  font-bold md:text-4xl ">
                 {settings?.hiring_success_rate} <span className="text-primary">%</span>
               </span>
-              <p className="text-muted-foreground mt-2 text-xl:font-medium">
+              <p className="text-muted-foreground mt-2 text-sm md:text-base text-xl:font-medium">
                 {t("home.hiring-success-rate")}
               </p>
             </div>

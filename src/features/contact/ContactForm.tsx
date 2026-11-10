@@ -148,7 +148,7 @@ export default function ContactForm({
         }
       />
 
-      <h2 className="text-secondary my-4 text-2xl font-bold">
+      <h2 className="text-secondary my-4 text-xl md:text-2xl font-bold">
         {role === "candidate"
           ? t("contactPage.tell-us-how-we-can-help")
           : t("contactPage.send-your-message")}

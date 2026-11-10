@@ -17,9 +17,9 @@ export default function AboutSection({ company }: { company: CompanyProfile }) {
     return (
         <div className="rounded-2xl bg-white flex flex-col gap-4 p-4 border">
             <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold ">{t("sharedCompanyProfilePage.about")}</h3>
+                <h3 className="text-lg font-semibold md:text-xl leading-6.5 ">{t("sharedCompanyProfilePage.about")}</h3>
             </div>
-            <p className="text-muted-foreground text-sm text-justify">
+            <p className="text-muted-foreground text-sm md:text-base text-justify">
                 {company.bio}
             </p>
             <div className="flex gap-2 justify-between items-center">

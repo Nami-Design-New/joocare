@@ -49,11 +49,11 @@ export default function FAQSection({
                   className="bg-muted data-[state=open]:bg-card border-border data-[state=open]:ring-border h-fit rounded-2xl border px-6 py-2 transition-all data-[state=open]:shadow-sm data-[state=open]:ring-1"
                 >
                   <AccordionTrigger className="group py-4 hover:no-underline">
-                    <span className="text-foreground text-left text-lg font-bold md:text-xl">
+                    <span className="text-foreground text-left text-sm font-bold md:text-xl">
                       {item.question}
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
+                  <AccordionContent className="text-muted-foreground pb-6 leading-relaxed text-sm md:text-base text-sm md:text-base">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -67,7 +67,7 @@ export default function FAQSection({
                 variant="outline"
                 size="pill"
                 hoverStyle="slidehorizontalPrimary"
-                className="text-muted-foreground text-md group mt-6 items-center gap-2 border-none font-normal flex"
+                className="text-muted-foreground text-sm md:text-base group mt-6 items-center gap-2 border-none font-normal flex"
                 onClick={handleToggle}
               >
                 {isExpanded ? t('search-filter.show-less') : t('search-filter.show-more')}

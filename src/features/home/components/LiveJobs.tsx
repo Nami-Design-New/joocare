@@ -36,14 +36,14 @@ export const LiveJobs = ({
                   size: "pill",
                   hoverStyle: "slidehorizontalPrimary",
                 }) +
-                " text-muted-foreground text-md group flex items-center gap-2 border-none font-normal"
+                " text-muted-foreground text-sm md:text-base group flex items-center gap-2 border-none font-normal"
               }
             >
               {t('home.explore-more')}
               <ArrowRight
                 size={28}
                 strokeWidth={1.5}
-                className={`border-muted-foreground text-muted-foreground size-7 rounded-full border
+                className={`border-muted-foreground text-muted-foreground size-5 md:size-7 rounded-full border
                bg-white transition-transform  ${locale === 'ar' ? " -rotate-135 group-hover:-rotate-180" : " -rotate-45 group-hover:rotate-0"}`} />
             </Link>
           </header>

@@ -155,7 +155,7 @@ export function AddSkillsModal({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-150 gap-4 rounded-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold text-black">
+          <DialogTitle className="text-xl font-semibold text-black md:text-2xl">
             {t("candidatePage.profile.add-skills")}
           </DialogTitle>
         </DialogHeader>
@@ -179,7 +179,7 @@ export function AddSkillsModal({
         </div>
 
         <div className="space-y-2">
-          <p className="text-sm">{t("candidatePage.profile.suggested-skills-title")}</p>
+          <p className="text-xs md:text-sm">{t("candidatePage.profile.suggested-skills-title")}</p>
           <div className="flex flex-wrap gap-2 rounded-xl bg-[#09760A05] p-3">
             {suggestionSkills.map((skill) => {
               const isSelected = selected.includes(skill.id);
@@ -188,7 +188,7 @@ export function AddSkillsModal({
                   key={skill.id}
                   type="button"
                   onClick={() => toggle(skill.id)}
-                  className={`border-border rounded-full border px-4 py-2 text-sm transition-all ${isSelected
+                  className={`border-border rounded-full border px-4 py-2 text-xs transition-all md:text-sm ${isSelected
                     ? "border-primary bg-primary text-white"
                     : "border-muted hover:border-primary hover:text-primary bg-white text-black"
                     }`}
@@ -198,7 +198,7 @@ export function AddSkillsModal({
               );
             })}
             {suggestionSkills.length === 0 && (
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-xs md:text-sm">
                 {t("candidatePage.profile.no-suggested-skills")}
               </p>
             )}
@@ -209,7 +209,7 @@ export function AddSkillsModal({
           <Button
             onClick={handleAdd}
             disabled={selected.length === 0 || isSuggestionLoading || isSaving}
-            className="rounded-full px-10"
+            className="rounded-full px-10 text-xs md:text-sm"
           >
             {isSaving ? t("candidatePage.common.saving") : t("candidatePage.common.add")}
           </Button>

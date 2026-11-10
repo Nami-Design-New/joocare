@@ -21,7 +21,7 @@ export default async function JobDetailsHeader({ job }: JobDetailsHeaderProps) {
           alt={t('jobDetailsPage.company-logo')}
           width={96}
           height={86}
-          className="h-22 w-24 rounded-2xl"
+          className="rounded-2xl w-18 h-18 md:w-24 md:h-22"
         />
         <div>
           <div className="flex items-center gap-4">
@@ -37,7 +37,7 @@ export default async function JobDetailsHeader({ job }: JobDetailsHeaderProps) {
               </span>
             </div>
             <Badge
-              size="md"
+              size="sm"
               className="bg-job-type rounded-[3px] font-semibold max-sm:text-[10px]"
             >
               {job?.employment_type?.title}

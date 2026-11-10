@@ -24,7 +24,7 @@ export default async function JobDescriptionCard({
 
       <DescriptionSection title={t('jobDetailsPage.qualifications')}>
         <div
-          className="prose prose-sm max-w-none border-b pb-5"
+          className="prose prose-sm max-w-none border-b pb-5 text-sm md:text-base"
           dangerouslySetInnerHTML={{
             __html:
               job.description ||

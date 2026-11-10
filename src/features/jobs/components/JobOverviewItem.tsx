@@ -22,7 +22,7 @@ const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
     <div>
       <div className="flex items-start gap-2">
         {icon && <Image src={icon} width={20} height={20} alt="" />}
-        <p className="text-muted-foreground text-md">{label}</p>
+        <p className="text-muted-foreground text-sm md:text-base">{label}</p>
       </div>
       <div>
         {Array.isArray(value) ? (
@@ -32,9 +32,9 @@ const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
             </p>
           ))
         ) : value ? (
-          <p className="text-foreground font-semibold text-[18px] mt-2">{value}</p>
+          <p className="text-foreground font-semibold text-base md:text-lg mt-2">{value}</p>
         ) : (
-          <p className="text-foreground font-semibold text-[18px] mt-2">{emptyValueLabel}</p>
+          <p className="text-foreground font-semibold text-base md:text-lg mt-2">{emptyValueLabel}</p>
         )}
       </div>
     </div>

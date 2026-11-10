@@ -15,7 +15,7 @@ export default async function HireSection({
     <section id="how-it-works" className="bg-[#EEF8F0] py-12 sm:py-20">
       <div className="layout-container">
         <div className="mb-8 lg:w-[50%]">
-          <h2 className="text-secondary text-4xl leading-tight font-bold sm:text-5xl">
+          <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
             {title}
           </h2>
 

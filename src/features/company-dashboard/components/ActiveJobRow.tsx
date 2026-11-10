@@ -23,6 +23,7 @@ export default function ActiveJobRow({
       <TableCell className="px-4 py-[15.5px] text-start">
         <bdi>{job.job_title?.title ?? job.title}</bdi>
       </TableCell>
+<<<<<<< HEAD
       <TableCell className="px-4 py-[15.5px] text-center">
         {formatDashboardNumber(job.views_num, locale)}
       </TableCell>
@@ -31,6 +32,20 @@ export default function ActiveJobRow({
       </TableCell>
       <TableCell className="text-muted-foreground px-4 py-[15.5px] text-center font-semibold">
         {formatDashboardDate(job.created_at, locale)}
+=======
+      <TableCell className="text-foreground text-base px-4 py-5 font-normal">
+        {isLoading ? <TextSkeleton /> : activeJob?.views_num}
+      </TableCell>
+      <TableCell className="text-foreground text-base px-4 py-5 font-normal">
+        {isLoading ? <TextSkeleton /> : activeJob?.applications_count}
+      </TableCell>
+      <TableCell className="text-foreground text-base px-4 py-5 font-normal">
+        {isLoading ? (
+          <TextSkeleton />
+        ) : (
+          formatDate(activeJob!.created_at)
+        )}
+>>>>>>> 904d2920899c61715b7c7d26b66ee676e42404d3
       </TableCell>
       <TableCell
         className={cn(

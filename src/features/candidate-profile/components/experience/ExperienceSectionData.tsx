@@ -28,7 +28,7 @@ export function ExperienceSectionData({
     <>
       <div className="border-border flex flex-col gap-4 rounded-2xl border bg-white p-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-foreground text-[21px] leading-6.5 font-semibold">
+          <h2 className="text-foreground text-base md:text-lg leading-6.5 font-semibold">
             {t('candidatePage.profile.experience')}
           </h2>
           {!readOnly && (
@@ -54,16 +54,16 @@ export function ExperienceSectionData({
               >
                 <div className="flex items-start justify-between gap-5.5">
                   <div className="flex flex-col gap-2">
-                    <span className="text-primary text-lg font-normal">
+                    <span className="text-primary text-base md:text-lg font-normal">
                       {exp.title}
                     </span>
                     <div className="flex items-center gap-2">
                       {exp.organization && (
-                        <span className="text-sm font-semibold">
+                        <span className="text-xs font-semibold md:text-sm">
                           {exp.organization}
                         </span>
                       )}
-                      <span className="text-secondary flex items-center gap-1 text-[12px]">
+                      <span className="text-secondary flex items-center gap-1 text-[10px] md:text-xs">
                         <CalendarRange size={16} />
                         {exp.startDateLabel ??
                           t('candidatePage.profile.start-date')}{' '}
@@ -88,7 +88,7 @@ export function ExperienceSectionData({
                       {exp.bullets.map((bullet, i) => (
                         <li
                           key={i}
-                          className="text-muted-foreground flex gap-2 text-xs"
+                          className="text-muted-foreground flex gap-2 text-xs md:text-sm"
                         >
                           <span className="text-muted-foreground">•</span>
                           {bullet}
@@ -96,8 +96,8 @@ export function ExperienceSectionData({
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-muted-foreground text-[12px]">
-                      {t('candidatePage.profile.no-details')}
+                    <p className="text-muted-foreground text-[10px] md:text-xs">
+                      {t("candidatePage.profile.no-details")}
                     </p>
                   )}
                 </AccordionContent>
@@ -105,9 +105,7 @@ export function ExperienceSectionData({
             ))}
           </Accordion>
         ) : (
-          <p className="text-muted-foreground text-sm">
-            {t('candidatePage.profile.no-experience')}
-          </p>
+          <p className="text-xs text-muted-foreground md:text-sm">{t("candidatePage.profile.no-experience")}</p>
         )}
       </div>
 
