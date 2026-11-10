@@ -15,7 +15,7 @@ export default function DashboardHiringAlerts() {
   const alerts = dashboardHiringAlerts;
   const total = dashboardDesignAnalytics.alertCount;
   return (
-    <section className="bg-card border-border/60 flex min-h-98 flex-col gap-5 rounded-xl border px-7 py-7 xl:col-span-2">
+    <section className="bg-card border-border/60 flex min-h-98 flex-col gap-5 rounded-xl border px-2 md:px-7 py-7 xl:col-span-2">
       <div>
         <div className="flex flex-wrap items-center gap-2">
           <DashboardIcon name="alert" width={22} height={19} />

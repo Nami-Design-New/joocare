@@ -136,7 +136,7 @@ export function CustomPagination({
 
       {/* Pagination */}
       <Pagination className="mx-0 w-auto justify-end">
-        <PaginationContent className="gap-1">
+        <PaginationContent className="gap-0.5 sm:gap-1">
           {/* Previous */}
           <PaginationItem>
             <PreviousComponent
@@ -155,7 +155,7 @@ export function CustomPagination({
                 }
                 handleChange(currentPage - 1);
               }}
-              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${
+              className={`flex size-7 items-center justify-center rounded-full p-0 sm:size-8 ${
                 isPreviousDisabled
                   ? 'cursor-not-allowed bg-gray-100 text-gray-400 opacity-50'
                   : 'cursor-pointer bg-gray-100 hover:bg-gray-200'
@@ -166,12 +166,32 @@ export function CustomPagination({
           {/* Page Numbers */}
           {pages.map((page, index) => {
             const previousPage = pages[index - 1];
+            // On phones keep only first, last and the pages next to the
+            // current one so the row fits narrow containers (e.g. modals).
+            const isFarFromCurrent =
+              Math.abs(page - currentPage) > 1 &&
+              page !== 1 &&
+              page !== totalPages;
 
             return (
-              <div key={page} className="flex items-center gap-1">
+              <div
+                key={page}
+                className={cn(
+                  'flex items-center gap-0.5 sm:gap-1',
+                  isFarFromCurrent && 'max-sm:hidden',
+                )}
+              >
                 {previousPage && page - previousPage > 1 ? (
                   <PaginationItem>
                     <PaginationEllipsis />
+                  </PaginationItem>
+                ) : previousPage &&
+                  !isFarFromCurrent &&
+                  Math.abs(previousPage - currentPage) > 1 &&
+                  previousPage !== 1 ? (
+                  // Mobile-only gap marker for the pages hidden above.
+                  <PaginationItem className="sm:hidden">
+                    <PaginationEllipsis className="size-7" />
                   </PaginationItem>
                 ) : null}
                 <PaginationItem>
@@ -179,7 +199,7 @@ export function CustomPagination({
                     href={getHref ? getHref(page) : undefined}
                     isActive={page === currentPage}
                     onClick={() => handleChange(page)}
-                    className={`h-8 w-8 rounded-full border-none ${
+                    className={`size-7 rounded-full border-none sm:size-8 ${
                       page === currentPage
                         ? 'bg-primary text-white'
                         : tone === 'strong'
@@ -218,7 +238,7 @@ export function CustomPagination({
                 }
                 handleChange(currentPage + 1);
               }}
-              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${
+              className={`flex size-7 items-center justify-center rounded-full p-0 sm:size-8 ${
                 isNextDisabled
                   ? 'cursor-not-allowed bg-gray-100 text-gray-400 opacity-50'
                   : 'cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200'

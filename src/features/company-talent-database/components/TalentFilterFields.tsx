@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { InputField } from '@/shared/components/InputField';
@@ -26,8 +27,23 @@ export default function TalentFilterFields({
     register,
     formState: { errors },
   } = useFormContext<TalentFilterValues>();
+  // Stable option arrays per field: the Combobox re-syncs its store whenever
+  // `items` changes identity, so rebuilding them on every render loops.
+  const optionsByField = useMemo(
+    () =>
+      new Map(
+        fields.map((field) => [
+          field.key,
+          (field.options ?? []).map((value) => ({
+            value,
+            label: t(`options.${value}`),
+          })),
+        ]),
+      ),
+    [fields, t],
+  );
   return (
-    <div className={cn('grid grid-cols-1 gap-5 md:grid-cols-3', className)}>
+    <div className={cn('grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3', className)}>
       {fields.map((field) => {
         const id = `talent-${field.key}`;
         const label = t(`fields.${field.key}`);
@@ -53,10 +69,7 @@ export default function TalentFilterFields({
             />
           );
         }
-        const options = (field.options ?? []).map((value) => ({
-          value,
-          label: t(`options.${value}`),
-        }));
+        const options = optionsByField.get(field.key) ?? [];
         return (
           <Controller
             key={field.key}

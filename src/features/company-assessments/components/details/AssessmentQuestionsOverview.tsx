@@ -111,7 +111,7 @@ export default function AssessmentQuestionsOverview({
   return (
     <Card
       id="questions-overview"
-      className="gap-3 rounded-2xl border-0 px-4 py-4 shadow-none md:px-5"
+      className="min-w-0 gap-3 rounded-2xl border-0 px-3 py-3 shadow-none sm:px-4 sm:py-4 md:px-5"
     >
       <h2 className="border-border border-b pb-2 text-[13px] font-semibold">
         {t('questions-overview')}
@@ -122,7 +122,7 @@ export default function AssessmentQuestionsOverview({
         getRowKey={(question) => question.id}
         dir={locale === 'ar' ? 'rtl' : 'ltr'}
         ariaLabel={t('questions-overview')}
-        containerClassName="overflow-hidden rounded-lg border border-border"
+        containerClassName="overflow-x-auto rounded-lg border border-border"
         className="min-w-[640px]"
         headerRowClassName="bg-muted hover:bg-muted"
         rowClassName="bg-card odd:bg-muted/50 hover:bg-muted"

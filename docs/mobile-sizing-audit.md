@@ -107,7 +107,7 @@
 | الأولوية | المكان | المشكلة | المقترح |
 |---|---|---|---|
 | ✅ | [CvBuilderWizard.tsx:29](../src/features/candidate-cv-builder/components/wizard/CvBuilderWizard.tsx#L29) (`/candidate/build-cv/create`) | **الصفحة الوحيدة اللي فيها horizontal scroll** (عرضها 440px): الـ grid ملوش أعمدة على الموبيل، فبيتمد على قد الـ stepper (9 خطوات) والفورم بيطلع برا الشاشة | ضيف `grid-cols-1` (= `minmax(0,1fr)`) قبل `lg:grid-cols-[…]` |
-| 🔴 | `/company/talent-database` | **Bug مش مقاسات**: الصفحة بتقع بـ 500 "Maximum update depth exceeded" (infinite setState loop) | محتاج debug |
+| ✅ | `/company/talent-database` | كانت بتقع بـ 500 "Maximum update depth exceeded": الـ Combobox بتاع base-ui كان بياخد arrays جديدة كل render | اتصلّحت: `useMemo` على `cachedSelectedOptions` في MultiSelectInputField، و options ثابتة في TalentFilterFields |
 | ✅ | [PlainBreadcramb.tsx:16-19](../src/shared/components/PlainBreadcramb.tsx#L16) و [Breadcrumb.tsx:36-39](../src/shared/components/Breadcrumb.tsx#L36) | مع العناوين الطويلة ("Build Your Professional CV" و "Professional Credentials") العنوان والـ breadcrumb الاتنين بيتكسروا على سطرين | اتعمل: الـ breadcrumb بقى `shrink-0 whitespace-nowrap`، والعنوان `min-w-0 text-sm`، فالعنوان بس هو اللي بيتكسر |
 | ✅ | كارت التابات اللي فوق صفحات company و candidate (Company Profile / Dashboard…) | الكارت واخد ~90px بسبب padding الكارت + padding التابات | قلل padding الكارت لـ `p-2` على الموبيل |
 | ✅ | Job management: كارت الوظيفة | زراري "Received Applications" و "Job Details" ارتفاعهم ~20px بس، أصغر من tap target مريح | `h-9 sm:h-…` |
