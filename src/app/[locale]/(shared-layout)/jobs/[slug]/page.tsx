@@ -198,7 +198,10 @@ export default async function page({
           <JobDetailsHeader job={jobDetails?.job} />
           <div className="grid grid-cols-1 max-lg:gap-y-5 lg:gap-5 pt-7 lg:grid-cols-3">
             <div className="col-span-2 flex flex-col gap-8">
-              <JobDescriptionCard job={jobDetails?.job} />
+              <JobDescriptionCard
+                job={jobDetails?.job}
+                showEmployerDetails={false}
+              />
               <AboutEmployer employer={jobDetails?.job?.company} />
             </div>
             <div className="col-span-1 flex flex-col gap-8 max-lg:order-first">

@@ -1,8 +1,5 @@
 import { z } from "zod";
-
-function isValidGpaFormat(value: string) {
-  return /^(?:[0-3](?:\.\d+)?|4(?:\.0+)?)$/.test(value);
-}
+import { isValidGpa } from "@/shared/lib/gpa";
 
 type EducationSchemaMessages = {
   degreeMin: string;
@@ -29,14 +26,14 @@ export const createEducationModalSchema = (messages: EducationSchemaMessages) =>
       .trim()
       .min(3, messages.universityMin)
       .max(100, messages.universityMax),
-    countryId: z.string().trim().min(1, messages.countryRequired),
+    country: z.string().trim().min(1, messages.countryRequired),
     startDate: z.string().min(1, messages.startDateRequired),
-    endDate: z.string().optional(),
+    endDate: z.string(),
     gpa: z
       .string()
       .trim()
       .min(1, messages.gpaRequired)
-      .refine((value) => isValidGpaFormat(value), {
+      .refine(isValidGpa, {
         message: messages.gpaInvalid,
       }),
   })

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 
 import { InputField } from "@/shared/components/InputField";
+import PasswordRequirements from "@/shared/components/PasswordRequirements";
 import LabelCheckbox from "@/shared/components/LabelCheckbox";
 import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
 import { SelectInputField } from "@/shared/components/SelectInputField";
@@ -51,8 +52,10 @@ const FormEmployerRegister = () => {
         personFullNameMax: t("authPage.validation.person-full-name-max"),
         phoneRequired: t("authPage.validation.phone-required"),
         phoneMax: t("authPage.validation.phone-max"),
-        passwordMin: t("authPage.validation.password-min"),
-        passwordMax: t("authPage.validation.password-less-than-max"),
+        passwordRequired: t("authPage.validation.password-required"),
+        passwordMin: t("common.password-validation.minimum-error"),
+        passwordMax: t("authPage.validation.password-max"),
+        passwordRules: t("common.password-validation.invalid"),
         confirmAuthorized: t("authPage.validation.confirm-authorized"),
         termsRequired: t("authPage.validation.terms-required"),
       }),
@@ -61,6 +64,7 @@ const FormEmployerRegister = () => {
   });
 
   const email = useWatch({ control, name: "officialEmail" });
+  const createPassword = useWatch({ control, name: "createPassword" });
   const domainsOptions = domains.map(
     (jt: { id: number | string; name?: string; title?: string }) => ({
       label: jt.name ?? jt.title ?? String(jt.id),
@@ -171,10 +175,17 @@ const FormEmployerRegister = () => {
         <InputField
           id="createPassword"
           type="password"
+          hidePasswordErrorMessage
+          aria-describedby="createPassword-password-rules"
           label={t("authPage.common.create-password")}
           placeholder="******"
           {...register("createPassword")}
           error={errors.createPassword?.message}
+        />
+        <PasswordRequirements
+          id="createPassword-password-rules"
+          value={createPassword ?? ""}
+          hasError={!!errors.createPassword}
         />
 
         <Controller
@@ -186,6 +197,7 @@ const FormEmployerRegister = () => {
               checked={field.value}
               onCheckedChange={field.onChange}
               error={errors.confirmRegister?.message}
+              className="text-sm md:text-base"
             >
               {t("authPage.forms.employer-register.confirm-authorized")}
             </LabelCheckbox>
@@ -201,6 +213,7 @@ const FormEmployerRegister = () => {
               checked={field.value}
               onCheckedChange={field.onChange}
               error={errors.termsAndConditions?.message}
+              className="text-sm md:text-base"
             >
               {t("authPage.forms.employer-register.i-agree-to")}{" "}
               <Link

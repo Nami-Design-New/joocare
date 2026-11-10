@@ -1,10 +1,74 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-dashboard-primary: var(--dashboard-primary);
+  --color-dashboard-stat-bg: var(--dashboard-stat-bg);
+  --color-dashboard-teal: var(--dashboard-teal);
+  --color-dashboard-heading: var(--dashboard-heading);
+  --color-dashboard-delta: var(--dashboard-delta);
+  --color-dashboard-delta-bg: var(--dashboard-delta-bg);
+  --color-dashboard-danger: var(--dashboard-danger);
+  --color-dashboard-danger-bg: var(--dashboard-danger-bg);
+  --color-dashboard-coming: var(--dashboard-coming);
+  --color-dashboard-category-blue: var(--dashboard-category-blue);
+  --color-dashboard-category-green: var(--dashboard-category-green);
+  --color-dashboard-category-orange: var(--dashboard-category-orange);
+  --color-chat-primary: var(--chat-primary);
+  --color-chat-list: var(--chat-list);
+  --color-chat-surface: var(--chat-surface);
+  --color-chat-heading: var(--chat-heading);
+  --color-chat-search: var(--chat-search);
+  --color-chat-muted: var(--chat-muted);
+  --color-chat-link: var(--chat-link);
+  --color-match-high: var(--match-high);
+  --color-match-high-text: var(--match-high-text);
+  --color-match-good: var(--match-good);
+  --color-match-good-text: var(--match-good-text);
+  --color-match-review: var(--match-review);
+  --color-match-review-text: var(--match-review-text);
+  --color-match-limited: var(--match-limited);
+  --color-match-limited-text: var(--match-limited-text);
+  --color-match-low: var(--match-low);
+  --color-match-low-text: var(--match-low-text);
+  --color-match-primary: var(--match-primary);
+  --color-match-check: var(--match-check);
+  --color-cv-builder-primary: var(--cv-builder-primary);
+  --color-cv-builder-draft: var(--cv-builder-draft);
+  --color-cv-builder-danger: var(--cv-builder-danger);
+  --color-tagline-border: var(--tagline-border);
+  --color-ats-primary: var(--ats-primary);
+  --color-ats-icon-surface: var(--ats-icon-surface);
+  --color-ats-badge: var(--ats-badge);
+  --color-cv-builder-edit: var(--cv-builder-edit);
+  --color-cv-builder-skill-surface: var(--cv-builder-skill-surface);
+  --color-cv-builder-skill-text: var(--cv-builder-skill-text);
+  --color-cv-builder-skill-border: var(--cv-builder-skill-border);
+  --color-question-card-surface: var(--question-card-surface);
+  --color-question-card-border: var(--question-card-border);
+  --color-question-card-title: var(--question-card-title);
+  --color-question-card-text: var(--question-card-text);
+  --color-question-card-hint: var(--question-card-hint);
+  --color-question-card-icon-bg: var(--question-card-icon-bg);
+  --color-question-card-accent: var(--question-card-accent);
+  --color-question-card-radio: var(--question-card-radio);
+  --color-question-card-chip: var(--question-card-chip);
+  --color-answer-missing: var(--answer-missing);
+  --color-profile-accent: var(--profile-accent);
+  --color-profile-online: var(--profile-online);
+  --color-profile-verified: var(--profile-verified);
+  --color-job-status-open: var(--job-status-open);
+  --color-job-status-active: var(--job-status-active);
+  --color-job-status-passive: var(--job-status-passive);
+  --color-chat-danger: var(--chat-danger);
+  --color-chat-danger-bg: var(--chat-danger-bg);
+  --color-chat-warning: var(--chat-warning);
+  --color-chat-warning-bg: var(--chat-warning-bg);
+  --color-chat-warning-border: var(--chat-warning-border);
+  --color-chat-dashed: var(--chat-dashed);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-outfit: var(--font-outfit);
@@ -32,6 +96,7 @@
   --color-secondary-08: var(--secondary-08);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-application-primary: var(--application-primary);
   --color-primary-bg: var(--primary-bg);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
@@ -48,19 +113,160 @@
   --color-warning: var(--warning);
   --color-warning-bg: var(--warning-bg);
   --color-warning-foreground: var(--warning-foreground);
+  --color-warning-strong: var(--warning-strong);
+  --color-job-type: var(--job-type);
+  --color-caution: var(--caution);
   --shadow-header: 0 12px 24px 0 oklch(0 0 0 / 5%);
   --shadow-card: 0 12px 20px 0 oklch(0 0 0 / 5%);
   --shadow-soft: 0 0 20px var(--shadow-soft);
   --color-soft-overlay: var(--soft-overlay);
   --color-body-bg: var(--body-bg);
+  --color-assessment-primary: var(--assessment-primary);
+  --color-assessment-action: var(--assessment-action);
+  --color-assessment-border: var(--assessment-border);
+  --color-assessment-surface: var(--assessment-surface);
+  --color-assessment-control: var(--assessment-control);
+  --color-assessment-heading: var(--assessment-heading);
+  --color-assessment-muted: var(--assessment-muted);
+  --color-assessment-info: var(--assessment-info);
+  --color-assessment-info-icon: var(--assessment-info-icon);
+  --color-assessment-info-border: var(--assessment-info-border);
+  --color-assessment-link-info: var(--assessment-link-info);
+  --color-assessment-link-info-border: var(--assessment-link-info-border);
+  --color-assessment-link-info-text: var(--assessment-link-info-text);
+  --color-assessment-copy: var(--assessment-copy);
+  --color-assessment-close: var(--assessment-close);
+  --color-assessment-outline: var(--assessment-outline);
+  --color-assessment-warning: var(--assessment-warning);
+  --color-assessment-missing: var(--assessment-missing);
+  --color-assessment-error: var(--assessment-error);
+  --color-assessment-dark: var(--assessment-dark);
+  --color-assessment-main: var(--assessment-main);
+  --color-assessment-absent: var(--assessment-absent);
   --bg-primary-gradient: var(--primary-gradient);
   --color-card-hover: var(--card-hover);
+  --color-gray-45: var(--gray-45);
+  --color-avatar-teal: var(--avatar-teal);
+  --color-avatar-teal-bg: var(--avatar-teal-bg);
+  --color-avatar-amber: var(--avatar-amber);
+  --color-avatar-amber-bg: var(--avatar-amber-bg);
+  --color-avatar-slate: var(--avatar-slate);
+  --color-avatar-slate-bg: var(--avatar-slate-bg);
+  --color-avatar-green: var(--avatar-green);
+  --color-avatar-green-bg: var(--avatar-green-bg);
+  --color-why-bg: var(--why-bg);
+  --color-why-bg-glow: var(--why-bg-glow);
+  --color-why-bg-mid: var(--why-bg-mid);
+  --color-why-ink: var(--why-ink);
+  --color-why-ink-muted: var(--why-ink-muted);
+  --color-why-line: var(--why-line);
+  --color-why-mint: var(--why-mint);
+  --color-why-green: var(--why-green);
+  --color-why-green-light: var(--why-green-light);
+  --color-legacy-accent: var(--legacy-accent);
+  --color-legacy-accent-light: var(--legacy-accent-light);
 }
 
 /* ════════════════════════════════════════
    LIGHT MODE — Joo Care Brand Theme
 ════════════════════════════════════════ */
 :root {
+  --dashboard-primary: var(--assessment-primary);
+  --application-primary: var(--assessment-primary);
+  --dashboard-activity-fill: #09760a;
+  --dashboard-stat-bg: #f7faf7;
+  --dashboard-teal: #006565;
+  --dashboard-heading: #3e4949;
+  --dashboard-delta: #0d9488;
+  --dashboard-delta-bg: #f0fdfa;
+  --dashboard-danger: #93000a;
+  --dashboard-danger-bg: #ffdad6;
+  --dashboard-coming: #b54808;
+  --dashboard-category-blue: #427ab3;
+  --dashboard-category-green: #8dae69;
+  --dashboard-category-orange: #e68c2b;
+  --chat-primary: #076914;
+  --chat-list: #f3f4f5;
+  --chat-surface: #f3f4f6;
+  --chat-heading: #191c1d;
+  --chat-search: #6e7979;
+  --chat-muted: #4b5563;
+  --chat-link: #1f6dd8;
+  /* AI job match levels (dot / border = base, label = text) */
+  --match-high: #047828;
+  --match-high-text: #046422;
+  --match-good: #7ac143;
+  --match-good-text: #3e821e;
+  --match-review: #f2c200;
+  --match-review-text: #8a6d00;
+  --match-limited: #f28c1b;
+  --match-limited-text: #a85a00;
+  --match-low: #e53935;
+  --match-low-text: #b3261e;
+  --match-primary: var(--assessment-primary);
+  --match-check: #10b981;
+  /* CV builder (landing states + wizard) */
+  --cv-builder-primary: var(--assessment-primary);
+  --cv-builder-draft: #b54708;
+  --cv-builder-danger: #d92e21;
+  --tagline-border: #2e90a61a;
+  /* CV match with ATS */
+  --ats-primary: var(--assessment-primary);
+  --ats-icon-surface: #ddeedf;
+  --ats-badge: #d5ebd9;
+  --cv-builder-edit: #0654c9;
+  --cv-builder-skill-surface: #eaf6ed;
+  --cv-builder-skill-text: #075e1b;
+  --cv-builder-skill-border: #087b22;
+  /* Yes / no question card (mobility: relocation, driving license) */
+  --question-card-surface: #fdfefe;
+  --question-card-border: #edf0f5;
+  --question-card-title: #0b1025;
+  --question-card-text: #63738f;
+  --question-card-hint: #77869f;
+  --question-card-icon-bg: #ddefe7;
+  --question-card-accent: #00743e;
+  --question-card-radio: #c7d1e0;
+  --question-card-chip: #e4f2ec;
+  /* Screening answers review: unanswered (missing) question */
+  --answer-missing: #d97706;
+  /* Candidate profile side panel (avatar ring, online dot, verified badge) */
+  --profile-accent: #29b89e;
+  --profile-online: #17993d;
+  --profile-verified: #e5f2e8;
+  /* Candidate job search status badge dots */
+  --job-status-open: #047857;
+  --job-status-active: #2563eb;
+  --job-status-passive: #6b7280;
+  --chat-danger: #dc2626;
+  --chat-danger-bg: #fef2f2;
+  --chat-warning: #92400e;
+  --chat-warning-bg: #fffbeb;
+  --chat-warning-border: #f59e0b;
+  --chat-dashed: #c4cad0;
+  --assessment-action: #007300;
+  --assessment-border: #dde2e6;
+  --assessment-surface: #f9fafb;
+  --assessment-control: #f3f5f8;
+  --assessment-heading: #11171d;
+  --assessment-muted: #636a71;
+  --assessment-info: #eef6ef;
+  --assessment-info-icon: #ddeedf;
+  --assessment-info-border: #cfe3d2;
+  --assessment-link-info: #eff6ff;
+  --assessment-link-info-border: #2563eb;
+  --assessment-link-info-text: #2563eb;
+  --assessment-copy: #4b5563;
+  --assessment-close: #eef0f2;
+  --assessment-outline: #c4cad0;
+  --assessment-warning: #f59e0b;
+  --assessment-missing: rgb(217 119 6);
+  --assessment-error: #dc2626;
+  --assessment-dark: #0d0d0d;
+  --assessment-main: #1c2629;
+  --assessment-absent: #6b7375;
+  --assessment-primary: #076914;
+  --assessment-primary-bg: #07691414;
   --radius: 0.75rem;
 
   /* Surfaces */
@@ -89,6 +295,30 @@
   --muted-foreground: oklch(0.089 0 0 / 65%); /* #0d0d0da6 — gray */
   --gray-45: #0d0d0d73; /*  — grayLight */
 
+  /* Avatar initials — candidate avatar stacks */
+  --avatar-teal: #197d6d;
+  --avatar-teal-bg: #dcf7f0;
+  --avatar-amber: #e78b30;
+  --avatar-amber-bg: #ffeecd;
+  --avatar-slate: #6a727e;
+  --avatar-slate-bg: #edf0f4;
+  --avatar-green: #21914e;
+  --avatar-green-bg: #d8fae0;
+
+  /* Home "Why Joocare" — dark AI engine section */
+  --why-bg: #0b1012;
+  --why-bg-glow: #17211f;
+  --why-bg-mid: #111819;
+  --why-ink: #e9f1ec;
+  --why-ink-muted: rgba(233, 241, 236, 0.68);
+  --why-line: rgba(206, 243, 213, 0.12);
+  --why-grid: rgba(206, 243, 213, 0.045);
+  --why-mint: #cef3d5;
+  --why-green: #1fad36;
+  --why-green-light: #61d174;
+  --legacy-accent: #c9806f;
+  --legacy-accent-light: #de9886;
+
   /* Accent — lighter green tint for hover/active states */
   --accent: oklch(0.468 0.148 145 / 8%); /* second-color08 */
   --accent-foreground: #00694b;
@@ -108,6 +338,9 @@
   --warning: oklch(0.748 0.157 66); /* #f59e0b */
   --warning-bg: #f59e0b0d;
   --warning-foreground: oklch(0.089 0 0);
+  --warning-strong: #b45309;
+  --job-type: #0ba02c;
+  --caution: #da4d01;
 
   /* Sidebar */
   --sidebar: oklch(1 0 0);
@@ -165,6 +398,9 @@
   --warning: oklch(0.8 0.16 66);
   --warning-bg: #f59e0b0d;
   --warning-foreground: oklch(0.089 0 0);
+  --warning-strong: #f59e0b;
+  --job-type: #22c55e;
+  --caution: #f97316;
 
   --sidebar: oklch(0.17 0 0);
   --sidebar-foreground: oklch(0.95 0 0);
@@ -187,30 +423,60 @@
   body {
     @apply text-foreground;
   }
+  /* Tailwind v4 no longer sets a pointer cursor on interactive elements. */
+  :is(
+      a[href],
+      button,
+      summary,
+      select,
+      label[for],
+      input[type='checkbox'],
+      input[type='radio'],
+      input[type='file'],
+      [role='button'],
+      [role='option'],
+      [role='menuitem'],
+      [role='menuitemcheckbox'],
+      [role='menuitemradio'],
+      [role='tab'],
+      [role='radio'],
+      [role='checkbox'],
+      [role='switch'],
+      [role='combobox']
+    ):not(:disabled, [aria-disabled='true'], [data-disabled]) {
+    cursor: pointer;
+  }
+  :is(button, [role='button'], [role='option'], [role='menuitem']):is(
+      :disabled,
+      [aria-disabled='true'],
+      [data-disabled]
+    ) {
+    cursor: not-allowed;
+  }
   h1 {
-    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-size: clamp(1.25rem, 4vw, 3rem);
     @apply text-secondary font-bold;
   }
   h2 {
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-size: clamp(1.1rem, 2vw, 1.75rem);
     @apply text-secondary font-semibold;
   }
 
-  input[type="password"]::-ms-reveal,
-  input[type="password"]::-ms-clear {
+  input[type='password']::-ms-reveal,
+  input[type='password']::-ms-clear {
     display: none;
   }
 
   /* iOS Safari can fail to paint masked characters when a custom web font or
      its private password-decoration pseudo-elements are overridden. */
-  input[type="password"] {
+  input[type='password'] {
     color: var(--foreground);
     -webkit-text-fill-color: var(--foreground);
     font-family: Arial, Helvetica, sans-serif;
     opacity: 1;
   }
 
-  input[type="password"]::placeholder {
+  input[type='password']::placeholder {
     color: var(--muted-foreground);
     -webkit-text-fill-color: var(--muted-foreground);
     opacity: 1;
@@ -273,6 +539,18 @@
   .bg-primary-gradient {
     background: var(--bg-primary-gradient);
   }
+  .bg-why-grid {
+    background-image:
+      linear-gradient(var(--why-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--why-grid) 1px, transparent 1px);
+    background-size: 44px 44px;
+    background-position: center;
+    mask-image: radial-gradient(
+      ellipse 80% 75% at 50% 55%,
+      black 35%,
+      rgb(0 0 0 / 50%) 100%
+    );
+  }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -284,7 +562,7 @@
   .dashed-list {
     list-style: none;
     li::marker {
-      content: "-   ";
+      content: '-   ';
     }
   }
 }
@@ -295,13 +573,13 @@
 }
 
 .bg-before::before {
-  content: "";
+  content: '';
   position: absolute;
 
   min-width: 24px;
   height: 100%;
   inset-inline-start: 0;
-  background-image: url("../../public/assets/footer2.svg");
+  background-image: url('../../public/assets/footer2.svg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -310,12 +588,12 @@
 }
 
 .bg-container {
-  background-image: url("../../public/assets/container.svg");
+  background-image: url('../../public/assets/container.svg');
   background-color: var(--color-primary);
 }
 .bg-container-gray {
   /* background-image: url("../../public/assets/why.svg"); */
-  background-image: url("../../public/assets/why.png");
+  background-image: url('../../public/assets/why.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -323,7 +601,7 @@
 }
 .bg-container-gray-ar {
   /* background-image: url("../../public/assets/why.svg"); */
-  background-image: url("../../public/assets/why-ar.png");
+  background-image: url('../../public/assets/why-ar.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -332,7 +610,7 @@
 @media (max-width: 1024px) {
   .bg-container-gray,
   .bg-container-gray-ar {
-    background-image: url("../../public/assets/why-vertical.png");
+    background-image: url('../../public/assets/why-vertical.png');
   }
 }
 
@@ -457,7 +735,7 @@
 .bg-container,
 .bg-container-gray,
 .bg-container-gray-ar,
-[class*="gradient"] {
+[class*='gradient'] {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
   backface-visibility: hidden;

@@ -11,6 +11,10 @@ export async function jobStepTwoService(
     payload.skills.forEach((skillId, index) => {
         formData.append(`skills[${index}]`, String(skillId));
     });
+    // Pending backend support; keep the field name documented by the jobs handoff.
+    if (payload.screening_questions) {
+        formData.append("screening_questions", JSON.stringify(payload.screening_questions));
+    }
 
     const response = await apiFetch(
         `${process.env.NEXT_PUBLIC_BASE_COMPANY_URL}/jobs-step-two/${jobId}`,
@@ -20,7 +24,6 @@ export async function jobStepTwoService(
             token,
         }
     );
-    // console.log("response Jobs-step-two :::", response);
     if (!response.ok) {
         throw new Error(response.message ?? "Failed to submit step two");
     }

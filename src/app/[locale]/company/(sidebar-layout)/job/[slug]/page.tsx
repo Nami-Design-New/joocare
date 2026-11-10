@@ -44,7 +44,7 @@ export default async function JobDetailsPage({
   const job = jobDetails.job;
   const jobTitle = job.title ?? job.job_title?.title ?? t("companyPage.jobDetails.untitled-job");
   const companyName = job.company?.name ?? t("companyPage.jobDetails.your-company");
-  const statusLabel = job.current_status?.status ?? job.status;
+  const status = normalizeJobStatus(job.current_status?.status ?? job.status);
   const statusDate = job.current_status?.updated_at ?? job.updated_at;
 
   return (
@@ -56,14 +56,12 @@ export default async function JobDetailsPage({
             title={jobTitle}
             company={companyName}
             employmentType={job.employment_type?.title ?? t("jobsPage.not-specified")}
-            status={normalizeJobStatus(statusLabel)}
-            closingDate={statusDate}
+            status={status}
+            statusDate={statusDate}
             actions={
               <JobActionButtons
                 jobId={job.id}
-                candidatesHref={`/company/job/candidates/${job.id}`}
-                applicationsCount={job.applications_count}
-                currentStatus={normalizeJobStatus(statusLabel)}
+                currentStatus={status}
                 deleteRedirectTo="/company/job-management"
               />
             }
@@ -77,10 +75,9 @@ export default async function JobDetailsPage({
               <JobLocationAndSalaryCard job={job} />
               <JobOverviewCard job={job} />
               <JobEducationAndCertificationsCard job={job} />
-              <JobShareCard
-                title={jobTitle}
-                path={`/jobs/${job.id}`}
-              />
+              {status === 'open' ? (
+                <JobShareCard title={jobTitle} path={`/jobs/${job.id}`} />
+              ) : null}
             </div>
           </div>
         </section>

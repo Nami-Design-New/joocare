@@ -26,7 +26,7 @@ export default function WizardNavigation({
           variant="outline"
           size="pill"
           onClick={prev}
-          className="w-1/3 lg:w-56"
+          className="w-1/2 px-4 sm:w-1/3 sm:px-8 lg:w-56"
           disabled={isPending}
         >
           {t("completeAccount.actions.prev")}
@@ -39,7 +39,7 @@ export default function WizardNavigation({
           variant="secondary"
           size="pill"
           onClick={next}
-          className="w-1/3 lg:w-56"
+          className="w-1/2 px-4 sm:w-1/3 sm:px-8 lg:w-56"
           disabled={isPending}
         >
           {isPending ? t("common.loading") : t("completeAccount.actions.next")}
@@ -51,7 +51,7 @@ export default function WizardNavigation({
           variant="secondary"
           size="pill"
           type="submit"
-          className="w-1/3 lg:w-56"
+          className="w-1/2 px-4 sm:w-1/3 sm:px-8 lg:w-56"
           disabled={isPending}
         >
           {isPending ? t("common.loading") : t("completeAccount.actions.submit")}

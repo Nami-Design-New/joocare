@@ -20,15 +20,15 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
   const visibleItems = isExpanded ? items : items.slice(0, initialCount);
 
   return (
-    <section className="bg-white py-20">
-      <div className="mx-auto px-4 sm:px-6">
+    <section className="bg-white py-10 sm:py-20">
+      <div className="mx-auto px-0 sm:px-6">
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <div className="mb-6 flex items-center gap-4">
               <CircleQuestionMark size={60} />
             </div>
 
-            <h2 className="text-secondary text-4xl leading-tight font-bold sm:text-5xl">
+            <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
               {title}
             </h2>
           </div>
@@ -41,14 +41,14 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
                     <AccordionItem
                       key={item.id}
                       value={item.id}
-                      className="bg-muted data-[state=open]:bg-card border-border data-[state=open]:ring-border h-fit rounded-2xl border px-6 py-2 transition-all data-[state=open]:shadow-sm data-[state=open]:ring-1"
+                      className="bg-muted data-[state=open]:bg-card border-border data-[state=open]:ring-border h-fit rounded-2xl border px-4 py-1 transition-all sm:px-6 sm:py-2 data-[state=open]:shadow-sm data-[state=open]:ring-1"
                     >
-                      <AccordionTrigger className="group py-4 hover:no-underline">
-                        <span className="text-foreground text-left text-lg font-bold md:text-xl">
+                      <AccordionTrigger className="group py-3 hover:no-underline sm:py-4">
+                        <span className="text-foreground text-left text-sm font-bold md:text-xl">
                           {item.question}
                         </span>
                       </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
+                      <AccordionContent className="text-muted-foreground pb-4 sm:pb-6 leading-relaxed text-sm md:text-base">
                         {item.answer}
                       </AccordionContent>
                     </AccordionItem>
@@ -62,7 +62,7 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
                     variant="outline"
                     size="pill"
                     hoverStyle="slidehorizontalPrimary"
-                    className="text-muted-foreground text-md group mt-6 items-center gap-2 border-none font-normal flex"
+                    className="text-muted-foreground text-sm md:text-base group mt-6 items-center gap-2 border-none font-normal flex"
                     onClick={() => setIsExpanded((prev) => !prev)}
                   >
                     {isExpanded ? t("search-filter.show-less") : t("search-filter.show-more")}

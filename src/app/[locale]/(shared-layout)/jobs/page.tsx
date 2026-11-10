@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 
 import type { PopularSearchesItem } from '@/features/home/components/PopularSearches';
 import { getPopularSearchesPage } from '@/features/home/services/home-service';
@@ -56,7 +56,7 @@ export async function generateMetadata({
   const siteOrigin = getSiteOrigin();
   const canonicalPath = buildJobsPagePath(locale, normalizedParams);
 
-  const ogImage = await getSharedOgImage(locale)
+  const ogImage = await getSharedOgImage(locale);
 
   return {
     title: copy.title,
@@ -74,13 +74,13 @@ export async function generateMetadata({
       url: `${siteOrigin}${canonicalPath}`,
       type: 'website',
       siteName: 'Joocare',
-      images: [{ url: ogImage, width: 1200, height: 630, alt: copy.title }], // ✅
+      images: [{ url: ogImage, width: 1200, height: 630, alt: copy.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: copy.title,
       description: copy.description,
-      images: [ogImage], // ✅
+      images: [ogImage],
     },
   };
 }
@@ -101,7 +101,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     roleCategories: normalizedParams.roleCategories,
     seniorityLevels: normalizedParams.seniorityLevels,
     domains: normalizedParams.domains,
-    // specialties: normalizedParams.specialties,
+    specialties: normalizedParams.specialties,
     experiences: normalizedParams.experiences,
     availabilities: normalizedParams.availabilities,
     categories: normalizedParams.categories,
@@ -139,12 +139,12 @@ export default async function Page({ params, searchParams }: PageProps) {
       name: 'domains[]',
       options: filtersData.domains,
     },
-    // {
-    //   key: "specialties",
-    //   label: "Specialty",
-    //   name: "specialties[]",
-    //   options: filtersData.specialties,
-    // },
+    {
+      key: 'specialties',
+      label: t('jobsPage.filters.specialty'),
+      name: 'specialties[]',
+      options: filtersData.specialties,
+    },
     {
       key: 'experiences',
       label: t('jobsPage.filters.experience'),
@@ -180,7 +180,10 @@ export default async function Page({ params, searchParams }: PageProps) {
       name: 'seniority_levels[]',
       value,
     })),
-    // ...normalizedParams.specialties.map((value) => ({ name: "specialties[]", value })),
+    ...normalizedParams.specialties.map((value) => ({
+      name: 'specialties[]',
+      value,
+    })),
     ...normalizedParams.experiences.map((value) => ({
       name: 'experiences[]',
       value,
@@ -263,7 +266,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   };
 
   return (
-    <section className="bg-body-bg">
+    <section className="bg-body-bg mb-8">
       <GpuFixClient />
       <Breadcrumb
         title={t('header.jobs')}
@@ -302,7 +305,7 @@ export default async function Page({ params, searchParams }: PageProps) {
               salaryTypeOptions={filtersData.salaryTypes}
             />
           </div>
-          <section className="mt-4 rounded-2xl bg-white p-4 lg:mt-6">
+          <section className="mt-4 rounded-2xl bg-white p-0 md:p-4 lg:mt-6">
             {/* ── Mobile / Tablet filter trigger ──────────────────────────── */}
 
             <div className="grid grid-cols-4 lg:gap-6">

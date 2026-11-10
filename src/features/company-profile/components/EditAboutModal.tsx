@@ -6,12 +6,11 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
 import { Button } from "@/shared/components/ui/button";
+import ModalHeading from "@/shared/components/modals/ModalHeading";
 import {
     Dialog,
     DialogContent,
     DialogFooter,
-    DialogHeader,
-    DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { Textarea } from "@/shared/components/ui/textarea";
 
@@ -63,7 +62,7 @@ export function EditAboutModal({
                     toast.success(t("companyPage.profile.about.toasts.updated-successfully"));
                     onOpenChange(false);
                 },
-                onError: (error: any) => {
+                onError: (error: Error) => {
                     toast.error(error?.message || t("companyPage.common.something-went-wrong"));
                 },
             }
@@ -73,11 +72,10 @@ export function EditAboutModal({
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-175 flex flex-col gap-5">
-                <DialogHeader>
-                    <DialogTitle className="text-[28px] text-black">
-                        {t("companyPage.profile.about.modal.title")}
-                    </DialogTitle>
-                </DialogHeader>
+                <ModalHeading
+                    title={t("companyPage.profile.about.modal.title")}
+                    titleClassName="text-black leading-none tracking-normal"
+                />
 
                 {/* FORM */}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

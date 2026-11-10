@@ -1,57 +1,102 @@
-"use client";
+'use client';
 
-import { Link } from "@/i18n/navigation";
-import { Button } from "@/shared/components/ui/button";
+import { Link } from '@/i18n/navigation';
+import { Button } from '@/shared/components/ui/button';
 import {
-  DialogClose,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { Check, Sparkles, X } from "lucide-react";
-import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import { useEffect, useRef } from "react";
-import animationData from "../../../../public/assets/lottie/successfully.json";
+} from '@/shared/components/ui/dialog';
+import Lottie, { LottieRefCurrentProps } from 'lottie-react';
+import type { ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
+import { cn } from '@/shared/lib/utils';
+import animationData from '../../../../public/assets/lottie/successfully.json';
 
 type SuccessModalAction = {
   label: string;
+  icon?: ReactNode;
   href?: string;
   onClick?: () => void;
+  closeOnClick?: boolean;
+  variant?: 'default' | 'outline' | 'link';
+};
+
+type SuccessModalCallout = {
+  title: string;
+  description: string;
 };
 
 type ConfirmDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
-  description: string;
-  variant?: "default" | "submitted";
+  description: ReactNode;
+  variant?: 'default' | 'submitted';
+  visual?: ReactNode;
+  visualClassName?: string;
+  visualWrapperClassName?: string;
+  callout?: SuccessModalCallout;
   primaryAction?: SuccessModalAction;
   secondaryAction?: SuccessModalAction;
+  className?: string;
+  actionsClassName?: string;
+  children?: ReactNode;
+  /** Closes the modal by itself after this many ms; `false` keeps it open until closed. */
+  autoCloseMs?: number | false;
 };
+
+const DEFAULT_AUTO_CLOSE_MS = 3000;
 
 export default function SuccessModal({
   open,
   onOpenChange,
   title,
   description,
-  variant = "default",
+  variant = 'default',
+  visual,
+  visualClassName,
+  visualWrapperClassName,
+  callout,
   primaryAction,
   secondaryAction,
+  className,
+  actionsClassName,
+  children,
+  autoCloseMs = DEFAULT_AUTO_CLOSE_MS,
 }: ConfirmDialogProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
-  const isSubmittedVariant = variant === "submitted";
+  const isSubmittedVariant = variant === 'submitted';
+  // Latest handler, so a re-render while open doesn't restart the timer.
+  const onOpenChangeRef = useRef(onOpenChange);
+
+  useEffect(() => {
+    onOpenChangeRef.current = onOpenChange;
+  }, [onOpenChange]);
+
+  useEffect(() => {
+    if (!open || autoCloseMs === false) return;
+    const timer = setTimeout(() => onOpenChangeRef.current(false), autoCloseMs);
+    return () => clearTimeout(timer);
+  }, [open, autoCloseMs]);
 
   const renderAction = (
     action: SuccessModalAction,
-    buttonVariant: "default" | "outline",
+    buttonVariant: 'default' | 'outline' | 'link',
   ) => {
     if (action.href) {
       return (
-        <Button asChild variant={buttonVariant} size="pill" className="h-11 flex-1">
+        <Button
+          asChild
+          variant={action.variant ?? buttonVariant}
+          size="pill"
+          className="h-11 flex-1 gap-2"
+        >
           <Link href={action.href} onClick={() => onOpenChange(false)}>
             {action.label}
+            {action.icon}
           </Link>
         </Button>
       );
@@ -60,15 +105,19 @@ export default function SuccessModal({
     return (
       <Button
         type="button"
-        variant={buttonVariant}
+        variant={action.variant ?? buttonVariant}
         size="pill"
-        className="h-11 flex-1"
+        className={cn(
+          'h-11 flex-1 gap-2',
+          action.variant === 'link' && 'h-auto min-h-8 p-0 underline',
+        )}
         onClick={() => {
           action.onClick?.();
-          onOpenChange(false);
+          if (action.closeOnClick !== false) onOpenChange(false);
         }}
       >
         {action.label}
+        {action.icon}
       </Button>
     );
   };
@@ -77,49 +126,58 @@ export default function SuccessModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={!isSubmittedVariant}
-        className="max-w-150 rounded-2xl p-8 text-center"
+        className={cn('max-w-150 rounded-2xl p-5 text-center sm:p-8', className)}
       >
-        {/* <div className="relative overflow-hidden rounded-[24px] bg-white px-6 pb-7 pt-12 text-center sm:px-8">
-          <DialogClose asChild>
-            <button
-              type="button"
-              className="absolute left-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition hover:bg-muted hover:text-foreground"
-            >
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </button>
-          </DialogClose>
-        </div> */}
-
-        <div className="mt-15 mb-12 flex w-full items-center justify-center">
-          <div className="h-50 w-50">
-            <Lottie
-              lottieRef={lottieRef}
-              animationData={animationData}
-              height={200}
-              width={200}
-              autoplay={true}
-              loop={true}
-            />
+        <div
+          className={cn(
+            'mt-8 mb-6 flex w-full items-center justify-center sm:mt-15 sm:mb-12',
+            visualWrapperClassName,
+          )}
+        >
+          <div className={cn('h-50 w-50', !visualClassName && 'max-sm:size-36', visualClassName)}>
+            {visual ?? (
+              <Lottie
+                lottieRef={lottieRef}
+                animationData={animationData}
+                height={200}
+                width={200}
+                autoplay={true}
+                loop={true}
+              />
+            )}
           </div>
         </div>
         <DialogHeader>
-          <DialogTitle className="text-foreground text-center text-3xl font-bold">
+          <DialogTitle className="text-foreground text-center text-2xl md:text-3xl font-bold">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-foreground text-center text-lg leading-tight mt-2">
+          <DialogDescription className="text-foreground text-center text-base leading-tight mt-2 sm:text-lg">
             {description}
           </DialogDescription>
-        </DialogHeader>   {
-          primaryAction || secondaryAction ? (
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              {primaryAction ? renderAction(primaryAction, "default") : null}
-              {secondaryAction ? renderAction(secondaryAction, "outline") : null}
-            </div>) : null
-        }
-
-
-      </DialogContent >
-    </Dialog >
+        </DialogHeader>{' '}
+        {callout ? (
+          <div className="bg-primary/10 mt-6 rounded-2xl p-4 text-start">
+            <h3 className="text-foreground text-sm font-semibold">
+              {callout.title}
+            </h3>
+            <p className="text-muted-foreground mt-1 text-sm leading-6">
+              {callout.description}
+            </p>
+          </div>
+        ) : null}
+        {children}
+        {primaryAction || secondaryAction ? (
+          <div
+            className={cn(
+              'mt-8 flex flex-col gap-3 sm:flex-row',
+              actionsClassName,
+            )}
+          >
+            {primaryAction ? renderAction(primaryAction, 'default') : null}
+            {secondaryAction ? renderAction(secondaryAction, 'outline') : null}
+          </div>
+        ) : null}
+      </DialogContent>
+    </Dialog>
   );
 }

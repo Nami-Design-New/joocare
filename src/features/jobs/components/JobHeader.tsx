@@ -1,13 +1,12 @@
-import Image from "next/image";
 import { ReactNode } from "react";
 import { JobActionButtons } from "./JobActionButtons";
 import JobStatusBadge from "./JobStatusBadge";
 import { JobStatus } from "../types/index.types";
-import PositionCard, { positionCardProps } from "./PositionCard";
+import PositionCard, { type PositionCardProps } from "./PositionCard";
 
-type JobHeaderProps = positionCardProps & {
+type JobHeaderProps = PositionCardProps & {
   status: JobStatus;
-  closingDate: string;
+  statusDate?: string | null;
   actions?: ReactNode;
 };
 
@@ -17,7 +16,7 @@ export default function JobHeader({
   company,
   employmentType,
   status,
-  closingDate,
+  statusDate,
   actions,
 }: JobHeaderProps) {
   return (
@@ -29,9 +28,10 @@ export default function JobHeader({
         employmentType={employmentType}
       />
 
-      <div className="flex flex-col items-end gap-2">
+      {/* Buttons and status bar share one width, as in Figma (3 × 131px). */}
+      <div className="flex w-full flex-col gap-4 md:w-102">
         {actions ?? <JobActionButtons />}
-        <JobStatusBadge status={status} closingDate={closingDate} />
+        <JobStatusBadge status={status} date={statusDate} />
       </div>
     </section>
   );

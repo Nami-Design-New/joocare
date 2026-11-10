@@ -27,7 +27,7 @@ export const TestimonialCard = ({
   <div className="bg-card flex flex-col  gap-3 rounded-tl-4xl rounded-br-4xl p-6 h-full w-full">
     <div className="flex justify-between">
       <div>
-        <h5 className="text-secondary text-xl font-normal">{name}</h5>
+        <h5 className="text-secondary text-lg md:text-xl font-normal">{name}</h5>
         <p className="text-muted-foreground text-xs">{date}</p>
       </div>
       <div className="mb-4 flex gap-1">
@@ -43,7 +43,7 @@ export const TestimonialCard = ({
         })}
       </div>
     </div>
-    <p className="text-muted-foreground leading-tight">{text}</p>
+    <p className="text-muted-foreground text-sm md:text-base leading-tight">{text}</p>
   </div>
 );
 
@@ -70,16 +70,16 @@ export const Testimonials = ({
             }}
           >
             {/* Header */}
-            <div className="mb-12 flex items-center justify-between">
-              <div className="space-y-4">
+            <div className="mb-6 flex items-end justify-between gap-3 sm:mb-12 sm:items-center">
+              <div className="min-w-0 space-y-4">
                 <SectionTitle sectionTitle={t('home.what-professionals-say')} />
                 <h2>{title}</h2>
               </div>
 
               {/* Shadcn carousel controls wired to the same Carousel context */}
-              <div className={`flex gap-4 ${locale === "ar" ? "flex-row-reverse" : ""}`}>
-                <CarouselPrevious className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
-                <CarouselNext className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
+              <div className={`flex shrink-0 gap-2 sm:gap-4 ${locale === "ar" ? "flex-row-reverse" : ""}`}>
+                <CarouselPrevious className="border-border text-secondary hover:bg-secondary static size-10 translate-y-0 rounded-full border transition-all hover:text-white sm:size-12" />
+                <CarouselNext className="border-border text-secondary hover:bg-secondary static size-10 translate-y-0 rounded-full border transition-all hover:text-white sm:size-12" />
               </div>
 
             </div>

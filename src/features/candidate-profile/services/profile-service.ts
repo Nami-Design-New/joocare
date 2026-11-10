@@ -75,11 +75,18 @@ function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationVi
   };
 }
 
+function toOptionalId(value: number | null | undefined) {
+  return value ? String(value) : null;
+}
+
 function mapExperience(entry: CandidateProfileApiExperience): CandidateExperienceViewModel {
   return {
     id: String(entry.id),
     title: entry.job_title?.title || entry.title || "Experience",
     organization: entry.company,
+    employmentTypeId: toOptionalId(entry.employment_type_id),
+    countryId: toOptionalId(entry.country_id),
+    cityId: toOptionalId(entry.city_id),
     startDate: entry.start_date,
     endDate: entry.end_date,
     startDateLabel: normalizeDateLabel(entry.start_date),
@@ -159,7 +166,6 @@ export async function getCandidateProfile() {
   );
 
   const user = data?.data;
-  console.log(user);
 
   if (!ok || !user?.id) {
     return null;
@@ -196,6 +202,9 @@ export async function getCandidateProfile() {
     unread_notifications_count: user.unread_notifications_count ?? 0,
     jobTitleId: user.job_title_id ? String(user.job_title_id) : null,
     specialty_title: specialtyTitle,
+    subspecialtyTitle: user.subspecialty_title ?? null,
+    domainId: user.domain_id ? String(user.domain_id) : null,
+    categoryId: user.category_id ? String(user.category_id) : null,
     experienceId: user.experience_id ? String(user.experience_id) : null,
     countryId: user.country_id ? String(user.country_id) : null,
     cityId: user.city_id ? String(user.city_id) : null,

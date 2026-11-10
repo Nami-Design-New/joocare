@@ -23,7 +23,7 @@ export default function AboutFeatureItem({
         <h4 className="text-base font-semibold text-gray-900 sm:text-lg">
           {title}
         </h4>
-        <p className="max-w-md text-gray-600 sm:text-base lg:text-[14px]">
+        <p className="max-w-md text-gray-600 text-sm md:text-base ">
           {description}
         </p>
       </div>

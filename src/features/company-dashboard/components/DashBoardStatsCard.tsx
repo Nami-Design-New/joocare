@@ -1,77 +1,79 @@
-import TextSkeleton from "@/features/company-profile/components/TextSkeleton";
+import type { ReactNode } from 'react';
+import { Skeleton } from '@/shared/components/ui/skeleton';
+import { cn } from '@/shared/lib/utils';
+import DashboardWidgetTitle from './DashboardWidgetTitle';
+import DashboardIcon from './DashboardIcon';
 
-export type statCardBadge = {
-  label: string;
-};
-export type addStatValue = {
-  label: string;
-  value: string;
-};
-
-export type dashboardStatCardType = {
-  /** Card title shown at the top */
+type DashBoardStatsCardProps = {
   title: string;
-
-  /** Primary numeric / text value  e.g. "327" or "+12" */
-  primaryValue: string | number;
-
-  /** Supporting description shown below the primary value */
+  value: string;
   description: string;
-
-  /** Optional SVG icon component rendered on the right side */
-  icon?: React.ReactNode;
-
-  /** Optional inline badge next to the primary value (e.g. "+12 this week") */
-  badge?: statCardBadge;
-
-  addState?: addStatValue;
-
-  /** Extra Tailwind classes forwarded to the root element */
-  className?: string;
+  icon: string;
+  suffix?: string;
+  comparison?: ReactNode;
+  periodSelect?: ReactNode;
   isPending?: boolean;
+  compact?: boolean;
 };
 
 export default function DashBoardStatsCard({
   title,
-  primaryValue,
+  value,
   description,
   icon,
-  badge,
-  addState,
+  suffix,
+  comparison,
+  periodSelect,
   isPending,
-  className = "",
-}: dashboardStatCardType) {
+  compact = false,
+}: DashBoardStatsCardProps) {
   return (
     <section
-      className={`flex h-full items-center gap-4 rounded-xl bg-white p-6 ${className}`}
+      className={cn(
+        'bg-card relative flex min-h-38.75 flex-col gap-4 rounded-2xl p-4 sm:p-6',
+        compact && 'bg-dashboard-stat-bg min-h-26.75 justify-center gap-1',
+      )}
     >
-      <div className="flex grow flex-col gap-4">
-        <h5 className="text-md text-secondary font-semibold">{title}</h5>
-        <div className="flex items-center justify-between gap-2">
-          <p>
-            <span className="text-primary text-3xl font-extrabold">
-              {isPending ? <TextSkeleton /> : primaryValue}{" "}
+      {compact ? (
+        <h2 className="text-muted-foreground text-base leading-5 font-normal">
+          {title}
+        </h2>
+      ) : (
+        <DashboardWidgetTitle title={title} description={description} />
+      )}
+      {periodSelect && (
+        <div className="absolute end-4 top-4.5 sm:end-6">{periodSelect}</div>
+      )}
+      <div className="flex min-h-8.75 items-center gap-2 pe-16">
+        {isPending ? (
+          <Skeleton className="h-9 w-16" />
+        ) : (
+          <p className="text-dashboard-primary text-2xl leading-8.75 sm:text-[28px] font-extrabold">
+            <bdi>{value}</bdi>
+            <span className="text-secondary ms-1 text-base font-normal">
+              {suffix}
             </span>
-            {badge && (
-              <span className="text-md text-muted-foreground font-normal">
-                {badge.label}
-              </span>
-            )}
           </p>
-          {addState && (
-            <p className="">
-              <span className="text-secondary text-xl font-semibold">
-                {isPending ? <TextSkeleton /> : addState.value}
-              </span>{" "}
-              <span className="text-muted-foreground">
-                {isPending ? <TextSkeleton /> : addState.label}
-              </span>{" "}
-            </p>
-          )}
-        </div>
-        <p className="text-muted-foreground text-md">{description}</p>
+        )}
+        {comparison && (
+          <div className="text-secondary absolute end-26 bottom-16 text-base leading-5">
+            {comparison}
+          </div>
+        )}
       </div>
-      {icon}
+      {!compact && (
+        <p className="text-muted-foreground mt-auto text-base leading-5">
+          {description}
+        </p>
+      )}
+      <DashboardIcon
+        name={icon}
+        width={48}
+        className={cn(
+          'absolute end-4 top-13.5 sm:end-6',
+          compact && 'top-1/2 -translate-y-1/2',
+        )}
+      />
     </section>
   );
 }

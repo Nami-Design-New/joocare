@@ -1,0 +1,131 @@
+import type { ProjectCandidateProfile } from '../types/candidate-profile.types';
+
+const experienceBullets = [
+  'Supervise cardiology fellowship training program with 12 fellows',
+  'Chair of the Cardiac Catheterization Lab quality improvement committee',
+];
+
+const qualificationPreview = {
+  degree: "Bachelor's degree, Medicine and Surgery",
+  university: 'Tanta University',
+  countryId: null,
+  countryName: 'Egypt',
+  startDate: '2023-12-21',
+  endDate: '2026-12-21',
+  period: '21 December 2023 - 21 December 2026',
+  image: null,
+};
+
+export const candidateProfilePreview: ProjectCandidateProfile = {
+  profile: {
+    id: 1,
+    name: 'Dr. Ahmed Al-Rashid',
+    email: 'saeed@gmail.com',
+    phone: '1050345200',
+    phoneCode: '+20',
+    fullPhone: '+201050345200',
+    unread_notifications_count: 0,
+    image: '/assets/company-projects/candidate-profile.png',
+    cv: '/assets/company-projects/sample-cv.pdf',
+    bio: 'Board-certified cardiologist with extensive experience in interventional procedures, cardiac imaging, and preventive cardiology. Passionate about patient-centered care and advancing cardiovascular health through innovative treatments.',
+    age: 32,
+    location: 'Cairo, Egypt',
+    jobTitle: 'Consultant Cardiologist',
+    experience: '+12 year',
+    isProfileComplete: true,
+    skills: [
+      'Clinical diagnosis',
+      'Medical',
+      'Emergency',
+      'Effective patient',
+      'Empathy',
+      'Patient care',
+      'Cardiac imaging',
+    ].map((label, index) => ({ id: `skill-${index + 1}`, label })),
+    educations: [
+      {
+        id: 'education-1',
+        university: 'Tanta University',
+        degree: "Bachelor's degree, Medicine and Surgery",
+        gpa: null,
+        period: '2017 - 2021',
+        countryId: null,
+        startDate: '2017-09-01',
+        endDate: '2021-06-30',
+        educationPeriod: '2017 - 2021',
+      },
+    ],
+    experiences: ['experience-1', 'experience-2'].map((id) => ({
+      id,
+      title: 'Consultant Interventional',
+      organization: 'Health care',
+      startDate: '2020-01-01',
+      endDate: null,
+      startDateLabel: 'Jan 2020',
+      endDateLabel: null,
+      isCurrent: true,
+      bullets: experienceBullets,
+    })),
+    missing_score_items: [],
+  },
+  summary: {
+    isOpenToWork: true,
+    lastActive: '2 days ago',
+    details: [
+      { key: 'email', value: 'saeed@gmail.com' },
+      { key: 'location', value: 'Cairo, Egypt' },
+      { key: 'phone', value: '+201050345200' },
+      { key: 'experience', value: '+12 year' },
+      { key: 'specialty', value: 'Cardiology' },
+      { key: 'subspecialty', value: 'Cardiology' },
+      { key: 'age', value: '32' },
+      { key: 'gender', value: 'Male' },
+      { key: 'religion', value: 'Muslim' },
+      { key: 'marital-status', value: 'Married' },
+    ],
+    languages: ['English', 'Arabic', 'French'],
+    drivingLicense: 'Yes',
+    licenseCountries: ['Saudi Arabia', 'Egypt'],
+  },
+  careerPreferences: {
+    desiredDesignations: [
+      'Consultant Cardiologist',
+      'Interventional Cardiologist',
+    ],
+    preferredWorkLocations: ['Saudi Arabia', 'UAE', 'Qatar'],
+    desiredIndustries: ['Hospitals', 'Specialty Clinics'],
+    noticePeriod: '1 month',
+    willingToRelocate: 'Yes',
+  },
+  clinicalPrivileges: [
+    'Coronary Angiography',
+    'PCI / Stenting',
+    'Transesophageal Echo',
+    'Pacemaker Implantation',
+  ],
+  qualifications: [
+    { id: 'qualification-1', ...qualificationPreview },
+    { id: 'qualification-2', ...qualificationPreview },
+  ],
+  certificates: [
+    {
+      id: 'certificate-1',
+      name: 'Advanced Cardiac Life Support (ACLS)',
+      company: 'American Heart Association',
+      startDate: '2023-12-21',
+      endDate: '2026-12-21',
+      period: '21 December 2023 - 21 December 2026',
+      image: null,
+    },
+  ],
+  licenses: [
+    {
+      id: 'license-1',
+      title: 'Saudi Commission for Health Specialties',
+      number: 'SCFHS-2045871',
+      countryId: null,
+      countryName: 'Saudi Arabia',
+      image: null,
+    },
+  ],
+};

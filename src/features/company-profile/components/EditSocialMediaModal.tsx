@@ -2,12 +2,11 @@
 
 import { InputField } from "@/shared/components/InputField";
 import { Button } from "@/shared/components/ui/button";
+import ModalHeading from "@/shared/components/modals/ModalHeading";
 import {
     Dialog,
     DialogContent,
     DialogFooter,
-    DialogHeader,
-    DialogTitle
 } from "@/shared/components/ui/dialog";
 import Image from "next/image";
 import { TCompanyProfileViewModel } from "../types";
@@ -95,9 +94,10 @@ export function EditSocialMediaModal({ open, onOpenChange, companyProfileData }:
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-175 ">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col  gap-5">
-                    <DialogHeader>
-                        <DialogTitle className="text-[28px] text-black">{t("companyPage.profile.social.modal.title")}</DialogTitle>
-                    </DialogHeader>
+                    <ModalHeading
+                        title={t("companyPage.profile.social.modal.title")}
+                        titleClassName="text-black leading-none tracking-normal"
+                    />
 
                     <InputField
                         id="website"

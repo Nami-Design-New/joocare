@@ -1,7 +1,8 @@
 import { formatDistanceToNowStrict } from 'date-fns';
 
 import { getBaseApiUrl } from '@/shared/lib/api-endpoints';
-import { JobDetails, JobListItem } from './types/jobs.types';
+import { assessmentSeeds } from '@/features/company-assessments/constants/assessment-data';
+import { JobDetails, JobLinkedAssessment, JobListItem } from './types/jobs.types';
 import { JobsSearchFilters, JobStatus } from './types/index.types';
 
 function getSingleParam(
@@ -71,7 +72,7 @@ export function normalizeJobsSearchParams(
     maxSalary: getSingleParam(searchParams, 'max_salary'),
     roleCategories: normalizedRoleCategories,
     seniorityLevels: normalizedSeniorityLevels,
-    // specialties: getArrayParam(searchParams, "specialties[]", "specialties"),
+    specialties: getArrayParam(searchParams, 'specialties[]', 'specialties'),
     experiences: getArrayParam(searchParams, 'experiences[]', 'experiences'),
     availabilities: getArrayParam(
       searchParams,
@@ -95,7 +96,7 @@ export function buildJobsQueryString(filters: JobsSearchFilters) {
     ['role_categories[]', filters.roleCategories],
     ['domains[]', filters.domains],
     ['seniority_levels[]', filters.seniorityLevels],
-    // ["specialties[]", filters.specialties],
+    ['specialties[]', filters.specialties],
     ['experiences[]', filters.experiences],
     ['availabilities[]', filters.availabilities],
     ['salary_types[]', filters.salaryTypes],
@@ -140,23 +141,13 @@ export function buildJobsPagePath(locale: string, filters: JobsSearchFilters) {
   return `/${locale}/jobs${queryString ? `?${queryString}` : ''}`;
 }
 
-export function buildSavedJobsPagePath(locale: string, page: number) {
-  const params = new URLSearchParams();
-
-  if (page > 1) {
-    params.set('page', String(page));
-  }
-
-  const queryString = params.toString();
-
-  return `/${locale}/jobs/saved${queryString ? `?${queryString}` : ''}`;
-}
-
 export function buildCandidateApplicationsPagePath(
   locale: string,
   page: number,
+  search = '',
 ) {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams({ tab: 'applied' });
+  if (search) params.set('search', search);
 
   if (page > 1) {
     params.set('page', String(page));
@@ -283,4 +274,75 @@ export function truncateText(text: string, maxLength = 150) {
 export function stripHtml(html: string) {
   if (!html) return '';
   return html.replace(/<[^>]*>/g, '');
+}
+
+export function getCvDownloadFileName(name: string, cvUrl: string) {
+  const urlPath = cvUrl.split('?')[0];
+  const extension = urlPath.includes('.')
+    ? `.${urlPath.split('.').pop() ?? 'pdf'}`
+    : '.pdf';
+  const safeName = name
+    .replace(/[<>:"/\|?*\x00-\x1F]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return `${safeName || 'candidate-cv'}${extension}`;
+}
+
+export function getJobCandidatesHref(jobId: string | number) {
+  return `/company/job/candidates/${jobId}`;
+}
+
+export function getAiTalentMatchHref(jobId: string | number) {
+  return `${getJobCandidatesHref(jobId)}?tab=ai-match`;
+}
+
+export function getPipelineFiltersHref(jobId: string | number, query = '') {
+  return `${getJobCandidatesHref(jobId)}/filters${query ? `?${query}` : ''}`;
+}
+
+// "21 December 2026, 4:00 AM" in the active locale; returns '' for missing/invalid dates.
+export function formatJobDateTime(value: string | null | undefined, locale: string) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(date);
+}
+
+export function getEditJobHref(jobId: string | number) {
+  return `/company/post-job?editId=${jobId}`;
+}
+
+// Opens a draft in the wizard (it starts at step 2, as in Figma).
+export function getCompletePostHref(jobId: string | number) {
+  return `/company/post-job?jobId=${jobId}`;
+}
+
+// "A", "B", … for answer options.
+export function getOptionLetter(index: number) {
+  return String.fromCharCode(65 + index);
+}
+
+export function getInitials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase();
+}
+
+// Linked assessment shown in the wizard preview (preview seeds until the assessments API exists).
+export function getLinkedAssessment(assessmentId?: string): JobLinkedAssessment | null {
+  const assessment = assessmentSeeds.find((item) => item.id === assessmentId);
+  return assessment
+    ? { id: assessment.id, title: assessment.title, category_id: assessment.categoryId }
+    : null;
 }

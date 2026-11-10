@@ -15,10 +15,19 @@ import {
   Base64UploadAdapter,
   List,
   Link,
-  MediaEmbed
+  Heading,
+  Alignment,
+  Underline,
+  Strikethrough,
+  Code,
+  RemoveFormat,
+  CodeBlock,
+  BlockQuote,
+  HorizontalLine,
 } from "ckeditor5";
 
 import "ckeditor5/ckeditor5.css";
+import { useTranslations } from "next-intl";
 
 interface CustomEditorProps {
   value: string;
@@ -26,6 +35,7 @@ interface CustomEditorProps {
 }
 
 export default function CustomEditor({ value, onChange }: CustomEditorProps) {
+  const t = useTranslations("companyPage.postJob.editor");
   return (
     <CKEditor
       editor={ClassicEditor}
@@ -41,6 +51,15 @@ export default function CustomEditor({ value, onChange }: CustomEditorProps) {
           Bold,
           Italic,
           Font,
+          Heading,
+          Alignment,
+          Underline,
+          Strikethrough,
+          Code,
+          RemoveFormat,
+          CodeBlock,
+          BlockQuote,
+          HorizontalLine,
           Image,
           ImageToolbar,
           ImageCaption,
@@ -49,26 +68,33 @@ export default function CustomEditor({ value, onChange }: CustomEditorProps) {
           ImageUpload,
           Base64UploadAdapter,
           List,
-          Link,
-          MediaEmbed
+          Link
         ],
         toolbar: [
           "undo",
           "redo",
           "|",
+          "heading",
+          "|",
+          "alignment",
+          "|",
+          "fontColor",
+          "|",
           "bold",
           "italic",
-          "link",
+          "underline",
+          "strikethrough",
+          "code",
+          "removeFormat",
+          "|",
           "bulletedList",
           "numberedList",
           "|",
-          "fontSize",
-          "fontFamily",
-          "fontColor",
-          "fontBackgroundColor",
-          "|",
+          "link",
           "imageUpload",
-          "mediaEmbed",
+          "codeBlock",
+          "blockQuote",
+          "horizontalLine",
         ],
         image: {
           toolbar: [
@@ -80,11 +106,13 @@ export default function CustomEditor({ value, onChange }: CustomEditorProps) {
             "imageTextAlternative",
           ],
         },
-        fontSize: {
-          options: [9, 11, 13, "default", 17, 19, 21],
-        },
-        mediaEmbed: {
-          previewsInData: true,
+        heading: {
+          options: [
+            { model: 'paragraph', title: t('normal-text'), class: 'ck-heading_paragraph' },
+            { model: 'heading1', view: 'h1', title: t('heading-one'), class: 'ck-heading_heading1' },
+            { model: 'heading2', view: 'h2', title: t('heading-two'), class: 'ck-heading_heading2' },
+            { model: 'heading3', view: 'h3', title: t('heading-three'), class: 'ck-heading_heading3' },
+          ],
         },
       }}
     />

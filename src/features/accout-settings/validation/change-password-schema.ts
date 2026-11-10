@@ -1,4 +1,6 @@
-import { z } from "zod";
+import { z } from 'zod';
+import { isDifferentFromPreviousPassword } from '@/shared/lib/password-rules';
+import { createPasswordSchema } from '@/shared/validation/password-schema';
 
 type CreateChangePasswordSchemaOptions = {
   messages?: {
@@ -6,6 +8,8 @@ type CreateChangePasswordSchemaOptions = {
     newPasswordRequired: string;
     newPasswordMin: string;
     newPasswordMax: string;
+    passwordRules: string;
+    newPasswordSameAsCurrent: string;
     confirmNewPasswordRequired: string;
     passwordsDoNotMatch: string;
   };
@@ -16,23 +20,35 @@ export const createChangePasswordSchema = ({
 }: CreateChangePasswordSchemaOptions = {}) =>
   z
     .object({
-      currentPassword: z
-        .string()
-        .min(1, { message: messages?.currentPasswordRequired ?? "Current password is required" }),
-      newPassword: z
-        .string()
-        .min(1, { message: messages?.newPasswordRequired ?? "New password is required" })
-        .min(6, { message: messages?.newPasswordMin ?? "New password must be at least 6 characters" })
-        .max(15, { message: messages?.newPasswordMax ?? "New password must be at most 15 characters" }),
-      confirmNewPassword: z
-        .string()
-        .min(1, {
-          message: messages?.confirmNewPasswordRequired ?? "Confirm new password is required",
-        }),
+      currentPassword: z.string().min(1, {
+        message:
+          messages?.currentPasswordRequired ?? 'Current password is required',
+      }),
+      newPassword: createPasswordSchema({
+        required: messages?.newPasswordRequired,
+        min: messages?.newPasswordMin,
+        max: messages?.newPasswordMax,
+        rules: messages?.passwordRules,
+      }),
+      confirmNewPassword: z.string().min(1, {
+        message:
+          messages?.confirmNewPasswordRequired ??
+          'Confirm new password is required',
+      }),
     })
+    .refine(
+      (data) =>
+        isDifferentFromPreviousPassword(data.newPassword, data.currentPassword),
+      {
+        message:
+          messages?.newPasswordSameAsCurrent ??
+          'New password must be different from your previous password',
+        path: ['newPassword'],
+      },
+    )
     .refine((data) => data.newPassword === data.confirmNewPassword, {
-      message: messages?.passwordsDoNotMatch ?? "Passwords do not match",
-      path: ["confirmNewPassword"],
+      message: messages?.passwordsDoNotMatch ?? 'Passwords do not match',
+      path: ['confirmNewPassword'],
     });
 
 export const ChangePasswordSchema = createChangePasswordSchema();

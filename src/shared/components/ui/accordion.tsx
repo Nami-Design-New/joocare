@@ -19,13 +19,13 @@ function AccordionItem({
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn("border-b last:border-b-0", className)}
+      className={cn("border-b ", className)}
       {...props}
     />
   );
 }
 
-type IconType = "plus-minus" | "arrow";
+type IconType = "plus-minus" | "arrow" | "circle-arrow";
 
 function AccordionTrigger({
   className,
@@ -63,6 +63,13 @@ function AccordionTrigger({
 
         {iconType === "arrow" && (
           <ChevronDownIcon className="text-black font-bold pointer-events-none size-6 shrink-0 translate-y-0.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+        )}
+
+        {/* Chevron in a 36px grey circle (post-job section cards). */}
+        {iconType === "circle-arrow" && (
+          <span className="bg-muted flex size-9 shrink-0 items-center justify-center rounded-full">
+            <ChevronDownIcon className="text-foreground pointer-events-none size-5 transition-transform duration-200 in-data-[state=open]:rotate-180" />
+          </span>
         )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

@@ -15,7 +15,7 @@ export default async function HireSection({
     <section id="how-it-works" className="bg-[#EEF8F0] py-12 sm:py-20">
       <div className="layout-container">
         <div className="mb-8 lg:w-[50%]">
-          <h2 className="text-secondary text-4xl leading-tight font-bold sm:text-5xl">
+          <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
             {title}
           </h2>
 
@@ -28,9 +28,9 @@ export default async function HireSection({
           {steps.map((step, index) => (
             <article
               key={step.id}
-              className="flex flex-col rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
+              className="flex flex-col rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-8"
             >
-              <div className="flex h-56 items-center justify-center">
+              <div className="flex h-40 items-center sm:h-56 justify-center">
                 <Image
                   src={
                     step.image ||

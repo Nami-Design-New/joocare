@@ -24,6 +24,8 @@ type UseGetCompanyJobsParams = {
     token: string;
     page: number;
     status?: string;
+    search?: string;
+    recruiter?: string;
     initialData?: JobsPage;
 };
 
@@ -31,11 +33,13 @@ export default function useGetCompanyJobs({
     token,
     page,
     status = "",
+    search = "",
+    recruiter = "",
     initialData,
 }: UseGetCompanyJobsParams) {
     const locale = useLocale();
     const query = useQuery({
-        queryKey: ["company-jobs", locale, page, status],
+        queryKey: ["company-jobs", locale, page, status, search, recruiter],
         queryFn: async (): Promise<JobsPage> => {
             const params = new URLSearchParams({
                 page: String(page),
@@ -45,6 +49,15 @@ export default function useGetCompanyJobs({
 
             if (status) {
                 params.set("status", status);
+            }
+
+            // search and recruiter wait on backend support; param names may change.
+            if (search) {
+                params.set("search", search);
+            }
+
+            if (recruiter) {
+                params.set("recruiter", recruiter);
             }
 
             const res = await apiFetch(

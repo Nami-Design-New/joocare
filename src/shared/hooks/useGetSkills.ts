@@ -3,12 +3,13 @@ import { getBaseApiUrl } from "../lib/api-endpoints";
 import { getTimeZone } from "../lib/fetch-manager";
 import { useLocale } from "next-intl";
 
-export default function useGetSkills(search = "", job_title_id = "") {
+export default function useGetSkills(search = "", job_title_id = "", enabled = true) {
   const trimmedSearch = search.trim();
   const locale = useLocale();
   const query = useInfiniteQuery({
     queryKey: ["skills", locale, trimmedSearch, job_title_id],
     initialPageParam: 1,
+    enabled,
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams();
       params.set("page", String(pageParam));

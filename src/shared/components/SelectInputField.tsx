@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { cn } from "../lib/utils";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
+import * as React from 'react';
+import { cn } from '../lib/utils';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import {
   Combobox,
   ComboboxContent,
@@ -12,8 +12,8 @@ import {
   ComboboxItem,
   ComboboxList,
   ComboboxTrigger,
-} from "./ui/combobox";
-import { Button } from "./ui/button";
+} from './ui/combobox';
+import { Button } from './ui/button';
 
 export type Option = {
   label: string;
@@ -24,9 +24,11 @@ export type Option = {
 
 type SelectInputFieldProps = {
   label?: string;
+  hint?: string;
   id: string;
   error?: string | boolean;
   containerStyles?: string;
+  'aria-label'?: string;
   options: Option[];
   placeholder?: string;
   value?: string;
@@ -54,6 +56,7 @@ export const SelectInputField = React.forwardRef<
   (
     {
       label,
+      hint,
       id,
       error,
       options,
@@ -68,7 +71,7 @@ export const SelectInputField = React.forwardRef<
       hasNextPage,
       isFetchingNextPage,
       withSearchInput = false,
-      searchPlaceholder = "",
+      searchPlaceholder = '',
       onSearchChange,
       portalContainer,
       allowDeselect = false,
@@ -77,7 +80,7 @@ export const SelectInputField = React.forwardRef<
     ref,
   ) => {
     const t = useTranslations();
-    const resolvedSearchPlaceholder = searchPlaceholder || t("common.search");
+    const resolvedSearchPlaceholder = searchPlaceholder || t('common.search');
     const listRef = React.useRef<HTMLDivElement | null>(null);
     const observerRef = React.useRef<IntersectionObserver | null>(null);
 
@@ -102,7 +105,7 @@ export const SelectInputField = React.forwardRef<
           },
           {
             root: listRef.current,
-            rootMargin: "100px", // preload before reaching bottom
+            rootMargin: '100px', // preload before reaching bottom
           },
         );
 
@@ -114,22 +117,33 @@ export const SelectInputField = React.forwardRef<
     const selectedOption = options?.find((o) => o.value === value);
 
     return (
-      <div className={cn("flex w-full flex-col", containerStyles)}>
+      <div className={cn('flex w-full flex-col', containerStyles)}>
         {label && (
-          <label htmlFor={id} className="mx-1 mb-1 font-semibold">
-            {label}
-          </label>
+          <div className="mx-1 mb-1 flex items-baseline gap-2">
+            <label htmlFor={id} className="font-semibold">
+              {label}
+            </label>
+            {hint ? (
+              <span className="text-muted-foreground text-xs">{hint}</span>
+            ) : null}
+          </div>
         )}
 
         <Combobox
           id={id}
           items={options}
           value={selectedOption ?? null}
+          // Without a visible search input there is nothing for the user to
+          // type, so the list must never be filtered down (it should behave
+          // like a plain <select>). Base UI otherwise keeps an internal
+          // query synced to the selected label, which can go stale after a
+          // programmatic value change and silently drop items from the list.
+          filter={withSearchInput ? undefined : null}
           onValueChange={(option) => {
-            const nextValue = (option as Option | null)?.value ?? "";
+            const nextValue = (option as Option | null)?.value ?? '';
 
             if (allowDeselect && nextValue === value) {
-              onChange?.("");
+              onChange?.('');
               return;
             }
 
@@ -143,10 +157,10 @@ export const SelectInputField = React.forwardRef<
             render={
               <Button
                 className={cn(
-                  "bg-muted border-input h-13 w-full justify-between rounded-full px-4 text-sm font-normal truncate",
-                  "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                  "disabled:bg-disabled text-foreground",
-                  error && "border-destructive",
+                  'bg-muted border-input h-13 w-full justify-between truncate rounded-full px-4 text-sm font-normal',
+                  'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+                  'disabled:bg-disabled text-foreground',
+                  error && 'border-destructive',
                   className,
                 )}
                 aria-invalid={!!error}
@@ -166,16 +180,16 @@ export const SelectInputField = React.forwardRef<
                 <span>{selectedOption.label}</span>
               </>
             ) : (
-              <span className="text-muted-foreground flex gap-1">
+              <span className="text-muted-foreground flex gap-1 text-xs md:text-sm">
                 {showPlaceholderImage && (
                   <Image
                     src={showPlaceholderImage}
-                    alt={t("common.placeholder-image-alt")}
+                    alt={t('common.placeholder-image-alt')}
                     width={30}
                     height={15}
                   />
                 )}
-                {placeholder || t("common.select-an-option")}
+                {placeholder || t('common.select-an-option')}
               </span>
             )}
           </ComboboxTrigger>
@@ -185,23 +199,23 @@ export const SelectInputField = React.forwardRef<
               <ComboboxInput
                 showTrigger={false}
                 placeholder={resolvedSearchPlaceholder}
-                onChange={(event) => onSearchChange?.(event.currentTarget.value)}
+                onChange={(event) =>
+                  onSearchChange?.(event.currentTarget.value)
+                }
               />
             )}
 
-            <ComboboxEmpty>{t("common.no-results-found")}</ComboboxEmpty>
+            <ComboboxEmpty>{t('common.no-results-found')}</ComboboxEmpty>
 
-            <ComboboxList
-              ref={listRef}
-              className="max-h-60 overflow-y-auto"
-            >
+            <ComboboxList ref={listRef} className="max-h-60 overflow-y-auto">
               {(item: Option) => (
                 <React.Fragment key={item.value}>
                   <ComboboxItem
                     key={item.value}
                     value={item}
                     className={cn(
-                      value === item.value && "bg-accent text-accent-foreground"
+                      value === item.value &&
+                        'bg-accent text-accent-foreground',
                     )}
                   >
                     {item.image && (
@@ -223,7 +237,7 @@ export const SelectInputField = React.forwardRef<
             </ComboboxList>
             {isFetchingNextPage && (
               <div className="text-muted-foreground px-2 pb-2 text-center text-xs">
-                {t("common.loading")}
+                {t('common.loading')}
               </div>
             )}
           </ComboboxContent>
@@ -237,4 +251,4 @@ export const SelectInputField = React.forwardRef<
   },
 );
 
-SelectInputField.displayName = "SelectInputField";
+SelectInputField.displayName = 'SelectInputField';

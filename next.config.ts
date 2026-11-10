@@ -1,3 +1,4 @@
+import path from "node:path";
 import { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
@@ -49,6 +50,11 @@ const nextConfig: NextConfig = {
   },
   webpack: (config) => {
     config.resolve.alias.canvas = false;
+    // pdf.mjs declares its own webpack runtime vars, which crash under the dev eval wrapper.
+    config.resolve.alias["pdfjs-dist$"] = require.resolve(
+      "pdfjs-dist/build/pdf.min.mjs",
+      { paths: [path.dirname(require.resolve("react-pdf"))] },
+    );
 
     return config;
   },

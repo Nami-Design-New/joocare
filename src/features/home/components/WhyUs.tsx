@@ -1,9 +1,10 @@
-import Image from "next/image";
-import Cons from "./Cons";
-import Pros from "./Pros";
-import SectionTitle from "./SectionTitle";
-import type { HomeWhyModel } from "../types/home.types";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl';
+import type { HomePageData } from '../types/home.types';
+import AiEngine from './AiEngine';
+import WhyModelColumn from './WhyModelColumn';
+import WhyTagPill from './WhyTagPill';
+
+type WhyUsProps = HomePageData['whyJoocare'];
 
 export default function WhyUs({
   title,
@@ -13,34 +14,40 @@ export default function WhyUs({
   joocareModelTitle,
   joocareModelDescription,
   joocareModels,
-}: {
-  title: string;
-  legacyModelTitle: string;
-  legacyModelDescription: string;
-  legacyModels: HomeWhyModel[];
-  joocareModelTitle: string;
-  joocareModelDescription: string;
-  joocareModels: HomeWhyModel[];
-}) {
-  const t = useTranslations();
-  const locale = useLocale()
+}: WhyUsProps) {
+  const t = useTranslations('home');
+
   return (
-    <section className="bg-white px-0 py-10">
-      <div className="layout-container mb-16 flex flex-col items-center space-y-4">
-        <SectionTitle sectionTitle={t('home.why-joocare')} />
-        {/* <h2 className="text-center">{title}</h2> */}
-      </div>
-      <div className={` flex flex-col lg:flex-row max-w-[2800px] gap-y-44 lg:gap-y-0 mx-auto ${locale === "ar" ? "bg-container-gray-ar" : "bg-container-gray"}`}>
-        <div className=" layout-container flex flex-col py-10 md:py-20 lg:flex-row lg:pl-22 max-lg:order-1">
-          <Cons
+    <section className="bg-why-bg from-why-bg-glow via-why-bg-mid to-why-bg text-why-ink relative isolate overflow-hidden bg-radial-[1200px_780px_at_50%_60%] via-48%">
+      <div
+        aria-hidden="true"
+        className="bg-why-grid pointer-events-none absolute inset-0 -z-10"
+      />
+      <div className="mx-auto max-w-[1320px] px-4 pt-10 pb-12 md:px-6 md:pt-14 md:pb-16">
+        <header className="mx-auto mb-8 max-w-[920px] text-center md:mb-12">
+          <WhyTagPill tone="model" variant="eyebrow">
+            {t('why-eyebrow')}
+          </WhyTagPill>
+          <h2 className="text-why-ink mt-4 mb-3.5 text-[clamp(30px,3.6vw,50px)] leading-[1.08] font-semibold tracking-[-.02em] rtl:tracking-normal">
+            {title}
+          </h2>
+          <p className="text-why-ink-muted mx-auto max-w-[800px] text-base leading-relaxed font-light md:text-[16.5px]">
+            {t('why-subtitle')}
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-7 xl:grid-cols-[minmax(0,1fr)_minmax(520px,640px)_minmax(0,1fr)]">
+          <WhyModelColumn
+            tone="legacy"
+            tag={t('legacy-model')}
             title={legacyModelTitle}
             description={legacyModelDescription}
             items={legacyModels}
           />
-        </div>
-        <div className="h-[100px] lg:h-0  lg:min-w-[100px] xl:min-w-[150px]"></div>
-        <div className=" layout-container flex flex-col py-10 pr-4 text-white md:py-20 max-lg:-order-1">
-          <Pros
+          <AiEngine className="order-first w-full max-w-[720px] min-w-0 justify-self-center md:col-span-2 md:mb-3 xl:order-none xl:col-span-1 xl:mb-0 xl:max-w-none" />
+          <WhyModelColumn
+            tone="model"
+            tag={t('joocare-model')}
             title={joocareModelTitle}
             description={joocareModelDescription}
             items={joocareModels}
@@ -50,59 +57,3 @@ export default function WhyUs({
     </section>
   );
 }
-// import Image from "next/image";
-// import Cons from "./Cons";
-// import Pros from "./Pros";
-// import SectionTitle from "./SectionTitle";
-// import type { HomeWhyModel } from "../types/home.types";
-
-// export default function WhyUs({
-//   title,
-//   legacyModelTitle,
-//   legacyModelDescription,
-//   legacyModels,
-//   joocareModelTitle,
-//   joocareModelDescription,
-//   joocareModels,
-// }: {
-//   title: string;
-//   legacyModelTitle: string;
-//   legacyModelDescription: string;
-//   legacyModels: HomeWhyModel[];
-//   joocareModelTitle: string;
-//   joocareModelDescription: string;
-//   joocareModels: HomeWhyModel[];
-// }) {
-//   return (
-//     <section className="bg-white px-0 py-10 md:py-20">
-//       <div className="layout-container mb-8 flex flex-col items-center space-y-4">
-//         <SectionTitle sectionTitle="Why Joocare?" />
-//         <h2 className="text-center">{title}</h2>
-//       </div>
-//       <div className="flex flex-col lg:flex-row max-w-[2800px] mx-auto">
-//         <div className="bg-container-gray layout-container flex flex-col py-10 md:py-20 lg:flex-row lg:pl-22">
-//           <Cons
-//             title={legacyModelTitle}
-//             description={legacyModelDescription}
-//             items={legacyModels}
-//           />
-//         </div>
-//         <div className="relative hidden w-70 shrink-0 xl:flex">
-//           <Image
-//             src="/assets/why-container.svg"
-//             fill
-//             alt="Why Joocare"
-//             className="object-cover"
-//           />
-//         </div>
-//         <div className="bg-container layout-container flex flex-col py-10 pr-4 text-white md:py-20">
-//           <Pros
-//             title={joocareModelTitle}
-//             description={joocareModelDescription}
-//             items={joocareModels}
-//           />
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }

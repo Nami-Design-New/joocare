@@ -49,7 +49,7 @@ export default function Hero({
             {title}
             <span className="text-primary"> {subtitle} </span>
           </h1>
-          <p className="text-muted-foreground text-md font-normal md:text-xl">{description}</p>
+          <p className="text-muted-foreground text-sm font-normal md:text-xl">{description}</p>
         </div>
 
         <div className=" min-w-full flex flex-col items-center gap-12 md:gap-18">

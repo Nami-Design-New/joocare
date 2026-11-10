@@ -17,6 +17,12 @@ export type AboutPillar = {
   content: string;
 };
 
+export type AboutContentSection = {
+  title: string;
+  description: string;
+  images: AboutImage[];
+};
+
 export type AboutPageData = {
   aboutSection: {
     title: string;
@@ -29,14 +35,6 @@ export type AboutPageData = {
     items: AboutPillar[];
     images: AboutImage[];
   };
-  vision: {
-    title: string;
-    description: string;
-    images: AboutImage[];
-  };
-  mission: {
-    title: string;
-    description: string;
-    images: AboutImage[];
-  };
+  vision: AboutContentSection;
+  mission: AboutContentSection;
 };

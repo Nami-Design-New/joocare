@@ -1,182 +1,101 @@
-"use client";
+'use client';
 
-import { Link } from "@/i18n/navigation";
-import { useDeleteCompanyJob } from "@/features/jobs/hooks/useDeleteCompanyJob";
-import { useUpdateCompanyJobStatus } from "@/features/jobs/hooks/useUpdateCompanyJobStatus";
-import AlertModal from "@/shared/components/modals/AlertModal";
-import DeleteModal from "@/shared/components/modals/DeleteModal";
-import { Button, buttonVariants } from "@/shared/components/ui/button";
-import { CheckCheck, Edit, EyeOff, Play, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { JobStatus } from "../types/index.types";
-import { useTranslations } from "next-intl";
+import { CheckCheck, Edit, EyeOff, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { Button } from '@/shared/components/ui/button';
+import { cn } from '@/shared/lib/utils';
+import { useJobStatusActions } from '../hooks/useJobStatusActions';
+import type { JobStatus } from '../types/index.types';
+import { getCompletePostHref, getEditJobHref } from '../utils';
+import JobStatusModals from './status/JobStatusModals';
 
 type JobActionButtonsProps = {
   jobId?: number | string;
-  candidatesHref?: string;
-  applicationsCount?: number;
   currentStatus?: JobStatus;
   deleteRedirectTo?: string;
 };
 
+// Figma: equal pills, 34px high, 14px regular.
+const BUTTON_CLASS = 'h-8.5 flex-1 gap-1 rounded-full px-3 text-sm font-normal';
+const ICON_CLASS = 'size-4';
+
 export function JobActionButtons({
   jobId,
-  candidatesHref,
-  applicationsCount,
-  currentStatus = "open",
+  currentStatus = 'open',
   deleteRedirectTo,
 }: JobActionButtonsProps) {
   const t = useTranslations();
-  const [closeJob, setCloseJob] = useState(false);
-  const [reactivateJob, setReactivateJob] = useState(false);
-  const [pauseJob, setPauseJob] = useState(false);
-  const [deleteJob, setDeleteJob] = useState(false);
-  const { updateStatus, isPending } = useUpdateCompanyJobStatus(jobId, {
-    onSuccess: () => {
-      setCloseJob(false);
-      setPauseJob(false);
-      setReactivateJob(false);
-      window.location.reload()
-    },
-  });
-  const { deleteJob: deleteCompanyJob, isPending: isDeleting } = useDeleteCompanyJob(jobId, {
-    redirectTo: deleteRedirectTo,
-    onSuccess: () => {
-      setDeleteJob(false);
-    },
-  });
+  const actions = useJobStatusActions({ deleteRedirectTo });
+  if (!jobId) return null;
 
-  const handleCloseJob = () => {
-    updateStatus("closed");
-  };
-  const handleReactivateJob = () => {
-    updateStatus("open");
-  };
-  const handlePauseJob = () => {
-    updateStatus("paused");
-  };
-  const handleOpenJob = () => {
-    updateStatus("open");
-  };
-  const handleDeleteJob = () => {
-    deleteCompanyJob();
-  };
-
-  const resolvedCompleteHref = jobId ? `/company/post-job?jobId=${jobId}` : "/company/post-job";
-  const resolvedEditHref = jobId ? `/company/post-job?editId=${jobId}` : "/company/post-job";
-  const isDraft = currentStatus === "draft";
-  const isClosed = currentStatus === "closed";
-  const isOpen = currentStatus === "open";
-  const isPaused = currentStatus === "paused";
+  const job = { id: jobId, status: currentStatus };
+  const deleteButton = (
+    <Button
+      variant="destructive"
+      className={BUTTON_CLASS}
+      disabled={actions.isDeleting}
+      onClick={() => actions.open('delete', job)}
+    >
+      <Trash2 aria-hidden="true" className={ICON_CLASS} />
+      {t('companyPage.jobs.actions.delete')}
+    </Button>
+  );
 
   return (
     <>
-      <div className="flex w-full flex-wrap gap-3">
-        {isOpen && (<>
-          <Link
-            href={resolvedEditHref}
-            className={`${buttonVariants({
-              variant: "default",
-              size: "pill",
-            })} items-center gap-2 max-sm:px-4`}
-          >
-            <Edit className="h-4 w-4" /> {t("common.edit")}
-          </Link>
-          <Button
-            variant="default"
-            size="pill"
-            className="bg-destructive flex items-center gap-2 max-sm:px-4"
-            disabled={isPending}
-            onClick={() => setCloseJob(true)}
-          >
-            <CheckCheck className="h-4 w-4" /> {t("companyPage.jobs.actions.close")}
-          </Button>
-          <Button
-            size="pill"
-            className="bg-warning flex items-center gap-2 max-sm:px-4"
-            disabled={isPending}
-            onClick={() => setPauseJob(true)}
-          >
-            <EyeOff className="h-4 w-4" /> {t("companyPage.jobs.actions.pause")}
-          </Button>
-        </>
-        )}
-        {isDraft ? (
-          <Link
-            href={resolvedCompleteHref}
-            className={`${buttonVariants({
-              variant: "default",
-              size: "pill",
-            })} flex-1 items-center justify-center gap-2 max-sm:px-4`}
-          >
-            {t("companyPage.jobs.actions.complete-post")}
-          </Link>
+      <div className="flex w-full gap-2">
+        {currentStatus === 'open' ? (
+          <>
+            <Button asChild className={BUTTON_CLASS}>
+              <Link href={getEditJobHref(jobId)}>
+                <Edit aria-hidden="true" className={ICON_CLASS} />
+                {t('common.edit')}
+              </Link>
+            </Button>
+            <Button
+              className={cn(BUTTON_CLASS, 'bg-caution hover:bg-caution/90 text-white')}
+              disabled={actions.isPending}
+              onClick={() => actions.open('pause', job)}
+            >
+              <EyeOff aria-hidden="true" className={ICON_CLASS} />
+              {t('companyPage.jobs.actions.pause')}
+            </Button>
+            <Button
+              variant="destructive"
+              className={BUTTON_CLASS}
+              disabled={actions.isPending}
+              onClick={() => actions.open('close', job)}
+            >
+              <CheckCheck aria-hidden="true" className={ICON_CLASS} />
+              {t('companyPage.jobs.actions.close')}
+            </Button>
+          </>
         ) : null}
-
-        {isPaused ? (
-          <Button
-            variant="default"
-            size="pill"
-            className="flex-1 items-center justify-center gap-2 max-sm:px-4"
-            disabled={isPending}
-            onClick={() => setReactivateJob(true)}
-          >
-            <Play className="h-4 w-4" /> {t("companyPage.jobs.actions.resume")}
-          </Button>
+        {currentStatus === 'paused' || currentStatus === 'closed' ? (
+          <>
+            <Button
+              className={BUTTON_CLASS}
+              disabled={actions.isPending}
+              onClick={() => actions.open('resume', job)}
+            >
+              {t('companyPage.jobs.actions.resume')}
+            </Button>
+            {deleteButton}
+          </>
         ) : null}
-        {isDraft && (
-          <Button
-            variant="destructive"
-            size="pill"
-            className={`flex-1 items-center justify-center gap-2 max-sm:px-4 `}
-            disabled={isDeleting}
-            onClick={() => setDeleteJob(true)}
-          >
-            <Trash2 className="h-4 w-4" /> {t("companyPage.jobs.actions.delete")}
-          </Button>
-        )}
+        {currentStatus === 'draft' ? (
+          <>
+            <Button asChild className={BUTTON_CLASS}>
+              <Link href={getCompletePostHref(jobId)}>
+                {t('companyPage.jobs.actions.complete-post')}
+              </Link>
+            </Button>
+            {deleteButton}
+          </>
+        ) : null}
       </div>
-      <AlertModal
-        open={closeJob}
-        onOpenChange={setCloseJob}
-        title={t("companyPage.jobs.card.modals.close.title")}
-        description={t("companyPage.jobs.card.modals.close.description")}
-        confirmLabel={t("companyPage.jobs.card.modals.close.confirm")}
-        cancelLabel={t("common.back")}
-        onConfirm={handleCloseJob}
-        isLoading={isPending}
-      />
-      <AlertModal
-        open={reactivateJob}
-        onOpenChange={setReactivateJob}
-        title={t("companyPage.jobs.card.modals.reactivate.title")}
-        description={t("companyPage.jobs.card.modals.reactivate.description")}
-        confirmLabel={t("companyPage.jobs.card.modals.reactivate.confirm")}
-        cancelLabel={t("common.back")}
-        onConfirm={handleReactivateJob}
-        isLoading={isPending}
-      />
-      <AlertModal
-        open={pauseJob}
-        onOpenChange={setPauseJob}
-        confirmButtonVariant="destructive"
-        title={t("companyPage.jobs.card.modals.pause.title")}
-        description={t("companyPage.jobs.card.modals.pause.description")}
-        confirmLabel={t("companyPage.jobs.card.modals.pause.confirm")}
-        cancelLabel={t("common.back")}
-        onConfirm={handlePauseJob}
-        isLoading={isPending}
-      />
-      <DeleteModal
-        open={deleteJob}
-        onOpenChange={setDeleteJob}
-        title={t("companyPage.jobs.card.modals.delete.title")}
-        description={t("companyPage.jobs.card.modals.delete.description")}
-        confirmLabel={t("companyPage.jobs.card.modals.delete.confirm")}
-        cancelLabel={t("common.back")}
-        onConfirm={handleDeleteJob}
-        isLoading={isDeleting}
-      />
+      <JobStatusModals actions={actions} backHref="/company/job-management" />
     </>
   );
 }

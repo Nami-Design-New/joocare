@@ -1,3 +1,5 @@
+import type { ScreeningQuestion } from './job-steps.types';
+import type { ApplicationAssessment } from './candidate-applications.types';
 // ==============================
 // BASE / SHARED ENTITIES
 // ==============================
@@ -147,6 +149,8 @@ export type JobListItem = {
 
   is_applied: boolean;
   is_saved: boolean;
+  // AI resume match (0-100). Pending backend field.
+  match_score?: number | null;
 
   created_at: string;
   updated_at: string;
@@ -250,9 +254,28 @@ export type JobDetails = {
 
   is_applied: boolean;
   is_saved: boolean;
+  // AI resume match (0-100). Pending backend field.
+  match_score?: number | null;
 
   created_at: string;
   updated_at: string;
+  // Pending backend fields; the UI renders them only when present.
+  screening_questions?: ScreeningQuestion[];
+  assessment?: JobLinkedAssessment | null;
+  created_by?: JobCreator | null;
+};
+
+export type JobLinkedAssessment = {
+  id: number | string;
+  title: string;
+  category_id: number | string;
+};
+
+export type JobCreator = {
+  name: string;
+  role: string;
+  email: string;
+  image?: string | null;
 };
 
 // ==============================
@@ -266,6 +289,7 @@ export type SimilarJob = JobListItem
 // ==============================
 
 export type CandidateApplicationItem = {
+  assessment?: ApplicationAssessment;
   id: number;
   user_id: number;
   job_id: number;

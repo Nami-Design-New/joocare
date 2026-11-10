@@ -1,26 +1,39 @@
-"use client";
+import { useTranslations } from 'next-intl';
+import { Skeleton } from '@/shared/components/ui/skeleton';
+import EmptyDataState from '@/shared/components/EmptyDataState';
+import { ChartPieDonut } from './ChartPieDonut';
+import DashboardWidgetTitle from './DashboardWidgetTitle';
+import type { DashboardCategory } from '../index.type';
 
-import { ChartPieDonut } from "./ChartPieDonut";
-import { useTranslations } from "next-intl";
+type PieChartCardProps = {
+  categories: DashboardCategory[];
+  isPending: boolean;
+};
 
 export default function PieChartCard({
-  className = "",
-  companyDashboardData,
+  categories,
   isPending,
-}: {
-  className?: string;
-  companyDashboardData: any;
-  isPending?: boolean;
-}) {
-  const t = useTranslations();
+}: PieChartCardProps) {
+  const t = useTranslations('companyPage.dashboard.design');
   return (
-    <section
-      className={`flex flex-col gap-4 rounded-xl bg-white p-6 ${className}`}
-    >
-      <h5 className="text-foreground text-xl font-semibold">
-        {t("companyPage.dashboard.category-breakdown")}
-      </h5>
-      <ChartPieDonut isPending={isPending} companyDashboardData={companyDashboardData} />
+    <section className="bg-card min-h-98 rounded-2xl px-5 py-6">
+      <DashboardWidgetTitle
+        title={t('category-title')}
+        description={t('category-description')}
+        className="text-[21px] leading-6.5"
+      />
+      {isPending ? (
+        <Skeleton className="mx-auto mt-16 size-41 rounded-full" />
+      ) : categories.some((item) => item.percentage > 0) ? (
+        <div className="mt-8">
+          <ChartPieDonut categories={categories} />
+        </div>
+      ) : (
+        <EmptyDataState
+          titleText={t('no-category-data')}
+          className="min-h-64 px-0 py-4 [&_h3]:text-sm [&_img]:max-w-24"
+        />
+      )}
     </section>
   );
 }

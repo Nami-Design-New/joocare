@@ -3,6 +3,7 @@
 import { CandidateProfileApiUser } from "@/features/candidate-profile/types/profile.types";
 import { getUserApiUrl } from "@/shared/lib/api-endpoints";
 import { apiFetch } from "@/shared/lib/fetch-manager";
+import type { ScreeningAnswer } from "../types/job-apply.types";
 
 type CandidateCvProfile = {
   cv: string | null;
@@ -16,6 +17,7 @@ type GetCandidateCvOptions = {
 type ApplyToJobOptions = {
   jobId: number;
   cvPath?: string | null;
+  answers?: ScreeningAnswer[];
   token: string;
   locale: string;
 };
@@ -66,6 +68,7 @@ export async function getCandidateCvProfile({
 export async function applyToJobService({
   jobId,
   cvPath,
+  answers,
   token,
   locale,
 }: ApplyToJobOptions): Promise<ApplyToJobResponse> {
@@ -74,6 +77,11 @@ export async function applyToJobService({
 
   if (cvPath) {
     formData.append("cv", normalizeStoredCvPath(cvPath));
+  }
+
+  // Pending backend contract for screening answers.
+  if (answers?.length) {
+    formData.append("screening_answers", JSON.stringify(answers));
   }
 
   const result = await apiFetch<ApplyToJobResponse>(

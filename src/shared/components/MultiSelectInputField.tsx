@@ -15,6 +15,11 @@ import {
 import { Button } from "./ui/button";
 import { Option } from "./SelectInputField";
 
+// Module-level so the Combobox gets the same function on every render;
+// a new one each render re-triggers its internal store sync.
+const isSameOption = (item: Option | null, selectedItem: Option | null) =>
+  item?.value === selectedItem?.value;
+
 type MultiSelectInputFieldProps = {
   label?: string;
   id: string;
@@ -35,6 +40,10 @@ type MultiSelectInputFieldProps = {
   onSearchChange?: (value: string) => void;
   portalContainer?: HTMLElement | null;
   preloadOptions?: Option[];
+  // Show only the placeholder in the trigger when the page renders the selection itself.
+  hideSelectedChips?: boolean;
+  // Badge shown next to the placeholder when chips are hidden, e.g. "2 selected".
+  selectedCountLabel?: string;
 };
 
 export const MultiSelectInputField = React.forwardRef<
@@ -62,6 +71,8 @@ export const MultiSelectInputField = React.forwardRef<
       onSearchChange,
       portalContainer,
       preloadOptions = [],
+      hideSelectedChips = false,
+      selectedCountLabel,
       ...props
     },
     ref,
@@ -104,9 +115,13 @@ export const MultiSelectInputField = React.forwardRef<
       });
     }, [options, preloadOptions]);
 
-    const cachedSelectedOptions = value
-      .map((v) => optionsCache.get(v))
-      .filter((o): o is Option => o !== undefined);
+    const cachedSelectedOptions = React.useMemo(
+      () =>
+        value
+          .map((v) => optionsCache.get(v))
+          .filter((o): o is Option => o !== undefined),
+      [value, optionsCache],
+    );
 
     // Merge cached selected options into the items list so the Combobox
     // never loses track of already-selected items when search filters change.
@@ -198,9 +213,7 @@ export const MultiSelectInputField = React.forwardRef<
           items={mergedItems}
           multiple
           value={selectedOptions}
-          isItemEqualToValue={(item, selectedItem) =>
-            item?.value === selectedItem?.value
-          }
+          isItemEqualToValue={isSameOption}
           onValueChange={(raw) => {
             const selected = Array.from(
               new Set(
@@ -225,7 +238,7 @@ export const MultiSelectInputField = React.forwardRef<
                   "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
                   "disabled:bg-disabled",
                   // expand height when chips wrap
-                  selectedOptions.length > 0 && "h-auto min-h-13 py-2 rounded-4xl",
+                  selectedOptions.length > 0 && !hideSelectedChips && "h-auto min-h-13 py-2 rounded-4xl",
                   error && "border-destructive",
                   className,
                 )}
@@ -233,7 +246,7 @@ export const MultiSelectInputField = React.forwardRef<
               />
             }
           >
-            {selectedOptions.length > 0 ? (
+            {selectedOptions.length > 0 && !hideSelectedChips ? (
               <span className="flex flex-wrap gap-1">
                 {selectedOptions.map((o) => (
                   <span
@@ -245,8 +258,15 @@ export const MultiSelectInputField = React.forwardRef<
                 ))}
               </span>
             ) : (
-              <span className="text-muted-foreground">
-                {placeholder || "Select options"}
+              <span className="flex min-w-0 flex-1 items-center justify-between gap-2">
+                <span className="text-muted-foreground truncate">
+                  {placeholder || "Select options"}
+                </span>
+                {hideSelectedChips && selectedCountLabel && selectedOptions.length > 0 && (
+                  <span className="bg-primary text-primary-foreground shrink-0 rounded-full px-2 py-0.5 text-xs font-medium">
+                    {selectedCountLabel}
+                  </span>
+                )}
               </span>
             )}
           </ComboboxTrigger>

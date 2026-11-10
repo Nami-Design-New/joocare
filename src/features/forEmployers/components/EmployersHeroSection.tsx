@@ -14,8 +14,8 @@ export default async function EmployersHeroSection({
     images.length > 0 ? images.slice(0, 3) : employerHeroFallbackImages;
 
   return (
-    <section className="bg-white pt-14 py-18 lg:py-18">
-      <div className="mx-auto grid  grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
+    <section className="bg-white pt-8 pb-10 sm:pb-18 md:pt-14">
+      <div className="mx-auto grid  grid-cols-1 gap-8 px-0 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
         <div>
           <div className="mb-2">
             <SectionTitle
@@ -24,7 +24,7 @@ export default async function EmployersHeroSection({
             />
           </div>
 
-          <h2 className="text-secondary mb-3 text-3xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">
+          <h2 className="text-secondary mb-3 text-2xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">
             {title}
           </h2>
 
@@ -37,7 +37,7 @@ export default async function EmployersHeroSection({
           {heroImages.map((image) => (
             <div
               key={image.id}
-              className="relative h-100 w-[220px] overflow-hidden rounded-3xl sm:w-[260px]"
+              className="relative h-72 w-[220px] sm:h-100 overflow-hidden rounded-3xl sm:w-[260px]"
             >
               <Image
                 src={image.image}

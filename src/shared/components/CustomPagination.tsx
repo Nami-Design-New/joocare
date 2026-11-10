@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Pagination,
   PaginationContent,
@@ -7,8 +7,9 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/shared/components/ui/pagination";
-import { useLocale, useTranslations } from "next-intl";
+} from '@/shared/components/ui/pagination';
+import { useLocale, useTranslations } from 'next-intl';
+import { cn } from '@/shared/lib/utils';
 
 type CustomPaginationProps = {
   currentPage: number;
@@ -16,14 +17,42 @@ type CustomPaginationProps = {
   pageSize?: number;
   onPageChange: (page: number) => void;
   getHref?: (page: number) => string;
+  className?: string;
+  statusPosition?: 'start' | 'end';
+  align?: 'center' | 'start';
+  tone?: 'default' | 'strong';
+  showLastPage?: boolean;
+  visiblePageCount?: number;
 };
 
-function getVisiblePages(currentPage: number, totalPages: number) {
+function getVisiblePages(
+  currentPage: number,
+  totalPages: number,
+  showLastPage = true,
+  visiblePageCount?: number,
+) {
+  if (visiblePageCount) {
+    const count = Math.max(1, Math.floor(visiblePageCount));
+    const first = Math.max(
+      1,
+      Math.min(currentPage - Math.floor(count / 2), totalPages - count + 1),
+    );
+    return Array.from(
+      { length: Math.min(count, totalPages) },
+      (_, index) => first + index,
+    );
+  }
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, index) => index + 1);
   }
 
-  const pages = new Set([1, totalPages, currentPage - 1, currentPage, currentPage + 1]);
+  const pages = new Set([
+    1,
+    ...(showLastPage ? [totalPages] : []),
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+  ]);
 
   if (currentPage <= 3) {
     pages.add(2);
@@ -37,7 +66,9 @@ function getVisiblePages(currentPage: number, totalPages: number) {
     pages.add(totalPages - 3);
   }
 
-  return [...pages].filter((page) => page >= 1 && page <= totalPages).sort((a, b) => a - b);
+  return [...pages]
+    .filter((page) => page >= 1 && page <= totalPages)
+    .sort((a, b) => a - b);
 }
 
 export function CustomPagination({
@@ -46,16 +77,27 @@ export function CustomPagination({
   pageSize = 10,
   onPageChange,
   getHref,
+  className,
+  statusPosition = 'end',
+  align = 'center',
+  tone = 'default',
+  showLastPage = true,
+  visiblePageCount,
 }: CustomPaginationProps) {
   const t = useTranslations();
   const locale = useLocale();
-  const isRtl = locale === "ar";
+  const isRtl = locale === 'ar';
   const PreviousComponent = isRtl ? PaginationNext : PaginationPrevious;
   const NextComponent = isRtl ? PaginationPrevious : PaginationNext;
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, totalItems);
-  const pages = getVisiblePages(currentPage, totalPages);
+  const pages = getVisiblePages(
+    currentPage,
+    totalPages,
+    showLastPage,
+    visiblePageCount,
+  );
   const isPreviousDisabled = currentPage <= 1;
   const isNextDisabled = currentPage >= totalPages;
 
@@ -65,19 +107,36 @@ export function CustomPagination({
   };
 
   return (
-    <div className="flex w-full flex-wrap items-center justify-center gap-2 md:gap-8">
+    <div
+      className={cn(
+        'flex w-full flex-wrap items-center gap-2 md:gap-8',
+        align === 'start' ? 'justify-start' : 'justify-center',
+        className,
+      )}
+    >
       {/* Status */}
-      <div className="text-muted-foreground order-2 text-sm font-medium md:order-1">
-        {t("faqPage.pagination-show")}{" "}
+      <div
+        className={cn(
+          cn(
+            'order-2 text-sm md:order-1',
+            tone === 'strong'
+              ? 'text-foreground font-semibold'
+              : 'text-muted-foreground font-medium',
+          ),
+          statusPosition === 'start' && 'order-first md:order-first',
+        )}
+      >
+        {t('faqPage.pagination-show')}{' '}
         <span className="font-semibold">
           {start} - {end}
-        </span>{" "}
-        {t("faqPage.pagination-from")} <span className="font-semibold">{totalItems}</span>
+        </span>{' '}
+        {t('faqPage.pagination-from')}{' '}
+        <span className="font-semibold">{totalItems}</span>
       </div>
 
       {/* Pagination */}
       <Pagination className="mx-0 w-auto justify-end">
-        <PaginationContent className="gap-1">
+        <PaginationContent className="gap-0.5 sm:gap-1">
           {/* Previous */}
           <PaginationItem>
             <PreviousComponent
@@ -96,22 +155,43 @@ export function CustomPagination({
                 }
                 handleChange(currentPage - 1);
               }}
-              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${isPreviousDisabled
-                ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
-                : "cursor-pointer bg-gray-100 hover:bg-gray-200"
-                }`}
+              className={`flex size-7 items-center justify-center rounded-full p-0 sm:size-8 ${
+                isPreviousDisabled
+                  ? 'cursor-not-allowed bg-gray-100 text-gray-400 opacity-50'
+                  : 'cursor-pointer bg-gray-100 hover:bg-gray-200'
+              }`}
             />
           </PaginationItem>
 
           {/* Page Numbers */}
           {pages.map((page, index) => {
             const previousPage = pages[index - 1];
+            // On phones keep only first, last and the pages next to the
+            // current one so the row fits narrow containers (e.g. modals).
+            const isFarFromCurrent =
+              Math.abs(page - currentPage) > 1 &&
+              page !== 1 &&
+              page !== totalPages;
 
             return (
-              <div key={page} className="flex items-center gap-1">
+              <div
+                key={page}
+                className={cn(
+                  'flex items-center gap-0.5 sm:gap-1',
+                  isFarFromCurrent && 'max-sm:hidden',
+                )}
+              >
                 {previousPage && page - previousPage > 1 ? (
                   <PaginationItem>
                     <PaginationEllipsis />
+                  </PaginationItem>
+                ) : previousPage &&
+                  !isFarFromCurrent &&
+                  Math.abs(previousPage - currentPage) > 1 &&
+                  previousPage !== 1 ? (
+                  // Mobile-only gap marker for the pages hidden above.
+                  <PaginationItem className="sm:hidden">
+                    <PaginationEllipsis className="size-7" />
                   </PaginationItem>
                 ) : null}
                 <PaginationItem>
@@ -119,8 +199,13 @@ export function CustomPagination({
                     href={getHref ? getHref(page) : undefined}
                     isActive={page === currentPage}
                     onClick={() => handleChange(page)}
-                    className={`h-8 w-8 rounded-full border-none ${page === currentPage ? "bg-primary text-white" : "text-muted-foreground"
-                      }`}
+                    className={`size-7 rounded-full border-none sm:size-8 ${
+                      page === currentPage
+                        ? 'bg-primary text-white'
+                        : tone === 'strong'
+                          ? 'text-foreground font-semibold'
+                          : 'text-muted-foreground'
+                    }`}
                   >
                     {page}
                   </PaginationLink>
@@ -128,6 +213,12 @@ export function CustomPagination({
               </div>
             );
           })}
+
+          {visiblePageCount && pages[pages.length - 1] < totalPages ? (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          ) : null}
 
           {/* Next */}
           <PaginationItem>
@@ -147,10 +238,11 @@ export function CustomPagination({
                 }
                 handleChange(currentPage + 1);
               }}
-              className={`flex h-8 w-8 items-center justify-center rounded-full p-0 ${isNextDisabled
-                ? "cursor-not-allowed bg-gray-100 text-gray-400 opacity-50"
-                : "cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
+              className={`flex size-7 items-center justify-center rounded-full p-0 sm:size-8 ${
+                isNextDisabled
+                  ? 'cursor-not-allowed bg-gray-100 text-gray-400 opacity-50'
+                  : 'cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
             />
           </PaginationItem>
         </PaginationContent>

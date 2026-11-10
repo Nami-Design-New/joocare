@@ -99,7 +99,7 @@ export default function CoverUploadImage() {
 
   return (
     <>
-      <div className="w-full h-93.75">
+      <div className="w-full h-60 sm:h-93.75">
         <div className="relative">
 
           {/* COVER IMAGE */}
@@ -110,7 +110,7 @@ export default function CoverUploadImage() {
               <div
                 onClick={() => !coverUploading && coverInputRef.current?.click()}
                 className={cn(
-                  "relative w-full h-75 rounded-[50px] bg-muted border",
+                  "relative w-full h-44 rounded-3xl bg-muted border sm:h-75 sm:rounded-[50px]",
                   "flex flex-col items-center justify-center cursor-pointer",
                   "hover:bg-border transition-colors duration-200",
                   errors.uploadCoverImage ? "border-red-500" : "border-transparent",
@@ -122,7 +122,7 @@ export default function CoverUploadImage() {
                     src={coverLocalPreview}
                     alt={t("completeAccount.upload.cover-alt")}
                     fill
-                    className="object-cover rounded-[50px]"
+                    className="object-cover rounded-3xl sm:rounded-[50px]"
                   />
                 ) : (
                   <div className="flex flex-col items-center gap-2 text-foreground/50">
@@ -132,7 +132,7 @@ export default function CoverUploadImage() {
                 )}
 
                 {coverUploading && (
-                  <div className="absolute inset-0 rounded-[50px] bg-black/50 flex flex-col items-center justify-center gap-2 z-10">
+                  <div className="absolute inset-0 rounded-3xl sm:rounded-[50px] bg-black/50 flex flex-col items-center justify-center gap-2 z-10">
                     <svg className="animate-spin text-white" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                       <path d="M12 2a10 10 0 0 1 10 10" />
                     </svg>
@@ -161,7 +161,7 @@ export default function CoverUploadImage() {
                 onClick={() => !logoUploading && logoInputRef.current?.click()}
                 className={cn(
                   `absolute bottom-0 translate-y-1/2 ${locale === 'ar' ? "right-6" : "left-6"}`,
-                  "w-37.5 h-37.5 rounded-full border",
+                  "size-24 sm:size-37.5 rounded-full border",
                   "flex flex-col items-center justify-center cursor-pointer",
                   "bg-[#EBEBEB] hover:bg-[#e0e0e0] transition-colors duration-200",
                   "ring-4 ring-white z-10",

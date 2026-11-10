@@ -18,7 +18,7 @@ const LinkedInButton = ({
     <Button
       variant={"outline"}
       size={"xl"}
-      className="w-1/2 gap-2 text-lg border-border"
+      className="w-1/2 gap-2 text-base sm:text-lg border-border"
       type="button"
       onClick={onClick}
     >

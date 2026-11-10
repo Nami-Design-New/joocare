@@ -63,15 +63,15 @@ export default function SideCard({
       : t("contactPage.for-employer"));
 
   return (
-    <div className="bg-muted flex h-full flex-col rounded-3xl p-5 text-left lg:p-6">
+    <div className="bg-muted flex h-full flex-col rounded-3xl p-4 text-left sm:p-5 lg:p-6">
       <div className="w-fit">
         <SectionTitle sectionTitle={title} />
-        <h2 className="text-secondary my-4 text-2xl leading-tight font-bold">
+        <h2 className="text-secondary my-4 text-xl md:text-2xl leading-tight font-bold">
           {subtitle}
         </h2>
       </div>
       <section className="flex w-full grow flex-col items-center justify-center gap-2">
-        <div className="relative h-75 w-full">
+        <div className="relative h-56 w-full sm:h-75">
           <Image src={resolvedImageSrc} alt={imageAlt} fill />
         </div>
         {canSwitchRole ? (
@@ -96,7 +96,7 @@ export default function SideCard({
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:scale-105  h-10 w-10"
+                  className="hover:scale-105  h-7 md:h-10 w-7 md:w-10"
                   aria-label={label}
                 >
                   <Image

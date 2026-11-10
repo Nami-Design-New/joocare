@@ -1,22 +1,24 @@
-"use client";
+'use client';
 
-import { Edit, Trash2 } from "lucide-react";
-import Image from "next/image";
-import { useQueryClient } from "@tanstack/react-query";
-import { useState, useTransition } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { toast } from "sonner";
-import DeleteModal from "@/shared/components/modals/DeleteModal";
-import { deleteQualificationAction } from "../../actions/qualification-actions";
-import { qualificationsQueryKeyPrefix } from "../../hooks/useGetQualifications";
-import { removeInfiniteItem } from "../../services/infinite-query-cache";
-import type { QualificationViewModel } from "../../types/qualification.types";
-import { QualificationModal } from "./QualificationModal";
+import { Edit, Trash2 } from 'lucide-react';
+import Image from 'next/image';
+import { useQueryClient } from '@tanstack/react-query';
+import { useState, useTransition } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import DeleteModal from '@/shared/components/modals/DeleteModal';
+import { deleteQualificationAction } from '../../actions/qualification-actions';
+import { qualificationsQueryKeyPrefix } from '../../hooks/useGetQualifications';
+import { removeInfiniteItem } from '../../services/infinite-query-cache';
+import type { QualificationViewModel } from '../../types/qualification.types';
+import { QualificationModal } from './QualificationModal';
 
 export default function QualificationCard({
   qualification,
+  readOnly = false,
 }: {
   qualification: QualificationViewModel;
+  readOnly?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [deleteQualification, setDeleteQualification] = useState(false);
@@ -35,7 +37,7 @@ export default function QualificationCard({
       (current) =>
         removeInfiniteItem<QualificationViewModel>(
           current,
-          ["qualifications", "qualification"],
+          ['qualifications', 'qualification'],
           qualification.id,
         ),
     );
@@ -47,7 +49,9 @@ export default function QualificationCard({
           locale,
         });
 
-        toast.success(response.message ?? t("candidatePage.toasts.qualification-deleted"));
+        toast.success(
+          response.message ?? t('candidatePage.toasts.qualification-deleted'),
+        );
         await queryClient.invalidateQueries({
           queryKey: qualificationsQueryKeyPrefix(locale),
         });
@@ -58,68 +62,81 @@ export default function QualificationCard({
         });
 
         const message =
-          error instanceof Error ? error.message : t("candidatePage.toasts.qualification-delete-failed");
+          error instanceof Error
+            ? error.message
+            : t('candidatePage.toasts.qualification-delete-failed');
         toast.error(message);
       }
     });
   };
 
-  console.log("qualification s", qualification);
-
   return (
     <>
       <section className="flex flex-col justify-start gap-2 rounded-2xl border bg-white p-2 shadow sm:flex-row sm:items-center">
-        <div className="h-38 w-40 shrink-0">
+        <div className="h-38 w-full sm:w-40 shrink-0">
           <Image
             className="h-full w-full rounded-lg"
             width={160}
             height={152}
-            src={qualification.image ?? "/assets/credentials.svg"}
+            src={qualification.image ?? '/assets/credentials.svg'}
             alt="credentials"
           />
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <div className="mb-2 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-black">{qualification.degree}</h2>
-            <div className="flex items-center gap-3">
-              <Edit
-                onClick={() => setOpen(true)}
-                width={22}
-                height={22}
-                className="text-muted-foreground cursor-pointer"
-              />
-              <Trash2
-                onClick={() => setDeleteQualification(true)}
-                width={22}
-                height={22}
-                className="cursor-pointer text-red-400"
-              />
-            </div>
+            <h2 className="text-lg font-semibold text-black">
+              {qualification.degree}
+            </h2>
+            {!readOnly && (
+              <div className="flex items-center gap-3">
+                <Edit
+                  onClick={() => setOpen(true)}
+                  width={22}
+                  height={22}
+                  className="text-muted-foreground cursor-pointer"
+                />
+                <Trash2
+                  onClick={() => setDeleteQualification(true)}
+                  width={22}
+                  height={22}
+                  className="cursor-pointer text-red-400"
+                />
+              </div>
+            )}
           </div>
-          <p className="text-base">{qualification.countryName ?? t("candidatePage.profile.country-not-provided")}</p>
+          <p className="text-base">
+            {qualification.countryName ??
+              t('candidatePage.profile.country-not-provided')}
+          </p>
           <p className="text-base">{qualification.university}</p>
-          <p className="text-base">{qualification.period ?? t("candidatePage.profile.no-period")}</p>
+          <p className="text-base">
+            {qualification.period ?? t('candidatePage.profile.no-period')}
+          </p>
         </div>
       </section>
 
       {open ? (
         <QualificationModal
-          label={t("candidatePage.credentials.edit-qualification")}
+          label={t('candidatePage.credentials.edit-qualification')}
           open={open}
           onOpenChange={setOpen}
           qualification={qualification}
         />
       ) : null}
 
-      <DeleteModal
-        open={deleteQualification}
-        onOpenChange={setDeleteQualification}
-        title={t("candidatePage.credentials.delete-qualification-title")}
-        description={t("candidatePage.credentials.delete-qualification-description")}
-        cancelLabel={t("candidatePage.common.back")}
-        onConfirm={handleDeleteQualification}
-        isLoading={isPending}
-      />
+      {!readOnly && (
+        <DeleteModal
+          open={deleteQualification}
+          onOpenChange={setDeleteQualification}
+          title={t('candidatePage.credentials.delete-qualification-title')}
+          description={t(
+            'candidatePage.credentials.delete-qualification-description',
+          )}
+          cancelLabel={t('candidatePage.common.back')}
+          onConfirm={handleDeleteQualification}
+          isLoading={isPending}
+        />
+      )}
     </>
   );
 }

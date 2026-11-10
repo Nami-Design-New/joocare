@@ -206,7 +206,7 @@ const BasicInfoForm = () => {
             onClick={() => setIsModalOpen(true)}
             variant="outline"
             size="pill"
-            className="w-1/3 md:w-50 text-secondary"
+            className="w-1/2 px-4 sm:w-1/3 sm:px-8 md:w-50 text-secondary"
           >
             {t("common.edit")}
           </Button>
@@ -380,7 +380,7 @@ const BasicInfoForm = () => {
             variant="secondary"
             hoverStyle="slidePrimary"
             size="pill"
-            className="w-1/3 md:w-56"
+            className="w-1/2 px-4 sm:w-1/3 sm:px-8 md:w-56"
             type="submit"
             disabled={isPending}
           >
