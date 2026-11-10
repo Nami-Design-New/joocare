@@ -70,16 +70,16 @@ export const Testimonials = ({
             }}
           >
             {/* Header */}
-            <div className="mb-12 flex items-center justify-between">
-              <div className="space-y-4">
+            <div className="mb-6 flex items-end justify-between gap-3 sm:mb-12 sm:items-center">
+              <div className="min-w-0 space-y-4">
                 <SectionTitle sectionTitle={t('home.what-professionals-say')} />
                 <h2>{title}</h2>
               </div>
 
               {/* Shadcn carousel controls wired to the same Carousel context */}
-              <div className={`flex gap-4 ${locale === "ar" ? "flex-row-reverse" : ""}`}>
-                <CarouselPrevious className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
-                <CarouselNext className="border-border text-secondary hover:bg-secondary static h-12 w-12 translate-y-0 rounded-full border transition-all hover:text-white" />
+              <div className={`flex shrink-0 gap-2 sm:gap-4 ${locale === "ar" ? "flex-row-reverse" : ""}`}>
+                <CarouselPrevious className="border-border text-secondary hover:bg-secondary static size-10 translate-y-0 rounded-full border transition-all hover:text-white sm:size-12" />
+                <CarouselNext className="border-border text-secondary hover:bg-secondary static size-10 translate-y-0 rounded-full border transition-all hover:text-white sm:size-12" />
               </div>
 
             </div>

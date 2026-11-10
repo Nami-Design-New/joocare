@@ -23,7 +23,7 @@ export const ImpactSection = ({
     <section className="bg-background py-10 md:py-20">
       <div className="layout-shell">
 
-        <div className="layout-content grid gap-12 lg:grid-cols-2 px-1">
+        <div className="layout-content grid gap-8 lg:gap-12 lg:grid-cols-2 px-1">
           <div className="flex flex-col justify-center">
             <SectionTitle sectionTitle={t('home.proven-hiring-impact')} />
             <h2 className="text-foreground mt-4 mb-8">{title}</h2>

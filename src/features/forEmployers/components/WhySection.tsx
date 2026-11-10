@@ -16,8 +16,8 @@ export default async function WhySection({
   const locale = await getLocale();
 
   return (
-    <section className="bg-white py-20">
-      <div className="mx-auto px-4 sm:px-6">
+    <section className="bg-white py-10 sm:py-20">
+      <div className="mx-auto px-0 sm:px-6">
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <div className="mb-2">
@@ -27,11 +27,11 @@ export default async function WhySection({
               />
             </div>
 
-            <h2 className="my-5 text-3xl font-bold text-[#1C2628] md:text-5xl ">
+            <h2 className="my-4 text-2xl font-bold sm:my-5 text-[#1C2628] md:text-5xl ">
               {title}
             </h2>
 
-            <p className="mb-8 text-base md:text-xl text-[#1C2628] lg:text-justify">
+            <p className="mb-8 text-sm sm:text-base md:text-xl text-[#1C2628] lg:text-justify">
               {description}
             </p>
 

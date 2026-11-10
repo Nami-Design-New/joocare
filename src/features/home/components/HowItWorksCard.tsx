@@ -13,8 +13,8 @@ export default function HowItWorksCard({
   description,
 }: HowItWorksCardProps) {
   return (
-    <section className="border-border grow flex flex-col items-center justify-center gap-3 border-b px-2 pt-4 pb-8 ">
-      <div className="bg-primary items-center flex size-14 justify-center rounded-full shrink-0">
+    <section className="border-border grow flex flex-col items-center justify-center gap-3 border-b px-2 pt-2 pb-6 sm:pt-4 sm:pb-8">
+      <div className="bg-primary items-center flex size-12 justify-center rounded-full shrink-0 sm:size-14">
         <Image src={icon} width={28} height={28} alt={`${title} Icon`} />
       </div>
 

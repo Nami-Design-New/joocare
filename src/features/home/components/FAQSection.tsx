@@ -46,14 +46,14 @@ export default function FAQSection({
                 <AccordionItem
                   key={item.id}
                   value={item.id}
-                  className="bg-muted data-[state=open]:bg-card border-border data-[state=open]:ring-border h-fit rounded-2xl border px-6 py-2 transition-all data-[state=open]:shadow-sm data-[state=open]:ring-1"
+                  className="bg-muted data-[state=open]:bg-card border-border data-[state=open]:ring-border h-fit rounded-2xl border px-4 py-1 transition-all sm:px-6 sm:py-2 data-[state=open]:shadow-sm data-[state=open]:ring-1"
                 >
-                  <AccordionTrigger className="group py-4 hover:no-underline">
+                  <AccordionTrigger className="group py-3 hover:no-underline sm:py-4">
                     <span className="text-foreground text-left text-sm font-bold md:text-xl">
                       {item.question}
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-6 leading-relaxed text-sm md:text-base text-sm md:text-base">
+                  <AccordionContent className="text-muted-foreground pb-4 sm:pb-6 leading-relaxed text-sm md:text-base">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>

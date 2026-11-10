@@ -28,7 +28,7 @@ export default async function BannerSection({
 */}
         <div className="relative px-4 pt-8 text-center text-white sm:px-6 md:px-16 ">
           <div className="hidden sm:block sm:absolute top-0 left-1/5 h-full w-18 rounded-full -rotate-45 bg-white blur-[120px] " />
-          <h2 className="mb-4 leading-tight font-bold text-white text-[clamp(1.75rem,2.8vw,3rem)]">
+          <h2 className="mb-4 leading-tight font-bold text-white text-[clamp(1.375rem,2.8vw,3rem)]">
             {title}
           </h2>
 

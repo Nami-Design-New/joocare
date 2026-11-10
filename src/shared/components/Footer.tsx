@@ -74,7 +74,7 @@ const Footer = () => {
           {/* Column 2: Candidates */}
           <div className="bg-before">
             <h4>{t("footer.for-candidates")}</h4>
-            <ul className="space-y-4 text-sm text-gray-300 md:text-base">
+            <ul className="space-y-3 text-sm text-gray-300 md:space-y-4 md:text-base">
               {candidateLinks.map((item) => (
                 <li key={item.label}>
                   <Link href={item.href} className="transition hover:text-white">
@@ -89,7 +89,7 @@ const Footer = () => {
           {employerLinks.length > 0 ? (
             <div className="bg-before">
               <h4 className="text-base md:text-lg lg:text-xl">{t("footer.for-employers")}</h4>
-              <ul className="space-y-4 text-sm text-gray-300 md:text-base">
+              <ul className="space-y-3 text-sm text-gray-300 md:space-y-4 md:text-base">
                 {employerLinks.map((item) => (
                   <li key={item.label}>
                     <Link href={item.href} className="transition hover:text-white">
@@ -106,7 +106,7 @@ const Footer = () => {
           {/* Column 4: Company*/}
           <div className="bg-before">
             <h4 className="text-base md:text-lg lg:text-xl">{t("footer.company-trust")}</h4>
-            <ul className="mb-8 space-y-4 text-sm text-gray-300 md:text-base">
+            <ul className="mb-8 space-y-3 text-sm text-gray-300 md:space-y-4 md:text-base">
               <li>
                 <Link href="/about" className="transition hover:text-white">
                   {t("footer.about-joocare")}
@@ -128,7 +128,7 @@ const Footer = () => {
 
           <div className="bg-before">
             <h4 className="text-base md:text-lg lg:text-xl">{t("footer.get-in-touch")}</h4>
-            <ul className="mb-8 space-y-4 text-sm text-gray-300 md:text-base">
+            <ul className="mb-8 space-y-3 text-sm text-gray-300 md:space-y-4 md:text-base">
               <li>
                 <Link href="/contact" className="transition hover:text-white">
                   {t("footer.contact-us")}
@@ -166,10 +166,10 @@ const Footer = () => {
         </div>
       </div>{" "}
       {/* Copyright */}
-      <p className="relative border-t border-[#0D0D0D73] pt-4 text-center text-base text-white md:text-lg">
+      <p className="relative border-t border-[#0D0D0D73] pt-4 text-center text-sm text-white md:text-lg">
         {copyrightText}
       </p>
-      <section className="absolute right-4 bottom-22 z-50 md:right-6 md:bottom-6">
+      <section className="absolute right-4 bottom-24 z-50 md:right-6 md:bottom-6">
         <BackToTopButton />
       </section>
     </footer>

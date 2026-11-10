@@ -26,7 +26,7 @@ export default function CorePillarsAccordionItem({
       </button>
 
       {isOpen && (
-        <p className="text-muted-foreground mt-4 max-w-xl text-justify text-sm sm:text-base">
+        <p className="text-muted-foreground mt-4 max-w-xl text-start text-sm sm:text-justify sm:text-base">
           {pillar.content}
         </p>
       )}

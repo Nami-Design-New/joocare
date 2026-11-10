@@ -12,7 +12,7 @@ export default async function AboutMissionSection({
   const t = await getTranslations('aboutPage');
 
   return (
-    <section className="bg-card py-16 sm:py-20 xl:py-24">
+    <section className="bg-card py-10 sm:py-20 xl:py-24">
       <AboutImageTextBlock
         eyebrow={t('our-mission')}
         title={title}

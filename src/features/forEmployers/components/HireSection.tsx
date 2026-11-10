@@ -28,9 +28,9 @@ export default async function HireSection({
           {steps.map((step, index) => (
             <article
               key={step.id}
-              className="flex flex-col rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
+              className="flex flex-col rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-8"
             >
-              <div className="flex h-56 items-center justify-center">
+              <div className="flex h-40 items-center sm:h-56 justify-center">
                 <Image
                   src={
                     step.image ||
