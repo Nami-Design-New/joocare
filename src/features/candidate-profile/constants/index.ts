@@ -33,7 +33,7 @@ export const CANDIDATE_PAGE_TITLES: readonly { path: string; label: string }[] =
     { path: CANDIDATE_ROUTES.aiJobMatch, label: 'sidebar.ai-job-match' },
     {
       path: CANDIDATE_ROUTES.profileInsights,
-      label: 'sidebar.profile-insights',
+      label: 'profileInsights.title',
     },
     { path: CANDIDATE_ROUTES.settings, label: 'sidebar.profile-settings' },
     { path: CANDIDATE_ROUTES.chat, label: 'chat.title' },

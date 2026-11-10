@@ -1402,6 +1402,18 @@
         "go-to-applied-jobs": "الذهاب إلى الوظائف المتقدَّم لها",
         "browse-jobs": "تصفح المزيد من الوظائف"
       }
+    },
+    "profileInsights": {
+      "title": "من شاهد ملفك الشخصي؟",
+      "search-placeholder": "ابحث باسم الشركة....",
+      "search": "بحث",
+      "viewed-on": "شاهد ملفك الشخصي في {date}",
+      "view-profile": "عرض الملف",
+      "logo-alt": "شعار {company}",
+      "empty-title": "لم يشاهد أحد ملفك الشخصي بعد",
+      "empty-description": "عندما تشاهد إحدى الشركات ملفك الشخصي، ستظهر هنا.",
+      "no-results-title": "لا توجد شركات",
+      "no-results-description": "لا توجد شركة تطابق \"{search}\" شاهدت ملفك الشخصي."
     }
   },
   "legalPages": {

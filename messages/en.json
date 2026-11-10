@@ -1402,6 +1402,18 @@
         "go-to-applied-jobs": "Go to Applied Jobs",
         "browse-jobs": "Browse more jobs"
       }
+    },
+    "profileInsights": {
+      "title": "Who viewed your profile?",
+      "search-placeholder": "Search by company name....",
+      "search": "Search",
+      "viewed-on": "Viewed your profile on {date}",
+      "view-profile": "View Profile",
+      "logo-alt": "{company} logo",
+      "empty-title": "No one has viewed your profile yet",
+      "empty-description": "When a company views your profile, it will appear here.",
+      "no-results-title": "No companies found",
+      "no-results-description": "No company matching \"{search}\" has viewed your profile."
     }
   },
   "legalPages": {
