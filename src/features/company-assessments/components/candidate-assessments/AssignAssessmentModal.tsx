@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Info, LoaderCircle } from 'lucide-react';
@@ -41,6 +41,7 @@ export default function AssignAssessmentModal({
   onAssign,
 }: AssignAssessmentModalProps) {
   const t = useTranslations('companyPage.assessments.candidate-assessments');
+  const [modalContent, setModalContent] = useState<HTMLDivElement | null>(null);
   const schema = useMemo(
     () =>
       createAssignAssessmentSchema({
@@ -78,6 +79,7 @@ export default function AssignAssessmentModal({
       }}
     >
       <DialogContent
+        ref={setModalContent}
         showCloseButton={false}
         className="bg-card w-[calc(100%-2rem)] max-w-195 gap-6 rounded-3xl border-0 p-6 sm:min-w-0"
       >
@@ -106,6 +108,7 @@ export default function AssignAssessmentModal({
                 label={t('category')}
                 placeholder={t('category-placeholder')}
                 options={categoryOptions}
+                portalContainer={modalContent}
                 value={field.value}
                 onChange={(value) => {
                   field.onChange(value);
@@ -127,6 +130,7 @@ export default function AssignAssessmentModal({
                   categoryId ? 'assessment-placeholder' : 'choose-category-first',
                 )}
                 options={assessmentOptions}
+                portalContainer={modalContent}
                 value={field.value}
                 onChange={field.onChange}
                 disabled={isSubmitting || !categoryId}

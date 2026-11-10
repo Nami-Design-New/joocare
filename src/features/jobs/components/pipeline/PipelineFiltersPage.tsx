@@ -38,7 +38,9 @@ function readDraft(get: (key: string) => string) {
   ) as Record<PipelineFilterKey, string>;
 }
 
-export default function PipelineFiltersPage({ jobId }: PipelineFiltersPageProps) {
+export default function PipelineFiltersPage({
+  jobId,
+}: PipelineFiltersPageProps) {
   const t = useTranslations('companyPage.candidates.filters-page');
   const tOptions = useTranslations('companyPage.talent-database.options');
   const router = useRouter();
@@ -92,9 +94,12 @@ export default function PipelineFiltersPage({ jobId }: PipelineFiltersPageProps)
   function applyFilters(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const params = new URLSearchParams(searchParams.toString());
-    [...PIPELINE_FILTER_KEYS, 'country_label', 'nationality_label', 'page'].forEach(
-      (key) => params.delete(key),
-    );
+    [
+      ...PIPELINE_FILTER_KEYS,
+      'country_label',
+      'nationality_label',
+      'page',
+    ].forEach((key) => params.delete(key));
     PIPELINE_FILTER_KEYS.forEach((key) => {
       const value = draft[key].trim();
       if (value) params.set(key, value);
@@ -119,8 +124,7 @@ export default function PipelineFiltersPage({ jobId }: PipelineFiltersPageProps)
     );
   }
 
-  const jobTitle =
-    job?.title ?? job?.job_title?.title ?? t('unknown-job');
+  const jobTitle = job?.title ?? job?.job_title?.title ?? t('unknown-job');
 
   return (
     <div className="flex min-w-0 flex-col gap-6">
@@ -220,12 +224,12 @@ export default function PipelineFiltersPage({ jobId }: PipelineFiltersPageProps)
               aria-label={t('starred-only')}
               className="size-5 rounded-sm"
             />
-            <Star aria-hidden className="text-warning size-4 fill-warning" />
+            <Star aria-hidden className="text-warning fill-warning size-4" />
             {t('starred-only')}
           </label>
         </section>
 
-        <section className="flex flex-col gap-4 border-t border-border pt-5">
+        <section className="border-border flex flex-col gap-4 border-t pt-5">
           <div>
             <h3 className="text-foreground text-base font-semibold">
               {t('ai-match-score')}
@@ -252,7 +256,7 @@ export default function PipelineFiltersPage({ jobId }: PipelineFiltersPageProps)
           </div>
         </section>
 
-        <section className="flex flex-col gap-4 border-t border-border pt-5">
+        <section className="border-border flex flex-col gap-4 border-t pt-5">
           <h3 className="text-foreground text-base font-semibold">
             {t('assessment')}
           </h3>

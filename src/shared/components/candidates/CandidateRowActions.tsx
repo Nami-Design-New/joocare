@@ -50,7 +50,7 @@ export default function CandidateRowActions({
           height={14}
         />
       </Button>
-      {downloadHref ? (
+      {/* {downloadHref ? (
         <Button asChild variant="secondary" size="sm" className={BUTTON_CLASS}>
           <a
             href={downloadHref}
@@ -77,7 +77,7 @@ export default function CandidateRowActions({
             <FileText aria-hidden className="size-4" />
           )}
         </Button>
-      )}
+      )} */}
       {viewHref ? (
         <Button asChild variant="outline" size="sm" className={BUTTON_CLASS}>
           <Link href={viewHref} aria-label={viewLabel}>

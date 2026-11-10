@@ -61,7 +61,8 @@
     "cv-file": {
       "download": "تحميل",
       "pdf-icon-alt": "أيقونة PDF",
-      "no-cv": "لا توجد سيرة ذاتية متاحة."
+      "no-cv": "لا توجد سيرة ذاتية متاحة.",
+      "candidate-answers": "إجابات المرشح"
     },
     "job-saved-modal": {
       "title": "تم الحفظ بنجاح!",
@@ -2794,6 +2795,28 @@
           "grace-period": "ضمن فترة السماح",
           "not-assigned": "غير معيّن"
         }
+      },
+      "answers": {
+        "title": "إجابات المرشح",
+        "close": "إغلاق",
+        "summary": "أسئلة الفرز لوظيفة {job} · {count, plural, one {سؤال واحد} two {سؤالان} few {# أسئلة} many {# سؤالًا} other {# سؤال}}",
+        "question-number": "س{number}",
+        "mandatory": "إلزامي",
+        "optional": "(اختياري)",
+        "result": {
+          "correct": "صحيحة",
+          "wrong": "خاطئة",
+          "missing": "بدون إجابة"
+        },
+        "count": {
+          "correct": "{count} صحيحة",
+          "wrong": "{count} خاطئة",
+          "missing": "{count} بدون إجابة"
+        },
+        "candidate-answer": "إجابة المرشح",
+        "correct-answer": "الإجابة الصحيحة",
+        "missing-note-optional": "سؤال (اختياري) — لم يُجب عنه المرشح",
+        "missing-note-mandatory": "سؤال إلزامي — لم يُجب عنه المرشح"
       }
     },
     "accountSettings": {

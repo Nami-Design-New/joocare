@@ -56,6 +56,7 @@
   --color-question-card-accent: var(--question-card-accent);
   --color-question-card-radio: var(--question-card-radio);
   --color-question-card-chip: var(--question-card-chip);
+  --color-answer-missing: var(--answer-missing);
   --color-profile-accent: var(--profile-accent);
   --color-profile-online: var(--profile-online);
   --color-profile-verified: var(--profile-verified);
@@ -227,6 +228,8 @@
   --question-card-accent: #00743e;
   --question-card-radio: #c7d1e0;
   --question-card-chip: #e4f2ec;
+  /* Screening answers review: unanswered (missing) question */
+  --answer-missing: #d97706;
   /* Candidate profile side panel (avatar ring, online dot, verified badge) */
   --profile-accent: #29b89e;
   --profile-online: #17993d;

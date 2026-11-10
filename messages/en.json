@@ -61,7 +61,8 @@
     "cv-file": {
       "download": "Download",
       "pdf-icon-alt": "PDF icon",
-      "no-cv": "No CV available."
+      "no-cv": "No CV available.",
+      "candidate-answers": "Candidate Answers"
     },
     "job-saved-modal": {
       "title": "Saved Successfully!",
@@ -2794,6 +2795,28 @@
           "grace-period": "In grace period",
           "not-assigned": "Not assigned"
         }
+      },
+      "answers": {
+        "title": "Candidate Answers",
+        "close": "Close",
+        "summary": "Screening questions for {job} · {count, plural, one {# question} other {# questions}}",
+        "question-number": "Q{number}",
+        "mandatory": "Mandatory",
+        "optional": "(Optional)",
+        "result": {
+          "correct": "Correct",
+          "wrong": "Wrong",
+          "missing": "Missing"
+        },
+        "count": {
+          "correct": "{count} Correct",
+          "wrong": "{count} Wrong",
+          "missing": "{count} Missing"
+        },
+        "candidate-answer": "Candidate answer",
+        "correct-answer": "Correct answer",
+        "missing-note-optional": "(Optional) question — the candidate did not answer it",
+        "missing-note-mandatory": "Mandatory question — the candidate did not answer it"
       }
     },
     "accountSettings": {

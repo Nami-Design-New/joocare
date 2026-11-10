@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { CHAT_ROUTES } from '@/features/chat/constants';
 import { useTranslations } from 'next-intl';
@@ -16,6 +17,7 @@ import SuccessModal from '@/shared/components/modals/SuccessModal';
 import { Button } from '@/shared/components/ui/button';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { JOB_CANDIDATES_PAGE_SIZE } from '../../constants';
+import { CANDIDATE_ANSWERS_PREVIEW } from '../../constants/candidate-answers-preview-data';
 import { usePipelineCandidates } from '../../hooks/usePipelineCandidates';
 import type { PipelineCandidate } from '../../types/job-candidates.types';
 import { getPipelineFiltersHref } from '../../utils';
@@ -24,6 +26,7 @@ import PipelineActiveFilters from './PipelineActiveFilters';
 import PipelineCandidatesTable from './PipelineCandidatesTable';
 import PipelineToolbar from './PipelineToolbar';
 import JobCandidatesTabs from './JobCandidatesTabs';
+import CandidateAnswersModal from './answers/CandidateAnswersModal';
 
 type PipelineCandidatesTabProps = {
   jobId: number;
@@ -46,6 +49,8 @@ export default function PipelineCandidatesTab({
   const router = useRouter();
   const searchParams = useSearchParams();
   const pipeline = usePipelineCandidates(jobId);
+  // Screening answers of the applicant whose CV is open (preview data until the API returns them).
+  const [answersOpen, setAnswersOpen] = useState(false);
   const projectActions = useCandidateProjectActions();
   const assessmentActions = useCandidateAssessmentActions();
   const pageSize = pipeline.pageSize ?? JOB_CANDIDATES_PAGE_SIZE;
@@ -139,7 +144,9 @@ export default function PipelineCandidatesTab({
               : undefined
           }
           description={
-            pipeline.hasFilters ? t('pipeline.no-matches-description') : undefined
+            pipeline.hasFilters
+              ? t('pipeline.no-matches-description')
+              : undefined
           }
         />
       )}
@@ -170,6 +177,15 @@ export default function PipelineCandidatesTab({
         }}
         title={t('cv-modal.title')}
         pdfUrl={pipeline.cvCandidate?.cvUrl}
+        onShowAnswers={() => {
+          pipeline.setCvCandidate(null);
+          setAnswersOpen(true);
+        }}
+      />
+      <CandidateAnswersModal
+        open={answersOpen}
+        onOpenChange={setAnswersOpen}
+        answers={CANDIDATE_ANSWERS_PREVIEW}
       />
       <CandidateProjectModals actions={projectActions} />
       <CandidateAssessmentModals actions={assessmentActions} />

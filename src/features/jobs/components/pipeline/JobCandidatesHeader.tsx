@@ -17,7 +17,8 @@ export default function JobCandidatesHeader({
   const t = useTranslations();
   const { data: job, isLoading } = useGetCompanyJob(jobId);
 
-  if (isLoading) return <Skeleton className="h-22 w-full max-w-md rounded-2xl" />;
+  if (isLoading)
+    return <Skeleton className="h-22 w-full max-w-md rounded-2xl" />;
 
   return (
     <PositionCard
