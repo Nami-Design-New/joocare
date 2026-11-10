@@ -13,12 +13,13 @@ import { VariantProps } from 'class-variance-authority';
 import Image from 'next/image';
 import { cn } from '@/shared/lib/utils';
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 
 type ConfirmDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
-  description: string;
+  description: ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
   confirmButtonVariant?: VariantProps<typeof buttonVariants>['variant'];

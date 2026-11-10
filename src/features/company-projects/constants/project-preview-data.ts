@@ -176,6 +176,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     status: 'Rejected',
     assessment: 'Passed',
     score: 86,
+    assessmentResult: { assessmentId: 'icu-nurses', candidateId: '1' },
   },
   {
     id: 'candidate-2',
@@ -187,6 +188,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     status: 'Shortlist',
     assessment: 'Failed',
     score: 42,
+    assessmentResult: { assessmentId: 'icu-nurses', candidateId: '2' },
     interview: '20 Oct 2026 · 10:00 AM',
     interviewDate: '20 Oct 2026',
     interviewTime: '10:00 AM',
@@ -205,6 +207,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     status: 'Under review',
     assessment: 'Passed',
     score: 78,
+    assessmentResult: { assessmentId: 'icu-nurses', candidateId: '3' },
   },
   {
     id: 'candidate-4',
@@ -226,6 +229,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     status: 'Shortlist',
     assessment: 'Passed',
     score: 91,
+    assessmentResult: { assessmentId: 'icu-nurses', candidateId: '1' },
     interview: '22 Oct 2026 · 01:30 PM',
     interviewDate: '22 Oct 2026',
     interviewTime: '01:30 PM',
@@ -244,6 +248,7 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
     status: 'Under review',
     assessment: 'Passed',
     score: 78,
+    assessmentResult: { assessmentId: 'icu-nurses', candidateId: '3' },
   },
 ];
 

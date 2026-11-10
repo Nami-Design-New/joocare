@@ -22,7 +22,10 @@ export default function ProjectDeleteModal({
       open
       onOpenChange={(open) => !open && onClose()}
       title={t('delete-project-title')}
-      description={t('delete-project-description', { name: project.name })}
+      description={t.rich('delete-project-description', {
+        name: project.name,
+        b: (chunks) => <strong className="font-semibold">{chunks}</strong>,
+      })}
       confirmLabel={t('delete')}
       cancelLabel={t('cancel')}
       onConfirm={() => onConfirm(project.id)}

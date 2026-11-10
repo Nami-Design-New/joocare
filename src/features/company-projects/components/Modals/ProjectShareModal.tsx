@@ -32,9 +32,7 @@ export default function ProjectShareModal({
   onShare,
 }: ProjectShareModalProps) {
   const t = useTranslations('companyPage.projects');
-  const [modalContent, setModalContent] = useState<HTMLDivElement | null>(
-    null,
-  );
+  const [modalContent, setModalContent] = useState<HTMLDivElement | null>(null);
   const [manager, setManager] = useState('');
   const [message, setMessage] = useState(projectShareMessage);
   const [isSubmitted, setIsSubmitted] = useState(false);

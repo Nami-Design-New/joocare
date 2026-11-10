@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
 import { Link } from '@/i18n/navigation';
+import { CHAT_ROUTES } from '@/features/chat/constants';
 import { cn } from '@/shared/lib/utils';
 import {
   ASSESSMENT_ASSETS,
@@ -205,18 +206,25 @@ export default function ExternalInvitationsTable({
       headerClassName: 'w-[6%]',
       renderCell: (candidate) => (
         <Button
-          onClick={() => onInspect(candidate)}
+          asChild
           variant="ghost"
           size="icon"
-          aria-label={t('chat-with', { name: candidate.name })}
           className="bg-assessment-primary/8 size-8 rounded-full"
         >
-          <Image
-            src={`${ASSESSMENT_ASSETS}/chat.svg`}
-            width={20.0009}
-            height={20.02}
-            alt=""
-          />
+          <Link
+            href={{
+              pathname: CHAT_ROUTES.company,
+              query: { conversation: `assessment-${candidate.id}` },
+            }}
+            aria-label={t('chat-with', { name: candidate.name })}
+          >
+            <Image
+              src={`${ASSESSMENT_ASSETS}/chat.svg`}
+              width={20.0009}
+              height={20.02}
+              alt=""
+            />
+          </Link>
         </Button>
       ),
     },

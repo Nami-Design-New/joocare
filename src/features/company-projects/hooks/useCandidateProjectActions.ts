@@ -20,10 +20,14 @@ const projectOptions: ProjectOption[] = projectPreviewData
       project.candidateInitials.length + project.additionalCandidates,
   }));
 
+// Candidate name + project count shown by the "linked to project" success modal.
+type LinkedToProjects = { name: string; count: number };
+
 // Preview only: swap the callbacks for project API mutations when available.
 export function useCandidateProjectActions() {
   const t = useTranslations('companyPage.projects.candidate-projects');
   const [action, setAction] = useState<CandidateProjectAction>(null);
+  const [linked, setLinked] = useState<LinkedToProjects | null>(null);
   const close = () => setAction(null);
 
   async function createProject({ name }: TCreateProjectSchema) {
@@ -36,23 +40,20 @@ export function useCandidateProjectActions() {
 
   async function linkProjects(projectIds: string[]) {
     if (!action) return;
-    toast.success(
-      t('linked-toast', {
-        count: projectIds.length,
-        name: action.candidate.name,
-      }),
-    );
+    setLinked({ name: action.candidate.name, count: projectIds.length });
     close();
   }
 
   return {
     action,
+    linked,
     projects: projectOptions,
     openCreate: (candidate: ProjectCandidateRef) =>
       setAction({ type: 'create', candidate }),
     openLink: (candidate: ProjectCandidateRef) =>
       setAction({ type: 'link', candidate }),
     close,
+    closeLinked: () => setLinked(null),
     createProject,
     linkProjects,
   };

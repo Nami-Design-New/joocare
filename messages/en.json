@@ -1831,7 +1831,7 @@
       "project-name": "Project Name",
       "save-changes": "Save Changes",
       "delete-project-title": "Permanently Delete Project?",
-      "delete-project-description": "You are about to permanently delete the \"{name}\" project and its candidate list. This action is irreversible and cannot be undone.",
+      "delete-project-description": "You are about to permanently delete the <b>\"{name}\"</b> project and its candidate list. This action is irreversible and cannot be undone.",
       "close-project-title": "Close this project?",
       "close-project-description": "Once \"{name}\" is closed, no more candidates can be added to it. The project and its shortlist stay available as read-only and hiring managers can still view it.",
       "confirm-close-project": "Yes, close project",
@@ -1870,7 +1870,7 @@
       "candidate-share-success": "Candidate Shared Successfully",
       "candidate-share-success-description": "The candidate was shared with {manager}.",
       "remove-candidate-title": "Remove Candidate from Project?",
-      "remove-candidate-description": "You are about to remove {name} from the {project} project. This action will hide the candidate from hiring managers assigned to this project, but the candidate profile will remain available in your talent database for future use.",
+      "remove-candidate-description": "You are about to remove <b>{name}</b> from the <b>{project}</b> project. This action will hide the candidate from hiring managers assigned to this project, but the candidate profile will remain available in your talent database for future use.",
       "remove": "Remove",
       "interview-note": "Interview Note",
       "interview-details": "Interview details",
@@ -1979,7 +1979,8 @@
         "no-projects-description": "Try another search or create a project first.",
         "adding": "Adding...",
         "link-submit": "Add to Project",
-        "linked-toast": "{name} was added to {count, plural, one {# project} other {# projects}}."
+        "linked-toast": "{name} was added to {count, plural, one {# project} other {# projects}}.",
+        "linked-success": "Candidate linked to project successfully"
       }
     },
     "roles": {

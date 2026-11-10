@@ -50,7 +50,8 @@ export default function ProjectDetailsPage({
           currentPage={preview.page}
           onPageChange={preview.setPage}
           statusPosition="start"
-          className="md:justify-between"
+          tone="strong"
+          align="start"
         />
       )}
 

@@ -91,7 +91,9 @@ export default function ProjectsPage() {
           pageSize={preview.pageSize}
           currentPage={preview.page}
           onPageChange={preview.setPage}
-          className="justify-start gap-4"
+          statusPosition="start"
+          tone="strong"
+          align="start"
         />
       )}
 

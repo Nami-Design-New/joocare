@@ -24,9 +24,10 @@ export default function CandidateRemoveModal({
       open
       onOpenChange={(open) => !open && onClose()}
       title={t('remove-candidate-title')}
-      description={t('remove-candidate-description', {
+      description={t.rich('remove-candidate-description', {
         name: candidate.name,
         project: projectName,
+        b: (chunks) => <strong className="font-semibold">{chunks}</strong>,
       })}
       confirmLabel={t('remove')}
       cancelLabel={t('cancel')}

@@ -8,6 +8,7 @@ import DataTable, {
   type DataTableColumn,
 } from '@/shared/components/common/DataTable';
 import { Button } from '@/shared/components/ui/button';
+import { getAssessmentResultHref } from '@/features/company-assessments/utils/candidate-assessments';
 import { cn } from '@/shared/lib/utils';
 import type {
   CandidateAction,
@@ -131,12 +132,17 @@ function AssessmentCell({
             {candidate.score}%
           </strong>
         </span>
-        <Link
-          href="/company/assessments/company-1/company-1-1/external-invitations/1"
-          className="text-primary text-xs font-medium underline underline-offset-2"
-        >
-          {t('view-result')}
-        </Link>
+        {candidate.assessmentResult ? (
+          <Link
+            href={getAssessmentResultHref(
+              candidate.assessmentResult.assessmentId,
+              candidate.assessmentResult.candidateId,
+            )}
+            className="text-primary text-xs font-medium underline underline-offset-2"
+          >
+            {t('view-result')}
+          </Link>
+        ) : null}
       </div>
     );
   }
@@ -357,7 +363,7 @@ export default function ProjectCandidatesTable({
         dir={direction}
         ariaLabel={t('candidate-table-title')}
         containerClassName="rounded-2xl border border-border bg-card"
-        className="min-w-[1080px] [&_td]:!px-4 [&_td]:!py-4 [&_td]:!text-sm [&_th]:!py-4 [&_th]:!text-sm"
+        className="min-w-[1080px] [&_td]:!px-4 [&_td]:!py-4 [&_td]:!text-sm [&_th]:!py-4 [&_th]:!text-lg [&_th]:!font-semibold"
         headerRowClassName="bg-muted/70"
         rowClassName="border-t border-border bg-body-bg/70 align-middle hover:bg-primary/5"
       />

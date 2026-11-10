@@ -31,6 +31,8 @@ export type ProjectCandidate = {
   status: 'Rejected' | 'Shortlist' | 'Under review';
   assessment: 'Passed' | 'Failed' | 'Not assigned';
   score?: number;
+  /** Ids of the candidate's result in Assessments Results ("View result"). */
+  assessmentResult?: { assessmentId: string; candidateId: string };
   interview?: string;
   interviewDate?: string;
   interviewTime?: string;
