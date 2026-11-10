@@ -64,4 +64,4 @@ Everyone who writes code in this project (developers and AI agents) must follow 
 
 ## Phase 2
 
-Product logic, Figma frames, and what is done or still left in Phase 2: [docs/PHASE-2-README.md](docs/PHASE-2-README.md).
+What is still missing from the Figma design, open decisions and pending API work: [docs/DESIGN-GAPS.md](docs/DESIGN-GAPS.md).
