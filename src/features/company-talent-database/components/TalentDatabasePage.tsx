@@ -105,7 +105,7 @@ export default function TalentDatabasePage() {
         }}
         title={t('message-success', { count: preview.sentCount })}
         description=""
-        className="w-[calc(100%-2rem)] max-w-175 grid-cols-1 rounded-3xl sm:min-w-0 [&_[data-slot=dialog-title]]:text-[28px]"
+        className="w-[calc(100%-2rem)] max-w-175 grid-cols-1 rounded-3xl sm:min-w-0 [&_[data-slot=dialog-title]]:text-2xl sm:[&_[data-slot=dialog-title]]:text-[28px]"
         visualClassName="aspect-square h-auto w-75 max-w-full"
         visualWrapperClassName="mt-16 mb-2"
       />

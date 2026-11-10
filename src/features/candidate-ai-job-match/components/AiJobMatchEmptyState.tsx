@@ -29,7 +29,7 @@ export default function AiJobMatchEmptyState({
   const t = useTranslations('candidatePage.aiJobMatch.empty');
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6 sm:gap-8">
       <AiJobMatchHeader
         title={t('title')}
         subtitle={t('subtitle')}

@@ -52,7 +52,7 @@ export default function MemberFormModal({
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <DialogContent
         showCloseButton
-        className="max-w-lg rounded-2xl p-8 sm:p-10 [&_label]:text-sm [&_input]:text-sm [&_button]:text-xs"
+        className="max-w-lg rounded-2xl p-5 sm:p-10 [&_label]:text-sm [&_input]:text-sm [&_button]:text-xs"
       >
         <DialogHeader>
           <DialogTitle className="text-[22px]">

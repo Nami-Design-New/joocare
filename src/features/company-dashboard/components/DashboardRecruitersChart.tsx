@@ -28,7 +28,7 @@ export default function DashboardRecruitersChart({
   const locale = useLocale();
   const format = new Intl.NumberFormat(locale);
   return (
-    <section className="bg-card space-y-6 rounded-2xl p-6">
+    <section className="bg-card space-y-6 rounded-2xl p-4 sm:p-6">
       <div className="flex min-h-11.5 flex-wrap items-center justify-between gap-3">
         <DashboardWidgetTitle
           title={t('recruiters-title')}

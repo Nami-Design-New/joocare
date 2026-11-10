@@ -700,7 +700,7 @@ export default function PostJobForm() {
   // ─── Loading gate test ────────────────────
   if (mode === 'complete' && isLoadingJob) {
     return (
-      <section className="h-min-dvh mx-auto max-w-255 py-12">
+      <section className="h-min-dvh mx-auto max-w-255 px-4 py-6 sm:px-0 sm:py-12">
         <div className="flex h-full items-center justify-center rounded-2xl bg-white p-6">
           <div className="flex flex-col items-center gap-4">
             <svg
@@ -748,8 +748,8 @@ export default function PostJobForm() {
   //  UNIFIED WIZARD — same UI for create, complete & edit
   // ═══════════════════════════════════════════════════════
   return (
-    <section className={cn('h-min-dvh mx-auto max-w-7xl py-12')}>
-      <div className="h-full rounded-2xl bg-white p-6 shadow-lg">
+    <section className={cn('h-min-dvh mx-auto max-w-7xl px-4 py-6 sm:px-0 sm:py-12')}>
+      <div className="h-full rounded-2xl bg-white p-4 shadow-lg sm:p-6">
         <div className="flex max-sm:mb-6 max-sm:flex-col sm:gap-6">
           <WizardProgress step={currentStep} steps={steps} />
           {/* Save as Draft — hidden in edit mode */}
@@ -808,7 +808,7 @@ export default function PostJobForm() {
               )}
             </div>
 
-            <div className="mt-5 flex w-full items-center justify-center gap-6">
+            <div className="mt-5 flex w-full items-center justify-center gap-3 sm:gap-6">
               {currentStep > 0 && (
                 <Button
                   type="button"
@@ -817,7 +817,7 @@ export default function PostJobForm() {
                   variant="outline"
                   hoverStyle="slidePrimary"
                   size="pill"
-                  className="w-2/6 md:w-1/6"
+                  className="w-1/2 px-4 sm:w-2/6 sm:px-8 md:w-1/6"
                 >
                   {t('companyPage.postJob.actions.prev')}
                 </Button>
@@ -836,7 +836,7 @@ export default function PostJobForm() {
                   variant="secondary"
                   hoverStyle="slidePrimary"
                   size="pill"
-                  className="w-2/6 md:w-1/6"
+                  className="w-1/2 px-4 sm:w-2/6 sm:px-8 md:w-1/6"
                 >
                   {isBusy && !isEditMode
                     ? t('common.saving')

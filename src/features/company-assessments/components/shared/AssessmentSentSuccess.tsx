@@ -37,7 +37,7 @@ export default function AssessmentSentSuccess({
     { icon: 'clock.svg', title: 'ready', description: 'ready-description' },
   ] as const;
   return (
-    <div className="relative flex flex-col items-center gap-5 px-6 pt-10 pb-9 sm:px-10">
+    <div className="relative flex flex-col items-center gap-5 px-6 pt-14 pb-9 sm:px-10 sm:pt-10">
       <DialogClose asChild>
         <Button
           size="icon"
@@ -53,7 +53,7 @@ export default function AssessmentSentSuccess({
           />
         </Button>
       </DialogClose>
-      <div className="relative h-[242px] w-[230px] shrink-0 overflow-hidden">
+      <div className="relative h-[168px] w-[160px] shrink-0 sm:h-[242px] sm:w-[230px] overflow-hidden">
         <Image
           src={`${ASSESSMENT_ASSETS}/sent-success.png`}
           width={265}
@@ -63,7 +63,7 @@ export default function AssessmentSentSuccess({
         />
       </div>
       <div className="w-full space-y-2.5 text-center">
-        <DialogTitle className="text-assessment-main text-[30px] leading-[1.2] font-bold">
+        <DialogTitle className="text-assessment-main text-2xl leading-[1.2] sm:text-[30px] font-bold">
           {t('success-title')}
         </DialogTitle>
         <DialogDescription className="text-assessment-copy text-[17px] leading-[1.5]">

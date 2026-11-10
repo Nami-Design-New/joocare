@@ -13,14 +13,16 @@ export default function HowItWorksCard({
   description,
 }: HowItWorksCardProps) {
   return (
-    <section className="border-border grow flex flex-col items-center justify-center gap-3 border-b px-2 pt-4 pb-8">
-      <div className="bg-primary items-center flex size-14 justify-center rounded-full">
+    <section className="border-border grow flex flex-col items-center justify-center gap-3 border-b px-2 pt-2 pb-6 sm:pt-4 sm:pb-8">
+      <div className="bg-primary items-center flex size-12 justify-center rounded-full shrink-0 sm:size-14">
         <Image src={icon} width={28} height={28} alt={`${title} Icon`} />
       </div>
 
-      <h4 className="text-lg font-semibold">{title}</h4>
+      <div className="flex flex-col justify-center gap-1">
+        <h4 className="text-lg font-semibold">{title}</h4>
+        <p className="text-muted-foreground text-sm md:text-base text-start">{description}</p>
+      </div>
 
-      <p className="text-muted-foreground text-md">{description}</p>
     </section>
   );
 }

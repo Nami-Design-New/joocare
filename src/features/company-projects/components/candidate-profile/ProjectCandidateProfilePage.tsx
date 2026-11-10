@@ -18,7 +18,7 @@ export default function ProjectCandidateProfilePage({
   const { profile } = candidate;
 
   return (
-    <div className="layout-container grid grid-cols-1 items-start gap-8 py-8 lg:grid-cols-[300px_minmax(0,1fr)] lg:py-12.5">
+    <div className="layout-container grid grid-cols-1 items-start gap-5 py-5 sm:gap-8 sm:py-8 lg:grid-cols-[300px_minmax(0,1fr)] lg:py-12.5">
       <CandidateProfileSidebar profile={profile} summary={candidate.summary} />
 
       <div className="flex min-w-0 flex-col gap-4">

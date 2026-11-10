@@ -33,7 +33,7 @@ export default function CandidateProfileSidebar({
               alt={t('profile-image', { name: profile.name })}
               width={150}
               height={150}
-              className="size-37.5 rounded-full object-cover"
+              className="size-28 rounded-full object-cover sm:size-37.5"
             />
           </span>
           {summary.isOpenToWork && (

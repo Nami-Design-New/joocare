@@ -37,11 +37,11 @@ export default function AssessmentPreviewDialog({
     <Dialog open={Boolean(assessment)} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         showCloseButton={false}
-        className="bg-white flex max-h-[90vh] w-[calc(100%-2rem)] max-w-269 flex-col gap-6 overflow-y-auto rounded-3xl border-0 p-6 sm:min-w-0 sm:p-8"
+        className="bg-white flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-269 flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-3xl border-0 p-4 sm:min-w-0 sm:gap-6 sm:p-8"
       >
-        <div className="flex items-start justify-between gap-4">
-          <DialogHeader className="gap-2 text-start">
-            <DialogTitle className="text-secondary text-2xl font-bold sm:text-[28px]">
+        <div className="flex items-start justify-between gap-3 sm:gap-4">
+          <DialogHeader className="min-w-0 gap-1 text-start sm:gap-2">
+            <DialogTitle className="text-secondary text-xl font-bold sm:text-[28px]">
               {t('preview-title')}
             </DialogTitle>
             <DialogDescription className="text-muted-foreground text-sm">

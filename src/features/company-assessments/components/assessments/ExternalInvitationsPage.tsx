@@ -40,10 +40,10 @@ export default function ExternalInvitationsPage({
     );
 
   return (
-    <div className="mx-auto flex w-full flex-col gap-11 lg:pt-5">
+    <div className="mx-auto flex w-full flex-col gap-6 sm:gap-11 lg:pt-5">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-assessment-dark text-[28px] leading-[normal] font-bold">
+          <h1 className="text-assessment-dark text-2xl leading-[normal] sm:text-[28px] font-bold">
             {t('title')}
           </h1>
           <p className="text-muted-foreground text-base leading-[normal]">

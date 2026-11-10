@@ -15,6 +15,11 @@ import {
 import { Button } from "./ui/button";
 import { Option } from "./SelectInputField";
 
+// Module-level so the Combobox gets the same function on every render;
+// a new one each render re-triggers its internal store sync.
+const isSameOption = (item: Option | null, selectedItem: Option | null) =>
+  item?.value === selectedItem?.value;
+
 type MultiSelectInputFieldProps = {
   label?: string;
   id: string;
@@ -110,9 +115,13 @@ export const MultiSelectInputField = React.forwardRef<
       });
     }, [options, preloadOptions]);
 
-    const cachedSelectedOptions = value
-      .map((v) => optionsCache.get(v))
-      .filter((o): o is Option => o !== undefined);
+    const cachedSelectedOptions = React.useMemo(
+      () =>
+        value
+          .map((v) => optionsCache.get(v))
+          .filter((o): o is Option => o !== undefined),
+      [value, optionsCache],
+    );
 
     // Merge cached selected options into the items list so the Combobox
     // never loses track of already-selected items when search filters change.
@@ -204,9 +213,7 @@ export const MultiSelectInputField = React.forwardRef<
           items={mergedItems}
           multiple
           value={selectedOptions}
-          isItemEqualToValue={(item, selectedItem) =>
-            item?.value === selectedItem?.value
-          }
+          isItemEqualToValue={isSameOption}
           onValueChange={(raw) => {
             const selected = Array.from(
               new Set(

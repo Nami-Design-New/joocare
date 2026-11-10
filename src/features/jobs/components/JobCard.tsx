@@ -53,7 +53,7 @@ type JobCardProps = {
 };
 
 // Figma card buttons: two equal pills, 34px high, 14px regular.
-const BUTTON_CLASS = "h-8.5 flex-1 gap-1 rounded-full px-3 text-sm font-normal";
+const BUTTON_CLASS = "h-9 w-full gap-1 rounded-full px-3 text-sm font-normal sm:h-8.5 sm:w-auto sm:flex-1";
 
 export default function JobCard({
   job,
@@ -147,7 +147,7 @@ export default function JobCard({
               {menuItems.map(({ key, icon: Icon, href, action, destructive }) => {
                 const label = t(`companyPage.jobs.actions.${key}`);
                 const itemClass = cn(
-                  "text-muted-foreground gap-2 text-base font-semibold [&_svg]:size-5",
+                  "text-muted-foreground gap-2 text-sm md:text-base font-semibold [&_svg]:size-5",
                   destructive && "text-destructive focus:text-destructive",
                 );
                 return href ? (
@@ -172,7 +172,7 @@ export default function JobCard({
         </div>
       </header>
 
-      <ul className="text-secondary flex flex-wrap gap-x-3 gap-y-1 text-sm">
+      <ul className="text-secondary flex flex-wrap gap-x-3 gap-y-1 text-xs md:text-sm">
         <li className="flex items-center gap-1">
           <MapPin aria-hidden="true" className="text-muted-foreground size-4 shrink-0" />
           {location}
@@ -190,13 +190,13 @@ export default function JobCard({
         {tags.map((tag, index) => (
           <li
             key={`${tag}-${index}`}
-            className="text-muted-foreground bg-muted rounded-full px-2 py-1 text-xs"
+            className="text-muted-foreground bg-muted rounded-full px-2 py-1 text-xs md:text-sm"
           >
             {tag}
           </li>
         ))}
       </ul>
-      <p className="text-muted-foreground line-clamp-2 text-sm">{excerpt}</p>
+      <p className="text-muted-foreground line-clamp-2 text-xs md:text-sm">{excerpt}</p>
 
       <footer className="border-border mt-auto flex flex-col gap-4 border-t pt-4">
         {!isDraft ? (

@@ -87,7 +87,7 @@ export default function CandidatePreviewModal({
             <span className="text-success text-sm font-semibold">
               {t(assessmentKey)}
             </span>
-            <span className="text-foreground text-4xl font-bold">
+            <span className="text-foreground text-3xl font-bold sm:text-4xl">
               {candidate.score ?? 0}%
             </span>
             <span className="text-muted-foreground text-xs">

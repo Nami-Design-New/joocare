@@ -17,8 +17,8 @@ export default function PositionCard({
 }: PositionCardProps) {
   const t = useTranslations();
   return (
-    <div className="flex items-center gap-6">
-      <div className="bg-primary-bg flex h-22 w-24 shrink-0 items-center justify-center rounded-2xl p-2">
+    <div className="flex items-center gap-3 sm:gap-6">
+      <div className="bg-primary-bg flex h-16 w-18 shrink-0 sm:h-22 sm:w-24 items-center justify-center rounded-2xl p-2">
         <Image
           src={logoSrc}
           alt={t('companyPage.postJob.review.companyLogoAlt')}
@@ -28,12 +28,10 @@ export default function PositionCard({
         />
       </div>
       <div>
-        <h1 className="text-foreground mb-1 text-2xl font-semibold">
-          {title}
-        </h1>
-        <p className="flex items-start gap-2 max-sm:flex-col sm:items-center">
-          <span className="text-muted-foreground text-base font-normal">
-            {t('companyPage.postJob.review.at')} {company}
+        <h6 className="text-foreground text-base md:text-2xl font-semibold mb-1">{title}</h6>
+        <p className="flex max-sm:flex-col items-start sm:items-center gap-2">
+          <span className="text-muted-foreground text-sm md:text-base font-normal">
+            {t("companyPage.postJob.review.at")} {company}
           </span>
           <Badge
             size="sm"

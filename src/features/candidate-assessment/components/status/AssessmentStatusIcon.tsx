@@ -20,11 +20,11 @@ export default function AssessmentStatusIcon({
     <span
       aria-hidden
       className={cn(
-        'flex size-28 items-center justify-center rounded-full',
+        'flex size-20 items-center sm:size-28 justify-center rounded-full',
         TONES[tone],
       )}
     >
-      <Icon className="size-14" strokeWidth={2.5} />
+      <Icon className="size-10 sm:size-14" strokeWidth={2.5} />
     </span>
   );
 }

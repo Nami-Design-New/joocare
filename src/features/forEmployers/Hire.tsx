@@ -29,7 +29,7 @@ export default function Hire() {
     <section className="bg-[#EEF8F0] py-12 sm:py-20">
       <div className="mx-auto  px-4 sm:px-6">
         <div className="mb-8 lg:w-[50%]">
-          <h2 className="text-secondary text-4xl leading-tight font-bold sm:text-5xl">
+          <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
             Hire Top Medical Talent in 3
             <br /> Simple Steps
           </h2>

@@ -126,15 +126,15 @@ export default function SuccessModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={!isSubmittedVariant}
-        className={cn('max-w-150 rounded-2xl p-8 text-center', className)}
+        className={cn('max-w-150 rounded-2xl p-5 text-center sm:p-8', className)}
       >
         <div
           className={cn(
-            'mt-15 mb-12 flex w-full items-center justify-center',
+            'mt-8 mb-6 flex w-full items-center justify-center sm:mt-15 sm:mb-12',
             visualWrapperClassName,
           )}
         >
-          <div className={cn('h-50 w-50', visualClassName)}>
+          <div className={cn('h-50 w-50', !visualClassName && 'max-sm:size-36', visualClassName)}>
             {visual ?? (
               <Lottie
                 lottieRef={lottieRef}
@@ -148,10 +148,10 @@ export default function SuccessModal({
           </div>
         </div>
         <DialogHeader>
-          <DialogTitle className="text-foreground text-center text-3xl font-bold">
+          <DialogTitle className="text-foreground text-center text-2xl md:text-3xl font-bold">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-foreground mt-2 text-center text-lg leading-tight">
+          <DialogDescription className="text-foreground text-center text-base leading-tight mt-2 sm:text-lg">
             {description}
           </DialogDescription>
         </DialogHeader>{' '}

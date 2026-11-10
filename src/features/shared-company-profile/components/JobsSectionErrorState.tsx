@@ -24,7 +24,7 @@ export default function JobsSectionErrorState({
       {statusCode ? (
         <p className="text-primary text-sm font-semibold">{statusCode}</p>
       ) : null}
-      <h3 className="mt-3 text-lg font-semibold text-secondary">
+      <h3 className="mt-3 text-base md:text-lg font-semibold text-secondary">
         {t("sharedCompanyProfilePage.jobs-unavailable")}
       </h3>
       <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm">

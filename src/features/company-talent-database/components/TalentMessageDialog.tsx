@@ -59,7 +59,7 @@ export default function TalentMessageDialog({
     >
       <DialogContent
         showCloseButton={false}
-        className="bg-card w-[calc(100%-2rem)] max-w-195 gap-8 rounded-3xl border-0 p-6 sm:min-w-0"
+        className="bg-card w-[calc(100%-2rem)] max-w-195 gap-5 rounded-3xl border-0 p-6 sm:gap-8 sm:min-w-0"
         onEscapeKeyDown={(event) => {
           if (isSubmitting) event.preventDefault();
         }}
@@ -68,7 +68,7 @@ export default function TalentMessageDialog({
         }}
       >
         <div className="flex items-center justify-between gap-6">
-          <DialogTitle className="text-[28px] leading-tight font-semibold">
+          <DialogTitle className="text-2xl leading-tight sm:text-[28px] font-semibold">
             {t('send-message')}
           </DialogTitle>
           <DialogClose asChild>

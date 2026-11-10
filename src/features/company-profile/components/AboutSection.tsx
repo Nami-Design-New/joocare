@@ -22,7 +22,7 @@ const AboutSection = ({ companyProfileData, isPending }: { companyProfileData: T
                     <TextSkeleton />
                 </div>
             ) : (
-                <p className="text-muted-foreground text-sm text-justify">
+                <p className="text-muted-foreground text-sm text-start sm:text-justify">
                     {companyProfileData?.bio}
                 </p>
             )}

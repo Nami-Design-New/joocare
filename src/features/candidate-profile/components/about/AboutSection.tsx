@@ -31,7 +31,7 @@ const AboutSection = ({
             />
           )}
         </div>
-        <p className="text-muted-foreground text-justify text-sm">
+        <p className="text-muted-foreground text-start text-sm md:text-base sm:text-justify">
           {aboutText}
         </p>
       </div>

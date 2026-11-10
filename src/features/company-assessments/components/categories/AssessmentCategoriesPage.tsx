@@ -19,7 +19,7 @@ export default function AssessmentCategoriesPage() {
   });
 
   return (
-    <div className="flex flex-col gap-10 lg:mt-1">
+    <div className="flex flex-col gap-6 sm:gap-10 lg:mt-1">
       <AssessmentCategoriesHeader
         count={catalog.categories.length}
         onCreate={catalog.openCreate}

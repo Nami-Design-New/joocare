@@ -20,7 +20,7 @@ const EducationSection = ({
     <>
       <section className="border-border flex flex-col gap-4 rounded-2xl border bg-white p-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-[21px] leading-6.5 font-semibold">
+          <h3 className="text-lg font-semibold md:text-xl leading-6.5">
             {t('candidatePage.profile.education')}
           </h3>
           {!readOnly && (

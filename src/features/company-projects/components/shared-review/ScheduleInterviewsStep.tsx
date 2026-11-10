@@ -75,7 +75,7 @@ export default function ScheduleInterviewsStep({
             variant="outline"
             size="pill"
             onClick={onBack}
-            className="h-12.5 px-10 text-sm font-semibold"
+            className="h-12.5 flex-1 px-4 text-sm font-semibold sm:flex-none sm:px-10"
           >
             {t('back')}
           </Button>
@@ -83,7 +83,7 @@ export default function ScheduleInterviewsStep({
             type="submit"
             size="pill"
             disabled={form.formState.isSubmitting}
-            className="h-12.5 px-8 text-sm font-semibold"
+            className="h-12.5 flex-1 px-4 text-sm font-semibold sm:flex-none sm:px-8"
           >
             {t('submit')}
           </Button>

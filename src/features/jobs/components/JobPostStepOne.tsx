@@ -473,6 +473,7 @@ function JobPostStepOneContent({
                 label={t("companyPage.postJob.fields.jobTitle.label")}
                 placeholder={t("companyPage.postJob.fields.jobTitle.placeholder")}
                 withSearchInput
+                className="whitespace-normal"
                 error={
                   translateMessage(errors.title?.message) ??
                   (jobTitlesError instanceof Error
@@ -1080,7 +1081,7 @@ function JobPostStepOneContent({
                   id="education-level"
                   label={t("companyPage.postJob.fields.educationLevel.label")}
                   placeholder={t("common.select")}
-                  className="bg-white"
+                  className="bg-white whitespace-normal"
                   error={
                     translateMessage(errors.educationLevel?.message) ??
                     (educationLevelsError instanceof Error
@@ -1117,7 +1118,7 @@ function JobPostStepOneContent({
                     id="mandatory-certifications"
                     label={t("companyPage.postJob.fields.mandatoryCertifications.label")}
                     placeholder={t("common.select")}
-                    className="bg-white"
+                    className="bg-white whitespace-normal"
                     error={
                       translateMessage(errors.mandatoryCertifications?.message) ??
                       (mandatoryCertificationsError instanceof Error

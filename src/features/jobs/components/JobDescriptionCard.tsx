@@ -17,14 +17,14 @@ export default async function JobDescriptionCard({
   const t = await getTranslations();
 
   return (
-    <div className="card font-noto-sans bg-body-bg text-foreground col-span-2 rounded-2xl p-7">
-      <h3 className="text-primary mb-4 text-xl font-bold">
+    <div className="card font-noto-sans bg-body-bg text-foreground col-span-2 rounded-2xl p-4 md:p-7">
+      <h3 className="text-primary mb-4 text-lg font-bold md:text-xl">
         {t('jobDetailsPage.job-description')}
       </h3>
 
       <DescriptionSection title={t('jobDetailsPage.qualifications')}>
         <div
-          className="prose prose-sm max-w-none border-b pb-5"
+          className="prose prose-sm max-w-none border-b pb-5 text-sm md:text-base"
           dangerouslySetInnerHTML={{
             __html:
               job.description ||
@@ -34,7 +34,7 @@ export default async function JobDescriptionCard({
       </DescriptionSection>
 
       <div>
-        <h3 className="text-primary font-outfit text-xl font-bold">
+        <h3 className="text-primary font-outfit text-lg font-bold md:text-xl">
           {t('jobDetailsPage.skills')}
         </h3>
         <ItemList items={job?.skills} variant="dashed" />

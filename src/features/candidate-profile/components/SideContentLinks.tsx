@@ -21,7 +21,7 @@ export default function CandidateSideContentLinks({
     links.map((link) => ({ ...link, label: t(link.label) }));
 
   return (
-    <aside className="no-scrollbar flex h-full flex-col gap-2 overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow lg:min-h-[calc(100dvh-150px)] lg:gap-5">
+    <aside className="no-scrollbar flex h-full flex-col gap-2 overflow-y-auto rounded-2xl bg-white px-3 py-3 shadow lg:py-6 lg:min-h-[calc(100dvh-150px)] lg:gap-5">
       <SidebarLinks
         links={translateLinks(CANDIDATE_SIDEBAR_LINKS)}
         bottomLinks={translateLinks(CANDIDATE_SIDEBAR_BOTTOM_LINKS)}
@@ -29,10 +29,10 @@ export default function CandidateSideContentLinks({
 
       {!isCompleted && (
         <section className="bg-destructive/5 mt-2 flex flex-col gap-3 rounded-2xl px-4 py-3 lg:mt-0">
-          <h3 className="text-destructive text-xl font-semibold">
+          <h3 className="text-destructive text-lg md:text-xl font-semibold">
             {t('complete-details-title')}
           </h3>
-          <p className="text-muted-foreground text-base">
+          <p className="text-muted-foreground text-sm md:text-base">
             {t('complete-details-description')}
           </p>
         </section>

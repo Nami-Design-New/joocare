@@ -16,7 +16,7 @@ export default function AssessmentBuilderHeader({
   const t = useTranslations('companyPage.assessments.builder');
 
   return (
-    <header className="mb-10 flex flex-wrap items-start justify-between gap-4">
+    <header className="mb-6 sm:mb-10 flex flex-wrap items-start justify-between gap-4">
       <div>
         <h1 className="text-secondary text-2xl font-bold md:text-[28px]">
           {t(step === 2 ? 'review-title' : isEditing ? 'edit-title' : 'title')}

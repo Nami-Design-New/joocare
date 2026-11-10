@@ -14,7 +14,7 @@ const addButtonVariants = cva(
         /** Dark round "+" next to an input (responsibilities, skills). */
         dark: 'bg-secondary hover:bg-secondary/90 text-primary-foreground size-13 rounded-full',
         /** Green pill with a label (add experience). */
-        pill: 'bg-cv-builder-primary hover:bg-cv-builder-primary/90 text-primary-foreground h-13 self-center rounded-full px-10 text-sm font-semibold',
+        pill: 'bg-cv-builder-primary hover:bg-cv-builder-primary/90 text-primary-foreground h-13 self-center rounded-full px-6 text-sm sm:px-10 font-semibold',
         /** Text link (add another publication / conference). */
         link: 'text-cv-builder-primary self-start text-sm font-semibold hover:underline',
         /** Dashed full-width row (add language). */

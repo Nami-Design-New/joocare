@@ -21,7 +21,7 @@ export default function AdditionalInfoPage() {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <h1 className="text-[32px] leading-10 font-semibold">{t('title')}</h1>
+        <h1 className="text-2xl leading-8 font-semibold sm:text-[32px] sm:leading-10">{t('title')}</h1>
         <p className="text-muted-foreground">{t('subtitle')}</p>
       </header>
 
@@ -50,7 +50,7 @@ export default function AdditionalInfoPage() {
               variant="outline"
               size="pill"
               onClick={onCancel}
-              className="border-secondary text-secondary h-12.5 min-w-40 text-sm font-semibold"
+              className="border-secondary text-secondary h-12.5 w-full text-sm sm:w-auto sm:min-w-40 font-semibold"
             >
               {t('cancel')}
             </Button>
@@ -58,7 +58,7 @@ export default function AdditionalInfoPage() {
               type="submit"
               variant="secondary"
               size="pill"
-              className="h-12.5 min-w-56 text-sm font-semibold"
+              className="h-12.5 w-full text-sm sm:w-auto sm:min-w-56 font-semibold"
             >
               {t('save')}
             </Button>

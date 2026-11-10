@@ -21,7 +21,7 @@ export default function AtsFeatureAccordion() {
           >
             {t(`${feature}.title`)}
           </AccordionTrigger>
-          <AccordionContent className="text-muted-foreground px-4 text-justify text-lg leading-6">
+          <AccordionContent className="text-muted-foreground px-4 text-start text-sm leading-6 sm:text-justify sm:text-lg">
             {t(`${feature}.description`)}
           </AccordionContent>
         </AccordionItem>

@@ -43,23 +43,23 @@ export default function YesNoQuestionCard({
   return (
     <section
       className={cn(
-        'bg-question-card-surface border-question-card-border flex flex-col self-start rounded-3xl border-[1.5px] p-6 shadow-[0_2px_8px_0_oklch(0_0_0/4%)]',
+        'bg-question-card-surface border-question-card-border flex flex-col self-start rounded-3xl border-[1.5px] p-4 sm:p-6 shadow-[0_2px_8px_0_oklch(0_0_0/4%)]',
         className,
       )}
     >
-      <div className="flex items-start gap-5">
+      <div className="flex items-start gap-3 sm:gap-5">
         <span className="bg-question-card-icon-bg flex size-11 shrink-0 items-center justify-center rounded-xl">
           <Image src={icon} width={24} height={24} alt="" className="size-6" />
         </span>
         <div className="flex flex-col gap-1.5">
-          <h3 className="text-question-card-title text-[21px] leading-[26px] font-semibold">
+          <h3 className="text-question-card-title text-lg leading-6 sm:text-[21px] sm:leading-[26px] font-semibold">
             {title}
           </h3>
-          <p className="text-question-card-text min-h-12 text-base leading-6">{description}</p>
+          <p className="text-question-card-text min-h-12 text-sm leading-5 sm:text-base sm:leading-6">{description}</p>
         </div>
       </div>
 
-      <fieldset className="flex flex-wrap items-center gap-14 py-4 ps-2">
+      <fieldset className="flex flex-wrap items-center gap-8 py-4 ps-2 sm:gap-14">
         <legend className="sr-only">{title}</legend>
         {ANSWERS.map((answer) => (
           <label

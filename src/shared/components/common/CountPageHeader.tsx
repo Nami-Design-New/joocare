@@ -20,10 +20,10 @@ export default function               CountPageHeader({
   className,
 }: CountPageHeaderProps) {
   return (
-    <header className={cn("flex w-full items-center justify-between gap-4", className)}>
+    <header className={cn("flex w-full flex-wrap items-center justify-between gap-4", className)}>
       <h1 className="flex items-center gap-2 leading-[1.2]">
-        <span className="text-[38px] font-bold text-secondary">{count}</span>
-        <span className="text-[28px] font-semibold tracking-[-0.28px] text-muted-foreground">
+        <span className="text-[28px] font-bold text-secondary sm:text-[38px]">{count}</span>
+        <span className="text-xl font-semibold tracking-[-0.28px] text-muted-foreground sm:text-[28px]">
           {title}
         </span>
       </h1>

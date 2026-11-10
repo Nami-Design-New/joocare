@@ -12,8 +12,8 @@ export default function CorePillarsSection({
   images: AboutImage[];
 }) {
   return (
-    <section className="bg-white py-16 sm:my-14 sm:py-20 lg:py-24">
-      <div className="grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
+    <section className="bg-white py-10 sm:my-14 sm:py-20 lg:py-24">
+      <div className="grid grid-cols-1 gap-8 px-0 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
         <CorePillarsVisual images={images} />
         <CorePillarsContent title={title} items={items} />
       </div>

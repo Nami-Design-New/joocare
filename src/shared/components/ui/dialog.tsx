@@ -72,7 +72,7 @@ const DialogContent = React.forwardRef<
           className={cn(
             animated &&
               'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-200',
-            'fixed top-[50%] left-[50%] z-50 grid max-h-[calc(100vh-2rem)] w-full translate-x-[-50%] translate-y-[-50%] gap-4 overflow-x-hidden overflow-y-auto rounded-lg border bg-white p-6 shadow-lg outline-none sm:min-w-125',
+            'fixed top-[50%] left-[50%] z-50 grid max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] sm:w-full translate-x-[-50%] translate-y-[-50%] gap-4 overflow-x-hidden overflow-y-auto rounded-lg border bg-white p-6 shadow-lg outline-none sm:min-w-125',
             className,
           )}
           {...props}

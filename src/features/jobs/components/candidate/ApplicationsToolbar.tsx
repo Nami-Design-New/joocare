@@ -27,7 +27,7 @@ export default async function ApplicationsToolbar({
             scroll={false}
             aria-current={item === tab ? 'page' : undefined}
             className={cn(
-              'focus-visible:ring-ring rounded-full px-5 py-2.5 text-lg leading-5.75 transition-colors focus-visible:ring-2',
+              'focus-visible:ring-ring rounded-full px-4 py-2 text-base leading-5.75 sm:px-5 sm:py-2.5 sm:text-lg transition-colors focus-visible:ring-2',
               item === tab
                 ? 'bg-application-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground',

@@ -30,7 +30,7 @@ export default function DashBoardStatsCard({
   return (
     <section
       className={cn(
-        'bg-card relative flex min-h-38.75 flex-col gap-4 rounded-2xl p-6',
+        'bg-card relative flex min-h-38.75 flex-col gap-4 rounded-2xl p-4 sm:p-6',
         compact && 'bg-dashboard-stat-bg min-h-26.75 justify-center gap-1',
       )}
     >
@@ -42,13 +42,13 @@ export default function DashBoardStatsCard({
         <DashboardWidgetTitle title={title} description={description} />
       )}
       {periodSelect && (
-        <div className="absolute end-6 top-4.5">{periodSelect}</div>
+        <div className="absolute end-4 top-4.5 sm:end-6">{periodSelect}</div>
       )}
       <div className="flex min-h-8.75 items-center gap-2 pe-16">
         {isPending ? (
           <Skeleton className="h-9 w-16" />
         ) : (
-          <p className="text-dashboard-primary text-[28px] leading-8.75 font-extrabold">
+          <p className="text-dashboard-primary text-2xl leading-8.75 sm:text-[28px] font-extrabold">
             <bdi>{value}</bdi>
             <span className="text-secondary ms-1 text-base font-normal">
               {suffix}
@@ -70,7 +70,7 @@ export default function DashBoardStatsCard({
         name={icon}
         width={48}
         className={cn(
-          'absolute end-6 top-13.5',
+          'absolute end-4 top-13.5 sm:end-6',
           compact && 'top-1/2 -translate-y-1/2',
         )}
       />

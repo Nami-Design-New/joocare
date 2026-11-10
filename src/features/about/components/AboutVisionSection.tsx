@@ -12,7 +12,7 @@ export default async function AboutVisionSection({
   const t = await getTranslations('aboutPage');
 
   return (
-    <section className="bg-background my-14 py-16">
+    <section className="bg-background my-8 py-10 sm:my-14 sm:py-16">
       <div className="layout-shell">
         <div className="layout-content">
           <AboutImageTextBlock

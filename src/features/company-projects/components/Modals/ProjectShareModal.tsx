@@ -117,13 +117,13 @@ export default function ProjectShareModal({
             className="h-full w-full object-contain"
           />
         }
-        visualClassName="h-[242px] w-[230px]"
+        visualClassName="h-40 w-38 sm:h-[242px] sm:w-[230px]"
         visualWrapperClassName="mt-0 mb-7"
         callout={{
           title: t('share-success-callout-title'),
           description: t('share-success-callout-description'),
         }}
-        className="max-w-[700px] rounded-[28px] p-10"
+        className="max-w-[700px] rounded-[28px] p-5 sm:p-10"
         primaryAction={{
           label: t('go-to-projects'),
           href: '/company/projects',

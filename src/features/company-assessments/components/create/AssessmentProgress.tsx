@@ -8,7 +8,7 @@ export default function AssessmentProgress({ step }: AssessmentProgressProps) {
   const t = useTranslations('companyPage.assessments.builder');
   const steps = [t('configuration'), t('questions'), t('review')];
   return (
-    <nav aria-label={t('progress')} className="mb-10 md:mb-12">
+    <nav aria-label={t('progress')} className="mb-6 sm:mb-10 md:mb-12">
       <div className="flex items-center" aria-hidden="true">
         {steps.map((label, index) => (
           <Fragment key={label}>

@@ -25,7 +25,7 @@ export default function CorePillarsContent({
         <SectionTitle sectionTitle={t("aboutPage.why-choose-us")} textColor="text-dark" />
       </div>
 
-      <h2 className="text-secondary mb-6 text-3xl leading-tight font-bold sm:mb-8 sm:text-4xl lg:text-5xl">
+      <h2 className="text-secondary mb-6 text-xl leading-tight font-bold sm:mb-8 sm:text-4xl lg:text-5xl">
         {title}
       </h2>
 

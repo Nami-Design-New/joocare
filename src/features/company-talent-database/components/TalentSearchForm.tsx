@@ -49,14 +49,14 @@ export default function TalentSearchForm({
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(onSearch)}
-        className="bg-card flex flex-col gap-5 rounded-2xl px-4 py-6 shadow-sm md:px-10 md:pt-12 md:pb-8"
+        className="bg-card flex flex-col gap-4 rounded-2xl px-3 py-4 shadow-sm sm:gap-5 sm:px-4 sm:py-6 md:px-10 md:pt-12 md:pb-8"
       >
         <h1 className="sr-only">{t('title')}</h1>
         <TalentFilterSection title={t('sections.occupational')}>
           <TalentFilterFields fields={occupationalFields} />
         </TalentFilterSection>
         <TalentFilterSection title={t('sections.qualifications')}>
-          <div className="space-y-5">
+          <div className="space-y-3 sm:space-y-5">
             <section>
               <h3 className="text-muted-foreground mb-3 text-sm">
                 {t('sections.experience')}
@@ -93,7 +93,7 @@ export default function TalentSearchForm({
           <TalentSalaryFilters />
         </TalentFilterSection>
         <TalentFilterSection title={t('sections.employment')}>
-          <div className="space-y-5">
+          <div className="space-y-3 sm:space-y-5">
             <TalentFilterFields fields={employmentFields} />
             <TalentKeywordFilter />
           </div>
