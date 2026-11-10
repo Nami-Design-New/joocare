@@ -1,10 +1,13 @@
 'use client';
 
 import { useCompanyChat } from '../hooks/useCompanyChat';
-import type { ChatViewOptions } from '../types/chat.types';
+import type { ChatConversation, ChatViewOptions } from '../types/chat.types';
 import ChatView from './ChatView';
 
-type CompanyChatPageProps = ChatViewOptions & { conversationId?: string };
+type CompanyChatPageProps = ChatViewOptions & {
+  conversationId?: string;
+  initialConversation?: ChatConversation;
+};
 
 export default function CompanyChatPage(props: CompanyChatPageProps) {
   const chat = useCompanyChat(props);

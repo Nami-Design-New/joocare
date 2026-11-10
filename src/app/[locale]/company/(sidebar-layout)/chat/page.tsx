@@ -6,6 +6,9 @@ type ChatPageProps = {
     conversation?: string;
     scenario?: string;
     view?: string;
+    candidateId?: string;
+    candidateName?: string;
+    candidateImage?: string;
   }>;
 };
 
@@ -21,6 +24,26 @@ export default async function ChatPage({ searchParams }: ChatPageProps) {
     <CompanyChatPage
       key={scenario}
       conversationId={query.conversation}
+      initialConversation={
+        query.candidateId &&
+        query.candidateName &&
+        query.conversation === `user-${query.candidateId}`
+          ? {
+              id: query.conversation,
+              profileHref: `/company/candidate-profile?candidateId=${encodeURIComponent(query.candidateId)}`,
+              name: query.candidateName,
+              avatar:
+                query.candidateImage ||
+                '/assets/company-projects/candidate-avatar.png',
+              jobTitle: '',
+              lastMessage: '',
+              updatedAt: '',
+              unread: 0,
+              recruiter: '',
+              messages: [],
+            }
+          : undefined
+      }
       scenario={scenario}
       superAdmin={query.view === 'super-admin'}
     />

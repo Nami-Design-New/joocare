@@ -1,6 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import { CHAT_ROUTES } from '@/features/chat/constants';
 import { useTranslations } from 'next-intl';
 import CandidateAssessmentModals from '@/features/company-assessments/components/candidate-assessments/CandidateAssessmentModals';
 import { useCandidateAssessmentActions } from '@/features/company-assessments/hooks/useCandidateAssessmentActions';
@@ -14,7 +15,7 @@ import EmptyDataState from '@/shared/components/EmptyDataState';
 import SuccessModal from '@/shared/components/modals/SuccessModal';
 import { Button } from '@/shared/components/ui/button';
 import { Skeleton } from '@/shared/components/ui/skeleton';
-import { COMPANY_INBOX_PATH, JOB_CANDIDATES_PAGE_SIZE } from '../../constants';
+import { JOB_CANDIDATES_PAGE_SIZE } from '../../constants';
 import { usePipelineCandidates } from '../../hooks/usePipelineCandidates';
 import type { PipelineCandidate } from '../../types/job-candidates.types';
 import { getPipelineFiltersHref } from '../../utils';
@@ -99,7 +100,15 @@ export default function PipelineCandidatesTab({
             onCreateProject={projectActions.openCreate}
             onLinkProject={projectActions.openLink}
             onMessage={(candidate) =>
-              router.push(`${COMPANY_INBOX_PATH}?candidateId=${candidate.userId}`)
+              router.push({
+                pathname: CHAT_ROUTES.company,
+                query: {
+                  conversation: `user-${candidate.userId}`,
+                  candidateId: candidate.userId,
+                  candidateName: candidate.name,
+                  candidateImage: candidate.image,
+                },
+              })
             }
             onDownload={pipeline.downloadCv}
             onViewCv={pipeline.setCvCandidate}

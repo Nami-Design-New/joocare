@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { CHAT_ROUTES } from '@/features/chat/constants';
 import CandidateProjectModals from '@/features/company-projects/components/Modals/CandidateProjectModals';
 import { useCandidateProjectActions } from '@/features/company-projects/hooks/useCandidateProjectActions';
 import TalentCandidatesTable from '@/features/company-talent-database/components/TalentCandidatesTable';
@@ -10,7 +11,7 @@ import { useRouter } from '@/i18n/navigation';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import CvFileModal from '@/shared/components/modals/CvFileModal';
-import { AI_TALENT_MATCH_PAGE_SIZE, COMPANY_INBOX_PATH } from '../../constants';
+import { AI_TALENT_MATCH_PAGE_SIZE } from '../../constants';
 import { useAiTalentMatchPreview } from '../../hooks/useAiTalentMatchPreview';
 import AiTalentMatchFilters from './AiTalentMatchFilters';
 import JobCandidatesTabs from './JobCandidatesTabs';
@@ -41,7 +42,10 @@ export default function AiTalentMatchTab({ jobId }: AiTalentMatchTabProps) {
             }
             onViewCv={setCvCandidate}
             onMessage={(candidate) =>
-              router.push(`${COMPANY_INBOX_PATH}?candidateId=${candidate.id}`)
+              router.push({
+                pathname: CHAT_ROUTES.company,
+                query: { conversation: candidate.id },
+              })
             }
             onCreateProject={projectActions.openCreate}
             onLinkProject={projectActions.openLink}

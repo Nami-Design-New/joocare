@@ -3,7 +3,8 @@
 import { CalendarDays, Video } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
+import { CHAT_ROUTES } from '@/features/chat/constants';
 import DataTable, {
   type DataTableColumn,
 } from '@/shared/components/common/DataTable';
@@ -182,12 +183,18 @@ function CandidateActions({
 }) {
   const t = useTranslations('companyPage.projects');
   const hasCv = Boolean(candidate.cv);
+  const router = useRouter();
+  const tInvitations = useTranslations('companyPage.assessments.invitations');
   const actions = [
     {
-      key: 'share',
-      onClick: () => onAction({ type: 'share', candidateId: candidate.id }),
+      key: 'chat',
+      onClick: () =>
+        router.push({
+          pathname: CHAT_ROUTES.company,
+          query: { conversation: `project-${candidate.id}` },
+        }),
       disabled: false,
-      label: t('share-candidate'),
+      label: tInvitations('chat-with', { name: candidate.name }),
       icon: (
         <Image
           src="/assets/company-projects/candidate-share.svg"
