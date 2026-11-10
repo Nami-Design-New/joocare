@@ -84,7 +84,7 @@ export default function PipelineCandidatesTab({
       ) : pipeline.isError ? (
         <div
           role="alert"
-          className="bg-card flex flex-col items-center gap-4 rounded-2xl p-10 text-center"
+          className="bg-card flex flex-col items-center gap-4 rounded-2xl p-6 text-center sm:p-10"
         >
           <p className="text-destructive">{t('pipeline.load-error')}</p>
           <Button variant="outline" onClick={() => pipeline.refetch()}>

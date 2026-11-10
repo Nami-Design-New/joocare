@@ -34,7 +34,7 @@ export default function AtsResultCard({ fileName, score }: AtsResultCardProps) {
         className="max-sm:scale-75"
         trackClassName="stroke-ats-primary/20"
         indicatorClassName="stroke-ats-primary"
-        valueClassName="text-ats-primary text-[38px] font-bold"
+        valueClassName="text-ats-primary text-3xl font-bold sm:text-[38px]"
       />
     </section>
   );

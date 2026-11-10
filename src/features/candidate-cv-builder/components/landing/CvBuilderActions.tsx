@@ -10,7 +10,7 @@ import {
 } from '../../constants';
 import type { CvBuilderState } from '../../types/cv-builder.types';
 
-const actionVariants = cva('h-12.5 gap-2 px-8 text-sm font-semibold', {
+const actionVariants = cva('h-12.5 gap-2 px-5 text-sm font-semibold sm:px-8', {
   variants: {
     tone: {
       primary:

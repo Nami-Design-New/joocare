@@ -10,7 +10,7 @@ export default function AtsAnalyzing() {
   return (
     <section
       aria-busy
-      className="flex flex-col items-center gap-18 py-10 lg:py-20"
+      className="flex flex-col items-center gap-10 py-8 sm:gap-18 sm:py-10 lg:py-20"
     >
       <Image
         src={ATS_ASSETS.analyzing}

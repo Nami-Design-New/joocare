@@ -12,7 +12,7 @@ export default async function JobOverviewCard({ job }: { job: JobDetails }) {
       <h2 className="text-foreground mb-4 text-lg font-semibold">
         {t("jobDetailsPage.job-overview")}
       </h2>
-      <div className="grid grid-cols-2 gap-6 px-4">
+      <div className="grid grid-cols-2 gap-6 sm:px-4">
         <div className="col-span-2">
           <JobOverviewItem
             label={t("jobsPage.filters.experience")}

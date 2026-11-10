@@ -25,7 +25,7 @@ export default function AssessmentResultsPage({
   return (
     <div className="mx-auto flex w-full flex-col gap-8 lg:pt-3">
       <header className="space-y-1">
-        <h1 className="text-assessment-dark text-[28px] leading-normal font-bold">
+        <h1 className="text-assessment-dark text-2xl leading-normal sm:text-[28px] font-bold">
           {t('title')}
         </h1>
         <p className="text-muted-foreground text-sm leading-5">

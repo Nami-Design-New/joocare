@@ -21,7 +21,7 @@ export default function CandidateSideContentLinks({
     links.map((link) => ({ ...link, label: t(link.label) }));
 
   return (
-    <aside className="no-scrollbar flex h-full flex-col gap-2 overflow-y-auto rounded-2xl bg-white px-3 py-6 shadow lg:min-h-[calc(100dvh-150px)] lg:gap-5">
+    <aside className="no-scrollbar flex h-full flex-col gap-2 overflow-y-auto rounded-2xl bg-white px-3 py-3 shadow lg:py-6 lg:min-h-[calc(100dvh-150px)] lg:gap-5">
       <SidebarLinks
         links={translateLinks(CANDIDATE_SIDEBAR_LINKS)}
         bottomLinks={translateLinks(CANDIDATE_SIDEBAR_BOTTOM_LINKS)}

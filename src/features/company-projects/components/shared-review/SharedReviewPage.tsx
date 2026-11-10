@@ -23,7 +23,7 @@ export default function SharedReviewPage({
     <div className="bg-body-bg min-h-dvh">
       <SharedReviewHeader experience={experience} />
 
-      <main className="mx-auto w-full max-w-360 px-4 pt-10 pb-14 md:px-7 md:pt-14.5 lg:px-13">
+      <main className="mx-auto w-full max-w-360 px-4 pt-6 pb-8 sm:pt-10 sm:pb-14 md:px-7 md:pt-14.5 lg:px-13">
         {review.step === 'review' ? (
           <ReviewCandidatesStep
             projectName={review.project.name}

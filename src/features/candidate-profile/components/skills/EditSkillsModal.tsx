@@ -118,7 +118,7 @@ export function EditSkillsModal({
         <div className="flex justify-center pt-1">
           <Button
             onClick={handleSave}
-            className="rounded-full px-10"
+            className="rounded-full px-6 sm:px-10"
             disabled={isSaving || profileSkills.length === 0}
           >
             {isSaving ? t("candidatePage.common.saving") : t("common.save")}

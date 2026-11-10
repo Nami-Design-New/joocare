@@ -58,7 +58,7 @@ export default function AssignAssessmentDialog({
           <>
             <div className="border-assessment-border flex items-center justify-between border-b px-6 py-5 sm:px-8">
               <div>
-                <DialogTitle className="text-assessment-heading text-2xl leading-8 font-semibold">
+                <DialogTitle className="text-assessment-heading text-xl leading-8 sm:text-2xl font-semibold">
                   {t('title')}
                 </DialogTitle>
                 <DialogDescription className="sr-only">

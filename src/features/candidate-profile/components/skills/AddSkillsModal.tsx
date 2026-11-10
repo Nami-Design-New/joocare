@@ -209,7 +209,7 @@ export function AddSkillsModal({
           <Button
             onClick={handleAdd}
             disabled={selected.length === 0 || isSuggestionLoading || isSaving}
-            className="rounded-full px-10 text-xs md:text-sm"
+            className="rounded-full px-6 text-xs sm:px-10 md:text-sm"
           >
             {isSaving ? t("candidatePage.common.saving") : t("candidatePage.common.add")}
           </Button>

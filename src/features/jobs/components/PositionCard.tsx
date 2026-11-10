@@ -17,8 +17,8 @@ export default function PositionCard({
 }: PositionCardProps) {
   const t = useTranslations();
   return (
-    <div className="flex items-center gap-6">
-      <div className="bg-primary-bg flex h-22 w-24 shrink-0 items-center justify-center rounded-2xl p-2">
+    <div className="flex items-center gap-3 sm:gap-6">
+      <div className="bg-primary-bg flex h-16 w-18 shrink-0 sm:h-22 sm:w-24 items-center justify-center rounded-2xl p-2">
         <Image
           src={logoSrc}
           alt={t('companyPage.postJob.review.companyLogoAlt')}

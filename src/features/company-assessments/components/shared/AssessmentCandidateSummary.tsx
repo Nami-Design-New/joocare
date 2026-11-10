@@ -19,14 +19,14 @@ export default function AssessmentCandidateSummary({
       {summary.map((stat) => (
         <Card
           key={stat.key}
-          className="items-center gap-2 rounded-xl border-0 p-5 text-center shadow-none"
+          className="items-center gap-2 rounded-xl border-0 p-3 text-center sm:p-5 shadow-none"
         >
           <p className="text-muted-foreground text-[13px] leading-normal font-semibold uppercase">
             {t(stat.key)}
           </p>
           <p
             className={cn(
-              'text-assessment-dark text-[28px] leading-normal font-bold',
+              'text-assessment-dark text-2xl leading-normal sm:text-[28px] font-bold',
               stat.className,
             )}
           >

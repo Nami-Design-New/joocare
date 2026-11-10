@@ -12,11 +12,11 @@ export default function PlainBreadcrumb({ items }: { items: Crumb[] }) {
 
   return (
     <div className="layout-shell border-b border-[#e6e6e6] bg-[#0D0D0D0D] py-2">
-      <div className="layout-content flex items-center justify-between py-3">
-        <h1 className="text-base md:text-lg font-semibold text-black">{title}</h1>
+      <div className="layout-content flex items-center justify-between gap-3 py-3">
+        <h1 className="min-w-0 text-sm sm:text-base md:text-lg font-semibold text-black">{title}</h1>
 
-        <nav aria-label="Breadcrumb">
-          <ol className="flex items-center space-x-2 text-xs md:text-sm text-gray-600">
+        <nav aria-label="Breadcrumb" className="shrink-0">
+          <ol className="flex items-center space-x-2 whitespace-nowrap text-xs md:text-sm text-gray-600">
             {items.map((it, idx) => {
               const isLast = idx === last;
               return (

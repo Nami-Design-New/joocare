@@ -52,14 +52,14 @@ export default function YesNoQuestionCard({
           <Image src={icon} width={24} height={24} alt="" className="size-6" />
         </span>
         <div className="flex flex-col gap-1.5">
-          <h3 className="text-question-card-title text-[21px] leading-[26px] font-semibold">
+          <h3 className="text-question-card-title text-lg leading-6 sm:text-[21px] sm:leading-[26px] font-semibold">
             {title}
           </h3>
           <p className="text-question-card-text min-h-12 text-base leading-6">{description}</p>
         </div>
       </div>
 
-      <fieldset className="flex flex-wrap items-center gap-14 py-4 ps-2">
+      <fieldset className="flex flex-wrap items-center gap-8 py-4 ps-2 sm:gap-14">
         <legend className="sr-only">{title}</legend>
         {ANSWERS.map((answer) => (
           <label

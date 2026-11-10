@@ -22,7 +22,7 @@ export default function AssessmentUnavailable({
   return (
     <AssessmentStatusCard
       visual={
-        <div aria-hidden className="size-28">
+        <div aria-hidden className="size-20 sm:size-28">
           <Lottie animationData={warningAnimation} loop autoplay />
         </div>
       }

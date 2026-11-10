@@ -42,8 +42,8 @@ export default function ChatConversationList({
         mobileConversationOpen && 'hidden md:flex',
       )}
     >
-      <div className="space-y-4 px-6 pt-6 pb-4">
-        <h1 className="text-chat-heading text-2xl leading-8 font-extrabold">
+      <div className="space-y-4 px-4 pt-4 pb-4 sm:px-6 sm:pt-6">
+        <h1 className="text-chat-heading text-xl leading-8 sm:text-2xl font-extrabold">
           {copy.listTitle}
         </h1>
         <SearchInput

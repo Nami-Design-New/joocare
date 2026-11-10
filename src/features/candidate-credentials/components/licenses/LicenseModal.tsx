@@ -216,7 +216,7 @@ export function LicenseModal({
       <DialogContent ref={handleDialogContentRef} className="max-w-175 flex flex-col gap-5">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <DialogHeader>
-            <DialogTitle className="text-[28px] text-black">{label}</DialogTitle>
+            <DialogTitle className="text-2xl text-black sm:text-[28px]">{label}</DialogTitle>
           </DialogHeader>
 
           <InputField

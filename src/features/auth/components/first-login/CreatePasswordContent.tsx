@@ -13,10 +13,10 @@ export default async function CreatePasswordContent() {
     <div className="flex min-h-[calc(100dvh-4.75rem)] items-center justify-center px-5 py-10 md:px-8 lg:px-20 lg:pt-16 lg:pb-44 rtl:font-sans">
       <div className="flex w-full max-w-135 flex-col gap-6">
         <div className="flex flex-col gap-3">
-          <h1 className="text-3xl leading-tight lg:text-[40px]">
+          <h1 className="text-2xl leading-tight sm:text-3xl lg:text-[40px]">
             {t('title')}
           </h1>
-          <p dir="ltr" lang="en" className="text-start text-lg leading-[23px]">
+          <p dir="ltr" lang="en" className="text-start text-base leading-[23px] sm:text-lg">
             {english('welcome', {
               name: english('member-name'),
               workspace: english('workspace-name'),
@@ -25,7 +25,7 @@ export default async function CreatePasswordContent() {
           <p
             dir="rtl"
             lang="ar"
-            className="text-start font-sans text-lg leading-[23px]"
+            className="text-start font-sans text-base leading-[23px] sm:text-lg"
           >
             {arabic('welcome', {
               name: arabic('member-name'),

@@ -53,7 +53,7 @@ type JobCardProps = {
 };
 
 // Figma card buttons: two equal pills, 34px high, 14px regular.
-const BUTTON_CLASS = "h-8.5 flex-1 gap-1 rounded-full px-3 text-sm font-normal";
+const BUTTON_CLASS = "h-9 w-full gap-1 rounded-full px-3 text-sm font-normal sm:h-8.5 sm:w-auto sm:flex-1";
 
 export default function JobCard({
   job,

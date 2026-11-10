@@ -115,7 +115,7 @@ export default function JobManagementSection() {
                         <JobCardSkeleton key={`initial-skeleton-${i}`} />
                     ))
                 ) : (
-                    <div className="border-border text-muted-foreground col-span-full rounded-2xl border border-dashed p-8 text-center">
+                    <div className="border-border text-muted-foreground col-span-full rounded-2xl border border-dashed p-5 text-center sm:p-8">
                         <EmptyDataState />
                     </div>
                 )}

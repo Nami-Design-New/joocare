@@ -145,7 +145,7 @@ export default function ExperienceFormModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent ref={setPortalContainer} className="max-w-175 gap-5">
         <DialogHeader>
-          <DialogTitle className="text-foreground text-[28px]">
+          <DialogTitle className="text-foreground text-2xl sm:text-[28px]">
             {title}
           </DialogTitle>
         </DialogHeader>

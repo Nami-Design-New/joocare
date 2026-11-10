@@ -36,7 +36,7 @@ export default function CvBuilderWizard({ mode }: CvBuilderWizardProps) {
             event.preventDefault();
             void wizard.next();
           }}
-          className="flex min-w-0 flex-col gap-15"
+          className="flex min-w-0 flex-col gap-8 sm:gap-15"
         >
           <CvStepContent step={step.key} />
           <CvBuilderFooter wizard={wizard} />

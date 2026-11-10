@@ -25,7 +25,7 @@ export default function PersonalDetailsStep() {
   });
 
   return (
-    <div className="flex flex-col gap-15">
+    <div className="flex flex-col gap-8 sm:gap-15">
       <CvStepCard
         title={t('personal.title')}
         description={t('personal.description')}

@@ -47,7 +47,7 @@ export default function ChatWindowHeader({
         alt=""
         className={
           isCandidate
-            ? 'size-14 shrink-0 rounded-xl object-cover'
+            ? 'size-11 shrink-0 rounded-xl object-cover sm:size-14'
             : 'size-10 shrink-0 rounded-lg object-cover'
         }
       />

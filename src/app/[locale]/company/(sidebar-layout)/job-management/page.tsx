@@ -3,7 +3,7 @@ import JobManagementSection from "@/features/jobs/components/JobManagementSectio
 
 export default async function Page() {
   return (
-    <section className="flex flex-col gap-12">
+    <section className="flex flex-col gap-6 sm:gap-12">
       <Suspense>
         <JobManagementSection />
       </Suspense>

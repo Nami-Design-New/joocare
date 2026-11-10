@@ -137,7 +137,7 @@ export default function PipelineFiltersPage({
         {t('back')}
       </Link>
       <div>
-        <h2 className="text-foreground text-2xl font-semibold">{t('title')}</h2>
+        <h2 className="text-foreground text-xl font-semibold sm:text-2xl">{t('title')}</h2>
         <p className="text-muted-foreground mt-1 text-sm">
           {t('description', {
             count: candidatesPage?.total ?? 0,

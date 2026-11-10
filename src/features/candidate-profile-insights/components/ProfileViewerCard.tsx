@@ -20,13 +20,13 @@ export default function ProfileViewerCard({ viewer }: ProfileViewerCardProps) {
 
   return (
     <li className="bg-card border-foreground/5 flex flex-wrap items-center gap-4 rounded-2xl border p-2 sm:flex-nowrap">
-      <span className="bg-body-bg flex size-20 shrink-0 items-center justify-center rounded-2xl">
+      <span className="bg-body-bg flex size-14 shrink-0 items-center sm:size-20 justify-center rounded-2xl">
         <Image
           src={viewer.logo || PROFILE_VIEWER_DEFAULT_LOGO}
           alt={t('logo-alt', { company: viewer.companyName })}
           width={70}
           height={70}
-          className="size-17.5 rounded-xl object-contain"
+          className="size-12 rounded-xl object-contain sm:size-17.5"
         />
       </span>
       <div className="flex min-w-0 flex-1 flex-col gap-1">

@@ -28,9 +28,9 @@ export function UpdateEmailModal({
   const t = useTranslations();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-full p-6 pt-14 sm:max-w-md">
+      <DialogContent className="w-[calc(100%-2rem)] p-5 pt-10 sm:w-full sm:max-w-md sm:p-6 sm:pt-14">
         <DialogHeader className="flex items-center">
-          <DialogTitle className="text-secondary text-[28px] font-semibold">
+          <DialogTitle className="text-secondary text-2xl font-semibold sm:text-[28px]">
             {t("companyPage.accountSettings.updateEmail.title")}
           </DialogTitle>
           <DialogDescription className="text-center md:px-4">

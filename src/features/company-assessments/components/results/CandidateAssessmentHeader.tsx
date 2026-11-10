@@ -56,7 +56,7 @@ export default function CandidateAssessmentHeader({
   ] as const;
 
   return (
-    <Card className="flex-wrap gap-6 rounded-2xl border-0 p-6 shadow-none xl:flex-row xl:flex-nowrap">
+    <Card className="flex-wrap gap-6 rounded-2xl border-0 p-4 shadow-none sm:p-6 xl:flex-row xl:flex-nowrap">
       <div className="flex min-w-0 flex-1 flex-col items-start gap-4 sm:flex-row sm:gap-6">
         <Image
           src={`${ASSESSMENT_ASSETS}/${result.candidate.image}`}
@@ -150,7 +150,7 @@ export default function CandidateAssessmentHeader({
                 stat.className,
               )}
             >
-              <span className="text-2xl leading-7 font-bold">{stat.value}</span>
+              <span className="text-xl leading-7 font-bold sm:text-2xl">{stat.value}</span>
               <span className="text-xs font-medium uppercase">
                 {t(stat.key)}
               </span>

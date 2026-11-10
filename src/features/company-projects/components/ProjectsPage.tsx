@@ -77,7 +77,7 @@ export default function ProjectsPage() {
           ))}
         </div>
       ) : (
-        <div className="border-border bg-card flex min-h-72 items-center justify-center rounded-2xl border border-dashed p-8 text-center">
+        <div className="border-border bg-card flex min-h-72 items-center justify-center rounded-2xl border border-dashed p-5 text-center sm:p-8">
           <EmptyDataState
             title="companyPage.projects.empty-title"
             description={t('empty-description')}
