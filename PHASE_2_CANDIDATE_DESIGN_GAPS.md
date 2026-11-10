@@ -65,7 +65,7 @@ Every finding was checked against the Figma frames (text, including hidden layer
 | `modal/upload-cv-to-apply` | `ApplyNowModal.tsx` | Update | The existing CV becomes a **selectable radio card**: file name, "Your Joocare profile CV · {size} · Updated {date}", and a separate **Preview** link. |
 | `job-details/full`, `job-details/applied-state` | `/jobs/[slug]` reuses the employer `JobDescriptionCard` | Update | The design shows only Description, Skills and About the employer. The **attachments card** (with its link to `/company/assessments`) and the **Posted by** card don't appear for candidates, so hide them on the candidate page. |
 | `popup/add-experience`, `modal/edit-experience` | `ExperienceModal.tsx` | Update | Add **Employment Type**, and **Country + City** in the Add frame. Figma draws Job Title as free text; the code uses a lookup with "Other". |
-| `popup/add-education`, `popup/edit-education` | `EducationModal.tsx` | Update | The code has a required **GPA** field that is not in the design. Remove it or confirm it stays. |
+| `popup/add-education`, `popup/edit-education` | `EducationModal.tsx` | Update | ✅ Decided 2026-11-09: **GPA stays** (required) in every Education form, between University and Country: the profile Education modal and CV Builder step 5 (inline card + Add Education modal). Not added to Qualifications. |
 
 ---
 

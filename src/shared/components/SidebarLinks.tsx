@@ -31,7 +31,8 @@ type SidebarLinkListProps = {
   className?: string;
 };
 
-const sidebarLinkVariants = cva(
+// Shared with the company mobile nav (SidebarNavMobile) so both pills look the same.
+export const sidebarLinkVariants = cva(
   'group flex items-center font-semibold transition-colors',
   {
     variants: {

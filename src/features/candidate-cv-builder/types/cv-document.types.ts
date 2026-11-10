@@ -33,6 +33,7 @@ export type CandidateCvEducation = {
   degree: string;
   institution: string;
   period: string;
+  gpa?: string;
 };
 
 export type CandidateCvLanguage = {

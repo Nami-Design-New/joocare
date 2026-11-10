@@ -62,6 +62,10 @@
       "download": "Download",
       "pdf-icon-alt": "PDF icon",
       "no-cv": "No CV available."
+    },
+    "job-saved-modal": {
+      "title": "Saved Successfully!",
+      "description": "The job has been added to your saved jobs. You can find it anytime under Job Applications › Saved."
     }
   },
   "header": {
@@ -406,7 +410,7 @@
       "for-candidate": "For Candidate",
       "email": "Email",
       "password": "Password",
-      "forgot-password": "Forgot password?",
+      "forgot-password": "Forget password?",
       "logging-in": "Logging...",
       "register": "Register",
       "registering": "Registering...",
@@ -1063,7 +1067,8 @@
       "errors": {
         "required": "This field is required",
         "invalid-email": "Enter a valid email address",
-        "invalid-url": "Enter a valid link starting with https://"
+        "invalid-url": "Enter a valid link starting with https://",
+        "invalid-gpa": "GPA must be a number between 0 and 4."
       },
       "steps": {
         "personal": "Personal details",
@@ -1160,6 +1165,8 @@
         "country-placeholder": "ex: Egypt",
         "start-date": "Start date",
         "end-date": "End date",
+        "gpa": "GPA",
+        "gpa-placeholder": "ex: 3.75",
         "add": "Add education",
         "add-title": "Add Education"
       },
@@ -1271,6 +1278,7 @@
         "highlights": "Key Highlights",
         "certifications": "Certifications & Training",
         "education": "Education",
+        "gpa": "GPA: {value}",
         "languages": "Languages",
         "additional-info": "Additional Information",
         "nationality": "Nationality",

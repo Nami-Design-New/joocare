@@ -22,14 +22,16 @@ export default function Breadcrumb({
 }: BreadcrumbProps) {
   const locale = useLocale();
   return (
-    <div className="layout-shell relative py-4 lg:pt-12 lg:pb-38">
+    // The banner's bottom padding sits under content pulled up over it (e.g. the job details card),
+    // so only the breadcrumb row takes clicks; the rest lets them through.
+    <div className="layout-shell pointer-events-none relative py-4 lg:pt-12 lg:pb-38">
 
       <div
         className={`absolute inset-0 -z-10 ${gradient ? "bg-primary-gradient" : "bg-transparent"
           }`}
       />
 
-      <div className={`layout-content relative z-0 flex items-center justify-between ${gradient ? "text-white" : "text-secondary"
+      <div className={`layout-content pointer-events-auto relative z-0 flex items-center justify-between ${gradient ? "text-white" : "text-secondary"
         }`}>
         <h6 className="text-lg font-semibold">{title}</h6>
 

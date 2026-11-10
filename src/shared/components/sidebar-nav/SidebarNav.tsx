@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import SidebarNavItem from "./SidebarNavItem";
+import SidebarNavMobile from "./SidebarNavMobile";
 import type { SidebarNavGroup } from "./types";
 
 type SidebarNavProps = {
@@ -14,7 +15,10 @@ export default function SidebarNav({ groups }: SidebarNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav aria-label={t("common.sidebar-navigation")}>
+    <>
+    {/* Mobile: swipeable pills; desktop: the grouped vertical list. */}
+    <SidebarNavMobile groups={groups} pathname={pathname} />
+    <nav aria-label={t("common.sidebar-navigation")} className="hidden lg:block">
       <div className="flex flex-col gap-5">
         {groups.map((group) => (
           <section key={group.title} aria-labelledby={`sidebar-group-${group.title}`}>
@@ -41,5 +45,6 @@ export default function SidebarNav({ groups }: SidebarNavProps) {
         ))}
       </div>
     </nav>
+    </>
   );
 }

@@ -66,6 +66,7 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
       country: 'Egypt',
       startDate: '2014-07',
       endDate: '2022-07',
+      gpa: '3.8',
     },
     {
       degree: 'Bachelor of Medicine and Surgery (MBBS)',
@@ -73,6 +74,7 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
       country: 'Egypt',
       startDate: '2004-09',
       endDate: '2011-07',
+      gpa: '3.6',
     },
   ],
   certificates: [

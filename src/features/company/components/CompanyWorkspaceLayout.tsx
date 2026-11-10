@@ -13,9 +13,6 @@ export default function CompanyWorkspaceLayout({
 }: CompanyWorkspaceLayoutProps) {
   const pathname = usePathname();
   const isChat = pathname === '/company/chat';
-  const isDashboard =
-    pathname === '/company/dashboard' ||
-    pathname.startsWith('/company/dashboard/');
   return (
     <>
       <Header />
@@ -24,8 +21,10 @@ export default function CompanyWorkspaceLayout({
       >
         <aside
           className={cn(
-            'col-span-12 lg:col-span-3 lg:block xl:col-span-2',
-            (isChat || isDashboard) && 'hidden',
+            // Mobile: a card inside the page padding (like the candidate area); desktop: full-height column.
+            'bg-body-bg col-span-12 px-4 pt-6 md:px-7 lg:col-span-3 lg:block lg:bg-transparent lg:p-0 xl:col-span-2',
+            // Mobile chat is full screen, so it has no sidebar.
+            isChat && 'hidden',
           )}
         >
           <CompanySidebar />

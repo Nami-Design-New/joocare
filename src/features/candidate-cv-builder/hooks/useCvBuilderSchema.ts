@@ -14,6 +14,7 @@ export function useCvBuilderSchema() {
         required: t('required'),
         invalidEmail: t('invalid-email'),
         invalidUrl: t('invalid-url'),
+        invalidGpa: t('invalid-gpa'),
       }),
     [t],
   );

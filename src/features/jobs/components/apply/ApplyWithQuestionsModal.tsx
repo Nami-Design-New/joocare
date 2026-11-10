@@ -67,7 +67,7 @@ export default function ApplyWithQuestionsModal({
       <Dialog open onOpenChange={(open) => !open && requestClose()}>
         <DialogContent
           showCloseButton={false}
-          className="bg-card flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-255 flex-col gap-6 rounded-2xl p-5 sm:max-w-255 sm:px-10 sm:pt-12.5 sm:pb-7.5"
+          className="bg-card grid max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-255 grid-rows-[auto_auto_minmax(0,1fr)_auto] gap-6 overflow-hidden rounded-2xl p-5 sm:max-w-255 sm:px-10 sm:pt-12.5 sm:pb-7.5"
         >
           <div className="flex items-center justify-between gap-6">
             <DialogTitle className="text-foreground text-xl leading-tight font-semibold sm:text-[28px]">
@@ -92,6 +92,7 @@ export default function ApplyWithQuestionsModal({
           />
 
           <form
+            key={step}
             id="apply-with-questions"
             noValidate
             onSubmit={(event) => {
@@ -99,7 +100,7 @@ export default function ApplyWithQuestionsModal({
               if (isCvStep) submit();
               else void goToCvStep();
             }}
-            className="scrollbar-hide -mx-1 min-h-0 flex-1 overflow-y-auto px-1 pb-1"
+            className="-mx-1 min-h-0 overflow-y-auto overscroll-contain px-1 pb-1 [scrollbar-gutter:stable]"
           >
             {isCvStep ? (
               <ApplyCvStep cv={cv} />

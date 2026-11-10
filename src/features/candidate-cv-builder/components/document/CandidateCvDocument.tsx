@@ -81,7 +81,11 @@ export default function CandidateCvDocument({ cv }: CandidateCvDocumentProps) {
             />
           )}
           {cv.educations.length > 0 && (
-            <CvEducation title={t('education')} educations={cv.educations} />
+            <CvEducation
+              title={t('education')}
+              educations={cv.educations}
+              formatGpa={(value) => t('gpa', { value })}
+            />
           )}
           {cv.languages.length > 0 && (
             <CvLanguages title={t('languages')} languages={cv.languages} />
