@@ -9,7 +9,7 @@ export default async function AboutEmployer({ employer }: { employer: CompanyDet
   const t = await getTranslations();
   return (
     <div className="card font-noto-sans col-span-2 rounded-2xl bg-white p-4 md:p-7 text-[#212529]">
-      <h3 className="text-foreground mb-4 text-xl font-bold">
+      <h3 className="text-foreground mb-4 text-lg font-bold md:text-xl">
         {t("jobDetailsPage.about-the-employer")}
       </h3>
       <div className="border-border flex items-center gap-4 rounded-2xl border p-4">
@@ -21,11 +21,11 @@ export default async function AboutEmployer({ employer }: { employer: CompanyDet
           className="rounded-2xl w-15 h-13"
         />
         <div>
-          <h3 className="text-lg font-semibold">{employer?.name}</h3>
-          <p className="text-muted-foreground text-base">{employer?.domain?.title}</p>
+          <h3 className="text-base font-semibold md:text-lg">{employer?.name}</h3>
+          <p className="text-muted-foreground text-sm md:text-base">{employer?.domain?.title}</p>
         </div>
       </div>
-      <p className="text-muted-foreground py-3 text-justify text-sm">
+      <p className="text-muted-foreground py-3 text-start text-sm md:text-justify">
         {employer?.bio}
       </p>
       <Link

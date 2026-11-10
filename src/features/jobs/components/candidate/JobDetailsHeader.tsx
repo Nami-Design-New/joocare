@@ -31,7 +31,7 @@ export default async function JobDetailsHeader({ job }: JobDetailsHeaderProps) {
             <JobMatchBadge score={job?.match_score} />
           </div>
           <div className="mt-2 flex items-start gap-2 max-sm:flex-col lg:items-center">
-            <div className="text-muted-foreground text-lg font-normal">
+            <div className="text-muted-foreground text-sm font-normal md:text-lg">
               <span>
                 {t('jobDetailsPage.at')} {job?.company?.domain?.title}{' '}
               </span>

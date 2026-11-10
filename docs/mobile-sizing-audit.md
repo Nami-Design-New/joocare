@@ -80,11 +80,11 @@
 
 | الأولوية | المكان | الحالي | المقترح | السبب |
 |---|---|---|---|---|
-| 🟡 | [JobDetailsHeader.tsx:34](../src/features/jobs/components/candidate/JobDetailsHeader.tsx#L34) | `text-lg` ("at Hospitals & …") | `text-sm md:text-lg` | أكبر من عنوان الوظيفة نفسه (`text-base`) |
-| 🟡 | [JobLocationAndSalaryCard.tsx:19,34](../src/features/jobs/components/JobLocationAndSalaryCard.tsx#L19) | `text-lg` + `py-8` | `text-base md:text-lg` + `py-5 md:py-8` | — |
-| 🟡 | [JobDescriptionCard.tsx:20-21](../src/features/jobs/components/JobDescriptionCard.tsx#L20) | `p-7` + `text-xl` | `p-4 md:p-7` + `text-lg md:text-xl` | الكارت ده بالذات طويل جدًا، فالـ padding بيفرق |
-| 🟡 | [AboutEmployer.tsx:24-28](../src/features/jobs/components/candidate/AboutEmployer.tsx#L24) | `text-lg` / `text-base` + `text-justify` | `text-base md:text-lg` / `text-sm md:text-base` + `text-start md:text-justify` | اسم الشركة بيتكسر، والوصف فيه فراغات كبيرة بين الكلمات |
-| 🟡 | [SimilarJobCard.tsx](../src/features/about/components/SimilarJobCard.tsx#L23) | — | شيل الـ `h-full` أو الـ min-height على الموبيل | فيه فراغ فاضي ~60px تحت المحتوى |
+| ✅ | [JobDetailsHeader.tsx:34](../src/features/jobs/components/candidate/JobDetailsHeader.tsx#L34) | `text-lg` ("at Hospitals & …") | `text-sm md:text-lg` | أكبر من عنوان الوظيفة نفسه (`text-base`) |
+| ✅ | [JobLocationAndSalaryCard.tsx:19,34](../src/features/jobs/components/JobLocationAndSalaryCard.tsx#L19) | `text-lg` + `py-8` | `text-base md:text-lg` + `py-5 md:py-8` | — |
+| ✅ | [JobDescriptionCard.tsx:20-21](../src/features/jobs/components/JobDescriptionCard.tsx#L20) | `p-7` + `text-xl` | `p-4 md:p-7` + `text-lg md:text-xl` | الكارت ده بالذات طويل جدًا، فالـ padding بيفرق |
+| ✅ | [AboutEmployer.tsx:24-28](../src/features/jobs/components/candidate/AboutEmployer.tsx#L24) | `text-lg` / `text-base` + `text-justify` | `text-base md:text-lg` / `text-sm md:text-base` + `text-start md:text-justify` | اسم الشركة بيتكسر، والوصف فيه فراغات كبيرة بين الكلمات |
+| ✅ | [SimilarJobCard.tsx](../src/features/about/components/SimilarJobCard.tsx#L23) | — | الـ 3 معلومات بقوا `flex-wrap`. الفراغ اللي تحت الكارت سيبته، لأنه من `h-full` اللي بيساوي طول كروت الـ carousel | — |
 | ⚪ | [CandidateJobCard.tsx:114](../src/features/jobs/components/candidate/CandidateJobCard.tsx#L114) | `text-sm md:text-base` | تمام | — |
 
 ## Auth (login / register / forget password)

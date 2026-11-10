@@ -43,7 +43,7 @@ export default function SimilarJobCard({ job }: SimilarJobCardProps) {
           href={`/jobs/${job.id}`}
           className="flex cursor-pointer flex-col gap-2"
         >
-          <ul className="flex items-start gap-2">
+          <ul className="flex flex-wrap items-start gap-x-3 gap-y-1 md:flex-nowrap md:gap-2">
             <li className="text-secondary flex items-start gap-1 text-xs font-normal md:text-sm">
               <LocationEdit size={14} color="var(--muted-foreground)" />
               {job?.city?.name ? `${job?.city?.name} ,` : ''}
