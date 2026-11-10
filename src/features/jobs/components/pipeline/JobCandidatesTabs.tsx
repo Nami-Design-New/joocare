@@ -35,7 +35,7 @@ export default function JobCandidatesTabs({
             scroll={false}
             aria-current={isActive ? 'page' : undefined}
             className={cn(
-              'rounded-full px-4 py-3 text-center text-base transition-colors md:text-lg',
+              'rounded-full px-2 py-2.5 text-center text-sm transition-colors sm:px-4 sm:py-3 sm:text-base md:text-lg',
               isActive
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground',

@@ -106,7 +106,7 @@
 
 | الأولوية | المكان | المشكلة | المقترح |
 |---|---|---|---|
-| 🔴 | [CvBuilderWizard.tsx:29](../src/features/candidate-cv-builder/components/wizard/CvBuilderWizard.tsx#L29) (`/candidate/build-cv/create`) | **الصفحة الوحيدة اللي فيها horizontal scroll** (عرضها 440px): الـ grid ملوش أعمدة على الموبيل، فبيتمد على قد الـ stepper (9 خطوات) والفورم بيطلع برا الشاشة | ضيف `grid-cols-1` (= `minmax(0,1fr)`) قبل `lg:grid-cols-[…]` |
+| ✅ | [CvBuilderWizard.tsx:29](../src/features/candidate-cv-builder/components/wizard/CvBuilderWizard.tsx#L29) (`/candidate/build-cv/create`) | **الصفحة الوحيدة اللي فيها horizontal scroll** (عرضها 440px): الـ grid ملوش أعمدة على الموبيل، فبيتمد على قد الـ stepper (9 خطوات) والفورم بيطلع برا الشاشة | ضيف `grid-cols-1` (= `minmax(0,1fr)`) قبل `lg:grid-cols-[…]` |
 | 🔴 | `/company/talent-database` | **Bug مش مقاسات**: الصفحة بتقع بـ 500 "Maximum update depth exceeded" (infinite setState loop) | محتاج debug |
 | 🟡 | [PlainBreadcramb.tsx:16-19](../src/shared/components/PlainBreadcramb.tsx#L16) و [Breadcrumb.tsx:36-39](../src/shared/components/Breadcrumb.tsx#L36) | مع العناوين الطويلة ("Build Your Professional CV" و "Professional Credentials") العنوان والـ breadcrumb الاتنين بيتكسروا على سطرين | `hidden sm:flex` على الـ `ol`، أو اعرض آخر item بس على الموبيل |
 | 🟡 | كارت التابات اللي فوق صفحات company و candidate (Company Profile / Dashboard…) | الكارت واخد ~90px بسبب padding الكارت + padding التابات | قلل padding الكارت لـ `p-2` على الموبيل |
@@ -133,12 +133,12 @@
 
 | الأولوية | المكان | الحالي | المقترح | السبب |
 |---|---|---|---|---|
-| 🔴 | [dialog.tsx:75](../src/shared/components/ui/dialog.tsx#L75) | `w-full` | `w-[calc(100%-2rem)] sm:w-full` | ~15 مودال لازقين في حرف الشاشة (Delete, Success, Alert, CV, credentials, education/experience, skills, UpdateEmail…) |
-| 🔴 | [PasswordChangedModal.tsx:44-48](../src/shared/components/modals/PasswordChangedModal.tsx#L44) | صورة `size-75` + `px-8 pt-30 pb-16` | `size-48 sm:size-75` + `px-5 pt-16 pb-8 sm:px-8 sm:pt-30 sm:pb-16` | صورة 300px في مساحة ~280px، يعني بتطلع برا |
-| 🟡 | [ModalHeading.tsx:28](../src/shared/components/modals/ModalHeading.tsx#L28) | `text-[28px]` | `text-2xl sm:text-[28px]` | بيغطي 6+ مودالز. نفس الـ `text-[28px]` متكرر inline في credentials modals و EducationFormModal:111 و ExperienceFormModal:148 و UpdateEmailModal:33 و CvViewModal:49 و TalentMessageDialog:71 |
-| 🟡 | [CountPageHeader.tsx:23-26](../src/shared/components/common/CountPageHeader.tsx#L23) | `flex … justify-between` + `text-[38px]` / `text-[28px]` | ضيف `flex-wrap` + `text-[28px] sm:text-[38px]` / `text-xl sm:text-[28px]` | صفحات Roles و Users و Recruiter Activity و Assessment Categories |
-| 🟡 | [SuccessModal.tsx:129-154](../src/shared/components/modals/SuccessModal.tsx#L129) | `p-8`، `mt-15 mb-12`، `h-50 w-50`، `text-lg` | `p-5 sm:p-8`، `mt-8 mb-6 sm:…`، `h-36 w-36 sm:h-50 sm:w-50`، `text-base sm:text-lg` | ⚠️ اللي بيمرروا `visualClassName` لازم يمرروا كمان قيمة `sm:` بتاعتهم، عشان tailwind-merge مش هيشيل `sm:h-50` |
-| 🟡 | [DeleteModal.tsx:52-55](../src/shared/components/modals/DeleteModal.tsx#L52) و [AlertModal.tsx:53-54](../src/shared/components/modals/AlertModal.tsx#L53) | `p-8` + gif `h-50 w-50` + `mt-15 mb-12` | `p-5 sm:p-8` + `h-32 w-32 sm:h-50 sm:w-50` + `mt-8 mb-6 sm:…` | المودال بياخد معظم ارتفاع الشاشة |
+| ✅ | [dialog.tsx:75](../src/shared/components/ui/dialog.tsx#L75) | `w-full` | `w-[calc(100%-2rem)] sm:w-full` | ~15 مودال لازقين في حرف الشاشة (Delete, Success, Alert, CV, credentials, education/experience, skills, UpdateEmail…) |
+| ✅ | [PasswordChangedModal.tsx:44-48](../src/shared/components/modals/PasswordChangedModal.tsx#L44) | صورة `size-75` + `px-8 pt-30 pb-16` | `size-48 sm:size-75` + `px-5 pt-16 pb-8 sm:px-8 sm:pt-30 sm:pb-16` | صورة 300px في مساحة ~280px، يعني بتطلع برا |
+| ✅ | [ModalHeading.tsx:28](../src/shared/components/modals/ModalHeading.tsx#L28) | `text-[28px]` | `text-2xl sm:text-[28px]` | بيغطي 6+ مودالز. نفس الـ `text-[28px]` متكرر inline في credentials modals و EducationFormModal:111 و ExperienceFormModal:148 و UpdateEmailModal:33 و CvViewModal:49 و TalentMessageDialog:71 |
+| ✅ | [CountPageHeader.tsx:23-26](../src/shared/components/common/CountPageHeader.tsx#L23) | `flex … justify-between` + `text-[38px]` / `text-[28px]` | ضيف `flex-wrap` + `text-[28px] sm:text-[38px]` / `text-xl sm:text-[28px]` | صفحات Roles و Users و Recruiter Activity و Assessment Categories |
+| ✅ | [SuccessModal.tsx:129-154](../src/shared/components/modals/SuccessModal.tsx#L129) | `p-8`، `mt-15 mb-12`، `h-50 w-50`، `text-lg` | `p-5 sm:p-8`، `mt-8 mb-6 sm:…`، `h-36 w-36 sm:h-50 sm:w-50`، `text-base sm:text-lg` | ⚠️ اللي بيمرروا `visualClassName` لازم يمرروا كمان قيمة `sm:` بتاعتهم، عشان tailwind-merge مش هيشيل `sm:h-50` |
+| ✅ | [DeleteModal.tsx:52-55](../src/shared/components/modals/DeleteModal.tsx#L52) و [AlertModal.tsx:53-54](../src/shared/components/modals/AlertModal.tsx#L53) | `p-8` + gif `h-50 w-50` + `mt-15 mb-12` | `p-5 sm:p-8` + `h-32 w-32 sm:h-50 sm:w-50` + `mt-8 mb-6 sm:…` | المودال بياخد معظم ارتفاع الشاشة |
 | 🟡 | [button.tsx:38](../src/shared/components/ui/button.tsx#L38) variant `pill` | `h-13 px-8` + nowrap | `h-11 px-5 sm:h-13 sm:px-8` | بيصلّح أزرار الـ pill اللي عرضها `w-1/3` واتزنقت (post-job، complete-account، account settings). ⚠️ بيأثر على الصفحات العامة كمان، فممكن تصلّح كل مكان لوحده بدل كده |
 | ⚪ | [YesNoQuestionCard.tsx:55,62](../src/shared/components/YesNoQuestionCard.tsx#L55) | `text-[21px]`، `gap-14` | `text-lg sm:text-[21px]`، `gap-8 sm:gap-14` | — |
 | ⚪ | [HttpStatusState.tsx:33](../src/shared/components/HttpStatusState.tsx#L33) و [RouteErrorFallback.tsx:29](../src/shared/components/RouteErrorFallback.tsx#L29) | `py-16`، `p-8`، `text-3xl` | `py-8 sm:py-16`، `p-5 sm:p-8`، `text-2xl sm:text-3xl` | شاشات الإيرور |
@@ -174,11 +174,11 @@
 
 | الأولوية | المكان | الحالي | المقترح |
 |---|---|---|---|
-| 🔴 | [ProfileHeader.tsx:53,60](../src/features/company-profile/components/ProfileHeader.tsx#L53) | الكوفر `h-93.75` (375px) + `mb-20` + `rounded-[40px]` | `h-48 mb-14 rounded-3xl sm:h-93.75 sm:mb-20 sm:rounded-[40px]` |
-| 🔴 | [ProfileHeader.tsx:114-115](../src/features/company-profile/components/ProfileHeader.tsx#L114) | لوجو `w-37.5 h-37.5`، `-bottom-12 left-8` | `size-24 sm:size-37.5`، `-bottom-8 start-4 sm:-bottom-12 sm:start-8` |
-| 🔴 | [cover-upload-image.tsx:102,113,164](../src/features/complete-account/components/cover-upload-image.tsx#L102) | `h-93.75`، `h-75 rounded-[50px]`، لوجو `w-37.5` | `h-60 sm:h-93.75`، `h-44 rounded-3xl sm:h-75 sm:rounded-[50px]`، `size-24 sm:size-37.5` |
-| 🔴 | [wizard-navigation.tsx:29,42,54](../src/features/complete-account/components/wizard-navigation.tsx#L29) | `w-1/3` pill `px-8` | `w-1/2 px-4 sm:w-1/3 sm:px-8` (حوالي 40px بس للنص، فبيطلع برا الزرار) |
-| 🟡 | [BasicInfoForm.tsx:209,383](../src/features/accout-settings/components/basic-info/BasicInfoForm.tsx#L209) | `w-1/3` pill | `w-1/2 px-4 sm:w-1/3 sm:px-8` |
+| ✅ | [ProfileHeader.tsx:53,60](../src/features/company-profile/components/ProfileHeader.tsx#L53) | الكوفر `h-93.75` (375px) + `mb-20` + `rounded-[40px]` | `h-48 mb-14 rounded-3xl sm:h-93.75 sm:mb-20 sm:rounded-[40px]` |
+| ✅ | [ProfileHeader.tsx:114-115](../src/features/company-profile/components/ProfileHeader.tsx#L114) | لوجو `w-37.5 h-37.5`، `-bottom-12 left-8` | `size-24 sm:size-37.5`، `-bottom-8 start-4 sm:-bottom-12 sm:start-8` |
+| ✅ | [cover-upload-image.tsx:102,113,164](../src/features/complete-account/components/cover-upload-image.tsx#L102) | `h-93.75`، `h-75 rounded-[50px]`، لوجو `w-37.5` | `h-60 sm:h-93.75`، `h-44 rounded-3xl sm:h-75 sm:rounded-[50px]`، `size-24 sm:size-37.5` |
+| ✅ | [wizard-navigation.tsx:29,42,54](../src/features/complete-account/components/wizard-navigation.tsx#L29) | `w-1/3` pill `px-8` | `w-1/2 px-4 sm:w-1/3 sm:px-8` (حوالي 40px بس للنص، فبيطلع برا الزرار) |
+| ✅ | [BasicInfoForm.tsx:209,383](../src/features/accout-settings/components/basic-info/BasicInfoForm.tsx#L209) | `w-1/3` pill | `w-1/2 px-4 sm:w-1/3 sm:px-8` |
 | ⚪ | [UpdateEmailModal.tsx:31](../src/features/accout-settings/components/basic-info/UpdateEmailModal.tsx#L31) | `pt-14` | `pt-10 sm:pt-14` |
 
 ### Company: dashboard
@@ -193,9 +193,9 @@
 
 | الأولوية | المكان | الحالي | المقترح |
 |---|---|---|---|
-| 🔴 | [PostJobForm.tsx:751-752](../src/features/jobs/components/PostJobForm.tsx#L751) | `max-w-7xl py-12` من غير padding جانبي، + `p-6` | `px-4 py-6 sm:px-0 sm:py-12` + `p-4 sm:p-6` (الفورم لازق في حرف الشاشة) |
-| 🔴 | [PostJobForm.tsx:820,839](../src/features/jobs/components/PostJobForm.tsx#L820) | `w-2/6 md:w-1/6` pill | `w-1/2 px-4 sm:w-2/6 sm:px-8 md:w-1/6` (نص Prev/Next بيطلع برا الزرار) |
-| 🟡 | [JobCandidatesTabs.tsx:38](../src/features/jobs/components/pipeline/JobCandidatesTabs.tsx#L38) | `px-4 py-3 text-base` | `px-2 py-2.5 text-sm sm:px-4 sm:py-3 sm:text-base` |
+| ✅ | [PostJobForm.tsx:751-752](../src/features/jobs/components/PostJobForm.tsx#L751) | `max-w-7xl py-12` من غير padding جانبي، + `p-6` | `px-4 py-6 sm:px-0 sm:py-12` + `p-4 sm:p-6` (الفورم لازق في حرف الشاشة) |
+| ✅ | [PostJobForm.tsx:820,839](../src/features/jobs/components/PostJobForm.tsx#L820) | `w-2/6 md:w-1/6` pill | `w-1/2 px-4 sm:w-2/6 sm:px-8 md:w-1/6` (نص Prev/Next بيطلع برا الزرار) |
+| ✅ | [JobCandidatesTabs.tsx:38](../src/features/jobs/components/pipeline/JobCandidatesTabs.tsx#L38) | `px-4 py-3 text-base` | `px-2 py-2.5 text-sm sm:px-4 sm:py-3 sm:text-base` |
 | 🟡 | [JobDescriptionCard.tsx:20](../src/features/jobs/components/JobDescriptionCard.tsx#L20) | `p-7` | `p-4 sm:p-7` (نفس البند اللي في Job details العامة) |
 | ⚪ | job-management/page.tsx:6، JobManagementSection.tsx:118، PipelineCandidatesTab.tsx:87، PipelineFiltersPage.tsx:140، JobOverviewCard.tsx:15 | `gap-12`، `p-8`، `p-10`، `text-2xl`، `px-4` | `gap-6 sm:gap-12`، `p-5 sm:p-8`، `p-6 sm:p-10`، `text-xl sm:text-2xl`، `sm:px-4` |
 
@@ -203,7 +203,7 @@
 
 | الأولوية | المكان | الحالي | المقترح |
 |---|---|---|---|
-| 🔴 | [CandidateAssessmentHeader.tsx:145](../src/features/company-assessments/components/results/CandidateAssessmentHeader.tsx#L145) | `grid-cols-4 gap-3` | `grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3` (الـ 4 pills النص بتاعهم بيطلع برا) |
+| ✅ | [CandidateAssessmentHeader.tsx:145](../src/features/company-assessments/components/results/CandidateAssessmentHeader.tsx#L145) | `grid-cols-4 gap-3` | `grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3` (الـ 4 pills النص بتاعهم بيطلع برا) |
 | 🟡 | ExternalInvitationsPage.tsx:46، AssessmentResultsPage.tsx:28، AssessmentCandidateSummary.tsx:29 | `text-[28px]` | `text-2xl sm:text-[28px]` |
 | 🟡 | [AssessmentSentSuccess.tsx:40,57,66](../src/features/company-assessments/components/shared/AssessmentSentSuccess.tsx#L57) | صورة `h-[242px] w-[230px]`، `text-[30px]`، `pt-10` | `h-[168px] w-[160px] sm:…`، `text-2xl sm:text-[30px]`، `pt-14 sm:pt-10` |
 | ⚪ | CandidateAssessmentHeader.tsx:59,153، AssessmentCandidateSummary.tsx:22، ExternalInvitationsPage.tsx:43، AssessmentProgress.tsx:11، AssessmentBuilderHeader.tsx:19، AssessmentCategoriesPage.tsx:22، AssignAssessmentDialog.tsx:61 | `p-6`، `text-2xl`، `p-5`، `gap-11`، `mb-10`، `gap-10` | `p-4 sm:p-6`، `text-xl sm:text-2xl`، `p-3 sm:p-5`، `gap-6 sm:gap-11`، `mb-6 sm:mb-10`، `gap-6 sm:gap-10` |
@@ -212,8 +212,8 @@
 
 | الأولوية | المكان | الحالي | المقترح |
 |---|---|---|---|
-| 🔴 | [ProjectShareModal.tsx:120,126](../src/features/company-projects/components/Modals/ProjectShareModal.tsx#L126) | `max-w-[700px] p-10`، صورة `h-[242px] w-[230px]` | ضيف `w-[calc(100%-2rem)]` + `p-5 sm:p-10`، `h-40 w-38 sm:h-[242px] sm:w-[230px]` |
-| 🟡 | [MemberFormModal.tsx:55](../src/features/company-admin-users/components/MemberFormModal.tsx#L55) | `max-w-lg p-8 sm:p-10` | ضيف `w-[calc(100%-2rem)]` + `p-5 sm:p-10` |
+| ✅ | [ProjectShareModal.tsx:120,126](../src/features/company-projects/components/Modals/ProjectShareModal.tsx#L126) | `max-w-[700px] p-10`، صورة `h-[242px] w-[230px]` | ضيف `w-[calc(100%-2rem)]` + `p-5 sm:p-10`، `h-40 w-38 sm:h-[242px] sm:w-[230px]` |
+| ✅ | [MemberFormModal.tsx:55](../src/features/company-admin-users/components/MemberFormModal.tsx#L55) | `max-w-lg p-8 sm:p-10` | ضيف `w-[calc(100%-2rem)]` + `p-5 sm:p-10` |
 | 🟡 | [TalentResultsHeader.tsx:28-29](../src/features/company-talent-database/components/TalentResultsHeader.tsx#L28) | `text-[28px]` / `text-4xl` | `text-xl sm:text-[28px]` / `text-[28px] sm:text-4xl` |
 | 🟡 | [ScheduleInterviewsStep.tsx:78,86](../src/features/company-projects/components/shared-review/ScheduleInterviewsStep.tsx#L78) (كمان hiring-manager) | `px-10` / `px-8` | `flex-1 px-4 sm:flex-none sm:px-10` / `… sm:px-8` |
 | ⚪ | CandidatePreviewModal.tsx:90، ProjectsPage.tsx:80، CandidateProfileSidebar.tsx:36، ProjectCandidateProfilePage.tsx:21، SharedReviewPage.tsx:26، TalentMessageDialog.tsx:62، TalentDatabasePage.tsx:108 | `text-4xl`، `p-8`، `size-37.5`، `gap-8 py-8`، `pt-10 pb-14`، `gap-8`، dialog title `text-[28px]` | `text-3xl sm:text-4xl`، `p-5 sm:p-8`، `size-28 sm:size-37.5`، `gap-5 py-5 sm:…`، `pt-6 pb-8 sm:…`، `gap-5 sm:gap-8`، `text-2xl sm:text-[28px]` |

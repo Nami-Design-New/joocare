@@ -41,11 +41,11 @@ export default function PasswordChangedModal({
           unoptimized
           width={300}
           height={300}
-          className="size-75"
+          className="size-48 sm:size-75"
         />
       }
-      className="w-[calc(100%-2rem)] max-w-175 gap-0 rounded-3xl px-8 pt-30 pb-16 sm:min-w-0 [&_[data-slot=dialog-close]]:start-8 [&_[data-slot=dialog-close]]:end-auto [&_[data-slot=dialog-close]]:top-8 [&_[data-slot=dialog-close]]:flex [&_[data-slot=dialog-close]]:size-8 [&_[data-slot=dialog-close]]:items-center [&_[data-slot=dialog-close]]:justify-center [&_[data-slot=dialog-description]]:hidden [&_[data-slot=dialog-title]]:text-[28px]"
-      visualClassName="h-75 w-75"
+      className="w-[calc(100%-2rem)] max-w-175 gap-0 rounded-3xl px-5 pt-16 pb-8 sm:min-w-0 sm:px-8 sm:pt-30 sm:pb-16 [&_[data-slot=dialog-close]]:start-8 [&_[data-slot=dialog-close]]:end-auto [&_[data-slot=dialog-close]]:top-8 [&_[data-slot=dialog-close]]:flex [&_[data-slot=dialog-close]]:size-8 [&_[data-slot=dialog-close]]:items-center [&_[data-slot=dialog-close]]:justify-center [&_[data-slot=dialog-description]]:hidden [&_[data-slot=dialog-title]]:text-2xl sm:[&_[data-slot=dialog-title]]:text-[28px]"
+      visualClassName="size-48 sm:size-75"
       visualWrapperClassName="mt-0 mb-2"
     />
   );

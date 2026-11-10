@@ -50,8 +50,8 @@ export default function AlertModal({
   };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-150 rounded-2xl p-8 text-center">
-        <div className="mt-15 mb-12 flex w-full items-center justify-center">
+      <DialogContent className="max-w-150 rounded-2xl p-5 text-center sm:p-8">
+        <div className="mt-8 mb-6 flex w-full items-center justify-center sm:mt-15 sm:mb-12">
           <div className="h-40 w-40 sm:h-50 sm:w-50">
             <Lottie
               lottieRef={lottieRef}

@@ -50,14 +50,14 @@ const ProfileHeader = ({
     const logoRef = useRef<HTMLInputElement>(null);
 
     return (
-        <div className="w-full h-93.75 mb-20">
+        <div className="w-full h-48 mb-14 sm:h-93.75 sm:mb-20">
             <div className="relative">
                 {/* COVER */}
                 <Controller
                     name="uploadCoverImage"
                     control={control}
                     render={({ field: { onChange } }) => (
-                        <div className="relative w-full h-93.75 rounded-[40px] overflow-hidden border">
+                        <div className="relative w-full h-48 rounded-3xl overflow-hidden border sm:h-93.75 sm:rounded-[40px]">
                             {isPending ? (
                                 <div className="w-full h-full flex items-center justify-center">
                                     {t("common.loading")}
@@ -111,8 +111,8 @@ const ProfileHeader = ({
                     control={control}
                     render={({ field: { onChange } }) => (
                         <div className={cn(
-                            `absolute -bottom-12 ${locale === "ar" ? "right-8" : "left-8"}`,
-                            "w-37.5 h-37.5 rounded-full border bg-white",
+                            `absolute -bottom-8 sm:-bottom-12 ${locale === "ar" ? "right-4 sm:right-8" : "left-4 sm:left-8"}`,
+                            "size-24 sm:size-37.5 rounded-full border bg-white",
                             "flex items-center justify-center cursor-pointer",
                             "ring-4 ring-white",
                         )}>

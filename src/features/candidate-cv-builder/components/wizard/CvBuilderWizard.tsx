@@ -26,7 +26,7 @@ export default function CvBuilderWizard({ mode }: CvBuilderWizardProps) {
 
   return (
     <FormProvider {...wizard.form}>
-      <section className="bg-card shadow-card grid gap-6 rounded-2xl p-4 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10">
+      <section className="bg-card shadow-card grid grid-cols-1 gap-6 rounded-2xl p-4 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10">
         <CvBuilderStepper wizard={wizard} />
 
         <form

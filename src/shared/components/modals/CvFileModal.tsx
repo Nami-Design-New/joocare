@@ -46,7 +46,7 @@ export default function CvFileModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="mb-25 max-w-175 rounded-2xl p-8 text-center">
+      <DialogContent className="mb-25 max-w-175 rounded-2xl p-5 text-center sm:p-8">
         <DialogHeader className="-mt-5 flex flex-row items-center justify-between gap-3 pr-6">
           <DialogTitle className="text-foreground text-xl font-bold">
             {title}

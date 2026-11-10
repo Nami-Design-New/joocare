@@ -49,10 +49,10 @@ export default function DeleteModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className={cn('max-w-150 rounded-2xl p-8 text-center', className)}
+        className={cn('max-w-150 rounded-2xl p-5 text-center sm:p-8', className)}
       >
         <div className="flex w-full items-center justify-center">
-          <div className="h-50 w-50">
+          <div className="size-32 sm:size-50">
             <Image
               src="/assets/gif/trash-icon.gif"
               alt=""
