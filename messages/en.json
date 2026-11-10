@@ -3398,14 +3398,14 @@
         "how-it-works-description": "The assessment will be shared with {name}.",
         "send": "Share Assessment",
         "sending": "Sharing...",
-        "assigned-toast": "Assessment shared with {name}.",
         "status": {
           "passed": "Passed",
           "failed": "Failed",
           "absent": "Absent",
           "grace-period": "In grace period",
           "not-assigned": "Not assigned"
-        }
+        },
+        "assigned-success": "Assessment sent to {name} successfully"
       },
       "details": {
         "paused": "Paused",

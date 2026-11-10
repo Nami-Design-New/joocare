@@ -3432,14 +3432,14 @@
         "how-it-works-description": "ستتم مشاركة التقييم مع {name}.",
         "send": "مشاركة التقييم",
         "sending": "جارٍ المشاركة...",
-        "assigned-toast": "تمت مشاركة التقييم مع {name}.",
         "status": {
           "passed": "ناجح",
           "failed": "راسب",
           "absent": "غائب",
           "grace-period": "ضمن فترة السماح",
           "not-assigned": "غير معيّن"
-        }
+        },
+        "assigned-success": "تم إرسال التقييم إلى {name} بنجاح"
       }
     },
     "recruiter-activity": {

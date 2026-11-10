@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
 import type {
   AssessmentCandidateSummary,
   CandidateAssessment,
@@ -11,18 +9,21 @@ import type {
 
 // Preview only: swap `assign` for the assessment invitation mutation when available.
 export function useCandidateAssessmentActions() {
-  const t = useTranslations('companyPage.assessments.candidate-assessments');
   const [action, setAction] = useState<CandidateAssessmentAction>(null);
+  // Candidate the assessment was just sent to (shows the success modal).
+  const [assignedName, setAssignedName] = useState<string | null>(null);
   const close = () => setAction(null);
 
   async function assign() {
     if (!action) return;
-    toast.success(t('assigned-toast', { name: action.candidate.name }));
+    setAssignedName(action.candidate.name);
     close();
   }
 
   return {
     action,
+    assignedName,
+    closeAssigned: () => setAssignedName(null),
     openList: (
       candidate: AssessmentCandidateSummary,
       assessments: CandidateAssessment[],
