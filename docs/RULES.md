@@ -218,7 +218,7 @@ In existing folders, follow the local file pattern. Spell names correctly, becau
 
 ### Maintenance and security
 
-- Follow the existing Prettier config (single quotes, Tailwind class sorting) and ESLint config. Format the files you change. Much of the older code isn't formatted yet, so don't reformat unrelated files in the same change. Don't change tool configs as part of a feature.
+- Follow the existing Prettier config (single quotes, 80-char lines, Tailwind class sorting) and ESLint config. Format the files you change. Much of the older code isn't formatted yet, so don't reformat unrelated files in the same change. Don't change tool configs as part of a feature.
 - Reuse the installed libraries. Don't add a new dependency when an existing one already does the job.
 - Never log tokens, secrets or personal data. Remove `console.log` before committing (ESLint doesn't catch it).
 - Secrets and environment-specific values (keys, hosts, URLs) come from env variables, not from hardcoded strings.
