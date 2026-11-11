@@ -1,0 +1,71 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main, development]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+      NEXT_PUBLIC_BASE_USER_URL: ${{ secrets.NEXT_PUBLIC_BASE_USER_URL }}
+      NEXT_PUBLIC_BASE_COMPANY_URL: ${{ secrets.NEXT_PUBLIC_BASE_COMPANY_URL }}
+      NEXTAUTH_SECRET: ci-build-only
+      NEXTAUTH_URL: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pick target
+        id: target
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "dir=/home/quickzap/joocare.com" >> "$GITHUB_OUTPUT"
+            echo "pm2=joocare" >> "$GITHUB_OUTPUT"
+          else
+            echo "dir=/home/quickzap/joocare.cloud" >> "$GITHUB_OUTPUT"
+            echo "pm2=joocare.cloud" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          port: ${{ secrets.VPS_PORT }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 30m
+          script: |
+            set -e
+            APP_DIR="${{ steps.target.outputs.dir }}"
+            BRANCH="${{ github.ref_name }}"
+            PM2_NAME="${{ steps.target.outputs.pm2 }}"
+
+            # git/npm run as the repo owner (quickzap), pm2 runs as root
+            as_owner() {
+              if [ "$(id -u)" = "0" ]; then sudo -u quickzap -H bash -lc "cd '$APP_DIR' && $1"
+              else bash -lc "cd '$APP_DIR' && $1"; fi
+            }
+            as_root() {
+              if [ "$(id -u)" = "0" ]; then bash -lc "$1"
+              else sudo -n -i bash -lc "$1"; fi
+            }
+
+            as_owner "git pull origin '$BRANCH'"
+            as_owner "npm ci && npm run build"
+            as_root "pm2 restart '$PM2_NAME' --update-env && pm2 save"
