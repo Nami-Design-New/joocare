@@ -15,7 +15,7 @@ export default function ItemList({ items, variant = "disc" }: ListProps) {
   const Tag = variant === "decimal" ? "ol" : "ul";
 
   return (
-    <Tag className={`${listClass} flex flex-col gap-1.5 ps-7 text-sm`}>
+    <Tag className={`max-md:text-3.25 max-md:leading-5.25 ${listClass} flex flex-col gap-1.5 ps-7 text-sm`}>
       {items?.map((item) => (
         <li key={item?.id}>{item?.title}</li>
       ))}

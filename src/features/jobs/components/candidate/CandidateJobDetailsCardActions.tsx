@@ -32,13 +32,14 @@ export default function CandidateJobDetailsCardActions({
   return (
     <>
       <JobApplyDialogs flow={applyFlow} jobId={jobId} jobTitle={jobTitle} />
-      <section className="flex items-center gap-4 max-lg:mt-2">
+      <section className="flex items-center gap-4 max-md:gap-2 max-lg:mt-2">
         {!applyFlow.isEmployer ? (
           <>
             <ToggleSavedJobButton
               jobId={jobId}
               initialIsSaved={initialIsSaved}
               variant="icon"
+              className="max-md:size-11 max-md:p-3"
             />
             {applyFlow.hasApplied ? (
               <Button
@@ -46,7 +47,7 @@ export default function CandidateJobDetailsCardActions({
                 variant="outline"
                 size="pill"
                 disabled
-                className="border-primary text-primary flex-1 cursor-not-allowed border bg-white hover:bg-transparent"
+                className="border-primary text-primary flex-1 cursor-not-allowed border bg-white hover:bg-transparent max-md:h-11 max-md:px-4 max-md:py-2"
               >
                 {t("already-applied")}
               </Button>
@@ -54,7 +55,7 @@ export default function CandidateJobDetailsCardActions({
               <Button
                 onClick={applyFlow.startApply}
                 size="pill"
-                className="flex flex-1 items-center gap-2"
+                className="flex flex-1 items-center gap-2 max-md:h-11 max-md:px-4 max-md:py-2"
               >
                 {t("apply-now")} <ArrowRight className="rtl:rotate-180" />
               </Button>

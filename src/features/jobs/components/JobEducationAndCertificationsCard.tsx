@@ -9,7 +9,7 @@ export default async function JobEducationAndCertificationsCard({ job }: { job: 
 
   return (
     <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-4 md:p-8">
-      <h2 className="text-foreground mb-4 text-lg font-semibold">
+      <h2 className="max-md:text-base max-md:leading-6 text-foreground mb-4 text-lg font-semibold">
         {t("jobDetailsPage.education-certifications")}
       </h2>
       <div className="flex flex-col gap-6">
@@ -27,7 +27,7 @@ export default async function JobEducationAndCertificationsCard({ job }: { job: 
                 height={20}
                 alt={t("jobDetailsPage.icon")}
               />
-              <p className="text-muted-foreground text-sm md:text-base">
+              <p className="max-md:text-xs max-md:leading-4 text-muted-foreground text-sm md:text-base">
                 {t("jobDetailsPage.mandatory-certifications")}
               </p>
             </div>

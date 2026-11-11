@@ -16,8 +16,8 @@ export default async function JobLocationAndSalaryCard({ job }: { job: JobDetail
             alt={t("jobDetailsPage.currency-icon")}
           />
         </div>
-        <h4 className="text-foreground text-base font-semibold md:text-lg">{t("jobDetailsPage.salary")} {job?.salary_type === null ? null : (job?.currency?.code)}</h4>
-        <p className="text-primary text-base font-semibold">
+        <h4 className="max-md:text-sm max-md:leading-5 text-foreground text-base font-semibold md:text-lg">{t("jobDetailsPage.salary")} {job?.salary_type === null ? null : (job?.currency?.code)}</h4>
+        <p className="max-md:text-sm max-md:leading-5 text-primary text-base font-semibold">
           {job.has_salary ? getJobSalary(job, t("jobsPage.not-specified")) : t("jobsPage.not-specified")} </p>
         <span className="text-muted-foreground text-sm">{job.has_salary ? job?.salary_type?.title : ""}</span>
       </div>
@@ -31,7 +31,7 @@ export default async function JobLocationAndSalaryCard({ job }: { job: JobDetail
             alt={t("jobDetailsPage.location-icon")}
           />
         </div>
-        <h4 className="text-foreground text-base font-semibold md:text-lg">{t("jobDetailsPage.job-location")}</h4>
+        <h4 className="max-md:text-sm max-md:leading-5 text-foreground text-base font-semibold md:text-lg">{t("jobDetailsPage.job-location")}</h4>
         <p className="text-muted-foreground text-sm md:text-base text-center font-semibold">
           {job?.city?.name}{job?.city_id === null ? "" : ","}<br />{job?.country?.name}
         </p>

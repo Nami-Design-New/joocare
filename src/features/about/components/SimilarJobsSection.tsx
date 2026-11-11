@@ -27,7 +27,7 @@ export default async function SimilarJobsSection({ jobs }: { jobs: SimilarJob[] 
           <div className="mb-12 flex items-center justify-between">
             <div className="space-y-4">
               <SectionTitle sectionTitle={t("jobDetailsPage.similar-jobs")} />
-              <h2>{t("jobDetailsPage.handpicked-for-your-profile")}</h2>
+              <h2 className="max-md:text-sm max-md:leading-5">{t("jobDetailsPage.handpicked-for-your-profile")}</h2>
             </div>
 
             {/* Shadcn carousel controls wired to the same Carousel context */}

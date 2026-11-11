@@ -18,13 +18,13 @@ export default async function JobDescriptionCard({
 
   return (
     <div className="card font-noto-sans bg-body-bg text-foreground col-span-2 rounded-2xl p-2 md:p-7">
-      <h3 className="text-primary mb-4 text-lg font-bold md:text-xl">
+      <h3 className="max-md:text-base max-md:leading-6 text-primary mb-4 text-lg font-bold md:text-xl">
         {t('jobDetailsPage.job-description')}
       </h3>
 
       <DescriptionSection title={t('jobDetailsPage.qualifications')}>
         <div
-          className="prose prose-sm max-w-none border-b pb-5 text-sm md:text-base"
+          className="max-md:text-3.25 max-md:leading-5.25 prose prose-sm max-w-none border-b pb-5 text-sm md:text-base"
           dangerouslySetInnerHTML={{
             __html:
               job.description ||
@@ -34,7 +34,7 @@ export default async function JobDescriptionCard({
       </DescriptionSection>
 
       <div>
-        <h3 className="text-primary font-outfit text-lg font-bold md:text-xl">
+        <h3 className="max-md:text-base max-md:leading-6 text-primary font-outfit text-lg font-bold md:text-xl">
           {t('jobDetailsPage.skills')}
         </h3>
         <ItemList items={job?.skills} variant="dashed" />
