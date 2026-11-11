@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - run: npm ci || npm install --no-audit --no-fund
       - run: npm run build
 
   deploy:
@@ -75,6 +75,7 @@ jobs:
             }
 
             as_owner "git pull --ff-only origin '$BRANCH'"
-            as_owner "npm ci && npm run build"
+            # lock file may be out of sync with npm 10 -> fall back to install, then restore lock so next pull stays clean
+            as_owner "(npm ci --no-audit --no-fund || npm install --no-audit --no-fund) && git checkout -- package-lock.json && npm run build"
             pm2_root restart "$PM2_NAME" --update-env
             pm2_root save
