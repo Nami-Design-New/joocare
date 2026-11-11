@@ -4,7 +4,7 @@ import { Button } from "@/shared/components/ui/button";
 import { TableCell, TableRow } from "@/shared/components/ui/table";
 import { Eye, Loader2 } from "lucide-react";
 import Image from "next/image";
-import { Applicant } from "../types/index.types";
+import type { Applicant } from "../types/index.types";
 import { useTranslations } from "next-intl";
 
 export default function ApplicantRow({
