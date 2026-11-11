@@ -13,12 +13,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
-      NEXT_PUBLIC_BASE_USER_URL: ${{ secrets.NEXT_PUBLIC_BASE_USER_URL }}
-      NEXT_PUBLIC_BASE_COMPANY_URL: ${{ secrets.NEXT_PUBLIC_BASE_COMPANY_URL }}
-      NEXTAUTH_SECRET: ci-build-only
-      NEXTAUTH_URL: http://localhost:3000
+      # public URLs only (no secrets): main -> .com (live), development -> .cloud (test)
+      DOMAIN: ${{ github.ref_name == 'main' && 'joocare.com' || 'joocare.cloud' }}
     steps:
+      - name: Set build env
+        run: |
+          {
+            echo "NEXTAUTH_URL=https://$DOMAIN"
+            echo "NEXT_PUBLIC_SITE_URL=https://$DOMAIN"
+            echo "NEXT_PUBLIC_BASE_URL=https://admin.$DOMAIN/api"
+            echo "NEXT_PUBLIC_BASE_USER_URL=https://admin.$DOMAIN/api/user"
+            echo "NEXT_PUBLIC_BASE_COMPANY_URL=https://admin.$DOMAIN/api/company"
+            echo "NEXTAUTH_SECRET=ci-build-only"
+          } >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
