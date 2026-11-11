@@ -60,8 +60,4 @@ There is no test runner configured yet, so there is no `npm test`.
 
 ## Coding Rules
 
-Everyone who writes code in this project (developers and AI agents) must follow [RULES.md](RULES.md): architecture and folder structure, clean code, component boundaries, design system, API, forms, localization and the finish checklist.
-
-## Phase 2
-
-What is still missing from the Figma design, open decisions and pending API work: [docs/DESIGN-GAPS.md](docs/DESIGN-GAPS.md).
+Everyone who writes code in this project (developers and AI agents) must follow [RULES.md](docs/RULES.md): architecture and folder structure, clean code, component boundaries, design system, API, forms, localization and the finish checklist.

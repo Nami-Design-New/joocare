@@ -1,0 +1,12 @@
+# Store and check out text files with LF so Prettier's "endOfLine": "lf" matches on every OS.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary

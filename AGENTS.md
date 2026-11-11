@@ -4,7 +4,7 @@ These instructions apply to every AI agent working in this repository.
 
 ## Before writing or editing code
 
-1. **Read the [Coding Rules in RULES.md](RULES.md) first.** They are mandatory.
+1. **Read the [Coding Rules in docs/RULES.md](docs/RULES.md) first.** They are mandatory.
 2. **Read the closest similar implementation** (same feature, or a feature with the same kind of page, form, table or dialog) and follow its structure.
 3. **Search before you create.** Check `src/shared` (`components/ui`, `components/common`, `components/modals`, `hooks`, `lib`) and the current feature for something you can reuse.
 4. **Old violations are not patterns to copy.** If existing code breaks a rule, write new code the right way and don't spread the old pattern.

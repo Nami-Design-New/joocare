@@ -171,7 +171,7 @@ In existing folders, follow the local file pattern. Spell names correctly, becau
 - When `generateMetadata` and the page need the same data, share one `cache()`-wrapped fetch.
 - After a mutation, invalidate or update the related queries instead of reloading the page.
 - Avoid duplicate requests and unnecessary `router.refresh()` calls.
-- Background and lessons learned: [docs/request-caching-audit.md](docs/request-caching-audit.md).
+- Background and lessons learned: [request-caching-audit.md](request-caching-audit.md).
 
 ### Forms
 
@@ -233,7 +233,3 @@ In existing folders, follow the local file pattern. Spell names correctly, becau
 - [ ] Query keys and cache invalidation are correct.
 - [ ] `npm run lint` and `npx tsc --noEmit` pass for the files you changed (if something fails outside your change, mention it).
 - [ ] UI changes were checked in **Arabic and English** and on **mobile**.
-
-create same desgin typical in figma depond on same system design and same folder structure
-
-and after finish can check wiht browser controller and check on everey thing

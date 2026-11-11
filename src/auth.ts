@@ -101,7 +101,7 @@ async function authorizeWithEndpoint({
     locale: credentials.locale ?? "en",
     body: formData,
   });
-  console.log("USER FOUND:", data);
+  // console.log("USER FOUND:", data);
 
   const errorMessage = message || "Invalid email or password.";
   const accessToken = extractToken(data);

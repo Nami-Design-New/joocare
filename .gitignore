@@ -41,3 +41,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 Joocare.postman_collection.json
+
+# local tooling / debug output
+/.playwright-mcp/
+/.agents/
+ts_errors.txt
