@@ -74,7 +74,7 @@ jobs:
               else sudo -n /usr/bin/pm2 "$@"; fi
             }
 
-            as_owner "git pull origin '$BRANCH'"
+            as_owner "git pull --ff-only origin '$BRANCH'"
             as_owner "npm ci && npm run build"
             pm2_root restart "$PM2_NAME" --update-env
             pm2_root save
