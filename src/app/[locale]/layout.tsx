@@ -102,7 +102,7 @@ export default async function RootLayout({ children, params }: Props) {
           messages={messages}
           initialSettings={initialSettings}
         >
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-screen max-md:min-h-dvh">{children}</main>
         </MainProviders>
       </body>
     </html>
