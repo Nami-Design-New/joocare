@@ -82,7 +82,7 @@ export default function AssessmentQuestionScreen({
           size="pill"
           onClick={onNext}
           disabled={!selectedOptionIds.length}
-          className="bg-assessment-primary hover:bg-assessment-primary/90 gap-3 self-end"
+          className="gap-3 self-end bg-assessment-primary hover:bg-assessment-primary/90"
         >
           {isLastQuestion ? t('submit') : t('next')}
           <ChevronRight aria-hidden className="size-5 rtl:rotate-180" />

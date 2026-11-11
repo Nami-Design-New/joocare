@@ -1,9 +1,14 @@
-"use client";
-import { useState } from "react";
-import { CircleQuestionMark } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/components/ui/accordion";
+'use client';
+import { useState } from 'react';
+import { CircleQuestionMark } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/shared/components/ui/accordion';
 
-type QA = { q: string; a: string, id: number };
+type QA = { q: string; a: string; id: number };
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -11,34 +16,34 @@ export default function FAQ() {
   const items: QA[] = [
     {
       id: 1,
-      q: "How can I subscribe to Joocare services?",
+      q: 'How can I subscribe to Joocare services?',
       a: "You can subscribe by contacting our sales team or using the Get Started flow. We'll guide you through plans and onboarding.",
     },
     {
       id: 2,
-      q: "What verification do you perform on professionals?",
-      a: "All professionals go through primary-source verification, license checks, and credential validation before appearing on the platform.",
+      q: 'What verification do you perform on professionals?',
+      a: 'All professionals go through primary-source verification, license checks, and credential validation before appearing on the platform.',
     },
     {
       id: 3,
-      q: "Can I filter candidates by availability and location?",
-      a: "Yes — use our advanced filters to match candidates by availability, location, specialty, and experience level in real-time.",
+      q: 'Can I filter candidates by availability and location?',
+      a: 'Yes — use our advanced filters to match candidates by availability, location, specialty, and experience level in real-time.',
     },
     {
       id: 4,
-      q: "Is messaging secure within the platform?",
-      a: "Our messaging channel is encrypted and designed to let you communicate securely with candidates and finalize details.",
+      q: 'Is messaging secure within the platform?',
+      a: 'Our messaging channel is encrypted and designed to let you communicate securely with candidates and finalize details.',
     },
     {
       id: 5,
-      q: "How does pricing work?",
+      q: 'How does pricing work?',
       a: "We offer subscription and transaction-based plans. Contact sales for a pricing plan tailored to your organization's needs.",
     },
   ];
 
   return (
-    <section className="py-20 bg-white">
-      <div className="mx-auto  px-4 sm:px-6">
+    <section className="bg-white py-20">
+      <div className="mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           {/* Left column */}
           <div className="lg:col-span-5">
@@ -48,7 +53,7 @@ export default function FAQ() {
               </div> */}
             </div>
 
-            <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
+            <h2 className="text-2xl leading-tight font-bold text-secondary md:text-5xl">
               Frequently Asked
               <br />
               Questions
@@ -64,22 +69,20 @@ export default function FAQ() {
                     <AccordionItem
                       key={item.id}
                       value={String(item.id)}
-                      className="bg-muted data-[state=open]:bg-card border-border data-[state=open]:ring-border h-fit rounded-2xl border px-6 py-2 transition-all data-[state=open]:shadow-sm data-[state=open]:ring-1"
+                      className="h-fit rounded-2xl border border-border bg-muted px-6 py-2 transition-all data-[state=open]:bg-card data-[state=open]:shadow-sm data-[state=open]:ring-1 data-[state=open]:ring-border"
                     >
                       <AccordionTrigger className="group py-4 hover:no-underline">
-                        <span className="text-foreground text-left text-sm font-bold md:text-xl">
+                        <span className="text-left text-sm font-bold text-foreground md:text-xl">
                           {item.q}
                         </span>
                       </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-6 leading-relaxed text-sm md:text-base">
+                      <AccordionContent className="pb-6 text-sm leading-relaxed text-muted-foreground md:text-base">
                         {item.a}
                       </AccordionContent>
                     </AccordionItem>
                   ))}
                 </div>
               </Accordion>
-
-
             </div>
           </div>
         </div>

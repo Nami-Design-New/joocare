@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { setSettings } from "@/features/settings/store/settings-slice";
-import type { AppSetting } from "@/shared/services/settings-services";
-import { NextIntlClientProvider } from "next-intl";
-import React, { useEffect, useState } from "react";
-import NextAuthProvider from "./next-auth-provider/next-auth.provider";
-import { Provider } from "react-redux";
-import { Toaster } from "sonner";
-import NextTopLoader from "nextjs-toploader";
-import UnauthorizedSessionHandler from "@/features/auth/components/UnauthorizedSessionHandler";
-import { makeStore, type AppStore } from "./redux/store";
-import TanstackQueryProvider from "./tanstack-query/TanstackQueryProvider";
+import { setSettings } from '@/features/settings/store/settings-slice';
+import type { AppSetting } from '@/shared/services/settings-services';
+import { NextIntlClientProvider } from 'next-intl';
+import React, { useEffect, useState } from 'react';
+import NextAuthProvider from './next-auth-provider/next-auth.provider';
+import { Provider } from 'react-redux';
+import { Toaster } from 'sonner';
+import NextTopLoader from 'nextjs-toploader';
+import UnauthorizedSessionHandler from '@/features/auth/components/UnauthorizedSessionHandler';
+import { makeStore, type AppStore } from './redux/store';
+import TanstackQueryProvider from './tanstack-query/TanstackQueryProvider';
 
 export default function MainProviders({
   children,

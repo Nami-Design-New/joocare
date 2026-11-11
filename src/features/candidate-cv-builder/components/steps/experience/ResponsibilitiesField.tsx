@@ -45,7 +45,7 @@ export default function ResponsibilitiesField({
               type="button"
               onClick={() => remove(index)}
               aria-label={t('remove-responsibility')}
-              className="bg-muted text-secondary flex size-13 shrink-0 items-center justify-center rounded-full"
+              className="flex size-13 shrink-0 items-center justify-center rounded-full bg-muted text-secondary"
             >
               <Minus aria-hidden className="size-6" strokeWidth={1.5} />
             </button>

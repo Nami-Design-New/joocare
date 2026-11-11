@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import mammoth from "mammoth";
-import { Document, Page, pdfjs } from "react-pdf";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
-import { useTranslations } from "next-intl";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import mammoth from 'mammoth';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+import { useTranslations } from 'next-intl';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -16,11 +16,11 @@ interface PdfViewerProps {
 
 function getFileExtension(source: string) {
   const cleanSource = source.split(/[?#]/)[0];
-  const fileName = cleanSource.split("/").filter(Boolean).pop() ?? "";
-  const dotIndex = fileName.lastIndexOf(".");
+  const fileName = cleanSource.split('/').filter(Boolean).pop() ?? '';
+  const dotIndex = fileName.lastIndexOf('.');
 
   if (dotIndex === -1) {
-    return "";
+    return '';
   }
 
   return fileName.slice(dotIndex).toLowerCase();
@@ -90,12 +90,16 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
   const [docxHtml, setDocxHtml] = useState<string | null>(null);
   const [docxSourceUrl, setDocxSourceUrl] = useState<string | null>(null);
   const [docxPreviewStatus, setDocxPreviewStatus] = useState<
-    "loading" | "ready" | "unavailable"
-  >("loading");
+    'loading' | 'ready' | 'unavailable'
+  >('loading');
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const fileUrl = useMemo(() => {
-    if (url.startsWith("blob:") || url.startsWith("data:") || url.startsWith("/api/")) {
+    if (
+      url.startsWith('blob:') ||
+      url.startsWith('data:') ||
+      url.startsWith('/api/')
+    ) {
       return url;
     }
 
@@ -106,10 +110,13 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
     return url;
   }, [url]);
   const fileExtension = useMemo(
-    () => getFileExtension(fileName ?? url) || getFileExtension(url) || getFileExtension(fileUrl),
+    () =>
+      getFileExtension(fileName ?? url) ||
+      getFileExtension(url) ||
+      getFileExtension(fileUrl),
     [fileName, url, fileUrl],
   );
-  const isDocx = fileExtension === ".docx";
+  const isDocx = fileExtension === '.docx';
 
   useEffect(() => {
     const element = containerRef.current;
@@ -131,15 +138,15 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
         return;
       }
 
-      setDocxPreviewStatus("loading");
+      setDocxPreviewStatus('loading');
       setDocxHtml(null);
 
       void (async () => {
         try {
-          const response = await fetch(fileUrl, { cache: "no-store" });
+          const response = await fetch(fileUrl, { cache: 'no-store' });
 
           if (!response.ok) {
-            throw new Error("Failed to load document.");
+            throw new Error('Failed to load document.');
           }
 
           const arrayBuffer = await response.arrayBuffer();
@@ -151,7 +158,7 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
 
           setDocxHtml(buildDocxSrcDoc(result.value));
           setDocxSourceUrl(fileUrl);
-          setDocxPreviewStatus("ready");
+          setDocxPreviewStatus('ready');
         } catch {
           if (cancelled) {
             return;
@@ -159,7 +166,7 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
 
           setDocxHtml(null);
           setDocxSourceUrl(null);
-          setDocxPreviewStatus("unavailable");
+          setDocxPreviewStatus('unavailable');
         }
       })();
     });
@@ -170,31 +177,32 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
   }, [fileUrl, isDocx]);
 
   const pageWidth = Math.max(0, containerWidth);
-  const isDocxReady = docxPreviewStatus === "ready" && docxHtml && docxSourceUrl === fileUrl;
+  const isDocxReady =
+    docxPreviewStatus === 'ready' && docxHtml && docxSourceUrl === fileUrl;
   const isDocxLoading =
-    docxPreviewStatus === "loading" ||
-    (docxPreviewStatus === "ready" && docxSourceUrl !== fileUrl);
+    docxPreviewStatus === 'loading' ||
+    (docxPreviewStatus === 'ready' && docxSourceUrl !== fileUrl);
 
   if (isDocx) {
     return (
       <div
         ref={containerRef}
-        className="no-scrollbar mt-6 flex h-125 w-full flex-col items-center overflow-y-auto overflow-x-hidden text-4xl"
+        className="mt-6 no-scrollbar flex h-125 w-full flex-col items-center overflow-x-hidden overflow-y-auto text-4xl"
       >
         {isDocxReady ? (
           <iframe
             title="DOCX preview"
             srcDoc={docxHtml}
             sandbox=""
-            className="h-full min-h-125 w-full rounded-2xl  bg-background"
+            className="h-full min-h-125 w-full rounded-2xl bg-background"
           />
         ) : isDocxLoading ? (
-          <p className="text-muted-foreground flex h-125 w-full items-center justify-center rounded-2xl border border-dashed p-6 text-sm">
-            {t("common.loading-document")}
+          <p className="flex h-125 w-full items-center justify-center rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
+            {t('common.loading-document')}
           </p>
         ) : (
-          <div className="text-muted-foreground flex h-125 w-full items-center justify-center rounded-2xl border border-dashed p-6 text-sm">
-            {t("common.failed-load-document")}
+          <div className="flex h-125 w-full items-center justify-center rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
+            {t('common.failed-load-document')}
           </div>
         )}
       </div>
@@ -204,13 +212,13 @@ export default function PdfViewer({ url, fileName }: PdfViewerProps) {
   return (
     <div
       ref={containerRef}
-      className="no-scrollbar mt-6 flex h-125 w-full flex-col items-center overflow-y-auto overflow-x-hidden text-4xl"
+      className="mt-6 no-scrollbar flex h-125 w-full flex-col items-center overflow-x-hidden overflow-y-auto text-4xl"
     >
       <Document
         file={fileUrl}
         onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-        loading={<p>{t("common.loading-document")}</p>}
-        error={<p>{t("common.failed-load-document")}</p>}
+        loading={<p>{t('common.loading-document')}</p>}
+        error={<p>{t('common.failed-load-document')}</p>}
       >
         {Array.from({ length: numPages }, (_, i) => (
           <Page

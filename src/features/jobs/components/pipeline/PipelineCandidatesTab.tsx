@@ -57,7 +57,7 @@ export default function PipelineCandidatesTab({
 
   return (
     <>
-      <div className="bg-muted flex flex-col gap-4 rounded-3xl p-3">
+      <div className="flex flex-col gap-4 rounded-3xl bg-muted p-3">
         <JobCandidatesTabs jobId={jobId} activeTab="pipeline" />
         <PipelineToolbar
           selectedCount={pipeline.selected.length}
@@ -76,7 +76,7 @@ export default function PipelineCandidatesTab({
       </div>
 
       {pipeline.isLoading ? (
-        <div className="bg-card flex flex-col gap-3 rounded-2xl p-3" aria-busy>
+        <div className="flex flex-col gap-3 rounded-2xl bg-card p-3" aria-busy>
           {Array.from({ length: 5 }, (_, index) => (
             <Skeleton key={index} className="h-20 w-full rounded-xl" />
           ))}
@@ -84,7 +84,7 @@ export default function PipelineCandidatesTab({
       ) : pipeline.isError ? (
         <div
           role="alert"
-          className="bg-card flex flex-col items-center gap-4 rounded-2xl p-6 text-center sm:p-10"
+          className="flex flex-col items-center gap-4 rounded-2xl bg-card p-6 text-center sm:p-10"
         >
           <p className="text-destructive">{t('pipeline.load-error')}</p>
           <Button variant="outline" onClick={() => pipeline.refetch()}>

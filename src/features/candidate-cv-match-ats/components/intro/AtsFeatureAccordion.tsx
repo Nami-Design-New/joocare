@@ -17,11 +17,11 @@ export default function AtsFeatureAccordion() {
         <AccordionItem key={feature} value={feature} className="border-border">
           <AccordionTrigger
             iconType="arrow"
-            className="text-ats-primary items-center p-4 text-start text-[21px] leading-6.5 font-semibold hover:no-underline [&>svg]:translate-y-0"
+            className="items-center p-4 text-start text-[21px] leading-6.5 font-semibold text-ats-primary hover:no-underline [&>svg]:translate-y-0"
           >
             {t(`${feature}.title`)}
           </AccordionTrigger>
-          <AccordionContent className="text-muted-foreground px-4 text-start text-sm leading-6 sm:text-justify sm:text-lg">
+          <AccordionContent className="px-4 text-start text-sm leading-6 text-muted-foreground sm:text-justify sm:text-lg">
             {t(`${feature}.description`)}
           </AccordionContent>
         </AccordionItem>

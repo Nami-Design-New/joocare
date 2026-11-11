@@ -23,19 +23,19 @@ export default function AssessmentRules({
   };
 
   return (
-    <section className="bg-assessment-primary/4 flex flex-col gap-4 rounded-2xl p-4">
-      <h2 className="text-foreground text-lg font-semibold">
+    <section className="flex flex-col gap-4 rounded-2xl bg-assessment-primary/4 p-4">
+      <h2 className="text-lg font-semibold text-foreground">
         {t('rules-title')}
       </h2>
       <ul className="flex flex-col gap-3">
         {ASSESSMENT_RULE_KEYS.map((key) => (
           <li
             key={key}
-            className="text-foreground flex items-start gap-3 text-base leading-5"
+            className="flex items-start gap-3 text-base leading-5 text-foreground"
           >
             <CircleCheck
               aria-hidden
-              className="text-assessment-primary mt-0.5 size-4 shrink-0"
+              className="mt-0.5 size-4 shrink-0 text-assessment-primary"
               strokeWidth={2}
             />
             <p>
@@ -45,7 +45,7 @@ export default function AssessmentRules({
                   <strong className="font-semibold">{chunks}</strong>
                 ),
                 highlight: (chunks) => (
-                  <span className="text-assessment-primary font-semibold">
+                  <span className="font-semibold text-assessment-primary">
                     {chunks}
                   </span>
                 ),

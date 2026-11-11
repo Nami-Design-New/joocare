@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Skeleton } from '@/shared/components/ui/skeleton';
 
 export function LicenseCardSkeleton() {
   return (

@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
-import { JobActionButtons } from "./JobActionButtons";
-import JobStatusBadge from "./JobStatusBadge";
-import { JobStatus } from "../types/index.types";
-import PositionCard, { type PositionCardProps } from "./PositionCard";
+import { ReactNode } from 'react';
+import { JobActionButtons } from './JobActionButtons';
+import JobStatusBadge from './JobStatusBadge';
+import { JobStatus } from '../types/index.types';
+import PositionCard, { type PositionCardProps } from './PositionCard';
 
 type JobHeaderProps = PositionCardProps & {
   status: JobStatus;

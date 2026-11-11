@@ -47,12 +47,12 @@ export default function JobAttachmentsCard({
 
   return (
     <>
-      <section className="bg-primary-bg border-primary/20 flex items-start gap-3.5 rounded-2xl border px-4 py-3.5">
-        <span className="bg-card text-primary flex size-9 shrink-0 items-center justify-center rounded-xl">
+      <section className="flex items-start gap-3.5 rounded-2xl border border-primary/20 bg-primary-bg px-4 py-3.5">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-card text-primary">
           <FileText aria-hidden="true" className="size-5" />
         </span>
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-          <h3 className="text-foreground text-base font-semibold">
+          <h3 className="text-base font-semibold text-foreground">
             {t('title')}
           </h3>
           {questions.length ? (
@@ -129,9 +129,9 @@ function AttachmentRow({
 }) {
   return (
     <div className="flex min-w-0 flex-wrap items-center gap-2 text-sm">
-      <span className="text-primary shrink-0">{icon}</span>
-      <span className="text-foreground font-semibold">{label}</span>
-      <span className="text-muted-foreground min-w-0 truncate">{meta}</span>
+      <span className="shrink-0 text-primary">{icon}</span>
+      <span className="font-semibold text-foreground">{label}</span>
+      <span className="min-w-0 truncate text-muted-foreground">{meta}</span>
       {link}
     </div>
   );

@@ -57,12 +57,12 @@ export default function CreateProjectModal({
     >
       <ModalContent
         showCloseButton={false}
-        className="bg-card w-[calc(100%-2rem)] max-w-200 gap-6 rounded-3xl border-0 p-6 sm:min-w-0"
+        className="w-[calc(100%-2rem)] max-w-200 gap-6 rounded-3xl border-0 bg-card p-6 sm:min-w-0"
       >
         <ProjectModalHeader
           title={t('create-title')}
           disabled={isSubmitting}
-          className="border-border border-b pb-4"
+          className="border-b border-border pb-4"
         />
         <ModalDescription className="sr-only">
           {t('create-description', { name: candidate.name })}

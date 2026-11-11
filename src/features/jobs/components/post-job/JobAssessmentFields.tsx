@@ -18,29 +18,36 @@ type JobAssessmentFieldsProps = {
 const RESET = { shouldValidate: true } as const;
 
 // Step 1 "Assessment" card (Figma 11073:43278 on, 11531:108027 off).
-export default function JobAssessmentFields({ translateError }: JobAssessmentFieldsProps) {
+export default function JobAssessmentFields({
+  translateError,
+}: JobAssessmentFieldsProps) {
   const t = useTranslations('companyPage.postJob.assessment');
   const tCommon = useTranslations('common');
-  const { control, watch, setValue, formState: { errors } } = useFormContext<JobFormData>();
+  const {
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext<JobFormData>();
   const [previewId, setPreviewId] = useState<string | null>(null);
   const enabled = watch('assessmentEnabled');
   const source = watch('assessmentSource');
   const categoryId = watch('assessmentCategoryId');
   const assessmentId = watch('assessmentId');
-  const { libraryOptions, categoryOptions, assessmentOptions } = useAssessmentOptions(
-    source,
-    categoryId,
-  );
+  const { libraryOptions, categoryOptions, assessmentOptions } =
+    useAssessmentOptions(source, categoryId);
 
   return (
-    <div className="bg-muted rounded-[12px] p-3">
-      <h6 className="text-gray-45 mb-5 font-semibold">{t('title')}</h6>
+    <div className="rounded-[12px] bg-muted p-3">
+      <h6 className="mb-5 font-semibold text-gray-45">{t('title')}</h6>
       <Controller
         control={control}
         name="assessmentEnabled"
         render={({ field }) => (
           <label className="flex cursor-pointer items-center justify-between gap-4">
-            <span className="text-foreground text-lg font-semibold">{t('link-label')}</span>
+            <span className="text-lg font-semibold text-foreground">
+              {t('link-label')}
+            </span>
             <Switch
               checked={field.value}
               onCheckedChange={(checked) => {
@@ -66,7 +73,10 @@ export default function JobAssessmentFields({ translateError }: JobAssessmentFie
                 className="bg-white"
                 label={t('library-label')}
                 placeholder={tCommon('select')}
-                options={libraryOptions.map((value) => ({ value, label: t(`library-${value}`) }))}
+                options={libraryOptions.map((value) => ({
+                  value,
+                  label: t(`library-${value}`),
+                }))}
                 error={translateError(errors.assessmentSource?.message)}
                 onChange={(value) => {
                   field.onChange(value);
@@ -119,14 +129,17 @@ export default function JobAssessmentFields({ translateError }: JobAssessmentFie
               aria-label={t('preview')}
               disabled={!assessmentId}
               onClick={() => setPreviewId(assessmentId ?? null)}
-              className="bg-secondary hover:bg-secondary/90 size-13 rounded-full text-white"
+              className="size-13 rounded-full bg-secondary text-white hover:bg-secondary/90"
             >
               <Eye aria-hidden="true" className="size-5" />
             </Button>
           </div>
         </div>
       ) : null}
-      <AssessmentPreviewDialog assessmentId={previewId} onClose={() => setPreviewId(null)} />
+      <AssessmentPreviewDialog
+        assessmentId={previewId}
+        onClose={() => setPreviewId(null)}
+      />
     </div>
   );
 }

@@ -1,43 +1,41 @@
-import { Button } from "@/shared/components/ui/button";
-import SectionTitle from "../home/components/SectionTitle";
-import { MoveRight } from "lucide-react";
-import { FeatureItem } from "./FeatureItem";
+import { Button } from '@/shared/components/ui/button';
+import SectionTitle from '../home/components/SectionTitle';
+import { MoveRight } from 'lucide-react';
+import { FeatureItem } from './FeatureItem';
 
 type Feature = { title: string; desc: string };
-
-
 
 export default function Why() {
   const features: Feature[] = [
     {
-      title: "Smart Matching Engine",
-      desc: "Bypass the manual search. Our engine analyzes your specific clinical requirements to present only the most compatible specialists for your final review.",
+      title: 'Smart Matching Engine',
+      desc: 'Bypass the manual search. Our engine analyzes your specific clinical requirements to present only the most compatible specialists for your final review.',
     },
     {
-      title: "Instant Primary Source Verification",
-      desc: "Selection is smart and simple. Every profile arrives with pre-validated licenses and certifications, removing the administrative burden of manual background checks.",
+      title: 'Instant Primary Source Verification',
+      desc: 'Selection is smart and simple. Every profile arrives with pre-validated licenses and certifications, removing the administrative burden of manual background checks.',
     },
     {
-      title: "Streamlined Acquisition Workflow",
-      desc: "Monitor your entire hiring lifecycle from a single dashboard. From initial attraction to final placement, enjoy a transparent process that keeps your team informed.",
+      title: 'Streamlined Acquisition Workflow',
+      desc: 'Monitor your entire hiring lifecycle from a single dashboard. From initial attraction to final placement, enjoy a transparent process that keeps your team informed.',
     },
     {
-      title: "Direct Access to Elite Talent",
+      title: 'Direct Access to Elite Talent',
       desc: "Connect with a curated pool of high-caliber professionals instantly. We bridge the gap between your vacancy and the industry's top talent with zero intermediaries.",
     },
     {
-      title: "Instant & Secure Messaging",
-      desc: "Speed up your selection process with a built-in, encrypted communication channel. Connect directly with top-tier specialists to finalize details faster.",
+      title: 'Instant & Secure Messaging',
+      desc: 'Speed up your selection process with a built-in, encrypted communication channel. Connect directly with top-tier specialists to finalize details faster.',
     },
     {
-      title: "Geographic Talent Precision",
-      desc: "Find the right fit exactly where you need it. Our localized search filters allow you to identify and select nearby medical professionals, reducing commute-related turnover.",
+      title: 'Geographic Talent Precision',
+      desc: 'Find the right fit exactly where you need it. Our localized search filters allow you to identify and select nearby medical professionals, reducing commute-related turnover.',
     },
   ];
 
   return (
-    <section className="py-20 bg-white">
-      <div className="mx-auto  px-4 sm:px-6">
+    <section className="bg-white py-20">
+      <div className="mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           {/* Left column */}
           <div className="lg:col-span-5">
@@ -52,7 +50,7 @@ export default function Why() {
               Why joocare?
             </h2>
 
-            <p className="mb-8 text-base text-justify leading-relaxed text-primary">
+            <p className="mb-8 text-justify text-base leading-relaxed text-primary">
               Joocare provides a domain-oriented, business-focused ecosystem
               designed to align elite medical talent with your facility’s
               specific operational demands. By leveraging AI-automated smart
@@ -69,10 +67,9 @@ export default function Why() {
               variant="default"
               size="pill"
               hoverStyle="slideSecondary"
-              className="w-full flex items-center justify-center gap-2 sm:mt-8 sm:w-fit"
+              className="flex w-full items-center justify-center gap-2 sm:mt-8 sm:w-fit"
             >
               Get Started For Free
-
               <MoveRight className="mt-[3px]" size={16} />
             </Button>
           </div>

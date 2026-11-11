@@ -14,8 +14,8 @@ export default function RoleSummaryCard({
   const t = useTranslations('companyPage.roles.permissions');
 
   return (
-    <div className="bg-primary/4 flex flex-wrap items-center gap-3.5 rounded-xl p-4">
-      <div className="bg-primary/8 flex size-11 shrink-0 items-center justify-center rounded-xl">
+    <div className="flex flex-wrap items-center gap-3.5 rounded-xl bg-primary/4 p-4">
+      <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/8">
         <Image
           src="/assets/icons/permissions/role-shield.svg"
           width={24}
@@ -24,18 +24,18 @@ export default function RoleSummaryCard({
         />
       </div>
       <div className="min-w-0 flex-1 space-y-1" dir="ltr">
-        <p className="text-secondary text-lg leading-[normal] font-semibold break-words">
+        <p className="text-lg leading-[normal] font-semibold break-words text-secondary">
           {name}
         </p>
         {description ? (
-          <p className="text-muted-foreground text-sm leading-[normal]">
+          <p className="text-sm leading-[normal] text-muted-foreground">
             {description}
           </p>
         ) : null}
       </div>
       <Badge
         variant="outline"
-        className="text-primary gap-1.5 rounded-full border-0 bg-white px-3 py-1.5 text-sm leading-[normal] font-semibold"
+        className="gap-1.5 rounded-full border-0 bg-white px-3 py-1.5 text-sm leading-[normal] font-semibold text-primary"
       >
         <Image
           src="/assets/icons/permissions/permission-eye.svg"

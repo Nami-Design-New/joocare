@@ -23,7 +23,7 @@ export default function ProfileViewersSearch({
         event.preventDefault();
         state.submit();
       }}
-      className="bg-foreground/2 border-border flex w-full max-w-136.5 items-center gap-1 rounded-full border p-2"
+      className="flex w-full max-w-136.5 items-center gap-1 rounded-full border border-border bg-foreground/2 p-2"
     >
       <Input
         type="search"
@@ -31,12 +31,12 @@ export default function ProfileViewersSearch({
         onChange={(event) => state.setValue(event.target.value)}
         placeholder={t('search-placeholder')}
         aria-label={t('search-placeholder')}
-        className="bg-card border-border h-13 flex-1 rounded-full px-4 text-base shadow-none"
+        className="h-13 flex-1 rounded-full border-border bg-card px-4 text-base shadow-none"
       />
       <Button
         type="submit"
         disabled={state.pending}
-        className="bg-assessment-primary hover:bg-assessment-primary/90 h-9.5 shrink-0 rounded-full px-5 text-sm font-normal"
+        className="h-9.5 shrink-0 rounded-full bg-assessment-primary px-5 text-sm font-normal hover:bg-assessment-primary/90"
       >
         {t('search')}
       </Button>

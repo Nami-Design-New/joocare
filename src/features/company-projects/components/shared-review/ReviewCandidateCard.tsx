@@ -48,13 +48,13 @@ export default function ReviewCandidateCard({
   ];
 
   return (
-    <article className="bg-card border-border flex flex-col gap-5 rounded-xl border p-4">
+    <article className="flex flex-col gap-5 rounded-xl border border-border bg-card p-4">
       <ReviewCandidateIdentity
         candidate={candidate}
-        className="border-border border-b pb-3"
+        className="border-b border-border pb-3"
       />
 
-      <div className="text-muted-foreground flex flex-col gap-4 text-sm">
+      <div className="flex flex-col gap-4 text-sm text-muted-foreground">
         <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
           {details.map(({ icon: Icon, value, isLtr }) => (
             <li key={value} className="flex items-center gap-1">

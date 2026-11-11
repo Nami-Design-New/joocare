@@ -20,7 +20,7 @@ export default function AssessmentStatusIcon({
     <span
       aria-hidden
       className={cn(
-        'flex size-20 items-center sm:size-28 justify-center rounded-full',
+        'flex size-20 items-center justify-center rounded-full sm:size-28',
         TONES[tone],
       )}
     >

@@ -19,7 +19,7 @@ export default function JobSearchStatusField() {
         <fieldset className="flex flex-col gap-2">
           <legend className="mx-1 mb-2 flex flex-wrap items-baseline gap-1">
             <span className="font-semibold">{t('job-search-status')}</span>
-            <span className="text-muted-foreground text-sm">
+            <span className="text-sm text-muted-foreground">
               · {t('job-search-status-hint')}
             </span>
           </legend>
@@ -31,10 +31,10 @@ export default function JobSearchStatusField() {
                   key={value}
                   className={cn(
                     'flex h-13 cursor-pointer items-center gap-2.5 rounded-full border px-4 transition-colors',
-                    'has-focus-visible:ring-ring/50 has-focus-visible:ring-[3px]',
+                    'has-focus-visible:ring-[3px] has-focus-visible:ring-ring/50',
                     checked
                       ? 'border-job-status-open bg-job-status-open/6 font-medium'
-                      : 'bg-card border-border hover:border-primary/50',
+                      : 'border-border bg-card hover:border-primary/50',
                   )}
                 >
                   <input
@@ -48,10 +48,10 @@ export default function JobSearchStatusField() {
                   <span
                     aria-hidden
                     className={cn(
-                      'bg-card size-5 shrink-0 rounded-full',
+                      'size-5 shrink-0 rounded-full bg-card',
                       checked
-                        ? 'border-primary border-[6px]'
-                        : 'border-foreground/30 border-[1.5px]',
+                        ? 'border-[6px] border-primary'
+                        : 'border-[1.5px] border-foreground/30',
                     )}
                   />
                   <span

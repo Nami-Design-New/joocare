@@ -1,14 +1,12 @@
-"use client";
+'use client';
 
-import {
-  buildJobsPagePath,
-} from "@/features/jobs/utils";
-import { JobListItem } from "@/features/jobs/types/jobs.types";
-import { JobsSearchFilters } from "@/features/jobs/types/index.types";
-import { CustomPagination } from "@/shared/components/CustomPagination";
-import EmptyDataState from "@/shared/components/EmptyDataState";
-import CandidateJobCard from "./CandidateJobCard";
-import { useTranslations } from "next-intl";
+import { buildJobsPagePath } from '@/features/jobs/utils';
+import { JobListItem } from '@/features/jobs/types/jobs.types';
+import { JobsSearchFilters } from '@/features/jobs/types/index.types';
+import { CustomPagination } from '@/shared/components/CustomPagination';
+import EmptyDataState from '@/shared/components/EmptyDataState';
+import CandidateJobCard from './CandidateJobCard';
+import { useTranslations } from 'next-intl';
 
 type JobsListProps = {
   jobs: JobListItem[];
@@ -39,16 +37,12 @@ export default function JobsList({
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {jobs.length > 0 ? (
           jobs.map((job) => (
-            <CandidateJobCard
-              key={job.id}
-              job={job}
-              href={`/jobs/${job.id}`}
-            />
+            <CandidateJobCard key={job.id} job={job} href={`/jobs/${job.id}`} />
           ))
         ) : (
           <EmptyDataState
-            title={t("jobsPage.empty-title")}
-            description={t("jobsPage.empty-description")}
+            title={t('jobsPage.empty-title')}
+            description={t('jobsPage.empty-description')}
           />
         )}
       </section>

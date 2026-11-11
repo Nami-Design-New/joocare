@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import CandidateJobCard from "@/features/jobs/components/candidate/CandidateJobCard";
-import JobCardSkeleton from "./JobCardSkeleton";
-import JobsSectionErrorState from "./JobsSectionErrorState";
-import { useInfiniteCompanyJobs } from "../hooks/useInfiniteCompanyJobs";
+import CandidateJobCard from '@/features/jobs/components/candidate/CandidateJobCard';
+import JobCardSkeleton from './JobCardSkeleton';
+import JobsSectionErrorState from './JobsSectionErrorState';
+import { useInfiniteCompanyJobs } from '../hooks/useInfiniteCompanyJobs';
 
 type JobsSectionsInfiniteProps = {
   slug: string;
@@ -26,7 +26,8 @@ export default function JobsSectionsInfinite({
     isFetchingNextPage,
   } = useInfiniteCompanyJobs({ slug, locale });
 
-  const additionalJobs = data?.pages.slice(1).flatMap((page) => page.data) ?? [];
+  const additionalJobs =
+    data?.pages.slice(1).flatMap((page) => page.data) ?? [];
 
   useEffect(() => {
     const node = sentinelRef.current;
@@ -37,12 +38,15 @@ export default function JobsSectionsInfinite({
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries.some((entry) => entry.isIntersecting) && !isFetchingNextPage) {
+        if (
+          entries.some((entry) => entry.isIntersecting) &&
+          !isFetchingNextPage
+        ) {
           void fetchNextPage();
         }
       },
       {
-        rootMargin: "160px 0px",
+        rootMargin: '160px 0px',
       },
     );
 
@@ -59,11 +63,7 @@ export default function JobsSectionsInfinite({
     return (
       <>
         {additionalJobs.map((job) => (
-          <CandidateJobCard
-            key={job.id}
-            job={job}
-            href={`/jobs/${job.id}`}
-          />
+          <CandidateJobCard key={job.id} job={job} href={`/jobs/${job.id}`} />
         ))}
         <JobsSectionErrorState
           error={error}
@@ -77,21 +77,15 @@ export default function JobsSectionsInfinite({
 
   return (
     <>
-
       {additionalJobs.length > 0 &&
         additionalJobs.map((job) => (
-          <CandidateJobCard
-            key={job.id}
-            job={job}
-            href={`/jobs/${job.id}`}
-          />
+          <CandidateJobCard key={job.id} job={job} href={`/jobs/${job.id}`} />
         ))}
 
       {isFetchingNextPage &&
         Array.from({ length: 2 }).map((_, i) => (
           <JobCardSkeleton key={`skeleton-${i}`} />
         ))}
-
 
       {additionalJobs.length === 0 &&
         !hasNextPage &&

@@ -1,5 +1,5 @@
-import ContactLayout from "@/features/contact/ContactLayout";
-import { getNextAuthToken } from "@/shared/util/auth.util";
+import ContactLayout from '@/features/contact/ContactLayout';
+import { getNextAuthToken } from '@/shared/util/auth.util';
 
 export default async function ContactPage() {
   const authSession = await getNextAuthToken();
@@ -11,8 +11,8 @@ export default async function ContactPage() {
     <ContactLayout
       authRole={authSession?.authRole}
       initialValues={{
-        name: authSession?.user?.name ?? "",
-        email: authSession?.user?.email ?? "",
+        name: authSession?.user?.name ?? '',
+        email: authSession?.user?.email ?? '',
       }}
     />
   );

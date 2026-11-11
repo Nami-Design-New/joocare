@@ -65,7 +65,7 @@ export default function PipelineCandidatesTable({
                   : false
             }
             onCheckedChange={onToggleAll}
-            className="border-primary-foreground bg-card size-6 rounded-[3px]"
+            className="size-6 rounded-[3px] border-primary-foreground bg-card"
           />
           <span>#</span>
         </div>
@@ -112,7 +112,7 @@ export default function PipelineCandidatesTable({
             {candidate.email}
           </bdi>
           {candidate.addedBy && (
-            <span className="bg-primary-bg text-primary flex items-center gap-1 rounded-full px-2 py-0.5 text-xs">
+            <span className="flex items-center gap-1 rounded-full bg-primary-bg px-2 py-0.5 text-xs text-primary">
               <UserRoundPlus aria-hidden className="size-3" />
               {t('added-by', { name: candidate.addedBy })}
             </span>
@@ -136,7 +136,7 @@ export default function PipelineCandidatesTable({
                 year: 'numeric',
               })}
             </span>
-            <span className="text-muted-foreground text-xs">
+            <span className="text-xs text-muted-foreground">
               {format.dateTime(date, { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
@@ -188,7 +188,7 @@ export default function PipelineCandidatesTable({
   ];
 
   return (
-    <div className="bg-card rounded-2xl p-3">
+    <div className="rounded-2xl bg-card p-3">
       <DataTable
         columns={columns}
         data={candidates}

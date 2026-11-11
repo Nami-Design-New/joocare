@@ -1,21 +1,23 @@
-import { NamedEntity } from "../types/jobs.types";
+import { NamedEntity } from '../types/jobs.types';
 
 interface ListProps {
   items: NamedEntity[];
-  variant?: "disc" | "decimal" | "dashed";
+  variant?: 'disc' | 'decimal' | 'dashed';
 }
 
-export default function ItemList({ items, variant = "disc" }: ListProps) {
+export default function ItemList({ items, variant = 'disc' }: ListProps) {
   const listClass = {
-    disc: "list-disc",
-    decimal: "list-decimal",
-    dashed: "dashed-list",
+    disc: 'list-disc',
+    decimal: 'list-decimal',
+    dashed: 'dashed-list',
   }[variant];
 
-  const Tag = variant === "decimal" ? "ol" : "ul";
+  const Tag = variant === 'decimal' ? 'ol' : 'ul';
 
   return (
-    <Tag className={`max-md:text-3.25 max-md:leading-5.25 ${listClass} flex flex-col gap-1.5 ps-7 text-sm`}>
+    <Tag
+      className={`max-md:text-3.25 max-md:leading-5.25 ${listClass} flex flex-col gap-1.5 ps-7 text-sm`}
+    >
       {items?.map((item) => (
         <li key={item?.id}>{item?.title}</li>
       ))}

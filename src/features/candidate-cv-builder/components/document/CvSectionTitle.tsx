@@ -15,13 +15,13 @@ export default function CvSectionTitle({
   return (
     <h3
       className={cn(
-        'text-foreground flex items-center gap-3 font-semibold',
+        'flex items-center gap-3 font-semibold text-foreground',
         size === 'lg' ? 'text-[22px] leading-7' : 'text-xl leading-[26px]',
       )}
     >
       <Icon
         aria-hidden="true"
-        className="text-primary size-6 shrink-0"
+        className="size-6 shrink-0 text-primary"
         strokeWidth={1.5}
       />
       {title}

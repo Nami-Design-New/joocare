@@ -18,13 +18,13 @@ export default function AiChatInput({ chat }: AiChatInputProps) {
   const canSend = Boolean(chat.draft.trim() || chat.pending.length);
 
   return (
-    <div className="bg-card/80 border-border flex flex-col gap-3 rounded-3xl border p-3">
+    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card/80 p-3">
       {chat.pending.length ? (
         <ul className="flex flex-wrap gap-2">
           {chat.pending.map((file) => (
             <li
               key={file.id}
-              className="bg-muted flex items-center gap-1 rounded-full py-1 ps-3 pe-1 text-xs"
+              className="flex items-center gap-1 rounded-full bg-muted py-1 ps-3 pe-1 text-xs"
             >
               <span className="max-w-40 truncate">{file.name}</span>
               <button
@@ -51,14 +51,14 @@ export default function AiChatInput({ chat }: AiChatInputProps) {
         }}
         aria-label={t('ask-placeholder')}
         placeholder={t('ask-placeholder')}
-        className="placeholder:text-foreground/45 max-h-40 resize-none bg-transparent px-2 py-1 text-sm outline-none"
+        className="max-h-40 resize-none bg-transparent px-2 py-1 text-sm outline-none placeholder:text-foreground/45"
       />
       <div className="flex items-center justify-between gap-2">
         <button
           type="button"
           onClick={() => fileInput.current?.click()}
           aria-label={t('attach')}
-          className="hover:bg-muted rounded-full p-1"
+          className="rounded-full p-1 hover:bg-muted"
         >
           <Link2 aria-hidden="true" className="size-5 -rotate-45" />
         </button>

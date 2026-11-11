@@ -18,7 +18,7 @@ export default function WhyUs({
   const t = useTranslations('home');
 
   return (
-    <section className="bg-why-bg from-why-bg-glow via-why-bg-mid to-why-bg text-why-ink relative isolate overflow-hidden bg-radial-[1200px_780px_at_50%_60%] via-48%">
+    <section className="relative isolate overflow-hidden bg-why-bg bg-radial-[1200px_780px_at_50%_60%] from-why-bg-glow via-why-bg-mid via-48% to-why-bg text-why-ink">
       <div
         aria-hidden="true"
         className="bg-why-grid pointer-events-none absolute inset-0 -z-10"
@@ -28,10 +28,10 @@ export default function WhyUs({
           <WhyTagPill tone="model" variant="eyebrow">
             {t('why-eyebrow')}
           </WhyTagPill>
-          <h2 className="text-why-ink mt-4 mb-3.5 text-[clamp(30px,3.6vw,50px)] leading-[1.08] font-semibold tracking-[-.02em] rtl:tracking-normal">
+          <h2 className="mt-4 mb-3.5 text-[clamp(30px,3.6vw,50px)] leading-[1.08] font-semibold tracking-[-.02em] text-why-ink rtl:tracking-normal">
             {title}
           </h2>
-          <p className="text-why-ink-muted mx-auto max-w-[800px] text-base leading-relaxed font-light md:text-[16.5px]">
+          <p className="mx-auto max-w-[800px] text-base leading-relaxed font-light text-why-ink-muted md:text-[16.5px]">
             {t('why-subtitle')}
           </p>
         </header>

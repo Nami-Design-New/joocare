@@ -46,14 +46,14 @@ export default function CandidateInterviewModal({
           </ModalDescription>
         </ModalHeader>
 
-        <dl className="border-border bg-body-bg overflow-hidden rounded-2xl border">
+        <dl className="overflow-hidden rounded-2xl border border-border bg-body-bg">
           {details.map(({ label, value }) => (
             <div
               key={label}
-              className="border-border flex min-h-11 items-center justify-between gap-4 border-b px-4 py-2 last:border-b-0"
+              className="flex min-h-11 items-center justify-between gap-4 border-b border-border px-4 py-2 last:border-b-0"
             >
-              <dt className="text-muted-foreground text-sm">{label}</dt>
-              <dd className="text-foreground text-end text-sm font-semibold">
+              <dt className="text-sm text-muted-foreground">{label}</dt>
+              <dd className="text-end text-sm font-semibold text-foreground">
                 {value || '—'}
               </dd>
             </div>
@@ -61,10 +61,10 @@ export default function CandidateInterviewModal({
         </dl>
 
         <div className="mt-5">
-          <h3 className="text-foreground mb-2 text-sm font-semibold">
+          <h3 className="mb-2 text-sm font-semibold text-foreground">
             {t('recruiter-note')}
           </h3>
-          <p className="bg-primary/10 text-foreground rounded-2xl p-4 text-sm leading-6">
+          <p className="rounded-2xl bg-primary/10 p-4 text-sm leading-6 text-foreground">
             {candidate.note ?? t('no-interview-note')}
           </p>
         </div>

@@ -19,8 +19,8 @@ export default function ProfileViewerCard({ viewer }: ProfileViewerCardProps) {
   const locale = useLocale();
 
   return (
-    <li className="bg-card border-foreground/5 flex flex-wrap items-center gap-4 rounded-2xl border p-2 sm:flex-nowrap">
-      <span className="bg-body-bg flex size-14 shrink-0 items-center sm:size-20 justify-center rounded-2xl">
+    <li className="flex flex-wrap items-center gap-4 rounded-2xl border border-foreground/5 bg-card p-2 sm:flex-nowrap">
+      <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-body-bg sm:size-20">
         <Image
           src={viewer.logo || PROFILE_VIEWER_DEFAULT_LOGO}
           alt={t('logo-alt', { company: viewer.companyName })}
@@ -30,20 +30,20 @@ export default function ProfileViewerCard({ viewer }: ProfileViewerCardProps) {
         />
       </span>
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <h2 className="text-foreground truncate text-lg leading-6 font-semibold">
+        <h2 className="truncate text-lg leading-6 font-semibold text-foreground">
           <bdi>{viewer.companyName}</bdi>
         </h2>
-        <p className="text-muted-foreground text-base">
+        <p className="text-base text-muted-foreground">
           <bdi>{viewer.companyType}</bdi>
         </p>
-        <p className="text-foreground/45 text-sm">
+        <p className="text-sm text-foreground/45">
           {t('viewed-on', { date: formatViewedDate(viewer.viewedAt, locale) })}
         </p>
       </div>
       <Button
         asChild
         variant="outline"
-        className="border-secondary text-secondary h-9.5 shrink-0 rounded-full px-5 text-sm font-normal max-sm:w-full"
+        className="h-9.5 shrink-0 rounded-full border-secondary px-5 text-sm font-normal text-secondary max-sm:w-full"
       >
         <Link href={PROFILE_INSIGHTS_ROUTES.companyProfile(viewer.companyId)}>
           {t('view-profile')}

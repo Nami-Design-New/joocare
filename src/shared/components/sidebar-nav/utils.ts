@@ -1,34 +1,29 @@
-import type { SidebarNavItem, SidebarNavLink } from "./types";
+import type { SidebarNavItem, SidebarNavLink } from './types';
 
 const LOCALE_PREFIX = /^\/(?:en|ar)(?=\/|$)/;
 
 export function normalizeSidebarPath(pathname: string) {
-  return pathname.replace(LOCALE_PREFIX, "") || "/";
+  return pathname.replace(LOCALE_PREFIX, '') || '/';
 }
 
 function matchesPath(pathname: string, href: string) {
   const normalizedPathname = normalizeSidebarPath(pathname);
-  const normalizedHref = normalizeSidebarPath(href).replace(/\/$/, "") || "/";
+  const normalizedHref = normalizeSidebarPath(href).replace(/\/$/, '') || '/';
 
   return (
     normalizedPathname === normalizedHref ||
-    (normalizedHref !== "/" && normalizedPathname.startsWith(`${normalizedHref}/`))
+    (normalizedHref !== '/' &&
+      normalizedPathname.startsWith(`${normalizedHref}/`))
   );
 }
 
-export function isSidebarNavLinkActive(
-  link: SidebarNavLink,
-  pathname: string,
-) {
+export function isSidebarNavLinkActive(link: SidebarNavLink, pathname: string) {
   return [link.href, ...(link.activePaths ?? [])].some((path) =>
     matchesPath(pathname, path),
   );
 }
 
-export function isSidebarNavItemActive(
-  item: SidebarNavItem,
-  pathname: string,
-) {
+export function isSidebarNavItemActive(item: SidebarNavItem, pathname: string) {
   if (item.children?.length) {
     return item.children.some((child) =>
       isSidebarNavLinkActive(child, pathname),

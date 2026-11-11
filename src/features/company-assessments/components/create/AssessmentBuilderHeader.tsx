@@ -16,20 +16,20 @@ export default function AssessmentBuilderHeader({
   const t = useTranslations('companyPage.assessments.builder');
 
   return (
-    <header className="mb-6 sm:mb-10 flex flex-wrap items-start justify-between gap-4">
+    <header className="mb-6 flex flex-wrap items-start justify-between gap-4 sm:mb-10">
       <div>
-        <h1 className="text-secondary text-2xl font-bold md:text-[28px]">
+        <h1 className="text-2xl font-bold text-secondary md:text-[28px]">
           {t(step === 2 ? 'review-title' : isEditing ? 'edit-title' : 'title')}
         </h1>
         {step !== 1 && (
-          <p className="text-muted-foreground mt-2 text-sm">
+          <p className="mt-2 text-sm text-muted-foreground">
             {t(step === 2 ? 'review-description' : 'configuration-description')}
           </p>
         )}
       </div>
       {step === 1 && (
         <div className="flex items-center gap-2 text-xs">
-          <span className="bg-muted rounded-full px-3 py-2">
+          <span className="rounded-full bg-muted px-3 py-2">
             {t('total-score')}{' '}
             <span
               className={
@@ -39,7 +39,7 @@ export default function AssessmentBuilderHeader({
               {Number(totalScore.toFixed(2))}%
             </span>
           </span>
-          <span className="bg-muted rounded-full px-3 py-2">
+          <span className="rounded-full bg-muted px-3 py-2">
             {t('questions-count', { count: questionCount })}
           </span>
         </div>

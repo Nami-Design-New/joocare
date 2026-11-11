@@ -15,7 +15,7 @@ export default function CandidateChatPage(props: CandidateChatPageProps) {
     <ChatView
       role="candidate"
       chat={chat}
-      className="bg-card shadow-card h-[calc(100dvh-12rem)] max-h-220 min-h-144 rounded-2xl"
+      className="h-[calc(100dvh-12rem)] max-h-220 min-h-144 rounded-2xl bg-card shadow-card"
     />
   );
 }

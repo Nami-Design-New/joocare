@@ -3,9 +3,9 @@ import {
   getCountries,
   getCountryCallingCode,
   parsePhoneNumber,
-} from "react-phone-number-input";
+} from 'react-phone-number-input';
 
-export const DEFAULT_PHONE_COUNTRY: Country = "AE";
+export const DEFAULT_PHONE_COUNTRY: Country = 'AE';
 export const MIN_PHONE_NUMBER_LENGTH = 7;
 
 export const getCountryCodeByPhoneCode = (
@@ -14,7 +14,7 @@ export const getCountryCodeByPhoneCode = (
 ): Country => {
   if (!phoneCode) return fallbackCountry;
 
-  const numericCode = phoneCode.replace(/\D/g, "");
+  const numericCode = phoneCode.replace(/\D/g, '');
   const match = getCountries().find(
     (country) => getCountryCallingCode(country) === numericCode,
   );
@@ -27,12 +27,12 @@ export const getNationalPhoneValue = (
   phoneCode?: string | null,
   fallbackCountry: Country = DEFAULT_PHONE_COUNTRY,
 ) => {
-  if (!phone) return "";
+  if (!phone) return '';
 
   const trimmedPhone = phone.trim();
-  const digitsOnly = trimmedPhone.replace(/\D/g, "");
+  const digitsOnly = trimmedPhone.replace(/\D/g, '');
 
-  if (!digitsOnly) return "";
+  if (!digitsOnly) return '';
 
   try {
     const parsedInternational = parsePhoneNumber(trimmedPhone);
@@ -45,7 +45,9 @@ export const getNationalPhoneValue = (
 
   try {
     if (phoneCode) {
-      const parsedWithCallingCode = parsePhoneNumber(`${phoneCode}${digitsOnly}`);
+      const parsedWithCallingCode = parsePhoneNumber(
+        `${phoneCode}${digitsOnly}`,
+      );
       if (parsedWithCallingCode?.nationalNumber) {
         return parsedWithCallingCode.nationalNumber;
       }

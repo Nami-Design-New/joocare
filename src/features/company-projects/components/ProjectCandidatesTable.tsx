@@ -74,7 +74,7 @@ function CandidateIdentity({
       <div className="min-w-0">
         <Link
           href={profileHref}
-          className="text-foreground hover:text-primary block max-w-full truncate font-medium underline underline-offset-2"
+          className="block max-w-full truncate font-medium text-foreground underline underline-offset-2 hover:text-primary"
         >
           {candidate.name}
         </Link>
@@ -87,19 +87,19 @@ function CandidateIdentity({
           {t(statusKey)}
         </span>
         {candidate.interview && (
-          <div className="text-muted-foreground mt-2 space-y-1 text-[11px] leading-4">
+          <div className="mt-2 space-y-1 text-[11px] leading-4 text-muted-foreground">
             <p className="flex items-center gap-1">
-              <CalendarDays className="text-primary size-3" />
+              <CalendarDays className="size-3 text-primary" />
               {candidate.interview}
             </p>
             <p className="flex items-center gap-1">
-              <Video className="text-primary size-3" />
+              <Video className="size-3 text-primary" />
               {candidate.interviewType}
             </p>
             <button
               type="button"
               onClick={onViewNote}
-              className="text-primary font-medium underline underline-offset-2"
+              className="font-medium text-primary underline underline-offset-2"
             >
               {t('view-note')}
             </button>
@@ -129,7 +129,7 @@ function AssessmentCell({
           )}
         >
           {t(getAssessmentLabelKey(candidate.assessment))}
-          <strong className="text-foreground ml-2 text-base">
+          <strong className="ml-2 text-base text-foreground">
             {candidate.score}%
           </strong>
         </span>
@@ -139,7 +139,7 @@ function AssessmentCell({
               candidate.assessmentResult.assessmentId,
               candidate.assessmentResult.candidateId,
             )}
-            className="text-primary text-xs font-medium underline underline-offset-2"
+            className="text-xs font-medium text-primary underline underline-offset-2"
           >
             {t('view-result')}
           </Link>
@@ -153,7 +153,7 @@ function AssessmentCell({
       <button
         type="button"
         onClick={onShareAssessment}
-        className="text-primary text-xs font-semibold whitespace-nowrap underline underline-offset-2"
+        className="text-xs font-semibold whitespace-nowrap text-primary underline underline-offset-2"
       >
         + {t('share-assessment')}
       </button>
@@ -266,7 +266,7 @@ function CandidateActions({
           disabled={action.disabled}
           className={cn(
             'h-[30px] w-[45.25px] rounded-full border-0 px-0 py-0',
-            action.key === 'view-cv' && 'border-secondary bg-card border',
+            action.key === 'view-cv' && 'border border-secondary bg-card',
             action.key === 'remove' &&
               'bg-destructive/10 text-destructive hover:bg-destructive/20',
           )}
@@ -377,7 +377,7 @@ export default function ProjectCandidatesTable({
       {!candidates.length && (
         <p
           role="status"
-          className="bg-card text-muted-foreground mt-4 rounded-xl px-4 py-8 text-center text-sm"
+          className="mt-4 rounded-xl bg-card px-4 py-8 text-center text-sm text-muted-foreground"
         >
           {t('no-candidates')}
         </p>

@@ -1,13 +1,13 @@
-import BannerSection from "@/features/forEmployers/components/BannerSection";
-import EmployersHeroSection from "@/features/forEmployers/components/EmployersHeroSection";
-import FAQSection from "@/features/forEmployers/components/FAQSection";
-import HireSection from "@/features/forEmployers/components/HireSection";
-import { getForEmployersPageData } from "@/features/forEmployers/services";
-import WhySection from "@/features/forEmployers/components/WhySection";
-import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
-import HttpStatusState from "@/shared/components/HttpStatusState";
-import { getHttpStatusCode } from "@/shared/lib/http-error";
-import { getTranslations } from "next-intl/server";
+import BannerSection from '@/features/forEmployers/components/BannerSection';
+import EmployersHeroSection from '@/features/forEmployers/components/EmployersHeroSection';
+import FAQSection from '@/features/forEmployers/components/FAQSection';
+import HireSection from '@/features/forEmployers/components/HireSection';
+import { getForEmployersPageData } from '@/features/forEmployers/services';
+import WhySection from '@/features/forEmployers/components/WhySection';
+import PlainBreadcrumb from '@/shared/components/PlainBreadcramb';
+import HttpStatusState from '@/shared/components/HttpStatusState';
+import { getHttpStatusCode } from '@/shared/lib/http-error';
+import { getTranslations } from 'next-intl/server';
 
 export const revalidate = 300;
 
@@ -31,7 +31,7 @@ export default async function ForEmployers({
           statusCode={statusCode}
           error={error}
           primaryHref="/"
-          primaryLabel={t("common.back-to-home")}
+          primaryLabel={t('common.back-to-home')}
         />
       );
     }
@@ -43,8 +43,8 @@ export default async function ForEmployers({
     <>
       <PlainBreadcrumb
         items={[
-          { label: t("header.home"), href: "/" },
-          { label: t("footer.for-employers") },
+          { label: t('header.home'), href: '/' },
+          { label: t('footer.for-employers') },
         ]}
       />
       <section className="layout-shell">

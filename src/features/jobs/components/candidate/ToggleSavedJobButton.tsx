@@ -66,7 +66,6 @@ export default function ToggleSavedJobButton({
     },
   );
 
-
   // "Saved successfully" confirmation (close only) after saving a job.
   const savedModal = (
     <SuccessModal
@@ -92,7 +91,7 @@ export default function ToggleSavedJobButton({
           onClick={toggleSaved}
           className={`h-13 w-13 rounded-[4px] p-4 ${
             isSaved
-              ? 'bg-primary hover:bg-primary/90 text-white'
+              ? 'bg-primary text-white hover:bg-primary/90'
               : 'bg-accent text-primary'
           } ${className}`}
           aria-pressed={isSaved}
@@ -107,7 +106,7 @@ export default function ToggleSavedJobButton({
   return (
     <>
       <LoginAlertModal open={loginModalOpen} onOpenChange={setLoginModalOpen} />
-        {savedModal}
+      {savedModal}
       <Button
         type="button"
         variant="outline"

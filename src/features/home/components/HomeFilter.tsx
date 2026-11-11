@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
-import useGetCategories from "@/shared/hooks/useGetCategories";
-import useGetCountries from "@/shared/hooks/useGetCountries";
-import useGetDomains from "@/shared/hooks/useGetDomains";
-import { InputField } from "@/shared/components/InputField";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { Button } from "@/shared/components/ui/button";
+import { useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
+import useGetCategories from '@/shared/hooks/useGetCategories';
+import useGetCountries from '@/shared/hooks/useGetCountries';
+import useGetDomains from '@/shared/hooks/useGetDomains';
+import { InputField } from '@/shared/components/InputField';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import { Button } from '@/shared/components/ui/button';
 
 type LocalizedValue = {
   ar?: string | null;
@@ -20,27 +20,29 @@ function resolveLocalizedLabel(
   locale: string,
 ) {
   if (!value) {
-    return "";
+    return '';
   }
 
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     return value;
   }
 
-  return locale === "ar" ? value.ar ?? value.en ?? "" : value.en ?? value.ar ?? "";
+  return locale === 'ar'
+    ? (value.ar ?? value.en ?? '')
+    : (value.en ?? value.ar ?? '');
 }
 
 export default function HomeFilter() {
   const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
-  const [search, setSearch] = useState("");
-  const [domainSearch, setDomainSearch] = useState("");
-  const [countrySearch, setCountrySearch] = useState("");
-  const [categorySearch, setCategorySearch] = useState("");
-  const [domainId, setDomainId] = useState("");
-  const [countryId, setCountryId] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [search, setSearch] = useState('');
+  const [domainSearch, setDomainSearch] = useState('');
+  const [countrySearch, setCountrySearch] = useState('');
+  const [categorySearch, setCategorySearch] = useState('');
+  const [domainId, setDomainId] = useState('');
+  const [countryId, setCountryId] = useState('');
+  const [categoryId, setCategoryId] = useState('');
 
   const {
     countries,
@@ -66,18 +68,29 @@ export default function HomeFilter() {
 
   const optionsToSelectInput = (
     items: Array<Record<string, unknown>>,
-    labelKey: "name" | "title",
+    labelKey: 'name' | 'title',
   ) =>
-    items.map((item) => ({
-      label: resolveLocalizedLabel(item[labelKey] as LocalizedValue | string, locale),
-      value: String(item.id ?? ""),
-    })).filter((item) => item.label);
+    items
+      .map((item) => ({
+        label: resolveLocalizedLabel(
+          item[labelKey] as LocalizedValue | string,
+          locale,
+        ),
+        value: String(item.id ?? ''),
+      }))
+      .filter((item) => item.label);
 
-  const countryOptions = optionsToSelectInput(countries as Array<Record<string, unknown>>, "name");
-  const domainOptions = optionsToSelectInput(domains as Array<Record<string, unknown>>, "title");
+  const countryOptions = optionsToSelectInput(
+    countries as Array<Record<string, unknown>>,
+    'name',
+  );
+  const domainOptions = optionsToSelectInput(
+    domains as Array<Record<string, unknown>>,
+    'title',
+  );
   const categoryOptions = optionsToSelectInput(
     categories as Array<Record<string, unknown>>,
-    "title",
+    'title',
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -86,27 +99,27 @@ export default function HomeFilter() {
     const params = new URLSearchParams();
 
     if (search.trim()) {
-      params.set("search", search.trim());
+      params.set('search', search.trim());
     }
 
     if (domainId) {
-      params.set("domain", domainId);
+      params.set('domain', domainId);
     }
 
     if (countryId) {
-      params.set("country", countryId);
+      params.set('country', countryId);
     }
 
     if (categoryId) {
-      params.set("categories", categoryId);
+      params.set('categories', categoryId);
     }
 
-    router.push(`/jobs${params.toString() ? `?${params.toString()}` : ""}`);
+    router.push(`/jobs${params.toString() ? `?${params.toString()}` : ''}`);
   };
 
   return (
     <form
-      className="bg-border flex w-full flex-wrap items-center justify-center gap-2 rounded-lg p-2 md:flex-nowrap md:rounded-full"
+      className="flex w-full flex-wrap items-center justify-center gap-2 rounded-lg bg-border p-2 md:flex-nowrap md:rounded-full"
       onSubmit={handleSubmit}
     >
       <InputField
@@ -168,7 +181,12 @@ export default function HomeFilter() {
         isFetchingNextPage={categoriesFetchingNextPage}
       />
 
-      <Button type="submit" variant="default" size="pill" className="shrink-0 max-md:w-full">
+      <Button
+        type="submit"
+        variant="default"
+        size="pill"
+        className="shrink-0 max-md:w-full"
+      >
         {t('search-filter.find-job')}
       </Button>
     </form>

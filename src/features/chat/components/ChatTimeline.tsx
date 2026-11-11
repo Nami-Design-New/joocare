@@ -63,7 +63,7 @@ export default function ChatTimeline({
               {(index === 0 ||
                 conversation.messages[index - 1].day !== message.day) && (
                 <div className="flex justify-center">
-                  <span className="bg-chat-surface text-muted-foreground rounded-full px-3 py-1 text-xs leading-3.75">
+                  <span className="rounded-full bg-chat-surface px-3 py-1 text-xs leading-3.75 text-muted-foreground">
                     {t(message.day)}
                   </span>
                 </div>
@@ -83,7 +83,7 @@ export default function ChatTimeline({
               className={cn(
                 'mx-auto w-fit rounded-full px-3 py-1 text-center text-xs leading-4',
                 role === 'candidate'
-                  ? 'bg-chat-danger-bg text-chat-danger font-medium'
+                  ? 'bg-chat-danger-bg font-medium text-chat-danger'
                   : 'bg-chat-surface text-chat-muted',
               )}
             >

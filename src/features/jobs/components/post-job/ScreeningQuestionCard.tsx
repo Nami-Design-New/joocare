@@ -33,15 +33,15 @@ export default function ScreeningQuestionCard({
   return (
     <article
       className={cn(
-        'border-border rounded-2xl border p-4 transition-colors',
+        'rounded-2xl border border-border p-4 transition-colors',
         isHighlighted ? 'bg-primary-bg' : 'bg-card',
       )}
     >
       <div className="flex items-center gap-4">
-        <span className="bg-primary-bg text-primary flex size-10 shrink-0 items-center justify-center rounded-xl text-sm font-semibold">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-bg text-sm font-semibold text-primary">
           Q{number}
         </span>
-        <p className="text-foreground min-w-0 flex-1 truncate text-sm">
+        <p className="min-w-0 flex-1 truncate text-sm text-foreground">
           {isExpanded ? null : question.question}
         </p>
         <button
@@ -51,7 +51,7 @@ export default function ScreeningQuestionCard({
           aria-label={t(isExpanded ? 'collapse-question' : 'expand-question', {
             number,
           })}
-          className="bg-muted flex size-10 shrink-0 items-center justify-center rounded-full"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted"
         >
           <ChevronDown
             aria-hidden="true"
@@ -65,7 +65,7 @@ export default function ScreeningQuestionCard({
           type="button"
           onClick={onEdit}
           aria-label={t('edit-question', { number })}
-          className="border-border flex size-10 shrink-0 items-center justify-center rounded-full border"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full border border-border"
         >
           <Pencil aria-hidden="true" className="size-4.5" />
         </button>
@@ -73,7 +73,7 @@ export default function ScreeningQuestionCard({
           type="button"
           onClick={onDelete}
           aria-label={t('delete-question', { number })}
-          className="bg-destructive flex size-10 shrink-0 items-center justify-center rounded-full text-white"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-destructive text-white"
         >
           <Trash2 aria-hidden="true" className="size-4.5" />
         </button>

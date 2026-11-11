@@ -16,8 +16,8 @@ export default function DashboardActiveJobsPage() {
 
   return (
     <div className="mx-auto space-y-6">
-      <section className="bg-card space-y-6 rounded-2xl p-4">
-        <h1 className="text-foreground text-[21px] leading-6.5 font-semibold">
+      <section className="space-y-6 rounded-2xl bg-card p-4">
+        <h1 className="text-[21px] leading-6.5 font-semibold text-foreground">
           {t('title')}
         </h1>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">

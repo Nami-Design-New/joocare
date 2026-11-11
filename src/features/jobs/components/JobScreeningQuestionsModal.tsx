@@ -37,10 +37,10 @@ export default function JobScreeningQuestionsModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="bg-card flex max-h-[85vh] w-[calc(100%-2rem)] max-w-253 flex-col gap-6 rounded-3xl border-0 p-6 sm:min-w-0"
+        className="flex max-h-[85vh] w-[calc(100%-2rem)] max-w-253 flex-col gap-6 rounded-3xl border-0 bg-card p-6 sm:min-w-0"
       >
         <div className="flex items-center justify-between gap-4">
-          <DialogTitle className="text-secondary text-2xl font-bold sm:text-[28px]">
+          <DialogTitle className="text-2xl font-bold text-secondary sm:text-[28px]">
             {t('dialog-title', { count: questions.length })}
           </DialogTitle>
           <DialogClose asChild>
@@ -62,16 +62,16 @@ export default function JobScreeningQuestionsModal({
             <AccordionItem
               key={question.id}
               value={question.id}
-              className="border-border rounded-2xl border px-4"
+              className="rounded-2xl border border-border px-4"
             >
               <AccordionTrigger
                 iconType="arrow"
                 className="items-center gap-3 py-6 text-start hover:no-underline"
               >
-                <span className="bg-primary-bg text-primary flex size-10 shrink-0 items-center justify-center rounded-xl text-sm font-semibold">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-bg text-sm font-semibold text-primary">
                   Q{index + 1}
                 </span>
-                <span className="text-foreground min-w-0 flex-1 text-sm">
+                <span className="min-w-0 flex-1 text-sm text-foreground">
                   {question.question}
                   {question.required ? ` (${t('required')})` : null}
                 </span>

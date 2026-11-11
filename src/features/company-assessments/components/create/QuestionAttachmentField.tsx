@@ -43,8 +43,8 @@ export default function QuestionAttachmentField({
   }
   return (
     <div className="space-y-4">
-      <div className="bg-muted flex items-center gap-4 rounded-2xl p-4">
-        <FileUp aria-hidden="true" className="text-primary size-6 shrink-0" />
+      <div className="flex items-center gap-4 rounded-2xl bg-muted p-4">
+        <FileUp aria-hidden="true" className="size-6 shrink-0 text-primary" />
         <div className="flex-1">
           <label
             htmlFor="question-attachment-enabled"
@@ -52,7 +52,7 @@ export default function QuestionAttachmentField({
           >
             {t('add-attachment')}
           </label>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {t('attachment-description')}
           </p>
         </div>
@@ -77,7 +77,7 @@ export default function QuestionAttachmentField({
             }}
           />
           {file && preview ? (
-            <div className="border-border flex flex-col gap-5 rounded-2xl border p-4 sm:flex-row sm:items-center">
+            <div className="flex flex-col gap-5 rounded-2xl border border-border p-4 sm:flex-row sm:items-center">
               <Image
                 src={preview}
                 alt={t('attachment-preview')}
@@ -88,7 +88,7 @@ export default function QuestionAttachmentField({
               />
               <div className="min-w-0">
                 <p className="font-semibold break-all">{file.name}</p>
-                <p className="text-muted-foreground mt-1 text-sm">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {t('image-details', { size: Math.ceil(file.size / 1024) })}
                 </p>
                 <div className="mt-2 flex gap-4">
@@ -103,7 +103,7 @@ export default function QuestionAttachmentField({
                   <Button
                     variant="link"
                     type="button"
-                    className="text-destructive h-auto p-0 underline"
+                    className="h-auto p-0 text-destructive underline"
                     onClick={() => selectFile(null)}
                   >
                     {t('remove-image')}
@@ -113,7 +113,7 @@ export default function QuestionAttachmentField({
             </div>
           ) : (
             <div
-              className="border-primary bg-primary-bg flex min-h-40 flex-col items-center justify-center rounded-2xl border border-dashed p-5 text-center"
+              className="flex min-h-40 flex-col items-center justify-center rounded-2xl border border-dashed border-primary bg-primary-bg p-5 text-center"
               onDragOver={(event) => event.preventDefault()}
               onDrop={(event) => {
                 event.preventDefault();
@@ -124,7 +124,7 @@ export default function QuestionAttachmentField({
                 selectFile(event.dataTransfer.files[0]);
               }}
             >
-              <span className="bg-card text-primary mb-3 rounded-full p-3">
+              <span className="mb-3 rounded-full bg-card p-3 text-primary">
                 <FileUp aria-hidden="true" className="size-6" />
               </span>
               <p className="font-semibold">
@@ -138,13 +138,13 @@ export default function QuestionAttachmentField({
                   {t('browse')}
                 </Button>
               </p>
-              <p className="text-muted-foreground mt-2 text-sm">
+              <p className="mt-2 text-sm text-muted-foreground">
                 {t('attachment-hint')}
               </p>
             </div>
           )}
           {(fileError || error) && (
-            <p role="alert" className="text-destructive text-sm">
+            <p role="alert" className="text-sm text-destructive">
               {fileError || error}
             </p>
           )}

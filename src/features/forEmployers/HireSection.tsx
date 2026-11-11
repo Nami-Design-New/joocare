@@ -1,5 +1,5 @@
-import Image from "next/image";
-import type { EmployerHomeItem } from "./types";
+import Image from 'next/image';
+import type { EmployerHomeItem } from './types';
 
 type HireSectionProps = {
   title: string;
@@ -8,9 +8,9 @@ type HireSectionProps = {
 };
 
 const fallbackStepImages = [
-  "/assets/employers/company.gif",
-  "/assets/employers/search.gif",
-  "/assets/employers/artboard.gif",
+  '/assets/employers/company.gif',
+  '/assets/employers/search.gif',
+  '/assets/employers/artboard.gif',
 ];
 
 export default function HireSection({
@@ -22,13 +22,13 @@ export default function HireSection({
 
   return (
     <section className="bg-[#EEF8F0] py-12 sm:py-20">
-      <div className="mx-auto  px-4 sm:px-6">
+      <div className="mx-auto px-4 sm:px-6">
         <div className="mb-8 lg:w-[50%]">
-          <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
+          <h2 className="text-2xl leading-tight font-bold text-secondary md:text-5xl">
             {title}
           </h2>
 
-          <p className="text-secondary mt-2 text-sm opacity-90 sm:text-base">
+          <p className="mt-2 text-sm text-secondary opacity-90 sm:text-base">
             {description}
           </p>
         </div>
@@ -41,7 +41,11 @@ export default function HireSection({
             >
               <div className="flex h-56 items-center justify-center">
                 <Image
-                  src={step.image || fallbackStepImages[index] || fallbackStepImages[0]}
+                  src={
+                    step.image ||
+                    fallbackStepImages[index] ||
+                    fallbackStepImages[0]
+                  }
                   alt={step.title}
                   width={200}
                   height={200}

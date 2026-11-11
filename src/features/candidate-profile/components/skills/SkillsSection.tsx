@@ -27,9 +27,11 @@ const SkillsSection = ({
 
   return (
     <>
-      <section className="border-border flex flex-col gap-4 rounded-2xl border bg-white p-4">
+      <section className="flex flex-col gap-4 rounded-2xl border border-border bg-white p-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold md:text-xl">{t("candidatePage.profile.skills")}</h3>
+          <h3 className="text-lg font-semibold md:text-xl">
+            {t('candidatePage.profile.skills')}
+          </h3>
 
           {!readOnly && (
             <div className="flex items-center gap-4">
@@ -53,8 +55,8 @@ const SkillsSection = ({
               <OneSkillSection key={skill.id} label={skill.label} />
             ))
           ) : (
-            <p className="text-muted-foreground text-xs md:text-sm">
-              {t("candidatePage.profile.no-skills")}
+            <p className="text-xs text-muted-foreground md:text-sm">
+              {t('candidatePage.profile.no-skills')}
             </p>
           )}
         </div>

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Button } from "@/shared/components/ui/button";
-import { useTranslations } from "next-intl";
-import useGetCertificates from "../../hooks/useGetCertificates";
-import { CredentialCardSkeletonList } from "../shared/CredentialCardSkeleton";
-import CredentialsEmptyState from "../shared/CredentialsEmptyState";
-import InfiniteScrollTrigger from "../shared/InfiniteScrollTrigger";
-import CertificateCard from "./CertificateCard";
+import { Button } from '@/shared/components/ui/button';
+import { useTranslations } from 'next-intl';
+import useGetCertificates from '../../hooks/useGetCertificates';
+import { CredentialCardSkeletonList } from '../shared/CredentialCardSkeleton';
+import CredentialsEmptyState from '../shared/CredentialsEmptyState';
+import InfiniteScrollTrigger from '../shared/InfiniteScrollTrigger';
+import CertificateCard from './CertificateCard';
 
 export default function CertificatesContent() {
   const t = useTranslations();
@@ -21,7 +21,6 @@ export default function CertificatesContent() {
     refetch,
   } = useGetCertificates();
 
-
   if (isInitialLoading) {
     return <CredentialCardSkeletonList />;
   }
@@ -29,7 +28,11 @@ export default function CertificatesContent() {
   if (isError) {
     return (
       <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-5 text-sm text-red-700">
-        <p>{error instanceof Error ? error.message : t("candidatePage.credentials.load-certificates-failed")}</p>
+        <p>
+          {error instanceof Error
+            ? error.message
+            : t('candidatePage.credentials.load-certificates-failed')}
+        </p>
         <Button
           type="button"
           variant="outline"
@@ -37,7 +40,7 @@ export default function CertificatesContent() {
           className="mt-4"
           onClick={() => void refetch()}
         >
-          {t("candidatePage.common.try-again")}
+          {t('candidatePage.common.try-again')}
         </Button>
       </div>
     );
@@ -46,8 +49,8 @@ export default function CertificatesContent() {
   if (certificates.length === 0) {
     return (
       <CredentialsEmptyState
-        title={t("candidatePage.credentials.no-certificates")}
-        description={t("candidatePage.credentials.no-certificates-description")}
+        title={t('candidatePage.credentials.no-certificates')}
+        description={t('candidatePage.credentials.no-certificates-description')}
       />
     );
   }

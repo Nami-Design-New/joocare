@@ -26,9 +26,9 @@ export function ExperienceSectionData({
   // console.log("experiences"  , experiences);
   return (
     <>
-      <div className="border-border flex flex-col gap-4 rounded-2xl border bg-white p-4">
+      <div className="flex flex-col gap-4 rounded-2xl border border-border bg-white p-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-foreground text-base md:text-lg leading-6.5 font-semibold">
+          <h2 className="text-base leading-6.5 font-semibold text-foreground md:text-lg">
             {t('candidatePage.profile.experience')}
           </h2>
           {!readOnly && (
@@ -44,7 +44,7 @@ export function ExperienceSectionData({
           <Accordion
             type="multiple"
             defaultValue={[experiences[0].id]}
-            className="divide-border divide-y"
+            className="divide-y divide-border"
           >
             {experiences.map((exp) => (
               <AccordionItem
@@ -54,7 +54,7 @@ export function ExperienceSectionData({
               >
                 <div className="flex items-start justify-between gap-5.5">
                   <div className="flex flex-col gap-2">
-                    <span className="text-primary text-base md:text-lg font-normal">
+                    <span className="text-base font-normal text-primary md:text-lg">
                       {exp.title}
                     </span>
                     <div className="flex items-center gap-2">
@@ -63,7 +63,7 @@ export function ExperienceSectionData({
                           {exp.organization}
                         </span>
                       )}
-                      <span className="text-secondary flex items-center gap-1 text-[10px] md:text-xs">
+                      <span className="flex items-center gap-1 text-[10px] text-secondary md:text-xs">
                         <CalendarRange size={16} />
                         {exp.startDateLabel ??
                           t('candidatePage.profile.start-date')}{' '}
@@ -77,7 +77,7 @@ export function ExperienceSectionData({
                     {!readOnly && <ExperienceActions experience={exp} />}
                     <AccordionTrigger
                       iconType="arrow"
-                      className="[&>svg]:text-muted-foreground flex items-center justify-center rounded-md p-0"
+                      className="flex items-center justify-center rounded-md p-0 [&>svg]:text-muted-foreground"
                     />
                   </div>
                 </div>
@@ -88,7 +88,7 @@ export function ExperienceSectionData({
                       {exp.bullets.map((bullet, i) => (
                         <li
                           key={i}
-                          className="text-muted-foreground flex gap-2 text-xs md:text-sm"
+                          className="flex gap-2 text-xs text-muted-foreground md:text-sm"
                         >
                           <span className="text-muted-foreground">•</span>
                           {bullet}
@@ -96,8 +96,8 @@ export function ExperienceSectionData({
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-muted-foreground text-[10px] md:text-xs">
-                      {t("candidatePage.profile.no-details")}
+                    <p className="text-[10px] text-muted-foreground md:text-xs">
+                      {t('candidatePage.profile.no-details')}
                     </p>
                   )}
                 </AccordionContent>
@@ -105,7 +105,9 @@ export function ExperienceSectionData({
             ))}
           </Accordion>
         ) : (
-          <p className="text-xs text-muted-foreground md:text-sm">{t("candidatePage.profile.no-experience")}</p>
+          <p className="text-xs text-muted-foreground md:text-sm">
+            {t('candidatePage.profile.no-experience')}
+          </p>
         )}
       </div>
 

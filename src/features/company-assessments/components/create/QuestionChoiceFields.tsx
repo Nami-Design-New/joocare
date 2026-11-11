@@ -28,10 +28,10 @@ export default function QuestionChoiceFields({
   return (
     <div className="space-y-5">
       <div className="space-y-3">
-        <p className="text-muted-foreground text-sm">{t('answer-options')}</p>
+        <p className="text-sm text-muted-foreground">{t('answer-options')}</p>
         {options.fields.map((option, index) => (
           <div key={option.fieldKey} className="flex items-center gap-3">
-            <span className="text-muted-foreground text-base">
+            <span className="text-base text-muted-foreground">
               {String.fromCharCode(65 + index)}.
             </span>
             <InputField
@@ -59,7 +59,7 @@ export default function QuestionChoiceFields({
           </div>
         ))}
         {form.formState.errors.options && (
-          <p role="alert" className="text-destructive text-sm">
+          <p role="alert" className="text-sm text-destructive">
             {t('validation.options')}
           </p>
         )}
@@ -81,7 +81,7 @@ export default function QuestionChoiceFields({
           </span>
         </div>
       </div>
-      <div className="border-border border-t pt-5">
+      <div className="border-t border-border pt-5">
         <Controller
           control={form.control}
           name="correctAnswers"

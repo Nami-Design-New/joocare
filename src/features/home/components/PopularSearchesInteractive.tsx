@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
-import { useRouter } from "@/i18n/navigation";
-import PopularSearches, { type PopularSearchesItem } from "./PopularSearches";
-import { getTimeZone } from "@/shared/lib/fetch-manager";
+import { useEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
+import PopularSearches, { type PopularSearchesItem } from './PopularSearches';
+import { getTimeZone } from '@/shared/lib/fetch-manager';
 
 interface Props {
   items: PopularSearchesItem[];
-  variant: "hero" | "jobs";
+  variant: 'hero' | 'jobs';
   maxVisible?: number;
   currentPage?: number;
   lastPage?: number;
@@ -37,11 +37,11 @@ export default function PopularSearchesInteractive({
   }, [items, currentPage, lastPage]);
 
   const handleItemClick = (item: PopularSearchesItem) => {
-    if (variant === "hero") {
+    if (variant === 'hero') {
       router.push(`/jobs?search=${encodeURIComponent(item.label)}`);
     } else {
       const params = new URLSearchParams(searchParams.toString());
-      params.set("search", item.label);
+      params.set('search', item.label);
       router.replace(`/jobs?${params.toString()}`);
     }
   };
@@ -65,25 +65,30 @@ export default function PopularSearchesInteractive({
           const targetPage = nextPage + 1;
           const nextParams = new URLSearchParams({
             page: String(targetPage),
-            limit_per_page: "10",
+            limit_per_page: '10',
           });
 
-          if (typeof params?.locale === "string" && params.locale) {
-            nextParams.set("locale", params.locale);
+          if (typeof params?.locale === 'string' && params.locale) {
+            nextParams.set('locale', params.locale);
           }
 
-          const response = await fetch(`/api/searches?${nextParams.toString()}`, {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              "X-Timezone": getTimeZone(),
-              "Accept-Language":
-                (typeof params?.locale === "string" && params.locale ? params.locale : "en"),
+          const response = await fetch(
+            `/api/searches?${nextParams.toString()}`,
+            {
+              method: 'GET',
+              headers: {
+                Accept: 'application/json',
+                'X-Timezone': getTimeZone(),
+                'Accept-Language':
+                  typeof params?.locale === 'string' && params.locale
+                    ? params.locale
+                    : 'en',
+              },
             },
-          });
+          );
 
           if (!response.ok) {
-            throw new Error("Failed to load more popular searches.");
+            throw new Error('Failed to load more popular searches.');
           }
 
           const data = (await response.json()) as {

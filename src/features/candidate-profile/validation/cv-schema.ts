@@ -1,21 +1,23 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
-const ALLOWED_EXTENSIONS = [".pdf", ".doc", ".docx"];
+const ALLOWED_EXTENSIONS = ['.pdf', '.doc', '.docx'];
 
 function hasAllowedExtension(file: File) {
   const lowerCaseName = file.name.toLowerCase();
-  return ALLOWED_EXTENSIONS.some((extension) => lowerCaseName.endsWith(extension));
+  return ALLOWED_EXTENSIONS.some((extension) =>
+    lowerCaseName.endsWith(extension),
+  );
 }
 
 export const cvSchema = z.object({
   cv: z
     .instanceof(File)
     .refine((file) => hasAllowedExtension(file), {
-      message: "CV must be a PDF or Word document.",
+      message: 'CV must be a PDF or Word document.',
     })
     .refine((file) => file.size <= MAX_FILE_SIZE, {
-      message: "CV must be 5 MB or smaller.",
+      message: 'CV must be 5 MB or smaller.',
     }),
 });
 
@@ -27,10 +29,10 @@ export function createCvSchema(messages?: {
     cv: z
       .instanceof(File)
       .refine((file) => hasAllowedExtension(file), {
-        message: messages?.invalidType ?? "CV must be a PDF or Word document.",
+        message: messages?.invalidType ?? 'CV must be a PDF or Word document.',
       })
       .refine((file) => file.size <= MAX_FILE_SIZE, {
-        message: messages?.invalidSize ?? "CV must be 5 MB or smaller.",
+        message: messages?.invalidSize ?? 'CV must be 5 MB or smaller.',
       }),
   });
 }
@@ -38,14 +40,14 @@ export function createCvSchema(messages?: {
 export type CvFormData = z.infer<typeof cvSchema>;
 
 export function isPdfFileName(fileName: string) {
-  return fileName.toLowerCase().endsWith(".pdf");
+  return fileName.toLowerCase().endsWith('.pdf');
 }
 
 export function isDocxFileName(fileName: string) {
-  return fileName.toLowerCase().endsWith(".docx");
+  return fileName.toLowerCase().endsWith('.docx');
 }
 
 export function isPreviewableCvFileName(fileName: string) {
   const lowerName = fileName.toLowerCase();
-  return lowerName.endsWith(".pdf") || lowerName.endsWith(".docx");
+  return lowerName.endsWith('.pdf') || lowerName.endsWith('.docx');
 }

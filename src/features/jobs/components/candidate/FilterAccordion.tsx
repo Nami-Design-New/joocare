@@ -19,12 +19,12 @@ export default function FilterAccordion({
   onCheck,
 }: AccordionProps) {
   return (
-    <div className="border-border border-b last:border-none">
+    <div className="border-b border-border last:border-none">
       {/* Header */}
       <button
         type="button"
         onClick={onToggle}
-        className="hover:text-primary flex w-full items-center justify-between py-3.5 text-left transition-colors"
+        className="flex w-full items-center justify-between py-3.5 text-left transition-colors hover:text-primary"
       >
         <span
           className={cn(
@@ -35,9 +35,9 @@ export default function FilterAccordion({
           {section.label}
         </span>
         {isOpen ? (
-          <ChevronUp className="text-muted-foreground h-4 w-4 shrink-0" />
+          <ChevronUp className="h-4 w-4 shrink-0 text-muted-foreground" />
         ) : (
-          <ChevronDown className="text-muted-foreground h-4 w-4 shrink-0" />
+          <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
         )}
       </button>
 
@@ -45,7 +45,7 @@ export default function FilterAccordion({
       {isOpen && (
         <div className="flex flex-col gap-2.5 pb-4">
           {section.helperText ? (
-            <p className="text-muted-foreground text-xs">
+            <p className="text-xs text-muted-foreground">
               {section.helperText}
             </p>
           ) : null}
@@ -86,7 +86,7 @@ export default function FilterAccordion({
                 >
                   <Check className="h-3.5 w-3.5 stroke-[5px]" />
                 </span>
-                <span className="text-foreground/75 text-sm font-normal select-none">
+                <span className="text-sm font-normal text-foreground/75 select-none">
                   {option.label}
                 </span>
               </label>

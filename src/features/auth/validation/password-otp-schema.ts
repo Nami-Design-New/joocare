@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 type CreatePasswordOtpSchemaOptions = {
   codeRequired?: string;
@@ -6,13 +6,15 @@ type CreatePasswordOtpSchemaOptions = {
 };
 
 export const createPasswordOtpSchema = ({
-  codeRequired = "Code is required",
-  codeLength = "Code must be 5 digits",
+  codeRequired = 'Code is required',
+  codeLength = 'Code must be 5 digits',
 }: CreatePasswordOtpSchemaOptions = {}) =>
   z.object({
-    otp: z.string({
-      message: codeRequired,
-    }).length(5, codeLength),
+    otp: z
+      .string({
+        message: codeRequired,
+      })
+      .length(5, codeLength),
   });
 
 export const PasswordOtpSchema = createPasswordOtpSchema();

@@ -68,32 +68,151 @@ export const RECOMMENDED_SKILLS_STEP = 11;
 
 // Preview templates until the backend template catalog is available.
 export const SCREENING_QUESTION_TEMPLATES = [
-  { id: 'education', labelKey: 'education', question: 'Do you have an educational qualification relevant to this role?' },
-  { id: 'professional-license', labelKey: 'professional-license', question: 'Do you hold an active professional license from the Saudi Commission for Health Specialties (SCFHS)?' },
-  { id: 'medical-license', labelKey: 'medical-license', question: 'Do you hold a valid medical license for the country where this role is based?' },
-  { id: 'years-experience', labelKey: 'years-experience', question: 'Do you have at least three years of experience in a related healthcare role?' },
-  { id: 'board-certification', labelKey: 'board-certification', question: 'Do you hold a current board certification relevant to this specialty?' },
-  { id: 'specialty', labelKey: 'specialty', question: 'Does your clinical specialty match the requirements of this role?' },
-  { id: 'hospital-experience', labelKey: 'hospital-experience', question: 'Do you have previous experience working in a hospital setting?' },
-  { id: 'icu-experience', labelKey: 'icu-experience', question: 'Do you have previous experience working in an intensive care unit?' },
-  { id: 'emergency-experience', labelKey: 'emergency-experience', question: 'Do you have previous experience working in an emergency department?' },
-  { id: 'surgery-experience', labelKey: 'surgery-experience', question: 'Do you have previous experience supporting or performing surgical procedures?' },
-  { id: 'language', labelKey: 'language', question: 'Are you fluent in the languages required for this role?' },
-  { id: 'english-proficiency', labelKey: 'english-proficiency', question: 'Can you communicate professionally in English?' },
-  { id: 'arabic-proficiency', labelKey: 'arabic-proficiency', question: 'Can you communicate professionally in Arabic?' },
-  { id: 'availability', labelKey: 'availability', question: 'Are you available to start within the timeframe listed for this role?' },
-  { id: 'night-shift', labelKey: 'night-shift', question: 'Are you able to work night shifts when scheduled?' },
-  { id: 'weekend-shift', labelKey: 'weekend-shift', question: 'Are you able to work weekend shifts when scheduled?' },
-  { id: 'relocation', labelKey: 'relocation', question: 'Are you willing to relocate for this position if required?' },
-  { id: 'current-location', labelKey: 'current-location', question: 'Are you currently located in the country where this role is based?' },
-  { id: 'work-authorization', labelKey: 'work-authorization', question: 'Are you legally authorized to work in the country where this role is based?' },
-  { id: 'visa-status', labelKey: 'visa-status', question: 'Do you have a valid visa or residency status for this position?' },
-  { id: 'background-check', labelKey: 'background-check', question: 'Are you willing to complete the background checks required for this role?' },
-  { id: 'drug-test', labelKey: 'drug-test', question: 'Are you willing to complete a drug screening if required for this role?' },
-  { id: 'reference-check', labelKey: 'reference-check', question: 'Can you provide professional references when requested?' },
-  { id: 'drivers-license', labelKey: 'drivers-license', question: 'Do you hold a valid driver’s license if this role requires one?' },
-  { id: 'computer-skills', labelKey: 'computer-skills', question: 'Are you comfortable using the digital systems required for this role?' },
-  { id: 'communication-skills', labelKey: 'communication-skills', question: 'Can you communicate clearly with patients and clinical colleagues?' },
+  {
+    id: 'education',
+    labelKey: 'education',
+    question: 'Do you have an educational qualification relevant to this role?',
+  },
+  {
+    id: 'professional-license',
+    labelKey: 'professional-license',
+    question:
+      'Do you hold an active professional license from the Saudi Commission for Health Specialties (SCFHS)?',
+  },
+  {
+    id: 'medical-license',
+    labelKey: 'medical-license',
+    question:
+      'Do you hold a valid medical license for the country where this role is based?',
+  },
+  {
+    id: 'years-experience',
+    labelKey: 'years-experience',
+    question:
+      'Do you have at least three years of experience in a related healthcare role?',
+  },
+  {
+    id: 'board-certification',
+    labelKey: 'board-certification',
+    question:
+      'Do you hold a current board certification relevant to this specialty?',
+  },
+  {
+    id: 'specialty',
+    labelKey: 'specialty',
+    question:
+      'Does your clinical specialty match the requirements of this role?',
+  },
+  {
+    id: 'hospital-experience',
+    labelKey: 'hospital-experience',
+    question: 'Do you have previous experience working in a hospital setting?',
+  },
+  {
+    id: 'icu-experience',
+    labelKey: 'icu-experience',
+    question:
+      'Do you have previous experience working in an intensive care unit?',
+  },
+  {
+    id: 'emergency-experience',
+    labelKey: 'emergency-experience',
+    question:
+      'Do you have previous experience working in an emergency department?',
+  },
+  {
+    id: 'surgery-experience',
+    labelKey: 'surgery-experience',
+    question:
+      'Do you have previous experience supporting or performing surgical procedures?',
+  },
+  {
+    id: 'language',
+    labelKey: 'language',
+    question: 'Are you fluent in the languages required for this role?',
+  },
+  {
+    id: 'english-proficiency',
+    labelKey: 'english-proficiency',
+    question: 'Can you communicate professionally in English?',
+  },
+  {
+    id: 'arabic-proficiency',
+    labelKey: 'arabic-proficiency',
+    question: 'Can you communicate professionally in Arabic?',
+  },
+  {
+    id: 'availability',
+    labelKey: 'availability',
+    question:
+      'Are you available to start within the timeframe listed for this role?',
+  },
+  {
+    id: 'night-shift',
+    labelKey: 'night-shift',
+    question: 'Are you able to work night shifts when scheduled?',
+  },
+  {
+    id: 'weekend-shift',
+    labelKey: 'weekend-shift',
+    question: 'Are you able to work weekend shifts when scheduled?',
+  },
+  {
+    id: 'relocation',
+    labelKey: 'relocation',
+    question: 'Are you willing to relocate for this position if required?',
+  },
+  {
+    id: 'current-location',
+    labelKey: 'current-location',
+    question:
+      'Are you currently located in the country where this role is based?',
+  },
+  {
+    id: 'work-authorization',
+    labelKey: 'work-authorization',
+    question:
+      'Are you legally authorized to work in the country where this role is based?',
+  },
+  {
+    id: 'visa-status',
+    labelKey: 'visa-status',
+    question: 'Do you have a valid visa or residency status for this position?',
+  },
+  {
+    id: 'background-check',
+    labelKey: 'background-check',
+    question:
+      'Are you willing to complete the background checks required for this role?',
+  },
+  {
+    id: 'drug-test',
+    labelKey: 'drug-test',
+    question:
+      'Are you willing to complete a drug screening if required for this role?',
+  },
+  {
+    id: 'reference-check',
+    labelKey: 'reference-check',
+    question: 'Can you provide professional references when requested?',
+  },
+  {
+    id: 'drivers-license',
+    labelKey: 'drivers-license',
+    question: 'Do you hold a valid driver’s license if this role requires one?',
+  },
+  {
+    id: 'computer-skills',
+    labelKey: 'computer-skills',
+    question:
+      'Are you comfortable using the digital systems required for this role?',
+  },
+  {
+    id: 'communication-skills',
+    labelKey: 'communication-skills',
+    question:
+      'Can you communicate clearly with patients and clinical colleagues?',
+  },
 ] as const;
 
 // Illustrations exported from the Figma job-status / post-job modals.
@@ -132,7 +251,8 @@ export const AI_JD_BUILDER_PREVIEW_MESSAGES = [
     sentAt: '2026-09-27T09:15:00',
     text: "Based on your prompt, here's a suggestion to make this requirement more compelling and inclusive:",
     insight: {
-      suggestion: 'Consider adding Magnet Hospital experience requirements to attract high-tier nursing leaders.',
+      suggestion:
+        'Consider adding Magnet Hospital experience requirements to attract high-tier nursing leaders.',
       note: 'This can help you attract candidates from top-rated institutions and signal a commitment to excellence.',
     },
   },
@@ -141,7 +261,14 @@ export const AI_JD_BUILDER_PREVIEW_MESSAGES = [
     author: 'user',
     sentAt: '2026-09-27T09:18:00',
     text: "Here's our requirements file and a sample of the license candidates must hold.",
-    attachments: [{ id: 'preview-file', name: 'ICU_Nurse_Requirements.pdf', size: 245760, kind: 'file' }],
+    attachments: [
+      {
+        id: 'preview-file',
+        name: 'ICU_Nurse_Requirements.pdf',
+        size: 245760,
+        kind: 'file',
+      },
+    ],
   },
 ] satisfies AiChatMessage[];
 

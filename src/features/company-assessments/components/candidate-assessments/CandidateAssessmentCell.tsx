@@ -61,13 +61,13 @@ export default function CandidateAssessmentCell({
           {t('view-result')}
         </Link>
       ) : primary.status === 'grace-period' && primary.dueAt ? (
-        <span className="text-muted-foreground text-xs whitespace-nowrap">
+        <span className="text-xs whitespace-nowrap text-muted-foreground">
           {t('due', {
             date: format.dateTime(new Date(primary.dueAt), SHORT_DATE_FORMAT),
           })}
         </span>
       ) : primary.status === 'absent' ? (
-        <span className="text-muted-foreground text-xs whitespace-nowrap">
+        <span className="text-xs whitespace-nowrap text-muted-foreground">
           {t('time-expired')}
         </span>
       ) : null}

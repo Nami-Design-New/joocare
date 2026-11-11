@@ -52,7 +52,7 @@ export default function PipelineToolbar({
           asChild
           variant="outline"
           className={cn(
-            'bg-card h-12 gap-2 rounded-full px-5 text-base',
+            'h-12 gap-2 rounded-full bg-card px-5 text-base',
             hasFilters && 'border-primary text-primary',
           )}
         >
@@ -64,7 +64,7 @@ export default function PipelineToolbar({
                 aria-label={t('active-filters-count', {
                   count: activeFiltersCount,
                 })}
-                className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-full text-xs font-semibold"
+                className="flex size-6 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground"
               >
                 {activeFiltersCount}
               </span>

@@ -109,7 +109,7 @@ export default function MultiSelectChipsField<T extends FieldValues>({
                 field.onChange(values.filter((item) => item !== value))
               }
             />
-            {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
+            {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
           </div>
         );
       }}

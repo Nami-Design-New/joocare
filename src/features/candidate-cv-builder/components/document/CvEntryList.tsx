@@ -22,10 +22,10 @@ export default function CvEntryList({
         {entries.map((entry) => (
           <li key={entry.id} className="flex items-start justify-between gap-4">
             <div className="flex flex-col gap-1">
-              <p className="text-foreground text-[15px] leading-5 font-medium">
+              <p className="text-[15px] leading-5 font-medium text-foreground">
                 {entry.title}
               </p>
-              <p className="text-muted-foreground text-[13px]">{entry.meta}</p>
+              <p className="text-[13px] text-muted-foreground">{entry.meta}</p>
             </div>
             {entry.url && (
               <a
@@ -33,7 +33,7 @@ export default function CvEntryList({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={linkLabel(entry.title)}
-                className="text-muted-foreground hover:text-primary shrink-0 transition-colors"
+                className="shrink-0 text-muted-foreground transition-colors hover:text-primary"
               >
                 <ExternalLink
                   className="size-[18px] rtl:-scale-x-100"

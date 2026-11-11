@@ -1,8 +1,8 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
 
-import { getBaseApiUrl } from "../lib/api-endpoints";
-import { getTimeZone } from "../lib/fetch-manager";
+import { getBaseApiUrl } from '../lib/api-endpoints';
+import { getTimeZone } from '../lib/fetch-manager';
 
 type InfiniteLookupOptions = {
   endpoint: string;
@@ -19,7 +19,7 @@ type InfiniteLookupOptions = {
 export function useInfiniteLookup({
   endpoint,
   queryKey,
-  search = "",
+  search = '',
   limitPerPage = 10,
   extraParams,
   enabled = true,
@@ -33,12 +33,12 @@ export function useInfiniteLookup({
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams({
         page: String(pageParam),
-        pagination: "on",
+        pagination: 'on',
         limit_per_page: String(limitPerPage),
       });
 
       if (search.trim()) {
-        params.set("search", search.trim());
+        params.set('search', search.trim());
       }
 
       Object.entries(extraParams ?? {}).forEach(([key, value]) => {
@@ -57,15 +57,18 @@ export function useInfiniteLookup({
         }
       });
 
-      const res = await fetch(`${getBaseApiUrl()}/${endpoint}?${params.toString()}`, {
-        headers: {
-          "X-Timezone": getTimeZone(),
-          "Accept-Language": locale,
-        }
-      });
+      const res = await fetch(
+        `${getBaseApiUrl()}/${endpoint}?${params.toString()}`,
+        {
+          headers: {
+            'X-Timezone': getTimeZone(),
+            'Accept-Language': locale,
+          },
+        },
+      );
 
       if (!res.ok) {
-        throw new Error("Network error");
+        throw new Error('Network error');
       }
 
       const data = await res.json();
@@ -76,7 +79,7 @@ export function useInfiniteLookup({
       if (!lastPage?.next_page_url) return undefined;
 
       const url = new URL(lastPage.next_page_url);
-      const page = Number(url.searchParams.get("page"));
+      const page = Number(url.searchParams.get('page'));
 
       return Number.isNaN(page) ? undefined : page;
     },

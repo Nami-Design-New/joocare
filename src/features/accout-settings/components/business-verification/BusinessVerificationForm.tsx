@@ -1,400 +1,511 @@
-"use client";
+'use client';
 
-import { typedZodResolver } from "@/shared/lib/typed-zod-resolver";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { typedZodResolver } from '@/shared/lib/typed-zod-resolver';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-import { storeUploadedFileAction } from "@/features/candidate-settings/actions/basic-info-actions";
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
-import { InputField } from "@/shared/components/InputField";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
-import { Button } from "@/shared/components/ui/button";
-import { useSession } from "next-auth/react";
-import { useLocale } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
-import { useUpdateBusinessVerification } from "../../hooks/useUpdateBusinessVerification";
-import { UpdateBusinessVerificationPayload } from "../../types";
-import { createBusinessVerificationSchema, TBusinessVerificationSchema } from "../../validation/business-verification-schema";
-import useGetCountries from "@/shared/hooks/useGetCountries";
-import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
-import useGetOrganizationSizes from "@/shared/hooks/useGetOrganizationSizes";
-import useGetEmployerTypes from "@/shared/hooks/useGetEmployerTypes";
-import { useTranslations } from "next-intl";
+import { storeUploadedFileAction } from '@/features/candidate-settings/actions/basic-info-actions';
+import useGetCompanyProfile from '@/features/company-profile/hooks/useGetCompanyProfile';
+import { InputField } from '@/shared/components/InputField';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import { StoredFilepondUpload } from '@/shared/components/StoredFilepondUpload';
+import { Button } from '@/shared/components/ui/button';
+import { useSession } from 'next-auth/react';
+import { useLocale } from 'next-intl';
+import { useEffect, useMemo, useState } from 'react';
+import { useUpdateBusinessVerification } from '../../hooks/useUpdateBusinessVerification';
+import { UpdateBusinessVerificationPayload } from '../../types';
+import {
+  createBusinessVerificationSchema,
+  TBusinessVerificationSchema,
+} from '../../validation/business-verification-schema';
+import useGetCountries from '@/shared/hooks/useGetCountries';
+import useGetSpecialties from '@/shared/hooks/useGetSpecialties';
+import useGetOrganizationSizes from '@/shared/hooks/useGetOrganizationSizes';
+import useGetEmployerTypes from '@/shared/hooks/useGetEmployerTypes';
+import { useTranslations } from 'next-intl';
 
 const formatDateForInput = (value?: string | Date | null) => {
-    if (!value) return "";
+  if (!value) return '';
 
-    if (typeof value === "string") {
-        return value.slice(0, 10);
-    }
+  if (typeof value === 'string') {
+    return value.slice(0, 10);
+  }
 
-    return value.toISOString().slice(0, 10);
+  return value.toISOString().slice(0, 10);
 };
 
 export default function BusinessVerificationForm() {
-    const t = useTranslations();
-    // hooks land and token
-    const locale = useLocale();
-    const { data: session } = useSession();
-    const token = session?.accessToken as string
+  const t = useTranslations();
+  // hooks land and token
+  const locale = useLocale();
+  const { data: session } = useSession();
+  const token = session?.accessToken as string;
 
-    // company profile data
-    const { data: companyProfileData, isPending: isCompanyProfilePending } = useGetCompanyProfile({ token });
+  // company profile data
+  const { data: companyProfileData, isPending: isCompanyProfilePending } =
+    useGetCompanyProfile({ token });
 
-    // search states
-    // const [specialtySearch, setSpecialtySearch] = useState("");
-    const [countrySearch, setCountrySearch] = useState("");
-    const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
-    const [employerTypesSearch, setEmployerTypesSearch] = useState("");
-    // countries data
-    const {
-        countries,
-        isLoading: isCountriesLoading,
-        error: countriesError,
-        hasNextPage: hasMoreCountries,
-        fetchNextPage: fetchMoreCountries,
-        isFetchingNextPage: isFetchingMoreCountries,
-    } = useGetCountries(countrySearch);
-    //organization sizes
-    const {
-        organizationSizes,
-        isLoading: isOrganizationSizesLoading,
-        error: organizationSizesError,
-        hasNextPage: hasMoreOrganizationSizes,
-        fetchNextPage: fetchMoreOrganizationSizes,
-        isFetchingNextPage: isFetchingMoreOrganizationSizes,
-    } = useGetOrganizationSizes(organizationSizesSearch);
+  // search states
+  // const [specialtySearch, setSpecialtySearch] = useState("");
+  const [countrySearch, setCountrySearch] = useState('');
+  const [organizationSizesSearch, setOrganizationSizesSearch] = useState('');
+  const [employerTypesSearch, setEmployerTypesSearch] = useState('');
+  // countries data
+  const {
+    countries,
+    isLoading: isCountriesLoading,
+    error: countriesError,
+    hasNextPage: hasMoreCountries,
+    fetchNextPage: fetchMoreCountries,
+    isFetchingNextPage: isFetchingMoreCountries,
+  } = useGetCountries(countrySearch);
+  //organization sizes
+  const {
+    organizationSizes,
+    isLoading: isOrganizationSizesLoading,
+    error: organizationSizesError,
+    hasNextPage: hasMoreOrganizationSizes,
+    fetchNextPage: fetchMoreOrganizationSizes,
+    isFetchingNextPage: isFetchingMoreOrganizationSizes,
+  } = useGetOrganizationSizes(organizationSizesSearch);
 
-    ///employer-types
-    const {
-        employerTypes,
-        isLoading: isEmployerTypesLoading,
-        error: employerTypesError,
-        hasNextPage: hasMoreEmployerTypes,
-        fetchNextPage: fetchMoreEmployerTypes,
-        isFetchingNextPage: isFetchingMoreEmployerTypes,
-    } = useGetEmployerTypes(employerTypesSearch);
+  ///employer-types
+  const {
+    employerTypes,
+    isLoading: isEmployerTypesLoading,
+    error: employerTypesError,
+    hasNextPage: hasMoreEmployerTypes,
+    fetchNextPage: fetchMoreEmployerTypes,
+    isFetchingNextPage: isFetchingMoreEmployerTypes,
+  } = useGetEmployerTypes(employerTypesSearch);
 
-    // //specialties
-    // const {
-    //     specialties,
-    //     isLoading: isSpecialtiesLoading,
-    //     error: specialtiesError,
-    //     hasNextPage: hasMoreSpecialties,
-    //     fetchNextPage: fetchMoreSpecialties,
-    //     isFetchingNextPage: isFetchingMoreSpecialties,
-    // } = useGetSpecialties(specialtySearch);
+  // //specialties
+  // const {
+  //     specialties,
+  //     isLoading: isSpecialtiesLoading,
+  //     error: specialtiesError,
+  //     hasNextPage: hasMoreSpecialties,
+  //     fetchNextPage: fetchMoreSpecialties,
+  //     isFetchingNextPage: isFetchingMoreSpecialties,
+  // } = useGetSpecialties(specialtySearch);
 
+  // file states
+  const [commercialRegistrationImage, setCommercialRegistrationImage] =
+    useState<string | null>(null);
+  const [
+    showExistingCommercialRegistrationImage,
+    setShowExistingCommercialRegistrationImage,
+  ] = useState<boolean | null>(null);
+  const [medicalLicenseImage, setMedicalLicenseImage] = useState<string | null>(
+    null,
+  );
+  const [showExistingMedicalLicenseImage, setShowExistingMedicalLicenseImage] =
+    useState<boolean | null>(null);
 
-    // file states
-    const [commercialRegistrationImage, setCommercialRegistrationImage] = useState<string | null>(null);
-    const [showExistingCommercialRegistrationImage, setShowExistingCommercialRegistrationImage] = useState<boolean | null>(null);
-    const [medicalLicenseImage, setMedicalLicenseImage] = useState<string | null>(null);
-    const [showExistingMedicalLicenseImage, setShowExistingMedicalLicenseImage] = useState<boolean | null>(null);
-
-    // form states
-    const schema = useMemo(() => createBusinessVerificationSchema({
+  // form states
+  const schema = useMemo(
+    () =>
+      createBusinessVerificationSchema({
         messages: {
-            required: t("companyPage.accountSettings.validation.required"),
-            commercialRegistrationNumberMax: t("companyPage.accountSettings.validation.commercial-registration-number-max"),
-            issuingCountryRequired: t("companyPage.accountSettings.validation.issuing-country-required"),
-            organizationSizeRequired: t("companyPage.accountSettings.validation.organization-size-required"),
-            commercialIssueDateRequired: t("companyPage.accountSettings.validation.commercial-issue-date-required"),
-            commercialExpiryDateRequired: t("companyPage.accountSettings.validation.commercial-expiry-date-required"),
-            employerTypeRequired: t("companyPage.accountSettings.validation.employer-type-required"),
-            medicalFacilityLicenseNumberMax: t("companyPage.accountSettings.validation.medical-facility-license-number-max"),
-            licenseIssuingAuthorityMin: t("companyPage.accountSettings.validation.license-issuing-authority-min"),
-            licenseIssuingAuthorityMax: t("companyPage.accountSettings.validation.license-issuing-authority-max"),
-            specialtyRequired: t("companyPage.accountSettings.validation.specialty-required"),
-            medicalIssueDateRequired: t("companyPage.accountSettings.validation.medical-issue-date-required"),
-            medicalExpiryDateRequired: t("companyPage.accountSettings.validation.medical-expiry-date-required"),
-            commercialIssueDatePast: t("companyPage.accountSettings.validation.commercial-issue-date-past"),
-            commercialExpiryDateFuture: t("companyPage.accountSettings.validation.commercial-expiry-date-future"),
-            commercialExpiryAfterIssue: t("companyPage.accountSettings.validation.commercial-expiry-after-issue"),
-            medicalIssueDatePast: t("companyPage.accountSettings.validation.medical-issue-date-past"),
-            medicalExpiryDateFuture: t("companyPage.accountSettings.validation.medical-expiry-date-future"),
-            medicalExpiryAfterIssue: t("companyPage.accountSettings.validation.medical-expiry-after-issue"),
-        }
-    }), [t]);
+          required: t('companyPage.accountSettings.validation.required'),
+          commercialRegistrationNumberMax: t(
+            'companyPage.accountSettings.validation.commercial-registration-number-max',
+          ),
+          issuingCountryRequired: t(
+            'companyPage.accountSettings.validation.issuing-country-required',
+          ),
+          organizationSizeRequired: t(
+            'companyPage.accountSettings.validation.organization-size-required',
+          ),
+          commercialIssueDateRequired: t(
+            'companyPage.accountSettings.validation.commercial-issue-date-required',
+          ),
+          commercialExpiryDateRequired: t(
+            'companyPage.accountSettings.validation.commercial-expiry-date-required',
+          ),
+          employerTypeRequired: t(
+            'companyPage.accountSettings.validation.employer-type-required',
+          ),
+          medicalFacilityLicenseNumberMax: t(
+            'companyPage.accountSettings.validation.medical-facility-license-number-max',
+          ),
+          licenseIssuingAuthorityMin: t(
+            'companyPage.accountSettings.validation.license-issuing-authority-min',
+          ),
+          licenseIssuingAuthorityMax: t(
+            'companyPage.accountSettings.validation.license-issuing-authority-max',
+          ),
+          specialtyRequired: t(
+            'companyPage.accountSettings.validation.specialty-required',
+          ),
+          medicalIssueDateRequired: t(
+            'companyPage.accountSettings.validation.medical-issue-date-required',
+          ),
+          medicalExpiryDateRequired: t(
+            'companyPage.accountSettings.validation.medical-expiry-date-required',
+          ),
+          commercialIssueDatePast: t(
+            'companyPage.accountSettings.validation.commercial-issue-date-past',
+          ),
+          commercialExpiryDateFuture: t(
+            'companyPage.accountSettings.validation.commercial-expiry-date-future',
+          ),
+          commercialExpiryAfterIssue: t(
+            'companyPage.accountSettings.validation.commercial-expiry-after-issue',
+          ),
+          medicalIssueDatePast: t(
+            'companyPage.accountSettings.validation.medical-issue-date-past',
+          ),
+          medicalExpiryDateFuture: t(
+            'companyPage.accountSettings.validation.medical-expiry-date-future',
+          ),
+          medicalExpiryAfterIssue: t(
+            'companyPage.accountSettings.validation.medical-expiry-after-issue',
+          ),
+        },
+      }),
+    [t],
+  );
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        control,
-        setError,
-        clearErrors,
-        formState: { errors },
-    } = useForm<TBusinessVerificationSchema>({
-        resolver: typedZodResolver(schema),
-    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm<TBusinessVerificationSchema>({
+    resolver: typedZodResolver(schema),
+  });
 
-    // update business verification
-    const { mutate: updateBusinessVerification, isPending: isUpdating } = useUpdateBusinessVerification({ token });
+  // update business verification
+  const { mutate: updateBusinessVerification, isPending: isUpdating } =
+    useUpdateBusinessVerification({ token });
 
-    // set form data from company profile
-    useEffect(() => {
-        if (companyProfileData) {
-            reset({
-                commercial_registration_number: companyProfileData.commercial_registration_number?.toString() || "",
-                license_issue_country_id: companyProfileData.license_issue_country_id?.toString() || "",
-                organization_size_id: companyProfileData.organization_size_id?.toString() || "",
-                commercial_registration_issue_date: formatDateForInput(companyProfileData.commercial_registration_issue_date),
-                commercial_registration_expiry_date: formatDateForInput(companyProfileData.commercial_registration_expiry_date),
-                employer_type_id: companyProfileData.employer_type_id?.toString() || "",
-                medical_facility_license_number: companyProfileData.medical_facility_license_number?.toString() || "",
-                license_issuing_authority: companyProfileData.license_issuing_authority || "",
-                specialty_title: companyProfileData.specialty_title || "",
-                medical_license_issue_date: formatDateForInput(companyProfileData.medical_license_issue_date),
-                medical_license_expiry_date: formatDateForInput(companyProfileData.medical_license_expiry_date),
-            });
-        }
-    }, [companyProfileData, reset]);
+  // set form data from company profile
+  useEffect(() => {
+    if (companyProfileData) {
+      reset({
+        commercial_registration_number:
+          companyProfileData.commercial_registration_number?.toString() || '',
+        license_issue_country_id:
+          companyProfileData.license_issue_country_id?.toString() || '',
+        organization_size_id:
+          companyProfileData.organization_size_id?.toString() || '',
+        commercial_registration_issue_date: formatDateForInput(
+          companyProfileData.commercial_registration_issue_date,
+        ),
+        commercial_registration_expiry_date: formatDateForInput(
+          companyProfileData.commercial_registration_expiry_date,
+        ),
+        employer_type_id: companyProfileData.employer_type_id?.toString() || '',
+        medical_facility_license_number:
+          companyProfileData.medical_facility_license_number?.toString() || '',
+        license_issuing_authority:
+          companyProfileData.license_issuing_authority || '',
+        specialty_title: companyProfileData.specialty_title || '',
+        medical_license_issue_date: formatDateForInput(
+          companyProfileData.medical_license_issue_date,
+        ),
+        medical_license_expiry_date: formatDateForInput(
+          companyProfileData.medical_license_expiry_date,
+        ),
+      });
+    }
+  }, [companyProfileData, reset]);
 
-    // submit handler
-    const onSubmit: SubmitHandler<TBusinessVerificationSchema> = (data) => {
-        const payload: UpdateBusinessVerificationPayload = {
-            commercial_registration_number: data.commercial_registration_number,
-            commercial_registration_issue_date: data.commercial_registration_issue_date,
-            commercial_registration_expiry_date: data.commercial_registration_expiry_date,
-            license_issue_country_id: Number(data.license_issue_country_id),
-            organization_size_id: Number(data.organization_size_id),
-            employer_type_id: Number(data.employer_type_id),
-            medical_facility_license_number: data.medical_facility_license_number,
-            license_issuing_authority: data.license_issuing_authority,
-            specialty_title: data.specialty_title,
-            medical_license_issue_date: data.medical_license_issue_date,
-            medical_license_expiry_date: data.medical_license_expiry_date,
-        };
+  // submit handler
+  const onSubmit: SubmitHandler<TBusinessVerificationSchema> = (data) => {
+    const payload: UpdateBusinessVerificationPayload = {
+      commercial_registration_number: data.commercial_registration_number,
+      commercial_registration_issue_date:
+        data.commercial_registration_issue_date,
+      commercial_registration_expiry_date:
+        data.commercial_registration_expiry_date,
+      license_issue_country_id: Number(data.license_issue_country_id),
+      organization_size_id: Number(data.organization_size_id),
+      employer_type_id: Number(data.employer_type_id),
+      medical_facility_license_number: data.medical_facility_license_number,
+      license_issuing_authority: data.license_issuing_authority,
+      specialty_title: data.specialty_title,
+      medical_license_issue_date: data.medical_license_issue_date,
+      medical_license_expiry_date: data.medical_license_expiry_date,
+    };
 
-        if (commercialRegistrationImage) {
-            payload.commercial_registration_image = commercialRegistrationImage;
-        } else if (showExistingCommercialRegistrationImage === false) {
-            payload.commercial_registration_image = "";
-        }
-
-        if (medicalLicenseImage) {
-            payload.medical_license_image = medicalLicenseImage;
-        } else if (showExistingMedicalLicenseImage === false) {
-            payload.medical_license_image = "";
-        }
-
-        updateBusinessVerification(payload);
+    if (commercialRegistrationImage) {
+      payload.commercial_registration_image = commercialRegistrationImage;
+    } else if (showExistingCommercialRegistrationImage === false) {
+      payload.commercial_registration_image = '';
     }
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
-            <div className="bg-input p-2 md:p-5 rounded-2xl flex flex-col justify-between gap-y-5">
-                <h2 className="text-lg text-disabled font-semibold text-start mt-2">
-                    {t("companyPage.accountSettings.businessVerification.sections.commercial-registration")}
-                </h2>
-                <InputField
-                    id="commercial_registration_number"
-                    label={t("companyPage.accountSettings.businessVerification.fields.commercial-registration-number.label")}
-                    type={"text"}
-                    placeholder={t("companyPage.accountSettings.businessVerification.fields.commercial-registration-number.placeholder")}
-                    className="bg-white"
-                    {...register("commercial_registration_number")}
-                    error={errors.commercial_registration_number?.message?.toString()}
-                />
+    if (medicalLicenseImage) {
+      payload.medical_license_image = medicalLicenseImage;
+    } else if (showExistingMedicalLicenseImage === false) {
+      payload.medical_license_image = '';
+    }
 
-                <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
-                    <Controller
-                        name="license_issue_country_id"
-                        control={control}
-                        render={({ field }) => (
-                            <SelectInputField
-                                withSearchInput={true}
-                                id="license_issue_country_id"
-                                label={t("companyPage.accountSettings.businessVerification.fields.issuing-country.label")}
-                                placeholder={t("common.select")}
-                                className="bg-white hover:bg-transparent"
-                                {...field}
-                                error={
-                                    errors.license_issue_country_id?.message ??
-                                    (countriesError instanceof Error
-                                        ? countriesError.message
-                                        : undefined)
-                                }
-                                options={countries.map((country) => ({
-                                    label: country.name,
-                                    value: String(country.id),
-                                }))}
-                                disabled={isCountriesLoading}
-                                onReachEnd={() => fetchMoreCountries()}
-                                hasNextPage={Boolean(hasMoreCountries)}
-                                isFetchingNextPage={isFetchingMoreCountries}
-                                onSearchChange={setCountrySearch}
-                            />
-                        )}
-                    />
+    updateBusinessVerification(payload);
+  };
 
-                    <Controller
-                        name="organization_size_id"
-                        control={control}
-                        render={({ field }) => (
-                            <SelectInputField
-                                id="organization_size_id"
-                                label={t("companyPage.accountSettings.businessVerification.fields.organization-size.label")}
-                                placeholder={t("common.select")}
-                                className="bg-white"
-                                {...field}
-                                error={
-                                    errors.organization_size_id?.message ??
-                                    (organizationSizesError instanceof Error
-                                        ? organizationSizesError.message
-                                        : undefined)
-                                }
-                                options={organizationSizes.map((country) => ({
-                                    label: country.title,
-                                    value: String(country.id),
-                                }))}
-                                disabled={isOrganizationSizesLoading}
-                                onReachEnd={() => fetchMoreOrganizationSizes()}
-                                hasNextPage={Boolean(hasMoreOrganizationSizes)}
-                                isFetchingNextPage={isFetchingMoreOrganizationSizes}
-                                onSearchChange={setOrganizationSizesSearch}
-                            />
-                        )}
-                    />
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
+      <div className="flex flex-col justify-between gap-y-5 rounded-2xl bg-input p-2 md:p-5">
+        <h2 className="mt-2 text-start text-lg font-semibold text-disabled">
+          {t(
+            'companyPage.accountSettings.businessVerification.sections.commercial-registration',
+          )}
+        </h2>
+        <InputField
+          id="commercial_registration_number"
+          label={t(
+            'companyPage.accountSettings.businessVerification.fields.commercial-registration-number.label',
+          )}
+          type={'text'}
+          placeholder={t(
+            'companyPage.accountSettings.businessVerification.fields.commercial-registration-number.placeholder',
+          )}
+          className="bg-white"
+          {...register('commercial_registration_number')}
+          error={errors.commercial_registration_number?.message?.toString()}
+        />
 
-                </div>
+        <div className="flex flex-col items-center justify-center gap-2 lg:flex-row">
+          <Controller
+            name="license_issue_country_id"
+            control={control}
+            render={({ field }) => (
+              <SelectInputField
+                withSearchInput={true}
+                id="license_issue_country_id"
+                label={t(
+                  'companyPage.accountSettings.businessVerification.fields.issuing-country.label',
+                )}
+                placeholder={t('common.select')}
+                className="bg-white hover:bg-transparent"
+                {...field}
+                error={
+                  errors.license_issue_country_id?.message ??
+                  (countriesError instanceof Error
+                    ? countriesError.message
+                    : undefined)
+                }
+                options={countries.map((country) => ({
+                  label: country.name,
+                  value: String(country.id),
+                }))}
+                disabled={isCountriesLoading}
+                onReachEnd={() => fetchMoreCountries()}
+                hasNextPage={Boolean(hasMoreCountries)}
+                isFetchingNextPage={isFetchingMoreCountries}
+                onSearchChange={setCountrySearch}
+              />
+            )}
+          />
 
-                <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
-                    <InputField
-                        id="commercial_registration_issue_date"
-                        label={t("companyPage.accountSettings.businessVerification.fields.commercial-issue-date.label")}
-                        type={"date"}
-                        placeholder={t("companyPage.accountSettings.businessVerification.fields.commercial-issue-date.placeholder")}
-                        className="bg-white"
-                        {...register("commercial_registration_issue_date")}
-                        error={errors.commercial_registration_issue_date?.message?.toString()}
-                    />
+          <Controller
+            name="organization_size_id"
+            control={control}
+            render={({ field }) => (
+              <SelectInputField
+                id="organization_size_id"
+                label={t(
+                  'companyPage.accountSettings.businessVerification.fields.organization-size.label',
+                )}
+                placeholder={t('common.select')}
+                className="bg-white"
+                {...field}
+                error={
+                  errors.organization_size_id?.message ??
+                  (organizationSizesError instanceof Error
+                    ? organizationSizesError.message
+                    : undefined)
+                }
+                options={organizationSizes.map((country) => ({
+                  label: country.title,
+                  value: String(country.id),
+                }))}
+                disabled={isOrganizationSizesLoading}
+                onReachEnd={() => fetchMoreOrganizationSizes()}
+                hasNextPage={Boolean(hasMoreOrganizationSizes)}
+                isFetchingNextPage={isFetchingMoreOrganizationSizes}
+                onSearchChange={setOrganizationSizesSearch}
+              />
+            )}
+          />
+        </div>
 
-                    <InputField
-                        id="commercial_registration_expiry_date"
-                        label={t("companyPage.accountSettings.businessVerification.fields.commercial-expiry-date.label")}
-                        type={"date"}
-                        placeholder={t("companyPage.accountSettings.businessVerification.fields.commercial-expiry-date.placeholder")}
-                        className="bg-white"
-                        {...register("commercial_registration_expiry_date")}
-                        error={errors.commercial_registration_expiry_date?.message?.toString()}
-                    />
+        <div className="flex flex-col items-center justify-center gap-2 lg:flex-row">
+          <InputField
+            id="commercial_registration_issue_date"
+            label={t(
+              'companyPage.accountSettings.businessVerification.fields.commercial-issue-date.label',
+            )}
+            type={'date'}
+            placeholder={t(
+              'companyPage.accountSettings.businessVerification.fields.commercial-issue-date.placeholder',
+            )}
+            className="bg-white"
+            {...register('commercial_registration_issue_date')}
+            error={errors.commercial_registration_issue_date?.message?.toString()}
+          />
 
-                </div>
+          <InputField
+            id="commercial_registration_expiry_date"
+            label={t(
+              'companyPage.accountSettings.businessVerification.fields.commercial-expiry-date.label',
+            )}
+            type={'date'}
+            placeholder={t(
+              'companyPage.accountSettings.businessVerification.fields.commercial-expiry-date.placeholder',
+            )}
+            className="bg-white"
+            {...register('commercial_registration_expiry_date')}
+            error={errors.commercial_registration_expiry_date?.message?.toString()}
+          />
+        </div>
 
-                <Controller
-                    name="commercial_registration_image"
-                    control={control}
-                    render={({ field }) => (
-                        <StoredFilepondUpload
-                            className="file-pond-style-custom"
-                            label={t("companyPage.accountSettings.businessVerification.fields.commercial-registration-image.label")}
-                            files={field.value}
-                            onChange={field.onChange}
-                            allowImagePreview={true}
-                            acceptedFileTypes={[
-                                "image/*",
-                            ]}
-                            processFile={async (file) => {
-                                const uploadFormData = new FormData();
-                                uploadFormData.append("image", file);
-                                return storeUploadedFileAction(uploadFormData, locale);
-                            }}
-                            onStoredPathChange={(path) => {
-                                setCommercialRegistrationImage(path);
-                                if (path) {
-                                    clearErrors("commercial_registration_image");
-                                }
-                            }}
-                            onUploadError={(message) => {
-                                if (!message) {
-                                    clearErrors("commercial_registration_image");
-                                    return;
-                                }
+        <Controller
+          name="commercial_registration_image"
+          control={control}
+          render={({ field }) => (
+            <StoredFilepondUpload
+              className="file-pond-style-custom"
+              label={t(
+                'companyPage.accountSettings.businessVerification.fields.commercial-registration-image.label',
+              )}
+              files={field.value}
+              onChange={field.onChange}
+              allowImagePreview={true}
+              acceptedFileTypes={['image/*']}
+              processFile={async (file) => {
+                const uploadFormData = new FormData();
+                uploadFormData.append('image', file);
+                return storeUploadedFileAction(uploadFormData, locale);
+              }}
+              onStoredPathChange={(path) => {
+                setCommercialRegistrationImage(path);
+                if (path) {
+                  clearErrors('commercial_registration_image');
+                }
+              }}
+              onUploadError={(message) => {
+                if (!message) {
+                  clearErrors('commercial_registration_image');
+                  return;
+                }
 
-                                setError("commercial_registration_image", {
-                                    type: "server",
-                                    message,
-                                });
-                            }}
-                            existingFileUrl={(showExistingCommercialRegistrationImage ?? Boolean(companyProfileData?.commercial_registration_image)) ? companyProfileData?.commercial_registration_image : null}
-                            existingFileLabel={(showExistingCommercialRegistrationImage ?? Boolean(companyProfileData?.commercial_registration_image)) ? t("companyPage.accountSettings.businessVerification.fields.commercial-registration-image.existing-label") : undefined}
-                            onExistingFileRemove={() => {
-                                setShowExistingCommercialRegistrationImage(false);
-                                setCommercialRegistrationImage(null);
-                                field.onChange([]);
-                            }}
-                            allowMultiple={false}
-                            maxFiles={1}
-                            error={errors.commercial_registration_image?.message as string}
-                        />
-                    )}
-                />
+                setError('commercial_registration_image', {
+                  type: 'server',
+                  message,
+                });
+              }}
+              existingFileUrl={
+                (showExistingCommercialRegistrationImage ??
+                Boolean(companyProfileData?.commercial_registration_image))
+                  ? companyProfileData?.commercial_registration_image
+                  : null
+              }
+              existingFileLabel={
+                (showExistingCommercialRegistrationImage ??
+                Boolean(companyProfileData?.commercial_registration_image))
+                  ? t(
+                      'companyPage.accountSettings.businessVerification.fields.commercial-registration-image.existing-label',
+                    )
+                  : undefined
+              }
+              onExistingFileRemove={() => {
+                setShowExistingCommercialRegistrationImage(false);
+                setCommercialRegistrationImage(null);
+                field.onChange([]);
+              }}
+              allowMultiple={false}
+              maxFiles={1}
+              error={errors.commercial_registration_image?.message as string}
+            />
+          )}
+        />
+      </div>
 
-            </div>
+      <div className="flex flex-col justify-between gap-y-5 rounded-2xl bg-input p-3 md:p-5">
+        <h2 className="mt-2 text-start text-lg font-semibold text-disabled">
+          {t(
+            'companyPage.accountSettings.businessVerification.sections.medical-license',
+          )}
+        </h2>
+        <Controller
+          name="employer_type_id"
+          control={control}
+          render={({ field }) => (
+            <SelectInputField
+              id="employer_type_id"
+              label={t(
+                'companyPage.accountSettings.businessVerification.fields.employer-type.label',
+              )}
+              placeholder={t(
+                'companyPage.accountSettings.businessVerification.fields.employer-type.placeholder',
+              )}
+              className="bg-white"
+              {...field}
+              error={
+                errors.employer_type_id?.message ??
+                (employerTypesError instanceof Error
+                  ? employerTypesError.message
+                  : undefined)
+              }
+              options={employerTypes.map((type) => ({
+                label: type.title,
+                value: String(type.id),
+              }))}
+              disabled={isEmployerTypesLoading}
+              onReachEnd={() => fetchMoreEmployerTypes()}
+              hasNextPage={Boolean(hasMoreEmployerTypes)}
+              isFetchingNextPage={isFetchingMoreEmployerTypes}
+              onSearchChange={setEmployerTypesSearch}
+            />
+          )}
+        />
+        <InputField
+          id="medical_facility_license_number"
+          label={t(
+            'companyPage.accountSettings.businessVerification.fields.medical-facility-license-number.label',
+          )}
+          type={'text'}
+          placeholder={t(
+            'companyPage.accountSettings.businessVerification.fields.medical-facility-license-number.placeholder',
+          )}
+          className="bg-white"
+          {...register('medical_facility_license_number')}
+          error={errors.medical_facility_license_number?.message?.toString()}
+        />
+        <InputField
+          id="license_issuing_authority"
+          label={t(
+            'companyPage.accountSettings.businessVerification.fields.license-issuing-authority.label',
+          )}
+          type={'text'}
+          placeholder={t(
+            'companyPage.accountSettings.businessVerification.fields.license-issuing-authority.placeholder',
+          )}
+          className="bg-white"
+          {...register('license_issuing_authority')}
+          error={errors.license_issuing_authority?.message?.toString()}
+        />
 
-            <div className="bg-input p-3 md:p-5 rounded-2xl flex flex-col justify-between gap-y-5">
-                <h2 className="text-lg text-disabled font-semibold text-start mt-2">
-                    {t("companyPage.accountSettings.businessVerification.sections.medical-license")}
-                </h2>
-                <Controller
-                    name="employer_type_id"
-                    control={control}
-                    render={({ field }) => (
-                        <SelectInputField
-                            id="employer_type_id"
-                            label={t("companyPage.accountSettings.businessVerification.fields.employer-type.label")}
-                            placeholder={t("companyPage.accountSettings.businessVerification.fields.employer-type.placeholder")}
-                            className="bg-white"
-                            {...field}
-                            error={
-                                errors.employer_type_id?.message ??
-                                (employerTypesError instanceof Error
-                                    ? employerTypesError.message
-                                    : undefined)
-                            }
-                            options={employerTypes.map((type) => ({
-                                label: type.title,
-                                value: String(type.id),
-                            }))}
-                            disabled={isEmployerTypesLoading}
-                            onReachEnd={() => fetchMoreEmployerTypes()}
-                            hasNextPage={Boolean(hasMoreEmployerTypes)}
-                            isFetchingNextPage={isFetchingMoreEmployerTypes}
-                            onSearchChange={setEmployerTypesSearch}
-                        />
-                    )}
-                />
-                <InputField
-                    id="medical_facility_license_number"
-                    label={t("companyPage.accountSettings.businessVerification.fields.medical-facility-license-number.label")}
-                    type={"text"}
-                    placeholder={t("companyPage.accountSettings.businessVerification.fields.medical-facility-license-number.placeholder")}
-                    className="bg-white"
-                    {...register("medical_facility_license_number")}
-                    error={errors.medical_facility_license_number?.message?.toString()}
-                />
-                <InputField
-                    id="license_issuing_authority"
-                    label={t("companyPage.accountSettings.businessVerification.fields.license-issuing-authority.label")}
-                    type={"text"}
-                    placeholder={t("companyPage.accountSettings.businessVerification.fields.license-issuing-authority.placeholder")}
-                    className="bg-white"
-                    {...register("license_issuing_authority")}
-                    error={errors.license_issuing_authority?.message?.toString()}
-                />
-
-                <InputField
-                    id="specialty_title"
-                    label={t("companyPage.accountSettings.businessVerification.fields.specialty.label")}
-                    type={"text"}
-                    placeholder={t("companyPage.accountSettings.businessVerification.fields.specialty.placeholder")}
-                    className="bg-white"
-                    {...register("specialty_title")}
-                    error={errors.specialty_title?.message?.toString()}
-                />
-                {/* <Controller
+        <InputField
+          id="specialty_title"
+          label={t(
+            'companyPage.accountSettings.businessVerification.fields.specialty.label',
+          )}
+          type={'text'}
+          placeholder={t(
+            'companyPage.accountSettings.businessVerification.fields.specialty.placeholder',
+          )}
+          className="bg-white"
+          {...register('specialty_title')}
+          error={errors.specialty_title?.message?.toString()}
+        />
+        {/* <Controller
                     name="specialty_id"
                     control={control}
                     render={({ field }) => (
@@ -423,85 +534,108 @@ export default function BusinessVerificationForm() {
                         />
                     )}
                 /> */}
-                <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
-                    <InputField
-                        id="medical_license_issue_date"
-                        label={t("companyPage.accountSettings.businessVerification.fields.medical-issue-date.label")}
-                        type={"date"}
-                        placeholder={t("companyPage.accountSettings.businessVerification.fields.medical-issue-date.placeholder")}
-                        className="bg-white"
-                        {...register("medical_license_issue_date")}
-                        error={errors.medical_license_issue_date?.message?.toString()}
-                    />
+        <div className="flex flex-col items-center justify-center gap-2 lg:flex-row">
+          <InputField
+            id="medical_license_issue_date"
+            label={t(
+              'companyPage.accountSettings.businessVerification.fields.medical-issue-date.label',
+            )}
+            type={'date'}
+            placeholder={t(
+              'companyPage.accountSettings.businessVerification.fields.medical-issue-date.placeholder',
+            )}
+            className="bg-white"
+            {...register('medical_license_issue_date')}
+            error={errors.medical_license_issue_date?.message?.toString()}
+          />
 
-                    <InputField
-                        id="medical_license_expiry_date"
-                        label={t("companyPage.accountSettings.businessVerification.fields.medical-expiry-date.label")}
-                        type={"date"}
-                        placeholder={t("companyPage.accountSettings.businessVerification.fields.medical-expiry-date.placeholder")}
-                        className="bg-white"
-                        {...register("medical_license_expiry_date")}
-                        error={errors.medical_license_expiry_date?.message?.toString()}
-                    />
+          <InputField
+            id="medical_license_expiry_date"
+            label={t(
+              'companyPage.accountSettings.businessVerification.fields.medical-expiry-date.label',
+            )}
+            type={'date'}
+            placeholder={t(
+              'companyPage.accountSettings.businessVerification.fields.medical-expiry-date.placeholder',
+            )}
+            className="bg-white"
+            {...register('medical_license_expiry_date')}
+            error={errors.medical_license_expiry_date?.message?.toString()}
+          />
+        </div>
+        <Controller
+          name="medical_license_image"
+          control={control}
+          render={({ field }) => (
+            <StoredFilepondUpload
+              className="file-pond-style-custom"
+              label={t(
+                'companyPage.accountSettings.businessVerification.fields.medical-license-image.label',
+              )}
+              files={field.value}
+              onChange={field.onChange}
+              allowMultiple={false}
+              maxFiles={2}
+              allowImagePreview={true}
+              acceptedFileTypes={['image/*']}
+              processFile={async (file) => {
+                const uploadFormData = new FormData();
+                uploadFormData.append('image', file);
+                return storeUploadedFileAction(uploadFormData, locale);
+              }}
+              onStoredPathChange={(path) => {
+                setMedicalLicenseImage(path);
+                if (path) {
+                  clearErrors('medical_license_image');
+                }
+              }}
+              onUploadError={(message) => {
+                if (!message) {
+                  clearErrors('medical_license_image');
+                  return;
+                }
 
-                </div>
-                <Controller
-                    name="medical_license_image"
-                    control={control}
-                    render={({ field }) => (
-                        <StoredFilepondUpload
-                            className="file-pond-style-custom"
-                            label={t("companyPage.accountSettings.businessVerification.fields.medical-license-image.label")}
-                            files={field.value}
-                            onChange={field.onChange}
-                            allowMultiple={false}
-                            maxFiles={2}
-                            allowImagePreview={true}
-                            acceptedFileTypes={[
-                                "image/*",
-                            ]}
-                            processFile={async (file) => {
-                                const uploadFormData = new FormData();
-                                uploadFormData.append("image", file);
-                                return storeUploadedFileAction(uploadFormData, locale);
-                            }}
-                            onStoredPathChange={(path) => {
-                                setMedicalLicenseImage(path);
-                                if (path) {
-                                    clearErrors("medical_license_image");
-                                }
-                            }}
-                            onUploadError={(message) => {
-                                if (!message) {
-                                    clearErrors("medical_license_image");
-                                    return;
-                                }
-
-                                setError("medical_license_image", {
-                                    type: "server",
-                                    message,
-                                });
-                            }}
-                            existingFileUrl={(showExistingMedicalLicenseImage ?? Boolean(companyProfileData?.medical_license_image)) ? companyProfileData?.medical_license_image : null}
-                            existingFileLabel={(showExistingMedicalLicenseImage ?? Boolean(companyProfileData?.medical_license_image)) ? t("companyPage.accountSettings.businessVerification.fields.medical-license-image.existing-label") : undefined}
-                            onExistingFileRemove={() => {
-                                setShowExistingMedicalLicenseImage(false);
-                                setMedicalLicenseImage(null);
-                                field.onChange([]);
-                            }}
-                            error={errors.medical_license_image?.message?.toString()}
-                        />
-                    )}
-                />
-
-            </div>
-            <div className="flex justify-center items-center">
-
-                <Button variant={"secondary"} hoverStyle={'slidePrimary'} size={'pill'} className='w-1/3 md:w-56' type="submit" disabled={isUpdating || isCompanyProfilePending}>
-                    {isUpdating ? t("common.saving") : t("common.save")}
-                </Button>
-            </div>
-
-        </form>
-    );
+                setError('medical_license_image', {
+                  type: 'server',
+                  message,
+                });
+              }}
+              existingFileUrl={
+                (showExistingMedicalLicenseImage ??
+                Boolean(companyProfileData?.medical_license_image))
+                  ? companyProfileData?.medical_license_image
+                  : null
+              }
+              existingFileLabel={
+                (showExistingMedicalLicenseImage ??
+                Boolean(companyProfileData?.medical_license_image))
+                  ? t(
+                      'companyPage.accountSettings.businessVerification.fields.medical-license-image.existing-label',
+                    )
+                  : undefined
+              }
+              onExistingFileRemove={() => {
+                setShowExistingMedicalLicenseImage(false);
+                setMedicalLicenseImage(null);
+                field.onChange([]);
+              }}
+              error={errors.medical_license_image?.message?.toString()}
+            />
+          )}
+        />
+      </div>
+      <div className="flex items-center justify-center">
+        <Button
+          variant={'secondary'}
+          hoverStyle={'slidePrimary'}
+          size={'pill'}
+          className="w-1/3 md:w-56"
+          type="submit"
+          disabled={isUpdating || isCompanyProfilePending}
+        >
+          {isUpdating ? t('common.saving') : t('common.save')}
+        </Button>
+      </div>
+    </form>
+  );
 }

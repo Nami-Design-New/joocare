@@ -11,7 +11,7 @@ export default function PreferenceFieldset({
 }: PreferenceFieldsetProps) {
   return (
     <fieldset className="flex flex-col gap-3">
-      <legend className="text-secondary mb-3 font-semibold">{legend}</legend>
+      <legend className="mb-3 font-semibold text-secondary">{legend}</legend>
       {children}
     </fieldset>
   );

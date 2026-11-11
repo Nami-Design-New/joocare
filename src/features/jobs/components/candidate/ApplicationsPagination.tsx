@@ -25,7 +25,7 @@ export default function ApplicationsPagination({
       align="start"
       showLastPage={false}
       visiblePageCount={5}
-      className="[&_[aria-current=page]]:bg-application-primary mt-4 justify-between"
+      className="mt-4 justify-between [&_[aria-current=page]]:bg-application-primary"
     />
   );
 }

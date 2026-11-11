@@ -34,7 +34,7 @@ export default function CategoryLibrary({
 
   return (
     <section aria-label={title} className="space-y-3">
-      <h2 className="text-secondary text-lg font-semibold">{title}</h2>
+      <h2 className="text-lg font-semibold text-secondary">{title}</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {visible.map((category) => (
           <CategoryCard

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 import {
   Table,
   TableBody,
@@ -6,8 +6,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shared/components/ui/table";
-import { cn } from "@/shared/lib/utils";
+} from '@/shared/components/ui/table';
+import { cn } from '@/shared/lib/utils';
 
 export type DataTableColumn<T> = {
   id: string;
@@ -21,7 +21,7 @@ type DataTableProps<T> = {
   columns: DataTableColumn<T>[];
   data: T[];
   getRowKey: (item: T) => string | number;
-  dir?: "ltr" | "rtl";
+  dir?: 'ltr' | 'rtl';
   ariaLabel?: string;
   className?: string;
   containerClassName?: string;
@@ -41,7 +41,7 @@ export default function DataTable<T>({
   rowClassName,
 }: DataTableProps<T>) {
   return (
-    <div className={cn("w-full overflow-x-auto", containerClassName)}>
+    <div className={cn('w-full overflow-x-auto', containerClassName)}>
       <Table className={className} dir={dir} aria-label={ariaLabel}>
         <TableHeader>
           <TableRow className={headerRowClassName}>
@@ -49,7 +49,7 @@ export default function DataTable<T>({
               <TableHead
                 key={column.id}
                 className={cn(
-                  "px-4 py-5 text-center text-[18px] leading-normal font-semibold",
+                  'px-4 py-5 text-center text-[18px] leading-normal font-semibold',
                   column.headerClassName,
                 )}
               >
@@ -63,7 +63,7 @@ export default function DataTable<T>({
             <TableRow
               key={getRowKey(item)}
               className={cn(
-                typeof rowClassName === "function"
+                typeof rowClassName === 'function'
                   ? rowClassName(item, index)
                   : rowClassName,
               )}
@@ -72,7 +72,7 @@ export default function DataTable<T>({
                 <TableCell
                   key={column.id}
                   className={cn(
-                    "px-4 py-3 text-center text-[16px] leading-normal font-normal text-foreground",
+                    'px-4 py-3 text-center text-[16px] leading-normal font-normal text-foreground',
                     column.cellClassName,
                   )}
                 >

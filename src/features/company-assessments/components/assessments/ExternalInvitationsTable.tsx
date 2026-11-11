@@ -67,7 +67,7 @@ export default function ExternalInvitationsTable({
             alt=""
             className="size-8 shrink-0 rounded-full object-cover"
           />
-          <span className="text-assessment-primary truncate text-sm font-semibold underline underline-offset-2">
+          <span className="truncate text-sm font-semibold text-assessment-primary underline underline-offset-2">
             {candidate.name}
           </span>
         </button>
@@ -144,14 +144,14 @@ export default function ExternalInvitationsTable({
         ) : (
           <Button
             asChild
-            className="bg-assessment-main h-8 gap-2 rounded-full py-1 ps-3 pe-1 text-sm"
+            className="h-8 gap-2 rounded-full bg-assessment-main py-1 ps-3 pe-1 text-sm"
           >
             <Link
               href={getScoreHref(candidate)}
               aria-label={t('view-score', { name: candidate.name })}
             >
               <span>{format.number(candidate.score)}%</span>
-              <span className="bg-card flex size-6 items-center justify-center rounded-full">
+              <span className="flex size-6 items-center justify-center rounded-full bg-card">
                 <Image
                   src={`${ASSESSMENT_ASSETS}/score-eye.svg`}
                   width={16}
@@ -188,7 +188,7 @@ export default function ExternalInvitationsTable({
               alt=""
               className="absolute end-0 top-0"
             />
-            <span className="bg-assessment-error absolute inset-x-[6.25%] top-1/2 bottom-[9.38%] flex items-center justify-center rounded-[1.1px]">
+            <span className="absolute inset-x-[6.25%] top-1/2 bottom-[9.38%] flex items-center justify-center rounded-[1.1px] bg-assessment-error">
               <Image
                 src={`${ASSESSMENT_ASSETS}/cv-label.svg`}
                 width={14.5101}
@@ -209,7 +209,7 @@ export default function ExternalInvitationsTable({
           asChild
           variant="ghost"
           size="icon"
-          className="bg-assessment-primary/8 size-8 rounded-full"
+          className="size-8 rounded-full bg-assessment-primary/8"
         >
           <Link
             href={{
@@ -277,7 +277,7 @@ export default function ExternalInvitationsTable({
       columns={columns.map((column) => ({
         ...column,
         headerClassName: cn(
-          'px-2 py-5 text-[13px] leading-[normal] text-assessment-dark font-semibold first:rounded-s-lg last:rounded-e-lg',
+          'px-2 py-5 text-[13px] leading-[normal] font-semibold text-assessment-dark first:rounded-s-lg last:rounded-e-lg',
           column.headerClassName,
         ),
         cellClassName: 'px-2 py-3 text-sm text-muted-foreground',

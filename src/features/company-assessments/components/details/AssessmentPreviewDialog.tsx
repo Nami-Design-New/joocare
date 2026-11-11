@@ -34,22 +34,29 @@ export default function AssessmentPreviewDialog({
     assessmentDetailSeeds[0];
 
   return (
-    <Dialog open={Boolean(assessment)} onOpenChange={(open) => !open && onClose()}>
+    <Dialog
+      open={Boolean(assessment)}
+      onOpenChange={(open) => !open && onClose()}
+    >
       <DialogContent
         showCloseButton={false}
-        className="bg-white flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-269 flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-3xl border-0 p-4 sm:min-w-0 sm:gap-6 sm:p-8"
+        className="flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-269 flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-3xl border-0 bg-white p-4 sm:min-w-0 sm:gap-6 sm:p-8"
       >
         <div className="flex items-start justify-between gap-3 sm:gap-4">
           <DialogHeader className="min-w-0 gap-1 text-start sm:gap-2">
-            <DialogTitle className="text-secondary text-xl font-bold sm:text-[28px]">
+            <DialogTitle className="text-xl font-bold text-secondary sm:text-[28px]">
               {t('preview-title')}
             </DialogTitle>
-            <DialogDescription className="text-muted-foreground text-sm">
+            <DialogDescription className="text-sm text-muted-foreground">
               {t('preview-subtitle')}
             </DialogDescription>
           </DialogHeader>
           <DialogClose asChild>
-            <Button size="icon-circle" aria-label={t('preview-close')} className="shrink-0">
+            <Button
+              size="icon-circle"
+              aria-label={t('preview-close')}
+              className="shrink-0"
+            >
               <X aria-hidden="true" className="size-5" />
             </Button>
           </DialogClose>

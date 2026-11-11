@@ -124,7 +124,7 @@ export const SelectInputField = React.forwardRef<
               {label}
             </label>
             {hint ? (
-              <span className="text-muted-foreground text-xs">{hint}</span>
+              <span className="text-xs text-muted-foreground">{hint}</span>
             ) : null}
           </div>
         )}
@@ -157,9 +157,9 @@ export const SelectInputField = React.forwardRef<
             render={
               <Button
                 className={cn(
-                  'bg-muted border-input h-13 w-full justify-between truncate rounded-full px-4 text-sm font-normal',
-                  'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-                  'disabled:bg-disabled text-foreground',
+                  'h-13 w-full justify-between truncate rounded-full border-input bg-muted px-4 text-sm font-normal',
+                  'focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
+                  'text-foreground disabled:bg-disabled',
                   error && 'border-destructive',
                   className,
                 )}
@@ -180,7 +180,7 @@ export const SelectInputField = React.forwardRef<
                 <span>{selectedOption.label}</span>
               </>
             ) : (
-              <span className="text-muted-foreground flex gap-1 text-xs md:text-sm">
+              <span className="flex gap-1 text-xs text-muted-foreground md:text-sm">
                 {showPlaceholderImage && (
                   <Image
                     src={showPlaceholderImage}
@@ -236,7 +236,7 @@ export const SelectInputField = React.forwardRef<
               )}
             </ComboboxList>
             {isFetchingNextPage && (
-              <div className="text-muted-foreground px-2 pb-2 text-center text-xs">
+              <div className="px-2 pb-2 text-center text-xs text-muted-foreground">
                 {t('common.loading')}
               </div>
             )}

@@ -25,7 +25,7 @@ export default function ChatView({
 }: ChatViewProps) {
   const canClose = role === 'company';
   return (
-    <div className={cn('text-foreground flex overflow-hidden', className)}>
+    <div className={cn('flex overflow-hidden text-foreground', className)}>
       <ChatConversationList
         role={role}
         conversations={chat.conversations}

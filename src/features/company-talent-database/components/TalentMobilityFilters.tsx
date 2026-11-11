@@ -38,7 +38,10 @@ const COUNTRY_FIELDS = Object.fromEntries(
       },
     ] as TalentFilterField[],
   ]),
-) as Record<(typeof MOBILITY_QUESTIONS)[number]['countries'], TalentFilterField[]>;
+) as Record<
+  (typeof MOBILITY_QUESTIONS)[number]['countries'],
+  TalentFilterField[]
+>;
 
 export default function TalentMobilityFilters() {
   const t = useTranslations('companyPage.talent-database');

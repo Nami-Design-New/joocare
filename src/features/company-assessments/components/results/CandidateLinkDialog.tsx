@@ -56,7 +56,7 @@ export default function CandidateLinkDialog({
         className="max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-[780px] gap-0 overflow-y-auto rounded-[24px] p-6 sm:min-w-0 sm:p-6"
       >
         <div className="flex items-center justify-between gap-4 pb-6">
-          <DialogTitle className="text-assessment-dark text-[24px] leading-8 font-bold sm:text-[28px]">
+          <DialogTitle className="text-[24px] leading-8 font-bold text-assessment-dark sm:text-[28px]">
             {kind === 'job' ? t('link-job-title') : t('link-project-title')}
           </DialogTitle>
           <DialogClose asChild>
@@ -64,7 +64,7 @@ export default function CandidateLinkDialog({
               variant="ghost"
               size="icon"
               aria-label={t('close')}
-              className="bg-assessment-primary hover:bg-assessment-primary/90 size-12 shrink-0 rounded-full text-white hover:text-white"
+              className="size-12 shrink-0 rounded-full bg-assessment-primary text-white hover:bg-assessment-primary/90 hover:text-white"
             >
               <X className="size-5" />
             </Button>
@@ -80,7 +80,7 @@ export default function CandidateLinkDialog({
           onChange={(event) => onSearchChange(event.target.value)}
           containerClassName="mb-3"
           iconClassName="text-assessment-primary"
-          className="border-assessment-border border ps-11 text-sm"
+          className="border border-assessment-border ps-11 text-sm"
         />
         <div className="flex max-h-[310px] flex-col gap-3 overflow-y-auto py-1">
           {targets.map((target) => {
@@ -107,7 +107,7 @@ export default function CandidateLinkDialog({
                 aria-checked={isSelected}
                 onClick={() => onTargetSelect(target.id)}
                 className={cn(
-                  'border-assessment-border flex min-h-[74px] w-full items-center gap-3 rounded-2xl border px-4 py-3 text-start transition-colors',
+                  'flex min-h-[74px] w-full items-center gap-3 rounded-2xl border border-assessment-border px-4 py-3 text-start transition-colors',
                   isSelected &&
                     'border-assessment-primary bg-assessment-info/80',
                 )}
@@ -115,24 +115,24 @@ export default function CandidateLinkDialog({
                 <span
                   aria-hidden="true"
                   className={cn(
-                    'border-assessment-border flex size-4 shrink-0 items-center justify-center rounded-full border',
+                    'flex size-4 shrink-0 items-center justify-center rounded-full border border-assessment-border',
                     isSelected && 'border-assessment-primary',
                   )}
                 >
                   {isSelected ? (
-                    <span className="bg-assessment-primary size-2 rounded-full" />
+                    <span className="size-2 rounded-full bg-assessment-primary" />
                   ) : null}
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="text-assessment-dark block truncate text-base leading-5 font-semibold">
+                  <span className="block truncate text-base leading-5 font-semibold text-assessment-dark">
                     {target.name}
                   </span>
-                  <span className="text-assessment-muted mt-1 block truncate text-[13px] leading-5">
+                  <span className="mt-1 block truncate text-[13px] leading-5 text-assessment-muted">
                     {metadata.join('  •  ')}
                   </span>
                 </span>
                 {target.alreadyLinked ? (
-                  <span className="bg-assessment-warning/10 text-assessment-warning shrink-0 rounded-full px-3 py-1 text-xs font-semibold">
+                  <span className="shrink-0 rounded-full bg-assessment-warning/10 px-3 py-1 text-xs font-semibold text-assessment-warning">
                     {kind === 'job'
                       ? t('already-applied')
                       : t('already-in-project')}
@@ -142,12 +142,12 @@ export default function CandidateLinkDialog({
             );
           })}
           {!targets.length ? (
-            <p className="text-assessment-muted py-6 text-center text-sm">
+            <p className="py-6 text-center text-sm text-assessment-muted">
               {t('no-link-targets')}
             </p>
           ) : null}
         </div>
-        <div className="border-assessment-link-info-border bg-assessment-link-info text-assessment-link-info-text mt-5 flex items-start gap-3 rounded-2xl border p-4">
+        <div className="mt-5 flex items-start gap-3 rounded-2xl border border-assessment-link-info-border bg-assessment-link-info p-4 text-assessment-link-info-text">
           <Info aria-hidden="true" className="mt-0.5 size-5 shrink-0" />
           <div>
             <p className="text-sm leading-5 font-semibold">
@@ -170,10 +170,10 @@ export default function CandidateLinkDialog({
         </div>
         {candidate && kind ? (
           <div className="flex flex-wrap items-center justify-between gap-3 py-6">
-            <p className="text-assessment-dark text-sm font-semibold">
+            <p className="text-sm font-semibold text-assessment-dark">
               {t('candidate')}
             </p>
-            <p className="text-assessment-muted text-sm">
+            <p className="text-sm text-assessment-muted">
               {t('candidate-result', {
                 name: candidate.name,
                 score:
@@ -189,7 +189,7 @@ export default function CandidateLinkDialog({
           type="button"
           disabled={!selectedTargetIsVisible}
           onClick={onConfirm}
-          className="bg-assessment-primary h-13 w-full rounded-full text-sm font-semibold"
+          className="h-13 w-full rounded-full bg-assessment-primary text-sm font-semibold"
         >
           {kind === 'job' ? t('link-job') : t('link-project')}
         </Button>

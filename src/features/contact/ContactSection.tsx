@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import ContactForm from "./ContactForm";
-import SideCard from "./SideCard";
-import type { ContactInitialValues, ContactRole } from "./types";
-import { useTranslations } from "next-intl";
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import ContactForm from './ContactForm';
+import SideCard from './SideCard';
+import type { ContactInitialValues, ContactRole } from './types';
+import { useTranslations } from 'next-intl';
 
 export type ContactSocialLink = {
   href: string;
-  platform: "linkedin" | "facebook" | "instagram" | "twitter" | "snapchat";
+  platform: 'linkedin' | 'facebook' | 'instagram' | 'twitter' | 'snapchat';
 };
 
 export default function ContactSection({
@@ -25,10 +25,10 @@ export default function ContactSection({
 }) {
   const t = useTranslations();
   const { data: session, status } = useSession();
-  const [guestRole, setGuestRole] = useState<ContactRole>("candidate");
+  const [guestRole, setGuestRole] = useState<ContactRole>('candidate');
   const resolvedAuthRole =
     authRole ?? (session?.authRole as ContactRole | undefined);
-  const isResolvingAuthRole = !authRole && status === "loading";
+  const isResolvingAuthRole = !authRole && status === 'loading';
   const activeRole = resolvedAuthRole ?? guestRole;
   const canSwitchRole = !resolvedAuthRole && !isResolvingAuthRole;
 
@@ -38,17 +38,17 @@ export default function ContactSection({
         <SideCard
           socialLinks={socialLinks}
           role={activeRole}
-          title={t("contactPage.contact-us")}
+          title={t('contactPage.contact-us')}
           subtitle={
-            activeRole === "candidate"
-              ? t("contactPage.get-in-touch-candidate")
-              : t("contactPage.get-in-touch-employer")
+            activeRole === 'candidate'
+              ? t('contactPage.get-in-touch-candidate')
+              : t('contactPage.get-in-touch-employer')
           }
-          imageAlt={t("contactPage.illustration-alt")}
+          imageAlt={t('contactPage.illustration-alt')}
           canSwitchRole={canSwitchRole}
           onSwitchRole={() =>
             setGuestRole((currentRole) =>
-              currentRole === "candidate" ? "employer" : "candidate",
+              currentRole === 'candidate' ? 'employer' : 'candidate',
             )
           }
         />

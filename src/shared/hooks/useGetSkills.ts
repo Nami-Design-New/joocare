@@ -1,38 +1,45 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getBaseApiUrl } from "../lib/api-endpoints";
-import { getTimeZone } from "../lib/fetch-manager";
-import { useLocale } from "next-intl";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getBaseApiUrl } from '../lib/api-endpoints';
+import { getTimeZone } from '../lib/fetch-manager';
+import { useLocale } from 'next-intl';
 
-export default function useGetSkills(search = "", job_title_id = "", enabled = true) {
+export default function useGetSkills(
+  search = '',
+  job_title_id = '',
+  enabled = true,
+) {
   const trimmedSearch = search.trim();
   const locale = useLocale();
   const query = useInfiniteQuery({
-    queryKey: ["skills", locale, trimmedSearch, job_title_id],
+    queryKey: ['skills', locale, trimmedSearch, job_title_id],
     initialPageParam: 1,
     enabled,
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams();
-      params.set("page", String(pageParam));
-      params.set("pagination", "on");
-      params.set("limit_per_page", "10");
+      params.set('page', String(pageParam));
+      params.set('pagination', 'on');
+      params.set('limit_per_page', '10');
 
       if (job_title_id) {
-        params.set("job_title_id", job_title_id);
+        params.set('job_title_id', job_title_id);
       }
 
       if (trimmedSearch) {
-        params.set("search", trimmedSearch);
+        params.set('search', trimmedSearch);
       }
 
-      const res = await fetch(`${getBaseApiUrl()}/skills?${params.toString()}`, {
-        headers: {
-          "X-Timezone": getTimeZone(),
-          "Accept-Language": locale,
-        }
-      });
+      const res = await fetch(
+        `${getBaseApiUrl()}/skills?${params.toString()}`,
+        {
+          headers: {
+            'X-Timezone': getTimeZone(),
+            'Accept-Language': locale,
+          },
+        },
+      );
 
       if (!res.ok) {
-        throw new Error("Network error");
+        throw new Error('Network error');
       }
 
       const data = await res.json();
@@ -43,7 +50,7 @@ export default function useGetSkills(search = "", job_title_id = "", enabled = t
       if (!lastPage?.next_page_url) return undefined;
 
       const url = new URL(lastPage.next_page_url);
-      const page = Number(url.searchParams.get("page"));
+      const page = Number(url.searchParams.get('page'));
       return Number.isNaN(page) ? undefined : page;
     },
   });

@@ -14,8 +14,16 @@ type ModalInfoPanelProps = {
 };
 
 const TONES = {
-  warning: { panel: 'bg-warning/10', badge: 'bg-warning text-white', title: 'text-secondary' },
-  success: { panel: 'bg-primary-bg', badge: 'bg-primary text-primary-foreground', title: 'text-primary' },
+  warning: {
+    panel: 'bg-warning/10',
+    badge: 'bg-warning text-white',
+    title: 'text-secondary',
+  },
+  success: {
+    panel: 'bg-primary-bg',
+    badge: 'bg-primary text-primary-foreground',
+    title: 'text-primary',
+  },
 };
 
 export default function ModalInfoPanel({
@@ -40,16 +48,24 @@ export default function ModalInfoPanel({
       {icon ?? (
         <span
           aria-hidden="true"
-          className={cn('flex size-7.5 shrink-0 items-center justify-center rounded-full', styles.badge)}
+          className={cn(
+            'flex size-7.5 shrink-0 items-center justify-center rounded-full',
+            styles.badge,
+          )}
         >
           <Info className="size-4" />
         </span>
       )}
-      <div className={cn('flex min-w-0 flex-col', isList ? 'gap-3 pt-0.5' : 'gap-1 self-center')}>
+      <div
+        className={cn(
+          'flex min-w-0 flex-col',
+          isList ? 'gap-3 pt-0.5' : 'gap-1 self-center',
+        )}
+      >
         <h3
           className={cn(
             'font-semibold',
-            isList ? 'text-secondary text-[17px]' : cn('text-lg', styles.title),
+            isList ? 'text-[17px] text-secondary' : cn('text-lg', styles.title),
           )}
         >
           {title}
@@ -57,10 +73,16 @@ export default function ModalInfoPanel({
         {isList ? (
           <ul className="flex flex-col gap-3">
             {items?.map((item) => (
-              <li key={item} className="text-foreground/80 flex items-start gap-3 text-[15px]">
+              <li
+                key={item}
+                className="flex items-start gap-3 text-[15px] text-foreground/80"
+              >
                 <span
                   aria-hidden="true"
-                  className={cn('flex size-5.5 shrink-0 items-center justify-center rounded-full', styles.badge)}
+                  className={cn(
+                    'flex size-5.5 shrink-0 items-center justify-center rounded-full',
+                    styles.badge,
+                  )}
                 >
                   <Check className="size-3.5" strokeWidth={3} />
                 </span>
@@ -69,7 +91,9 @@ export default function ModalInfoPanel({
             ))}
           </ul>
         ) : (
-          <p className="text-muted-foreground text-[15px] leading-relaxed">{description}</p>
+          <p className="text-[15px] leading-relaxed text-muted-foreground">
+            {description}
+          </p>
         )}
       </div>
     </section>

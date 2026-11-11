@@ -23,11 +23,11 @@ export default function AssessmentAnswersReview({
         <div className="space-y-1">
           <h2
             id="answers-review-title"
-            className="text-assessment-dark text-lg leading-6 font-semibold"
+            className="text-lg leading-6 font-semibold text-assessment-dark"
           >
             {t('review-title')}
           </h2>
-          <p className="text-assessment-copy text-[13px] leading-4">
+          <p className="text-[13px] leading-4 text-assessment-copy">
             {t('review-description', {
               page: review.page,
               pages: Math.ceil(questions.length / ANSWER_REVIEW_PAGE_SIZE),
@@ -40,7 +40,7 @@ export default function AssessmentAnswersReview({
           type="button"
           variant="ghost"
           onClick={review.toggleAll}
-          className="text-assessment-primary h-auto shrink-0 rounded-lg px-3 py-2 text-sm font-semibold"
+          className="h-auto shrink-0 rounded-lg px-3 py-2 text-sm font-semibold text-assessment-primary"
         >
           {t(review.hasOpenQuestions ? 'collapse-all' : 'expand-all')}
         </Button>

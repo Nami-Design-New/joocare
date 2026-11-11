@@ -1,5 +1,5 @@
-import type { MessagePayload } from "firebase/messaging";
-import { getFirebaseMessaging } from "@/shared/lib/firebase";
+import type { MessagePayload } from 'firebase/messaging';
+import { getFirebaseMessaging } from '@/shared/lib/firebase';
 
 type ForegroundMessageHandler = (payload: MessagePayload) => void;
 
@@ -20,17 +20,17 @@ export function listenForMessages(
       const messaging = await getFirebaseMessaging();
       if (!messaging) {
         console.warn(
-          "[Notifications] Foreground listener not attached: messaging unavailable.",
+          '[Notifications] Foreground listener not attached: messaging unavailable.',
         );
         foregroundListenerAttached = false;
         return;
       }
 
-      const { onMessage } = await import("firebase/messaging");
-      console.info("[Notifications] Foreground listener attached.");
+      const { onMessage } = await import('firebase/messaging');
+      console.info('[Notifications] Foreground listener attached.');
 
       onMessage(messaging, (payload) => {
-        console.info("[Notifications] Foreground message received.", payload);
+        console.info('[Notifications] Foreground message received.', payload);
 
         foregroundHandlers.forEach((handler) => {
           handler(payload);

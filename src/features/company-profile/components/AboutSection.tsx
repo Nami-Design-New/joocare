@@ -1,37 +1,54 @@
-"use client"
-import { Edit2 } from "lucide-react"
-import { useState } from "react"
-import { TCompanyProfileViewModel } from "../types"
-import { EditAboutModal } from "./EditAboutModal"
-import TextSkeleton from "./TextSkeleton"
-import { useTranslations } from "next-intl"
+'use client';
+import { Edit2 } from 'lucide-react';
+import { useState } from 'react';
+import { TCompanyProfileViewModel } from '../types';
+import { EditAboutModal } from './EditAboutModal';
+import TextSkeleton from './TextSkeleton';
+import { useTranslations } from 'next-intl';
 
-const AboutSection = ({ companyProfileData, isPending }: { companyProfileData: TCompanyProfileViewModel, isPending: boolean }) => {
-    const [open, setOpen] = useState(false)
-    const t = useTranslations();
+const AboutSection = ({
+  companyProfileData,
+  isPending,
+}: {
+  companyProfileData: TCompanyProfileViewModel;
+  isPending: boolean;
+}) => {
+  const [open, setOpen] = useState(false);
+  const t = useTranslations();
 
-    return (<>
-        <div className="rounded-2xl bg-white flex flex-col gap-4 p-4 border">
-            <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold ">{t("companyPage.profile.about.title")}</h2>
-                {companyProfileData?.status !== "Draft" && <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />}
-            </div>
-            {isPending ? (
-                <div className="w-full flex flex-col gap-2">
-                    <TextSkeleton />
-                    <TextSkeleton />
-                </div>
-            ) : (
-                <p className="text-muted-foreground text-sm text-start sm:text-justify">
-                    {companyProfileData?.bio}
-                </p>
-            )}
+  return (
+    <>
+      <div className="flex flex-col gap-4 rounded-2xl border bg-white p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">
+            {t('companyPage.profile.about.title')}
+          </h2>
+          {companyProfileData?.status !== 'Draft' && (
+            <Edit2
+              size={22}
+              className="cursor-pointer"
+              onClick={() => setOpen(!open)}
+            />
+          )}
         </div>
-        <EditAboutModal open={open} onOpenChange={setOpen}
-            defaultVal={companyProfileData?.bio}
-        />
+        {isPending ? (
+          <div className="flex w-full flex-col gap-2">
+            <TextSkeleton />
+            <TextSkeleton />
+          </div>
+        ) : (
+          <p className="text-start text-sm text-muted-foreground sm:text-justify">
+            {companyProfileData?.bio}
+          </p>
+        )}
+      </div>
+      <EditAboutModal
+        open={open}
+        onOpenChange={setOpen}
+        defaultVal={companyProfileData?.bio}
+      />
     </>
-    )
-}
+  );
+};
 
-export default AboutSection
+export default AboutSection;

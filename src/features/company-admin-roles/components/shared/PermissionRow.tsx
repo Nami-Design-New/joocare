@@ -12,11 +12,11 @@ export default function PermissionRow({ entry }: PermissionRowProps) {
       className={cn(
         'text-sm leading-[normal]',
         entry.label &&
-        'border-border flex flex-col gap-2 border-b py-3 sm:flex-row sm:items-center sm:gap-6',
+          'flex flex-col gap-2 border-b border-border py-3 sm:flex-row sm:items-center sm:gap-6',
       )}
     >
       {entry.label ? (
-        <p className="text-secondary shrink-0 font-semibold sm:w-60">
+        <p className="shrink-0 font-semibold text-secondary sm:w-60">
           {entry.label}
         </p>
       ) : null}
@@ -29,7 +29,7 @@ export default function PermissionRow({ entry }: PermissionRowProps) {
             alt=""
             className="shrink-0"
           />
-          <p className="text-secondary min-w-0">{entry.value}</p>
+          <p className="min-w-0 text-secondary">{entry.value}</p>
         </div>
         {entry.description ? (
           <p className="text-muted-foreground">{entry.description}</p>

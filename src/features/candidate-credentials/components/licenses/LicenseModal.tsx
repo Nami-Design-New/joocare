@@ -1,39 +1,42 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useMemo, useState, useTransition } from "react";
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { useLocale, useTranslations } from "next-intl";
-import { toast } from "sonner";
-import { InputField } from "@/shared/components/InputField";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
-import { Button } from "@/shared/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCallback, useMemo, useState, useTransition } from 'react';
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
+import { useLocale, useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import { InputField } from '@/shared/components/InputField';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import { StoredFilepondUpload } from '@/shared/components/StoredFilepondUpload';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import useGetCountries from "@/shared/hooks/useGetCountries";
-import { storeUploadedFileAction } from "@/features/candidate-settings/actions/basic-info-actions";
+} from '@/shared/components/ui/dialog';
+import useGetCountries from '@/shared/hooks/useGetCountries';
+import { storeUploadedFileAction } from '@/features/candidate-settings/actions/basic-info-actions';
 import {
   createLicenseAction,
   updateLicenseAction,
-} from "../../actions/license-actions";
-import { licensesQueryKeyPrefix } from "../../hooks/useGetLicenses";
+} from '../../actions/license-actions';
+import { licensesQueryKeyPrefix } from '../../hooks/useGetLicenses';
 import {
   prependInfiniteItem,
   replaceInfiniteItem,
-} from "../../services/infinite-query-cache";
-import type { LicenseFormValues, LicenseViewModel } from "../../types/license.types";
+} from '../../services/infinite-query-cache';
+import type {
+  LicenseFormValues,
+  LicenseViewModel,
+} from '../../types/license.types';
 import {
   createLicenseSchema,
   type LicenseSchemaOutput,
   type LicenseSchemaValues,
-} from "../../validation/license-schema";
+} from '../../validation/license-schema';
 
 interface LicenseModalProps {
   open: boolean;
@@ -43,9 +46,9 @@ interface LicenseModalProps {
 }
 
 const EMPTY_FORM: LicenseFormValues = {
-  title: "",
-  number: "",
-  countryId: "",
+  title: '',
+  number: '',
+  countryId: '',
   image: [],
 };
 
@@ -57,7 +60,7 @@ function toFormState(license?: LicenseViewModel | null): LicenseFormValues {
   return {
     title: license.title,
     number: license.number,
-    countryId: license.countryId ?? "",
+    countryId: license.countryId ?? '',
     image: [],
   };
 }
@@ -95,24 +98,27 @@ export function LicenseModal({
   const locale = useLocale();
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
-  const [dialogContentElement, setDialogContentElement] = useState<HTMLDivElement | null>(null);
-  const [countrySearch, setCountrySearch] = useState("");
+  const [dialogContentElement, setDialogContentElement] =
+    useState<HTMLDivElement | null>(null);
+  const [countrySearch, setCountrySearch] = useState('');
   const [storedImagePath, setStoredImagePath] = useState<string | null>(null);
-  const [showExistingImage, setShowExistingImage] = useState(Boolean(license?.image));
+  const [showExistingImage, setShowExistingImage] = useState(
+    Boolean(license?.image),
+  );
   const licenseFormSchema = useMemo(
     () =>
       createLicenseSchema({
         requireImage: !(license?.image && showExistingImage),
         messages: {
-          titleMin: t("candidateValidation.license-title-min"),
-          titleMax: t("candidateValidation.license-title-max"),
-          numberMin: t("candidateValidation.license-number-min"),
-          numberMax: t("candidateValidation.license-number-max"),
-          countryRequired: t("authPage.validation.country-required"),
-          imageRequired: t("candidateValidation.license-image-required"),
-          oneImageOnly: t("candidateValidation.one-image-only"),
-          imageType: t("candidateValidation.image-jpg-png"),
-          imageSize: t("candidateValidation.image-max-2mb"),
+          titleMin: t('candidateValidation.license-title-min'),
+          titleMax: t('candidateValidation.license-title-max'),
+          numberMin: t('candidateValidation.license-number-min'),
+          numberMax: t('candidateValidation.license-number-max'),
+          countryRequired: t('authPage.validation.country-required'),
+          imageRequired: t('candidateValidation.license-image-required'),
+          oneImageOnly: t('candidateValidation.one-image-only'),
+          imageType: t('candidateValidation.image-jpg-png'),
+          imageSize: t('candidateValidation.image-max-2mb'),
         },
       }),
     [license?.image, showExistingImage, t],
@@ -140,7 +146,7 @@ export function LicenseModal({
 
   const countryOptions = countries
     .map((country) => ({
-      label: String(country.title ?? country.name ?? ""),
+      label: String(country.title ?? country.name ?? ''),
       value: String(country.id),
     }))
     .filter((country) => country.label);
@@ -151,8 +157,9 @@ export function LicenseModal({
 
   const onSubmit: SubmitHandler<LicenseSchemaOutput> = (form) => {
     const imagePayload = license?.id
-      ? storedImagePath ?? undefined
-      : storedImagePath ?? (showExistingImage ? license?.image ?? null : null);
+      ? (storedImagePath ?? undefined)
+      : (storedImagePath ??
+        (showExistingImage ? (license?.image ?? null) : null));
 
     const payload = {
       title: form.title.trim(),
@@ -169,32 +176,36 @@ export function LicenseModal({
       queryKey: licensesQueryKeyPrefix(locale),
     });
 
-    queryClient.setQueriesData({ queryKey: licensesQueryKeyPrefix(locale) }, (current) =>
-      license?.id
-        ? replaceInfiniteItem<LicenseViewModel>(
-          current,
-          ["user_licenses", "licenses"],
-          optimisticLicense,
-        )
-        : prependInfiniteItem<LicenseViewModel>(
-          current,
-          ["user_licenses", "licenses"],
-          optimisticLicense,
-        ),
+    queryClient.setQueriesData(
+      { queryKey: licensesQueryKeyPrefix(locale) },
+      (current) =>
+        license?.id
+          ? replaceInfiniteItem<LicenseViewModel>(
+              current,
+              ['user_licenses', 'licenses'],
+              optimisticLicense,
+            )
+          : prependInfiniteItem<LicenseViewModel>(
+              current,
+              ['user_licenses', 'licenses'],
+              optimisticLicense,
+            ),
     );
 
     startTransition(async () => {
       try {
         const response = license?.id
           ? await updateLicenseAction({
-            id: license.id,
-            ...payload,
-          })
+              id: license.id,
+              ...payload,
+            })
           : await createLicenseAction(payload);
 
         toast.success(
           response.message ??
-          (license?.id ? t("candidatePage.toasts.license-updated") : t("candidatePage.toasts.license-added")),
+            (license?.id
+              ? t('candidatePage.toasts.license-updated')
+              : t('candidatePage.toasts.license-added')),
         );
         onOpenChange(false);
         await queryClient.invalidateQueries({
@@ -205,7 +216,10 @@ export function LicenseModal({
           queryClient.setQueryData(queryKey, data);
         });
 
-        const message = error instanceof Error ? error.message : t("candidatePage.toasts.license-save-failed");
+        const message =
+          error instanceof Error
+            ? error.message
+            : t('candidatePage.toasts.license-save-failed');
         toast.error(message);
       }
     });
@@ -213,27 +227,36 @@ export function LicenseModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent ref={handleDialogContentRef} className="max-w-175 flex flex-col gap-5">
+      <DialogContent
+        ref={handleDialogContentRef}
+        className="flex max-w-175 flex-col gap-5"
+      >
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-black sm:text-[28px]">{label}</DialogTitle>
+            <DialogTitle className="text-2xl text-black sm:text-[28px]">
+              {label}
+            </DialogTitle>
           </DialogHeader>
 
           <InputField
             id="licenseTitle"
-            label={t("authPage.common.license-title")}
+            label={t('authPage.common.license-title')}
             type="text"
-            placeholder={t("candidatePage.credentials.license-title-placeholder")}
-            {...register("title")}
+            placeholder={t(
+              'candidatePage.credentials.license-title-placeholder',
+            )}
+            {...register('title')}
             error={errors.title?.message}
           />
 
           <InputField
             id="licenseNumber"
-            label={t("authPage.common.license-number")}
+            label={t('authPage.common.license-number')}
             type="text"
-            placeholder={t("candidatePage.credentials.license-number-placeholder")}
-            {...register("number")}
+            placeholder={t(
+              'candidatePage.credentials.license-number-placeholder',
+            )}
+            {...register('number')}
             error={errors.number?.message}
           />
 
@@ -243,14 +266,18 @@ export function LicenseModal({
             render={({ field }) => (
               <SelectInputField
                 id="country"
-                label={t("candidatePage.profile.country")}
-                placeholder={isLoading ? t("candidatePage.profile.loading-countries") : t("candidatePage.credentials.license-country-placeholder")}
+                label={t('candidatePage.profile.country')}
+                placeholder={
+                  isLoading
+                    ? t('candidatePage.profile.loading-countries')
+                    : t('candidatePage.credentials.license-country-placeholder')
+                }
                 options={countryOptions}
                 value={field.value}
                 disabled={isLoading}
                 portalContainer={dialogContentElement}
                 withSearchInput
-                searchPlaceholder={t("candidatePage.profile.search-countries")}
+                searchPlaceholder={t('candidatePage.profile.search-countries')}
                 onSearchChange={setCountrySearch}
                 onChange={field.onChange}
                 onReachEnd={() => void fetchNextPage()}
@@ -266,39 +293,43 @@ export function LicenseModal({
             control={control}
             render={({ field }) => (
               <StoredFilepondUpload
-                label={t("candidatePage.profile.upload-image")}
+                label={t('candidatePage.profile.upload-image')}
                 files={field.value}
                 onChange={field.onChange}
                 required={!(license?.image && showExistingImage)}
                 allowMultiple={false}
                 maxFiles={1}
                 allowImagePreview
-                acceptedFileTypes={["image/png", "image/jpeg", "image/jpg"]}
+                acceptedFileTypes={['image/png', 'image/jpeg', 'image/jpg']}
                 processFile={async (file) => {
                   const uploadFormData = new FormData();
-                  uploadFormData.append("image", file);
+                  uploadFormData.append('image', file);
                   return storeUploadedFileAction(uploadFormData, locale);
                 }}
                 onStoredPathChange={(path) => {
                   setStoredImagePath(path);
                   if (path) {
-                    clearErrors("image");
+                    clearErrors('image');
                     setShowExistingImage(false);
                   }
                 }}
                 onUploadError={(message) => {
                   if (!message) {
-                    clearErrors("image");
+                    clearErrors('image');
                     return;
                   }
 
-                  setError("image", {
-                    type: "server",
+                  setError('image', {
+                    type: 'server',
                     message,
                   });
                 }}
-                existingFileUrl={showExistingImage ? license?.image ?? null : null}
-                existingFileLabel={license?.title ?? t("candidatePage.credentials.license-image")}
+                existingFileUrl={
+                  showExistingImage ? (license?.image ?? null) : null
+                }
+                existingFileLabel={
+                  license?.title ?? t('candidatePage.credentials.license-image')
+                }
                 onExistingFileRemove={() => {
                   setShowExistingImage(false);
                   setStoredImagePath(null);
@@ -307,7 +338,7 @@ export function LicenseModal({
                 error={errors.image?.message}
                 onUploadingChange={(isUploading) => {
                   setUploadingCount((prev) =>
-                    isUploading ? prev + 1 : Math.max(0, prev - 1)
+                    isUploading ? prev + 1 : Math.max(0, prev - 1),
                   );
                 }}
               />
@@ -315,8 +346,17 @@ export function LicenseModal({
           />
 
           <DialogFooter className="flex items-center justify-center!">
-            <Button className="w-1/3" size="pill" type="submit" disabled={isPending || isLoading || isUploading}>
-              {isPending ? t("candidatePage.common.saving") : license?.id ? t("common.save") : t("candidatePage.common.add")}
+            <Button
+              className="w-1/3"
+              size="pill"
+              type="submit"
+              disabled={isPending || isLoading || isUploading}
+            >
+              {isPending
+                ? t('candidatePage.common.saving')
+                : license?.id
+                  ? t('common.save')
+                  : t('candidatePage.common.add')}
             </Button>
           </DialogFooter>
         </form>

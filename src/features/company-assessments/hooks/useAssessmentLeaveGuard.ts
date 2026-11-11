@@ -95,7 +95,8 @@ export function useAssessmentLeaveGuard(
     }
 
     function popstate(event: PopStateEvent) {
-      if (allowLeave.current || event.state?.[marker] === historyGuardId) return;
+      if (allowLeave.current || event.state?.[marker] === historyGuardId)
+        return;
       event.stopImmediatePropagation();
       window.history.forward();
       backRequested.current = true;
@@ -128,7 +129,9 @@ export function useAssessmentLeaveGuard(
     if (backRequested.current) {
       // Skip both our guard entry and the original assessment entry.
       window.history.go(
-        window.history.state?.__assessmentLeaveGuard === historyGuardId ? -2 : -1,
+        window.history.state?.__assessmentLeaveGuard === historyGuardId
+          ? -2
+          : -1,
       );
       return;
     }

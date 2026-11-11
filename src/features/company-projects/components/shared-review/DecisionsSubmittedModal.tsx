@@ -73,16 +73,16 @@ export default function DecisionsSubmittedModal({
       actionsClassName="mt-5"
     >
       <div className="mt-4 flex flex-col gap-4 text-start">
-        <section className="bg-body-bg border-border overflow-hidden rounded-2xl border">
-          <div className="border-border flex items-center gap-4 border-b px-5 py-4.5">
-            <span className="bg-primary-bg text-primary flex size-12 shrink-0 items-center justify-center rounded-full">
+        <section className="overflow-hidden rounded-2xl border border-border bg-body-bg">
+          <div className="flex items-center gap-4 border-b border-border px-5 py-4.5">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary-bg text-primary">
               <Briefcase aria-hidden="true" className="size-5" />
             </span>
             <div className="flex flex-col gap-0.5">
-              <span className="text-muted-foreground text-[13px]">
+              <span className="text-[13px] text-muted-foreground">
                 {t('hiring-project')}
               </span>
-              <span className="text-secondary font-semibold">
+              <span className="font-semibold text-secondary">
                 {projectName}
               </span>
             </div>
@@ -91,7 +91,7 @@ export default function DecisionsSubmittedModal({
             {stats.map(({ icon: Icon, value, label, iconClass }) => (
               <li
                 key={label}
-                className="border-border flex flex-col items-center gap-2 px-2 text-center not-last:border-e"
+                className="flex flex-col items-center gap-2 border-border px-2 text-center not-last:border-e"
               >
                 <span
                   className={cn(
@@ -103,13 +103,13 @@ export default function DecisionsSubmittedModal({
                 </span>
                 <span
                   className={cn(
-                    'text-secondary font-bold',
+                    'font-bold text-secondary',
                     typeof value === 'number' ? 'text-2xl' : 'text-base',
                   )}
                 >
                   {value}
                 </span>
-                <span className="text-muted-foreground max-w-24 text-[13px] leading-4">
+                <span className="max-w-24 text-[13px] leading-4 text-muted-foreground">
                   {label}
                 </span>
               </li>
@@ -117,8 +117,8 @@ export default function DecisionsSubmittedModal({
           </ul>
         </section>
 
-        <p className="text-muted-foreground flex items-center gap-4 px-5 text-[15px] leading-5.5">
-          <span className="bg-assessment-link-info text-assessment-link-info-text flex size-11 shrink-0 items-center justify-center rounded-full">
+        <p className="flex items-center gap-4 px-5 text-[15px] leading-5.5 text-muted-foreground">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-assessment-link-info text-assessment-link-info-text">
             <Send aria-hidden="true" className="size-5 rtl:-scale-x-100" />
           </span>
           {t('success-notice')}

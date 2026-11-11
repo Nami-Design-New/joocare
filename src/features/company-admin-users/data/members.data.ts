@@ -54,9 +54,7 @@ export const sampleCompanyMembers: CompanyMember[] = Array.from(
       ...example,
       id: index + 1,
       email:
-        cycle === 0
-          ? example.email
-          : example.email.replace('@', `+${cycle}@`),
+        cycle === 0 ? example.email : example.email.replace('@', `+${cycle}@`),
     };
   },
 );

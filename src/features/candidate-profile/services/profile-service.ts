@@ -1,9 +1,9 @@
-import "server-only";
-import { getLocale } from "next-intl/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth";
-import { getUserApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import 'server-only';
+import { getLocale } from 'next-intl/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
+import { getUserApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 import type {
   CandidateProfileApiEducation,
   CandidateProfileApiExperience,
@@ -13,7 +13,7 @@ import type {
   CandidateProfileViewModel,
   CandidateSkillViewModel,
   CandidateProfileApiLookup,
-} from "../types/profile.types";
+} from '../types/profile.types';
 
 function normalizeDateLabel(value: string | null) {
   if (!value) {
@@ -26,9 +26,9 @@ function normalizeDateLabel(value: string | null) {
     return value;
   }
 
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
   });
 }
 function normalizeDateLabelEduction(value: string | null) {
@@ -42,29 +42,39 @@ function normalizeDateLabelEduction(value: string | null) {
     return value;
   }
 
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
     // month: "short",
   });
 }
 
-function mapEducation(entry: CandidateProfileApiEducation): CandidateEducationViewModel {
+function mapEducation(
+  entry: CandidateProfileApiEducation,
+): CandidateEducationViewModel {
   const startYear = normalizeDateLabel(entry.start_date);
-  const endYear = entry.end_date ? normalizeDateLabel(entry.end_date) : "Present";
+  const endYear = entry.end_date
+    ? normalizeDateLabel(entry.end_date)
+    : 'Present';
   const period =
-    startYear && endYear ? `${startYear} - ${endYear}` : startYear ?? endYear ?? null;
+    startYear && endYear
+      ? `${startYear} - ${endYear}`
+      : (startYear ?? endYear ?? null);
 
   const startEductionPeriod = normalizeDateLabelEduction(entry.start_date);
-  const endEductionPeriod = entry.end_date ? normalizeDateLabelEduction(entry.end_date) : "Present";
+  const endEductionPeriod = entry.end_date
+    ? normalizeDateLabelEduction(entry.end_date)
+    : 'Present';
   const educationPeriod =
-    startEductionPeriod && endEductionPeriod ? `${startEductionPeriod} - ${endEductionPeriod}` : startEductionPeriod ?? endEductionPeriod ?? null;
+    startEductionPeriod && endEductionPeriod
+      ? `${startEductionPeriod} - ${endEductionPeriod}`
+      : (startEductionPeriod ?? endEductionPeriod ?? null);
 
   return {
     id: String(entry.id),
-    university: entry.university ?? "Education",
+    university: entry.university ?? 'Education',
     degree: entry.degree,
     gpa:
-      entry.gpa === null || entry.gpa === undefined || entry.gpa === ""
+      entry.gpa === null || entry.gpa === undefined || entry.gpa === ''
         ? null
         : String(entry.gpa),
     period,
@@ -79,10 +89,12 @@ function toOptionalId(value: number | null | undefined) {
   return value ? String(value) : null;
 }
 
-function mapExperience(entry: CandidateProfileApiExperience): CandidateExperienceViewModel {
+function mapExperience(
+  entry: CandidateProfileApiExperience,
+): CandidateExperienceViewModel {
   return {
     id: String(entry.id),
-    title: entry.job_title?.title || entry.title || "Experience",
+    title: entry.job_title?.title || entry.title || 'Experience',
     organization: entry.company,
     employmentTypeId: toOptionalId(entry.employment_type_id),
     countryId: toOptionalId(entry.country_id),
@@ -91,8 +103,8 @@ function mapExperience(entry: CandidateProfileApiExperience): CandidateExperienc
     endDate: entry.end_date,
     startDateLabel: normalizeDateLabel(entry.start_date),
     endDateLabel: entry.is_current
-      ? "Present"
-      : normalizeDateLabel(entry.end_date) ?? "Present",
+      ? 'Present'
+      : (normalizeDateLabel(entry.end_date) ?? 'Present'),
     isCurrent: entry.is_current,
     bullets: (entry.responsibilities ?? [])
       .map((responsibility) => responsibility.description)
@@ -109,11 +121,11 @@ function buildLocation(country: string | null, city: string | null) {
 }
 
 function normalizeAge(age: number | string | null | undefined) {
-  if (typeof age === "number") {
+  if (typeof age === 'number') {
     return Number.isNaN(age) ? null : age;
   }
 
-  if (typeof age === "string") {
+  if (typeof age === 'string') {
     const parsed = Number.parseInt(age, 10);
     return Number.isNaN(parsed) ? null : parsed;
   }
@@ -124,7 +136,7 @@ function normalizeAge(age: number | string | null | undefined) {
 function resolveJobTitle(
   title: CandidateProfileApiLookup | string | null | undefined,
 ) {
-  if (typeof title === "string") {
+  if (typeof title === 'string') {
     return title.trim() || null;
   }
 
@@ -140,9 +152,9 @@ function resolveStoredFileUrl(path: string | null | undefined) {
     return path;
   }
 
-  const trimmedPath = path.trim().replace(/^\/+/, "");
-  const normalizedPath = trimmedPath.startsWith("storage/")
-    ? trimmedPath.slice("storage/".length)
+  const trimmedPath = path.trim().replace(/^\/+/, '');
+  const normalizedPath = trimmedPath.startsWith('storage/')
+    ? trimmedPath.slice('storage/'.length)
     : trimmedPath;
 
   return `https://joocare.nami-tec.com/storage/${normalizedPath}`;
@@ -151,7 +163,7 @@ function resolveStoredFileUrl(path: string | null | undefined) {
 export async function getCandidateProfile() {
   const session = await getServerSession(authOptions);
 
-  if (!session?.accessToken || session.authRole !== "candidate") {
+  if (!session?.accessToken || session.authRole !== 'candidate') {
     return null;
   }
 
@@ -159,7 +171,7 @@ export async function getCandidateProfile() {
   const { ok, data } = await apiFetch<CandidateProfileApiUser>(
     `${getUserApiUrl()}/auth/profile`,
     {
-      method: "GET",
+      method: 'GET',
       locale,
       token: String(session.accessToken),
     },
@@ -175,7 +187,9 @@ export async function getCandidateProfile() {
   const city = user.city?.name ?? null;
   const jobTitle = user.job_title?.title || resolveJobTitle(user.title);
   const fullPhone =
-    user.phone && user.phone_code ? `${user.phone_code}${user.phone}` : user.phone;
+    user.phone && user.phone_code
+      ? `${user.phone_code}${user.phone}`
+      : user.phone;
   const skills = (user.skills ?? []).map((skill) => ({
     id: String(skill.id),
     label: skill.title,
@@ -184,13 +198,13 @@ export async function getCandidateProfile() {
   const educations = (user.educations ?? []).map(mapEducation);
   const experiences = (user.experiences ?? []).map(mapExperience);
   const experienceLabel =
-    typeof user.experience === "string"
+    typeof user.experience === 'string'
       ? user.experience
-      : user.experience?.title ?? user.experience?.name ?? null;
+      : (user.experience?.title ?? user.experience?.name ?? null);
   const specialtyTitle =
-    typeof user.specialty_title === "string"
+    typeof user.specialty_title === 'string'
       ? user.specialty_title
-      : user.specialty_title ?? user.specialty?.title ?? null;
+      : (user.specialty_title ?? user.specialty?.title ?? null);
 
   return {
     id: user.id,

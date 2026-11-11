@@ -429,41 +429,41 @@
   }
   /* Tailwind v4 no longer sets a pointer cursor on interactive elements. */
   :is(
-      a[href],
-      button,
-      summary,
-      select,
-      label[for],
-      input[type='checkbox'],
-      input[type='radio'],
-      input[type='file'],
-      [role='button'],
-      [role='option'],
-      [role='menuitem'],
-      [role='menuitemcheckbox'],
-      [role='menuitemradio'],
-      [role='tab'],
-      [role='radio'],
-      [role='checkbox'],
-      [role='switch'],
-      [role='combobox']
-    ):not(:disabled, [aria-disabled='true'], [data-disabled]) {
+    a[href],
+    button,
+    summary,
+    select,
+    label[for],
+    input[type='checkbox'],
+    input[type='radio'],
+    input[type='file'],
+    [role='button'],
+    [role='option'],
+    [role='menuitem'],
+    [role='menuitemcheckbox'],
+    [role='menuitemradio'],
+    [role='tab'],
+    [role='radio'],
+    [role='checkbox'],
+    [role='switch'],
+    [role='combobox']
+  ):not(:disabled, [aria-disabled='true'], [data-disabled]) {
     cursor: pointer;
   }
   :is(button, [role='button'], [role='option'], [role='menuitem']):is(
-      :disabled,
-      [aria-disabled='true'],
-      [data-disabled]
-    ) {
+    :disabled,
+    [aria-disabled='true'],
+    [data-disabled]
+  ) {
     cursor: not-allowed;
   }
   h1 {
     font-size: clamp(1.25rem, 4vw, 3rem);
-    @apply text-secondary font-bold;
+    @apply font-bold text-secondary;
   }
   h2 {
     font-size: clamp(1.1rem, 2vw, 1.75rem);
-    @apply text-secondary font-semibold;
+    @apply font-semibold text-secondary;
   }
 
   input[type='password']::-ms-reveal,
@@ -518,18 +518,18 @@
   }
 
   .nav-link {
-    @apply text-secondary border-b-2 border-transparent px-2 py-1 text-lg transition-colors;
+    @apply border-b-2 border-transparent px-2 py-1 text-lg text-secondary transition-colors;
   }
 
   .nav-link:hover {
-    @apply text-primary border-primary;
+    @apply border-primary text-primary;
   }
   .nav-link:active {
-    @apply text-primary border-primary;
+    @apply border-primary text-primary;
   }
 
   .edu-certificate {
-    @apply bg-secondary-08 text-secondary w-fit rounded-sm px-3 py-1 text-xs;
+    @apply w-fit rounded-sm bg-secondary-08 px-3 py-1 text-xs text-secondary;
   }
 
   footer {

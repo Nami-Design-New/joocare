@@ -1,10 +1,10 @@
-"use client";
-import * as React from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { Calendar } from "lucide-react";
-import { cn } from "../lib/utils";
-import { Input } from "./ui/input";
+'use client';
+import * as React from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Calendar } from 'lucide-react';
+import { cn } from '../lib/utils';
+import { Input } from './ui/input';
 
 type YearPickerProps = {
   id: string;
@@ -30,14 +30,14 @@ export const YearPicker = React.forwardRef<HTMLInputElement, YearPickerProps>(
       containerStyles,
       hint,
       disabled = false,
-      placeholder = "ex: 2021",
+      placeholder = 'ex: 2021',
       className,
       value,
       onChange,
       onBlur,
       name,
     },
-    ref
+    ref,
   ) => {
     // Convert string value (e.g. "2021") to Date for DatePicker
     const selectedDate = React.useMemo(() => {
@@ -52,25 +52,25 @@ export const YearPicker = React.forwardRef<HTMLInputElement, YearPickerProps>(
       if (date) {
         onChange(date.getFullYear().toString());
       } else {
-        onChange("");
+        onChange('');
       }
     };
 
     return (
-      <div className={cn("flex w-full flex-col", containerStyles)}>
+      <div className={cn('flex w-full flex-col', containerStyles)}>
         {label && (
           <label htmlFor={id} className="mx-1 mb-1 font-semibold">
             {label}
             {hint && (
-              <span className="text-muted-foreground text-sm font-normal">
-                {" "}
+              <span className="text-sm font-normal text-muted-foreground">
+                {' '}
                 {hint}
               </span>
             )}
           </label>
         )}
-        <div className="relative w-full flex flex-col">
-          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary pointer-events-none z-10" />
+        <div className="relative flex w-full flex-col">
+          <Calendar className="pointer-events-none absolute top-1/2 left-3 z-10 h-5 w-5 -translate-y-1/2 text-primary" />
           <DatePicker
             selected={selectedDate}
             onChange={handleChange}
@@ -85,7 +85,7 @@ export const YearPicker = React.forwardRef<HTMLInputElement, YearPickerProps>(
                 id={id}
                 ref={ref}
                 aria-invalid={!!error}
-                className={cn("pl-10", className)}
+                className={cn('pl-10', className)}
               />
             }
           />
@@ -95,7 +95,7 @@ export const YearPicker = React.forwardRef<HTMLInputElement, YearPickerProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-YearPicker.displayName = "YearPicker";
+YearPicker.displayName = 'YearPicker';

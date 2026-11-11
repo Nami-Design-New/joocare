@@ -38,10 +38,7 @@ export default function TalentDatabasePage() {
       />
     );
   return (
-    <div
-      ref={resultsRef}
-      className="flex min-w-0 scroll-mt-24 flex-col gap-4"
-    >
+    <div ref={resultsRef} className="flex min-w-0 scroll-mt-24 flex-col gap-4">
       <TalentResultsHeader
         count={preview.filtered.length}
         selectedCount={preview.selectedCandidates.length}

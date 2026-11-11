@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Breadcrumb from "@/shared/components/Breadcrumb";
-import ContactSection, { ContactSocialLink } from "./ContactSection";
-import type { ContactInitialValues, ContactRole } from "./types";
-import { useAppSelector } from "@/shared/providers/redux/hooks";
-import { useTranslations } from "next-intl";
+import Breadcrumb from '@/shared/components/Breadcrumb';
+import ContactSection, { ContactSocialLink } from './ContactSection';
+import type { ContactInitialValues, ContactRole } from './types';
+import { useAppSelector } from '@/shared/providers/redux/hooks';
+import { useTranslations } from 'next-intl';
 
 export default function ContactLayout({
   authRole,
@@ -16,20 +16,20 @@ export default function ContactLayout({
   const t = useTranslations();
   const settings = useAppSelector((state) => state.settings.data);
   const socialLinks = [
-    { href: settings?.linkedin, platform: "linkedin" as const },
-    { href: settings?.facebook, platform: "facebook" as const },
-    { href: settings?.instagram, platform: "instagram" as const },
-    { href: settings?.twitter, platform: "twitter" as const },
-    { href: settings?.snapchat, platform: "snapchat" as const },
+    { href: settings?.linkedin, platform: 'linkedin' as const },
+    { href: settings?.facebook, platform: 'facebook' as const },
+    { href: settings?.instagram, platform: 'instagram' as const },
+    { href: settings?.twitter, platform: 'twitter' as const },
+    { href: settings?.snapchat, platform: 'snapchat' as const },
   ].filter((item) => Boolean(item.href));
 
   return (
-    <div className="bg-background min-h-screen pb-12">
+    <div className="min-h-screen bg-background pb-12">
       <Breadcrumb
-        title={t("footer.contact-us")}
+        title={t('footer.contact-us')}
         items={[
-          { label: t("header.home"), href: "/" },
-          { label: t("footer.contact-us") },
+          { label: t('header.home'), href: '/' },
+          { label: t('footer.contact-us') },
         ]}
       />
       <section className="layout-shell">

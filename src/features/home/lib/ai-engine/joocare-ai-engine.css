@@ -5,23 +5,23 @@
 .jce {
   /* brand (from the logo) */
   --jce-green: #076914;
-  --jce-charcoal: #1D2729;
+  --jce-charcoal: #1d2729;
 
   /* lighter tints of the brand green, used for light and glow on the dark background */
-  --jce-g500: #1FAD36;
-  --jce-g300: #61D174;
-  --jce-g100: #CEF3D5;
+  --jce-g500: #1fad36;
+  --jce-g300: #61d174;
+  --jce-g100: #cef3d5;
 
   /* surfaces */
-  --jce-core: #121A1C;        /* inner circle */
-  --jce-core-edge: #0D1315;   /* inner circle, outer edge of the gradient */
-  --jce-surface: #0F1618;     /* fill of the small circles; keep it close to your page background */
+  --jce-core: #121a1c; /* inner circle */
+  --jce-core-edge: #0d1315; /* inner circle, outer edge of the gradient */
+  --jce-surface: #0f1618; /* fill of the small circles; keep it close to your page background */
 
   /* text and lines */
-  --jce-ink: #E9F1EC;
-  --jce-ink-2: rgba(233, 241, 236, .66);
-  --jce-ink-3: rgba(233, 241, 236, .44);
-  --jce-line: rgba(206, 243, 213, .13);
+  --jce-ink: #e9f1ec;
+  --jce-ink-2: rgba(233, 241, 236, 0.66);
+  --jce-ink-3: rgba(233, 241, 236, 0.44);
+  --jce-line: rgba(206, 243, 213, 0.13);
 
   /* timing: seconds for one full loop through the 8 steps */
   --jce-loop: 20;
@@ -31,74 +31,225 @@
   width: 100%;
 }
 
-.jce-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.jce-cell { position: absolute; border-radius: 50%; pointer-events: none; }
+.jce-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.jce-cell {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
 /* inherits the site font */
-.jce-t { font-family: inherit; }
+.jce-t {
+  font-family: inherit;
+}
 /* letter-spacing breaks Arabic letter joining */
-.jce--rtl .jce-t, .jce--rtl .jce-t tspan { letter-spacing: 0 !important; }
+.jce--rtl .jce-t,
+.jce--rtl .jce-t tspan {
+  letter-spacing: 0 !important;
+}
 
 /* gradient stops */
-.jce-s500 { stop-color: var(--jce-g500); }
-.jce-s300 { stop-color: var(--jce-g300); }
-.jce-s100 { stop-color: var(--jce-g100); }
-.jce-schar { stop-color: var(--jce-charcoal); }
-.jce-score { stop-color: var(--jce-core); }
-.jce-score-edge { stop-color: var(--jce-core-edge); }
+.jce-s500 {
+  stop-color: var(--jce-g500);
+}
+.jce-s300 {
+  stop-color: var(--jce-g300);
+}
+.jce-s100 {
+  stop-color: var(--jce-g100);
+}
+.jce-schar {
+  stop-color: var(--jce-charcoal);
+}
+.jce-score {
+  stop-color: var(--jce-core);
+}
+.jce-score-edge {
+  stop-color: var(--jce-core-edge);
+}
 
 /* rings */
-.jce-orbit { fill: none; stroke: rgba(206, 243, 213, .1); }
-.jce-core-edge { fill: none; stroke: var(--jce-line); }
-.jce-core-edge--inner { stroke: rgba(206, 243, 213, .07); }
-.jce-dial line { stroke: rgba(206, 243, 213, .2); }
-.jce-dial .jce-major { stroke: rgba(206, 243, 213, .46); }
+.jce-orbit {
+  fill: none;
+  stroke: rgba(206, 243, 213, 0.1);
+}
+.jce-core-edge {
+  fill: none;
+  stroke: var(--jce-line);
+}
+.jce-core-edge--inner {
+  stroke: rgba(206, 243, 213, 0.07);
+}
+.jce-dial line {
+  stroke: rgba(206, 243, 213, 0.2);
+}
+.jce-dial .jce-major {
+  stroke: rgba(206, 243, 213, 0.46);
+}
 
 /* the spark that travels around the ring */
-.jce-tail { fill: none; stroke: var(--jce-g300); stroke-width: 2; }
-.jce-head { fill: var(--jce-g100); }
-.jce-head-ring { fill: none; stroke: var(--jce-g100); stroke-width: 1.6; }
+.jce-tail {
+  fill: none;
+  stroke: var(--jce-g300);
+  stroke-width: 2;
+}
+.jce-head {
+  fill: var(--jce-g100);
+}
+.jce-head-ring {
+  fill: none;
+  stroke: var(--jce-g100);
+  stroke-width: 1.6;
+}
 
 /* dot and ring marks (from the logo) */
-.jce-mark-ring { fill: none; stroke: var(--jce-g300); }
-.jce-mark-dot { fill: var(--jce-g300); }
-.jce-mark-bg { fill: var(--jce-surface); }
+.jce-mark-ring {
+  fill: none;
+  stroke: var(--jce-g300);
+}
+.jce-mark-dot {
+  fill: var(--jce-g300);
+}
+.jce-mark-bg {
+  fill: var(--jce-surface);
+}
 
 /* centre texts */
-.jce-core-label { fill: var(--jce-g300); font-size: 16px; font-weight: 500; letter-spacing: .42em; }
-.jce-status { fill: var(--jce-ink-2); font-size: 20px; font-weight: 300; letter-spacing: .01em; }
+.jce-core-label {
+  fill: var(--jce-g300);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+}
+.jce-status {
+  fill: var(--jce-ink-2);
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
 
 /* the 8 step circles */
-.jce-ring-outer { fill: var(--jce-surface); stroke: rgba(206, 243, 213, .22); stroke-width: 1; }
-.jce-ring-outer--on { fill: none; stroke: var(--jce-g300); }
-.jce-ring { fill: #111A1C; stroke: rgba(206, 243, 213, .32); stroke-width: 1.3; }
-.jce-ring--on { fill: rgba(31, 173, 54, .16); stroke: var(--jce-g300); stroke-width: 1.5; }
-.jce-icon { fill: none; stroke: rgba(233, 241, 236, .74); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.jce-icon--on { stroke: var(--jce-g100); }
-.jce-spoke { stroke: rgba(206, 243, 213, .14); stroke-width: 1.2; stroke-linecap: round; }
-.jce-spoke--on { stroke: var(--jce-g300); }
+.jce-ring-outer {
+  fill: var(--jce-surface);
+  stroke: rgba(206, 243, 213, 0.22);
+  stroke-width: 1;
+}
+.jce-ring-outer--on {
+  fill: none;
+  stroke: var(--jce-g300);
+}
+.jce-ring {
+  fill: #111a1c;
+  stroke: rgba(206, 243, 213, 0.32);
+  stroke-width: 1.3;
+}
+.jce-ring--on {
+  fill: rgba(31, 173, 54, 0.16);
+  stroke: var(--jce-g300);
+  stroke-width: 1.5;
+}
+.jce-icon {
+  fill: none;
+  stroke: rgba(233, 241, 236, 0.74);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.jce-icon--on {
+  stroke: var(--jce-g100);
+}
+.jce-spoke {
+  stroke: rgba(206, 243, 213, 0.14);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+.jce-spoke--on {
+  stroke: var(--jce-g300);
+}
 
 /* step labels: number, bold first word, lighter second word */
-.jce-label .jce-num { fill: rgba(97, 209, 116, .8); font-size: 15px; font-weight: 500; letter-spacing: .08em; }
-.jce-label .jce-l1 { fill: rgba(233, 241, 236, .9); font-size: 24px; font-weight: 600; }
-.jce-label .jce-l2 { fill: rgba(233, 241, 236, .55); font-size: 20px; font-weight: 300; }
+.jce-label .jce-num {
+  fill: rgba(97, 209, 116, 0.8);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+.jce-label .jce-l1 {
+  fill: rgba(233, 241, 236, 0.9);
+  font-size: 24px;
+  font-weight: 600;
+}
+.jce-label .jce-l2 {
+  fill: rgba(233, 241, 236, 0.55);
+  font-size: 20px;
+  font-weight: 300;
+}
 .jce-label--on .jce-num,
-.jce-label--on .jce-l1 { fill: var(--jce-g100); }
-.jce-label--on .jce-l2 { fill: rgba(233, 241, 236, .9); }
+.jce-label--on .jce-l1 {
+  fill: var(--jce-g100);
+}
+.jce-label--on .jce-l2 {
+  fill: rgba(233, 241, 236, 0.9);
+}
 
 /* top pill, dotted lines and the bottom line */
-.jce-rail { stroke: var(--jce-line); }
-.jce-flow { fill: none; stroke: var(--jce-g300); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0 14; }
-.jce-pill-bg { fill: rgba(255, 255, 255, .025); stroke: var(--jce-line); }
-.jce-pill-bg--on { fill: rgba(31, 173, 54, .10); stroke: rgba(97, 209, 116, .6); }
-.jce-pill-text { fill: var(--jce-ink-2); font-size: 18px; font-weight: 500; letter-spacing: .14em; }
-.jce-foot { fill: var(--jce-ink-3); font-size: 19px; font-weight: 400; letter-spacing: .03em; }
-.jce-arrow { fill: var(--jce-g300); }
-.jce-foot--stack { display: none; }
+.jce-rail {
+  stroke: var(--jce-line);
+}
+.jce-flow {
+  fill: none;
+  stroke: var(--jce-g300);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 0 14;
+}
+.jce-pill-bg {
+  fill: rgba(255, 255, 255, 0.025);
+  stroke: var(--jce-line);
+}
+.jce-pill-bg--on {
+  fill: rgba(31, 173, 54, 0.1);
+  stroke: rgba(97, 209, 116, 0.6);
+}
+.jce-pill-text {
+  fill: var(--jce-ink-2);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+.jce-foot {
+  fill: var(--jce-ink-3);
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+.jce-arrow {
+  fill: var(--jce-g300);
+}
+.jce-foot--stack {
+  display: none;
+}
 
 /* compact (narrow boxes such as phones): labels hide and the centre names the active step */
 .jce--compact .jce-label,
-.jce--compact .jce-foot--line { display: none; }
-.jce--compact .jce-foot--stack { display: inline; font-size: 26px; }
-.jce--compact .jce-status { font-size: 28px; }
-.jce--compact .jce-core-label { font-size: 21px; }
-.jce--compact .jce-pill-text { font-size: 24px; }
+.jce--compact .jce-foot--line {
+  display: none;
+}
+.jce--compact .jce-foot--stack {
+  display: inline;
+  font-size: 26px;
+}
+.jce--compact .jce-status {
+  font-size: 28px;
+}
+.jce--compact .jce-core-label {
+  font-size: 21px;
+}
+.jce--compact .jce-pill-text {
+  font-size: 24px;
+}

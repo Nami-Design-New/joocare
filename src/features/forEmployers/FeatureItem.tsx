@@ -1,6 +1,5 @@
 type Feature = { title: string; desc: string };
 
-
 export function FeatureItem({ title, desc }: Feature) {
   return (
     <div className="rounded-xl border border-gray-100 bg-white p-3 shadow-sm">
@@ -10,8 +9,12 @@ export function FeatureItem({ title, desc }: Feature) {
         </div>
 
         <div className="min-w-0">
-          <h3 className="text-base md:text-lg font-semibold text-secondary">{title}</h3>
-          <p className="mt-1 text-xs md:text-sm leading-relaxed text-pretty text-gray-600">{desc}</p>
+          <h3 className="text-base font-semibold text-secondary md:text-lg">
+            {title}
+          </h3>
+          <p className="mt-1 text-xs leading-relaxed text-pretty text-gray-600 md:text-sm">
+            {desc}
+          </p>
         </div>
       </div>
     </div>

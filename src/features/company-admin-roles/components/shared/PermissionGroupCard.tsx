@@ -13,11 +13,11 @@ export default function PermissionGroupCard({
 }: PermissionGroupCardProps) {
   return (
     <Card
-      className="border-border gap-4 rounded-xl bg-white p-5 shadow-none"
+      className="gap-4 rounded-xl border-border bg-white p-5 shadow-none"
       dir="ltr"
     >
       <div className="space-y-1">
-        <h3 className="text-secondary text-base leading-[normal] font-semibold">
+        <h3 className="text-base leading-[normal] font-semibold text-secondary">
           {group.title}
         </h3>
         {group.description ? (
@@ -29,7 +29,7 @@ export default function PermissionGroupCard({
       <div
         className={cn(
           'space-y-3',
-          group.highlighted && 'bg-primary/[0.04] rounded-xl p-4',
+          group.highlighted && 'rounded-xl bg-primary/[0.04] p-4',
           group.entries.some((entry) => entry.label) && 'space-y-0',
         )}
       >
@@ -37,7 +37,7 @@ export default function PermissionGroupCard({
           <PermissionRow key={entry.id} entry={entry} />
         ))}
         {group.note ? (
-          <p className="text-muted-foreground text-sm leading-[normal]">
+          <p className="text-sm leading-[normal] text-muted-foreground">
             {group.note}
           </p>
         ) : null}

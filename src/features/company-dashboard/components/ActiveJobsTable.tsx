@@ -38,7 +38,7 @@ export default function ActiveJobsTable({
   const rows = previewJobs ?? jobs.jobs;
   return (
     <section>
-      <div className="bg-card space-y-6 rounded-2xl p-4">
+      <div className="space-y-6 rounded-2xl bg-card p-4">
         <DashboardWidgetTitle
           title={title ?? t('design.jobs-title')}
           description={t('design.jobs-description')}
@@ -65,7 +65,7 @@ export default function ActiveJobsTable({
           <div className="overflow-hidden rounded-t-2xl">
             <Table className="min-w-175 table-fixed text-base">
               <TableHeader>
-                <TableRow className="bg-muted border-border h-13.75">
+                <TableRow className="h-13.75 border-border bg-muted">
                   {[
                     t('table.job-title'),
                     t('table.job-views'),
@@ -122,7 +122,7 @@ export default function ActiveJobsTable({
           tone="strong"
           showLastPage={false}
           visiblePageCount={5}
-          className="[&_[aria-current=page]]:bg-dashboard-primary mt-4"
+          className="mt-4 [&_[aria-current=page]]:bg-dashboard-primary"
         />
       )}
     </section>

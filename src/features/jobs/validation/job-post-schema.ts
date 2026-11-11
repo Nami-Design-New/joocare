@@ -1,12 +1,12 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const optionalSalaryNumber = z.preprocess((value) => {
-  if (value === "" || value == null) {
+  if (value === '' || value == null) {
     return undefined;
   }
 
   return value;
-}, z.coerce.number().min(0).max(9999999999, "companyPage.postJob.validation.salaryMaxDigits").optional());
+}, z.coerce.number().min(0).max(9999999999, 'companyPage.postJob.validation.salaryMaxDigits').optional());
 
 // ─────────────────────────────────────────────
 // STEP 1 — Job Post Schema
@@ -16,9 +16,11 @@ const optionalSalaryNumber = z.preprocess((value) => {
 export const step1Schema = z
   .object({
     // ── Core Info ──────────────────────────────
-    title: z.string().min(1, "companyPage.postJob.validation.jobTitleRequired"),
+    title: z.string().min(1, 'companyPage.postJob.validation.jobTitleRequired'),
     otherJobTitle: z.string().optional(),
-    license: z.string().min(1, "companyPage.postJob.validation.professionalLicenseRequired"),
+    license: z
+      .string()
+      .min(1, 'companyPage.postJob.validation.professionalLicenseRequired'),
 
     // ── Salary (conditionally required) ────────
     // addSalary: z.boolean().default(false),
@@ -49,77 +51,108 @@ export const step1Schema = z
       })
       .optional(),
     // ── Classification ─────────────────────────
-    category: z.string().min(1, "companyPage.postJob.validation.categoryRequired"),
+    category: z
+      .string()
+      .min(1, 'companyPage.postJob.validation.categoryRequired'),
     otherCategoryTitle: z.string().optional(),
-    specialty: z.string().min(1, "companyPage.postJob.validation.specialtyRequired"),
+    specialty: z
+      .string()
+      .min(1, 'companyPage.postJob.validation.specialtyRequired'),
 
     // ── Employment Type ────────────────────────
-    employmentType: z.string().min(1, "companyPage.postJob.validation.employmentTypeRequired"),
-    roleCategory: z.string().min(1, "companyPage.postJob.validation.roleCategoryRequired"),
+    employmentType: z
+      .string()
+      .min(1, 'companyPage.postJob.validation.employmentTypeRequired'),
+    roleCategory: z
+      .string()
+      .min(1, 'companyPage.postJob.validation.roleCategoryRequired'),
     seniorityLevel: z.string().optional(), // marked optional in UI (hint="optional")
 
     // ── Location ───────────────────────────────
-    country: z.string().min(1, "companyPage.postJob.validation.countryRequired"),
-    city: z.string().min(1, "companyPage.postJob.validation.cityRequired"),
+    country: z
+      .string()
+      .min(1, 'companyPage.postJob.validation.countryRequired'),
+    city: z.string().min(1, 'companyPage.postJob.validation.cityRequired'),
 
     // ── Experience ─────────────────────────────
-    yearsOfExperience: z.string().min(1, "companyPage.postJob.validation.yearsOfExperienceRequired"),
+    yearsOfExperience: z
+      .string()
+      .min(1, 'companyPage.postJob.validation.yearsOfExperienceRequired'),
     otherExperienceTitle: z.string().optional(),
 
     // ── Education & Certifications ─────────────
     educationLevel: z
       .array(z.string())
-      .min(1, "companyPage.postJob.validation.educationLevelRequired"),
+      .min(1, 'companyPage.postJob.validation.educationLevelRequired'),
     mandatoryCertifications: z
       .array(z.string())
-      .min(1, "companyPage.postJob.validation.mandatoryCertificationsRequired"),
-    availability: z.string().min(1, "companyPage.postJob.validation.availabilityRequired"),
+      .min(1, 'companyPage.postJob.validation.mandatoryCertificationsRequired'),
+    availability: z
+      .string()
+      .min(1, 'companyPage.postJob.validation.availabilityRequired'),
     otherAvailabilityTitle: z.string().optional(),
-  }).superRefine((data, ctx) => {
+  })
+  .superRefine((data, ctx) => {
     if (data.assessmentEnabled) {
       if (!data.assessmentSource) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "companyPage.postJob.validation.assessmentLibraryRequired", path: ["assessmentSource"] });
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'companyPage.postJob.validation.assessmentLibraryRequired',
+          path: ['assessmentSource'],
+        });
       }
       if (!data.assessmentCategoryId) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "companyPage.postJob.validation.assessmentCategoryRequired", path: ["assessmentCategoryId"] });
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'companyPage.postJob.validation.assessmentCategoryRequired',
+          path: ['assessmentCategoryId'],
+        });
       }
       if (!data.assessmentId) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "companyPage.postJob.validation.assessmentRequired", path: ["assessmentId"] });
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'companyPage.postJob.validation.assessmentRequired',
+          path: ['assessmentId'],
+        });
       }
     }
     // ── Other job title ──
-    if (data.title === "__other__" && !data.otherJobTitle?.trim()) {
+    if (data.title === '__other__' && !data.otherJobTitle?.trim()) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "companyPage.postJob.validation.otherJobTitleRequired",
-        path: ["otherJobTitle"],
+        message: 'companyPage.postJob.validation.otherJobTitleRequired',
+        path: ['otherJobTitle'],
       });
     }
 
-    if (data.category === "__other__" && !data.otherCategoryTitle?.trim()) {
+    if (data.category === '__other__' && !data.otherCategoryTitle?.trim()) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "companyPage.postJob.validation.otherCategoryRequired",
-        path: ["otherCategoryTitle"],
+        message: 'companyPage.postJob.validation.otherCategoryRequired',
+        path: ['otherCategoryTitle'],
       });
     }
 
     if (
-      data.yearsOfExperience === "__other__" &&
+      data.yearsOfExperience === '__other__' &&
       !data.otherExperienceTitle?.trim()
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "companyPage.postJob.validation.otherYearsOfExperienceRequired",
-        path: ["otherExperienceTitle"],
+        message:
+          'companyPage.postJob.validation.otherYearsOfExperienceRequired',
+        path: ['otherExperienceTitle'],
       });
     }
 
-    if (data.availability === "__other__" && !data.otherAvailabilityTitle?.trim()) {
+    if (
+      data.availability === '__other__' &&
+      !data.otherAvailabilityTitle?.trim()
+    ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "companyPage.postJob.validation.otherAvailabilityRequired",
-        path: ["otherAvailabilityTitle"],
+        message: 'companyPage.postJob.validation.otherAvailabilityRequired',
+        path: ['otherAvailabilityTitle'],
       });
     }
 
@@ -128,8 +161,8 @@ export const step1Schema = z
       if (!data.salary) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "companyPage.postJob.validation.salaryRequired",
-          path: ["salary"],
+          message: 'companyPage.postJob.validation.salaryRequired',
+          path: ['salary'],
         });
         return;
       }
@@ -137,16 +170,16 @@ export const step1Schema = z
       if (data.salary.min == null) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "companyPage.postJob.validation.minSalaryRequired",
-          path: ["salary", "min"],
+          message: 'companyPage.postJob.validation.minSalaryRequired',
+          path: ['salary', 'min'],
         });
       }
 
       if (data.salary.max == null) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "companyPage.postJob.validation.maxSalaryRequired",
-          path: ["salary", "max"],
+          message: 'companyPage.postJob.validation.maxSalaryRequired',
+          path: ['salary', 'max'],
         });
       }
 
@@ -157,28 +190,28 @@ export const step1Schema = z
       ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "companyPage.postJob.validation.maxSalaryGreaterThanMin",
-          path: ["salary", "max"],
+          message: 'companyPage.postJob.validation.maxSalaryGreaterThanMin',
+          path: ['salary', 'max'],
         });
       }
 
       if (!data.salary.type) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "companyPage.postJob.validation.salaryTypeRequired",
-          path: ["salary", "type"],
+          message: 'companyPage.postJob.validation.salaryTypeRequired',
+          path: ['salary', 'type'],
         });
       }
 
       if (!data.salary.currency) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: "companyPage.postJob.validation.currencyRequired",
-          path: ["salary", "currency"],
+          message: 'companyPage.postJob.validation.currencyRequired',
+          path: ['salary', 'currency'],
         });
       }
     }
-  })
+  });
 // ─────────────────────────────────────────────
 // STEP 2 SCHEMA
 // Fields: description (CKEditor HTML), skills (multi-select → string[])
@@ -188,7 +221,7 @@ export const step2Schema = z.object({
   // CKEditor emits an HTML string; strip tags to measure real content length
   description: z
     .string()
-    .min(1, "companyPage.postJob.validation.descriptionRequired"),
+    .min(1, 'companyPage.postJob.validation.descriptionRequired'),
   // .refine(
   //   (val) => val.replace(/<[^>]*>/g, "").trim().length >= 20,
   //   "Description must be at least 20 characters",
@@ -196,19 +229,25 @@ export const step2Schema = z.object({
 
   // SelectInputField stores a single string value per selection.
   // If you later switch to a multi-select, change to z.array(z.string())
-  skills: z.array(z.string()).min(1, "companyPage.postJob.validation.atLeastOneSkillRequired"),
+  skills: z
+    .array(z.string())
+    .min(1, 'companyPage.postJob.validation.atLeastOneSkillRequired'),
   // Screening questions remain client preview data until the backend accepts this field.
-  screeningQuestions: z.array(z.object({
-    id: z.string(),
-    source: z.enum(['template', 'custom']),
-    templateId: z.string().optional(),
-    type: z.enum(['single', 'multi', 'yes-no']),
-    question: z.string(),
-    mark: z.number().int().positive(),
-    options: z.array(z.object({ id: z.string(), text: z.string() })),
-    correctOptionIds: z.array(z.string()),
-    required: z.boolean(),
-  })).default([]),
+  screeningQuestions: z
+    .array(
+      z.object({
+        id: z.string(),
+        source: z.enum(['template', 'custom']),
+        templateId: z.string().optional(),
+        type: z.enum(['single', 'multi', 'yes-no']),
+        question: z.string(),
+        mark: z.number().int().positive(),
+        options: z.array(z.object({ id: z.string(), text: z.string() })),
+        correctOptionIds: z.array(z.string()),
+        required: z.boolean(),
+      }),
+    )
+    .default([]),
 });
 
 // ─────────────────────────────────────────────
@@ -226,37 +265,37 @@ export const stepSchemas = [step1Schema, step2Schema] as const;
 export type StepIndex = 0 | 1;
 
 export const STEPS = [
-  { label: "Job Details", number: 1 },
-  { label: "Job Description & Requirements", number: 2 },
-  { label: "Job Preview", number: 3 },
+  { label: 'Job Details', number: 1 },
+  { label: 'Job Description & Requirements', number: 2 },
+  { label: 'Job Preview', number: 3 },
 ];
 
 export const jobFormDefaults: Partial<JobFormData> = {
-  title: "",
-  otherJobTitle: "",
-  license: "",
+  title: '',
+  otherJobTitle: '',
+  license: '',
   addSalary: false,
   assessmentEnabled: false,
-  assessmentSource: "",
-  assessmentCategoryId: "",
-  assessmentId: "",
-  salary: { min: undefined, max: undefined, type: "", currency: "" },
-  category: "",
-  otherCategoryTitle: "",
-  specialty: "",
-  employmentType: "",
-  roleCategory: "",
-  seniorityLevel: "",
-  country: "",
-  city: "",
-  yearsOfExperience: "",
-  otherExperienceTitle: "",
+  assessmentSource: '',
+  assessmentCategoryId: '',
+  assessmentId: '',
+  salary: { min: undefined, max: undefined, type: '', currency: '' },
+  category: '',
+  otherCategoryTitle: '',
+  specialty: '',
+  employmentType: '',
+  roleCategory: '',
+  seniorityLevel: '',
+  country: '',
+  city: '',
+  yearsOfExperience: '',
+  otherExperienceTitle: '',
   educationLevel: [],
   mandatoryCertifications: [],
-  availability: "",
-  otherAvailabilityTitle: "",
+  availability: '',
+  otherAvailabilityTitle: '',
   // step 2
-  description: "",
+  description: '',
   skills: [],
   screeningQuestions: [],
 };

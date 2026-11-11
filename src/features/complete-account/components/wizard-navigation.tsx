@@ -1,5 +1,5 @@
-import { Button } from "@/shared/components/ui/button";
-import { useTranslations } from "next-intl";
+import { Button } from '@/shared/components/ui/button';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   isFirstStep: boolean;
@@ -14,12 +14,12 @@ export default function WizardNavigation({
   isLastStep,
   next,
   prev,
-  isPending
+  isPending,
 }: Props) {
   const t = useTranslations();
 
   return (
-    <div className="flex justify-center items-center mt-5 w-full gap-2">
+    <div className="mt-5 flex w-full items-center justify-center gap-2">
       {!isFirstStep && (
         <Button
           type="button"
@@ -29,7 +29,7 @@ export default function WizardNavigation({
           className="w-1/2 px-4 sm:w-1/3 sm:px-8 lg:w-56"
           disabled={isPending}
         >
-          {t("completeAccount.actions.prev")}
+          {t('completeAccount.actions.prev')}
         </Button>
       )}
 
@@ -42,7 +42,7 @@ export default function WizardNavigation({
           className="w-1/2 px-4 sm:w-1/3 sm:px-8 lg:w-56"
           disabled={isPending}
         >
-          {isPending ? t("common.loading") : t("completeAccount.actions.next")}
+          {isPending ? t('common.loading') : t('completeAccount.actions.next')}
         </Button>
       )}
 
@@ -54,7 +54,9 @@ export default function WizardNavigation({
           className="w-1/2 px-4 sm:w-1/3 sm:px-8 lg:w-56"
           disabled={isPending}
         >
-          {isPending ? t("common.loading") : t("completeAccount.actions.submit")}
+          {isPending
+            ? t('common.loading')
+            : t('completeAccount.actions.submit')}
         </Button>
       )}
     </div>

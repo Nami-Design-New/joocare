@@ -7,7 +7,7 @@ export default function PermissionNotice({
 }: PermissionNoticeData) {
   return (
     <div
-      className="bg-muted flex items-start gap-2.5 rounded-xl p-4 text-sm leading-[normal]"
+      className="flex items-start gap-2.5 rounded-xl bg-muted p-4 text-sm leading-[normal]"
       dir="ltr"
     >
       <Image
@@ -18,7 +18,7 @@ export default function PermissionNotice({
         className="shrink-0"
       />
       <div className="min-w-0 space-y-1">
-        {title ? <p className="text-secondary font-semibold">{title}</p> : null}
+        {title ? <p className="font-semibold text-secondary">{title}</p> : null}
         <p className="text-muted-foreground">{description}</p>
       </div>
     </div>

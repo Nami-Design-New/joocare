@@ -24,15 +24,15 @@ export default function AssessmentAnswerQuestion({
   return (
     <AccordionItem
       value={question.id}
-      className="bg-card rounded-lg border-0 p-6"
+      className="rounded-lg border-0 bg-card p-6"
     >
       <AccordionTrigger
         iconType="arrow"
-        className="[&>svg]:text-assessment-muted items-start gap-2 p-0 text-start hover:no-underline"
+        className="items-start gap-2 p-0 text-start hover:no-underline [&>svg]:text-assessment-muted"
       >
         <span className="flex min-w-0 flex-1 flex-col gap-4">
           <span className="flex flex-wrap items-center gap-2">
-            <span className="bg-assessment-primary/8 text-assessment-primary rounded px-2.5 py-1 text-xs font-bold">
+            <span className="rounded bg-assessment-primary/8 px-2.5 py-1 text-xs font-bold text-assessment-primary">
               {t('question-number', { number: question.number })}
             </span>
             <span
@@ -48,7 +48,7 @@ export default function AssessmentAnswerQuestion({
               {t(status)}
             </span>
             {question.image ? (
-              <span className="bg-secondary/5 text-assessment-dark rounded px-2.5 py-1 text-xs font-semibold">
+              <span className="rounded bg-secondary/5 px-2.5 py-1 text-xs font-semibold text-assessment-dark">
                 {t('includes-image')}
               </span>
             ) : null}
@@ -63,7 +63,7 @@ export default function AssessmentAnswerQuestion({
               {format.number(question.maxPoints)}
             </span>
           </span>
-          <span className="text-assessment-dark text-[15px] leading-5 font-medium">
+          <span className="text-[15px] leading-5 font-medium text-assessment-dark">
             {question.text}
           </span>
         </span>
@@ -86,7 +86,7 @@ export default function AssessmentAnswerQuestion({
               <li
                 key={option.id}
                 className={cn(
-                  'border-assessment-border flex min-h-11 flex-wrap items-center gap-x-3 gap-y-2 rounded-sm border px-4 py-3 text-sm leading-4.5',
+                  'flex min-h-11 flex-wrap items-center gap-x-3 gap-y-2 rounded-sm border border-assessment-border px-4 py-3 text-sm leading-4.5',
                   {
                     'border-assessment-primary/35 bg-assessment-primary/8 text-assessment-primary':
                       correct,
@@ -102,12 +102,12 @@ export default function AssessmentAnswerQuestion({
                       checked={selected}
                       disabled
                       tabIndex={-1}
-                      className="border-assessment-outline data-[state=checked]:border-assessment-primary data-[state=checked]:bg-assessment-primary size-4 h-4 w-4 rounded-xs shadow-none disabled:opacity-100"
+                      className="size-4 h-4 w-4 rounded-xs border-assessment-outline shadow-none disabled:opacity-100 data-[state=checked]:border-assessment-primary data-[state=checked]:bg-assessment-primary"
                     />
                   ) : (
                     <span
                       className={cn(
-                        'border-assessment-outline flex size-4 items-center justify-center rounded-full border',
+                        'flex size-4 items-center justify-center rounded-full border border-assessment-outline',
                         selected &&
                           (correct
                             ? 'border-assessment-primary'
@@ -145,7 +145,7 @@ export default function AssessmentAnswerQuestion({
                     </span>
                   ) : null}
                   {correct ? (
-                    <span className="bg-assessment-primary/15 rounded-full px-2 py-0.5">
+                    <span className="rounded-full bg-assessment-primary/15 px-2 py-0.5">
                       {t('correct-answer')}
                     </span>
                   ) : null}
@@ -155,7 +155,7 @@ export default function AssessmentAnswerQuestion({
           })}
         </ul>
         {status === 'missing' ? (
-          <p className="bg-assessment-missing/8 text-assessment-missing rounded-lg px-3 py-2.5 text-[13px] leading-4 font-medium">
+          <p className="rounded-lg bg-assessment-missing/8 px-3 py-2.5 text-[13px] leading-4 font-medium text-assessment-missing">
             {t(question.optional ? 'skipped-optional' : 'skipped-question', {
               points: question.maxPoints,
             })}

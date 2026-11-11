@@ -181,7 +181,7 @@ export default function AssessmentQuestionModal({
                           className={
                             field.value.includes(answer)
                               ? 'h-11 rounded-full'
-                              : 'bg-muted text-muted-foreground h-11 rounded-full'
+                              : 'h-11 rounded-full bg-muted text-muted-foreground'
                           }
                           aria-pressed={field.value.includes(answer)}
                           onClick={() => field.onChange([answer])}
@@ -191,7 +191,7 @@ export default function AssessmentQuestionModal({
                       ))}
                     </div>
                     {errors.correctAnswers && (
-                      <p role="alert" className="text-destructive mt-2 text-sm">
+                      <p role="alert" className="mt-2 text-sm text-destructive">
                         {errors.correctAnswers.message}
                       </p>
                     )}
@@ -204,7 +204,7 @@ export default function AssessmentQuestionModal({
                 portalContainer={portalContainer}
               />
             )}
-            <div className="border-border flex justify-end border-t pt-4">
+            <div className="flex justify-end border-t border-border pt-4">
               <Button
                 type="submit"
                 variant="secondary"

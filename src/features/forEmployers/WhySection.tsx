@@ -1,8 +1,8 @@
-import { MoveRight } from "lucide-react";
-import { Button } from "@/shared/components/ui/button";
-import SectionTitle from "../home/components/SectionTitle";
-import { FeatureItem } from "./FeatureItem";
-import type { EmployerHomeItem } from "./types";
+import { MoveRight } from 'lucide-react';
+import { Button } from '@/shared/components/ui/button';
+import SectionTitle from '../home/components/SectionTitle';
+import { FeatureItem } from './FeatureItem';
+import type { EmployerHomeItem } from './types';
 
 type WhySectionProps = {
   title: string;

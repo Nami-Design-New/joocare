@@ -74,7 +74,7 @@ export default function ScreeningQuestionField({
               ))}
             </div>
             {fieldState.error ? (
-              <p id={errorId} role="alert" className="text-destructive text-sm">
+              <p id={errorId} role="alert" className="text-sm text-destructive">
                 {fieldState.error.message}
               </p>
             ) : null}

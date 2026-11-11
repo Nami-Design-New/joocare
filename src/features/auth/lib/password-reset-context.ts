@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { PasswordResetRole } from "./password-reset";
+import { PasswordResetRole } from './password-reset';
 
 type PasswordResetContext = {
   email: string;
@@ -8,7 +8,7 @@ type PasswordResetContext = {
   role: PasswordResetRole;
 };
 
-const COOKIE_PREFIX = "joo_reset_";
+const COOKIE_PREFIX = 'joo_reset_';
 const COOKIE_MAX_AGE = 60 * 10;
 
 function setCookie(name: string, value: string, maxAge = COOKIE_MAX_AGE) {
@@ -17,7 +17,7 @@ function setCookie(name: string, value: string, maxAge = COOKIE_MAX_AGE) {
 
 function getCookie(name: string) {
   const prefix = `${name}=`;
-  const cookies = document.cookie.split("; ");
+  const cookies = document.cookie.split('; ');
   const match = cookies.find((cookie) => cookie.startsWith(prefix));
 
   return match ? decodeURIComponent(match.slice(prefix.length)) : null;

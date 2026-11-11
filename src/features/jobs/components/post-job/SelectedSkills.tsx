@@ -17,10 +17,10 @@ export default function SelectedSkills({
   if (!skills.length) return null;
 
   return (
-    <section className="bg-primary-bg flex flex-col gap-3 rounded-xl p-4">
-      <h3 className="text-primary flex items-center gap-2 text-sm font-semibold">
+    <section className="flex flex-col gap-3 rounded-xl bg-primary-bg p-4">
+      <h3 className="flex items-center gap-2 text-sm font-semibold text-primary">
         {t('selected')}
-        <span className="bg-card flex size-6 items-center justify-center rounded-full text-xs">
+        <span className="flex size-6 items-center justify-center rounded-full bg-card text-xs">
           {skills.length}
         </span>
       </h3>
@@ -28,7 +28,7 @@ export default function SelectedSkills({
         {skills.map((skill) => (
           <li
             key={skill.value}
-            className="border-primary text-primary flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium"
+            className="flex items-center gap-1.5 rounded-full border border-primary px-3.5 py-2 text-sm font-medium text-primary"
           >
             <button
               type="button"

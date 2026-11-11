@@ -46,10 +46,10 @@ export default function ApplyNowModal({
       <DialogContent className="max-h-[calc(100dvh-2rem)] max-w-175 overflow-y-auto rounded-2xl p-5 sm:max-w-175 sm:p-8">
         <div className="flex flex-col gap-6">
           <DialogHeader className="pe-8 text-start">
-            <DialogTitle className="text-foreground text-2xl sm:text-[28px]">
+            <DialogTitle className="text-2xl text-foreground sm:text-[28px]">
               {t('cv-submission-required')}
             </DialogTitle>
-            <DialogDescription className="text-muted-foreground text-base">
+            <DialogDescription className="text-base text-muted-foreground">
               {t('cv-submission-description')}
             </DialogDescription>
           </DialogHeader>
@@ -75,7 +75,7 @@ export default function ApplyNowModal({
               size="pill"
               onClick={apply}
               disabled={applyMutation.isPending || cv.isLoadingProfile}
-              className="bg-assessment-primary hover:bg-assessment-primary/90 w-full sm:w-50"
+              className="w-full bg-assessment-primary hover:bg-assessment-primary/90 sm:w-50"
             >
               {applyMutation.isPending ? t('applying') : t('apply-now')}
             </Button>

@@ -59,24 +59,24 @@ export default function ProjectCard({
   const lastShare = project.shareLogs[0];
 
   return (
-    <Card className="bg-card gap-4 rounded-[24px] border-0 p-3 shadow-none">
+    <Card className="gap-4 rounded-[24px] border-0 bg-card p-3 shadow-none">
       <CardContent className="flex flex-col gap-4 px-0">
         <div className="flex items-start gap-3">
-          <span className="bg-accent text-primary flex size-12 shrink-0 items-center justify-center rounded-full">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-accent text-primary">
             <Folder className="size-6" strokeWidth={1.67} />
           </span>
           <div className="flex min-w-0 flex-1 flex-col gap-2">
-            <h2 className="text-foreground line-clamp-2 text-lg leading-[23px] font-semibold">
+            <h2 className="line-clamp-2 text-lg leading-[23px] font-semibold text-foreground">
               {project.name}
             </h2>
-            <p className="text-muted-foreground text-sm">{project.createdAt}</p>
+            <p className="text-sm text-muted-foreground">{project.createdAt}</p>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
                 aria-label={t('project-actions', { name: project.name })}
-                className="text-muted-foreground hover:text-foreground mt-3 shrink-0 rounded-full transition-colors"
+                className="mt-3 shrink-0 rounded-full text-muted-foreground transition-colors hover:text-foreground"
               >
                 <CircleEllipsis className="size-6" strokeWidth={1.5} />
               </button>
@@ -131,11 +131,11 @@ export default function ProjectCard({
         <p className="flex items-center gap-1.5 text-sm">
           <UserRound
             aria-hidden="true"
-            className="text-secondary size-4 shrink-0"
+            className="size-4 shrink-0 text-secondary"
             strokeWidth={1.5}
           />
           <span className="text-muted-foreground">{t('created-by')}</span>
-          <span className="text-secondary truncate font-medium">
+          <span className="truncate font-medium text-secondary">
             {project.createdBy}
           </span>
         </p>
@@ -160,23 +160,23 @@ export default function ProjectCard({
               </span>
             ))}
           </div>
-          <span className="text-gray-45 text-sm">
+          <span className="text-sm text-gray-45">
             +{project.additionalCandidates} {t('more')}
           </span>
         </div>
 
-        <div className="border-border bg-body-bg flex min-h-[34px] items-center gap-2 rounded-xl border px-3 py-2 text-[13px] leading-4">
-          <ProjectShareIcon className="text-primary size-4 shrink-0" />
+        <div className="flex min-h-[34px] items-center gap-2 rounded-xl border border-border bg-body-bg px-3 py-2 text-[13px] leading-4">
+          <ProjectShareIcon className="size-4 shrink-0 text-primary" />
           {shareCount ? (
             <>
-              <span className="text-muted-foreground min-w-0 flex-1 truncate">
+              <span className="min-w-0 flex-1 truncate text-muted-foreground">
                 {t('shared-count', { count: shareCount })} ·{' '}
                 {t('last-shared', { date: lastShare?.date ?? '' })}
               </span>
               <button
                 type="button"
                 onClick={onShowLog}
-                className="text-primary shrink-0 font-medium underline underline-offset-2"
+                className="shrink-0 font-medium text-primary underline underline-offset-2"
               >
                 {t('view-log')}
               </button>
@@ -201,7 +201,7 @@ export default function ProjectCard({
           </Link>
         </Button>
         {project.isClosed ? (
-          <span className="bg-destructive text-primary-foreground flex h-10 items-center rounded-full px-4 text-xs font-semibold">
+          <span className="flex h-10 items-center rounded-full bg-destructive px-4 text-xs font-semibold text-primary-foreground">
             {t('closed')}
           </span>
         ) : (
@@ -211,7 +211,7 @@ export default function ProjectCard({
             size="icon"
             aria-label={t('share-project')}
             onClick={onShare}
-            className="border-border bg-muted text-primary hover:bg-accent size-10 shrink-0 rounded-full"
+            className="size-10 shrink-0 rounded-full border-border bg-muted text-primary hover:bg-accent"
           >
             <ProjectShareIcon className="size-5" />
           </Button>

@@ -1,9 +1,9 @@
-import { useInfiniteLookup } from "./useInfiniteLookup";
+import { useInfiniteLookup } from './useInfiniteLookup';
 
-export default function useGetAvailabilities(search = "") {
+export default function useGetAvailabilities(search = '') {
   const query = useInfiniteLookup({
-    endpoint: "availabilities",
-    queryKey: "availabilities",
+    endpoint: 'availabilities',
+    queryKey: 'availabilities',
     search,
   });
 

@@ -1,5 +1,5 @@
-import { getAuthApiUrl, type AuthApiRole } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { getAuthApiUrl, type AuthApiRole } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
 export type PasswordResetRole = AuthApiRole;
 
@@ -22,17 +22,20 @@ export async function requestPasswordReset({
   email: string;
   locale: string;
 }) {
-  const { ok, message } = await apiFetch(`${getAuthApiUrl(role)}/auth/forgot-password`, {
-    method: "POST",
-    locale,
-    body: createFormData({ email }),
-  });
+  const { ok, message } = await apiFetch(
+    `${getAuthApiUrl(role)}/auth/forgot-password`,
+    {
+      method: 'POST',
+      locale,
+      body: createFormData({ email }),
+    },
+  );
 
   if (!ok) {
-    throw new Error(message || "Failed to send reset code.");
+    throw new Error(message || 'Failed to send reset code.');
   }
 
-  return message || "Reset code sent successfully.";
+  return message || 'Reset code sent successfully.';
 }
 
 export async function verifyPasswordResetOtp({
@@ -46,17 +49,20 @@ export async function verifyPasswordResetOtp({
   otp: string;
   locale: string;
 }) {
-  const { ok, message } = await apiFetch(`${getAuthApiUrl(role)}/auth/verify-otp`, {
-    method: "POST",
-    locale,
-    body: createFormData({ email, otp }),
-  });
+  const { ok, message } = await apiFetch(
+    `${getAuthApiUrl(role)}/auth/verify-otp`,
+    {
+      method: 'POST',
+      locale,
+      body: createFormData({ email, otp }),
+    },
+  );
 
   if (!ok) {
-    throw new Error(message || "Invalid verification code.");
+    throw new Error(message || 'Invalid verification code.');
   }
 
-  return message || "Code verified successfully.";
+  return message || 'Code verified successfully.';
 }
 
 export async function resetPassword({
@@ -74,20 +80,23 @@ export async function resetPassword({
   passwordConfirmation: string;
   locale: string;
 }) {
-  const { ok, message } = await apiFetch(`${getAuthApiUrl(role)}/auth/reset-password`, {
-    method: "POST",
-    locale,
-    body: createFormData({
-      email,
-      otp,
-      password,
-      password_confirmation: passwordConfirmation,
-    }),
-  });
+  const { ok, message } = await apiFetch(
+    `${getAuthApiUrl(role)}/auth/reset-password`,
+    {
+      method: 'POST',
+      locale,
+      body: createFormData({
+        email,
+        otp,
+        password,
+        password_confirmation: passwordConfirmation,
+      }),
+    },
+  );
 
   if (!ok) {
-    throw new Error(message || "Failed to reset password.");
+    throw new Error(message || 'Failed to reset password.');
   }
 
-  return message || "Password reset successfully.";
+  return message || 'Password reset successfully.';
 }

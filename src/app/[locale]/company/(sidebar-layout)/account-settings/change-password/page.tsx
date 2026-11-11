@@ -1,12 +1,11 @@
-import ChangePasswordForm from "@/features/accout-settings/components/change-password/ChangePasswordForm"
+import ChangePasswordForm from '@/features/accout-settings/components/change-password/ChangePasswordForm';
 
 const ChangePasswordPage = () => {
-    return (
-        <main className="p-2 md:p-6 rounded-2xl bg-white">
-            <ChangePasswordForm />
-        </main>
-    )
-}
+  return (
+    <main className="rounded-2xl bg-white p-2 md:p-6">
+      <ChangePasswordForm />
+    </main>
+  );
+};
 
-export default ChangePasswordPage
-
+export default ChangePasswordPage;

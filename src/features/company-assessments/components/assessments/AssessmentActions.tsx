@@ -30,20 +30,16 @@ export default function AssessmentActions({
   const [assignOpen, setAssignOpen] = useState(false);
 
   return (
-    <div className="border-border flex flex-wrap items-center gap-2 border-t pt-3">
-      <Button
-        className="h-9 flex-1 rounded-full px-3 text-xs"
-      >
-        <Link
-          href={`/company/job-management`}
-        >
+    <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
+      <Button className="h-9 flex-1 rounded-full px-3 text-xs">
+        <Link href={`/company/job-management`}>
           {t('associated-jobs', { count: assessment.associatedJobs })}
         </Link>
       </Button>
       {isCompany ? (
         <Button
           variant="outline"
-          className="border-primary text-primary h-9 flex-1 rounded-full px-3 text-xs"
+          className="h-9 flex-1 rounded-full border-primary px-3 text-xs text-primary"
           asChild
         >
           <Link
@@ -60,8 +56,8 @@ export default function AssessmentActions({
         variant="ghost"
         className={
           isCompany
-            ? 'bg-muted text-secondary size-9 rounded-full p-0'
-            : 'bg-muted text-secondary h-9 flex-1 gap-2 rounded-full px-3 text-xs'
+            ? 'size-9 rounded-full bg-muted p-0 text-secondary'
+            : 'h-9 flex-1 gap-2 rounded-full bg-muted px-3 text-xs text-secondary'
         }
         aria-label={t('preview-assessment', { name: title })}
         onClick={previewHref ? undefined : showComingSoon}
@@ -81,7 +77,7 @@ export default function AssessmentActions({
       <Button
         variant="ghost"
         size="icon"
-        className="bg-muted text-primary size-9 rounded-full"
+        className="size-9 rounded-full bg-muted text-primary"
         aria-label={t('share-assessment', { name: title })}
         title={t(assessment.pausedAt ? 'sharing-disabled' : 'share')}
         disabled={Boolean(assessment.pausedAt)}

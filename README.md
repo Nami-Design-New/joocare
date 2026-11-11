@@ -55,7 +55,6 @@ npx tsc --noEmit  # Type-check the project
 
 There is no test runner configured yet, so there is no `npm test`.
 
-
 ---
 
 ## Coding Rules

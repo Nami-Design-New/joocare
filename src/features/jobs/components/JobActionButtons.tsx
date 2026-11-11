@@ -54,7 +54,10 @@ export function JobActionButtons({
               </Link>
             </Button>
             <Button
-              className={cn(BUTTON_CLASS, 'bg-caution hover:bg-caution/90 text-white')}
+              className={cn(
+                BUTTON_CLASS,
+                'bg-caution text-white hover:bg-caution/90',
+              )}
               disabled={actions.isPending}
               onClick={() => actions.open('pause', job)}
             >

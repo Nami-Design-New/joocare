@@ -1,23 +1,23 @@
-import { getBaseApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { getBaseApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
 export type PrivacyPolicy = {
-  privacy: string
+  privacy: string;
 };
 
 export const privacyService = async (locale: string) => {
   const { data, ok, message } = await apiFetch<PrivacyPolicy>(
     `${getBaseApiUrl()}/privacy`,
     {
-      method: "GET",
-      cache: "force-cache",
+      method: 'GET',
+      cache: 'force-cache',
       next: { revalidate: 300 },
-      locale
+      locale,
     },
   );
 
   if (!ok) {
-    throw new Error(message || "Failed to fetch privacy policy");
+    throw new Error(message || 'Failed to fetch privacy policy');
   }
 
   return data?.data ?? null;

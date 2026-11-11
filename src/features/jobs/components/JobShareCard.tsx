@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Button } from "@/shared/components/ui/button";
-import { useJobShare } from "../hooks/useJobShare";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { Button } from '@/shared/components/ui/button';
+import { useJobShare } from '../hooks/useJobShare';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 type JobShareCardProps = {
   title?: string;
@@ -14,34 +14,38 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
   const t = useTranslations();
   const { shareUrl, copyLink } = useJobShare({ title, path });
   const encodedShareUrl = encodeURIComponent(shareUrl);
-  const encodedTitle = encodeURIComponent(title || t("jobDetailsPage.check-out-this-job"));
+  const encodedTitle = encodeURIComponent(
+    title || t('jobDetailsPage.check-out-this-job'),
+  );
 
   return (
-    <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-4 md:p-8">
-      <h2 className="max-md:text-base max-md:leading-6 text-foreground mb-4 text-lg font-semibold">
-        {t("jobDetailsPage.share-this-job")}
+    <div className="card min-h-36 rounded-2xl border-2 border-border bg-white p-4 shadow-card md:p-8">
+      <h2 className="mb-4 text-lg font-semibold text-foreground max-md:text-base max-md:leading-6">
+        {t('jobDetailsPage.share-this-job')}
       </h2>
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex flex-wrap gap-2">
         <Button
           type="button"
           variant="ghost"
-          className="text-primary bg-accent hover:bg-accent flex h-auto items-center gap-2 rounded-sm px-4 py-2"
+          className="flex h-auto items-center gap-2 rounded-sm bg-accent px-4 py-2 text-primary hover:bg-accent"
           onClick={() => void copyLink()}
         >
           <Image
             src="/assets/icons/pin-link-icon.svg"
-            alt={t("jobDetailsPage.link-icon")}
+            alt={t('jobDetailsPage.link-icon')}
             width={24}
             height={24}
           />
-          <span className="text-sm md:text-lg">{t("jobDetailsPage.copy-link")}</span>
+          <span className="text-sm md:text-lg">
+            {t('jobDetailsPage.copy-link')}
+          </span>
         </Button>
         <div className="flex gap-2">
           <a
             href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedShareUrl}`}
             target="_blank"
             rel="noreferrer"
-            className="bg-accent flex items-center justify-center rounded-sm p-2.5"
+            className="flex items-center justify-center rounded-sm bg-accent p-2.5"
             aria-label="Share on LinkedIn"
           >
             <Image
@@ -55,7 +59,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
             href={`https://www.facebook.com/sharer/sharer.php?u=${encodedShareUrl}`}
             target="_blank"
             rel="noreferrer"
-            className="bg-accent flex items-center justify-center rounded-sm p-2.5"
+            className="flex items-center justify-center rounded-sm bg-accent p-2.5"
             aria-label="Share on Facebook"
           >
             <Image
@@ -69,7 +73,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
             href={`https://twitter.com/intent/tweet?url=${encodedShareUrl}&text=${encodedTitle}`}
             target="_blank"
             rel="noreferrer"
-            className="bg-accent flex items-center justify-center rounded-sm p-2.5"
+            className="flex items-center justify-center rounded-sm bg-accent p-2.5"
             aria-label="Share on X"
           >
             <Image
@@ -82,7 +86,7 @@ export default function JobShareCard({ title, path }: JobShareCardProps) {
 
           <a
             href={`mailto:?subject=${encodedTitle}&body=${encodedShareUrl}`}
-            className="bg-accent flex items-center justify-center rounded-sm p-2.5"
+            className="flex items-center justify-center rounded-sm bg-accent p-2.5"
             aria-label="Share by email"
           >
             <Image

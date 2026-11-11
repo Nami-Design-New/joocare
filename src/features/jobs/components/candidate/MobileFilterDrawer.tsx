@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { Button } from "@/shared/components/ui/button";
+import { Button } from '@/shared/components/ui/button';
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/shared/components/ui/sheet";
-import { SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
-import { AccordionSection, FilterState } from "../../types/index.types";
-import JobFilterSidebar from "./JobsSideBarFilter";
-import { useTranslations } from "next-intl";
+} from '@/shared/components/ui/sheet';
+import { SlidersHorizontal } from 'lucide-react';
+import { useState } from 'react';
+import { AccordionSection, FilterState } from '../../types/index.types';
+import JobFilterSidebar from './JobsSideBarFilter';
+import { useTranslations } from 'next-intl';
 
 type MobileFilterDrawerProps = {
   actionPath: string;
@@ -20,7 +20,7 @@ type MobileFilterDrawerProps = {
   country: string;
   filters: FilterState;
   sections: AccordionSection[];
-  salaryTypeOptions: AccordionSection["options"];
+  salaryTypeOptions: AccordionSection['options'];
 };
 
 export default function MobileFilterDrawer(props: MobileFilterDrawerProps) {
@@ -36,7 +36,7 @@ export default function MobileFilterDrawer(props: MobileFilterDrawerProps) {
           className="flex items-center gap-2 rounded-full border-none bg-white lg:hidden"
         >
           <SlidersHorizontal className="h-4 w-4" />
-          <span className="text-base">{t("jobsPage.filters.title")}</span>
+          <span className="text-base">{t('jobsPage.filters.title')}</span>
         </Button>
       </SheetTrigger>
 
@@ -44,9 +44,9 @@ export default function MobileFilterDrawer(props: MobileFilterDrawerProps) {
         side="left"
         className="w-[320px] overflow-y-auto bg-white p-0 sm:w-95"
       >
-        <SheetHeader className="border-border border-b px-4 py-3">
+        <SheetHeader className="border-b border-border px-4 py-3">
           <SheetTitle className="text-left text-base font-semibold">
-            {t("jobsPage.filters.title")}
+            {t('jobsPage.filters.title')}
           </SheetTitle>
         </SheetHeader>
 

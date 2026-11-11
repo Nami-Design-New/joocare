@@ -23,9 +23,9 @@ export default function AssessmentQuestionCard({
   const t = useTranslations('companyPage.assessments.builder');
   const [expanded, setExpanded] = useState(true);
   return (
-    <article className="border-border rounded-2xl border p-4 md:p-6">
+    <article className="rounded-2xl border border-border p-4 md:p-6">
       <header className="flex items-center gap-3">
-        <span className="bg-primary-bg text-primary rounded-lg p-2 text-sm font-semibold">
+        <span className="rounded-lg bg-primary-bg p-2 text-sm font-semibold text-primary">
           {t('question-number', { number })}
         </span>
         <h2 className="min-w-0 flex-1 truncate text-sm">

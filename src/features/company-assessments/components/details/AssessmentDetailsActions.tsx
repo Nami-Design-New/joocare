@@ -47,8 +47,8 @@ export default function AssessmentDetailsActions({
         variant={isPaused ? 'secondary' : 'ghost'}
         className={
           isPaused
-            ? 'bg-success hover:bg-success/90 rounded-full px-4 text-white'
-            : 'bg-warning/20 text-warning-foreground hover:bg-warning/30 rounded-full px-4'
+            ? 'rounded-full bg-success px-4 text-white hover:bg-success/90'
+            : 'rounded-full bg-warning/20 px-4 text-warning-foreground hover:bg-warning/30'
         }
         onClick={() => setPauseOpen(true)}
       >
@@ -62,7 +62,7 @@ export default function AssessmentDetailsActions({
       <Button
         asChild
         size="sm"
-        className="bg-success hover:bg-success/90 rounded-full px-4 text-white"
+        className="rounded-full bg-success px-4 text-white hover:bg-success/90"
       >
         <Link href={editHref}>
           <Pencil aria-hidden="true" className="size-3.5" />

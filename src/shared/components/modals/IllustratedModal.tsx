@@ -78,7 +78,7 @@ export default function IllustratedModal({
     >
       <DialogContent
         showCloseButton={false}
-        className="bg-card flex w-[calc(100%-2rem)] max-w-175 flex-col items-center gap-5 rounded-3xl border-0 px-6 pt-10 pb-9 text-center shadow-xl sm:min-w-0 sm:px-10"
+        className="flex w-[calc(100%-2rem)] max-w-175 flex-col items-center gap-5 rounded-3xl border-0 bg-card px-6 pt-10 pb-9 text-center shadow-xl sm:min-w-0 sm:px-10"
       >
         <button
           type="button"
@@ -86,7 +86,7 @@ export default function IllustratedModal({
           disabled={isBusy}
           aria-label={t('close')}
           className={cn(
-            'bg-muted hover:bg-muted/80 absolute top-6 flex size-10 items-center justify-center rounded-full transition-colors',
+            'absolute top-6 flex size-10 items-center justify-center rounded-full bg-muted transition-colors hover:bg-muted/80',
             closePosition === 'end' ? 'end-6' : 'start-6',
           )}
         >
@@ -101,14 +101,14 @@ export default function IllustratedModal({
         />
         {badge}
         <div className="flex w-full flex-col gap-2.5">
-          <DialogTitle className="text-secondary text-2xl font-bold sm:text-3xl">
+          <DialogTitle className="text-2xl font-bold text-secondary sm:text-3xl">
             {title}
           </DialogTitle>
           {subtitle ? (
-            <p className="text-foreground/80 text-lg font-medium">{subtitle}</p>
+            <p className="text-lg font-medium text-foreground/80">{subtitle}</p>
           ) : null}
           {description ? (
-            <DialogDescription className="text-muted-foreground text-base leading-relaxed whitespace-pre-line sm:text-[17px]">
+            <DialogDescription className="text-base leading-relaxed whitespace-pre-line text-muted-foreground sm:text-[17px]">
               {description}
             </DialogDescription>
           ) : null}
@@ -129,7 +129,7 @@ export default function IllustratedModal({
           ))}
         </div>
         {footnote ? (
-          <p className="text-muted-foreground -mt-1 text-sm">{footnote}</p>
+          <p className="-mt-1 text-sm text-muted-foreground">{footnote}</p>
         ) : null}
       </DialogContent>
     </Dialog>
@@ -164,7 +164,11 @@ function ModalActionButton({
 
   if (action.href) {
     return (
-      <Button asChild variant={action.variant ?? 'default'} className={className}>
+      <Button
+        asChild
+        variant={action.variant ?? 'default'}
+        className={className}
+      >
         <Link href={action.href} onClick={action.onClick}>
           {content}
         </Link>

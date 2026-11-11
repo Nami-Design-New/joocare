@@ -22,7 +22,7 @@ export default function CompanyWorkspaceLayout({
         <aside
           className={cn(
             // Mobile: a card inside the page padding (like the candidate area); desktop: full-height column.
-            'bg-body-bg col-span-12 px-4 pt-6 md:px-7 lg:col-span-3 lg:block lg:bg-transparent lg:p-0 xl:col-span-2',
+            'col-span-12 bg-body-bg px-4 pt-6 md:px-7 lg:col-span-3 lg:block lg:bg-transparent lg:p-0 xl:col-span-2',
             // Mobile chat is full screen, so it has no sidebar.
             isChat && 'hidden',
           )}
@@ -31,7 +31,7 @@ export default function CompanyWorkspaceLayout({
         </aside>
         <section
           className={cn(
-            'bg-body-bg col-span-12 min-w-0 px-4 pt-6 pb-8 md:px-7 md:pt-12 lg:col-span-9 xl:col-span-10',
+            'col-span-12 min-w-0 bg-body-bg px-4 pt-6 pb-8 md:px-7 md:pt-12 lg:col-span-9 xl:col-span-10',
             isChat && 'px-0 pt-0 pb-0 md:px-7 md:pt-12 md:pb-6',
           )}
         >

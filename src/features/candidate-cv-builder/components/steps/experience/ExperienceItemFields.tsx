@@ -80,7 +80,7 @@ export default function ExperienceItemFields({
                   field.onChange(checked);
                   if (checked) setValue(`${path}.endDate`, '');
                 }}
-                className="text-muted-foreground text-sm"
+                className="text-sm text-muted-foreground"
               >
                 {t('currently-working')}
               </LabelCheckbox>

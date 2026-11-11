@@ -25,7 +25,7 @@ export default function SideContentInfos({
   const t = useTranslations('candidatePage.profile');
 
   return (
-    <aside className="bg-card border-border flex flex-col gap-7 rounded-2xl border p-4">
+    <aside className="flex flex-col gap-7 rounded-2xl border border-border bg-card p-4">
       <section className="flex flex-col items-center gap-3 text-center">
         <ProfileAvatar
           image={profile?.image || DEFAULT_PROFILE_IMAGE}
@@ -33,10 +33,10 @@ export default function SideContentInfos({
           isVerified={Boolean(profile?.isVerified)}
         />
         <div className="flex flex-col gap-2">
-          <h2 className="text-foreground text-[21px] leading-6.5 font-semibold">
+          <h2 className="text-[21px] leading-6.5 font-semibold text-foreground">
             {profile?.name || t('candidate')}
           </h2>
-          <span className="text-assessment-primary text-sm font-semibold">
+          <span className="text-sm font-semibold text-assessment-primary">
             {profile?.jobTitle || t('candidate-account')}
           </span>
         </div>

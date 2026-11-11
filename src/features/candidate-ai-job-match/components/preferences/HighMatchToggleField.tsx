@@ -17,8 +17,8 @@ export default function HighMatchToggleField({
   const t = useTranslations('candidatePage.aiJobMatch.preferences');
 
   return (
-    <div className="border-border flex flex-col gap-3 border-t pt-5">
-      <p className="text-secondary font-semibold">{t('match-preference')}</p>
+    <div className="flex flex-col gap-3 border-t border-border pt-5">
+      <p className="font-semibold text-secondary">{t('match-preference')}</p>
       <Controller
         name="highMatchOnly"
         control={control}
@@ -27,12 +27,12 @@ export default function HighMatchToggleField({
             htmlFor="highMatchOnly"
             className="flex cursor-pointer items-center gap-3"
           >
-            <Target aria-hidden className="text-primary size-6 shrink-0" />
+            <Target aria-hidden className="size-6 shrink-0 text-primary" />
             <span className="flex-1">
-              <span className="text-secondary block font-semibold">
+              <span className="block font-semibold text-secondary">
                 {t('high-match-only')}
               </span>
-              <span className="text-muted-foreground block text-sm">
+              <span className="block text-sm text-muted-foreground">
                 {t('high-match-description', {
                   threshold: HIGH_MATCH_THRESHOLD,
                 })}

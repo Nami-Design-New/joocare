@@ -23,19 +23,19 @@ export default function QuestionHeading({
 }: QuestionHeadingProps) {
   return (
     <div className={cn('flex items-center gap-3', className)}>
-      <span className="bg-assessment-primary/4 text-assessment-primary flex size-10 shrink-0 items-center justify-center rounded-lg text-sm font-semibold">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-assessment-primary/4 text-sm font-semibold text-assessment-primary">
         {badge}
       </span>
       <p
         id={id}
         className={cn(
-          'text-foreground text-base leading-5 font-semibold',
+          'text-base leading-5 font-semibold text-foreground',
           titleClassName,
         )}
       >
         <bdi>{title}</bdi>
         {note ? (
-          <span className="text-muted-foreground ms-1.5 text-sm font-normal">
+          <span className="ms-1.5 text-sm font-normal text-muted-foreground">
             {note}
           </span>
         ) : null}

@@ -25,7 +25,7 @@ export default function ModalHeading({
     <DialogHeader className={className}>
       <DialogTitle
         className={cn(
-          'text-secondary text-2xl sm:text-[28px] leading-[normal] font-semibold tracking-[-0.28px]',
+          'text-2xl leading-[normal] font-semibold tracking-[-0.28px] text-secondary sm:text-[28px]',
           titleClassName,
         )}
       >
@@ -34,7 +34,7 @@ export default function ModalHeading({
       {description ? (
         <DialogDescription
           className={cn(
-            'text-muted-foreground text-base leading-[normal]',
+            'text-base leading-[normal] text-muted-foreground',
             descriptionClassName,
           )}
         >

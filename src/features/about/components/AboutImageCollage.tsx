@@ -24,7 +24,7 @@ export default function AboutImageCollage({
         />
       </div>
 
-      <div className="border-card absolute start-0 top-[29.5%] h-1/2 w-1/2 overflow-hidden rounded-[22px] border-8 shadow-xl sm:rounded-[30px] sm:border-12">
+      <div className="absolute start-0 top-[29.5%] h-1/2 w-1/2 overflow-hidden rounded-[22px] border-8 border-card shadow-xl sm:rounded-[30px] sm:border-12">
         <Image
           src={secondaryImage?.image || ABOUT_FALLBACK_IMAGES.secondary}
           alt={secondaryImage?.alt || fallbackAlt}

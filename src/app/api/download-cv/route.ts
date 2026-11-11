@@ -1,22 +1,22 @@
-import { getTimeZone } from "@/shared/lib/fetch-manager";
-import { NextRequest, NextResponse } from "next/server";
+import { getTimeZone } from '@/shared/lib/fetch-manager';
+import { NextRequest, NextResponse } from 'next/server';
 
-const DEFAULT_FILE_NAME = "candidate-cv.pdf";
+const DEFAULT_FILE_NAME = 'candidate-cv.pdf';
 
 function getAllowedHosts() {
   const values = [
     process.env.NEXT_PUBLIC_BASE_URL,
     process.env.NEXT_PUBLIC_BASE_USER_URL,
     process.env.NEXT_PUBLIC_BASE_COMPANY_URL,
-    "admin.joocare.com",
-    "joocare.com",
+    'admin.joocare.com',
+    'joocare.com',
   ].filter(Boolean) as string[];
 
   return new Set(
     values
       .map((value) => {
         try {
-          const normalized = value.startsWith("http")
+          const normalized = value.startsWith('http')
             ? value
             : `https://${value}`;
 
@@ -31,24 +31,24 @@ function getAllowedHosts() {
 
 function buildContentDisposition(fileName: string) {
   const safeFileName = fileName
-    .replace(/[^\w.\- ]/g, " ")
-    .replace(/\s+/g, " ")
+    .replace(/[^\w.\- ]/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
 
   return `attachment; filename="${safeFileName || DEFAULT_FILE_NAME}"`;
 }
 
 export async function GET(request: NextRequest) {
-  const url = request.nextUrl.searchParams.get("url");
+  const url = request.nextUrl.searchParams.get('url');
   const locale =
-    request.nextUrl.searchParams.get("locale") ??
-    request.headers.get("accept-language") ??
-    "en";
+    request.nextUrl.searchParams.get('locale') ??
+    request.headers.get('accept-language') ??
+    'en';
   const fileName =
-    request.nextUrl.searchParams.get("filename") ?? DEFAULT_FILE_NAME;
+    request.nextUrl.searchParams.get('filename') ?? DEFAULT_FILE_NAME;
 
   if (!url) {
-    return NextResponse.json({ message: "Missing file URL" }, { status: 400 });
+    return NextResponse.json({ message: 'Missing file URL' }, { status: 400 });
   }
 
   let parsedUrl: URL;
@@ -56,39 +56,42 @@ export async function GET(request: NextRequest) {
   try {
     parsedUrl = new URL(url);
   } catch {
-    return NextResponse.json({ message: "Invalid file URL" }, { status: 400 });
+    return NextResponse.json({ message: 'Invalid file URL' }, { status: 400 });
   }
 
   const allowedHosts = getAllowedHosts();
   if (allowedHosts.size > 0 && !allowedHosts.has(parsedUrl.host)) {
-    return NextResponse.json({ message: "File host is not allowed" }, { status: 403 });
+    return NextResponse.json(
+      { message: 'File host is not allowed' },
+      { status: 403 },
+    );
   }
 
   const response = await fetch(parsedUrl.toString(), {
-    cache: "no-store",
+    cache: 'no-store',
     headers: {
-      "X-Timezone": getTimeZone(),
-      "Accept-Language": locale,
+      'X-Timezone': getTimeZone(),
+      'Accept-Language': locale,
     },
   });
 
   if (!response.ok) {
     return NextResponse.json(
-      { message: "Failed to fetch CV file" },
+      { message: 'Failed to fetch CV file' },
       { status: response.status },
     );
   }
 
   const headers = new Headers();
   headers.set(
-    "Content-Type",
-    response.headers.get("Content-Type") ?? "application/octet-stream",
+    'Content-Type',
+    response.headers.get('Content-Type') ?? 'application/octet-stream',
   );
-  headers.set("Content-Disposition", buildContentDisposition(fileName));
+  headers.set('Content-Disposition', buildContentDisposition(fileName));
 
-  const contentLength = response.headers.get("Content-Length");
+  const contentLength = response.headers.get('Content-Length');
   if (contentLength) {
-    headers.set("Content-Length", contentLength);
+    headers.set('Content-Length', contentLength);
   }
 
   return new NextResponse(response.body, {

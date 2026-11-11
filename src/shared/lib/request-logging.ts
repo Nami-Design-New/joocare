@@ -1,14 +1,14 @@
 const SENSITIVE_QUERY_KEYS = new Set([
-  "token",
-  "access_token",
-  "refresh_token",
-  "authorization",
-  "password",
-  "secret",
-  "code",
+  'token',
+  'access_token',
+  'refresh_token',
+  'authorization',
+  'password',
+  'secret',
+  'code',
 ]);
 
-type RouteCounterKey = "proxy" | "apiFetch";
+type RouteCounterKey = 'proxy' | 'apiFetch';
 
 type RouteCounterStore = Record<RouteCounterKey, Map<string, number>>;
 
@@ -33,17 +33,17 @@ function isLoggingEnabled(envValue: string | undefined, fallback = false) {
   }
 
   const normalized = envValue.trim().toLowerCase();
-  return normalized === "1" || normalized === "true" || normalized === "yes";
+  return normalized === '1' || normalized === 'true' || normalized === 'yes';
 }
 
 function redactQueryValue(key: string, value: string) {
-  return SENSITIVE_QUERY_KEYS.has(key.toLowerCase()) ? "[redacted]" : value;
+  return SENSITIVE_QUERY_KEYS.has(key.toLowerCase()) ? '[redacted]' : value;
 }
 
 export function shouldLogRequests() {
   return isLoggingEnabled(
     process.env.ENABLE_REQUEST_LOGS,
-    process.env.NODE_ENV !== "production",
+    process.env.NODE_ENV !== 'production',
   );
 }
 
@@ -61,7 +61,7 @@ export function sanitizeUrl(input: string) {
     }
 
     const search = params.toString();
-    return `${url.origin}${url.pathname}${search ? `?${search}` : ""}`;
+    return `${url.origin}${url.pathname}${search ? `?${search}` : ''}`;
   } catch {
     return input;
   }
@@ -91,7 +91,7 @@ export function incrementRouteCounter(source: RouteCounterKey, url: string) {
 
 export function createRequestLogContext(input: {
   requestId: string;
-  source: "proxy" | "apiFetch";
+  source: 'proxy' | 'apiFetch';
   method: string;
   url: string;
   status?: number;

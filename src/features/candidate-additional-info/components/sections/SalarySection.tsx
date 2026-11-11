@@ -27,18 +27,18 @@ export default function SalarySection() {
     <InfoSection section="salary">
       <InfoSubsection title={t('fields.current-salary')}>
         <div className="flex flex-col gap-1">
-          <div className="bg-card border-border focus-within:border-ring focus-within:ring-ring/50 flex h-13 items-center gap-3 rounded-full border ps-4 pe-1 focus-within:ring-[3px]">
+          <div className="flex h-13 items-center gap-3 rounded-full border border-border bg-card ps-4 pe-1 focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50">
             <input
               id="currentSalary"
               inputMode="decimal"
               aria-label={t('fields.current-salary')}
               aria-invalid={Boolean(errors.currentSalary)}
               placeholder={t('placeholders.current-salary')}
-              className="placeholder:text-muted-foreground/60 h-full min-w-0 flex-1 bg-transparent text-base outline-none"
+              className="h-full min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground/60"
               {...register('currentSalary')}
             />
             <CurrencySymbol currencyId={currentCurrency} />
-            <span aria-hidden className="bg-foreground/5 h-9 w-px" />
+            <span aria-hidden className="h-9 w-px bg-foreground/5" />
             <LookupSelectField
               name="currentCurrency"
               placeholder={t('fields.currency')}
@@ -48,7 +48,7 @@ export default function SalarySection() {
             />
           </div>
           {errors.currentSalary && (
-            <p className="text-destructive mx-1 text-sm">
+            <p className="mx-1 text-sm text-destructive">
               {errors.currentSalary.message}
             </p>
           )}
@@ -74,7 +74,7 @@ export default function SalarySection() {
             placeholder={t('fields.currency')}
             useLookup={useCurrencyLookup}
             containerStyles="w-auto shrink-0"
-            className="bg-secondary text-secondary-foreground h-13 w-24 border-0 px-5 text-[13px] font-semibold shadow-none [&_[data-slot=combobox-trigger-icon]]:text-secondary-foreground"
+            className="h-13 w-24 border-0 bg-secondary px-5 text-[13px] font-semibold text-secondary-foreground shadow-none [&_[data-slot=combobox-trigger-icon]]:text-secondary-foreground"
           />
         </div>
       </InfoSubsection>

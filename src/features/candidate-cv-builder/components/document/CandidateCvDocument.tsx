@@ -31,18 +31,18 @@ export default function CandidateCvDocument({ cv }: CandidateCvDocumentProps) {
       />
 
       {cv.summary && (
-        <section className="bg-primary/5 flex flex-col gap-3.5 rounded-xl px-6 pt-5.5 pb-6">
+        <section className="flex flex-col gap-3.5 rounded-xl bg-primary/5 px-6 pt-5.5 pb-6">
           <CvSectionTitle
             icon={FileText}
             title={t('professional-summary')}
             size="lg"
           />
-          <p className="text-secondary text-[15px] leading-6">{cv.summary}</p>
+          <p className="text-[15px] leading-6 text-secondary">{cv.summary}</p>
         </section>
       )}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_330px] lg:gap-5">
-        <div className="divide-border flex flex-col divide-y [&>*]:py-6 [&>*:first-child]:pt-0">
+        <div className="flex flex-col divide-y divide-border [&>*]:py-6 [&>*:first-child]:pt-0">
           {cv.skills.length > 0 && (
             <CvSkills title={t('skills')} skills={cv.skills} />
           )}
@@ -70,7 +70,7 @@ export default function CandidateCvDocument({ cv }: CandidateCvDocumentProps) {
           )}
         </div>
 
-        <aside className="divide-border lg:border-border relative flex flex-col divide-y lg:border-s lg:ps-5 [&>*]:py-6 [&>*:first-child]:pt-0">
+        <aside className="relative flex flex-col divide-y divide-border lg:border-s lg:border-border lg:ps-5 [&>*]:py-6 [&>*:first-child]:pt-0">
           {cv.highlights.length > 0 && (
             <CvHighlights title={t('highlights')} highlights={cv.highlights} />
           )}

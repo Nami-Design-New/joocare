@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React from "react";
-import { JobFormData } from "../validation/job-post-schema";
-import Image from "next/image";
-import { JobDetails } from "../types/jobs.types";
-import { getJobSalary, getLinkedAssessment } from "../utils";
-import JobOverviewItem from "./JobOverviewItem";
-import { useTranslations } from "next-intl";
-import JobAttachmentsCard from "./JobAttachmentsCard";
-import PositionCard from "./PositionCard";
+import React from 'react';
+import { JobFormData } from '../validation/job-post-schema';
+import Image from 'next/image';
+import { JobDetails } from '../types/jobs.types';
+import { getJobSalary, getLinkedAssessment } from '../utils';
+import JobOverviewItem from './JobOverviewItem';
+import { useTranslations } from 'next-intl';
+import JobAttachmentsCard from './JobAttachmentsCard';
+import PositionCard from './PositionCard';
 
 type JobPreviewLabels = Partial<{
   title: string;
@@ -65,7 +65,7 @@ type ReviewSidebarData = {
 };
 
 function toIdString(value: number | string | null | undefined) {
-  return value == null ? "" : String(value);
+  return value == null ? '' : String(value);
 }
 
 function resolveNamedValue(
@@ -73,8 +73,10 @@ function resolveNamedValue(
   entityId: number | null | undefined,
   entityTitle?: string | null,
 ) {
-  if (!selectedValue) return entityTitle ?? "-";
-  return selectedValue === toIdString(entityId) ? (entityTitle ?? "-") : selectedValue;
+  if (!selectedValue) return entityTitle ?? '-';
+  return selectedValue === toIdString(entityId)
+    ? (entityTitle ?? '-')
+    : selectedValue;
 }
 
 function resolveDisplayValue(
@@ -84,7 +86,7 @@ function resolveDisplayValue(
   entityTitle?: string | null,
 ) {
   if (previewValue !== undefined) {
-    return previewValue || "-";
+    return previewValue || '-';
   }
 
   return resolveNamedValue(selectedValue, entityId, entityTitle);
@@ -95,7 +97,7 @@ function resolveTitle(
   job: JobDetails | null,
   untitledJobLabel: string,
 ) {
-  if (data.title === "__other__") {
+  if (data.title === '__other__') {
     return data.otherJobTitle?.trim() || job?.title || untitledJobLabel;
   }
 
@@ -114,8 +116,8 @@ function resolveCustomOrNamedValue(
   entityId: number | null | undefined,
   entityTitle?: string | null,
 ) {
-  if (selectedValue === "__other__") {
-    return customValue?.trim() || entityTitle || "-";
+  if (selectedValue === '__other__') {
+    return customValue?.trim() || entityTitle || '-';
   }
 
   return resolveNamedValue(selectedValue, entityId, entityTitle);
@@ -126,7 +128,7 @@ function resolvePreviewString(
   fallbackValue: string,
 ) {
   if (previewValue !== undefined) {
-    return previewValue || "-";
+    return previewValue || '-';
   }
 
   return fallbackValue;
@@ -145,37 +147,37 @@ function buildEditPreviewData(
   const resolvedTitle = resolveTitle(data, job, labels.untitledJob);
   const salary = data.addSalary
     ? getJobSalary({
-      min_salary: data.salary?.min ?? null,
-      max_salary: data.salary?.max ?? null,
-      currency: null,
-    })
+        min_salary: data.salary?.min ?? null,
+        max_salary: data.salary?.max ?? null,
+        currency: null,
+      })
     : labels.notSpecified;
   const salaryType = data.addSalary
     ? resolvePreviewString(
-      previewLabels.salaryType,
-      resolveNamedValue(
-        data.salary?.type,
-        job?.salary_type_id,
-        job?.salary_type?.title,
-      ),
-    )
-    : "-";
+        previewLabels.salaryType,
+        resolveNamedValue(
+          data.salary?.type,
+          job?.salary_type_id,
+          job?.salary_type?.title,
+        ),
+      )
+    : '-';
   const currencyCode = data.addSalary
     ? resolvePreviewString(
-      previewLabels.currency,
-      resolveNamedValue(
-        data.salary?.currency,
-        job?.currency_id,
-        job?.currency?.code,
-      ),
-    )
-    : "";
+        previewLabels.currency,
+        resolveNamedValue(
+          data.salary?.currency,
+          job?.currency_id,
+          job?.currency?.code,
+        ),
+      )
+    : '';
 
   // console.log("data job preview panel:::::::::", data);
 
   return {
     title:
-      data.title === "__other__"
+      data.title === '__other__'
         ? resolvedTitle
         : resolvePreviewString(previewLabels.title, resolvedTitle),
     employmentType: resolvePreviewString(
@@ -191,7 +193,8 @@ function buildEditPreviewData(
       previewLabels.skills ??
       data.skills?.map(
         (skillId) =>
-          job?.skills?.find((skill) => String(skill.id) === skillId)?.title ?? skillId,
+          job?.skills?.find((skill) => String(skill.id) === skillId)?.title ??
+          skillId,
       ) ??
       [],
     salary,
@@ -251,20 +254,21 @@ function buildEditPreviewData(
       previewLabels.educationLevel ??
       data.educationLevel?.map(
         (levelId) =>
-          job?.education_levels?.find((level) => String(level.id) === levelId)?.title ??
-          levelId,
+          job?.education_levels?.find((level) => String(level.id) === levelId)
+            ?.title ?? levelId,
       ) ??
       [],
     mandatoryCertifications:
       previewLabels.mandatoryCertifications ??
       data.mandatoryCertifications?.map((certificationId) => {
-        if (certificationId.startsWith("__custom__:")) {
-          return certificationId.replace("__custom__:", "");
+        if (certificationId.startsWith('__custom__:')) {
+          return certificationId.replace('__custom__:', '');
         }
 
         return (
           job?.mandatory_certifications?.find(
-            (item) => String(item.mandatory_certification_id) === certificationId,
+            (item) =>
+              String(item.mandatory_certification_id) === certificationId,
           )?.mandatory_certification?.title ??
           job?.mandatory_certifications?.find(
             (item) => String(item.id) === certificationId,
@@ -294,29 +298,29 @@ function buildSidebarData(
   const addSalary = Boolean(data.addSalary || job?.has_salary);
   const salary = addSalary
     ? getJobSalary({
-      min_salary: data.salary?.min ?? job?.min_salary ?? null,
-      max_salary: data.salary?.max ?? job?.max_salary ?? null,
-      currency: null,
-    })
+        min_salary: data.salary?.min ?? job?.min_salary ?? null,
+        max_salary: data.salary?.max ?? job?.max_salary ?? null,
+        currency: null,
+      })
     : labels.notSpecified;
 
   const salaryType = addSalary
     ? resolveDisplayValue(
-      previewLabels.salaryType,
-      data.salary?.type,
-      job?.salary_type_id,
-      job?.salary_type?.title,
-    )
-    : "-";
+        previewLabels.salaryType,
+        data.salary?.type,
+        job?.salary_type_id,
+        job?.salary_type?.title,
+      )
+    : '-';
 
   const currencyCode = addSalary
     ? resolveDisplayValue(
-      previewLabels.currency,
-      data.salary?.currency,
-      job?.currency_id,
-      job?.currency?.code,
-    )
-    : "";
+        previewLabels.currency,
+        data.salary?.currency,
+        job?.currency_id,
+        job?.currency?.code,
+      )
+    : '';
 
   return {
     salary,
@@ -336,7 +340,7 @@ function buildSidebarData(
     ),
     experience: resolveDisplayValue(
       previewLabels.yearsOfExperience,
-      data.yearsOfExperience === "__other__"
+      data.yearsOfExperience === '__other__'
         ? data.otherExperienceTitle
         : data.yearsOfExperience,
       job?.experience_id,
@@ -344,7 +348,7 @@ function buildSidebarData(
     ),
     category: resolveDisplayValue(
       previewLabels.category,
-      data.category === "__other__" ? data.otherCategoryTitle : data.category,
+      data.category === '__other__' ? data.otherCategoryTitle : data.category,
       job?.category_id,
       job?.category_title ?? job?.category?.title,
     ),
@@ -370,20 +374,21 @@ function buildSidebarData(
       previewLabels.educationLevel ??
       data.educationLevel?.map(
         (levelId) =>
-          job?.education_levels?.find((level) => String(level.id) === levelId)?.title ??
-          levelId,
+          job?.education_levels?.find((level) => String(level.id) === levelId)
+            ?.title ?? levelId,
       ) ??
       [],
     mandatoryCertifications:
       previewLabels.mandatoryCertifications ??
       data.mandatoryCertifications?.map((certificationId) => {
-        if (certificationId.startsWith("__custom__:")) {
-          return certificationId.replace("__custom__:", "");
+        if (certificationId.startsWith('__custom__:')) {
+          return certificationId.replace('__custom__:', '');
         }
 
         return (
           job?.mandatory_certifications?.find(
-            (item) => String(item.mandatory_certification_id) === certificationId,
+            (item) =>
+              String(item.mandatory_certification_id) === certificationId,
           )?.mandatory_certification?.title ??
           job?.mandatory_certifications?.find(
             (item) => String(item.id) === certificationId,
@@ -394,7 +399,7 @@ function buildSidebarData(
       [],
     availability: resolveDisplayValue(
       previewLabels.availability,
-      data.availability === "__other__"
+      data.availability === '__other__'
         ? data.otherAvailabilityTitle
         : data.availability,
       job?.availability_id,
@@ -405,112 +410,121 @@ function buildSidebarData(
 
 function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
   const t = useTranslations();
-  const tPostJob = useTranslations("companyPage.postJob");
+  const tPostJob = useTranslations('companyPage.postJob');
 
   return (
     <>
-      <div className="card border-border shadow-card flex min-h-36 items-start justify-around rounded-2xl border-2 bg-white px-6 py-8 lg:justify-between">
+      <div className="card flex min-h-36 items-start justify-around rounded-2xl border-2 border-border bg-white px-6 py-8 shadow-card lg:justify-between">
         <div className="flex flex-1 flex-col items-center justify-center gap-2">
-          <div className="flex items-center justify-center p-1 rounded-full border-3 border-primary">
+          <div className="flex items-center justify-center rounded-full border-3 border-primary p-1">
             <Image
-              src={"/assets/icons/dollar.svg"}
+              src={'/assets/icons/dollar.svg'}
               width={20}
               height={20}
               alt=""
             />
           </div>
-          <h4 className="text-foreground text-lg font-semibold">
-            {tPostJob("review.salary")}
-            {preview.salaryType !== "-" && preview.currencyCode ? ` (${preview.currencyCode})` : ""}
+          <h4 className="text-lg font-semibold text-foreground">
+            {tPostJob('review.salary')}
+            {preview.salaryType !== '-' && preview.currencyCode
+              ? ` (${preview.currencyCode})`
+              : ''}
           </h4>
-          <p className="text-primary text-base font-semibold">
+          <p className="text-base font-semibold text-primary">
             {preview.salary}
             {/* {preview.salaryType !== "-" ? preview.currencyCode : ""} */}
           </p>
-          <span className="text-muted-foreground text-sm">{preview.salaryType}</span>
+          <span className="text-sm text-muted-foreground">
+            {preview.salaryType}
+          </span>
         </div>
-        <div className="bg-muted h-full w-0.5"></div>
-        <div className="flex flex-1 flex-col items-center justify-center gap-1 -mt-[3px]">
-          <div className="flex items-center justify-center ">
+        <div className="h-full w-0.5 bg-muted"></div>
+        <div className="-mt-[3px] flex flex-1 flex-col items-center justify-center gap-1">
+          <div className="flex items-center justify-center">
             <Image
-              src={"/assets/icons/map-pin.svg"}
+              src={'/assets/icons/map-pin.svg'}
               width={38}
               height={38}
               alt=""
             />
           </div>
-          <h4 className="text-foreground text-lg font-semibold">{tPostJob("review.jobLocation")}</h4>
-          <p className="text-muted-foreground text-sm md:text-base text-center font-semibold">
+          <h4 className="text-lg font-semibold text-foreground">
+            {tPostJob('review.jobLocation')}
+          </h4>
+          <p className="text-center text-sm font-semibold text-muted-foreground md:text-base">
             {preview.city}
-            {preview.city !== "-" ? "," : ""}
+            {preview.city !== '-' ? ',' : ''}
             <br />
             {preview.country}
           </p>
         </div>
       </div>
 
-      <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white px-6 py-8">
-        <h2 className="text-foreground mb-4 text-lg font-semibold">
-          {tPostJob("review.jobOverview")}
+      <div className="card min-h-36 rounded-2xl border-2 border-border bg-white px-6 py-8 shadow-card">
+        <h2 className="mb-4 text-lg font-semibold text-foreground">
+          {tPostJob('review.jobOverview')}
         </h2>
         <div className="grid grid-cols-2 gap-6 px-3 text-sm">
           <div className="col-span-2">
             <JobOverviewItem
-              label={tPostJob("review.fields.experience")}
+              label={tPostJob('review.fields.experience')}
               value={preview.experience}
               icon="/assets/icons/exp.svg"
-              emptyValueLabel={t("jobsPage.not-specified")}
+              emptyValueLabel={t('jobsPage.not-specified')}
             />
           </div>
           <JobOverviewItem
-            label={tPostJob("review.fields.jobCategory")}
+            label={tPostJob('review.fields.jobCategory')}
             value={preview.category}
             icon="/assets/icons/job-category.svg"
-            emptyValueLabel={t("jobsPage.not-specified")}
+            emptyValueLabel={t('jobsPage.not-specified')}
           />
           <JobOverviewItem
-            label={tPostJob("review.fields.specialty")}
+            label={tPostJob('review.fields.specialty')}
             value={preview.specialty}
             icon="/assets/icons/specialty.svg"
-            emptyValueLabel={t("jobsPage.not-specified")}
+            emptyValueLabel={t('jobsPage.not-specified')}
           />
           <JobOverviewItem
-            label={tPostJob("review.fields.roleCategory")}
+            label={tPostJob('review.fields.roleCategory')}
             value={preview.roleCategory}
             icon="/assets/icons/role-category.svg"
-            emptyValueLabel={t("jobsPage.not-specified")}
+            emptyValueLabel={t('jobsPage.not-specified')}
           />
           <JobOverviewItem
-            label={tPostJob("review.fields.seniorityLevel")}
+            label={tPostJob('review.fields.seniorityLevel')}
             value={preview.seniorityLevel}
             icon="/assets/icons/seniority.svg"
-            emptyValueLabel={t("jobsPage.not-specified")}
+            emptyValueLabel={t('jobsPage.not-specified')}
           />
         </div>
       </div>
 
-      <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white px-6 py-8">
-        <h2 className="text-foreground mb-4 text-lg font-semibold">
-          {tPostJob("review.educationSectionTitle")}
+      <div className="card min-h-36 rounded-2xl border-2 border-border bg-white px-6 py-8 shadow-card">
+        <h2 className="mb-4 text-lg font-semibold text-foreground">
+          {tPostJob('review.educationSectionTitle')}
         </h2>
         <div className="flex flex-col gap-6">
           <div>
             <div className="flex items-center gap-2">
               <Image
                 src="/assets/icons/exp.svg"
-                width={20} height={20}
+                width={20}
+                height={20}
                 alt=""
               />
-              <p className="text-muted-foreground text-sm md:text-base">{tPostJob("review.fields.educationLevel")}</p>
+              <p className="text-sm text-muted-foreground md:text-base">
+                {tPostJob('review.fields.educationLevel')}
+              </p>
             </div>
             <ul className="mt-2 flex flex-col gap-2">
               {preview.educationLevels.map((level) => (
-                <li className="text-foreground font-semibold" key={level}>
+                <li className="font-semibold text-foreground" key={level}>
                   {level}
                 </li>
               ))}
               {preview.educationLevels.length === 0 && (
-                <li className="text-foreground font-semibold">-</li>
+                <li className="font-semibold text-foreground">-</li>
               )}
             </ul>
           </div>
@@ -518,10 +532,13 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
             <div className="flex items-center gap-2">
               <Image
                 src="/assets/icons/case.svg"
-                width={20} height={20}
+                width={20}
+                height={20}
                 alt=""
               />
-              <p className="text-muted-foreground text-sm md:text-base">{tPostJob("review.fields.mandatoryCertifications")}</p>
+              <p className="text-sm text-muted-foreground md:text-base">
+                {tPostJob('review.fields.mandatoryCertifications')}
+              </p>
             </div>
             <ul className="mt-2 flex flex-col gap-2">
               {preview.mandatoryCertifications.map((item) => (
@@ -535,10 +552,10 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
             </ul>
           </div>
           <JobOverviewItem
-            label={tPostJob("review.fields.availability")}
+            label={tPostJob('review.fields.availability')}
             value={preview.availability}
             icon="/assets/icons/case.svg"
-            emptyValueLabel={t("jobsPage.not-specified")}
+            emptyValueLabel={t('jobsPage.not-specified')}
           />
         </div>
       </div>
@@ -558,45 +575,52 @@ export default function JobReviewPanel({
   previewLabels?: JobPreviewLabels;
 }) {
   const t = useTranslations();
-  const tPostJob = useTranslations("companyPage.postJob");
+  const tPostJob = useTranslations('companyPage.postJob');
 
   const labels = {
-    untitledJob: tPostJob("review.untitledJob"),
-    notSpecified: t("jobsPage.not-specified"),
-    noDescriptionHtml: `<p>${tPostJob("review.noDescriptionHtml")}</p>`,
+    untitledJob: tPostJob('review.untitledJob'),
+    notSpecified: t('jobsPage.not-specified'),
+    noDescriptionHtml: `<p>${tPostJob('review.noDescriptionHtml')}</p>`,
   };
 
   if (!job && !isEditMode) {
     return (
       <section className="p-6">
-        <p className="text-muted-foreground text-sm">
-          {tPostJob("review.noPreviewData")}
+        <p className="text-sm text-muted-foreground">
+          {tPostJob('review.noPreviewData')}
         </p>
       </section>
     );
   }
 
-  const preview = isEditMode ? buildEditPreviewData(data, job, previewLabels, labels) : null;
+  const preview = isEditMode
+    ? buildEditPreviewData(data, job, previewLabels, labels)
+    : null;
   const sidebarPreview = buildSidebarData(data, job, previewLabels, labels);
-  const skills = preview?.skills ?? job?.skills?.map((skill) => skill.title) ?? [];
+  const skills =
+    preview?.skills ?? job?.skills?.map((skill) => skill.title) ?? [];
 
   return (
     <section>
       <div className="mt-5 p-4">
         <PositionCard
-          logoSrc={job?.company?.image || "/assets/new-logo-dot.svg"}
-          title={preview?.title ?? job?.title ?? job?.job_title?.title ?? data.title}
-          company={job?.company?.name ?? tPostJob("review.companyFallback")}
+          logoSrc={job?.company?.image || '/assets/new-logo-dot.svg'}
+          title={
+            preview?.title ?? job?.title ?? job?.job_title?.title ?? data.title
+          }
+          company={job?.company?.name ?? tPostJob('review.companyFallback')}
           employmentType={
-            preview?.employmentType ?? job?.employment_type?.title ?? tPostJob("review.na")
+            preview?.employmentType ??
+            job?.employment_type?.title ??
+            tPostJob('review.na')
           }
         />
       </div>
 
-      <div className="grid grid-cols-1 max-lg:gap-y-5 lg:gap-5 lg:p-7 lg:grid-cols-3">
-        <div className="font-noto-sans col-span-2 text-[#212529] max-sm:order-2">
-          <h3 className="text-primary mb-4 text-xl font-bold">
-            {tPostJob("review.jobDescriptionTitle")}
+      <div className="grid grid-cols-1 max-lg:gap-y-5 lg:grid-cols-3 lg:gap-5 lg:p-7">
+        <div className="col-span-2 font-noto-sans text-[#212529] max-sm:order-2">
+          <h3 className="mb-4 text-xl font-bold text-primary">
+            {tPostJob('review.jobDescriptionTitle')}
           </h3>
           <div
             className="prose prose-sm max-w-none border-b pb-5"
@@ -608,19 +632,23 @@ export default function JobReviewPanel({
             }}
           />
           <div>
-            <h3 className="text-primary font-outfit mt-5 text-xl font-bold">
-              {tPostJob("review.skillsTitle")}
+            <h3 className="mt-5 font-outfit text-xl font-bold text-primary">
+              {tPostJob('review.skillsTitle')}
             </h3>
             <ul className="dashed-list mt-5 flex flex-col gap-1.5 ps-7 text-sm">
               {skills.map((skill) => (
                 <li key={skill}>{skill}</li>
               ))}
-              {skills.length === 0 && <li>{tPostJob("review.noSkillsSelected")}</li>}
+              {skills.length === 0 && (
+                <li>{tPostJob('review.noSkillsSelected')}</li>
+              )}
             </ul>
             <div className="mt-6">
               <JobAttachmentsCard
                 questions={data.screeningQuestions}
-                assessment={getLinkedAssessment(data.assessmentEnabled ? data.assessmentId : undefined)}
+                assessment={getLinkedAssessment(
+                  data.assessmentEnabled ? data.assessmentId : undefined,
+                )}
                 previewAssessment
               />
             </div>

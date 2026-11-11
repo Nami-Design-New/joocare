@@ -17,24 +17,24 @@ export default function CvExperience({
       <ol className="flex flex-col">
         {experiences.map((experience) => (
           <li key={experience.id} className="grid grid-cols-[96px_1fr] gap-3">
-            <span className="text-primary pt-0.5 text-[13px] font-semibold">
+            <span className="pt-0.5 text-[13px] font-semibold text-primary">
               {experience.label}
             </span>
-            <div className="border-primary/30 relative border-s-2 ps-5 pb-2">
+            <div className="relative border-s-2 border-primary/30 ps-5 pb-2">
               <span
                 aria-hidden="true"
-                className="bg-primary absolute -start-2 top-1 size-3.5 rounded-full"
+                className="absolute -start-2 top-1 size-3.5 rounded-full bg-primary"
               />
-              <h4 className="text-foreground text-base font-semibold">
+              <h4 className="text-base font-semibold text-foreground">
                 {experience.title}
               </h4>
               {experience.description && (
-                <p className="text-secondary mt-1 text-sm leading-[22px]">
+                <p className="mt-1 text-sm leading-[22px] text-secondary">
                   {experience.description}
                 </p>
               )}
               {experience.strengthsTitle && (
-                <h5 className="text-foreground mt-4 text-sm font-semibold">
+                <h5 className="mt-4 text-sm font-semibold text-foreground">
                   {experience.strengthsTitle}
                 </h5>
               )}
@@ -42,7 +42,7 @@ export default function CvExperience({
                 {experience.strengths.map((strength) => (
                   <li
                     key={strength}
-                    className="text-secondary text-[13px] leading-[18px]"
+                    className="text-[13px] leading-[18px] text-secondary"
                   >
                     {strength}
                   </li>

@@ -29,7 +29,7 @@ export default function JobMatchCard({ job }: JobMatchCardProps) {
   ];
 
   return (
-    <Card className="border-border shadow-header gap-5 rounded-2xl p-4">
+    <Card className="gap-5 rounded-2xl border-border p-4 shadow-header">
       <div className="flex items-start gap-4">
         <div className="flex min-w-0 flex-1 items-start gap-3.5">
           <Image
@@ -37,26 +37,26 @@ export default function JobMatchCard({ job }: JobMatchCardProps) {
             width={52}
             height={46}
             alt=""
-            className="bg-match-primary/8 h-11.5 w-13 shrink-0 rounded-[11.52px] object-contain p-1.5"
+            className="h-11.5 w-13 shrink-0 rounded-[11.52px] bg-match-primary/8 object-contain p-1.5"
           />
           <div className="flex min-w-0 flex-1 flex-col gap-2">
             <div className="flex flex-col gap-1">
-              <h3 className="text-secondary truncate text-lg leading-[23px] font-semibold">
+              <h3 className="truncate text-lg leading-[23px] font-semibold text-secondary">
                 <Link href={href} className="hover:text-match-primary">
                   {job.title}
                 </Link>
               </h3>
-              <p className="text-muted-foreground truncate text-sm leading-[23px]">
+              <p className="truncate text-sm leading-[23px] text-muted-foreground">
                 {job.companyName}
               </p>
             </div>
-            <ul className="text-foreground flex flex-wrap items-center gap-2 text-sm leading-[18px]">
+            <ul className="flex flex-wrap items-center gap-2 text-sm leading-[18px] text-foreground">
               {meta.map(({ icon, value }, index) => (
                 <Fragment key={value}>
                   {index > 0 && (
                     <li
                       aria-hidden
-                      className="bg-border size-0.5 rounded-full"
+                      className="size-0.5 rounded-full bg-border"
                     />
                   )}
                   <li className="flex items-center gap-1">
@@ -88,13 +88,13 @@ export default function JobMatchCard({ job }: JobMatchCardProps) {
         ))}
       </ul>
 
-      <div className="bg-border h-px" />
+      <div className="h-px bg-border" />
 
       <div className="grid grid-cols-2 gap-2">
         <Button
           asChild
           className={cn(
-            'bg-match-primary hover:bg-match-primary/90 text-primary-foreground',
+            'bg-match-primary text-primary-foreground hover:bg-match-primary/90',
             ACTION_CLASS_NAME,
           )}
         >

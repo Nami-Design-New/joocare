@@ -35,17 +35,17 @@ export default function CandidateAnswersModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="bg-card flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-255 flex-col gap-6 rounded-2xl border-0 p-5 sm:min-w-0 sm:px-10 sm:py-12"
+        className="flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-255 flex-col gap-6 rounded-2xl border-0 bg-card p-5 sm:min-w-0 sm:px-10 sm:py-12"
       >
         <div className="flex items-center justify-between gap-4">
-          <DialogTitle className="text-foreground text-2xl font-semibold sm:text-[28px]">
+          <DialogTitle className="text-2xl font-semibold text-foreground sm:text-[28px]">
             {t('title')}
           </DialogTitle>
           <DialogClose asChild>
             <Button
               size="icon-circle"
               aria-label={t('close')}
-              className="bg-assessment-primary hover:bg-assessment-primary/90 size-12 shrink-0"
+              className="size-12 shrink-0 bg-assessment-primary hover:bg-assessment-primary/90"
             >
               <X aria-hidden className="size-5" />
             </Button>
@@ -54,7 +54,7 @@ export default function CandidateAnswersModal({
 
         <div className="flex min-h-0 flex-col gap-4">
           <div className="flex flex-wrap items-center gap-2">
-            <DialogDescription className="text-muted-foreground min-w-0 flex-1 text-sm">
+            <DialogDescription className="min-w-0 flex-1 text-sm text-muted-foreground">
               {t('summary', {
                 job: answers.jobTitle,
                 count: answers.questions.length,

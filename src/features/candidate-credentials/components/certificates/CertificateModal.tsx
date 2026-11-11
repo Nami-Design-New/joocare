@@ -1,40 +1,40 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState, useTransition } from "react";
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { useLocale, useTranslations } from "next-intl";
-import { toast } from "sonner";
-import { InputField } from "@/shared/components/InputField";
-import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
-import { Button } from "@/shared/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
+import { useMemo, useState, useTransition } from 'react';
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
+import { useLocale, useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import { InputField } from '@/shared/components/InputField';
+import { StoredFilepondUpload } from '@/shared/components/StoredFilepondUpload';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { storeUploadedFileAction } from "@/features/candidate-settings/actions/basic-info-actions";
+} from '@/shared/components/ui/dialog';
+import { storeUploadedFileAction } from '@/features/candidate-settings/actions/basic-info-actions';
 import {
   createCertificateAction,
   updateCertificateAction,
-} from "../../actions/certificate-actions";
-import { certificatesQueryKeyPrefix } from "../../hooks/useGetCertificates";
+} from '../../actions/certificate-actions';
+import { certificatesQueryKeyPrefix } from '../../hooks/useGetCertificates';
 import {
   prependInfiniteItem,
   replaceInfiniteItem,
-} from "../../services/infinite-query-cache";
+} from '../../services/infinite-query-cache';
 import type {
   CertificateFormValues,
   CertificateViewModel,
-} from "../../types/certificate.types";
+} from '../../types/certificate.types';
 import {
   createCertificateSchema,
   type CertificateSchemaOutput,
   type CertificateSchemaValues,
-} from "../../validation/certificate-schema";
+} from '../../validation/certificate-schema';
 
 interface CertificateModalProps {
   open: boolean;
@@ -44,14 +44,16 @@ interface CertificateModalProps {
 }
 
 const EMPTY_FORM: CertificateFormValues = {
-  name: "",
-  company: "",
-  startDate: "",
-  endDate: "",
+  name: '',
+  company: '',
+  startDate: '',
+  endDate: '',
   image: [],
 };
 
-function toFormState(certificate?: CertificateViewModel | null): CertificateFormValues {
+function toFormState(
+  certificate?: CertificateViewModel | null,
+): CertificateFormValues {
   if (!certificate) {
     return EMPTY_FORM;
   }
@@ -59,8 +61,8 @@ function toFormState(certificate?: CertificateViewModel | null): CertificateForm
   return {
     name: certificate.name,
     company: certificate.company,
-    startDate: certificate.startDate ?? "",
-    endDate: certificate.endDate ?? "",
+    startDate: certificate.startDate ?? '',
+    endDate: certificate.endDate ?? '',
     image: [],
   };
 }
@@ -80,16 +82,16 @@ function buildOptimisticCertificate({
   endDate?: string;
   image?: string | null;
 }): CertificateViewModel {
-  const startLabel = new Date(startDate).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
+  const startLabel = new Date(startDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
   });
   const endLabel = endDate
-    ? new Date(endDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
+    ? new Date(endDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
       })
-    : "Present";
+    : 'Present';
 
   return {
     id: certificate?.id ?? `temp-${Date.now()}`,
@@ -113,23 +115,25 @@ export function CertificateModal({
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
   const [storedImagePath, setStoredImagePath] = useState<string | null>(null);
-  const [showExistingImage, setShowExistingImage] = useState(Boolean(certificate?.image));
+  const [showExistingImage, setShowExistingImage] = useState(
+    Boolean(certificate?.image),
+  );
   const certificateFormSchema = useMemo(
     () =>
       createCertificateSchema({
         requireImage: !(certificate?.image && showExistingImage),
         messages: {
-          nameMin: t("candidateValidation.certificate-name-min"),
-          nameMax: t("candidateValidation.certificate-name-max"),
-          companyMin: t("candidateValidation.issuing-organization-min"),
-          companyMax: t("candidateValidation.issuing-organization-max"),
-          startDateRequired: t("candidateValidation.start-date-required"),
-          imageRequired: t("candidateValidation.certificate-image-required"),
-          oneImageOnly: t("candidateValidation.one-image-only"),
-          imageType: t("candidateValidation.image-jpg-png"),
-          imageSize: t("candidateValidation.image-max-5mb"),
-          startDatePast: t("candidateValidation.start-date-past"),
-          endDateAfterStart: t("candidateValidation.end-date-after-start"),
+          nameMin: t('candidateValidation.certificate-name-min'),
+          nameMax: t('candidateValidation.certificate-name-max'),
+          companyMin: t('candidateValidation.issuing-organization-min'),
+          companyMax: t('candidateValidation.issuing-organization-max'),
+          startDateRequired: t('candidateValidation.start-date-required'),
+          imageRequired: t('candidateValidation.certificate-image-required'),
+          oneImageOnly: t('candidateValidation.one-image-only'),
+          imageType: t('candidateValidation.image-jpg-png'),
+          imageSize: t('candidateValidation.image-max-5mb'),
+          startDatePast: t('candidateValidation.start-date-past'),
+          endDateAfterStart: t('candidateValidation.end-date-after-start'),
         },
       }),
     [certificate?.image, showExistingImage, t],
@@ -148,8 +152,9 @@ export function CertificateModal({
 
   const onSubmit: SubmitHandler<CertificateSchemaOutput> = (form) => {
     const imagePayload = certificate?.id
-      ? storedImagePath ?? undefined
-      : storedImagePath ?? (showExistingImage ? certificate?.image ?? null : null);
+      ? (storedImagePath ?? undefined)
+      : (storedImagePath ??
+        (showExistingImage ? (certificate?.image ?? null) : null));
 
     const payload = {
       name: form.name.trim(),
@@ -173,12 +178,12 @@ export function CertificateModal({
         certificate?.id
           ? replaceInfiniteItem<CertificateViewModel>(
               current,
-              ["certifications", "certificates"],
+              ['certifications', 'certificates'],
               optimisticCertificate,
             )
           : prependInfiniteItem<CertificateViewModel>(
               current,
-              ["certifications", "certificates"],
+              ['certifications', 'certificates'],
               optimisticCertificate,
             ),
     );
@@ -195,8 +200,8 @@ export function CertificateModal({
         toast.success(
           response.message ??
             (certificate?.id
-              ? t("candidatePage.toasts.certificate-updated")
-              : t("candidatePage.toasts.certificate-added")),
+              ? t('candidatePage.toasts.certificate-updated')
+              : t('candidatePage.toasts.certificate-added')),
         );
         onOpenChange(false);
         await queryClient.invalidateQueries({
@@ -208,7 +213,9 @@ export function CertificateModal({
         });
 
         const message =
-          error instanceof Error ? error.message : t("candidatePage.toasts.certificate-save-failed");
+          error instanceof Error
+            ? error.message
+            : t('candidatePage.toasts.certificate-save-failed');
         toast.error(message);
       }
     });
@@ -216,10 +223,12 @@ export function CertificateModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-175 flex flex-col gap-5">
+      <DialogContent className="flex max-w-175 flex-col gap-5">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-black sm:text-[28px]">{label}</DialogTitle>
+            <DialogTitle className="text-2xl text-black sm:text-[28px]">
+              {label}
+            </DialogTitle>
           </DialogHeader>
 
           <Controller
@@ -227,39 +236,44 @@ export function CertificateModal({
             control={control}
             render={({ field }) => (
               <StoredFilepondUpload
-                label={t("candidatePage.profile.upload-image")}
+                label={t('candidatePage.profile.upload-image')}
                 files={field.value}
                 onChange={field.onChange}
                 required={!(certificate?.image && showExistingImage)}
                 allowMultiple={false}
                 maxFiles={1}
                 allowImagePreview
-                acceptedFileTypes={["image/png", "image/jpeg", "image/jpg"]}
+                acceptedFileTypes={['image/png', 'image/jpeg', 'image/jpg']}
                 processFile={async (file) => {
                   const uploadFormData = new FormData();
-                  uploadFormData.append("image", file);
+                  uploadFormData.append('image', file);
                   return storeUploadedFileAction(uploadFormData, locale);
                 }}
                 onStoredPathChange={(path) => {
                   setStoredImagePath(path);
                   if (path) {
-                    clearErrors("image");
+                    clearErrors('image');
                     setShowExistingImage(false);
                   }
                 }}
                 onUploadError={(message) => {
                   if (!message) {
-                    clearErrors("image");
+                    clearErrors('image');
                     return;
                   }
 
-                  setError("image", {
-                    type: "server",
+                  setError('image', {
+                    type: 'server',
                     message,
                   });
                 }}
-                existingFileUrl={showExistingImage ? certificate?.image ?? null : null}
-                existingFileLabel={certificate?.name ?? t("candidatePage.credentials.certificate-image")}
+                existingFileUrl={
+                  showExistingImage ? (certificate?.image ?? null) : null
+                }
+                existingFileLabel={
+                  certificate?.name ??
+                  t('candidatePage.credentials.certificate-image')
+                }
                 onExistingFileRemove={() => {
                   setShowExistingImage(false);
                   setStoredImagePath(null);
@@ -272,42 +286,55 @@ export function CertificateModal({
 
           <InputField
             id="certificateName"
-            label={t("candidatePage.credentials.certificate-name")}
+            label={t('candidatePage.credentials.certificate-name')}
             type="text"
-            placeholder={t("candidatePage.credentials.certificate-name-placeholder")}
-            {...register("name")}
+            placeholder={t(
+              'candidatePage.credentials.certificate-name-placeholder',
+            )}
+            {...register('name')}
             error={errors.name?.message}
           />
 
           <InputField
             id="issuingOrganization"
-            label={t("candidatePage.credentials.issuing-organization")}
+            label={t('candidatePage.credentials.issuing-organization')}
             type="text"
-            placeholder={t("candidatePage.credentials.issuing-organization-placeholder")}
-            {...register("company")}
+            placeholder={t(
+              'candidatePage.credentials.issuing-organization-placeholder',
+            )}
+            {...register('company')}
             error={errors.company?.message}
           />
 
           <div className="flex flex-col items-center justify-between gap-2 md:flex-row">
             <InputField
               id="startDate"
-              label={t("candidatePage.profile.start-date")}
+              label={t('candidatePage.profile.start-date')}
               type="date"
-              {...register("startDate")}
+              {...register('startDate')}
               error={errors.startDate?.message}
             />
             <InputField
               id="endDate"
-              label={t("candidatePage.profile.end-date")}
+              label={t('candidatePage.profile.end-date')}
               type="date"
-              {...register("endDate")}
+              {...register('endDate')}
               error={errors.endDate?.message}
             />
           </div>
 
           <DialogFooter className="flex items-center justify-center!">
-            <Button className="w-1/3" size="pill" type="submit" disabled={isPending}>
-              {isPending ? t("candidatePage.common.saving") : certificate?.id ? t("common.save") : t("candidatePage.common.add")}
+            <Button
+              className="w-1/3"
+              size="pill"
+              type="submit"
+              disabled={isPending}
+            >
+              {isPending
+                ? t('candidatePage.common.saving')
+                : certificate?.id
+                  ? t('common.save')
+                  : t('candidatePage.common.add')}
             </Button>
           </DialogFooter>
         </form>

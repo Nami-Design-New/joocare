@@ -1,4 +1,4 @@
-import { optional, z } from "zod";
+import { optional, z } from 'zod';
 
 // const imageFileSchema = z
 //   .instanceof(File)
@@ -12,14 +12,15 @@ import { optional, z } from "zod";
 //     },
 //   );
 const imageFileSchema = z
-  .string("Image is required").min(1, { message: "Image is required" })
+  .string('Image is required')
+  .min(1, { message: 'Image is required' });
 
 const optionalUrl = z
   .string()
   .trim()
   .transform((val) => {
     if (!val) return val;
-    if (!val.startsWith("http")) {
+    if (!val.startsWith('http')) {
       return `https://${val}`;
     }
     return val;
@@ -36,49 +37,62 @@ const optionalUrl = z
       }
     },
     {
-      message: "Please enter a valid URL",
-    }
+      message: 'Please enter a valid URL',
+    },
   );
 export const stepThreeSchema = z.object({
-  uploadCoverImage: z.string("cover image is required").min(1, { message: "cover image is required" }),
+  uploadCoverImage: z
+    .string('cover image is required')
+    .min(1, { message: 'cover image is required' }),
 
-  uploadLogoImage: z.string("logo image is required").min(1, { message: "logo image is required" }),
+  uploadLogoImage: z
+    .string('logo image is required')
+    .min(1, { message: 'logo image is required' }),
 
   organizationPhoneNumber: z.string().optional(),
 
-  organizationCountry: z.string().min(1, { message: "Country is required" }),
+  organizationCountry: z.string().min(1, { message: 'Country is required' }),
 
-  organizationCity: z.string().min(1, { message: "City is required" }),
+  organizationCity: z.string().min(1, { message: 'City is required' }),
 
   dateOfEstablishment: z
     .string()
     .trim()
-    .min(1, { message: "Date of establishment is required" })
-    .refine((val) => {
-      const year = Number(val);
-      return !isNaN(year);
-    }, {
-      message: "Please enter a valid year",
-    })
-    .refine((val) => {
-      const year = Number(val);
-      return year >= 1900;
-    }, {
-      message: "Please enter a year greater than or equal to 1900",
-    })
-    .refine((val) => {
-      const year = Number(val);
-      const currentYear = new Date().getFullYear();
-      return year <= currentYear;
-    }, {
-      message: "Year cannot be in the future",
-    }),
+    .min(1, { message: 'Date of establishment is required' })
+    .refine(
+      (val) => {
+        const year = Number(val);
+        return !isNaN(year);
+      },
+      {
+        message: 'Please enter a valid year',
+      },
+    )
+    .refine(
+      (val) => {
+        const year = Number(val);
+        return year >= 1900;
+      },
+      {
+        message: 'Please enter a year greater than or equal to 1900',
+      },
+    )
+    .refine(
+      (val) => {
+        const year = Number(val);
+        const currentYear = new Date().getFullYear();
+        return year <= currentYear;
+      },
+      {
+        message: 'Year cannot be in the future',
+      },
+    ),
   aboutOrganization: z
     .string()
     .min(50, {
-      message: "Please write at least 50 characters about your organization",
+      message: 'Please write at least 50 characters about your organization',
     })
-    .max(1500, { message: "Description must be under 1500 characters" }),
+    .max(1500, { message: 'Description must be under 1500 characters' }),
 
   website: optionalUrl,
   linkedIn: optionalUrl,
@@ -86,5 +100,4 @@ export const stepThreeSchema = z.object({
   XTwitter: optionalUrl,
   instagram: optionalUrl,
   snapchat: optionalUrl,
-
 });

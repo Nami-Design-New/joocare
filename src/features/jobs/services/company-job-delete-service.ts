@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
 type DeleteCompanyJobOptions = {
   jobId: number | string;
@@ -22,15 +22,15 @@ export async function deleteCompanyJobService({
   const result = await apiFetch<DeleteCompanyJobResponse>(
     `${getCompanyApiUrl()}/jobs/${jobId}`,
     {
-      method: "DELETE",
+      method: 'DELETE',
       token,
       locale,
-      cache: "no-store",
+      cache: 'no-store',
     },
   );
 
   if (!result.ok) {
-    throw new Error(result.message || "Failed to delete job.");
+    throw new Error(result.message || 'Failed to delete job.');
   }
 
   return result.data ?? {};

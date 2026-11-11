@@ -45,7 +45,7 @@ export default function RolesTable({
           type="button"
           onClick={(event) => onShowPermissions(role, event.currentTarget)}
           size="sm"
-          className="bg-secondary text-secondary-foreground hover:bg-secondary/90 h-8 rounded-full px-4 text-xs font-normal"
+          className="h-8 rounded-full bg-secondary px-4 text-xs font-normal text-secondary-foreground hover:bg-secondary/90"
           aria-label={`${t('companyPage.roles.showPermissions')} - ${role.name}`}
         >
           <Eye className="size-4" aria-hidden="true" />

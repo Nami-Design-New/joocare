@@ -4,22 +4,22 @@ import type { ComponentProps } from 'react';
 import { cn } from '@/shared/lib/utils';
 
 const addButtonVariants = cva(
-  'flex shrink-0 cursor-pointer items-center justify-center gap-2 transition-colors focus-visible:ring-ring/50 outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50',
+  'flex shrink-0 cursor-pointer items-center justify-center gap-2 transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       variant: {
         /** Green round "+" under the item cards (education, certificates). */
         round:
-          'bg-cv-builder-primary hover:bg-cv-builder-primary/90 text-primary-foreground h-13 w-21 self-end rounded-full',
+          'h-13 w-21 self-end rounded-full bg-cv-builder-primary text-primary-foreground hover:bg-cv-builder-primary/90',
         /** Dark round "+" next to an input (responsibilities, skills). */
-        dark: 'bg-secondary hover:bg-secondary/90 text-primary-foreground size-13 rounded-full',
+        dark: 'size-13 rounded-full bg-secondary text-primary-foreground hover:bg-secondary/90',
         /** Green pill with a label (add experience). */
-        pill: 'bg-cv-builder-primary hover:bg-cv-builder-primary/90 text-primary-foreground h-13 self-center rounded-full px-6 text-sm sm:px-10 font-semibold',
+        pill: 'h-13 self-center rounded-full bg-cv-builder-primary px-6 text-sm font-semibold text-primary-foreground hover:bg-cv-builder-primary/90 sm:px-10',
         /** Text link (add another publication / conference). */
-        link: 'text-cv-builder-primary self-start text-sm font-semibold hover:underline',
+        link: 'self-start text-sm font-semibold text-cv-builder-primary hover:underline',
         /** Dashed full-width row (add language). */
         dashed:
-          'border-cv-builder-primary text-cv-builder-primary hover:bg-cv-builder-primary/5 h-15 w-full rounded-full border border-dashed',
+          'h-15 w-full rounded-full border border-dashed border-cv-builder-primary text-cv-builder-primary hover:bg-cv-builder-primary/5',
       },
     },
   },

@@ -53,7 +53,7 @@ export default function CvSwitchEntries({
               key={field.id}
               className={cn(
                 'flex flex-col gap-3',
-                index > 0 && 'border-border border-t pt-3',
+                index > 0 && 'border-t border-border pt-3',
               )}
             >
               {index > 0 && (
@@ -61,7 +61,7 @@ export default function CvSwitchEntries({
                   type="button"
                   onClick={() => remove(index)}
                   aria-label={removeLabel}
-                  className="text-muted-foreground hover:text-destructive self-end rounded-full p-1"
+                  className="self-end rounded-full p-1 text-muted-foreground hover:text-destructive"
                 >
                   <X aria-hidden className="size-5" />
                 </button>

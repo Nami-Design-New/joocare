@@ -42,11 +42,11 @@ export default function CvViewModal({
     <Dialog open onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="bg-card flex max-h-[92dvh] w-[calc(100%-2rem)] max-w-256 flex-col gap-0 overflow-hidden rounded-3xl p-0 sm:max-w-256"
+        className="flex max-h-[92dvh] w-[calc(100%-2rem)] max-w-256 flex-col gap-0 overflow-hidden rounded-3xl bg-card p-0 sm:max-w-256"
       >
-        <div className="bg-body-bg flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-4 py-5 sm:px-6 sm:py-8">
+        <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto bg-body-bg px-4 py-5 sm:px-6 sm:py-8">
           <DialogHeader className="flex-row items-center justify-between gap-4 text-start">
-            <DialogTitle className="text-foreground text-2xl font-semibold sm:text-[28px] sm:leading-9">
+            <DialogTitle className="text-2xl font-semibold text-foreground sm:text-[28px] sm:leading-9">
               {t('title')}
             </DialogTitle>
             <DialogDescription className="sr-only">{cv.name}</DialogDescription>
@@ -62,7 +62,7 @@ export default function CvViewModal({
                 type="button"
                 onClick={() => onOpenChange(false)}
                 aria-label={t('close')}
-                className="text-foreground hover:text-primary rounded-full transition-colors"
+                className="rounded-full text-foreground transition-colors hover:text-primary"
               >
                 <X aria-hidden className="size-7" strokeWidth={1.5} />
               </button>
@@ -85,14 +85,14 @@ export default function CvViewModal({
             <Button
               type="button"
               onClick={onEdit}
-              className={`${actionClassName} bg-cv-builder-edit hover:bg-cv-builder-edit/90 text-xs`}
+              className={`${actionClassName} bg-cv-builder-edit text-xs hover:bg-cv-builder-edit/90`}
             >
               <PencilLine aria-hidden className="size-4" strokeWidth={1.5} />
               {t('edit')}
             </Button>
             <Button
               asChild
-              className={`${actionClassName} bg-secondary hover:bg-secondary/90 text-primary-foreground`}
+              className={`${actionClassName} bg-secondary text-primary-foreground hover:bg-secondary/90`}
             >
               <Link href={applyHref}>
                 <CheckCheck aria-hidden className="size-4" strokeWidth={1.5} />

@@ -15,7 +15,7 @@ export default function CvHighlights({ title, highlights }: CvHighlightsProps) {
         {highlights.map((highlight) => (
           <li
             key={highlight}
-            className="text-secondary flex items-center gap-2.5 text-[15px]"
+            className="flex items-center gap-2.5 text-[15px] text-secondary"
           >
             <CvCheckIcon />
             {highlight}

@@ -1,51 +1,55 @@
-"use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import { InputField } from "@/shared/components/InputField";
-import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { TextareaField } from "@/shared/components/TextareaField";
-import { Button } from "@/shared/components/ui/button";
-import useGetCitiesByCountryId from "@/shared/hooks/useGetCitiesByCountryId";
-import useGetCountries from "@/shared/hooks/useGetCountries";
-import useGetInquiryTypes from "@/shared/hooks/useGetInquiryTypes";
-import SectionTitle from "../home/components/SectionTitle";
-import { useSubmitContact } from "./hooks/useSubmitContact";
-import type { ContactFormValues, ContactInitialValues, ContactRole } from "./types";
-import { createContactSchema } from "./validation/contact-schema";
-import { useTranslations } from "next-intl";
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useMemo, useState } from 'react';
+import { Controller, useForm, useWatch } from 'react-hook-form';
+import { InputField } from '@/shared/components/InputField';
+import { PhoneInputCode } from '@/shared/components/PhoneInputCode';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import { TextareaField } from '@/shared/components/TextareaField';
+import { Button } from '@/shared/components/ui/button';
+import useGetCitiesByCountryId from '@/shared/hooks/useGetCitiesByCountryId';
+import useGetCountries from '@/shared/hooks/useGetCountries';
+import useGetInquiryTypes from '@/shared/hooks/useGetInquiryTypes';
+import SectionTitle from '../home/components/SectionTitle';
+import { useSubmitContact } from './hooks/useSubmitContact';
+import type {
+  ContactFormValues,
+  ContactInitialValues,
+  ContactRole,
+} from './types';
+import { createContactSchema } from './validation/contact-schema';
+import { useTranslations } from 'next-intl';
 
-const OTHER_INQUIRY_TYPE_VALUE = "__other__";
+const OTHER_INQUIRY_TYPE_VALUE = '__other__';
 
 function getDefaultValues(
   role: ContactRole,
   initialValues?: ContactInitialValues,
 ): ContactFormValues {
-  if (role === "employer") {
+  if (role === 'employer') {
     return {
       role,
-      name: initialValues?.name ?? "",
-      email: initialValues?.email ?? "",
-      phone: "",
-      countryId: "",
-      cityId: "",
-      inquiryTypeId: "",
-      inquiryTypeTitle: "",
-      message: "",
+      name: initialValues?.name ?? '',
+      email: initialValues?.email ?? '',
+      phone: '',
+      countryId: '',
+      cityId: '',
+      inquiryTypeId: '',
+      inquiryTypeTitle: '',
+      message: '',
     };
   }
 
   return {
     role,
-    name: initialValues?.name ?? "",
-    email: initialValues?.email ?? "",
-    phone: "",
-    countryId: "",
-    cityId: "",
-    inquiryTypeId: "",
-    inquiryTypeTitle: "",
-    message: "",
+    name: initialValues?.name ?? '',
+    email: initialValues?.email ?? '',
+    phone: '',
+    countryId: '',
+    cityId: '',
+    inquiryTypeId: '',
+    inquiryTypeTitle: '',
+    message: '',
   };
 }
 
@@ -57,15 +61,11 @@ export default function ContactForm({
   initialValues?: ContactInitialValues;
 }) {
   const t = useTranslations();
-  const [inquirySearch, setInquirySearch] = useState("");
-  const {
-    inquiryTypes,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useGetInquiryTypes(inquirySearch);
-  const [countrySearch, setCountrySearch] = useState("");
-  const [citySearch, setCitySearch] = useState("");
+  const [inquirySearch, setInquirySearch] = useState('');
+  const { inquiryTypes, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetInquiryTypes(inquirySearch);
+  const [countrySearch, setCountrySearch] = useState('');
+  const [citySearch, setCitySearch] = useState('');
 
   const defaultValues = useMemo(
     () => getDefaultValues(role, initialValues),
@@ -82,14 +82,18 @@ export default function ContactForm({
   } = useForm<ContactFormValues>({
     resolver: zodResolver(
       createContactSchema({
-        nameRequired: t("contactPage.validation.name-required"),
-        emailInvalid: t("contactPage.validation.email-invalid"),
-        inquiryTypeRequired: t("contactPage.validation.inquiry-type-required"),
-        messageMin: t("contactPage.validation.message-min"),
-        otherInquiryTypeRequired: t("contactPage.validation.other-inquiry-type-required"),
-        phoneRequired: t("contactPage.validation.phone-required"),
-        currentLocationRequired: t("contactPage.validation.current-location-required"),
-        cityRequired: t("contactPage.validation.city-required"),
+        nameRequired: t('contactPage.validation.name-required'),
+        emailInvalid: t('contactPage.validation.email-invalid'),
+        inquiryTypeRequired: t('contactPage.validation.inquiry-type-required'),
+        messageMin: t('contactPage.validation.message-min'),
+        otherInquiryTypeRequired: t(
+          'contactPage.validation.other-inquiry-type-required',
+        ),
+        phoneRequired: t('contactPage.validation.phone-required'),
+        currentLocationRequired: t(
+          'contactPage.validation.current-location-required',
+        ),
+        cityRequired: t('contactPage.validation.city-required'),
       }),
     ),
     defaultValues,
@@ -97,11 +101,11 @@ export default function ContactForm({
 
   const selectedCountryId = useWatch({
     control,
-    name: "countryId",
+    name: 'countryId',
   });
   const selectedInquiryTypeId = useWatch({
     control,
-    name: "inquiryTypeId",
+    name: 'inquiryTypeId',
   });
   const isOtherInquiryType = selectedInquiryTypeId === OTHER_INQUIRY_TYPE_VALUE;
   const {
@@ -130,11 +134,11 @@ export default function ContactForm({
   });
 
   const inquiryOptions = inquiryTypes.map((type) => ({
-    label: type.title ?? type.name ?? t("contactPage.inquiry-type"),
-    value: String(type.id ?? ""),
+    label: type.title ?? type.name ?? t('contactPage.inquiry-type'),
+    value: String(type.id ?? ''),
   }));
   const inquiryOptionsWithOther = [
-    { label: t("contactPage.other"), value: OTHER_INQUIRY_TYPE_VALUE },
+    { label: t('contactPage.other'), value: OTHER_INQUIRY_TYPE_VALUE },
     ...inquiryOptions,
   ];
 
@@ -142,17 +146,16 @@ export default function ContactForm({
     <div className="h-full">
       <SectionTitle
         sectionTitle={
-          role === "candidate"
-            ? t("contactPage.share-your-thoughts")
-            : t("contactPage.request-for-demo")
+          role === 'candidate'
+            ? t('contactPage.share-your-thoughts')
+            : t('contactPage.request-for-demo')
         }
       />
 
-      <h2 className="text-secondary my-4 text-xl md:text-2xl font-bold">
-        {role === "candidate"
-          ? t("contactPage.tell-us-how-we-can-help")
-          : t("contactPage.send-your-message")}
-
+      <h2 className="my-4 text-xl font-bold text-secondary md:text-2xl">
+        {role === 'candidate'
+          ? t('contactPage.tell-us-how-we-can-help')
+          : t('contactPage.send-your-message')}
       </h2>
 
       <form
@@ -160,31 +163,39 @@ export default function ContactForm({
         onSubmit={handleSubmit((data) => submitContact.mutate(data))}
       >
         <InputField
-          label={role === "candidate" ? t("contactPage.full-name") : t("contactPage.company-name")}
+          label={
+            role === 'candidate'
+              ? t('contactPage.full-name')
+              : t('contactPage.company-name')
+          }
           id="name"
           placeholder={
-            role === "candidate"
-              ? t("contactPage.full-name-placeholder")
-              : t("contactPage.company-name-placeholder")
+            role === 'candidate'
+              ? t('contactPage.full-name-placeholder')
+              : t('contactPage.company-name-placeholder')
           }
           error={errors.name?.message}
-          {...register("name")}
+          {...register('name')}
         />
 
         <InputField
-          label={role === "candidate" ? t("contactPage.email") : t("contactPage.official-email")}
+          label={
+            role === 'candidate'
+              ? t('contactPage.email')
+              : t('contactPage.official-email')
+          }
           id="email"
           type="email"
-          placeholder={t("contactPage.email-placeholder")}
+          placeholder={t('contactPage.email-placeholder')}
           error={errors.email?.message}
-          {...register("email")}
+          {...register('email')}
         />
 
-        {role === "employer" ? (
+        {role === 'employer' ? (
           <>
             <>
               <label htmlFor="phone" className="mx-1 -mb-4 font-semibold">
-                {t("contactPage.phone-number")}
+                {t('contactPage.phone-number')}
               </label>
               <Controller
                 control={control}
@@ -195,7 +206,7 @@ export default function ContactForm({
                     defaultCountry="AE"
                     id="phone"
                     className="w-full"
-                    placeholder={t("contactPage.phone-placeholder")}
+                    placeholder={t('contactPage.phone-placeholder')}
                     onChange={(value) => field.onChange(value)}
                     error={Boolean(errors.phone?.message)}
                   />
@@ -216,16 +227,18 @@ export default function ContactForm({
                   <SelectInputField
                     withSearchInput
                     id="countryId"
-                    label={t("contactPage.current-location")}
-                    placeholder={t("contactPage.country")}
+                    label={t('contactPage.current-location')}
+                    placeholder={t('contactPage.country')}
                     {...field}
                     onChange={(value) => {
                       field.onChange(value);
-                      setValue("cityId", "");
+                      setValue('cityId', '');
                     }}
                     error={
                       errors.countryId?.message ??
-                      (countriesError instanceof Error ? countriesError.message : undefined)
+                      (countriesError instanceof Error
+                        ? countriesError.message
+                        : undefined)
                     }
                     options={countries.map((country) => ({
                       label: country.name,
@@ -246,13 +259,15 @@ export default function ContactForm({
                 render={({ field }) => (
                   <SelectInputField
                     withSearchInput
-                    label={t("contactPage.city")}
+                    label={t('contactPage.city')}
                     id="cityId"
-                    placeholder={t("contactPage.city-lower")}
+                    placeholder={t('contactPage.city-lower')}
                     {...field}
                     error={
                       errors.cityId?.message ??
-                      (citiesError instanceof Error ? citiesError.message : undefined)
+                      (citiesError instanceof Error
+                        ? citiesError.message
+                        : undefined)
                     }
                     options={cities.map((city) => ({
                       label: city.name,
@@ -276,19 +291,19 @@ export default function ContactForm({
           render={({ field }) => (
             <SelectInputField
               id="inquiryTypeId"
-              label={t("contactPage.type-of-inquiry")}
-              placeholder={t("contactPage.select-inquiry-type")}
+              label={t('contactPage.type-of-inquiry')}
+              placeholder={t('contactPage.select-inquiry-type')}
               options={inquiryOptionsWithOther}
               value={field.value}
               onChange={(value) => {
                 field.onChange(value);
                 if (value !== OTHER_INQUIRY_TYPE_VALUE) {
-                  setValue("inquiryTypeTitle", "");
+                  setValue('inquiryTypeTitle', '');
                 }
               }}
               error={errors.inquiryTypeId?.message}
               withSearchInput
-              searchPlaceholder={t("contactPage.search-inquiry-type")}
+              searchPlaceholder={t('contactPage.search-inquiry-type')}
               onSearchChange={setInquirySearch}
               onReachEnd={() => {
                 if (hasNextPage) {
@@ -304,20 +319,20 @@ export default function ContactForm({
         {isOtherInquiryType && (
           <InputField
             id="inquiryTypeTitle"
-            label={t("contactPage.other-inquiry-type")}
-            placeholder={t("contactPage.enter-inquiry-type")}
-            {...register("inquiryTypeTitle")}
+            label={t('contactPage.other-inquiry-type')}
+            placeholder={t('contactPage.enter-inquiry-type')}
+            {...register('inquiryTypeTitle')}
             error={errors.inquiryTypeTitle?.message}
           />
         )}
 
         <TextareaField
-          label={t("contactPage.message")}
+          label={t('contactPage.message')}
           id="message"
-          placeholder={t("contactPage.message-placeholder")}
+          placeholder={t('contactPage.message-placeholder')}
           rows={6}
           error={errors.message?.message}
-          {...register("message")}
+          {...register('message')}
         />
 
         <Button
@@ -328,7 +343,9 @@ export default function ContactForm({
           className="w-full justify-center"
           disabled={submitContact.isPending}
         >
-          {submitContact.isPending ? t("contactPage.sending") : t("contactPage.send")}
+          {submitContact.isPending
+            ? t('contactPage.sending')
+            : t('contactPage.send')}
         </Button>
       </form>
     </div>

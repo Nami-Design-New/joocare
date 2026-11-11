@@ -22,7 +22,7 @@ export default function ProfessionalSummaryStep() {
   return (
     <CvStepCard title={t('title')} description={t('description')}>
       <div className="flex flex-col">
-        <div className="bg-card border-border overflow-hidden rounded-3xl border">
+        <div className="overflow-hidden rounded-3xl border border-border bg-card">
           <Controller<CvBuilderValues, 'summary.text'>
             name="summary.text"
             render={({ field, fieldState }) => (
@@ -37,12 +37,12 @@ export default function ProfessionalSummaryStep() {
               />
             )}
           />
-          <div className="border-border border-t p-3">
+          <div className="border-t border-border p-3">
             <section
               aria-label={t('suggestion-label')}
-              className="bg-cv-builder-primary/8 flex flex-col gap-8 rounded-2xl p-3"
+              className="flex flex-col gap-8 rounded-2xl bg-cv-builder-primary/8 p-3"
             >
-              <p className="text-foreground text-base leading-5">
+              <p className="text-base leading-5 text-foreground">
                 {suggestion}
               </p>
               <div className="flex flex-wrap items-center justify-between gap-2">
@@ -55,7 +55,7 @@ export default function ProfessionalSummaryStep() {
                       (index) => (index + 1) % SUGGESTED_SUMMARIES.length,
                     )
                   }
-                  className="bg-card text-foreground border-border h-10 gap-2 px-5 font-normal"
+                  className="h-10 gap-2 border-border bg-card px-5 font-normal text-foreground"
                 >
                   <RefreshCw aria-hidden className="size-5" />
                   {t('refresh')}
@@ -68,7 +68,7 @@ export default function ProfessionalSummaryStep() {
                       shouldValidate: true,
                     })
                   }
-                  className="bg-cv-builder-primary hover:bg-cv-builder-primary/90 h-12.5 w-full font-semibold sm:w-56"
+                  className="h-12.5 w-full bg-cv-builder-primary font-semibold hover:bg-cv-builder-primary/90 sm:w-56"
                 >
                   {t('apply')}
                 </Button>
@@ -79,7 +79,7 @@ export default function ProfessionalSummaryStep() {
         {error && (
           <span
             id="summary-text-error"
-            className="text-destructive mt-1 text-xs"
+            className="mt-1 text-xs text-destructive"
           >
             {error}
           </span>

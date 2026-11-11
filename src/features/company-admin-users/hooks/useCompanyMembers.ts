@@ -3,7 +3,10 @@
 import { useMemo, useState } from 'react';
 import { useLocale } from 'next-intl';
 import { sampleCompanyMembers } from '../data/members.data';
-import type { CompanyMember, CompanyMemberFormValues } from '../types/member.types';
+import type {
+  CompanyMember,
+  CompanyMemberFormValues,
+} from '../types/member.types';
 
 const PAGE_SIZE = 5;
 
@@ -13,7 +16,9 @@ export function useCompanyMembers() {
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [editingMember, setEditingMember] = useState<CompanyMember | null>(null);
+  const [editingMember, setEditingMember] = useState<CompanyMember | null>(
+    null,
+  );
   const [memberModalOpen, setMemberModalOpen] = useState(false);
   const [deletingMemberId, setDeletingMemberId] = useState<number | null>(null);
 
@@ -77,14 +82,16 @@ export function useCompanyMembers() {
   const confirmDeleteMember = () => {
     if (deletingMemberId === null) return;
 
-    setMembers((current) => current.filter((member) => member.id !== deletingMemberId));
+    setMembers((current) =>
+      current.filter((member) => member.id !== deletingMemberId),
+    );
     setCurrentPage(1);
     setDeletingMemberId(null);
   };
 
   return {
     pageSize: PAGE_SIZE,
-    direction: locale === 'ar' ? 'rtl' as const : 'ltr' as const,
+    direction: locale === 'ar' ? ('rtl' as const) : ('ltr' as const),
     filteredMembers,
     visibleMembers,
     search,

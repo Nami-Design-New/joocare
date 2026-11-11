@@ -5,18 +5,18 @@ import type {
   EmployerHomeItem,
   EmployerImageApiModel,
   EmployerItemApiModel,
-} from "./types";
+} from './types';
 
 export const employerHeroFallbackImages: EmployerHomeImage[] = [
-  { id: "1", image: "/assets/employers/1.png", alt: "Employer hero image 1" },
-  { id: "2", image: "/assets/employers/2.png", alt: "Employer hero image 2" },
-  { id: "3", image: "/assets/employers/3.png", alt: "Employer hero image 3" },
+  { id: '1', image: '/assets/employers/1.png', alt: 'Employer hero image 1' },
+  { id: '2', image: '/assets/employers/2.png', alt: 'Employer hero image 2' },
+  { id: '3', image: '/assets/employers/3.png', alt: 'Employer hero image 3' },
 ];
 
 export const employerHireFallbackStepImages = [
-  "/assets/employers/company.gif",
-  "/assets/employers/search.gif",
-  "/assets/employers/artboard.gif",
+  '/assets/employers/company.gif',
+  '/assets/employers/search.gif',
+  '/assets/employers/artboard.gif',
 ];
 
 export function mapImage(
@@ -28,7 +28,7 @@ export function mapImage(
   }
 
   return {
-    id: String(image.id ?? ""),
+    id: String(image.id ?? ''),
     image: image.image,
     alt: image.alt ?? fallbackAlt,
   };
@@ -50,20 +50,22 @@ export function mapItems(
 ): EmployerHomeItem[] {
   return (
     items?.map((item) => ({
-      id: String(item.id ?? ""),
-      title: item.title ?? "",
-      description: item.description ?? "",
+      id: String(item.id ?? ''),
+      title: item.title ?? '',
+      description: item.description ?? '',
       image: item.image ?? null,
     })) ?? []
   );
 }
 
-export function mapFaqs(items: EmployerFaqApiModel[] | undefined): EmployerFaqItem[] {
+export function mapFaqs(
+  items: EmployerFaqApiModel[] | undefined,
+): EmployerFaqItem[] {
   return (
     items?.map((item) => ({
-      id: String(item.id ?? ""),
-      question: item.question ?? "",
-      answer: item.answer ?? "",
+      id: String(item.id ?? ''),
+      question: item.question ?? '',
+      answer: item.answer ?? '',
     })) ?? []
   );
 }

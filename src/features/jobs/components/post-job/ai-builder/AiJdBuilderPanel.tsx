@@ -24,15 +24,15 @@ export default function AiJdBuilderPanel({ onClose }: AiJdBuilderPanelProps) {
   return (
     <aside
       aria-label={t('panel-title')}
-      className="bg-body-bg rounded-3xl p-1 lg:sticky lg:top-24 lg:self-start"
+      className="rounded-3xl bg-body-bg p-1 lg:sticky lg:top-24 lg:self-start"
     >
-      <div className="bg-card flex max-h-[calc(100dvh-8rem)] min-h-125 flex-col gap-8 rounded-3xl px-4 py-6">
+      <div className="flex max-h-[calc(100dvh-8rem)] min-h-125 flex-col gap-8 rounded-3xl bg-card px-4 py-6">
         <header className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="bg-primary-bg text-primary flex size-10 items-center justify-center rounded-xl">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-primary-bg text-primary">
               <Sparkles aria-hidden="true" className="size-5.5" />
             </span>
-            <h2 className="text-primary text-xl font-semibold sm:text-[21px]">
+            <h2 className="text-xl font-semibold text-primary sm:text-[21px]">
               {t('panel-title')}
             </h2>
           </div>
@@ -40,7 +40,7 @@ export default function AiJdBuilderPanel({ onClose }: AiJdBuilderPanelProps) {
             type="button"
             onClick={onClose}
             aria-label={t('close-panel')}
-            className="bg-muted border-border hover:bg-muted/70 flex size-12 items-center justify-center rounded-full border"
+            className="flex size-12 items-center justify-center rounded-full border border-border bg-muted hover:bg-muted/70"
           >
             <X aria-hidden="true" className="size-5" />
           </button>

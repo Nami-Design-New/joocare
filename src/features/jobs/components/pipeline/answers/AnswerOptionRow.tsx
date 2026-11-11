@@ -27,12 +27,12 @@ export default function AnswerOptionRow({
       className={cn(
         'flex flex-wrap items-center gap-3 rounded-lg border px-4 py-3 text-sm',
         isWrongPick &&
-          'bg-destructive/8 border-destructive/45 text-destructive font-medium',
+          'border-destructive/45 bg-destructive/8 font-medium text-destructive',
         isCorrect &&
           (isSelected
-            ? 'bg-assessment-primary/8 border-assessment-primary/45 text-assessment-primary font-medium'
-            : 'bg-assessment-primary/4 border-assessment-primary/45 text-assessment-primary font-medium'),
-        !isSelected && !isCorrect && 'bg-card border-border text-foreground',
+            ? 'border-assessment-primary/45 bg-assessment-primary/8 font-medium text-assessment-primary'
+            : 'border-assessment-primary/45 bg-assessment-primary/4 font-medium text-assessment-primary'),
+        !isSelected && !isCorrect && 'border-border bg-card text-foreground',
       )}
     >
       <AnswerIndicator
@@ -54,7 +54,7 @@ export default function AnswerOptionRow({
         </span>
       ) : null}
       {isCorrect ? (
-        <span className="bg-assessment-primary/12 text-assessment-primary rounded-full px-2 py-0.5 text-xs font-semibold">
+        <span className="rounded-full bg-assessment-primary/12 px-2 py-0.5 text-xs font-semibold text-assessment-primary">
           {t('correct-answer')}
         </span>
       ) : null}
@@ -94,7 +94,7 @@ function AnswerIndicator({
     <span
       aria-hidden
       className={cn(
-        'bg-card flex size-4.5 shrink-0 items-center justify-center rounded-full border',
+        'flex size-4.5 shrink-0 items-center justify-center rounded-full border bg-card',
         isSelected ? border : 'border-foreground/30',
       )}
     >

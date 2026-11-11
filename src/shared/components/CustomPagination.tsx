@@ -120,8 +120,8 @@ export function CustomPagination({
           cn(
             'order-2 text-sm md:order-1',
             tone === 'strong'
-              ? 'text-foreground font-semibold'
-              : 'text-muted-foreground font-medium',
+              ? 'font-semibold text-foreground'
+              : 'font-medium text-muted-foreground',
           ),
           statusPosition === 'start' && 'order-first md:order-first',
         )}
@@ -203,7 +203,7 @@ export function CustomPagination({
                       page === currentPage
                         ? 'bg-primary text-white'
                         : tone === 'strong'
-                          ? 'text-foreground font-semibold'
+                          ? 'font-semibold text-foreground'
                           : 'text-muted-foreground'
                     }`}
                   >

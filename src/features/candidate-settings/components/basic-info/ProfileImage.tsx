@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useEffect, useMemo, useRef } from "react";
-import { Loader2, Plus, Trash2 } from "lucide-react";
-import { cn } from "@/shared/lib/utils";
-import { useTranslations } from "next-intl";
+import Image from 'next/image';
+import { useEffect, useMemo, useRef } from 'react';
+import { Loader2, Plus, Trash2 } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface ProfileImageProps {
   value?: File[] | string | null;
@@ -31,11 +31,11 @@ const ProfileImage = ({
       return URL.createObjectURL(selectedFile);
     }
 
-    return typeof value === "string" ? value : null;
+    return typeof value === 'string' ? value : null;
   }, [value]);
 
   useEffect(() => {
-    if (!preview || typeof value === "string") {
+    if (!preview || typeof value === 'string') {
       return;
     }
 
@@ -49,14 +49,14 @@ const ProfileImage = ({
       <div className="relative flex justify-center">
         <div
           className={cn(
-            "relative flex h-37.5 w-37.5 items-center justify-center rounded-full border bg-white ring-4 ring-white",
-            !isUploading && "cursor-pointer",
-            error && "border-red-500",
+            'relative flex h-37.5 w-37.5 items-center justify-center rounded-full border bg-white ring-4 ring-white',
+            !isUploading && 'cursor-pointer',
+            error && 'border-red-500',
           )}
         >
           <Image
-            src={preview ? '' + preview : "/assets/profile_image.svg"}
-            alt={t("candidateSettingsPage.profile-image")}
+            src={preview ? '' + preview : '/assets/profile_image.svg'}
+            alt={t('candidateSettingsPage.profile-image')}
             fill
             className="rounded-full object-cover"
           />
@@ -88,15 +88,15 @@ const ProfileImage = ({
             <button
               type="button"
               onClick={() => {
-                inputRef.current?.setAttribute("value", "");
+                inputRef.current?.setAttribute('value', '');
                 if (inputRef.current) {
-                  inputRef.current.value = "";
+                  inputRef.current.value = '';
                 }
                 onRemove?.();
               }}
               disabled={isUploading}
-              className="absolute z-20 right-3 bottom-0 flex h-7 w-7 items-center justify-center rounded-full bg-red-500 transition"
-              aria-label={t("candidateSettingsPage.remove-profile-image")}
+              className="absolute right-3 bottom-0 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-red-500 transition"
+              aria-label={t('candidateSettingsPage.remove-profile-image')}
             >
               <Trash2 width={16} className="text-white" />
             </button>
@@ -111,15 +111,15 @@ const ProfileImage = ({
                 inputRef.current?.click();
               }}
               disabled={isUploading}
-              className="bg-primary absolute right-3 bottom-0 flex h-7 w-7 items-center justify-center rounded-full transition"
-              aria-label={t("candidateSettingsPage.upload-profile-image")}
+              className="absolute right-3 bottom-0 flex h-7 w-7 items-center justify-center rounded-full bg-primary transition"
+              aria-label={t('candidateSettingsPage.upload-profile-image')}
             >
               <Plus width={16} className="text-white" />
             </button>
           )}
         </div>
       </div>
-      {typeof error === "string" && error ? (
+      {typeof error === 'string' && error ? (
         <span className="mt-2 block text-center text-[12px] text-red-500">
           {error}
         </span>

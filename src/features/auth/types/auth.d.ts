@@ -1,4 +1,4 @@
-import { IUser } from "@/shared/types";
+import { IUser } from '@/shared/types';
 
 export interface ILoginResponse {
   user: IUser;

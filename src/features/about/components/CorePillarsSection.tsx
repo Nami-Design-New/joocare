@@ -1,6 +1,6 @@
-import CorePillarsContent from "./CorePillarsContent";
-import CorePillarsVisual from "./CorePillarsVisual";
-import type { AboutImage, AboutPillar } from "../types/about.types";
+import CorePillarsContent from './CorePillarsContent';
+import CorePillarsVisual from './CorePillarsVisual';
+import type { AboutImage, AboutPillar } from '../types/about.types';
 
 export default function CorePillarsSection({
   title,

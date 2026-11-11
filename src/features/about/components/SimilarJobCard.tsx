@@ -20,7 +20,7 @@ export default function SimilarJobCard({ job }: SimilarJobCardProps) {
   const t = useTranslations();
 
   return (
-    <Card className="hover:border-primary h-full gap-2 hover:border">
+    <Card className="h-full gap-2 hover:border hover:border-primary">
       <CardHeader className="flex gap-2">
         <Image
           width={52}
@@ -30,8 +30,12 @@ export default function SimilarJobCard({ job }: SimilarJobCardProps) {
           className="h-12 w-14 rounded-2xl"
         />
         <div className="flex grow flex-col gap-1">
-          <p className="text-foreground text-sm font-normal md:text-lg">{job?.title === null ? job?.job_title?.title : job?.title}</p>
-          <p className="text-foreground text-sm font-normal md:text-base">{job?.company?.name}</p>
+          <p className="text-sm font-normal text-foreground md:text-lg">
+            {job?.title === null ? job?.job_title?.title : job?.title}
+          </p>
+          <p className="text-sm font-normal text-foreground md:text-base">
+            {job?.company?.name}
+          </p>
           {/* <time className="text-muted-foreground font normal text-xs">
             {job.created_at}
           </time> */}
@@ -44,35 +48,39 @@ export default function SimilarJobCard({ job }: SimilarJobCardProps) {
           className="flex cursor-pointer flex-col gap-2"
         >
           <ul className="flex flex-wrap items-start gap-x-3 gap-y-1 md:flex-nowrap md:gap-2">
-            <li className="text-secondary flex items-start gap-1 text-xs font-normal md:text-sm">
+            <li className="flex items-start gap-1 text-xs font-normal text-secondary md:text-sm">
               <LocationEdit size={14} color="var(--muted-foreground)" />
               {job?.city?.name ? `${job?.city?.name} ,` : ''}
               {job?.country?.name}
             </li>
-            <li className="text-secondary flex items-start gap-1 text-xs font-normal md:text-sm">
+            <li className="flex items-start gap-1 text-xs font-normal text-secondary md:text-sm">
               <Briefcase size={14} color="var(--muted-foreground)" />
               {job?.category?.title ??
                 job?.category_title ??
                 t('jobsPage.not-specified')}{' '}
             </li>
-            <li className="text-secondary flex items-start gap-1 text-xs font-normal md:text-sm">
+            <li className="flex items-start gap-1 text-xs font-normal text-secondary md:text-sm">
               <CircleDollarSign size={14} color="var(--muted-foreground)" />
               {getJobSalary(job, t('jobsPage.not-specified'))}
             </li>
           </ul>
-          <ul className="items-center flex gap-2">
-            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-normal md:text-xs">
-              {job?.experience?.title ?? job?.experience_title ?? t("jobsPage.not-specified")}
+          <ul className="flex items-center gap-2">
+            <li className="flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-[10px] font-normal text-muted-foreground md:text-xs">
+              {job?.experience?.title ??
+                job?.experience_title ??
+                t('jobsPage.not-specified')}
             </li>
-            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-normal md:text-xs">
+            <li className="flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-[10px] font-normal text-muted-foreground md:text-xs">
               {job?.employment_type?.title}
             </li>
-            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-normal md:text-xs">
-              {job?.specialty?.title ?? job?.specialty_title ?? t("jobsPage.not-specified")}
+            <li className="flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-[10px] font-normal text-muted-foreground md:text-xs">
+              {job?.specialty?.title ??
+                job?.specialty_title ??
+                t('jobsPage.not-specified')}
             </li>
           </ul>
           <div
-            className="text-muted-foreground line-clamp-1 text-sm md:text-base"
+            className="line-clamp-1 text-sm text-muted-foreground md:text-base"
             dangerouslySetInnerHTML={{
               __html:
                 job?.description ||
@@ -82,7 +90,7 @@ export default function SimilarJobCard({ job }: SimilarJobCardProps) {
         </Link>
       </CardContent>
       <CardFooter className="">
-        <p className="text-foreground flex items-center gap-1 text-xs md:text-sm">
+        <p className="flex items-center gap-1 text-xs text-foreground md:text-sm">
           <Timer size={16} /> {job?.created_at}
         </p>
       </CardFooter>

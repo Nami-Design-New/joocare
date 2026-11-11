@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode } from "swiper/modules";
-import "swiper/css";
-import { Link } from "@/i18n/navigation";
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import { Link } from '@/i18n/navigation';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/shared/components/ui/popover";
-import { cn } from "@/shared/lib/utils";
-import { sidebarLinkVariants } from "../SidebarLinks";
-import type { SidebarNavGroup, SidebarNavItem } from "./types";
-import { isSidebarNavItemActive, isSidebarNavLinkActive } from "./utils";
+} from '@/shared/components/ui/popover';
+import { cn } from '@/shared/lib/utils';
+import { sidebarLinkVariants } from '../SidebarLinks';
+import type { SidebarNavGroup, SidebarNavItem } from './types';
+import { isSidebarNavItemActive, isSidebarNavLinkActive } from './utils';
 
 type SidebarNavMobileProps = {
   groups: readonly SidebarNavGroup[];
@@ -37,13 +37,16 @@ function MobileMenuPill({ item, pathname }: MobileItemProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
-        className={sidebarLinkVariants({ variant: "pill", active: isActive })}
+        className={sidebarLinkVariants({ variant: 'pill', active: isActive })}
       >
         <Icon aria-hidden="true" className="size-4 shrink-0" />
         <span>{t(item.label)}</span>
         <ChevronDown
           aria-hidden="true"
-          className={cn("size-4 shrink-0 transition-transform", open && "rotate-180")}
+          className={cn(
+            'size-4 shrink-0 transition-transform',
+            open && 'rotate-180',
+          )}
         />
       </PopoverTrigger>
       <PopoverContent align="start" className="w-56 rounded-2xl p-2">
@@ -56,12 +59,12 @@ function MobileMenuPill({ item, pathname }: MobileItemProps) {
                 <Link
                   href={child.href}
                   onClick={() => setOpen(false)}
-                  aria-current={isChildActive ? "page" : undefined}
+                  aria-current={isChildActive ? 'page' : undefined}
                   className={cn(
-                    "block rounded-xl px-3 py-2 text-sm transition-colors",
+                    'block rounded-xl px-3 py-2 text-sm transition-colors',
                     isChildActive
-                      ? "bg-primary-bg text-primary font-semibold"
-                      : "text-muted-foreground hover:bg-primary-bg hover:text-primary",
+                      ? 'bg-primary-bg font-semibold text-primary'
+                      : 'text-muted-foreground hover:bg-primary-bg hover:text-primary',
                   )}
                 >
                   {t(child.label)}
@@ -85,8 +88,8 @@ function MobileLinkPill({ item, pathname }: MobileItemProps) {
   return (
     <Link
       href={item.href}
-      aria-current={isActive ? "page" : undefined}
-      className={sidebarLinkVariants({ variant: "pill", active: isActive })}
+      aria-current={isActive ? 'page' : undefined}
+      className={sidebarLinkVariants({ variant: 'pill', active: isActive })}
     >
       <Icon aria-hidden="true" className="size-4 shrink-0" />
       <span>{t(item.label)}</span>
@@ -96,12 +99,15 @@ function MobileLinkPill({ item, pathname }: MobileItemProps) {
 
 // Mobile sidebar: one swipeable row of pills (same look as the candidate sidebar);
 // items with sub-pages open a dropdown.
-export default function SidebarNavMobile({ groups, pathname }: SidebarNavMobileProps) {
+export default function SidebarNavMobile({
+  groups,
+  pathname,
+}: SidebarNavMobileProps) {
   const t = useTranslations();
   const items = groups.flatMap((group) => group.items);
 
   return (
-    <nav aria-label={t("common.sidebar-navigation")} className="lg:hidden">
+    <nav aria-label={t('common.sidebar-navigation')} className="lg:hidden">
       <Swiper
         modules={[FreeMode]}
         spaceBetween={8}

@@ -38,19 +38,19 @@ export default function ChatConversationList({
     <aside
       aria-label={t('conversations')}
       className={cn(
-        'bg-chat-list border-border flex w-full shrink-0 flex-col overflow-hidden md:w-80 md:border-e xl:w-95',
+        'flex w-full shrink-0 flex-col overflow-hidden border-border bg-chat-list md:w-80 md:border-e xl:w-95',
         mobileConversationOpen && 'hidden md:flex',
       )}
     >
       <div className="space-y-4 px-4 pt-4 pb-4 sm:px-6 sm:pt-6">
-        <h1 className="text-chat-heading text-xl leading-8 sm:text-2xl font-extrabold">
+        <h1 className="text-xl leading-8 font-extrabold text-chat-heading sm:text-2xl">
           {copy.listTitle}
         </h1>
         <SearchInput
           value={search}
           onChange={(event) => onSearch(event.target.value)}
           placeholder={copy.searchPlaceholder}
-          className="placeholder:text-chat-search h-10.25 rounded-[14px] ps-10 pe-3 text-sm"
+          className="h-10.25 rounded-[14px] ps-10 pe-3 text-sm placeholder:text-chat-search"
           icon={<ChatIcon name="search" width={14} height={14} />}
         />
       </div>
@@ -75,10 +75,10 @@ export default function ChatConversationList({
               aria-current={active ? 'true' : undefined}
               onClick={() => onSelect(conversation.id)}
               className={cn(
-                'focus-visible:ring-chat-primary flex w-full cursor-pointer items-start gap-3 rounded-xl border border-transparent p-3 text-start outline-none focus-visible:ring-2',
+                'flex w-full cursor-pointer items-start gap-3 rounded-xl border border-transparent p-3 text-start outline-none focus-visible:ring-2 focus-visible:ring-chat-primary',
                 active
-                  ? 'bg-card border-border min-h-21'
-                  : 'hover:bg-card/60 mx-3 w-[calc(100%-1.5rem)] border-0 p-0',
+                  ? 'min-h-21 border-border bg-card'
+                  : 'mx-3 w-[calc(100%-1.5rem)] border-0 p-0 hover:bg-card/60',
               )}
             >
               <span className="relative shrink-0">
@@ -90,7 +90,7 @@ export default function ChatConversationList({
                   className="size-12 rounded-xl object-cover"
                 />
                 {conversation.unread > 0 && (
-                  <span className="bg-chat-primary text-primary-foreground absolute -end-1 -top-1 flex size-5 items-center justify-center rounded-full text-[10px]">
+                  <span className="absolute -end-1 -top-1 flex size-5 items-center justify-center rounded-full bg-chat-primary text-[10px] text-primary-foreground">
                     {new Intl.NumberFormat(locale).format(conversation.unread)}
                   </span>
                 )}
@@ -126,15 +126,15 @@ export default function ChatConversationList({
                 </span>
                 <span
                   className={cn(
-                    'text-muted-foreground block truncate text-[11px] leading-[16.5px]',
-                    conversation.unread && 'text-foreground font-semibold',
+                    'block truncate text-[11px] leading-[16.5px] text-muted-foreground',
+                    conversation.unread && 'font-semibold text-foreground',
                     active && 'italic',
                   )}
                 >
                   <bdi>{preview}</bdi>
                 </span>
                 {superAdmin && (
-                  <span className="text-chat-muted flex items-center gap-1 text-[11px] leading-4.5">
+                  <span className="flex items-center gap-1 text-[11px] leading-4.5 text-chat-muted">
                     <ChatIcon name="contacted-by" width={12} />
                     {t('contacted-by')}{' '}
                     <span className="truncate font-medium">

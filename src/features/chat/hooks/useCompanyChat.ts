@@ -63,7 +63,10 @@ export function useCompanyChat(
     getConversationHref: (id) => {
       const query = new URLSearchParams();
       if (id) query.set('conversation', id);
-      if (options.initialConversation && id === options.initialConversation.id) {
+      if (
+        options.initialConversation &&
+        id === options.initialConversation.id
+      ) {
         const candidate = options.initialConversation;
         query.set('candidateId', candidate.id.slice('user-'.length));
         query.set('candidateName', candidate.name);

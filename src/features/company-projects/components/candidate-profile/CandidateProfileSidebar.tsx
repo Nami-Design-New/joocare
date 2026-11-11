@@ -24,10 +24,10 @@ export default function CandidateProfileSidebar({
   const t = useTranslations('companyPage.projects.candidate-profile');
 
   return (
-    <aside className="bg-card flex flex-col gap-7 rounded-2xl border p-4">
+    <aside className="flex flex-col gap-7 rounded-2xl border bg-card p-4">
       <section className="flex flex-col items-center gap-3 text-center">
         <div className="flex flex-col items-center">
-          <span className="border-primary rounded-full border-[3px] p-[3px]">
+          <span className="rounded-full border-[3px] border-primary p-[3px]">
             <Image
               src={profile.image ?? DEFAULT_PROFILE_IMAGE}
               alt={t('profile-image', { name: profile.name })}
@@ -37,24 +37,24 @@ export default function CandidateProfileSidebar({
             />
           </span>
           {summary.isOpenToWork && (
-            <span className="bg-primary text-primary-foreground border-card -mt-3.5 rounded-full border-2 px-3 py-0.5 text-[13px] font-semibold">
+            <span className="-mt-3.5 rounded-full border-2 border-card bg-primary px-3 py-0.5 text-[13px] font-semibold text-primary-foreground">
               {t('open-to-work')}
             </span>
           )}
         </div>
         <div className="flex flex-col items-center gap-2">
-          <h1 className="text-foreground text-[21px] font-semibold">
+          <h1 className="text-[21px] font-semibold text-foreground">
             {profile.name}
           </h1>
           {profile.jobTitle && (
-            <p className="text-primary text-sm font-semibold">
+            <p className="text-sm font-semibold text-primary">
               {profile.jobTitle}
             </p>
           )}
-          <p className="text-muted-foreground flex items-center gap-1.5 text-[13px]">
+          <p className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
             <span
               aria-hidden="true"
-              className="bg-gray-45 size-1.5 rounded-full"
+              className="size-1.5 rounded-full bg-gray-45"
             />
             {t('last-active')} <bdi>{summary.lastActive}</bdi>
           </p>
@@ -67,11 +67,11 @@ export default function CandidateProfileSidebar({
             key={detail.key}
             className="flex items-center justify-between gap-4 p-2"
           >
-            <dt className="text-muted-foreground shrink-0">{t(detail.key)}</dt>
+            <dt className="shrink-0 text-muted-foreground">{t(detail.key)}</dt>
             <dd
               title={detail.value}
               dir={LTR_DETAIL_KEYS.has(detail.key) ? 'ltr' : 'auto'}
-              className="text-foreground min-w-0 truncate"
+              className="min-w-0 truncate text-foreground"
             >
               {detail.value}
             </dd>
@@ -90,8 +90,8 @@ export default function CandidateProfileSidebar({
           <dd className="text-foreground">{summary.drivingLicense}</dd>
         </div>
 
-        <div className="border-border ms-2 flex flex-col gap-2 border-s-2 py-2 ps-4">
-          <dt className="text-muted-foreground text-[13px]">
+        <div className="ms-2 flex flex-col gap-2 border-s-2 border-border py-2 ps-4">
+          <dt className="text-[13px] text-muted-foreground">
             {t('issuing-countries')}
           </dt>
           <dd>

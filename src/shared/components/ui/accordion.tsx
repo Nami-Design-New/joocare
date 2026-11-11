@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { ChevronDownIcon, Minus, Plus } from "lucide-react";
-import { Accordion as AccordionPrimitive } from "radix-ui";
+import * as React from 'react';
+import { ChevronDownIcon, Minus, Plus } from 'lucide-react';
+import { Accordion as AccordionPrimitive } from 'radix-ui';
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from '@/shared/lib/utils';
 
 function Accordion({
   ...props
@@ -19,18 +19,18 @@ function AccordionItem({
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn("border-b ", className)}
+      className={cn('border-b', className)}
       {...props}
     />
   );
 }
 
-type IconType = "plus-minus" | "arrow" | "circle-arrow";
+type IconType = 'plus-minus' | 'arrow' | 'circle-arrow';
 
 function AccordionTrigger({
   className,
   children,
-  iconType = "plus-minus", // default value
+  iconType = 'plus-minus', // default value
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
   iconType?: IconType;
@@ -40,7 +40,7 @@ function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          " focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
+          'flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180',
           className,
         )}
         {...props}
@@ -52,23 +52,22 @@ function AccordionTrigger({
           <Minus className="hidden h-4 w-4 text-white group-data-[state=open]:block" />
         </div> */}
 
-
         {/* ICON */}
-        {iconType === "plus-minus" && (
-          <div className="bg-secondary ml-4 flex size-7 shrink-0 items-center justify-center rounded-full">
+        {iconType === 'plus-minus' && (
+          <div className="ml-4 flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary">
             <Plus className="h-4 w-4 text-white group-data-[state=open]:hidden" />
             <Minus className="hidden h-4 w-4 text-white group-data-[state=open]:block" />
           </div>
         )}
 
-        {iconType === "arrow" && (
-          <ChevronDownIcon className="text-black font-bold pointer-events-none size-6 shrink-0 translate-y-0.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+        {iconType === 'arrow' && (
+          <ChevronDownIcon className="pointer-events-none size-6 shrink-0 translate-y-0.5 font-bold text-black transition-transform duration-200 group-data-[state=open]:rotate-180" />
         )}
 
         {/* Chevron in a 36px grey circle (post-job section cards). */}
-        {iconType === "circle-arrow" && (
-          <span className="bg-muted flex size-9 shrink-0 items-center justify-center rounded-full">
-            <ChevronDownIcon className="text-foreground pointer-events-none size-5 transition-transform duration-200 in-data-[state=open]:rotate-180" />
+        {iconType === 'circle-arrow' && (
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted">
+            <ChevronDownIcon className="pointer-events-none size-5 text-foreground transition-transform duration-200 in-data-[state=open]:rotate-180" />
           </span>
         )}
       </AccordionPrimitive.Trigger>
@@ -84,10 +83,10 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm"
+      className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
       {...props}
     >
-      <div className={cn("pt-0 pb-4", className)}>{children}</div>
+      <div className={cn('pt-0 pb-4', className)}>{children}</div>
     </AccordionPrimitive.Content>
   );
 }

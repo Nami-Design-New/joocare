@@ -21,7 +21,9 @@ export default function AdditionalInfoPage() {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <h1 className="text-2xl leading-8 font-semibold sm:text-[32px] sm:leading-10">{t('title')}</h1>
+        <h1 className="text-2xl leading-8 font-semibold sm:text-[32px] sm:leading-10">
+          {t('title')}
+        </h1>
         <p className="text-muted-foreground">{t('subtitle')}</p>
       </header>
 
@@ -34,7 +36,7 @@ export default function AdditionalInfoPage() {
         <form
           noValidate
           onSubmit={onSubmit}
-          className="bg-card flex flex-col gap-6 rounded-2xl px-4 pt-7.5 pb-6 md:px-10"
+          className="flex flex-col gap-6 rounded-2xl bg-card px-4 pt-7.5 pb-6 md:px-10"
         >
           <QualificationsSection />
           <LanguagesSection />
@@ -50,7 +52,7 @@ export default function AdditionalInfoPage() {
               variant="outline"
               size="pill"
               onClick={onCancel}
-              className="border-secondary text-secondary h-12.5 w-full text-sm sm:w-auto sm:min-w-40 font-semibold"
+              className="h-12.5 w-full border-secondary text-sm font-semibold text-secondary sm:w-auto sm:min-w-40"
             >
               {t('cancel')}
             </Button>
@@ -58,7 +60,7 @@ export default function AdditionalInfoPage() {
               type="submit"
               variant="secondary"
               size="pill"
-              className="h-12.5 w-full text-sm sm:w-auto sm:min-w-56 font-semibold"
+              className="h-12.5 w-full text-sm font-semibold sm:w-auto sm:min-w-56"
             >
               {t('save')}
             </Button>

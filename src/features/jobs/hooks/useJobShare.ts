@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { usePathname } from "@/i18n/navigation";
-import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
+import { usePathname } from '@/i18n/navigation';
+import { useLocale, useTranslations } from 'next-intl';
+import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 type UseJobShareOptions = {
   title?: string;
@@ -19,7 +19,7 @@ function normalizeSharePath(path: string, locale: string) {
     return path;
   }
 
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   return `/${locale}${normalizedPath}`;
 }
 
@@ -28,18 +28,21 @@ function buildAbsoluteUrl(path: string) {
     return path;
   }
 
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return path;
   }
 
   return new URL(path, window.location.origin).toString();
 }
 
-export function useJobShare({ title = "Check out this job", path }: UseJobShareOptions = {}) {
+export function useJobShare({
+  title = 'Check out this job',
+  path,
+}: UseJobShareOptions = {}) {
   const locale = useLocale();
   const t = useTranslations();
   const pathname = usePathname();
-  const [shareUrl, setShareUrl] = useState("");
+  const [shareUrl, setShareUrl] = useState('');
 
   const resolvedPath = useMemo(
     () => normalizeSharePath(path ?? pathname, locale),
@@ -58,9 +61,9 @@ export function useJobShare({ title = "Check out this job", path }: UseJobShareO
 
     try {
       await navigator.clipboard.writeText(shareText);
-      toast.success(t("jobsPage.toasts.job-link-copied"));
+      toast.success(t('jobsPage.toasts.job-link-copied'));
     } catch {
-      toast.error(t("jobsPage.toasts.unable-copy-job-link"));
+      toast.error(t('jobsPage.toasts.unable-copy-job-link'));
     }
   };
 
@@ -69,7 +72,10 @@ export function useJobShare({ title = "Check out this job", path }: UseJobShareO
     const urlToShare = shareUrl || fallbackUrl;
 
     try {
-      if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+      if (
+        typeof navigator !== 'undefined' &&
+        typeof navigator.share === 'function'
+      ) {
         await navigator.share({
           title,
           // text: title,
@@ -79,13 +85,13 @@ export function useJobShare({ title = "Check out this job", path }: UseJobShareO
       }
 
       await navigator.clipboard.writeText(urlToShare);
-      toast.success(t("jobsPage.toasts.job-link-copied"));
+      toast.success(t('jobsPage.toasts.job-link-copied'));
     } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") {
+      if (error instanceof Error && error.name === 'AbortError') {
         return;
       }
 
-      toast.error(t("jobsPage.toasts.unable-share-job-link"));
+      toast.error(t('jobsPage.toasts.unable-share-job-link'));
     }
   };
 

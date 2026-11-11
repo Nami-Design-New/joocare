@@ -33,7 +33,7 @@ export default function ApplyCvPicker({ cv, layout }: ApplyCvPickerProps) {
 
   if (cv.isLoadingProfile) {
     return (
-      <p className="border-border text-muted-foreground rounded-xl border px-5 py-6 text-sm">
+      <p className="rounded-xl border border-border px-5 py-6 text-sm text-muted-foreground">
         {t('loading-cv')}
       </p>
     );
@@ -75,7 +75,7 @@ export default function ApplyCvPicker({ cv, layout }: ApplyCvPickerProps) {
       onUploadError={cv.setError}
       error={cv.error ?? cv.profileError ?? undefined}
       className={cn(
-        '[&_.filepond--drop-label]:bg-muted [&_.filepond--panel-root]:border-border [&_.filepond--panel-root]:bg-muted [&_.filepond--panel-root]:border [&_.filepond--root]:mb-0',
+        '[&_.filepond--drop-label]:bg-muted [&_.filepond--panel-root]:border [&_.filepond--panel-root]:border-border [&_.filepond--panel-root]:bg-muted [&_.filepond--root]:mb-0',
         layout === 'cards' &&
           hasProfileCv &&
           cv.source !== 'upload' &&
@@ -107,7 +107,7 @@ export default function ApplyCvPicker({ cv, layout }: ApplyCvPickerProps) {
                     <span className="font-semibold">
                       {t('apply.cv.upload-title')}
                     </span>
-                    <span className="text-muted-foreground text-sm">
+                    <span className="text-sm text-muted-foreground">
                       {t('apply.cv.upload-description')}
                     </span>
                   </span>
@@ -122,11 +122,11 @@ export default function ApplyCvPicker({ cv, layout }: ApplyCvPickerProps) {
           {profileOption}
           {hasProfileCv ? (
             <div className="flex items-center gap-4">
-              <span className="bg-border h-px flex-1" />
-              <span className="text-foreground text-sm font-medium">
+              <span className="h-px flex-1 bg-border" />
+              <span className="text-sm font-medium text-foreground">
                 {t('or')}
               </span>
-              <span className="bg-border h-px flex-1" />
+              <span className="h-px flex-1 bg-border" />
             </div>
           ) : null}
           {uploadField}

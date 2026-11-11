@@ -27,12 +27,12 @@ export default function RouteErrorFallback({
 
   return (
     <section className="layout-shell flex min-h-[50vh] items-center justify-center py-8 sm:py-16">
-      <div className="bg-card w-full max-w-2xl rounded-3xl border p-5 text-center sm:p-8 shadow-sm">
-        <p className="text-primary text-sm font-semibold">{statusCode}</p>
-        <h1 className="text-foreground mt-3 text-2xl font-semibold sm:text-3xl">
+      <div className="w-full max-w-2xl rounded-3xl border bg-card p-5 text-center shadow-sm sm:p-8">
+        <p className="text-sm font-semibold text-primary">{statusCode}</p>
+        <h1 className="mt-3 text-2xl font-semibold text-foreground sm:text-3xl">
           {title ?? meta.title}
         </h1>
-        <p className="text-muted-foreground mt-4 text-base">
+        <p className="mt-4 text-base text-muted-foreground">
           {description ?? meta.description}
         </p>
         <div className="mt-8 flex justify-center">

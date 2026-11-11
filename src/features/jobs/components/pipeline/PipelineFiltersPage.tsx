@@ -131,14 +131,16 @@ export default function PipelineFiltersPage({
       <JobCandidatesHeader jobId={jobId} />
       <Link
         href={`${getJobCandidatesHref(jobId)}${searchParams.size ? `?${searchParams.toString()}` : ''}`}
-        className="text-primary flex w-fit items-center gap-2 text-sm font-semibold"
+        className="flex w-fit items-center gap-2 text-sm font-semibold text-primary"
       >
         <ArrowLeft aria-hidden className="size-4 rtl:rotate-180" />
         {t('back')}
       </Link>
       <div>
-        <h2 className="text-foreground text-xl font-semibold sm:text-2xl">{t('title')}</h2>
-        <p className="text-muted-foreground mt-1 text-sm">
+        <h2 className="text-xl font-semibold text-foreground sm:text-2xl">
+          {t('title')}
+        </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
           {t('description', {
             count: candidatesPage?.total ?? 0,
             job: jobTitle,
@@ -148,10 +150,10 @@ export default function PipelineFiltersPage({
 
       <form
         onSubmit={applyFilters}
-        className="bg-card flex flex-col gap-7 rounded-3xl p-6 md:p-8"
+        className="flex flex-col gap-7 rounded-3xl bg-card p-6 md:p-8"
       >
         <section className="flex flex-col gap-4">
-          <h3 className="text-foreground text-base font-semibold">
+          <h3 className="text-base font-semibold text-foreground">
             {t('candidate-details')}
           </h3>
           <div className="grid grid-cols-1 gap-x-4 gap-y-3 md:grid-cols-2">
@@ -162,7 +164,7 @@ export default function PipelineFiltersPage({
                 onChange={(event) => updateDraft('search', event.target.value)}
                 placeholder={t('search-name')}
                 iconClassName="size-4.5"
-                className="border-border bg-card h-13 border ps-11 shadow-none"
+                className="h-13 border border-border bg-card ps-11 shadow-none"
               />
             </FilterField>
             <FilterField label={t('email')}>
@@ -172,7 +174,7 @@ export default function PipelineFiltersPage({
                 onChange={(event) => updateDraft('email', event.target.value)}
                 placeholder={t('search-email')}
                 iconClassName="size-4.5"
-                className="border-border bg-card h-13 border ps-11 shadow-none"
+                className="h-13 border border-border bg-card ps-11 shadow-none"
               />
             </FilterField>
             <SelectInputField
@@ -187,7 +189,7 @@ export default function PipelineFiltersPage({
               hasNextPage={countryQuery.hasNextPage}
               isFetchingNextPage={countryQuery.isFetchingNextPage}
               onReachEnd={() => countryQuery.fetchNextPage()}
-              className="border-border bg-card h-13 border"
+              className="h-13 border border-border bg-card"
             />
             <SelectInputField
               id="pipeline-filter-nationality"
@@ -196,7 +198,7 @@ export default function PipelineFiltersPage({
               options={nationalityOptions}
               value={draft.nationality}
               onChange={(value) => updateDraft('nationality', value)}
-              className="border-border bg-card h-13 border"
+              className="h-13 border border-border bg-card"
             />
             <SelectInputField
               id="pipeline-filter-license"
@@ -205,7 +207,7 @@ export default function PipelineFiltersPage({
               options={licenseOptions}
               value={draft.medical_license}
               onChange={(value) => updateDraft('medical_license', value)}
-              className="border-border bg-card h-13 border"
+              className="h-13 border border-border bg-card"
             />
             <SelectInputField
               id="pipeline-filter-recruiter"
@@ -214,7 +216,7 @@ export default function PipelineFiltersPage({
               options={recruiterOptions}
               value={draft.recruiter}
               onChange={(value) => updateDraft('recruiter', value)}
-              className="border-border bg-card h-13 border"
+              className="h-13 border border-border bg-card"
             />
           </div>
           <label className="flex w-fit cursor-pointer items-center gap-3 font-semibold">
@@ -224,17 +226,17 @@ export default function PipelineFiltersPage({
               aria-label={t('starred-only')}
               className="size-5 rounded-sm"
             />
-            <Star aria-hidden className="text-warning fill-warning size-4" />
+            <Star aria-hidden className="size-4 fill-warning text-warning" />
             {t('starred-only')}
           </label>
         </section>
 
-        <section className="border-border flex flex-col gap-4 border-t pt-5">
+        <section className="flex flex-col gap-4 border-t border-border pt-5">
           <div>
-            <h3 className="text-foreground text-base font-semibold">
+            <h3 className="text-base font-semibold text-foreground">
               {t('ai-match-score')}
             </h3>
-            <p className="text-muted-foreground mt-1 text-sm">
+            <p className="mt-1 text-sm text-muted-foreground">
               {t('score-description')}
             </p>
           </div>
@@ -256,8 +258,8 @@ export default function PipelineFiltersPage({
           </div>
         </section>
 
-        <section className="border-border flex flex-col gap-4 border-t pt-5">
-          <h3 className="text-foreground text-base font-semibold">
+        <section className="flex flex-col gap-4 border-t border-border pt-5">
+          <h3 className="text-base font-semibold text-foreground">
             {t('assessment')}
           </h3>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -268,7 +270,7 @@ export default function PipelineFiltersPage({
               options={statusOptions}
               value={draft.assessment_status}
               onChange={(value) => updateDraft('assessment_status', value)}
-              className="border-border bg-card h-13 border"
+              className="h-13 border border-border bg-card"
             />
             <SelectInputField
               id="pipeline-assessment"
@@ -277,7 +279,7 @@ export default function PipelineFiltersPage({
               options={assessmentOptions}
               value={draft.assessment_id}
               onChange={(value) => updateDraft('assessment_id', value)}
-              className="border-border bg-card h-13 border"
+              className="h-13 border border-border bg-card"
             />
             <ScoreField
               id="pipeline-min-assessment-score"
@@ -352,7 +354,7 @@ function ScoreField({
       value={value}
       onChange={(event) => onChange(event.target.value)}
       placeholder={placeholder}
-      className="border-border bg-card h-13 border shadow-none"
+      className="h-13 border border-border bg-card shadow-none"
     />
   );
 }

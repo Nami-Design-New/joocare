@@ -3,7 +3,10 @@
 import { useEffect, useState } from 'react';
 import { talentPreviewCandidates } from '@/features/company-talent-database/constants/talent-preview-data';
 import { useUrlFilters } from '@/shared/hooks/useUrlFilters';
-import { AI_TALENT_MATCH_PAGE_SIZE, JOB_SEARCH_DEBOUNCE_MS } from '../constants';
+import {
+  AI_TALENT_MATCH_PAGE_SIZE,
+  JOB_SEARCH_DEBOUNCE_MS,
+} from '../constants';
 
 const FILTER_KEYS = ['order', 'country', 'license'] as const;
 type AiMatchFilterKey = (typeof FILTER_KEYS)[number];
@@ -44,7 +47,9 @@ export function useAiTalentMatchPreview() {
   });
   const ordered =
     filters.order === 'oldest' ? [...filtered].reverse() : filtered;
-  const hasFilters = Boolean(urlSearch || FILTER_KEYS.some((key) => filters[key]));
+  const hasFilters = Boolean(
+    urlSearch || FILTER_KEYS.some((key) => filters[key]),
+  );
 
   return {
     search,
@@ -55,7 +60,13 @@ export function useAiTalentMatchPreview() {
       update({ [key]: value, page: null }),
     reset: () => {
       setSearch('');
-      update({ search: null, order: null, country: null, license: null, page: null });
+      update({
+        search: null,
+        order: null,
+        country: null,
+        license: null,
+        page: null,
+      });
     },
     page,
     setPage: (next: number) => update({ page: next }),

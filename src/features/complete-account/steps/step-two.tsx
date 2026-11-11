@@ -1,40 +1,56 @@
-"use client";
+'use client';
 
-import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
-import { storeUploadedFileAction } from "@/features/candidate-settings/actions/basic-info-actions";
-import { InputField } from "@/shared/components/InputField";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { Controller, useFormContext } from "react-hook-form";
-import useGetCountries from "@/shared/hooks/useGetCountries";
+import { StoredFilepondUpload } from '@/shared/components/StoredFilepondUpload';
+import { storeUploadedFileAction } from '@/features/candidate-settings/actions/basic-info-actions';
+import { InputField } from '@/shared/components/InputField';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import { Controller, useFormContext } from 'react-hook-form';
+import useGetCountries from '@/shared/hooks/useGetCountries';
 // import useGetSpecialties from "@/shared/hooks/useGetSpecialties";
-import useGetOrganizationSizes from "@/shared/hooks/useGetOrganizationSizes";
-import useGetEmployerTypes from "@/shared/hooks/useGetEmployerTypes";
-import { useState } from "react";
-import { useLocale } from "next-intl";
-import { useSession } from "next-auth/react";
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import useGetOrganizationSizes from '@/shared/hooks/useGetOrganizationSizes';
+import useGetEmployerTypes from '@/shared/hooks/useGetEmployerTypes';
+import { useState } from 'react';
+import { useLocale } from 'next-intl';
+import { useSession } from 'next-auth/react';
+import useGetCompanyProfile from '@/features/company-profile/hooks/useGetCompanyProfile';
 
 export default function StepTwo() {
   const locale = useLocale();
   const { data: session } = useSession();
-  const token = session?.accessToken || "";
+  const token = session?.accessToken || '';
   const { data: profileData } = useGetCompanyProfile({ token });
-  const { register, control, setError, clearErrors, setValue, watch, formState: { errors }, } = useFormContext();
+  const {
+    register,
+    control,
+    setError,
+    clearErrors,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext();
 
   // const [specialtySearch, setSpecialtySearch] = useState("");
-  const [countrySearch, setCountrySearch] = useState("");
-  const [organizationSizesSearch, setOrganizationSizesSearch] = useState("");
-  const [employerTypesSearch, setEmployerTypesSearch] = useState("");
-  const [showExistingCommercialRegistrationImage, setShowExistingCommercialRegistrationImage] = useState<boolean | null>(null);
-  const [showExistingMedicalLicenseImage, setShowExistingMedicalLicenseImage] = useState<boolean | null>(null);
+  const [countrySearch, setCountrySearch] = useState('');
+  const [organizationSizesSearch, setOrganizationSizesSearch] = useState('');
+  const [employerTypesSearch, setEmployerTypesSearch] = useState('');
+  const [
+    showExistingCommercialRegistrationImage,
+    setShowExistingCommercialRegistrationImage,
+  ] = useState<boolean | null>(null);
+  const [showExistingMedicalLicenseImage, setShowExistingMedicalLicenseImage] =
+    useState<boolean | null>(null);
 
-  const commercialRegistrationImagePath = watch("commercialRegistrationImagePath");
-  const medicalLicenseImagePath = watch("medicalLicenseImagePath");
+  const commercialRegistrationImagePath = watch(
+    'commercialRegistrationImagePath',
+  );
+  const medicalLicenseImagePath = watch('medicalLicenseImagePath');
 
   const shouldShowExistingCommercialRegistrationImage =
-    showExistingCommercialRegistrationImage ?? Boolean(profileData?.commercial_registration_image);
+    showExistingCommercialRegistrationImage ??
+    Boolean(profileData?.commercial_registration_image);
   const shouldShowExistingMedicalLicenseImage =
-    showExistingMedicalLicenseImage ?? Boolean(profileData?.medical_license_image);
+    showExistingMedicalLicenseImage ??
+    Boolean(profileData?.medical_license_image);
 
   const {
     countries,
@@ -74,21 +90,21 @@ export default function StepTwo() {
 
   return (
     <div className="flex flex-col gap-y-5">
-      <div className="bg-input p-5 rounded-2xl flex flex-col justify-between gap-y-5">
-        <h2 className="text-lg text-disabled font-semibold text-start mt-2">
+      <div className="flex flex-col justify-between gap-y-5 rounded-2xl bg-input p-5">
+        <h2 className="mt-2 text-start text-lg font-semibold text-disabled">
           Commercial Registration
         </h2>
         <InputField
           id="commercialRegister"
           label="Commercial Registration No"
-          type={"text"}
+          type={'text'}
           placeholder="ex: 23121212"
           className="bg-white"
-          {...register("commercialRegister")}
+          {...register('commercialRegister')}
           error={errors.commercialRegister?.message?.toString()}
         />
 
-        <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
+        <div className="flex flex-col items-center justify-center gap-2 lg:flex-row">
           <Controller
             name="issuingCountryLicense"
             control={control}
@@ -148,27 +164,26 @@ export default function StepTwo() {
           />
         </div>
 
-        <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
+        <div className="flex flex-col items-center justify-center gap-2 lg:flex-row">
           <InputField
             id="commercialRegistrationIssueDate"
             label="Commercial Registration Issue Date"
-            type={"date"}
+            type={'date'}
             placeholder="ex:Dec 2025"
             className="bg-white"
-            {...register("commercialRegistrationIssueDate")}
+            {...register('commercialRegistrationIssueDate')}
             error={errors.commercialRegistrationIssueDate?.message?.toString()}
           />
 
           <InputField
             id="commercialRegistrationExpiryDate"
             label="Commercial Registration Expiry Date"
-            type={"date"}
+            type={'date'}
             placeholder="ex:Dec 2025"
             className="bg-white"
-            {...register("commercialRegistrationExpiryDate")}
+            {...register('commercialRegistrationExpiryDate')}
             error={errors.commercialRegistrationExpiryDate?.message?.toString()}
           />
-
         </div>
         <Controller
           name="commercialRegistrationImage"
@@ -180,28 +195,26 @@ export default function StepTwo() {
               files={field.value}
               onChange={field.onChange}
               allowImagePreview={true}
-              acceptedFileTypes={[
-                "image/*",
-              ]}
+              acceptedFileTypes={['image/*']}
               processFile={async (file) => {
                 const uploadFormData = new FormData();
-                uploadFormData.append("image", file);
+                uploadFormData.append('image', file);
                 return storeUploadedFileAction(uploadFormData, locale);
               }}
               onStoredPathChange={(path) => {
-                setValue("commercialRegistrationImagePath", path);
+                setValue('commercialRegistrationImagePath', path);
                 if (path) {
                   setShowExistingCommercialRegistrationImage(false);
-                  clearErrors("commercialRegistrationImage");
+                  clearErrors('commercialRegistrationImage');
                 }
               }}
               onUploadError={(message) => {
                 if (!message) {
-                  clearErrors("commercialRegistrationImage");
+                  clearErrors('commercialRegistrationImage');
                   return;
                 }
-                setError("commercialRegistrationImage", {
-                  type: "server",
+                setError('commercialRegistrationImage', {
+                  type: 'server',
                   message,
                 });
               }}
@@ -213,13 +226,13 @@ export default function StepTwo() {
               }
               existingFileLabel={
                 shouldShowExistingCommercialRegistrationImage ||
-                  Boolean(commercialRegistrationImagePath)
-                  ? "Existing Commercial Registration Image"
+                Boolean(commercialRegistrationImagePath)
+                  ? 'Existing Commercial Registration Image'
                   : undefined
               }
               onExistingFileRemove={() => {
                 setShowExistingCommercialRegistrationImage(false);
-                setValue("commercialRegistrationImagePath", "");
+                setValue('commercialRegistrationImagePath', '');
                 field.onChange([]);
               }}
               allowMultiple={false}
@@ -228,11 +241,10 @@ export default function StepTwo() {
             />
           )}
         />
-
       </div>
 
-      <div className="bg-input p-5 rounded-2xl flex flex-col justify-between gap-y-5">
-        <h2 className="text-lg text-disabled font-semibold text-start mt-2">
+      <div className="flex flex-col justify-between gap-y-5 rounded-2xl bg-input p-5">
+        <h2 className="mt-2 text-start text-lg font-semibold text-disabled">
           Medical License
         </h2>
         <Controller
@@ -266,28 +278,28 @@ export default function StepTwo() {
         <InputField
           id="medicalFacilityLicenseNumber"
           label="Medical Facility License Number"
-          type={"text"}
+          type={'text'}
           placeholder="ex: 23121212"
           className="bg-white"
-          {...register("medicalFacilityLicenseNumber")}
+          {...register('medicalFacilityLicenseNumber')}
           error={errors.medicalFacilityLicenseNumber?.message?.toString()}
         />
         <InputField
           id="licenseIssuingAuthority"
           label="License Issuing Authority"
-          type={"text"}
+          type={'text'}
           placeholder="ex: Dubai Health Authority"
           className="bg-white"
-          {...register("licenseIssuingAuthority")}
+          {...register('licenseIssuingAuthority')}
           error={errors.licenseIssuingAuthority?.message?.toString()}
         />
         <InputField
           id="specialtyScopePractice"
           label="Specialty / Scope of Practice"
-          type={"text"}
+          type={'text'}
           placeholder="ex: Cardiology"
           className="bg-white"
-          {...register("specialtyScopePractice")}
+          {...register('specialtyScopePractice')}
           error={errors.specialtyScopePractice?.message?.toString()}
         />
         {/* <Controller
@@ -321,27 +333,26 @@ export default function StepTwo() {
           )}
         /> */}
 
-        <div className="flex flex-col lg:flex-row justify-center items-center gap-2">
+        <div className="flex flex-col items-center justify-center gap-2 lg:flex-row">
           <InputField
             id="medicalRegistrationIssueDate"
             label="medical Registration Issue Date"
-            type={"date"}
+            type={'date'}
             placeholder="ex:Dec 2025"
             className="bg-white"
-            {...register("medicalRegistrationIssueDate")}
+            {...register('medicalRegistrationIssueDate')}
             error={errors.medicalRegistrationIssueDate?.message?.toString()}
           />
 
           <InputField
             id="medicalRegistrationExpiryDate"
             label="medical Registration Expiry Date"
-            type={"date"}
+            type={'date'}
             placeholder="ex:Dec 2025"
             className="bg-white"
-            {...register("medicalRegistrationExpiryDate")}
+            {...register('medicalRegistrationExpiryDate')}
             error={errors.medicalRegistrationExpiryDate?.message?.toString()}
           />
-
         </div>
         <Controller
           name="medicalLicenseImage"
@@ -355,28 +366,26 @@ export default function StepTwo() {
               allowMultiple={false}
               maxFiles={1}
               allowImagePreview={true}
-              acceptedFileTypes={[
-                "image/*",
-              ]}
+              acceptedFileTypes={['image/*']}
               processFile={async (file) => {
                 const uploadFormData = new FormData();
-                uploadFormData.append("image", file);
+                uploadFormData.append('image', file);
                 return storeUploadedFileAction(uploadFormData, locale);
               }}
               onStoredPathChange={(path) => {
-                setValue("medicalLicenseImagePath", path);
+                setValue('medicalLicenseImagePath', path);
                 if (path) {
                   setShowExistingMedicalLicenseImage(false);
-                  clearErrors("medicalLicenseImage");
+                  clearErrors('medicalLicenseImage');
                 }
               }}
               onUploadError={(message) => {
                 if (!message) {
-                  clearErrors("medicalLicenseImage");
+                  clearErrors('medicalLicenseImage');
                   return;
                 }
-                setError("medicalLicenseImage", {
-                  type: "server",
+                setError('medicalLicenseImage', {
+                  type: 'server',
                   message,
                 });
               }}
@@ -388,20 +397,19 @@ export default function StepTwo() {
               }
               existingFileLabel={
                 shouldShowExistingMedicalLicenseImage ||
-                  Boolean(medicalLicenseImagePath)
-                  ? "Existing Medical License Image"
+                Boolean(medicalLicenseImagePath)
+                  ? 'Existing Medical License Image'
                   : undefined
               }
               onExistingFileRemove={() => {
                 setShowExistingMedicalLicenseImage(false);
-                setValue("medicalLicenseImagePath", "");
+                setValue('medicalLicenseImagePath', '');
                 field.onChange([]);
               }}
               error={errors.medicalLicenseImagePath?.message?.toString()}
             />
           )}
         />
-
       </div>
     </div>
   );

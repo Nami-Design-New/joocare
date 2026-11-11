@@ -1,15 +1,15 @@
 'use client';
 
-import { useLocale, useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
-import DeleteModal from "@/shared/components/modals/DeleteModal";
-import { Edit, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { useRouter } from "@/i18n/navigation";
-import { deleteExperience } from "../../services/experience-client-service";
-import type { CandidateExperienceViewModel } from "../../types/profile.types";
-import { ExperienceModal } from "./ExperienceModal";
+import { useLocale, useTranslations } from 'next-intl';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
+import DeleteModal from '@/shared/components/modals/DeleteModal';
+import { Edit, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { useRouter } from '@/i18n/navigation';
+import { deleteExperience } from '../../services/experience-client-service';
+import type { CandidateExperienceViewModel } from '../../types/profile.types';
+import { ExperienceModal } from './ExperienceModal';
 
 export default function ExperienceActions({
   experience,
@@ -26,7 +26,7 @@ export default function ExperienceActions({
 
   const handleDeleteExperience = async () => {
     if (!session?.accessToken) {
-      toast.error(t("candidatePage.toasts.session-expired"));
+      toast.error(t('candidatePage.toasts.session-expired'));
       return;
     }
 
@@ -38,12 +38,16 @@ export default function ExperienceActions({
         token: session.accessToken,
       });
 
-      toast.success(response?.message ?? t("candidatePage.toasts.experience-deleted"));
+      toast.success(
+        response?.message ?? t('candidatePage.toasts.experience-deleted'),
+      );
       setDeleteOpen(false);
       router.refresh();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : t("candidatePage.toasts.experience-delete-failed");
+        error instanceof Error
+          ? error.message
+          : t('candidatePage.toasts.experience-delete-failed');
       toast.error(message);
     } finally {
       setIsDeleting(false);
@@ -68,7 +72,7 @@ export default function ExperienceActions({
       </div>
 
       <ExperienceModal
-        label={t("candidatePage.profile.edit-experience")}
+        label={t('candidatePage.profile.edit-experience')}
         open={open}
         onOpenChange={setOpen}
         experience={experience}
@@ -76,9 +80,9 @@ export default function ExperienceActions({
       <DeleteModal
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title={t("candidatePage.profile.delete-experience-title")}
-        description={t("candidatePage.profile.delete-experience-description")}
-        cancelLabel={t("candidatePage.common.back")}
+        title={t('candidatePage.profile.delete-experience-title')}
+        description={t('candidatePage.profile.delete-experience-description')}
+        cancelLabel={t('candidatePage.common.back')}
         onConfirm={handleDeleteExperience}
         isLoading={isDeleting}
       />

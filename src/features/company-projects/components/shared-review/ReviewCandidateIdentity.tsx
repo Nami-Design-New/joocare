@@ -22,10 +22,10 @@ export default function ReviewCandidateIdentity({
         className="size-13 shrink-0 rounded-2xl object-cover"
       />
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <h3 className="text-foreground truncate font-semibold">
+        <h3 className="truncate font-semibold text-foreground">
           {candidate.name}
         </h3>
-        <p className="text-muted-foreground truncate text-sm">
+        <p className="truncate text-sm text-muted-foreground">
           {candidate.specialty}
         </p>
       </div>

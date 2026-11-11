@@ -22,7 +22,7 @@ export default function DashboardWidgetTitle({
         <h2
           tabIndex={0}
           className={cn(
-            'text-secondary focus-visible:ring-ring w-fit text-base leading-5 font-semibold outline-none focus-visible:ring-2',
+            'w-fit text-base leading-5 font-semibold text-secondary outline-none focus-visible:ring-2 focus-visible:ring-ring',
             className,
           )}
         >

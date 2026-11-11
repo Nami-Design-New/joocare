@@ -21,17 +21,17 @@ export default function ChatClosedNotice({
   return (
     <div
       role="status"
-      className="bg-chat-surface border-border flex flex-wrap items-center gap-3 rounded-2xl border p-4"
+      className="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-chat-surface p-4"
     >
       <ChatIcon
         name={role === 'candidate' ? 'close-chat' : 'lock-banner'}
         width={22}
       />
       <div className="min-w-0 flex-1 basis-48">
-        <p className="text-secondary text-sm leading-5 font-semibold">
+        <p className="text-sm leading-5 font-semibold text-secondary">
           {copy.closedNoticeTitle(conversation)}
         </p>
-        <p className="text-muted-foreground mt-1 text-xs leading-4.5">
+        <p className="mt-1 text-xs leading-4.5 text-muted-foreground">
           {copy.closedNoticeDescription(conversation)}
         </p>
       </div>
@@ -39,7 +39,7 @@ export default function ChatClosedNotice({
         <Button
           type="button"
           onClick={onReopen}
-          className="bg-chat-primary h-10 rounded-xl px-4 text-sm font-semibold"
+          className="h-10 rounded-xl bg-chat-primary px-4 text-sm font-semibold"
         >
           {t('reopen-chat')}
         </Button>

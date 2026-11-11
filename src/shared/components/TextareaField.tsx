@@ -36,7 +36,7 @@ export const TextareaField = React.forwardRef<
           <label htmlFor={id} className="mx-1 mb-1 font-semibold">
             {label}
             {hint && (
-              <span className="text-muted-foreground ms-2 text-[13px] font-normal">
+              <span className="ms-2 text-[13px] font-normal text-muted-foreground">
                 {hint}
               </span>
             )}
@@ -53,7 +53,7 @@ export const TextareaField = React.forwardRef<
         />
 
         {error && (
-          <span className="text-destructive mt-1 text-[12px]">{error}</span>
+          <span className="mt-1 text-[12px] text-destructive">{error}</span>
         )}
       </div>
     );

@@ -50,12 +50,8 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
     );
     const errorId = `${id}-error`;
     const inputDescription =
-      [
-        describedBy,
-        showInlineError && errorId,
-      ]
-        .filter(Boolean)
-        .join(' ') || undefined;
+      [describedBy, showInlineError && errorId].filter(Boolean).join(' ') ||
+      undefined;
 
     React.useEffect(() => {
       const userAgent = navigator.userAgent;
@@ -80,7 +76,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
           <label htmlFor={id} className="mx-1 mb-1 font-semibold">
             {label}{' '}
             {hint && (
-              <span className="text-muted-foreground text-sm font-normal">
+              <span className="text-sm font-normal text-muted-foreground">
                 {' '}
                 {hint}{' '}
               </span>
@@ -125,7 +121,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
               onClick={() => setShowPassword((prev) => !prev)}
               aria-label={t(showPassword ? 'hide-password' : 'show-password')}
               aria-pressed={showPassword}
-              className="text-muted-foreground absolute end-3 top-1/2 -translate-y-1/2"
+              className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             >
               {showPassword ? (
                 <EyeOffIcon className="h-4 w-4" />
@@ -142,7 +138,7 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
         </div>
 
         {showInlineError && (
-          <span id={errorId} className="text-destructive mt-1 text-xs">
+          <span id={errorId} className="mt-1 text-xs text-destructive">
             {error}
           </span>
         )}

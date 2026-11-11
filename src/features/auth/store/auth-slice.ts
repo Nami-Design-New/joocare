@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { IUser } from "../../../shared/types";
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { IUser } from '../../../shared/types';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
   user: IUser | null;
@@ -16,7 +16,7 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     setCredentials: (

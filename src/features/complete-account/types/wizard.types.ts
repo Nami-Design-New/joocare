@@ -1,4 +1,4 @@
-import { IWizardSchema } from "../schema/wizard.schema";
+import { IWizardSchema } from '../schema/wizard.schema';
 
 export type WizardFormData = IWizardSchema;
 

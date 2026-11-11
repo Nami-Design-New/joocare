@@ -36,7 +36,7 @@ export default function SearchInput({
         <Search
           aria-hidden="true"
           className={cn(
-            'text-primary pointer-events-none absolute start-4 top-1/2 z-10 size-5 -translate-y-1/2',
+            'pointer-events-none absolute start-4 top-1/2 z-10 size-5 -translate-y-1/2 text-primary',
             iconClassName,
           )}
         />
@@ -45,7 +45,7 @@ export default function SearchInput({
         type="search"
         placeholder={placeholder}
         aria-label={ariaLabel ?? placeholder}
-        className={cn('bg-card h-13 border-0 ps-12 shadow-none', className)}
+        className={cn('h-13 border-0 bg-card ps-12 shadow-none', className)}
         {...props}
       />
     </div>

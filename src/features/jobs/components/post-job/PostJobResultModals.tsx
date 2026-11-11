@@ -16,7 +16,9 @@ type PostJobResultModalsProps = {
   jobId?: number | string | null;
 };
 
-const ARROW = <ArrowRight aria-hidden="true" className="size-5 rtl:rotate-180" />;
+const ARROW = (
+  <ArrowRight aria-hidden="true" className="size-5 rtl:rotate-180" />
+);
 const JOB_MANAGEMENT_PATH = '/company/job-management';
 
 // "Saved Successfully!" (Figma 10086:88528) and "Congratulations!" (10895:61678).
@@ -40,7 +42,11 @@ export default function PostJobResultModals({
         title={t('savedSuccessfully.title')}
         description={t('savedSuccessfully.description')}
         actions={[
-          { label: t('savedSuccessfully.go-to-management'), icon: ARROW, href: JOB_MANAGEMENT_PATH },
+          {
+            label: t('savedSuccessfully.go-to-management'),
+            icon: ARROW,
+            href: JOB_MANAGEMENT_PATH,
+          },
           {
             label: t('savedSuccessfully.continue-editing'),
             variant: 'outline',
@@ -52,7 +58,7 @@ export default function PostJobResultModals({
           title={t('savedSuccessfully.callout-title')}
           description={t('savedSuccessfully.callout-description')}
           icon={
-            <span className="bg-primary text-primary-foreground flex size-13 shrink-0 items-center justify-center rounded-full">
+            <span className="flex size-13 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
               <Lightbulb aria-hidden="true" className="size-6" />
             </span>
           }
@@ -65,10 +71,16 @@ export default function PostJobResultModals({
         // Figma: closing goes back to Job Management.
         onCloseClick={() => router.push(JOB_MANAGEMENT_PATH)}
         imageSrc={JOB_STATUS_MODAL_IMAGES.published}
-        title={isEditMode ? t('postSuccess.updatedTitle') : t('postSuccess.congrats-title')}
+        title={
+          isEditMode
+            ? t('postSuccess.updatedTitle')
+            : t('postSuccess.congrats-title')
+        }
         subtitle={isEditMode ? undefined : t('postSuccess.published-subtitle')}
         description={
-          isEditMode ? t('postSuccess.updatedDescription') : t('postSuccess.publishedDescription')
+          isEditMode
+            ? t('postSuccess.updatedDescription')
+            : t('postSuccess.publishedDescription')
         }
         actions={[
           {
@@ -76,7 +88,11 @@ export default function PostJobResultModals({
             variant: 'outline',
             href: jobId ? `/company/job/${jobId}` : JOB_MANAGEMENT_PATH,
           },
-          { label: t('postSuccess.go-to-dashboard'), icon: ARROW, href: '/company/dashboard' },
+          {
+            label: t('postSuccess.go-to-dashboard'),
+            icon: ARROW,
+            href: '/company/dashboard',
+          },
         ]}
       >
         {isEditMode ? null : (
@@ -84,7 +100,7 @@ export default function PostJobResultModals({
             title={t('postSuccess.callout-title')}
             description={t('postSuccess.callout-description')}
             icon={
-              <span className="bg-primary/15 text-primary flex size-14 shrink-0 items-center justify-center rounded-full">
+              <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
                 <Megaphone aria-hidden="true" className="size-6.5" />
               </span>
             }

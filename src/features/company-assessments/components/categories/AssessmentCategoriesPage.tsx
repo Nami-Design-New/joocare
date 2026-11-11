@@ -48,7 +48,7 @@ export default function AssessmentCategoriesPage() {
           withSearchInput
           value={catalog.selectedCategoryId}
           onChange={catalog.setSelectedCategoryId}
-          className="bg-card h-13 border-none text-sm shadow-none"
+          className="h-13 border-none bg-card text-sm shadow-none"
         />
       </AssessmentFilter>
 

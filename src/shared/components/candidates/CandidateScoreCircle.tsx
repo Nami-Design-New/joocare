@@ -10,13 +10,13 @@ export default function CandidateScoreCircle({
   className,
 }: CandidateScoreCircleProps) {
   if (score === null) {
-    return <span className="text-muted-foreground block text-center">-</span>;
+    return <span className="block text-center text-muted-foreground">-</span>;
   }
 
   return (
     <span
       className={cn(
-        'border-primary text-primary mx-auto flex size-12 items-center justify-center rounded-full border-2 text-sm',
+        'mx-auto flex size-12 items-center justify-center rounded-full border-2 border-primary text-sm text-primary',
         className,
       )}
     >

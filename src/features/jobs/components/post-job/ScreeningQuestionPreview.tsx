@@ -28,7 +28,7 @@ export default function ScreeningQuestionPreview({
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-2 gap-3 text-sm">
-        <div className="border-border rounded-full border px-4 py-3">
+        <div className="rounded-full border border-border px-4 py-3">
           {t(question.type)}
         </div>
         <div
@@ -42,7 +42,7 @@ export default function ScreeningQuestionPreview({
           {t(question.required ? 'required' : 'optional')}
         </div>
       </div>
-      <p className="border-border rounded-3xl border px-4 py-3 text-sm">
+      <p className="rounded-3xl border border-border px-4 py-3 text-sm">
         {question.question}
       </p>
       {isYesNo ? (
@@ -63,7 +63,7 @@ export default function ScreeningQuestionPreview({
         </div>
       ) : (
         <div className="flex flex-col gap-3">
-          <p className="text-foreground/80 text-[13px] font-semibold">
+          <p className="text-[13px] font-semibold text-foreground/80">
             {t('answer-options')}
           </p>
           {question.options.map((option, index) => (
@@ -73,9 +73,9 @@ export default function ScreeningQuestionPreview({
               </span>
               <span
                 className={cn(
-                  'border-border flex-1 rounded-full border px-4 py-2',
+                  'flex-1 rounded-full border border-border px-4 py-2',
                   question.correctOptionIds.includes(option.id) &&
-                    'bg-primary-bg text-primary border-primary',
+                    'border-primary bg-primary-bg text-primary',
                 )}
               >
                 {option.text}
@@ -84,11 +84,11 @@ export default function ScreeningQuestionPreview({
           ))}
         </div>
       )}
-      <div className="border-border flex flex-col gap-2 border-t pt-4">
-        <p className="text-foreground text-sm font-semibold">
+      <div className="flex flex-col gap-2 border-t border-border pt-4">
+        <p className="text-sm font-semibold text-foreground">
           {t('correct-answer')}
         </p>
-        <p className="border-border rounded-full border px-4 py-3 text-sm">
+        <p className="rounded-full border border-border px-4 py-3 text-sm">
           {isYesNo
             ? question.options.find((option) =>
                 question.correctOptionIds.includes(option.id),

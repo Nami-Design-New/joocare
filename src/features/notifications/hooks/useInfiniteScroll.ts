@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from 'react';
 
 type InfiniteScrollOptions = {
   enabled: boolean;
@@ -12,7 +12,7 @@ type InfiniteScrollOptions = {
 export function useInfiniteScroll({
   enabled,
   onLoadMore,
-  rootMargin = "200px 0px",
+  rootMargin = '200px 0px',
   threshold = 0,
 }: InfiniteScrollOptions) {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -89,7 +89,6 @@ export function useInfiniteScroll({
     setTargetRef,
   };
 }
-
 
 /////// old
 // "use client";

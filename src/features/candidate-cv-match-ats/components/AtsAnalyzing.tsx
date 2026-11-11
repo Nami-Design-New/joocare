@@ -27,7 +27,7 @@ export default function AtsAnalyzing() {
         type="button"
         size="pill"
         disabled
-        className="bg-foreground/15 text-foreground/45 h-13 w-56 text-base font-semibold disabled:opacity-100"
+        className="h-13 w-56 bg-foreground/15 text-base font-semibold text-foreground/45 disabled:opacity-100"
       >
         {t('analyze')}
       </Button>

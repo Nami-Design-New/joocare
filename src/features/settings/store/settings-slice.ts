@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import type { AppSetting } from "@/shared/services/settings-services";
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { AppSetting } from '@/shared/services/settings-services';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type SettingsState = {
   data: AppSetting | null;
@@ -18,7 +18,7 @@ const initialState: SettingsState = {
 };
 
 const settingsSlice = createSlice({
-  name: "settings",
+  name: 'settings',
   initialState,
   reducers: {
     setSettings(state, action: PayloadAction<AppSetting | null>) {
@@ -38,4 +38,3 @@ const settingsSlice = createSlice({
 
 export const { setSettings, clearSettings } = settingsSlice.actions;
 export default settingsSlice.reducer;
-

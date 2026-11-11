@@ -130,7 +130,7 @@ export default function SharedComponentsPage() {
   return (
     <main className="mx-auto max-w-7xl" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <section className="space-y-4">
-        <h2 className="text-secondary text-xl font-semibold">
+        <h2 className="text-xl font-semibold text-secondary">
           Company Admin Roles
         </h2>
         <div className="grid gap-4 xl:grid-cols-2">
@@ -192,7 +192,7 @@ export default function SharedComponentsPage() {
       </section>
 
       <section className="mt-10 space-y-4">
-        <h2 className="text-secondary text-xl font-semibold">
+        <h2 className="text-xl font-semibold text-secondary">
           Assessment Components
         </h2>
         <div className="grid gap-4 xl:grid-cols-2">
@@ -219,7 +219,7 @@ export default function SharedComponentsPage() {
                 ]}
                 value={selectedCategoryId}
                 onChange={setSelectedCategoryId}
-                className="bg-card h-13 border-none text-sm shadow-none"
+                className="h-13 border-none bg-card text-sm shadow-none"
               />
             </AssessmentFilter>
           </ComponentPreview>

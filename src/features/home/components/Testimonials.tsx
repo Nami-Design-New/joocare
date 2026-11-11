@@ -1,14 +1,14 @@
-import { Star } from "lucide-react";
-import SectionTitle from "./SectionTitle";
+import { Star } from 'lucide-react';
+import SectionTitle from './SectionTitle';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/shared/components/ui/carousel";
-import type { HomeRate } from "../types/home.types";
-import { useLocale, useTranslations } from "next-intl";
+} from '@/shared/components/ui/carousel';
+import type { HomeRate } from '../types/home.types';
+import { useLocale, useTranslations } from 'next-intl';
 
 export const TestimonialCard = ({
   name,
@@ -24,11 +24,13 @@ export const TestimonialCard = ({
   date?: string | null | undefined;
   text?: string | null | undefined;
 }) => (
-  <div className="bg-card flex flex-col  gap-3 rounded-tl-4xl rounded-br-4xl p-6 h-full w-full">
+  <div className="flex h-full w-full flex-col gap-3 rounded-tl-4xl rounded-br-4xl bg-card p-6">
     <div className="flex justify-between">
       <div>
-        <h5 className="text-secondary text-lg md:text-xl font-normal">{name}</h5>
-        <p className="text-muted-foreground text-xs">{date}</p>
+        <h5 className="text-lg font-normal text-secondary md:text-xl">
+          {name}
+        </h5>
+        <p className="text-xs text-muted-foreground">{date}</p>
       </div>
       <div className="mb-4 flex gap-1">
         {[...Array(5)].map((_, i) => {
@@ -37,13 +39,15 @@ export const TestimonialCard = ({
           return (
             <Star
               key={i}
-              className={`h-4 w-4 ${isFilled ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+              className={`h-4 w-4 ${isFilled ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
             />
           );
         })}
       </div>
     </div>
-    <p className="text-muted-foreground text-sm md:text-base leading-tight">{text}</p>
+    <p className="text-sm leading-tight text-muted-foreground md:text-base">
+      {text}
+    </p>
   </div>
 );
 
@@ -55,17 +59,16 @@ export const Testimonials = ({
   reviews: HomeRate[];
 }) => {
   const t = useTranslations();
-  const locale = useLocale()
+  const locale = useLocale();
   // console.log("review ::", reviews);
 
   return (
     <section className="bg-background py-10 md:py-20">
       <div className="layout-shell">
         <div className="layout-content">
-
           <Carousel
             opts={{
-              align: "start",
+              align: 'start',
               loop: false,
             }}
           >
@@ -77,17 +80,18 @@ export const Testimonials = ({
               </div>
 
               {/* Shadcn carousel controls wired to the same Carousel context */}
-              <div className={`flex shrink-0 gap-2 sm:gap-4 ${locale === "ar" ? "flex-row-reverse" : ""}`}>
-                <CarouselPrevious className="border-border text-secondary hover:bg-secondary static size-10 translate-y-0 rounded-full border transition-all hover:text-white sm:size-12" />
-                <CarouselNext className="border-border text-secondary hover:bg-secondary static size-10 translate-y-0 rounded-full border transition-all hover:text-white sm:size-12" />
+              <div
+                className={`flex shrink-0 gap-2 sm:gap-4 ${locale === 'ar' ? 'flex-row-reverse' : ''}`}
+              >
+                <CarouselPrevious className="static size-10 translate-y-0 rounded-full border border-border text-secondary transition-all hover:bg-secondary hover:text-white sm:size-12" />
+                <CarouselNext className="static size-10 translate-y-0 rounded-full border border-border text-secondary transition-all hover:bg-secondary hover:text-white sm:size-12" />
               </div>
-
             </div>
 
             {/* Cards */}
             <CarouselContent className="-ml-6 items-stretch">
               {reviews.map((rev) => (
-                <CarouselItem key={rev.id} className="pl-6 md:basis-1/3 flex">
+                <CarouselItem key={rev.id} className="flex pl-6 md:basis-1/3">
                   <TestimonialCard {...rev} />
                 </CarouselItem>
               ))}

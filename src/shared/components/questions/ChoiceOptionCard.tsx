@@ -36,7 +36,7 @@ export default function ChoiceOptionCard({
   return (
     <label
       className={cn(
-        'has-focus-visible:ring-ring/40 flex min-h-13 cursor-pointer items-center gap-4 rounded-xl border p-4 transition-colors has-focus-visible:ring-[3px]',
+        'flex min-h-13 cursor-pointer items-center gap-4 rounded-xl border p-4 transition-colors has-focus-visible:ring-[3px] has-focus-visible:ring-ring/40',
         checked
           ? 'border-assessment-primary bg-assessment-primary/4'
           : 'border-border bg-card hover:bg-muted/60',
@@ -62,11 +62,11 @@ export default function ChoiceOptionCard({
         <CheckboxIndicator checked={checked} />
       )}
       {marker ? (
-        <bdi className="text-foreground shrink-0 text-base font-semibold">
+        <bdi className="shrink-0 text-base font-semibold text-foreground">
           {marker}
         </bdi>
       ) : null}
-      <span className="text-foreground min-w-0 flex-1 text-base leading-5">
+      <span className="min-w-0 flex-1 text-base leading-5 text-foreground">
         {label}
       </span>
     </label>
@@ -83,7 +83,7 @@ function RadioIndicator({ checked }: { checked: boolean }) {
       )}
     >
       {checked ? (
-        <span className="bg-assessment-primary size-2 rounded-full" />
+        <span className="size-2 rounded-full bg-assessment-primary" />
       ) : null}
     </span>
   );

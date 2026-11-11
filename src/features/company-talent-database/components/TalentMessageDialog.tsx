@@ -59,7 +59,7 @@ export default function TalentMessageDialog({
     >
       <DialogContent
         showCloseButton={false}
-        className="bg-card w-[calc(100%-2rem)] max-w-195 gap-5 rounded-3xl border-0 p-6 sm:gap-8 sm:min-w-0"
+        className="w-[calc(100%-2rem)] max-w-195 gap-5 rounded-3xl border-0 bg-card p-6 sm:min-w-0 sm:gap-8"
         onEscapeKeyDown={(event) => {
           if (isSubmitting) event.preventDefault();
         }}
@@ -68,7 +68,7 @@ export default function TalentMessageDialog({
         }}
       >
         <div className="flex items-center justify-between gap-6">
-          <DialogTitle className="text-2xl leading-tight sm:text-[28px] font-semibold">
+          <DialogTitle className="text-2xl leading-tight font-semibold sm:text-[28px]">
             {t('send-message')}
           </DialogTitle>
           <DialogClose asChild>
@@ -96,7 +96,7 @@ export default function TalentMessageDialog({
             {candidates.map((candidate) => (
               <span
                 key={candidate.id}
-                className="bg-primary/10 text-primary border-primary flex items-center gap-2 rounded-full border py-1.5 ps-3.5 pe-2 text-sm font-medium"
+                className="flex items-center gap-2 rounded-full border border-primary bg-primary/10 py-1.5 ps-3.5 pe-2 text-sm font-medium text-primary"
               >
                 <bdi>{candidate.name}</bdi>
                 <button
@@ -112,7 +112,7 @@ export default function TalentMessageDialog({
             ))}
           </div>
           {!candidates.length && (
-            <p role="alert" className="text-destructive text-sm">
+            <p role="alert" className="text-sm text-destructive">
               {t('recipient-required')}
             </p>
           )}
@@ -122,9 +122,9 @@ export default function TalentMessageDialog({
             {...register('message')}
             error={errors.message?.message}
             disabled={isSubmitting}
-            className="border-assessment-outline bg-card mt-5 min-h-40 rounded-2xl px-4 py-3.5 text-[15px] shadow-none"
+            className="mt-5 min-h-40 rounded-2xl border-assessment-outline bg-card px-4 py-3.5 text-[15px] shadow-none"
           />
-          <aside className="border-assessment-link-info-border bg-assessment-link-info text-assessment-link-info-text flex items-start gap-3 rounded-xl border p-4 text-xs leading-relaxed">
+          <aside className="flex items-start gap-3 rounded-xl border border-assessment-link-info-border bg-assessment-link-info p-4 text-xs leading-relaxed text-assessment-link-info-text">
             <Info aria-hidden className="mt-0.5 size-4.5 shrink-0" />
             <div>
               <h3 className="mb-1 font-semibold">{t('send-individually')}</h3>

@@ -4,9 +4,9 @@ export default function ChatLoading() {
   return (
     <div
       aria-busy="true"
-      className="bg-card mx-auto flex h-[calc(100dvh-4.75rem)] max-w-256 overflow-hidden md:h-[calc(100dvh-10.875rem)] md:min-h-144"
+      className="mx-auto flex h-[calc(100dvh-4.75rem)] max-w-256 overflow-hidden bg-card md:h-[calc(100dvh-10.875rem)] md:min-h-144"
     >
-      <div className="bg-chat-list w-full space-y-6 p-6 md:w-80 xl:w-95">
+      <div className="w-full space-y-6 bg-chat-list p-6 md:w-80 xl:w-95">
         <Skeleton className="h-8 w-24" />
         <Skeleton className="h-10 w-full rounded-xl" />
         {Array.from({ length: 4 }, (_, index) => (

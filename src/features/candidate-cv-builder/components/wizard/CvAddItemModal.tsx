@@ -83,7 +83,7 @@ export default function CvAddItemModal<N extends CvListName>({
             <Button
               type="submit"
               size="pill"
-              className="bg-cv-builder-primary hover:bg-cv-builder-primary/90 h-12.5 w-full self-center font-semibold sm:w-56"
+              className="h-12.5 w-full self-center bg-cv-builder-primary font-semibold hover:bg-cv-builder-primary/90 sm:w-56"
             >
               {t('add')}
             </Button>

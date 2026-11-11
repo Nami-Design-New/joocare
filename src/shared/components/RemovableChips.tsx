@@ -8,13 +8,13 @@ const chipVariants = cva('flex items-center rounded-full', {
   variants: {
     variant: {
       /** Tinted chip with no border. */
-      soft: 'bg-primary/10 text-primary gap-2 px-3 py-1.5 text-sm font-medium',
+      soft: 'gap-2 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary',
       /** Tinted chip with a border, colored by `text-*` (current color). */
       outline:
-        'border-current/20 bg-current/8 h-8 gap-1.5 border py-1.5 ps-3 pe-2 text-sm font-medium',
+        'h-8 gap-1.5 border border-current/20 bg-current/8 py-1.5 ps-3 pe-2 text-sm font-medium',
       /** Mobility card chip (relocation / driving license countries). */
       mobility:
-        'bg-question-card-chip text-question-card-accent gap-2.5 px-5 py-2.5 text-sm font-semibold',
+        'gap-2.5 bg-question-card-chip px-5 py-2.5 text-sm font-semibold text-question-card-accent',
     },
   },
   defaultVariants: { variant: 'soft' },
@@ -51,7 +51,7 @@ export default function RemovableChips({
           {withInitial && (
             <span
               aria-hidden
-              className="bg-card flex size-6 items-center justify-center rounded-full text-xs"
+              className="flex size-6 items-center justify-center rounded-full bg-card text-xs"
             >
               {item.label.charAt(0)}
             </span>

@@ -96,7 +96,7 @@ export default function PersonalDetailsStep() {
                 type="button"
                 onClick={() => languages.remove(index)}
                 aria-label={t('languages.remove')}
-                className="text-muted-foreground hover:text-destructive bg-card flex size-13 shrink-0 items-center justify-center rounded-full"
+                className="flex size-13 shrink-0 items-center justify-center rounded-full bg-card text-muted-foreground hover:text-destructive"
               >
                 <X aria-hidden className="size-5" />
               </button>

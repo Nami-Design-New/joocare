@@ -81,7 +81,7 @@ export default function JobPostStepTwo({
                     onChange={field.onChange}
                   />
                   {errors.description?.message ? (
-                    <p className="text-destructive text-sm">
+                    <p className="text-sm text-destructive">
                       {translateError(errors.description.message)}
                     </p>
                   ) : null}

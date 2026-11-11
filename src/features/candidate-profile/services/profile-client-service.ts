@@ -1,9 +1,9 @@
-import { getUserApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { getUserApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
 export async function updateCandidateBio({
   bio,
-  locale = "en",
+  locale = 'en',
   token,
 }: {
   bio: string;
@@ -11,17 +11,17 @@ export async function updateCandidateBio({
   token: string;
 }) {
   const formData = new FormData();
-  formData.append("bio", bio);
+  formData.append('bio', bio);
 
   const { ok, data, message } = await apiFetch(`${getUserApiUrl()}/user-bio`, {
-    method: "POST",
+    method: 'POST',
     locale,
     token,
     body: formData,
   });
 
   if (!ok) {
-    throw new Error(message || "Failed to update about information.");
+    throw new Error(message || 'Failed to update about information.');
   }
 
   return data;

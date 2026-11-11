@@ -44,7 +44,7 @@ export default function ExternalInvitationFilters({
     { value: 'nursing', label: 'Nursing Assessment' },
   ];
   return (
-    <div className="bg-secondary/4 grid grid-cols-2 gap-2.5 rounded-3xl p-3 lg:grid-cols-[minmax(230px,300fr)_170fr_200fr_145fr_145fr]">
+    <div className="grid grid-cols-2 gap-2.5 rounded-3xl bg-secondary/4 p-3 lg:grid-cols-[minmax(230px,300fr)_170fr_200fr_145fr_145fr]">
       <SearchInput
         id="invitation-search"
         placeholder={t('search')}
@@ -52,7 +52,7 @@ export default function ExternalInvitationFilters({
         onChange={(event) => onSearch(event.target.value)}
         containerClassName="col-span-2 lg:col-span-1"
         iconClassName="text-assessment-primary size-4.5"
-        className="placeholder:text-muted-foreground/60 ps-11 text-base"
+        className="ps-11 text-base placeholder:text-muted-foreground/60"
       />
       <SelectInputField
         id="invitation-status"
@@ -60,7 +60,7 @@ export default function ExternalInvitationFilters({
         options={statusOptions}
         value={status}
         onChange={onStatus}
-        className="bg-card text-muted-foreground/60 h-13 rounded-full border-none px-4 text-base"
+        className="h-13 rounded-full border-none bg-card px-4 text-base text-muted-foreground/60"
       />
       <SelectInputField
         id="invitation-project"
@@ -68,7 +68,7 @@ export default function ExternalInvitationFilters({
         options={projects}
         value={project}
         onChange={onProject}
-        className="bg-card text-muted-foreground/60 h-13 rounded-full border-none px-4 text-base"
+        className="h-13 rounded-full border-none bg-card px-4 text-base text-muted-foreground/60"
       />
       <InputField
         id="invitation-min-score"
@@ -79,7 +79,7 @@ export default function ExternalInvitationFilters({
         placeholder={t('min-score')}
         value={minScore}
         onChange={(event) => onMinScore(event.target.value)}
-        className="bg-card placeholder:text-muted-foreground/60 h-13 border-none text-base shadow-none"
+        className="h-13 border-none bg-card text-base shadow-none placeholder:text-muted-foreground/60"
       />
       <InputField
         id="invitation-max-score"
@@ -90,7 +90,7 @@ export default function ExternalInvitationFilters({
         placeholder={t('max-score')}
         value={maxScore}
         onChange={(event) => onMaxScore(event.target.value)}
-        className="bg-card placeholder:text-muted-foreground/60 h-13 border-none text-base shadow-none"
+        className="h-13 border-none bg-card text-base shadow-none placeholder:text-muted-foreground/60"
       />
     </div>
   );

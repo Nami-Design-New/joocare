@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
-import SidebarNavItem from "./SidebarNavItem";
-import SidebarNavMobile from "./SidebarNavMobile";
-import type { SidebarNavGroup } from "./types";
+import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import SidebarNavItem from './SidebarNavItem';
+import SidebarNavMobile from './SidebarNavMobile';
+import type { SidebarNavGroup } from './types';
 
 type SidebarNavProps = {
   groups: readonly SidebarNavGroup[];
@@ -16,35 +16,41 @@ export default function SidebarNav({ groups }: SidebarNavProps) {
 
   return (
     <>
-    {/* Mobile: swipeable pills; desktop: the grouped vertical list. */}
-    <SidebarNavMobile groups={groups} pathname={pathname} />
-    <nav aria-label={t("common.sidebar-navigation")} className="hidden lg:block">
-      <div className="flex flex-col gap-5">
-        {groups.map((group) => (
-          <section key={group.title} aria-labelledby={`sidebar-group-${group.title}`}>
-            <h2
-              id={`sidebar-group-${group.title}`}
-              className="mb-2 px-3 text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground"
+      {/* Mobile: swipeable pills; desktop: the grouped vertical list. */}
+      <SidebarNavMobile groups={groups} pathname={pathname} />
+      <nav
+        aria-label={t('common.sidebar-navigation')}
+        className="hidden lg:block"
+      >
+        <div className="flex flex-col gap-5">
+          {groups.map((group) => (
+            <section
+              key={group.title}
+              aria-labelledby={`sidebar-group-${group.title}`}
             >
-              {t(group.title)}
-            </h2>
-            <ul className="flex flex-col gap-1">
-              {group.items.map((item) => (
-                <SidebarNavItem
-                  key={`${item.label}-${pathname}`}
-                  item={item}
-                  pathname={pathname}
-                  label={t(item.label)}
-                  childLabels={(item.children ?? []).map((child) =>
-                    t(child.label),
-                  )}
-                />
-              ))}
-            </ul>
-          </section>
-        ))}
-      </div>
-    </nav>
+              <h2
+                id={`sidebar-group-${group.title}`}
+                className="mb-2 px-3 text-[10px] font-medium tracking-[0.12em] text-muted-foreground uppercase"
+              >
+                {t(group.title)}
+              </h2>
+              <ul className="flex flex-col gap-1">
+                {group.items.map((item) => (
+                  <SidebarNavItem
+                    key={`${item.label}-${pathname}`}
+                    item={item}
+                    pathname={pathname}
+                    label={t(item.label)}
+                    childLabels={(item.children ?? []).map((child) =>
+                      t(child.label),
+                    )}
+                  />
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </nav>
     </>
   );
 }

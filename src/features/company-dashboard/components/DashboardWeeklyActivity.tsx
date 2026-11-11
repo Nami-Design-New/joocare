@@ -25,8 +25,8 @@ export default function DashboardWeeklyActivity() {
   });
 
   return (
-    <section className="bg-card rounded-xl p-3">
-      <h2 className="text-foreground flex items-center gap-1.25 text-[13.5px] leading-4.25 font-semibold">
+    <section className="rounded-xl bg-card p-3">
+      <h2 className="flex items-center gap-1.25 text-[13.5px] leading-4.25 font-semibold text-foreground">
         <DashboardIcon name="weekly-activity" width={15.5} />
         {t('weekly-activity')}
       </h2>

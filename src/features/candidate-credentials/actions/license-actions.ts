@@ -1,19 +1,19 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth";
+import { revalidatePath } from 'next/cache';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
 import {
   createLicense,
   deleteLicense,
   updateLicense,
-} from "../services/license-mutation-service";
+} from '../services/license-mutation-service';
 
 async function resolveCandidateToken() {
   const session = await getServerSession(authOptions);
 
-  if (!session?.accessToken || session.authRole !== "candidate") {
-    throw new Error("Your session has expired. Please log in again.");
+  if (!session?.accessToken || session.authRole !== 'candidate') {
+    throw new Error('Your session has expired. Please log in again.');
   }
 
   return session.accessToken;
@@ -29,7 +29,7 @@ export async function createLicenseAction({
   number,
   countryId,
   image,
-  locale = "en",
+  locale = 'en',
 }: {
   title: string;
   number: string;
@@ -50,7 +50,7 @@ export async function createLicenseAction({
   revalidateLicensePaths(locale);
 
   return {
-    message: result?.message ?? "License added successfully.",
+    message: result?.message ?? 'License added successfully.',
   };
 }
 
@@ -60,7 +60,7 @@ export async function updateLicenseAction({
   number,
   countryId,
   image,
-  locale = "en",
+  locale = 'en',
 }: {
   id: string;
   title: string;
@@ -82,13 +82,13 @@ export async function updateLicenseAction({
   revalidateLicensePaths(locale);
 
   return {
-    message: result?.message ?? "License updated successfully.",
+    message: result?.message ?? 'License updated successfully.',
   };
 }
 
 export async function deleteLicenseAction({
   id,
-  locale = "en",
+  locale = 'en',
 }: {
   id: string;
   locale?: string;
@@ -103,6 +103,6 @@ export async function deleteLicenseAction({
   revalidateLicensePaths(locale);
 
   return {
-    message: result?.message ?? "License deleted successfully.",
+    message: result?.message ?? 'License deleted successfully.',
   };
 }

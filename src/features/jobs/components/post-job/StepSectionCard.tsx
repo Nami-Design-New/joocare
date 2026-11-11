@@ -26,15 +26,20 @@ export default function StepSectionCard({
   return (
     <AccordionItem
       value={value}
-      className={cn('bg-card border-border overflow-hidden rounded-2xl border last:border-b', className)}
+      className={cn(
+        'overflow-hidden rounded-2xl border border-border bg-card last:border-b',
+        className,
+      )}
     >
       <AccordionTrigger
         iconType="circle-arrow"
-        className="text-secondary items-center px-3 py-4 text-start text-xl font-semibold hover:no-underline sm:text-[21px]"
+        className="items-center px-3 py-4 text-start text-xl font-semibold text-secondary hover:no-underline sm:text-[21px]"
       >
         {title}
       </AccordionTrigger>
-      <AccordionContent className={cn('p-3', mutedBody && 'bg-muted')}>{children}</AccordionContent>
+      <AccordionContent className={cn('p-3', mutedBody && 'bg-muted')}>
+        {children}
+      </AccordionContent>
     </AccordionItem>
   );
 }

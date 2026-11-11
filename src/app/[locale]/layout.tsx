@@ -1,13 +1,13 @@
-import { routing } from "@/i18n/routing";
-import { settingService } from "@/shared/services/settings-services";
-import MainProviders from "@/shared/providers/MainProviders";
-import type { Metadata } from "next";
-import { hasLocale } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
-import { Noto_Sans, Outfit } from "next/font/google";
-import { notFound } from "next/navigation";
-import "../globals.css";
-import { getSharedOgImage } from "@/shared/util/metadata";
+import { routing } from '@/i18n/routing';
+import { settingService } from '@/shared/services/settings-services';
+import MainProviders from '@/shared/providers/MainProviders';
+import type { Metadata } from 'next';
+import { hasLocale } from 'next-intl';
+import { getMessages, setRequestLocale } from 'next-intl/server';
+import { Noto_Sans, Outfit } from 'next/font/google';
+import { notFound } from 'next/navigation';
+import '../globals.css';
+import { getSharedOgImage } from '@/shared/util/metadata';
 
 function getMetadataBase() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -23,17 +23,16 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-outfit",
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-outfit',
 });
 
 const notoSans = Noto_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-noto-sans",
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-noto-sans',
 });
-
 
 export async function generateMetadata({
   params,
@@ -51,20 +50,24 @@ export async function generateMetadata({
 
   return {
     metadataBase,
-    title: "Joocare - Find the best healthcare jobs",
-    description: "Discover your ideal healthcare job with Joocare...",
-    icons: { icon: "/tab-icon.png", shortcut: "/tab-icon.png", apple: "/tab-icon.png" },
+    title: 'Joocare - Find the best healthcare jobs',
+    description: 'Discover your ideal healthcare job with Joocare...',
+    icons: {
+      icon: '/tab-icon.png',
+      shortcut: '/tab-icon.png',
+      apple: '/tab-icon.png',
+    },
     openGraph: {
-      title: "Joocare - Find the best healthcare jobs",
-      description: "Discover your ideal healthcare job with Joocare...",
-      siteName: "Joocare",
-      type: "website",
-      images: [{ url: imageUrl, width: 1200, height: 630, alt: "Joocare" }],
+      title: 'Joocare - Find the best healthcare jobs',
+      description: 'Discover your ideal healthcare job with Joocare...',
+      siteName: 'Joocare',
+      type: 'website',
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: 'Joocare' }],
     },
     twitter: {
-      card: "summary_large_image",
-      title: "Joocare - Find the best healthcare jobs",
-      description: "Discover your ideal healthcare job with Joocare...",
+      card: 'summary_large_image',
+      title: 'Joocare - Find the best healthcare jobs',
+      description: 'Discover your ideal healthcare job with Joocare...',
       images: [imageUrl],
     },
   };
@@ -89,11 +92,10 @@ export default async function RootLayout({ children, params }: Props) {
     settingService(locale).catch(() => null),
   ]);
 
-
   return (
     <html
       lang={locale}
-      dir={locale === "ar" ? "rtl" : "ltr"}
+      dir={locale === 'ar' ? 'rtl' : 'ltr'}
       className={`${outfit.variable} ${notoSans.variable}`}
     >
       <body className={`antialiased ${outfit.className}`}>

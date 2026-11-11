@@ -22,7 +22,10 @@ export default function JobSkillsField({
   onLabelsChange,
 }: JobSkillsFieldProps) {
   const t = useTranslations('companyPage.postJob.fields.skills');
-  const { control, formState: { errors } } = useFormContext<JobFormData>();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<JobFormData>();
   const skills = useJobSkillsField(existingJob);
   const { query, recommended } = skills;
 
@@ -53,7 +56,11 @@ export default function JobSkillsField({
               options={skills.options}
               onChange={change}
               disabled={query.isLoading}
-              preloadOptions={skills.existingOptions.length ? skills.existingOptions : skills.options}
+              preloadOptions={
+                skills.existingOptions.length
+                  ? skills.existingOptions
+                  : skills.options
+              }
               onReachEnd={() => query.fetchNextPage()}
               hasNextPage={Boolean(query.hasNextPage)}
               isFetchingNextPage={query.isFetchingNextPage}
@@ -68,8 +75,13 @@ export default function JobSkillsField({
               onShowMore={recommended.showMore}
             />
             <SelectedSkills
-              skills={value.map((skillId) => ({ value: skillId, label: skills.getLabel(skillId) }))}
-              onRemove={(skillId) => change(value.filter((item) => item !== skillId))}
+              skills={value.map((skillId) => ({
+                value: skillId,
+                label: skills.getLabel(skillId),
+              }))}
+              onRemove={(skillId) =>
+                change(value.filter((item) => item !== skillId))
+              }
             />
           </div>
         );

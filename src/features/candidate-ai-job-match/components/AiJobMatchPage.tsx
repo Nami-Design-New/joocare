@@ -14,7 +14,7 @@ export default function AiJobMatchPage({ scenario }: AiJobMatchPageProps) {
   const match = useAiJobMatch(scenario);
 
   return (
-    <section className="bg-card shadow-card rounded-2xl p-4 md:p-8">
+    <section className="rounded-2xl bg-card p-4 shadow-card md:p-8">
       {match.hasPreferences ? (
         <JobMatchResults
           matches={match.matches}

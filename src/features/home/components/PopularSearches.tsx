@@ -69,10 +69,10 @@
 //     </section>
 //   );
 // }
-import { Button } from "@/shared/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import PopularSearchItem from "./PopularSearchItem";
-import { useLocale, useTranslations } from "next-intl";
+import { Button } from '@/shared/components/ui/button';
+import { ArrowRight } from 'lucide-react';
+import PopularSearchItem from './PopularSearchItem';
+import { useLocale, useTranslations } from 'next-intl';
 
 export interface PopularSearchesItem {
   id: string;
@@ -94,27 +94,28 @@ interface PopularSearchesProps {
 
 export default function PopularSearches({
   items,
-  title = "search-filter.popular-searches",
+  title = 'search-filter.popular-searches',
   maxVisible,
   onItemClick,
   onShowMore,
   onShowLess,
   isExpanded = false,
   isLoadingMore = false,
-  showMoreLabel = "search-filter.show-more",
-  showLessLabel = "search-filter.show-less",
+  showMoreLabel = 'search-filter.show-more',
+  showLessLabel = 'search-filter.show-less',
 }: PopularSearchesProps) {
   const t = useTranslations();
-  const locale = useLocale()
+  const locale = useLocale();
   const visibleItems = maxVisible ? items.slice(0, maxVisible) : items;
   const hasItems = items.length > 0;
-  const shouldShowToggleButton = hasItems && (Boolean(onShowMore) || Boolean(onShowLess));
+  const shouldShowToggleButton =
+    hasItems && (Boolean(onShowMore) || Boolean(onShowLess));
 
   return (
-    <section className="flex w-full  flex-col items-center gap-2 lg:flex-row lg:items-start lg:justify-between">
+    <section className="flex w-full flex-col items-center gap-2 lg:flex-row lg:items-start lg:justify-between">
       {/* Top Row (mobile/tablet) */}
       <div className="flex w-full items-center justify-between lg:w-auto lg:shrink-0">
-        <h4 className="text-foreground text-base md:text-xl font-semibold whitespace-nowrap">
+        <h4 className="text-base font-semibold whitespace-nowrap text-foreground md:text-xl">
           {t(title)}
         </h4>
 
@@ -123,20 +124,20 @@ export default function PopularSearches({
             variant="outline"
             size="pill"
             hoverStyle="slidehorizontalPrimary"
-            className="text-muted-foreground text-sm md:text-base group flex items-center gap-2 border-none font-normal lg:hidden"
+            className="group flex items-center gap-2 border-none text-sm font-normal text-muted-foreground md:text-base lg:hidden"
             onClick={isExpanded ? onShowLess : onShowMore}
             disabled={isLoadingMore}
           >
             {isLoadingMore
-              ? "Loading..."
+              ? 'Loading...'
               : isExpanded
                 ? t(showLessLabel)
                 : t(showMoreLabel)}
             <ArrowRight
               size={28}
               strokeWidth={1.5}
-              className={`border-muted-foreground text-muted-foreground size-5 md:size-7 rounded-full border
-               bg-white transition-transform  ${locale === 'ar' ? " -rotate-135 group-hover:-rotate-180" : " -rotate-45 group-hover:rotate-0"}`} />
+              className={`size-5 rounded-full border border-muted-foreground bg-white text-muted-foreground transition-transform md:size-7 ${locale === 'ar' ? '-rotate-135 group-hover:-rotate-180' : '-rotate-45 group-hover:rotate-0'}`}
+            />
           </Button>
         )}
       </div>
@@ -159,20 +160,19 @@ export default function PopularSearches({
           variant="outline"
           size="pill"
           hoverStyle="slidehorizontalPrimary"
-          className="text-muted-foreground text-sm md:text-base group hidden items-center gap-2 border-none font-normal lg:flex"
+          className="group hidden items-center gap-2 border-none text-sm font-normal text-muted-foreground md:text-base lg:flex"
           onClick={isExpanded ? onShowLess : onShowMore}
           disabled={isLoadingMore}
         >
           {isLoadingMore
-            ? "Loading..."
+            ? 'Loading...'
             : isExpanded
               ? t(showLessLabel)
               : t(showMoreLabel)}
           <ArrowRight
             size={28}
             strokeWidth={1.5}
-            className={`border-muted-foreground text-muted-foreground size-5 md:size-7 rounded-full border
-               bg-white transition-transform  ${locale === 'ar' ? " -rotate-135 group-hover:-rotate-180" : " -rotate-45 group-hover:rotate-0"}`}
+            className={`size-5 rounded-full border border-muted-foreground bg-white text-muted-foreground transition-transform md:size-7 ${locale === 'ar' ? '-rotate-135 group-hover:-rotate-180' : '-rotate-45 group-hover:rotate-0'}`}
           />
         </Button>
       )}

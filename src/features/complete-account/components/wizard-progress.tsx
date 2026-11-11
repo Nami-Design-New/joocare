@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment } from 'react';
 
 interface Props {
   step: number;
@@ -16,15 +16,15 @@ export default function WizardProgress({ step, steps, className }: Props) {
           <Fragment key={index}>
             <div
               key={index}
-              className={`flex h-9 w-9 items-center justify-center rounded-full p-2 text-lg font-semibold ${step >= index ? "bg-primary text-white" : "bg-muted text-disabled"} `}
+              className={`flex h-9 w-9 items-center justify-center rounded-full p-2 text-lg font-semibold ${step >= index ? 'bg-primary text-white' : 'bg-muted text-disabled'} `}
             >
               {index + 1}
             </div>
 
             {index !== steps.length - 1 && (
               <div
-                className={`w-full flex-1 p-1.5 ${step > index ? "bg-primary" : "bg-muted"}`}
-                style={{ marginLeft: "-.05rem", marginRight: "-.05rem" }}
+                className={`w-full flex-1 p-1.5 ${step > index ? 'bg-primary' : 'bg-muted'}`}
+                style={{ marginLeft: '-.05rem', marginRight: '-.05rem' }}
               />
             )}
           </Fragment>
@@ -35,7 +35,7 @@ export default function WizardProgress({ step, steps, className }: Props) {
         {steps.map((label, index) => (
           <span
             key={index}
-            className={`text-xs md:text-lg ${step >= index ? "" : "text-disabled"}`}
+            className={`text-xs md:text-lg ${step >= index ? '' : 'text-disabled'}`}
           >
             {label}
           </span>

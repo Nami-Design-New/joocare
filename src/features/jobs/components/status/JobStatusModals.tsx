@@ -15,9 +15,14 @@ type JobStatusModalsProps = {
   backHref?: string;
 };
 
-const ARROW = <ArrowRight aria-hidden="true" className="size-5 rtl:rotate-180" />;
+const ARROW = (
+  <ArrowRight aria-hidden="true" className="size-5 rtl:rotate-180" />
+);
 
-export default function JobStatusModals({ actions, backHref }: JobStatusModalsProps) {
+export default function JobStatusModals({
+  actions,
+  backHref,
+}: JobStatusModalsProps) {
   const t = useTranslations('companyPage.jobs.card.modals');
   const tCommon = useTranslations('common');
   const router = useRouter();
@@ -47,13 +52,23 @@ export default function JobStatusModals({ actions, backHref }: JobStatusModalsPr
             isLoading: isPending,
             className: 'bg-warning hover:bg-warning/90 text-white',
           },
-          { label: t('pause.cancel'), variant: 'outline', onClick: closeAction, disabled: isPending },
+          {
+            label: t('pause.cancel'),
+            variant: 'outline',
+            onClick: closeAction,
+            disabled: isPending,
+          },
         ]}
       >
         <ModalInfoPanel
           tone="warning"
           title={t('pause.panel-title')}
-          items={[t('pause.item-one'), t('pause.item-two'), t('pause.item-three'), t('pause.item-four')]}
+          items={[
+            t('pause.item-one'),
+            t('pause.item-two'),
+            t('pause.item-three'),
+            t('pause.item-four'),
+          ]}
         />
       </IllustratedModal>
 
@@ -65,9 +80,18 @@ export default function JobStatusModals({ actions, backHref }: JobStatusModalsPr
         title={t('reactivate.title')}
         description={t('reactivate.description')}
         actions={[
-          { label: t('reactivate.confirm'), icon: ARROW, onClick: actions.confirm, isLoading: isPending },
           {
-            label: t(isResumeFromClosed ? 'reactivate.cancel-closed' : 'reactivate.cancel'),
+            label: t('reactivate.confirm'),
+            icon: ARROW,
+            onClick: actions.confirm,
+            isLoading: isPending,
+          },
+          {
+            label: t(
+              isResumeFromClosed
+                ? 'reactivate.cancel-closed'
+                : 'reactivate.cancel',
+            ),
             variant: 'outline',
             onClick: closeAction,
             disabled: isPending,
@@ -76,7 +100,12 @@ export default function JobStatusModals({ actions, backHref }: JobStatusModalsPr
       >
         <ModalInfoPanel
           title={t('reactivate.panel-title')}
-          items={[t('reactivate.item-one'), t('reactivate.item-two'), t('reactivate.item-three'), t('reactivate.item-four')]}
+          items={[
+            t('reactivate.item-one'),
+            t('reactivate.item-two'),
+            t('reactivate.item-three'),
+            t('reactivate.item-four'),
+          ]}
         />
       </IllustratedModal>
 
@@ -88,13 +117,27 @@ export default function JobStatusModals({ actions, backHref }: JobStatusModalsPr
         title={t('close.title')}
         description={t('close.description')}
         actions={[
-          { label: t('close.confirm'), icon: ARROW, onClick: actions.confirm, isLoading: isPending },
-          { label: t('close.cancel'), variant: 'outline', onClick: closeAction, disabled: isPending },
+          {
+            label: t('close.confirm'),
+            icon: ARROW,
+            onClick: actions.confirm,
+            isLoading: isPending,
+          },
+          {
+            label: t('close.cancel'),
+            variant: 'outline',
+            onClick: closeAction,
+            disabled: isPending,
+          },
         ]}
       >
         <ModalInfoPanel
           title={t('close.panel-title')}
-          items={[t('close.item-one'), t('close.item-two'), t('close.item-three')]}
+          items={[
+            t('close.item-one'),
+            t('close.item-two'),
+            t('close.item-three'),
+          ]}
         />
       </IllustratedModal>
 
@@ -115,7 +158,13 @@ export default function JobStatusModals({ actions, backHref }: JobStatusModalsPr
         imageSrc={JOB_STATUS_MODAL_IMAGES.closed}
         title={t('closed-success.title')}
         description={t('closed-success.description')}
-        actions={[{ label: t('closed-success.back'), icon: ARROW, onClick: closeSuccess }]}
+        actions={[
+          {
+            label: t('closed-success.back'),
+            icon: ARROW,
+            onClick: closeSuccess,
+          },
+        ]}
       />
       <IllustratedModal
         open={success === 'resumed'}
@@ -123,7 +172,13 @@ export default function JobStatusModals({ actions, backHref }: JobStatusModalsPr
         imageSrc={JOB_STATUS_MODAL_IMAGES.resumed}
         title={t('resumed-success.title')}
         description={t('resumed-success.description')}
-        actions={[{ label: t('resumed-success.back'), icon: ARROW, onClick: closeSuccess }]}
+        actions={[
+          {
+            label: t('resumed-success.back'),
+            icon: ARROW,
+            onClick: closeSuccess,
+          },
+        ]}
       />
     </>
   );

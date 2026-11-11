@@ -1,42 +1,42 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useMemo, useState, useTransition } from "react";
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { useLocale, useTranslations } from "next-intl";
-import { toast } from "sonner";
-import useGetCountries from "@/shared/hooks/useGetCountries";
-import { InputField } from "@/shared/components/InputField";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { StoredFilepondUpload } from "@/shared/components/StoredFilepondUpload";
-import { Button } from "@/shared/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCallback, useMemo, useState, useTransition } from 'react';
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
+import { useLocale, useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import useGetCountries from '@/shared/hooks/useGetCountries';
+import { InputField } from '@/shared/components/InputField';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import { StoredFilepondUpload } from '@/shared/components/StoredFilepondUpload';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { storeUploadedFileAction } from "@/features/candidate-settings/actions/basic-info-actions";
+} from '@/shared/components/ui/dialog';
+import { storeUploadedFileAction } from '@/features/candidate-settings/actions/basic-info-actions';
 import {
   createQualificationAction,
   updateQualificationAction,
-} from "../../actions/qualification-actions";
-import { qualificationsQueryKeyPrefix } from "../../hooks/useGetQualifications";
+} from '../../actions/qualification-actions';
+import { qualificationsQueryKeyPrefix } from '../../hooks/useGetQualifications';
 import {
   prependInfiniteItem,
   replaceInfiniteItem,
-} from "../../services/infinite-query-cache";
+} from '../../services/infinite-query-cache';
 import type {
   QualificationFormValues,
   QualificationViewModel,
-} from "../../types/qualification.types";
+} from '../../types/qualification.types';
 import {
   createQualificationSchema,
   type QualificationSchemaOutput,
   type QualificationSchemaValues,
-} from "../../validation/qualification-schema";
+} from '../../validation/qualification-schema';
 
 interface QualificationModalProps {
   open: boolean;
@@ -46,11 +46,11 @@ interface QualificationModalProps {
 }
 
 const EMPTY_FORM: QualificationFormValues = {
-  degree: "",
-  university: "",
-  countryId: "",
-  startDate: "",
-  endDate: "",
+  degree: '',
+  university: '',
+  countryId: '',
+  startDate: '',
+  endDate: '',
   image: [],
 };
 
@@ -64,9 +64,9 @@ function toFormState(
   return {
     degree: qualification.degree,
     university: qualification.university,
-    countryId: qualification.countryId ?? "",
-    startDate: qualification.startDate ?? "",
-    endDate: qualification.endDate ?? "",
+    countryId: qualification.countryId ?? '',
+    startDate: qualification.startDate ?? '',
+    endDate: qualification.endDate ?? '',
     image: [],
   };
 }
@@ -88,16 +88,16 @@ function buildOptimisticQualification({
   endDate?: string;
   image?: string | null;
 }): QualificationViewModel {
-  const startLabel = new Date(startDate).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
+  const startLabel = new Date(startDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
   });
   const endLabel = endDate
-    ? new Date(endDate).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-    })
-    : "Present";
+    ? new Date(endDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+      })
+    : 'Present';
 
   return {
     id: qualification?.id ?? `temp-${Date.now()}`,
@@ -122,27 +122,30 @@ export function QualificationModal({
   const locale = useLocale();
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
-  const [dialogContentElement, setDialogContentElement] = useState<HTMLDivElement | null>(null);
-  const [countrySearch, setCountrySearch] = useState("");
+  const [dialogContentElement, setDialogContentElement] =
+    useState<HTMLDivElement | null>(null);
+  const [countrySearch, setCountrySearch] = useState('');
   const [storedImagePath, setStoredImagePath] = useState<string | null>(null);
-  const [showExistingImage, setShowExistingImage] = useState(Boolean(qualification?.image));
+  const [showExistingImage, setShowExistingImage] = useState(
+    Boolean(qualification?.image),
+  );
   const qualificationFormSchema = useMemo(
     () =>
       createQualificationSchema({
         requireImage: !(qualification?.image && showExistingImage),
         messages: {
-          degreeMin: t("candidateValidation.degree-min"),
-          degreeMax: t("candidateValidation.degree-max"),
-          universityMin: t("candidateValidation.university-min"),
-          universityMax: t("candidateValidation.university-max-150"),
-          countryRequired: t("authPage.validation.country-required"),
-          startDateRequired: t("candidateValidation.start-date-required"),
-          imageRequired: t("candidateValidation.qualification-image-required"),
-          oneImageOnly: t("candidateValidation.one-image-only"),
-          imageType: t("candidateValidation.image-jpg-png"),
-          imageSize: t("candidateValidation.image-max-5mb"),
-          startDatePast: t("candidateValidation.start-date-past"),
-          endDateAfterStart: t("candidateValidation.end-date-after-start"),
+          degreeMin: t('candidateValidation.degree-min'),
+          degreeMax: t('candidateValidation.degree-max'),
+          universityMin: t('candidateValidation.university-min'),
+          universityMax: t('candidateValidation.university-max-150'),
+          countryRequired: t('authPage.validation.country-required'),
+          startDateRequired: t('candidateValidation.start-date-required'),
+          imageRequired: t('candidateValidation.qualification-image-required'),
+          oneImageOnly: t('candidateValidation.one-image-only'),
+          imageType: t('candidateValidation.image-jpg-png'),
+          imageSize: t('candidateValidation.image-max-5mb'),
+          startDatePast: t('candidateValidation.start-date-past'),
+          endDateAfterStart: t('candidateValidation.end-date-after-start'),
         },
       }),
     [qualification?.image, showExistingImage, t],
@@ -168,7 +171,7 @@ export function QualificationModal({
 
   const countryOptions = countries
     .map((country) => ({
-      label: String(country.title ?? country.name ?? ""),
+      label: String(country.title ?? country.name ?? ''),
       value: String(country.id),
     }))
     .filter((country) => country.label);
@@ -179,8 +182,9 @@ export function QualificationModal({
 
   const onSubmit: SubmitHandler<QualificationSchemaOutput> = (form) => {
     const imagePayload = qualification?.id
-      ? storedImagePath ?? undefined
-      : storedImagePath ?? (showExistingImage ? qualification?.image ?? null : null);
+      ? (storedImagePath ?? undefined)
+      : (storedImagePath ??
+        (showExistingImage ? (qualification?.image ?? null) : null));
 
     const payload = {
       degree: form.degree.trim(),
@@ -204,31 +208,31 @@ export function QualificationModal({
       (current) =>
         qualification?.id
           ? replaceInfiniteItem<QualificationViewModel>(
-            current,
-            ["qualifications", "qualification"],
-            optimisticQualification,
-          )
+              current,
+              ['qualifications', 'qualification'],
+              optimisticQualification,
+            )
           : prependInfiniteItem<QualificationViewModel>(
-            current,
-            ["qualifications", "qualification"],
-            optimisticQualification,
-          ),
+              current,
+              ['qualifications', 'qualification'],
+              optimisticQualification,
+            ),
     );
 
     startTransition(async () => {
       try {
         const response = qualification?.id
           ? await updateQualificationAction({
-            id: qualification.id,
-            ...payload,
-          })
+              id: qualification.id,
+              ...payload,
+            })
           : await createQualificationAction(payload);
 
         toast.success(
           response.message ??
-          (qualification?.id
-            ? t("candidatePage.toasts.qualification-updated")
-            : t("candidatePage.toasts.qualification-added")),
+            (qualification?.id
+              ? t('candidatePage.toasts.qualification-updated')
+              : t('candidatePage.toasts.qualification-added')),
         );
         await queryClient.invalidateQueries({
           queryKey: qualificationsQueryKeyPrefix(locale),
@@ -240,7 +244,9 @@ export function QualificationModal({
         });
 
         const message =
-          error instanceof Error ? error.message : t("candidatePage.toasts.qualification-save-failed");
+          error instanceof Error
+            ? error.message
+            : t('candidatePage.toasts.qualification-save-failed');
         toast.error(message);
       }
     });
@@ -251,7 +257,9 @@ export function QualificationModal({
       <DialogContent ref={handleDialogContentRef} className="max-w-175">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-black sm:text-[28px]">{label}</DialogTitle>
+            <DialogTitle className="text-2xl text-black sm:text-[28px]">
+              {label}
+            </DialogTitle>
           </DialogHeader>
 
           <Controller
@@ -259,39 +267,44 @@ export function QualificationModal({
             control={control}
             render={({ field }) => (
               <StoredFilepondUpload
-                label={t("candidatePage.profile.upload-image")}
+                label={t('candidatePage.profile.upload-image')}
                 files={field.value}
                 onChange={field.onChange}
                 required={!(qualification?.image && showExistingImage)}
                 allowMultiple={false}
                 maxFiles={1}
                 allowImagePreview
-                acceptedFileTypes={["image/png", "image/jpeg", "image/jpg"]}
+                acceptedFileTypes={['image/png', 'image/jpeg', 'image/jpg']}
                 processFile={async (file) => {
                   const uploadFormData = new FormData();
-                  uploadFormData.append("image", file);
+                  uploadFormData.append('image', file);
                   return storeUploadedFileAction(uploadFormData, locale);
                 }}
                 onStoredPathChange={(path) => {
                   setStoredImagePath(path);
                   if (path) {
-                    clearErrors("image");
+                    clearErrors('image');
                     setShowExistingImage(false);
                   }
                 }}
                 onUploadError={(message) => {
                   if (!message) {
-                    clearErrors("image");
+                    clearErrors('image');
                     return;
                   }
 
-                  setError("image", {
-                    type: "server",
+                  setError('image', {
+                    type: 'server',
                     message,
                   });
                 }}
-                existingFileUrl={showExistingImage ? qualification?.image ?? null : null}
-                existingFileLabel={qualification?.degree ?? t("candidatePage.credentials.qualification-image")}
+                existingFileUrl={
+                  showExistingImage ? (qualification?.image ?? null) : null
+                }
+                existingFileLabel={
+                  qualification?.degree ??
+                  t('candidatePage.credentials.qualification-image')
+                }
                 onExistingFileRemove={() => {
                   setShowExistingImage(false);
                   setStoredImagePath(null);
@@ -304,19 +317,19 @@ export function QualificationModal({
 
           <InputField
             id="degree"
-            label={t("candidatePage.profile.degree")}
+            label={t('candidatePage.profile.degree')}
             type="text"
-            placeholder={t("candidatePage.profile.degree-placeholder")}
-            {...register("degree")}
+            placeholder={t('candidatePage.profile.degree-placeholder')}
+            {...register('degree')}
             error={errors.degree?.message}
           />
 
           <InputField
             id="university"
-            label={t("candidatePage.profile.university")}
+            label={t('candidatePage.profile.university')}
             type="text"
-            placeholder={t("candidatePage.profile.university-placeholder")}
-            {...register("university")}
+            placeholder={t('candidatePage.profile.university-placeholder')}
+            {...register('university')}
             error={errors.university?.message}
           />
 
@@ -326,14 +339,18 @@ export function QualificationModal({
             render={({ field }) => (
               <SelectInputField
                 id="country"
-                label={t("candidatePage.profile.country")}
-                placeholder={isLoading ? t("candidatePage.profile.loading-countries") : t("candidatePage.profile.country-placeholder")}
+                label={t('candidatePage.profile.country')}
+                placeholder={
+                  isLoading
+                    ? t('candidatePage.profile.loading-countries')
+                    : t('candidatePage.profile.country-placeholder')
+                }
                 options={countryOptions}
                 value={field.value}
                 disabled={isLoading}
                 portalContainer={dialogContentElement}
                 withSearchInput
-                searchPlaceholder={t("candidatePage.profile.search-countries")}
+                searchPlaceholder={t('candidatePage.profile.search-countries')}
                 onSearchChange={setCountrySearch}
                 onChange={field.onChange}
                 onReachEnd={() => void fetchNextPage()}
@@ -347,24 +364,33 @@ export function QualificationModal({
           <div className="flex items-center justify-between gap-2 max-md:flex-col">
             <InputField
               id="startDate"
-              label={t("candidatePage.profile.start-date")}
+              label={t('candidatePage.profile.start-date')}
               type="date"
-              {...register("startDate")}
+              {...register('startDate')}
               error={errors.startDate?.message}
             />
 
             <InputField
               id="endDate"
-              label={t("candidatePage.profile.end-date")}
+              label={t('candidatePage.profile.end-date')}
               type="date"
-              {...register("endDate")}
+              {...register('endDate')}
               error={errors.endDate?.message}
             />
           </div>
 
           <DialogFooter className="flex items-center justify-center!">
-            <Button className="w-1/3" size={"pill"} type="submit" disabled={isPending}>
-              {isPending ? t("candidatePage.common.saving") : qualification?.id ? t("common.save") : t("candidatePage.common.add")}
+            <Button
+              className="w-1/3"
+              size={'pill'}
+              type="submit"
+              disabled={isPending}
+            >
+              {isPending
+                ? t('candidatePage.common.saving')
+                : qualification?.id
+                  ? t('common.save')
+                  : t('candidatePage.common.add')}
             </Button>
           </DialogFooter>
         </form>

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useEffectEvent, useRef } from "react";
-import { CredentialCardSkeleton } from "./CredentialCardSkeleton";
+import { useEffect, useEffectEvent, useRef } from 'react';
+import { CredentialCardSkeleton } from './CredentialCardSkeleton';
 
 type InfiniteScrollTriggerProps = {
   hasNextPage?: boolean;
@@ -38,7 +38,7 @@ export default function InfiniteScrollTrigger({
         }
       },
       {
-        rootMargin: "160px 0px",
+        rootMargin: '160px 0px',
       },
     );
 

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 type NotificationCardProps = {
   title: string;
@@ -17,16 +17,14 @@ export default function NotificationCard({
   isPending = false,
   onClick,
 }: NotificationCardProps) {
-
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={isPending}
-      className={`border-b-border flex w-full items-start gap-3 border-b border-dashed p-4 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-70 ${isRead
-        ? "bg-white"
-        : "bg-[#F4F8F6] hover:bg-[#EDF4F1]"
-        }`}
+      className={`flex w-full items-start gap-3 border-b border-dashed border-b-border p-4 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-70 ${
+        isRead ? 'bg-white' : 'bg-[#F4F8F6] hover:bg-[#EDF4F1]'
+      }`}
     >
       <Image
         src="/assets/new-logo-dot.svg"
@@ -36,13 +34,13 @@ export default function NotificationCard({
         className="h-11 w-11 rounded-full object-contain"
       />
       <div className="min-w-0 flex-1">
-        <h6 className="text-foreground text-sm md:text-base leading-7 font-medium">
+        <h6 className="text-sm leading-7 font-medium text-foreground md:text-base">
           {title}
         </h6>
-        <p className="text-muted-foreground mt-1 text-xs md:text-sm break-words">
+        <p className="mt-1 text-xs break-words text-muted-foreground md:text-sm">
           {message}
         </p>
-        <p className="text-muted-foreground mt-2 text-xs md:text-sm">
+        <p className="mt-2 text-xs text-muted-foreground md:text-sm">
           {createdAt}
         </p>
       </div>

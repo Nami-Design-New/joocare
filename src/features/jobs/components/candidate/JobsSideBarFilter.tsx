@@ -148,7 +148,7 @@ export default function JobFilterSidebar({
   );
 
   return (
-    <aside className="bg-card shadow-card hidden h-fit w-full flex-col rounded-2xl px-4 py-2 lg:flex">
+    <aside className="hidden h-fit w-full flex-col rounded-2xl bg-card px-4 py-2 shadow-card lg:flex">
       <form action={actionPath} method="get" className="flex flex-col">
         <input type="hidden" name="search" value={search} />
         <input type="hidden" name="country" value={country} />
@@ -175,10 +175,10 @@ export default function JobFilterSidebar({
         ))}
 
         {/* ── Salary Range ───────────────────────────────────────────────────── */}
-        <div className="border-border border-b py-3.5">
+        <div className="border-b border-border py-3.5">
           {/* Row: label + salary type */}
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-foreground/80 text-sm font-semibold">
+            <span className="text-sm font-semibold text-foreground/80">
               {t('jobsPage.filters.salary-range')}
             </span>
             <Select
@@ -190,11 +190,15 @@ export default function JobFilterSidebar({
                 }))
               }
             >
-              <SelectTrigger className="border-border bg-muted h-9 rounded-lg text-sm">
-                <SelectValue placeholder={t('jobsPage.filters.any-salary-type')} />
+              <SelectTrigger className="h-9 rounded-lg border-border bg-muted text-sm">
+                <SelectValue
+                  placeholder={t('jobsPage.filters.any-salary-type')}
+                />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="__all__">{t('jobsPage.filters.any-salary-type')}</SelectItem>
+                <SelectItem value="__all__">
+                  {t('jobsPage.filters.any-salary-type')}
+                </SelectItem>
                 {salaryTypeOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -208,7 +212,7 @@ export default function JobFilterSidebar({
           <div className="flex gap-3">
             <div className="flex flex-1 flex-col gap-1">
               <Label
-                className="text-muted-foreground text-xs"
+                className="text-xs text-muted-foreground"
                 htmlFor="min-salary"
               >
                 {t('jobsPage.filters.min')}
@@ -224,12 +228,12 @@ export default function JobFilterSidebar({
                     salaryMin: event.target.value,
                   }))
                 }
-                className="border-border bg-muted focus-visible:ring-primary h-9 rounded-lg text-sm"
+                className="h-9 rounded-lg border-border bg-muted text-sm focus-visible:ring-primary"
               />
             </div>
             <div className="flex flex-1 flex-col gap-1">
               <Label
-                className="text-muted-foreground text-xs"
+                className="text-xs text-muted-foreground"
                 htmlFor="max-salary"
               >
                 {t('jobsPage.filters.max')}
@@ -245,7 +249,7 @@ export default function JobFilterSidebar({
                     salaryMax: event.target.value,
                   }))
                 }
-                className="border-border bg-muted focus-visible:ring-primary h-9 rounded-lg text-sm"
+                className="h-9 rounded-lg border-border bg-muted text-sm focus-visible:ring-primary"
               />
             </div>
           </div>
@@ -257,13 +261,13 @@ export default function JobFilterSidebar({
             type="submit"
             variant="default"
             size="pill"
-            className="bg-success flex-1"
+            className="flex-1 bg-success"
           >
             {t('jobsPage.filters.apply-filters')}
           </Button>
           <Link
             href={actionPath}
-            className="border-border text-foreground flex h-11 items-center justify-center rounded-full border px-4 text-sm font-medium"
+            className="flex h-11 items-center justify-center rounded-full border border-border px-4 text-sm font-medium text-foreground"
           >
             {t('jobsPage.filters.reset')}
           </Link>

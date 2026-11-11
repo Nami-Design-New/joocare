@@ -1,18 +1,18 @@
-import type { Metadata, ResolvingMetadata } from "next";
-import ContactSection from "@/features/contact/ContactSection";
-import FaqAccordionSection from "@/features/faq/components/FaqAccordionSection";
-import FaqPagination from "@/features/faq/components/FaqPagination";
-import { getFaqsPageData } from "@/features/faq/services";
+import type { Metadata, ResolvingMetadata } from 'next';
+import ContactSection from '@/features/contact/ContactSection';
+import FaqAccordionSection from '@/features/faq/components/FaqAccordionSection';
+import FaqPagination from '@/features/faq/components/FaqPagination';
+import { getFaqsPageData } from '@/features/faq/services';
 import {
   buildFaqPagePath,
   getFaqPageCopy,
   getSiteOrigin,
   normalizeFaqPageParam,
-} from "@/features/faq/utils";
-import PlainBreadcrumb from "@/shared/components/PlainBreadcramb";
-import { getNextAuthToken } from "@/shared/util/auth.util";
-import { getTranslations } from "next-intl/server";
-import { getSharedOgImage } from "@/shared/util/metadata";
+} from '@/features/faq/utils';
+import PlainBreadcrumb from '@/shared/components/PlainBreadcramb';
+import { getNextAuthToken } from '@/shared/util/auth.util';
+import { getTranslations } from 'next-intl/server';
+import { getSharedOgImage } from '@/shared/util/metadata';
 
 type PageProps = {
   params: Promise<{ locale: string }>;
@@ -20,14 +20,14 @@ type PageProps = {
 };
 
 function getFaqAudienceByRole(
-  authRole?: "candidate" | "employer",
-): "employees" | "companies" | undefined {
-  if (authRole === "candidate") {
-    return "employees";
+  authRole?: 'candidate' | 'employer',
+): 'employees' | 'companies' | undefined {
+  if (authRole === 'candidate') {
+    return 'employees';
   }
 
-  if (authRole === "employer") {
-    return "companies";
+  if (authRole === 'employer') {
+    return 'companies';
   }
 
   return undefined;
@@ -60,12 +60,12 @@ export async function generateMetadata({
       title: copy.title,
       description: copy.description,
       url: `${siteOrigin}${canonicalPath}`,
-      type: "website",
-      siteName: "Joocare",
+      type: 'website',
+      siteName: 'Joocare',
       images: [{ url: ogImage, width: 1200, height: 630, alt: copy.title }], // ✅
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: copy.title,
       description: copy.description,
       images: [ogImage], // ✅
@@ -85,35 +85,35 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
   const siteOrigin = getSiteOrigin();
 
   const schema = {
-    "@context": "https://schema.org",
-    "@graph": [
+    '@context': 'https://schema.org',
+    '@graph': [
       {
-        "@type": "BreadcrumbList",
+        '@type': 'BreadcrumbList',
         itemListElement: [
           {
-            "@type": "ListItem",
+            '@type': 'ListItem',
             position: 1,
-            name: t("header.home"),
+            name: t('header.home'),
             item: `${siteOrigin}/${locale}`,
           },
           {
-            "@type": "ListItem",
+            '@type': 'ListItem',
             position: 2,
-            name: t("home.faq"),
+            name: t('home.faq'),
             item: `${siteOrigin}${canonicalPath}`,
           },
         ],
       },
       {
-        "@type": "FAQPage",
+        '@type': 'FAQPage',
         name: copy.title,
         description: copy.description,
         url: `${siteOrigin}${canonicalPath}`,
         mainEntity: faqsData.items.map((item) => ({
-          "@type": "Question",
+          '@type': 'Question',
           name: item.question,
           acceptedAnswer: {
-            "@type": "Answer",
+            '@type': 'Answer',
             text: item.answer,
           },
         })),
@@ -125,8 +125,8 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
     <>
       <PlainBreadcrumb
         items={[
-          { label: t("header.home"), href: "/" },
-          { label: t("home.faq") },
+          { label: t('header.home'), href: '/' },
+          { label: t('home.faq') },
         ]}
       />
       <script
@@ -144,13 +144,13 @@ export default async function FaqPage({ params, searchParams }: PageProps) {
           totalItems={faqsData.totalItems}
         />
 
-        <div className="bg-body-bg flex flex-col gap-12 py-20">
+        <div className="flex flex-col gap-12 bg-body-bg py-20">
           <h2 className="text-center text-5xl font-bold">{copy.tryTitle}</h2>
           <ContactSection
             authRole={authSession?.authRole}
             initialValues={{
-              name: authSession?.user?.name ?? "",
-              email: authSession?.user?.email ?? "",
+              name: authSession?.user?.name ?? '',
+              email: authSession?.user?.email ?? '',
             }}
             containerClassName="bg-card shadow-soft mx-auto grid w-full grid-cols-12 gap-y-4 rounded-3xl border p-4 sm:p-6 md:p-7 lg:gap-x-8"
           />

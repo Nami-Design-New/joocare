@@ -24,8 +24,8 @@ export default function RecommendedSkills({
   if (!skills.length && !canShowMore) return null;
 
   return (
-    <section className="bg-muted rounded-xl p-3">
-      <div className="bg-body-bg flex flex-col gap-4 rounded-2xl p-4">
+    <section className="rounded-xl bg-muted p-3">
+      <div className="flex flex-col gap-4 rounded-2xl bg-body-bg p-4">
         <h3 className="text-base">{t('recommended')}</h3>
         <div className="flex flex-wrap gap-3">
           {skills.map((skill) => (
@@ -35,7 +35,7 @@ export default function RecommendedSkills({
               disabled={disabled}
               onClick={() => onSelect(skill.value)}
               aria-label={t('add', { name: skill.label })}
-              className="border-border hover:border-primary hover:text-primary rounded-2xl border px-4 py-2 text-base transition-colors"
+              className="rounded-2xl border border-border px-4 py-2 text-base transition-colors hover:border-primary hover:text-primary"
             >
               {skill.label}
             </button>

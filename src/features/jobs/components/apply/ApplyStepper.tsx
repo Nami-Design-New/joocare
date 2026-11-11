@@ -13,9 +13,9 @@ export default function ApplyStepper({ steps, current }: ApplyStepperProps) {
   return (
     <div className="flex flex-col gap-3">
       <div aria-hidden className="relative flex items-center justify-between">
-        <span className="bg-assessment-close absolute inset-x-1 top-1/2 h-2.5 -translate-y-1/2 rounded-full">
+        <span className="absolute inset-x-1 top-1/2 h-2.5 -translate-y-1/2 rounded-full bg-assessment-close">
           <span
-            className="bg-assessment-primary absolute inset-y-0 inset-s-0 rounded-full transition-[width] duration-300"
+            className="absolute inset-y-0 inset-s-0 rounded-full bg-assessment-primary transition-[width] duration-300"
             style={{ width: fill }}
           />
         </span>

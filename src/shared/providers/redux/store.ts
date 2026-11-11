@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import authSlice from "@/features/auth/store/auth-slice";
-import settingsSlice from "@/features/settings/store/settings-slice";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import authSlice from '@/features/auth/store/auth-slice';
+import settingsSlice from '@/features/settings/store/settings-slice';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 const rootReducer = combineReducers({
   auth: authSlice,
@@ -19,4 +19,4 @@ export function makeStore(preloadedState?: Partial<RootState>) {
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof makeStore>;
-export type AppDispatch = AppStore["dispatch"];
+export type AppDispatch = AppStore['dispatch'];

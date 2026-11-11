@@ -1,96 +1,95 @@
-import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
-import { useQuery } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
-import { JobListItem } from "../types/jobs.types";
+import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
+import { useQuery } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
+import { JobListItem } from '../types/jobs.types';
 
 export type ManagedCompanyJob = Omit<JobListItem, 'status'> & {
-    status?: {
-        status: string;
-        created_at: string;
-    } | null;
+  status?: {
+    status: string;
+    created_at: string;
+  } | null;
 };
 
 export interface JobsPage {
-    data: ManagedCompanyJob[];
-    current_page: number;
-    last_page: number;
-    next_page_url: string | null;
-    per_page: number;
-    total: number;
+  data: ManagedCompanyJob[];
+  current_page: number;
+  last_page: number;
+  next_page_url: string | null;
+  per_page: number;
+  total: number;
 }
 
 type UseGetCompanyJobsParams = {
-    token: string;
-    page: number;
-    status?: string;
-    search?: string;
-    recruiter?: string;
-    initialData?: JobsPage;
+  token: string;
+  page: number;
+  status?: string;
+  search?: string;
+  recruiter?: string;
+  initialData?: JobsPage;
 };
 
 export default function useGetCompanyJobs({
-    token,
-    page,
-    status = "",
-    search = "",
-    recruiter = "",
-    initialData,
+  token,
+  page,
+  status = '',
+  search = '',
+  recruiter = '',
+  initialData,
 }: UseGetCompanyJobsParams) {
-    const locale = useLocale();
-    const query = useQuery({
-        queryKey: ["company-jobs", locale, page, status, search, recruiter],
-        queryFn: async (): Promise<JobsPage> => {
-            const params = new URLSearchParams({
-                page: String(page),
-                pagination: "on",
-                limit_per_page: "10",
-            });
+  const locale = useLocale();
+  const query = useQuery({
+    queryKey: ['company-jobs', locale, page, status, search, recruiter],
+    queryFn: async (): Promise<JobsPage> => {
+      const params = new URLSearchParams({
+        page: String(page),
+        pagination: 'on',
+        limit_per_page: '10',
+      });
 
-            if (status) {
-                params.set("status", status);
-            }
+      if (status) {
+        params.set('status', status);
+      }
 
-            // search and recruiter wait on backend support; param names may change.
-            if (search) {
-                params.set("search", search);
-            }
+      // search and recruiter wait on backend support; param names may change.
+      if (search) {
+        params.set('search', search);
+      }
 
-            if (recruiter) {
-                params.set("recruiter", recruiter);
-            }
+      if (recruiter) {
+        params.set('recruiter', recruiter);
+      }
 
-            const res = await apiFetch(
-                `${getCompanyApiUrl()}/jobs?${params.toString()}`,
-                { method: "GET", token, locale }
-            );
+      const res = await apiFetch(
+        `${getCompanyApiUrl()}/jobs?${params.toString()}`,
+        { method: 'GET', token, locale },
+      );
 
-            if (!res.ok || !res.data) {
-                throw new Error(res.message || "Something went wrong");
-            }
+      if (!res.ok || !res.data) {
+        throw new Error(res.message || 'Something went wrong');
+      }
 
-            const payload = res.data as unknown as JobsPage;
+      const payload = res.data as unknown as JobsPage;
 
-            return {
-                ...payload,
-                data: Array.isArray(payload.data)
-                    ? payload.data.map((job) => ({
-                        ...job,
-                        status: job.status ?? null,
-                    }))
-                    : [],
-            };
-        },
-        enabled: !!token,
-        placeholderData: initialData,
+      return {
+        ...payload,
+        data: Array.isArray(payload.data)
+          ? payload.data.map((job) => ({
+              ...job,
+              status: job.status ?? null,
+            }))
+          : [],
+      };
+    },
+    enabled: !!token,
+    placeholderData: initialData,
+  });
 
-    });
-
-    return {
-        ...query,
-        jobs: query.data?.data ?? [],
-        total: query.data?.total ?? 0,
-        perPage: query.data?.per_page ?? 10,
-        lastPage: query.data?.last_page ?? 1,
-    };
+  return {
+    ...query,
+    jobs: query.data?.data ?? [],
+    total: query.data?.total ?? 0,
+    perPage: query.data?.per_page ?? 10,
+    lastPage: query.data?.last_page ?? 1,
+  };
 }

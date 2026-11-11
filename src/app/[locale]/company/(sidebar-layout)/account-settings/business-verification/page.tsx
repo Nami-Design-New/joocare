@@ -1,11 +1,11 @@
-import BusinessVerificationForm from "@/features/accout-settings/components/business-verification/BusinessVerificationForm"
+import BusinessVerificationForm from '@/features/accout-settings/components/business-verification/BusinessVerificationForm';
 
 const BusinessVerificationPage = () => {
-    return (
-        <main className="p-2 md:p-6 rounded-2xl bg-white">
-            <BusinessVerificationForm />
-        </main>
-    )
-}
+  return (
+    <main className="rounded-2xl bg-white p-2 md:p-6">
+      <BusinessVerificationForm />
+    </main>
+  );
+};
 
-export default BusinessVerificationPage
+export default BusinessVerificationPage;

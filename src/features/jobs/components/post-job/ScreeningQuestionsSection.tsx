@@ -24,8 +24,8 @@ export default function ScreeningQuestionsSection() {
   const { questions } = state;
 
   return (
-    <section className="bg-muted flex flex-col gap-4 rounded-2xl p-2">
-      <h2 className="text-muted-foreground px-1 pt-2 text-xl font-semibold sm:text-[21px]">
+    <section className="flex flex-col gap-4 rounded-2xl bg-muted p-2">
+      <h2 className="px-1 pt-2 text-xl font-semibold text-muted-foreground sm:text-[21px]">
         {t('title')}
       </h2>
       <Accordion
@@ -63,13 +63,13 @@ export default function ScreeningQuestionsSection() {
           mutedBody
         >
           <div className="flex flex-col gap-4">
-            <p className="text-muted-foreground text-xs">
+            <p className="text-xs text-muted-foreground">
               {t('custom-subtitle')}
             </p>
             {questions.length ? (
               <>
                 <p
-                  className="text-foreground text-sm font-semibold"
+                  className="text-sm font-semibold text-foreground"
                   aria-live="polite"
                 >
                   {t('count', { count: questions.length })}
@@ -97,10 +97,10 @@ export default function ScreeningQuestionsSection() {
                   width={100}
                   height={100}
                 />
-                <h3 className="text-secondary text-xl font-semibold">
+                <h3 className="text-xl font-semibold text-secondary">
                   {t('empty-title')}
                 </h3>
-                <p className="text-muted-foreground max-w-xl">
+                <p className="max-w-xl text-muted-foreground">
                   {t('empty-description')}
                 </p>
                 <p className="text-muted-foreground">{t('empty-optional')}</p>
@@ -109,7 +109,7 @@ export default function ScreeningQuestionsSection() {
             <button
               type="button"
               onClick={() => state.setBuilderOpen(true)}
-              className="border-primary text-primary hover:bg-primary-bg flex h-11 w-full items-center justify-center gap-2 rounded-full border border-dashed text-sm font-semibold transition-colors"
+              className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-dashed border-primary text-sm font-semibold text-primary transition-colors hover:bg-primary-bg"
             >
               <Plus aria-hidden="true" className="size-4" />
               {t('custom-button')}

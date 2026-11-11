@@ -5,11 +5,14 @@ export type LicenseApiItem = {
   number?: string | null;
   license_number?: string | null;
   country_id?: number | string | null;
-  country?: {
-    id?: number | string;
-    name?: string | null;
-    title?: string | null;
-  } | string | null;
+  country?:
+    | {
+        id?: number | string;
+        name?: string | null;
+        title?: string | null;
+      }
+    | string
+    | null;
   image?: string | null;
   created_at?: string;
   updated_at?: string;

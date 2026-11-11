@@ -49,7 +49,7 @@ export default function TalentSearchForm({
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(onSearch)}
-        className="bg-card flex flex-col gap-4 rounded-2xl px-3 py-4 shadow-sm sm:gap-5 sm:px-4 sm:py-6 md:px-10 md:pt-12 md:pb-8"
+        className="flex flex-col gap-4 rounded-2xl bg-card px-3 py-4 shadow-sm sm:gap-5 sm:px-4 sm:py-6 md:px-10 md:pt-12 md:pb-8"
       >
         <h1 className="sr-only">{t('title')}</h1>
         <TalentFilterSection title={t('sections.occupational')}>
@@ -58,19 +58,19 @@ export default function TalentSearchForm({
         <TalentFilterSection title={t('sections.qualifications')}>
           <div className="space-y-3 sm:space-y-5">
             <section>
-              <h3 className="text-muted-foreground mb-3 text-sm">
+              <h3 className="mb-3 text-sm text-muted-foreground">
                 {t('sections.experience')}
               </h3>
               <TalentFilterFields fields={experienceFields} />
             </section>
             <section>
-              <h3 className="text-muted-foreground mb-3 text-sm">
+              <h3 className="mb-3 text-sm text-muted-foreground">
                 {t('sections.licensing')}
               </h3>
               <TalentFilterFields fields={licensingFields} />
             </section>
             <section>
-              <h3 className="text-muted-foreground mb-3 text-sm">
+              <h3 className="mb-3 text-sm text-muted-foreground">
                 {t('sections.languages')}
               </h3>
               <TalentFilterFields
@@ -100,9 +100,8 @@ export default function TalentSearchForm({
         </TalentFilterSection>
         <TalentFilterSection title={t('sections.availability')}>
           <TalentFilterFields fields={availabilityFields} />
-        </TalentFilterSection>  
+        </TalentFilterSection>
         <div className="flex flex-wrap justify-center gap-3 pt-1">
-  
           <Button type="submit" size="pill" className="min-w-56">
             {t('search')}
           </Button>

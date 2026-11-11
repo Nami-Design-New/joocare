@@ -37,13 +37,13 @@ export default function RecruiterActivityPage() {
             value={activity.recruiter}
             onChange={activity.updateRecruiter}
             placeholder={t('recruiter-filter')}
-            className="border-border bg-card h-13"
+            className="h-13 border-border bg-card"
           />
         </div>
       </div>
 
       <div className="flex flex-col gap-4">
-        <section className="bg-card rounded-2xl p-4">
+        <section className="rounded-2xl bg-card p-4">
           {activity.recruiters.length ? (
             <RecruiterActivityTable
               recruiters={activity.recruiters}

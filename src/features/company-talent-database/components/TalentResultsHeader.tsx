@@ -26,7 +26,9 @@ export default function TalentResultsHeader({
   return (
     <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
       <h1 className="shrink-0 text-xl font-semibold text-muted-foreground sm:text-[28px]">
-        <span className="me-2 text-[28px] text-secondary sm:text-4xl">{count}</span>{' '}
+        <span className="me-2 text-[28px] text-secondary sm:text-4xl">
+          {count}
+        </span>{' '}
         {t('candidates-cv')}
       </h1>
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-4 xl:flex-nowrap xl:justify-end xl:gap-6">

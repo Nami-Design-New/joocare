@@ -1,10 +1,10 @@
-import { Input } from "./Input";
-import { Select } from "./Select";
-import { Textarea } from "./Textarea";
-import { PhoneInput } from "./PhoneInput";
-import { LocationFields } from "./LocationFields";
+import { Input } from './Input';
+import { Select } from './Select';
+import { Textarea } from './Textarea';
+import { PhoneInput } from './PhoneInput';
+import { LocationFields } from './LocationFields';
 
-type FieldType = "input" | "select" | "textarea" | "phone" | "location";
+type FieldType = 'input' | 'select' | 'textarea' | 'phone' | 'location';
 
 interface Field {
   type: FieldType;
@@ -14,19 +14,19 @@ interface Field {
 
 export function RenderField({ field }: { field: Field }) {
   switch (field.type) {
-    case "input":
+    case 'input':
       return <Input label={field.label} placeholder={field.placeholder} />;
 
-    case "select":
+    case 'select':
       return <Select label={field.label} />;
 
-    case "textarea":
+    case 'textarea':
       return <Textarea />;
 
-    case "phone":
+    case 'phone':
       return <PhoneInput />;
 
-    case "location":
+    case 'location':
       return <LocationFields />;
 
     default:

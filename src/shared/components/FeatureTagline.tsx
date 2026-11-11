@@ -15,7 +15,7 @@ export default function FeatureTagline({
   return (
     <span
       className={cn(
-        'bg-soft-overlay border-tagline-border text-foreground flex w-fit items-center gap-2.5 rounded-xl border px-4 py-2',
+        'flex w-fit items-center gap-2.5 rounded-xl border border-tagline-border bg-soft-overlay px-4 py-2 text-foreground',
         className,
       )}
     >

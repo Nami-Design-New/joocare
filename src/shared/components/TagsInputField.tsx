@@ -81,7 +81,7 @@ export default function TagsInputField({
         items={value.map((item) => ({ value: item, label: item }))}
         onRemove={(item) => onChange(value.filter((tag) => tag !== item))}
       />
-      {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
+      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }

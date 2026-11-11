@@ -54,17 +54,17 @@ export default function AssessmentCard({
   const title = assessment.title;
   const pausedDate = assessment.pausedAt
     ? format.dateTime(new Date(assessment.pausedAt), {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      timeZone: 'UTC',
-    })
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        timeZone: 'UTC',
+      })
     : null;
 
   return (
     <Card className="gap-4 rounded-[28px] border-none p-4 shadow-none">
       <div className="flex items-start gap-3">
-        <span className="bg-primary-bg text-primary flex size-11 shrink-0 items-center justify-center rounded-full">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-bg text-primary">
           <Stethoscope
             aria-hidden="true"
             className="size-6"
@@ -72,24 +72,24 @@ export default function AssessmentCard({
           />
         </span>
         <div className="min-w-0 flex-1 space-y-1 self-center">
-          <h2 className="text-secondary text-sm font-semibold">{title}</h2>
-          <p className="text-muted-foreground text-xs">
+          <h2 className="text-sm font-semibold text-secondary">{title}</h2>
+          <p className="text-xs text-muted-foreground">
             {source === 'joocare'
               ? t('admin')
               : t('created-on', {
-                date: format.dateTime(new Date(assessment.createdAt), {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                  timeZone: 'UTC',
-                }),
-              })}
+                  date: format.dateTime(new Date(assessment.createdAt), {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    timeZone: 'UTC',
+                  }),
+                })}
           </p>
         </div>
         {source === 'company' ? (
           <div className="flex shrink-0 items-center gap-2">
             {assessment.pausedAt ? (
-              <Badge className="bg-warning/15 text-warning rounded-full border-none text-[10px]">
+              <Badge className="rounded-full border-none bg-warning/15 text-[10px] text-warning">
                 {t('paused')}
               </Badge>
             ) : null}
@@ -98,7 +98,7 @@ export default function AssessmentCard({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-muted-foreground size-7 rounded-full"
+                  className="size-7 rounded-full text-muted-foreground"
                   aria-label={t('assessment-actions', { name: title })}
                 >
                   <CircleEllipsis aria-hidden="true" className="size-5" />
@@ -125,7 +125,10 @@ export default function AssessmentCard({
                   className="text-destructive focus:text-destructive"
                   onSelect={() => setDeleteOpen(true)}
                 >
-                  <Trash2 aria-hidden="true" className="size-4 text-destructive" />
+                  <Trash2
+                    aria-hidden="true"
+                    className="size-4 text-destructive"
+                  />
                   {t('delete-action')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -134,12 +137,12 @@ export default function AssessmentCard({
         ) : null}
       </div>
       {pausedDate ? (
-        <p className="bg-warning/15 text-warning flex items-start gap-2 rounded-xl px-3 py-2 text-xs leading-5">
+        <p className="flex items-start gap-2 rounded-xl bg-warning/15 px-3 py-2 text-xs leading-5 text-warning">
           <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
           {t('paused-notice', { date: pausedDate })}
         </p>
       ) : (
-        <p className="text-muted-foreground line-clamp-2 text-xs leading-5">
+        <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
           {assessment.description}
         </p>
       )}

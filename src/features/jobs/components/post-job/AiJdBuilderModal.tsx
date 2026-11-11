@@ -12,7 +12,10 @@ type AiJdBuilderModalProps = {
 };
 
 // "AI JD Builder is coming soon" (Figma 11531:110531).
-export default function AiJdBuilderModal({ open, onOpenChange }: AiJdBuilderModalProps) {
+export default function AiJdBuilderModal({
+  open,
+  onOpenChange,
+}: AiJdBuilderModalProps) {
   const t = useTranslations('companyPage.postJob.aiBuilder');
   const close = () => onOpenChange(false);
 
@@ -23,14 +26,18 @@ export default function AiJdBuilderModal({ open, onOpenChange }: AiJdBuilderModa
       closePosition="start"
       imageSrc={JOB_STATUS_MODAL_IMAGES.aiJdBuilder}
       badge={
-        <span className="bg-warning/15 text-warning-strong rounded-full px-3 py-1 text-xs font-bold tracking-wide">
+        <span className="rounded-full bg-warning/15 px-3 py-1 text-xs font-bold tracking-wide text-warning-strong">
           {t('badge')}
         </span>
       }
       title={t('title')}
       description={t('description')}
       actions={[
-        { label: t('got-it'), onClick: close, className: 'bg-secondary hover:bg-secondary/90 sm:flex-[1.4]' },
+        {
+          label: t('got-it'),
+          onClick: close,
+          className: 'bg-secondary hover:bg-secondary/90 sm:flex-[1.4]',
+        },
         {
           label: t('notify'),
           variant: 'outline',

@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
-import { Button } from "@/shared/components/ui/button";
-import { File, Eye } from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
-import { storeUploadedFile } from "@/shared/services/store-uploaded-file-service";
-import CVModal from "./CVModal";
-import { deleteCvAction, updateCvAction } from "../actions/cv-actions";
-import { createCvSchema } from "../validation/cv-schema";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
+import { Button } from '@/shared/components/ui/button';
+import { File, Eye } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
+import { storeUploadedFile } from '@/shared/services/store-uploaded-file-service';
+import CVModal from './CVModal';
+import { deleteCvAction, updateCvAction } from '../actions/cv-actions';
+import { createCvSchema } from '../validation/cv-schema';
 
 function getShortFileName(fileName: string) {
   const trimmedName = fileName.trim();
 
   if (!trimmedName) {
-    return "CV";
+    return 'CV';
   }
 
-  const lastDotIndex = trimmedName.lastIndexOf(".");
+  const lastDotIndex = trimmedName.lastIndexOf('.');
   const hasExtension = lastDotIndex > 0;
-  const extension = hasExtension ? trimmedName.slice(lastDotIndex + 1) : "";
+  const extension = hasExtension ? trimmedName.slice(lastDotIndex + 1) : '';
   const baseName = hasExtension
     ? trimmedName.slice(0, lastDotIndex)
     : trimmedName;
@@ -44,9 +44,9 @@ function resolveStoredFileUrl(path: string | null) {
     return path;
   }
 
-  const trimmedPath = path.trim().replace(/^\/+/, "");
-  const normalizedPath = trimmedPath.startsWith("storage/")
-    ? trimmedPath.slice("storage/".length)
+  const trimmedPath = path.trim().replace(/^\/+/, '');
+  const normalizedPath = trimmedPath.startsWith('storage/')
+    ? trimmedPath.slice('storage/'.length)
     : trimmedPath;
 
   return `https://joocare.nami-tec.com/storage/${normalizedPath}`;
@@ -64,8 +64,8 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
   const cvValidationSchema = useMemo(
     () =>
       createCvSchema({
-        invalidType: t("authPage.validation.cv-invalid-type"),
-        invalidSize: t("authPage.validation.max-file-size-5mb"),
+        invalidType: t('authPage.validation.cv-invalid-type'),
+        invalidSize: t('authPage.validation.max-file-size-5mb'),
       }),
     [t],
   );
@@ -109,12 +109,12 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
     }
 
     if (!currentCvUrl) {
-      return "";
+      return '';
     }
 
-    const cleanUrl = currentCvUrl.split("?")[0];
+    const cleanUrl = currentCvUrl.split('?')[0];
     return getShortFileName(
-      decodeURIComponent(cleanUrl.split("/").pop() || "CV"),
+      decodeURIComponent(cleanUrl.split('/').pop() || 'CV'),
     );
   }, [currentCvUrl, selectedCvFile]);
 
@@ -134,8 +134,11 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
 
     const validation = cvValidationSchema.safeParse({ cv: file });
     if (!validation.success) {
-      toast.error(validation.error.issues[0]?.message || t("candidatePage.toasts.invalid-cv-file"));
-      e.target.value = "";
+      toast.error(
+        validation.error.issues[0]?.message ||
+          t('candidatePage.toasts.invalid-cv-file'),
+      );
+      e.target.value = '';
       return;
     }
 
@@ -147,8 +150,8 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
       });
 
       const payload = new FormData();
-      payload.append("cv", uploadedFile.path);
-      payload.append("locale", locale);
+      payload.append('cv', uploadedFile.path);
+      payload.append('locale', locale);
       const response = await updateCvAction(payload, session?.accessToken);
 
       setSelectedCvFile(file);
@@ -157,11 +160,13 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
       toast.success(response.message);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : t("candidatePage.toasts.upload-cv-failed");
+        error instanceof Error
+          ? error.message
+          : t('candidatePage.toasts.upload-cv-failed');
       toast.error(message);
     } finally {
       setIsUploading(false);
-      e.target.value = "";
+      e.target.value = '';
     }
   };
 
@@ -176,11 +181,11 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
     if (!displayUrl) return;
     const url = displayUrl;
 
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = displayFileName || t("candidatePage.profile.cv-file-name");
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
+    a.download = displayFileName || t('candidatePage.profile.cv-file-name');
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
     a.click();
   };
 
@@ -195,13 +200,15 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
       toast.success(response.message);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : t("candidatePage.toasts.delete-cv-failed");
+        error instanceof Error
+          ? error.message
+          : t('candidatePage.toasts.delete-cv-failed');
       toast.error(message);
     } finally {
       setIsDeleting(false);
     }
   };
-  console.log("profile ", cvUrl);
+  console.log('profile ', cvUrl);
 
   return (
     <>
@@ -221,9 +228,11 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
           size="pill"
           onClick={handleUploadClick}
           disabled={isUploading}
-          className="border-secondary text-secondary w-full text-base font-semibold"
+          className="w-full border-secondary text-base font-semibold text-secondary"
         >
-          {isUploading ? t("candidatePage.common.uploading") : t("jobDetailsPage.upload-cv")}
+          {isUploading
+            ? t('candidatePage.common.uploading')
+            : t('jobDetailsPage.upload-cv')}
         </Button>
       ) : (
         // ================= HAS CV =================
@@ -231,8 +240,8 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
           {/* File Info */}
           <div className="flex items-center justify-center gap-2 rounded-[8px] bg-white p-5 shadow">
             <Image
-              src={"/assets/pdf_file.svg"}
-              alt={t("candidatePage.profile.pdf-file")}
+              src={'/assets/pdf_file.svg'}
+              alt={t('candidatePage.profile.pdf-file')}
               width={24}
               height={24}
             />
@@ -240,7 +249,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
             <span className="text-xs md:text-sm">{displayFileName}</span>
 
             {displayFileSize && (
-              <span className="text-primary text-xs font-semibold md:text-sm">
+              <span className="text-xs font-semibold text-primary md:text-sm">
                 {displayFileSize}
               </span>
             )}
@@ -254,7 +263,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
               className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[10px] md:text-xs"
             >
               <File className="h-3 w-3" />
-              {t("candidatePage.common.download")}
+              {t('candidatePage.common.download')}
             </Button>
 
             <Button
@@ -263,7 +272,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
               className="flex h-8 flex-1 items-center justify-center gap-1 rounded-full text-[10px] md:text-[12px]"
             >
               <Eye className="h-3 w-3" />
-              {t("candidatePage.common.view")}
+              {t('candidatePage.common.view')}
             </Button>
           </div>
         </section>
@@ -273,7 +282,7 @@ const UploadCvSection = ({ cvUrl }: { cvUrl: string | null }) => {
         <CVModal
           open={open}
           onOpenChange={setOpen}
-          title={t("candidatePage.profile.view-cv")}
+          title={t('candidatePage.profile.view-cv')}
           url={displayUrl ?? undefined}
           fileName={displayFileName}
           handleDownload={handleDownload}

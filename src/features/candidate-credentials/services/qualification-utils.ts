@@ -1,16 +1,18 @@
 import type {
   QualificationApiItem,
   QualificationViewModel,
-} from "../types/qualification.types";
+} from '../types/qualification.types';
 
-const STORAGE_BASE_URL = "https://joocare.nami-tec.com/storage";
+const STORAGE_BASE_URL = 'https://joocare.nami-tec.com/storage';
 
-export function extractQualificationItems(payload: unknown): QualificationApiItem[] {
+export function extractQualificationItems(
+  payload: unknown,
+): QualificationApiItem[] {
   if (Array.isArray(payload)) {
     return payload as QualificationApiItem[];
   }
 
-  if (!payload || typeof payload !== "object") {
+  if (!payload || typeof payload !== 'object') {
     return [];
   }
 
@@ -29,7 +31,7 @@ export function extractQualificationItems(payload: unknown): QualificationApiIte
 
     if (
       candidate &&
-      typeof candidate === "object" &&
+      typeof candidate === 'object' &&
       Array.isArray((candidate as Record<string, unknown>).data)
     ) {
       return (candidate as { data: QualificationApiItem[] }).data;
@@ -50,10 +52,10 @@ function normalizeDateLabel(value: string | null) {
     return value;
   }
 
-  return date.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
+  return date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
   });
 }
 
@@ -66,30 +68,38 @@ function resolveStoredFileUrl(path: string | null | undefined) {
     return path;
   }
 
-  return `${STORAGE_BASE_URL}/${path.replace(/^\/+/, "")}`;
+  return `${STORAGE_BASE_URL}/${path.replace(/^\/+/, '')}`;
 }
 
-export function mapQualification(item: QualificationApiItem): QualificationViewModel | null {
+export function mapQualification(
+  item: QualificationApiItem,
+): QualificationViewModel | null {
   if (item.id === undefined || item.id === null) {
     return null;
   }
 
-  const degree = item.degree ?? item.title ?? item.name ?? "Qualification";
-  const university = item.university ?? item.institution ?? "Institution";
+  const degree = item.degree ?? item.title ?? item.name ?? 'Qualification';
+  const university = item.university ?? item.institution ?? 'Institution';
   const countryName =
-    typeof item.country === "string"
+    typeof item.country === 'string'
       ? item.country
-      : item.country?.name ?? item.country?.title ?? null;
+      : (item.country?.name ?? item.country?.title ?? null);
   const countryId =
     item.country_id !== undefined && item.country_id !== null
       ? String(item.country_id)
-      : item.country && typeof item.country === "object" && item.country.id !== undefined
+      : item.country &&
+          typeof item.country === 'object' &&
+          item.country.id !== undefined
         ? String(item.country.id)
         : null;
   const startLabel = normalizeDateLabel(item.start_date ?? null);
-  const endLabel = item.end_date ? normalizeDateLabel(item.end_date) : "Present";
+  const endLabel = item.end_date
+    ? normalizeDateLabel(item.end_date)
+    : 'Present';
   const period =
-    startLabel && endLabel ? `${startLabel} - ${endLabel}` : startLabel ?? endLabel ?? null;
+    startLabel && endLabel
+      ? `${startLabel} - ${endLabel}`
+      : (startLabel ?? endLabel ?? null);
 
   return {
     id: String(item.id),

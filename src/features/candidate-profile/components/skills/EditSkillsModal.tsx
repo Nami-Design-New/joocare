@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { toast } from "sonner";
-import { Button } from "@/shared/components/ui/button";
+import { useEffect, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { updateSkillsAction } from "../../actions/skills-actions";
-import type { CandidateSkillViewModel } from "../../types/profile.types";
-import { useQueryClient } from "@tanstack/react-query";
+} from '@/shared/components/ui/dialog';
+import { updateSkillsAction } from '../../actions/skills-actions';
+import type { CandidateSkillViewModel } from '../../types/profile.types';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface EditSkillsModalProps {
   open: boolean;
@@ -65,14 +65,16 @@ export function EditSkillsModal({
         locale,
       });
       queryClient.invalidateQueries({
-        queryKey: ["user-skills-suggestions"]
-      })
+        queryKey: ['user-skills-suggestions'],
+      });
       toast.success(result.message);
       onSave(current);
       onOpenChange(false);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : t("candidatePage.toasts.skills-update-failed");
+        error instanceof Error
+          ? error.message
+          : t('candidatePage.toasts.skills-update-failed');
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -83,11 +85,15 @@ export function EditSkillsModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-150 gap-4 rounded-2xl">
         <DialogHeader>
-          <DialogTitle className="text-base font-bold md:text-lg">{t("candidatePage.profile.edit-skills")}</DialogTitle>
+          <DialogTitle className="text-base font-bold md:text-lg">
+            {t('candidatePage.profile.edit-skills')}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-1.5">
-          <label className="font-semibold">{t("candidatePage.profile.skill-label")}</label>
+          <label className="font-semibold">
+            {t('candidatePage.profile.skill-label')}
+          </label>
           <div className="flex min-h-[60px] flex-wrap gap-2 rounded-xl bg-[#09760A08] p-3">
             {profileSkills.map((skill) => {
               const isSelected = current.some((item) => item.id === skill.id);
@@ -97,10 +103,11 @@ export function EditSkillsModal({
                   key={skill.id}
                   type="button"
                   onClick={() => toggle(skill)}
-                  className={`border-border rounded-full border px-4 py-2 text-xs transition-all md:text-sm ${isSelected
-                    ? "border-primary bg-primary text-white"
-                    : "border-muted hover:border-primary hover:text-primary bg-white text-black"
-                    }`}
+                  className={`rounded-full border border-border px-4 py-2 text-xs transition-all md:text-sm ${
+                    isSelected
+                      ? 'border-primary bg-primary text-white'
+                      : 'border-muted bg-white text-black hover:border-primary hover:text-primary'
+                  }`}
                 >
                   {skill.label}
                 </button>
@@ -108,8 +115,8 @@ export function EditSkillsModal({
             })}
 
             {profileSkills.length === 0 ? (
-              <p className="text-muted-foreground text-xs md:text-sm">
-                {t("candidatePage.profile.no-skills-to-edit")}
+              <p className="text-xs text-muted-foreground md:text-sm">
+                {t('candidatePage.profile.no-skills-to-edit')}
               </p>
             ) : null}
           </div>
@@ -121,7 +128,7 @@ export function EditSkillsModal({
             className="rounded-full px-6 sm:px-10"
             disabled={isSaving || profileSkills.length === 0}
           >
-            {isSaving ? t("candidatePage.common.saving") : t("common.save")}
+            {isSaving ? t('candidatePage.common.saving') : t('common.save')}
           </Button>
         </div>
       </DialogContent>

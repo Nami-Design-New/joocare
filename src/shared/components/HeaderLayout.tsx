@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
-import { usePathname } from "@/i18n/navigation";
-import { Link } from "@/i18n/navigation";
-import { buttonVariants } from "@/shared/components/ui/button";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode } from "swiper/modules";
-import "swiper/css";
-import { useSession } from "next-auth/react";
+import useGetCompanyProfile from '@/features/company-profile/hooks/useGetCompanyProfile';
+import { usePathname } from '@/i18n/navigation';
+import { Link } from '@/i18n/navigation';
+import { buttonVariants } from '@/shared/components/ui/button';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import { useSession } from 'next-auth/react';
 
 const HeaderLayout = ({
   navLinks,
@@ -16,19 +16,19 @@ const HeaderLayout = ({
 }) => {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const token = session?.accessToken || "";
+  const token = session?.accessToken || '';
   const role = session?.authRole;
-  const shouldLoadCompanyProfile = role === "employer";
+  const shouldLoadCompanyProfile = role === 'employer';
   const { data: companyProfileData } = useGetCompanyProfile({
-    token: shouldLoadCompanyProfile ? token : "",
+    token: shouldLoadCompanyProfile ? token : '',
   });
 
   const filteredNavLinks =
-    shouldLoadCompanyProfile && companyProfileData?.status === "Draft"
+    shouldLoadCompanyProfile && companyProfileData?.status === 'Draft'
       ? navLinks.slice(2, 3)
       : navLinks;
   return (
-    <header className="w-full rounded-full p-2 shadow sm:w-fit sm:pe-0 bg-white overflow-hidden">
+    <header className="w-full overflow-hidden rounded-full bg-white p-2 shadow sm:w-fit sm:pe-0">
       <Swiper
         modules={[FreeMode]}
         freeMode={true}
@@ -44,8 +44,8 @@ const HeaderLayout = ({
               <Link
                 href={href}
                 className={`${buttonVariants({
-                  variant: isActive ? "default" : "outline",
-                  size: "pill",
+                  variant: isActive ? 'default' : 'outline',
+                  size: 'pill',
                 })}`}
               >
                 {label}

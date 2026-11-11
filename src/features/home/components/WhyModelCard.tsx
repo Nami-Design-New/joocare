@@ -27,7 +27,7 @@ export default function WhyModelCard({ tone, item }: WhyModelCardProps) {
         <h4 className="mt-px mb-1 text-[14.5px] leading-snug font-semibold">
           {item.title}
         </h4>
-        <p className="text-why-ink-muted text-[12.5px] leading-normal font-light">
+        <p className="text-[12.5px] leading-normal font-light text-why-ink-muted">
           {item.description}
         </p>
       </div>

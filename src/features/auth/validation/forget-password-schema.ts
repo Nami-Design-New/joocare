@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 type CreateForgetPasswordSchemaOptions = {
   emailRequired?: string;
@@ -6,8 +6,8 @@ type CreateForgetPasswordSchemaOptions = {
 };
 
 export const createForgetPasswordSchema = ({
-  emailRequired = "Email is required",
-  emailInvalid = "Please enter a valid email address",
+  emailRequired = 'Email is required',
+  emailInvalid = 'Please enter a valid email address',
 }: CreateForgetPasswordSchemaOptions = {}) =>
   z.object({
     email: z

@@ -1,7 +1,7 @@
-import Image from "next/image";
-import type { HireSectionProps } from "../types";
-import { employerHireFallbackStepImages } from "../utils";
-import { getTranslations } from "next-intl/server";
+import Image from 'next/image';
+import type { HireSectionProps } from '../types';
+import { employerHireFallbackStepImages } from '../utils';
+import { getTranslations } from 'next-intl/server';
 
 export default async function HireSection({
   title,
@@ -15,11 +15,11 @@ export default async function HireSection({
     <section id="how-it-works" className="bg-[#EEF8F0] py-12 sm:py-20">
       <div className="layout-container">
         <div className="mb-8 lg:w-[50%]">
-          <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
+          <h2 className="text-2xl leading-tight font-bold text-secondary md:text-5xl">
             {title}
           </h2>
 
-          <p className="text-secondary mt-2 text-sm opacity-90 sm:text-base font-semibold">
+          <p className="mt-2 text-sm font-semibold text-secondary opacity-90 sm:text-base">
             {description}
           </p>
         </div>
@@ -30,7 +30,7 @@ export default async function HireSection({
               key={step.id}
               className="flex flex-col rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-8"
             >
-              <div className="flex h-40 items-center sm:h-56 justify-center">
+              <div className="flex h-40 items-center justify-center sm:h-56">
                 <Image
                   src={
                     step.image ||
@@ -47,7 +47,7 @@ export default async function HireSection({
               <div className="mt-6 flex-1">
                 <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[#F6FFF6] px-3 py-1 text-sm text-[#0B6B0F] shadow-[-4px_4px_12px_rgba(0,107,77,.3)]">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#0F7F10]" />
-                  {t("forEmployersPage.step", { number: index + 1 })}
+                  {t('forEmployersPage.step', { number: index + 1 })}
                 </span>
 
                 <h3 className="mt-4 text-lg">{step.title}</h3>

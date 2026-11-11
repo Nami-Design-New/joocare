@@ -41,13 +41,15 @@ export default async function Page({ searchParams }: PageProps) {
     : null;
 
   return (
-    <main className="bg-body-bg min-h-dvh">
+    <main className="min-h-dvh bg-body-bg">
       <Header />
       {isTalentDatabaseProfile && t ? (
         <div className="layout-container pt-6">
           <Link
-            href={jobId ? getAiTalentMatchHref(jobId) : '/company/talent-database'}
-            className="text-primary text-sm underline"
+            href={
+              jobId ? getAiTalentMatchHref(jobId) : '/company/talent-database'
+            }
+            className="text-sm text-primary underline"
           >
             {t(jobId ? 'back-to-ai-match' : 'back-to-database')}
           </Link>

@@ -37,10 +37,10 @@ export default function CategoryAssessmentsPage({
     <div className="flex flex-col gap-8 lg:mt-1">
       <header className="flex flex-wrap items-center justify-between gap-5">
         <div className="max-w-3xl space-y-2">
-          <h1 className="text-secondary text-2xl font-semibold md:text-[28px]">
+          <h1 className="text-2xl font-semibold text-secondary md:text-[28px]">
             {category.name}
           </h1>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {category.description}
           </p>
         </div>

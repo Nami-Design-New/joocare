@@ -14,7 +14,7 @@ export default function CvSkills({ title, skills }: CvSkillsProps) {
         {skills.map((skill) => (
           <li
             key={skill}
-            className="bg-muted text-secondary rounded-md px-3.5 py-2 text-sm"
+            className="rounded-md bg-muted px-3.5 py-2 text-sm text-secondary"
           >
             {skill}
           </li>

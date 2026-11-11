@@ -386,7 +386,7 @@ Keep `no-store` or request-time rendering for:
 ### Job details caching
 
 - [src/features/jobs/services/job-details-service.ts](/c:/joocare/src/features/jobs/services/job-details-service.ts)
-- [src/app/[locale]/(shared-layout)/jobs/[slug]/page.tsx](/c:/joocare/src/app/[locale]/(shared-layout)/jobs/[slug]/page.tsx)
+- [src/app/[locale]/(shared-layout)/jobs/[slug]/page.tsx](</c:/joocare/src/app/[locale]/(shared-layout)/jobs/[slug]/page.tsx>)
 
 ### Notifications
 

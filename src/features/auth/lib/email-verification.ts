@@ -1,6 +1,6 @@
-import { getAuthApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
-import { PasswordResetRole } from "./password-reset";
+import { getAuthApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
+import { PasswordResetRole } from './password-reset';
 
 function createFormData(values: Record<string, string>) {
   const formData = new FormData();
@@ -21,17 +21,20 @@ export async function requestEmailVerification({
   email: string;
   locale: string;
 }) {
-  const { ok, message } = await apiFetch(`${getAuthApiUrl(role)}/auth/email/verify`, {
-    method: "POST",
-    locale,
-    body: createFormData({ email }),
-  });
+  const { ok, message } = await apiFetch(
+    `${getAuthApiUrl(role)}/auth/email/verify`,
+    {
+      method: 'POST',
+      locale,
+      body: createFormData({ email }),
+    },
+  );
 
   if (!ok) {
-    throw new Error(message || "Failed to send verification code.");
+    throw new Error(message || 'Failed to send verification code.');
   }
 
-  return message || "Verification code sent successfully.";
+  return message || 'Verification code sent successfully.';
 }
 
 export async function confirmEmailVerification({
@@ -45,18 +48,21 @@ export async function confirmEmailVerification({
   otp: string;
   locale: string;
 }) {
-  const { ok, message, data } = await apiFetch(`${getAuthApiUrl(role)}/auth/email/confirm`, {
-    method: "POST",
-    locale,
-    body: createFormData({ email, otp }),
-  });
+  const { ok, message, data } = await apiFetch(
+    `${getAuthApiUrl(role)}/auth/email/confirm`,
+    {
+      method: 'POST',
+      locale,
+      body: createFormData({ email, otp }),
+    },
+  );
 
   if (!ok) {
-    throw new Error(message || "Failed to confirm verification code.");
+    throw new Error(message || 'Failed to confirm verification code.');
   }
 
   return {
-    message: message || "Email verified successfully.",
+    message: message || 'Email verified successfully.',
     data,
   };
 }

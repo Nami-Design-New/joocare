@@ -3,9 +3,9 @@ import {
   incrementRouteCounter,
   shouldLogOnly429,
   shouldLogRequests,
-} from "@/shared/lib/request-logging";
+} from '@/shared/lib/request-logging';
 
-type ApiMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+type ApiMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export type ApiFetchResponse<T = Record<string, unknown>> = {
   code?: number;
@@ -36,35 +36,35 @@ type ApiFetchOptions = {
   skipUnauthorizedHandler?: boolean;
 };
 
-export const UNAUTHORIZED_EVENT = "app:unauthorized";
+export const UNAUTHORIZED_EVENT = 'app:unauthorized';
 
 function normalizeLocale(locale: string | null | undefined) {
   if (!locale) return null;
   const value = locale.trim();
   if (!value) return null;
 
-  const primary = value.split(",")[0]?.trim() ?? "";
+  const primary = value.split(',')[0]?.trim() ?? '';
   if (!primary) return null;
 
   const lower = primary.toLowerCase();
-  if (lower.startsWith("ar")) return "ar";
-  if (lower.startsWith("en")) return "en";
+  if (lower.startsWith('ar')) return 'ar';
+  if (lower.startsWith('en')) return 'en';
 
   return primary;
 }
 
 function resolveDefaultLocale() {
-  if (typeof document !== "undefined") {
+  if (typeof document !== 'undefined') {
     const fromDom = normalizeLocale(document.documentElement?.lang);
     if (fromDom) return fromDom;
   }
 
-  if (typeof navigator !== "undefined") {
+  if (typeof navigator !== 'undefined') {
     const fromNavigator = normalizeLocale(navigator.language);
     if (fromNavigator) return fromNavigator;
   }
 
-  return "en";
+  return 'en';
 }
 
 function getHeaderValue(headers: Headers, names: string[]) {
@@ -100,15 +100,15 @@ function resolveStatusCode<T>(
   data: ApiFetchResponse<T> | null,
 ) {
   // 1. code from body
-  if (typeof data?.code === "number" && data.code > 0) {
+  if (typeof data?.code === 'number' && data.code > 0) {
     return data.code;
   }
 
   // 2. code from headers
   const headerStatusCode = getHeaderValue(response.headers, [
-    "x-status-code",
-    "status-code",
-    "code",
+    'x-status-code',
+    'status-code',
+    'code',
   ]);
 
   const parsedHeaderStatusCode = headerStatusCode
@@ -129,11 +129,11 @@ function resolveMessage<T>(
 ) {
   return (
     getHeaderValue(response.headers, [
-      "x-message",
-      "message",
-      "x-error-message",
-      "x-status-message",
-      "status-message",
+      'x-message',
+      'message',
+      'x-error-message',
+      'x-status-message',
+      'status-message',
     ]) ??
     data?.message ??
     null
@@ -153,7 +153,10 @@ function logApiFetch(input: {
   hasToken: boolean;
   message: string | null;
 }) {
-  const { routeCount, routePath } = incrementRouteCounter("apiFetch", input.url);
+  const { routeCount, routePath } = incrementRouteCounter(
+    'apiFetch',
+    input.url,
+  );
 
   if (!shouldLogRequests()) {
     return;
@@ -164,11 +167,11 @@ function logApiFetch(input: {
   }
 
   console.log(
-    "[apiFetch]",
+    '[apiFetch]',
     JSON.stringify(
       createRequestLogContext({
         requestId: input.requestId,
-        source: "apiFetch",
+        source: 'apiFetch',
         method: input.method,
         url: input.url,
         status: input.statusCode,
@@ -190,12 +193,12 @@ export async function apiFetch<T = Record<string, unknown>>(
   options: ApiFetchOptions = {},
 ): Promise<ApiResult<T>> {
   const {
-    method = "GET",
+    method = 'GET',
     locale,
     token,
     headers,
     body,
-    cache = "no-store",
+    cache = 'no-store',
     next,
     skipUnauthorizedHandler = false,
   } = options;
@@ -206,16 +209,16 @@ export async function apiFetch<T = Record<string, unknown>>(
   const requestHeaders = new Headers(headers);
 
   requestHeaders.set('X-Timezone', getTimeZone());
-  if (!requestHeaders.has("Accept")) {
-    requestHeaders.set("Accept", "application/json");
+  if (!requestHeaders.has('Accept')) {
+    requestHeaders.set('Accept', 'application/json');
   }
 
-  if (!requestHeaders.has("Accept-Language")) {
-    requestHeaders.set("Accept-Language", resolvedLocale);
+  if (!requestHeaders.has('Accept-Language')) {
+    requestHeaders.set('Accept-Language', resolvedLocale);
   }
 
-  if (token && !requestHeaders.has("Authorization")) {
-    requestHeaders.set("Authorization", `Bearer ${token}`);
+  if (token && !requestHeaders.has('Authorization')) {
+    requestHeaders.set('Authorization', `Bearer ${token}`);
   }
 
   const response = await fetch(url, {
@@ -226,11 +229,10 @@ export async function apiFetch<T = Record<string, unknown>>(
     next,
   });
 
-
-
   // console.log("Jobs data:::", response);
   const data =
-    ((await response.json().catch(() => null)) as ApiFetchResponse<T> | null) ?? null;
+    ((await response.json().catch(() => null)) as ApiFetchResponse<T> | null) ??
+    null;
 
   const statusCode = resolveStatusCode(response, data);
 
@@ -252,7 +254,7 @@ export async function apiFetch<T = Record<string, unknown>>(
     statusCode === 401 &&
     token &&
     !skipUnauthorizedHandler &&
-    typeof window !== "undefined"
+    typeof window !== 'undefined'
   ) {
     window.dispatchEvent(
       new CustomEvent(UNAUTHORIZED_EVENT, {

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { fetchCompanyJobsPageClient } from "../services/company-profile-service";
-import { getInfiniteCompanyJobsQueryOptions } from "../utils/company-jobs-utils";
+import { fetchCompanyJobsPageClient } from '../services/company-profile-service';
+import { getInfiniteCompanyJobsQueryOptions } from '../utils/company-jobs-utils';
 
 type UseInfiniteCompanyJobsOptions = {
   slug: string;
@@ -21,7 +21,6 @@ export function useInfiniteCompanyJobs({
       fetchPage: fetchCompanyJobsPageClient,
     }),
   );
-
 
   return {
     ...query,

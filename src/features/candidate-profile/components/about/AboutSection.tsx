@@ -18,7 +18,7 @@ const AboutSection = ({
   const aboutText = bioText || t('candidatePage.profile.no-bio');
   return (
     <>
-      <div className="border-border flex flex-col gap-3 rounded-2xl border bg-white p-4">
+      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-white p-4">
         <div className="flex items-center justify-between">
           <h3 className="text-[21px] leading-6.5 font-semibold">
             {t('candidatePage.profile.about')}
@@ -31,7 +31,7 @@ const AboutSection = ({
             />
           )}
         </div>
-        <p className="text-muted-foreground text-start text-sm md:text-base sm:text-justify">
+        <p className="text-start text-sm text-muted-foreground sm:text-justify md:text-base">
           {aboutText}
         </p>
       </div>

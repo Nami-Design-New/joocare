@@ -1,15 +1,15 @@
-import JobActionButtons from "@/features/jobs/components/JobActionButtons";
-import JobDescriptionCard from "@/features/jobs/components/JobDescriptionCard";
-import JobEducationAndCertificationsCard from "@/features/jobs/components/JobEducationAndCertificationsCard";
-import JobHeader from "@/features/jobs/components/JobHeader";
-import JobLocationAndSalaryCard from "@/features/jobs/components/JobLocationAndSalaryCard";
-import JobOverviewCard from "@/features/jobs/components/JobOverviewCard";
-import JobShareCard from "@/features/jobs/components/JobShareCard";
-import { getCompanyJobDetails } from "@/features/jobs/services/job-details-service";
-import { normalizeJobStatus } from "@/features/jobs/utils";
-import HttpStatusState from "@/shared/components/HttpStatusState";
-import { getHttpStatusCode } from "@/shared/lib/http-error";
-import { getTranslations } from "next-intl/server";
+import JobActionButtons from '@/features/jobs/components/JobActionButtons';
+import JobDescriptionCard from '@/features/jobs/components/JobDescriptionCard';
+import JobEducationAndCertificationsCard from '@/features/jobs/components/JobEducationAndCertificationsCard';
+import JobHeader from '@/features/jobs/components/JobHeader';
+import JobLocationAndSalaryCard from '@/features/jobs/components/JobLocationAndSalaryCard';
+import JobOverviewCard from '@/features/jobs/components/JobOverviewCard';
+import JobShareCard from '@/features/jobs/components/JobShareCard';
+import { getCompanyJobDetails } from '@/features/jobs/services/job-details-service';
+import { normalizeJobStatus } from '@/features/jobs/utils';
+import HttpStatusState from '@/shared/components/HttpStatusState';
+import { getHttpStatusCode } from '@/shared/lib/http-error';
+import { getTranslations } from 'next-intl/server';
 
 export default async function JobDetailsPage({
   params,
@@ -31,9 +31,9 @@ export default async function JobDetailsPage({
           statusCode={statusCode}
           error={error}
           primaryHref="/company/job-management"
-          primaryLabel={t("companyPage.jobDetails.back-to-job-management")}
+          primaryLabel={t('companyPage.jobDetails.back-to-job-management')}
           secondaryHref="/company/dashboard"
-          secondaryLabel={t("companyPage.jobDetails.go-to-dashboard")}
+          secondaryLabel={t('companyPage.jobDetails.go-to-dashboard')}
         />
       );
     }
@@ -42,8 +42,12 @@ export default async function JobDetailsPage({
   }
 
   const job = jobDetails.job;
-  const jobTitle = job.title ?? job.job_title?.title ?? t("companyPage.jobDetails.untitled-job");
-  const companyName = job.company?.name ?? t("companyPage.jobDetails.your-company");
+  const jobTitle =
+    job.title ??
+    job.job_title?.title ??
+    t('companyPage.jobDetails.untitled-job');
+  const companyName =
+    job.company?.name ?? t('companyPage.jobDetails.your-company');
   const status = normalizeJobStatus(job.current_status?.status ?? job.status);
   const statusDate = job.current_status?.updated_at ?? job.updated_at;
 
@@ -52,10 +56,12 @@ export default async function JobDetailsPage({
       <section className="">
         <section className="layout-content mt-4">
           <JobHeader
-            logoSrc={job.company?.image ?? "/assets/new-logo-dot.svg"}
+            logoSrc={job.company?.image ?? '/assets/new-logo-dot.svg'}
             title={jobTitle}
             company={companyName}
-            employmentType={job.employment_type?.title ?? t("jobsPage.not-specified")}
+            employmentType={
+              job.employment_type?.title ?? t('jobsPage.not-specified')
+            }
             status={status}
             statusDate={statusDate}
             actions={
@@ -67,7 +73,7 @@ export default async function JobDetailsPage({
             }
           />
 
-          <div className="grid grid-cols-1 max-xl:gap-y-5 xl:gap-5 pt-7 xl:grid-cols-3">
+          <div className="grid grid-cols-1 pt-7 max-xl:gap-y-5 xl:grid-cols-3 xl:gap-5">
             <div className="col-span-2 flex flex-col gap-8">
               <JobDescriptionCard job={job} />
             </div>

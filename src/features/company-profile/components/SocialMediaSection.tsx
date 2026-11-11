@@ -1,44 +1,92 @@
-"use client"
-import { Edit2 } from "lucide-react"
-import { useState } from "react"
-import { EditSocialMediaModal } from "./EditSocialMediaModal"
-import SocialMediaCard from "./SocialMediaCard"
-import { TCompanyProfileViewModel } from "../types"
-import DeleteModal from "@/shared/components/modals/DeleteModal"
-import { useTranslations } from "next-intl"
+'use client';
+import { Edit2 } from 'lucide-react';
+import { useState } from 'react';
+import { EditSocialMediaModal } from './EditSocialMediaModal';
+import SocialMediaCard from './SocialMediaCard';
+import { TCompanyProfileViewModel } from '../types';
+import DeleteModal from '@/shared/components/modals/DeleteModal';
+import { useTranslations } from 'next-intl';
 
-const SocialMediaSection = ({ companyProfileData, isPending }: { companyProfileData: TCompanyProfileViewModel, isPending: boolean }) => {
-    const [open, setOpen] = useState(false)
-    const t = useTranslations();
-    return (<>
-        <div className="rounded-2xl bg-white flex flex-col gap-4 p-4 border">
-            <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold ">{t("companyPage.profile.social.title")}</h2>
-                {companyProfileData?.status !== "Draft" && <Edit2 size={22} className="cursor-pointer" onClick={() => setOpen(!open)} />}
-            </div>
-            {companyProfileData?.website !== null &&
-                <SocialMediaCard title="website" link={companyProfileData?.website} src="/assets/icons/social-icons/globe.svg" isPending={isPending} />
-            }
-            {companyProfileData?.linkedin !== null &&
-                <SocialMediaCard title="LinkedIn" link={companyProfileData?.linkedin} src="/assets/icons/social-icons/linkedin.svg" isPending={isPending} />
-            }
-            {companyProfileData?.facebook !== null &&
-                <SocialMediaCard title="Facebook" link={companyProfileData?.facebook} src="/assets/icons/social-icons/facebook.svg" isPending={isPending} />
-            }
-            {companyProfileData?.instagram !== null &&
-                <SocialMediaCard title="Instagram" link={companyProfileData?.instagram} src="/assets/icons/social-icons/instagram.svg" isPending={isPending} />
-            }
-            {companyProfileData?.twitter !== null &&
-                <SocialMediaCard title="X/Twitter" link={companyProfileData?.twitter} src="/assets/icons/social-icons/twitter.svg" isPending={isPending} />
-            }
-            {companyProfileData?.snapchat !== null &&
-                <SocialMediaCard title="Snapchat" link={companyProfileData?.snapchat} src="/assets/icons/social-icons/snap.svg" isPending={isPending} />
-            }
-
+const SocialMediaSection = ({
+  companyProfileData,
+  isPending,
+}: {
+  companyProfileData: TCompanyProfileViewModel;
+  isPending: boolean;
+}) => {
+  const [open, setOpen] = useState(false);
+  const t = useTranslations();
+  return (
+    <>
+      <div className="flex flex-col gap-4 rounded-2xl border bg-white p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">
+            {t('companyPage.profile.social.title')}
+          </h2>
+          {companyProfileData?.status !== 'Draft' && (
+            <Edit2
+              size={22}
+              className="cursor-pointer"
+              onClick={() => setOpen(!open)}
+            />
+          )}
         </div>
-        <EditSocialMediaModal open={open} onOpenChange={setOpen} companyProfileData={companyProfileData} />
+        {companyProfileData?.website !== null && (
+          <SocialMediaCard
+            title="website"
+            link={companyProfileData?.website}
+            src="/assets/icons/social-icons/globe.svg"
+            isPending={isPending}
+          />
+        )}
+        {companyProfileData?.linkedin !== null && (
+          <SocialMediaCard
+            title="LinkedIn"
+            link={companyProfileData?.linkedin}
+            src="/assets/icons/social-icons/linkedin.svg"
+            isPending={isPending}
+          />
+        )}
+        {companyProfileData?.facebook !== null && (
+          <SocialMediaCard
+            title="Facebook"
+            link={companyProfileData?.facebook}
+            src="/assets/icons/social-icons/facebook.svg"
+            isPending={isPending}
+          />
+        )}
+        {companyProfileData?.instagram !== null && (
+          <SocialMediaCard
+            title="Instagram"
+            link={companyProfileData?.instagram}
+            src="/assets/icons/social-icons/instagram.svg"
+            isPending={isPending}
+          />
+        )}
+        {companyProfileData?.twitter !== null && (
+          <SocialMediaCard
+            title="X/Twitter"
+            link={companyProfileData?.twitter}
+            src="/assets/icons/social-icons/twitter.svg"
+            isPending={isPending}
+          />
+        )}
+        {companyProfileData?.snapchat !== null && (
+          <SocialMediaCard
+            title="Snapchat"
+            link={companyProfileData?.snapchat}
+            src="/assets/icons/social-icons/snap.svg"
+            isPending={isPending}
+          />
+        )}
+      </div>
+      <EditSocialMediaModal
+        open={open}
+        onOpenChange={setOpen}
+        companyProfileData={companyProfileData}
+      />
     </>
-    )
-}
+  );
+};
 
-export default SocialMediaSection
+export default SocialMediaSection;

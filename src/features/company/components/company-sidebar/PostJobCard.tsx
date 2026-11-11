@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Link } from "@/i18n/navigation";
-import { buttonVariants } from "@/shared/components/ui/button";
-import { cn } from "@/shared/lib/utils";
-import { Plus, Sparkles } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { Link } from '@/i18n/navigation';
+import { buttonVariants } from '@/shared/components/ui/button';
+import { cn } from '@/shared/lib/utils';
+import { Plus, Sparkles } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 type PostJobCardProps = {
   canPostJob: boolean;
@@ -12,11 +12,11 @@ type PostJobCardProps = {
 
 export default function PostJobCard({ canPostJob }: PostJobCardProps) {
   const t = useTranslations();
-  const tooltip = `${t("companyPage.sidebar.post-job-tooltip-line-1")} ${t("companyPage.sidebar.post-job-tooltip-line-2")}`;
+  const tooltip = `${t('companyPage.sidebar.post-job-tooltip-line-1')} ${t('companyPage.sidebar.post-job-tooltip-line-2')}`;
 
   const buttonClassName = cn(
-    buttonVariants({ variant: "default", size: "sm" }),
-    "w-full justify-center gap-1 rounded-full text-xs",
+    buttonVariants({ variant: 'default', size: 'sm' }),
+    'w-full justify-center gap-1 rounded-full text-xs',
   );
 
   return (
@@ -25,17 +25,17 @@ export default function PostJobCard({ canPostJob }: PostJobCardProps) {
         <Sparkles className="size-4" aria-hidden="true" />
       </span>
       <h2 className="text-xs font-semibold text-foreground">
-        {t("companyPage.sidebar.post-job-card-title")}
+        {t('companyPage.sidebar.post-job-card-title')}
       </h2>
       <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground">
-        {t("companyPage.sidebar.post-job-card-subtitle")}
+        {t('companyPage.sidebar.post-job-card-subtitle')}
       </p>
 
       <div className="group/post-job relative mt-3">
         {canPostJob ? (
           <Link href="/company/post-job" className={buttonClassName}>
             <Plus aria-hidden="true" />
-            {t("companyPage.sidebar.post-job")}
+            {t('companyPage.sidebar.post-job')}
           </Link>
         ) : (
           <button
@@ -46,7 +46,7 @@ export default function PostJobCard({ canPostJob }: PostJobCardProps) {
             className={buttonClassName}
           >
             <Plus aria-hidden="true" />
-            {t("companyPage.sidebar.post-job")}
+            {t('companyPage.sidebar.post-job')}
           </button>
         )}
 
@@ -54,7 +54,7 @@ export default function PostJobCard({ canPostJob }: PostJobCardProps) {
           <span
             id="post-job-disabled-tooltip"
             role="tooltip"
-            className="pointer-events-none absolute bottom-full start-1/2 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-popover px-3 py-1 text-xs text-popover-foreground shadow-md group-hover/post-job:block"
+            className="pointer-events-none absolute start-1/2 bottom-full mb-2 hidden -translate-x-1/2 rounded-md border border-border bg-popover px-3 py-1 text-xs whitespace-nowrap text-popover-foreground shadow-md group-hover/post-job:block"
           >
             {tooltip}
           </span>

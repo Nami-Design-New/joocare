@@ -31,7 +31,7 @@ export default function CareerPreferencesSection({
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {groups.map((group) => (
           <div key={group.key} className="flex flex-col gap-2">
-            <h4 className="text-muted-foreground text-sm font-semibold">
+            <h4 className="text-sm font-semibold text-muted-foreground">
               {t(group.key)}
             </h4>
             <CandidateProfileChips items={[...group.items]} />
@@ -39,7 +39,7 @@ export default function CareerPreferencesSection({
         ))}
       </div>
 
-      <dl className="border-border flex flex-wrap gap-x-10 gap-y-2 border-t pt-3 text-sm font-semibold">
+      <dl className="flex flex-wrap gap-x-10 gap-y-2 border-t border-border pt-3 text-sm font-semibold">
         {meta.map((item) => (
           <div key={item.key} className="flex items-center gap-2">
             <dt className="text-muted-foreground">{t(item.key)}:</dt>

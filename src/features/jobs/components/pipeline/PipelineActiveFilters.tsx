@@ -53,7 +53,7 @@ export default function PipelineActiveFilters({
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-muted-foreground text-sm">{t('label')}</span>
+      <span className="text-sm text-muted-foreground">{t('label')}</span>
       {chips.map((chip) => {
         const text =
           chip.id === 'starred'
@@ -62,14 +62,14 @@ export default function PipelineActiveFilters({
         return (
           <span
             key={chip.id}
-            className="border-border bg-card flex items-center gap-2 rounded-full border py-1.5 ps-3 pe-2 text-sm"
+            className="flex items-center gap-2 rounded-full border border-border bg-card py-1.5 ps-3 pe-2 text-sm"
           >
             <bdi>{text}</bdi>
             <button
               type="button"
               onClick={() => onRemove(chip)}
               aria-label={t('remove', { filter: text })}
-              className="text-muted-foreground hover:text-foreground rounded-full p-0.5"
+              className="rounded-full p-0.5 text-muted-foreground hover:text-foreground"
             >
               <X aria-hidden className="size-3.5" />
             </button>
@@ -79,7 +79,7 @@ export default function PipelineActiveFilters({
       <button
         type="button"
         onClick={onClearAll}
-        className="text-destructive text-sm font-medium underline underline-offset-2"
+        className="text-sm font-medium text-destructive underline underline-offset-2"
       >
         {t('clear-all')}
       </button>

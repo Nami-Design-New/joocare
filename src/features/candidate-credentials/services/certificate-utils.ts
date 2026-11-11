@@ -1,16 +1,18 @@
 import type {
   CertificateApiItem,
   CertificateViewModel,
-} from "../types/certificate.types";
+} from '../types/certificate.types';
 
-const STORAGE_BASE_URL = "https://joocare.nami-tec.com/storage";
+const STORAGE_BASE_URL = 'https://joocare.nami-tec.com/storage';
 
-export function extractCertificateItems(payload: unknown): CertificateApiItem[] {
+export function extractCertificateItems(
+  payload: unknown,
+): CertificateApiItem[] {
   if (Array.isArray(payload)) {
     return payload as CertificateApiItem[];
   }
 
-  if (!payload || typeof payload !== "object") {
+  if (!payload || typeof payload !== 'object') {
     return [];
   }
 
@@ -30,7 +32,7 @@ export function extractCertificateItems(payload: unknown): CertificateApiItem[] 
 
     if (
       candidate &&
-      typeof candidate === "object" &&
+      typeof candidate === 'object' &&
       Array.isArray((candidate as Record<string, unknown>).data)
     ) {
       return (candidate as { data: CertificateApiItem[] }).data;
@@ -51,10 +53,10 @@ function normalizeDateLabel(value: string | null) {
     return value;
   }
 
-  return date.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
+  return date.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
   });
 }
 
@@ -67,24 +69,33 @@ function resolveStoredFileUrl(path: string | null | undefined) {
     return path;
   }
 
-  return `${STORAGE_BASE_URL}/${path.replace(/^\/+/, "")}`;
+  return `${STORAGE_BASE_URL}/${path.replace(/^\/+/, '')}`;
 }
 
-export function mapCertificate(item: CertificateApiItem): CertificateViewModel | null {
+export function mapCertificate(
+  item: CertificateApiItem,
+): CertificateViewModel | null {
   if (item.id === undefined || item.id === null) {
     return null;
   }
 
   const startLabel = normalizeDateLabel(item.start_date ?? null);
-  const endLabel = item.end_date ? normalizeDateLabel(item.end_date) : "Present";
+  const endLabel = item.end_date
+    ? normalizeDateLabel(item.end_date)
+    : 'Present';
   const period =
-    startLabel && endLabel ? `${startLabel} - ${endLabel}` : startLabel ?? endLabel ?? null;
-
+    startLabel && endLabel
+      ? `${startLabel} - ${endLabel}`
+      : (startLabel ?? endLabel ?? null);
 
   return {
     id: String(item.id),
-    name: item.name ?? item.title ?? "Certificate",
-    company: item.company ?? item.organization ?? item.issuer ?? "Issuing organization",
+    name: item.name ?? item.title ?? 'Certificate',
+    company:
+      item.company ??
+      item.organization ??
+      item.issuer ??
+      'Issuing organization',
     startDate: item.start_date ?? null,
     endDate: item.end_date ?? null,
     period,

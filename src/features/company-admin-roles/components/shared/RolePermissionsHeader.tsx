@@ -17,7 +17,7 @@ export default function RolePermissionsHeader({
   const t = useTranslations('companyPage.roles.permissions');
 
   return (
-    <div className="border-border flex shrink-0 flex-col gap-6 border-b px-5 pt-5 pb-6 sm:px-8 sm:pt-8">
+    <div className="flex shrink-0 flex-col gap-6 border-b border-border px-5 pt-5 pb-6 sm:px-8 sm:pt-8">
       <div className="flex items-start gap-6">
         <ModalHeading
           title={t('title')}
@@ -28,7 +28,7 @@ export default function RolePermissionsHeader({
           <Button
             type="button"
             variant="ghost"
-            className="bg-muted size-9 rounded-full p-0"
+            className="size-9 rounded-full bg-muted p-0"
             aria-label={t('close')}
           >
             <Image

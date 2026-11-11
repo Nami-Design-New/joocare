@@ -14,14 +14,14 @@ export default function AssessmentStatusLinks() {
         asChild
         variant="outline"
         size="pill"
-        className="border-assessment-primary text-assessment-primary hover:text-assessment-primary h-12.5 px-8"
+        className="h-12.5 border-assessment-primary px-8 text-assessment-primary hover:text-assessment-primary"
       >
         <Link href={CANDIDATE_ASSESSMENT_ROUTES.jobs}>{t('browse-jobs')}</Link>
       </Button>
       <Button
         asChild
         size="pill"
-        className="bg-assessment-primary hover:bg-assessment-primary/90 gap-3"
+        className="gap-3 bg-assessment-primary hover:bg-assessment-primary/90"
       >
         <Link href={CANDIDATE_ASSESSMENT_ROUTES.appliedJobs}>
           {t('go-to-applied-jobs')}

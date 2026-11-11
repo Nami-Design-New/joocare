@@ -18,9 +18,9 @@ const EducationSection = ({
   const educations = profile?.educations ?? [];
   return (
     <>
-      <section className="border-border flex flex-col gap-4 rounded-2xl border bg-white p-4">
+      <section className="flex flex-col gap-4 rounded-2xl border border-border bg-white p-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold md:text-xl leading-6.5">
+          <h3 className="text-lg leading-6.5 font-semibold md:text-xl">
             {t('candidatePage.profile.education')}
           </h3>
           {!readOnly && (
@@ -43,7 +43,7 @@ const EducationSection = ({
             ))}
           </div>
         ) : (
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {t('candidatePage.profile.no-education')}
           </p>
         )}

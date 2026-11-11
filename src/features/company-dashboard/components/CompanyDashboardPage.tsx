@@ -60,7 +60,7 @@ export default function CompanyDashboardPage({
   return (
     <div className="mx-auto">
       <section className="space-y-6 py-4">
-        <h1 className="text-foreground text-[21px] leading-6.5 font-semibold">
+        <h1 className="text-[21px] leading-6.5 font-semibold text-foreground">
           {t('title')}
         </h1>
         <DashboardReportsBanner />

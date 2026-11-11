@@ -43,7 +43,7 @@ export default function CandidateAssessmentsModal({
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         showCloseButton={false}
-        className="bg-card w-[calc(100%-2rem)] max-w-195 gap-6 rounded-3xl border-0 p-6 sm:min-w-0"
+        className="w-[calc(100%-2rem)] max-w-195 gap-6 rounded-3xl border-0 bg-card p-6 sm:min-w-0"
       >
         <CandidateModalHeader title={t('list-title')} />
         <DialogDescription className="sr-only">
@@ -61,11 +61,11 @@ export default function CandidateAssessmentsModal({
             {assessments.map((assessment) => (
               <li
                 key={assessment.id}
-                className="border-border flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-4"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border p-4"
               >
                 <div className="flex min-w-0 flex-col gap-1">
                   <p className="font-semibold">{assessment.title}</p>
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-xs text-muted-foreground">
                     {t(`source.${assessment.source}`)} ·{' '}
                     {t('sent', { date: formatDate(assessment.sentAt) })}
                   </p>
@@ -82,13 +82,13 @@ export default function CandidateAssessmentsModal({
                           assessment.assessmentId,
                           candidate.id,
                         )}
-                        className="text-primary text-xs font-medium underline underline-offset-2"
+                        className="text-xs font-medium text-primary underline underline-offset-2"
                       >
                         {t('view-result')}
                       </Link>
                     </>
                   ) : assessment.dueAt ? (
-                    <span className="text-muted-foreground text-xs">
+                    <span className="text-xs text-muted-foreground">
                       {t('due', { date: formatDate(assessment.dueAt) })}
                     </span>
                   ) : null}

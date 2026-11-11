@@ -8,7 +8,7 @@ import { cn } from '@/shared/lib/utils';
 import type { CvBuilderValues } from '../../types/cv-builder.types';
 import { useFieldId } from './field-surface';
 
-const switchCardVariants = cva('bg-card flex flex-col', {
+const switchCardVariants = cva('flex flex-col bg-card', {
   variants: {
     variant: {
       /** Standalone yes/no row (license, availability, fresh graduate). */
@@ -58,20 +58,20 @@ export default function CvSwitchCard({
                 onCheckedChange?.(checked);
               }}
               aria-describedby={`${id}-description`}
-              className="data-[state=checked]:bg-cv-builder-primary data-[state=unchecked]:bg-foreground/35 mt-0.5 px-0.5 data-[size=default]:h-5.5 data-[size=default]:w-10 [&_[data-slot=switch-thumb]]:data-[state=checked]:translate-x-4.5 rtl:[&_[data-slot=switch-thumb]]:data-[state=checked]:-translate-x-4.5"
+              className="mt-0.5 px-0.5 data-[size=default]:h-5.5 data-[size=default]:w-10 data-[state=checked]:bg-cv-builder-primary data-[state=unchecked]:bg-foreground/35 [&_[data-slot=switch-thumb]]:data-[state=checked]:translate-x-4.5 rtl:[&_[data-slot=switch-thumb]]:data-[state=checked]:-translate-x-4.5"
             />
           )}
         />
         <div className="flex flex-col gap-1">
           <label
             htmlFor={id}
-            className="text-foreground text-base leading-5 font-semibold"
+            className="text-base leading-5 font-semibold text-foreground"
           >
             {title}
           </label>
           <p
             id={`${id}-description`}
-            className="text-foreground/45 text-sm leading-4.5"
+            className="text-sm leading-4.5 text-foreground/45"
           >
             {description}
           </p>

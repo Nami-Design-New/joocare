@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import RouteErrorFallback from "@/shared/components/RouteErrorFallback";
+import RouteErrorFallback from '@/shared/components/RouteErrorFallback';
 
 export default function Error({
   error,

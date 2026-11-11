@@ -49,7 +49,10 @@ export default function DeleteModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className={cn('max-w-150 rounded-2xl p-5 text-center sm:p-8', className)}
+        className={cn(
+          'max-w-150 rounded-2xl p-5 text-center sm:p-8',
+          className,
+        )}
       >
         <div className="flex w-full items-center justify-center">
           <div className="size-32 sm:size-50">
@@ -63,10 +66,10 @@ export default function DeleteModal({
           </div>
         </div>
         <DialogHeader className="">
-          <DialogTitle className="text-foreground text-center text-2xl md:text-3xl font-bold">
+          <DialogTitle className="text-center text-2xl font-bold text-foreground md:text-3xl">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-foreground text-center text-base md:text-lg leading-tight">
+          <DialogDescription className="text-center text-base leading-tight text-foreground md:text-lg">
             {description}
           </DialogDescription>
         </DialogHeader>

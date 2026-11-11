@@ -26,7 +26,7 @@ export default function AtsComingSoonModal({
       imageSrc={ATS_ASSETS.comingSoon}
       badge={
         // Overlaps the bottom of the illustration, as in the design.
-        <span className="bg-ats-badge text-ats-primary relative -mt-14 rounded-full border-3 border-white px-4.5 py-1.5 text-base font-semibold uppercase">
+        <span className="relative -mt-14 rounded-full border-3 border-white bg-ats-badge px-4.5 py-1.5 text-base font-semibold text-ats-primary uppercase">
           {t('badge')}
         </span>
       }

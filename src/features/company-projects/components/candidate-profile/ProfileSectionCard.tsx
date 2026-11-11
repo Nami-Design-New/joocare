@@ -10,8 +10,8 @@ export default function ProfileSectionCard({
   children,
 }: ProfileSectionCardProps) {
   return (
-    <section className="bg-card flex flex-col gap-3 rounded-2xl border p-4">
-      <h3 className="text-foreground text-xl font-semibold">{title}</h3>
+    <section className="flex flex-col gap-3 rounded-2xl border bg-card p-4">
+      <h3 className="text-xl font-semibold text-foreground">{title}</h3>
       {children}
     </section>
   );

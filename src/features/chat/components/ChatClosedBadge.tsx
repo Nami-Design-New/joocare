@@ -9,9 +9,9 @@ const closedBadgeVariants = cva(
     variants: {
       role: {
         company:
-          'text-chat-muted bg-chat-surface gap-1 px-2 py-0.5 text-[10px] leading-3.5',
+          'gap-1 bg-chat-surface px-2 py-0.5 text-[10px] leading-3.5 text-chat-muted',
         candidate:
-          'text-chat-danger bg-chat-danger-bg gap-2 px-4 py-2.5 text-sm leading-5',
+          'gap-2 bg-chat-danger-bg px-4 py-2.5 text-sm leading-5 text-chat-danger',
       },
     },
   },

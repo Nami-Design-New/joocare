@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { PopularSearchesItem } from "@/features/home/components/PopularSearches";
-import PopularSearchesInteractive from "@/features/home/components/PopularSearchesInteractive";
-import { InputField } from "@/shared/components/InputField";
-import { Option, SelectInputField } from "@/shared/components/SelectInputField";
-import { Button } from "@/shared/components/ui/button";
-import useGetCountries from "@/shared/hooks/useGetCountries";
-import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { PopularSearchesItem } from '@/features/home/components/PopularSearches';
+import PopularSearchesInteractive from '@/features/home/components/PopularSearchesInteractive';
+import { InputField } from '@/shared/components/InputField';
+import { Option, SelectInputField } from '@/shared/components/SelectInputField';
+import { Button } from '@/shared/components/ui/button';
+import useGetCountries from '@/shared/hooks/useGetCountries';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 type JobsFilterSectionProps = {
   locale: string;
@@ -34,7 +34,7 @@ export default function JobsFilterSection({
 }: JobsFilterSectionProps) {
   const t = useTranslations();
   const [location, setLocation] = useState<string>(country);
-  const [countrySearch, setCountrySearch] = useState("");
+  const [countrySearch, setCountrySearch] = useState('');
   const {
     countries: apiCountries,
     isLoading: countriesLoading,
@@ -42,7 +42,6 @@ export default function JobsFilterSection({
     fetchNextPage: fetchCountriesNextPage,
     isFetchingNextPage: countriesFetchingNextPage,
   } = useGetCountries(countrySearch);
-
 
   return (
     <section className="">
@@ -60,10 +59,15 @@ export default function JobsFilterSection({
           <form
             action={actionPath}
             method="get"
-            className="bg-border mx-auto mb-4 flex w-full max-w-5xl flex-wrap items-center justify-center gap-2 rounded-lg p-2 md:flex-nowrap md:rounded-full"
+            className="mx-auto mb-4 flex w-full max-w-5xl flex-wrap items-center justify-center gap-2 rounded-lg bg-border p-2 md:flex-nowrap md:rounded-full"
           >
             {hiddenInputs.map((input) => (
-              <input key={`${input.name}-${input.value}`} type="hidden" name={input.name} value={input.value} />
+              <input
+                key={`${input.name}-${input.value}`}
+                type="hidden"
+                name={input.name}
+                value={input.value}
+              />
             ))}
 
             <InputField
@@ -72,33 +76,40 @@ export default function JobsFilterSection({
               className="grow bg-white"
               containerStyles="w-full md:w-3/5 grow"
               id="search"
-              placeholder={t("search-filter.search-job")}
+              placeholder={t('search-filter.search-job')}
             />
 
             <input type="hidden" name="country" value={location} />
             <SelectInputField
               withSearchInput
               id="location"
-              options={apiCountries.map((apiCountry: { id: number; name: string }) => ({
-                label: apiCountry.name,
-                value: String(apiCountry.id),
-              }))}
-              placeholder={t("search-filter.by-country")}
+              options={apiCountries.map(
+                (apiCountry: { id: number; name: string }) => ({
+                  label: apiCountry.name,
+                  value: String(apiCountry.id),
+                }),
+              )}
+              placeholder={t('search-filter.by-country')}
               value={location}
               onChange={setLocation}
               disabled={countriesLoading}
-              searchPlaceholder={t("search-filter.country")}
+              searchPlaceholder={t('search-filter.country')}
               onSearchChange={setCountrySearch}
               onReachEnd={() => void fetchCountriesNextPage()}
               hasNextPage={countriesHasNextPage}
               isFetchingNextPage={countriesFetchingNextPage}
-              className="bg-white z-10"
+              className="z-10 bg-white"
               containerStyles="w-auto grow"
               allowDeselect
             />
 
-            <Button type="submit" variant="default" size="pill" className="shrink-0 z-10">
-              {t("search-filter.search")}
+            <Button
+              type="submit"
+              variant="default"
+              size="pill"
+              className="z-10 shrink-0"
+            >
+              {t('search-filter.search')}
             </Button>
           </form>
           <PopularSearchesInteractive

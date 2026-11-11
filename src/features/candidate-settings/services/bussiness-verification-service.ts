@@ -1,5 +1,5 @@
-import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
 export async function getBusinessVerificationService({
   token,
@@ -11,14 +11,14 @@ export async function getBusinessVerificationService({
   const { data, ok, message } = await apiFetch(
     `${getCompanyApiUrl()}/data/update-profile`,
     {
-      method: "GET",
+      method: 'GET',
       locale,
       token,
     },
   );
 
   if (!ok) {
-    throw new Error(message || "Failed to load business verification.");
+    throw new Error(message || 'Failed to load business verification.');
   }
 
   return data?.data;

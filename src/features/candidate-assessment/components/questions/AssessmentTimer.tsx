@@ -17,7 +17,7 @@ export default function AssessmentTimer({
   const Icon = isWarning ? TriangleAlert : Clock3;
 
   return (
-    <div className="bg-card border-border flex justify-center rounded-xl border p-5">
+    <div className="flex justify-center rounded-xl border border-border bg-card p-5">
       <p
         role="timer"
         aria-live={isWarning ? 'polite' : 'off'}

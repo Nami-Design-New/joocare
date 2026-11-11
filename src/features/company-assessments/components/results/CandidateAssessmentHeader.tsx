@@ -67,26 +67,26 @@ export default function CandidateAssessmentHeader({
         />
         <div className="w-full min-w-0 flex-1 space-y-1.5">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-assessment-dark text-xl font-bold">
+            <h1 className="text-xl font-bold text-assessment-dark">
               {result.candidate.name}
             </h1>
             <span
               className={cn(
                 'rounded-full px-2.5 py-1 text-xs font-semibold',
                 result.candidate.status === 'passed'
-                  ? 'text-assessment-primary bg-assessment-primary/8'
-                  : 'text-assessment-error bg-assessment-error/8',
+                  ? 'bg-assessment-primary/8 text-assessment-primary'
+                  : 'bg-assessment-error/8 text-assessment-error',
               )}
             >
               {status(result.candidate.status)}
             </span>
           </div>
-          <p className="text-assessment-dark text-sm break-all">
+          <p className="text-sm break-all text-assessment-dark">
             {result.candidate.email}
           </p>
           <dl className="space-y-2 pt-2.5 text-sm">
             <div className="flex flex-wrap gap-x-3 gap-y-1">
-              <dt className="text-assessment-muted w-25 shrink-0">
+              <dt className="w-25 shrink-0 text-assessment-muted">
                 {t('assessment')}
               </dt>
               <dd className="min-w-0 flex-1 font-semibold">
@@ -106,7 +106,7 @@ export default function CandidateAssessmentHeader({
             </div>
             {dateRows.map(({ key, date }) => (
               <div key={key} className="flex flex-wrap gap-x-3 gap-y-1">
-                <dt className="text-assessment-muted w-25 shrink-0">
+                <dt className="w-25 shrink-0 text-assessment-muted">
                   {t(key)}
                 </dt>
                 <dd className="text-assessment-main">
@@ -127,7 +127,7 @@ export default function CandidateAssessmentHeader({
               </div>
             ))}
             <div className="flex gap-3">
-              <dt className="text-assessment-muted w-25 shrink-0">
+              <dt className="w-25 shrink-0 text-assessment-muted">
                 {t('time-taken')}
               </dt>
               <dd className="text-assessment-main">
@@ -150,14 +150,16 @@ export default function CandidateAssessmentHeader({
                 stat.className,
               )}
             >
-              <span className="text-xl leading-7 font-bold sm:text-2xl">{stat.value}</span>
+              <span className="text-xl leading-7 font-bold sm:text-2xl">
+                {stat.value}
+              </span>
               <span className="text-xs font-medium uppercase">
                 {t(stat.key)}
               </span>
             </div>
           ))}
         </div>
-        <p className="text-assessment-copy text-end text-xs">
+        <p className="text-end text-xs text-assessment-copy">
           {t('questions-summary', {
             total: result.questions.length,
             skipped: counts.missing,

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/shared/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,19 +9,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/shared/components/ui/dialog";
-import { Textarea } from "@/shared/components/ui/textarea";
-import { useRouter } from "@/i18n/navigation";
-import { useLocale, useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { updateCandidateBio } from "../../services/profile-client-service";
+} from '@/shared/components/ui/dialog';
+import { Textarea } from '@/shared/components/ui/textarea';
+import { useRouter } from '@/i18n/navigation';
+import { useLocale, useTranslations } from 'next-intl';
+import { useSession } from 'next-auth/react';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { updateCandidateBio } from '../../services/profile-client-service';
 import {
   createAboutModalSchema,
   type AboutModalFormData,
-} from "../../validation/about-modal-schema";
+} from '../../validation/about-modal-schema';
 
 interface EditAboutModalProps {
   open: boolean;
@@ -41,8 +41,8 @@ export function EditAboutModal({
   const aboutSchema = useMemo(
     () =>
       createAboutModalSchema({
-        bioMax: t("candidateValidation.bio-max"),
-        bioMinWords: t("candidateValidation.bio-min-words"),
+        bioMax: t('candidateValidation.bio-max'),
+        bioMinWords: t('candidateValidation.bio-min-words'),
       }),
     [t],
   );
@@ -68,7 +68,7 @@ export function EditAboutModal({
 
   const onSubmit = async ({ bio }: AboutModalFormData) => {
     if (!session?.accessToken) {
-      toast.error(t("candidatePage.toasts.session-expired"));
+      toast.error(t('candidatePage.toasts.session-expired'));
       return;
     }
 
@@ -80,14 +80,16 @@ export function EditAboutModal({
         token: session.accessToken,
       });
 
-      toast.success(response?.message ?? t("candidatePage.toasts.about-updated"));
+      toast.success(
+        response?.message ?? t('candidatePage.toasts.about-updated'),
+      );
       onOpenChange(false);
       router.refresh();
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : t("candidatePage.toasts.about-update-failed");
+          : t('candidatePage.toasts.about-update-failed');
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -100,30 +102,32 @@ export function EditAboutModal({
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <DialogHeader>
             <DialogTitle className="text-[26px] text-black md:text-[28px]">
-              {t("candidatePage.profile.edit-about")}
+              {t('candidatePage.profile.edit-about')}
             </DialogTitle>
           </DialogHeader>
-          <DialogDescription className="text-muted-foreground -mt-2 text-xs md:text-sm">
-            {t("candidatePage.profile.about-description")}
+          <DialogDescription className="-mt-2 text-xs text-muted-foreground md:text-sm">
+            {t('candidatePage.profile.about-description')}
           </DialogDescription>
 
           <Textarea
-            className="bg-muted min-h-40 rounded-2xl p-4"
-            placeholder={t("candidatePage.profile.about-placeholder")}
-            {...register("bio")}
+            className="min-h-40 rounded-2xl bg-muted p-4"
+            placeholder={t('candidatePage.profile.about-placeholder')}
+            {...register('bio')}
           />
           {errors.bio?.message && (
-            <span className="text-[10px] text-red-500 md:text-[12px]">{errors.bio.message}</span>
+            <span className="text-[10px] text-red-500 md:text-[12px]">
+              {errors.bio.message}
+            </span>
           )}
 
           <DialogFooter className="flex justify-center!">
             <Button
               className="w-1/3"
-              size={"pill"}
+              size={'pill'}
               type="submit"
               disabled={isSaving}
             >
-              {isSaving ? t("candidatePage.common.saving") : t("common.save")}
+              {isSaving ? t('candidatePage.common.saving') : t('common.save')}
             </Button>
           </DialogFooter>
         </form>

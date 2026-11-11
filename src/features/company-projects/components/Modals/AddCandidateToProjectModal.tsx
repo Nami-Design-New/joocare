@@ -65,7 +65,7 @@ export default function AddCandidateToProjectModal({
     >
       <ModalContent
         showCloseButton={false}
-        className="bg-card w-[calc(100%-2rem)] max-w-200 gap-6 rounded-3xl border-0 p-6 sm:min-w-0"
+        className="w-[calc(100%-2rem)] max-w-200 gap-6 rounded-3xl border-0 bg-card p-6 sm:min-w-0"
       >
         <ProjectModalHeader title={t('link-title')} disabled={isSubmitting} />
         <ModalDescription className="sr-only">
@@ -76,7 +76,7 @@ export default function AddCandidateToProjectModal({
           onChange={(event) => setSearch(event.target.value)}
           placeholder={t('search-projects')}
           containerClassName="border-border border-b pb-4"
-          className="border-border bg-card border"
+          className="border border-border bg-card"
         />
         <div
           role="group"
@@ -95,7 +95,7 @@ export default function AddCandidateToProjectModal({
                   disabled={isSubmitting}
                   onClick={() => toggleProject(project.id)}
                   className={cn(
-                    'border-border flex items-center gap-3 rounded-xl border px-3 py-3 text-start transition-colors',
+                    'flex items-center gap-3 rounded-xl border border-border px-3 py-3 text-start transition-colors',
                     isSelected
                       ? 'border-primary bg-primary-bg'
                       : 'hover:bg-muted/50',
@@ -112,14 +112,14 @@ export default function AddCandidateToProjectModal({
                   >
                     {isSelected && <Check className="size-3.5" />}
                   </span>
-                  <span className="bg-primary-bg text-primary flex size-11 shrink-0 items-center justify-center rounded-full">
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-bg text-primary">
                     <Folder aria-hidden className="size-5" />
                   </span>
                   <span className="flex min-w-0 flex-col gap-1">
                     <span className="truncate font-semibold">
                       {project.name}
                     </span>
-                    <span className="text-muted-foreground text-sm">
+                    <span className="text-sm text-muted-foreground">
                       {t('candidates-count', {
                         count: project.candidateCount,
                       })}

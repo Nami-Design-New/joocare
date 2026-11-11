@@ -15,7 +15,9 @@ export function useRecommendedSkills(jobTitleId: string, selected: string[]) {
     label: skill.title,
     value: String(skill.id),
   }));
-  const available = options.filter((option) => !selected.includes(option.value));
+  const available = options.filter(
+    (option) => !selected.includes(option.value),
+  );
   const hasHidden = available.length > visibleCount;
 
   return {

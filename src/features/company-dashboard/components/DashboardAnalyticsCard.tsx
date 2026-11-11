@@ -32,9 +32,9 @@ export default function DashboardAnalyticsCard({
 }: DashboardAnalyticsCardProps) {
   const t = useTranslations('companyPage.dashboard.design');
   return (
-    <section className="bg-card flex min-h-56 flex-col gap-1 rounded-2xl p-4 sm:p-6">
+    <section className="flex min-h-56 flex-col gap-1 rounded-2xl bg-card p-4 sm:p-6">
       <div className="flex h-9 items-center justify-between gap-2">
-        <span className="bg-dashboard-teal/10 flex h-9 w-11 items-center justify-center rounded-xl">
+        <span className="flex h-9 w-11 items-center justify-center rounded-xl bg-dashboard-teal/10">
           <DashboardIcon name={icon} width={20} height={iconHeight} />
         </span>
         {periodSelect}
@@ -58,10 +58,10 @@ export default function DashboardAnalyticsCard({
       ) : (
         <>
           <div className="flex h-10 flex-wrap items-baseline gap-x-3">
-            <p className="text-foreground text-3xl leading-9 font-bold sm:text-[38px] sm:leading-10">
+            <p className="text-3xl leading-9 font-bold text-foreground sm:text-[38px] sm:leading-10">
               {value}
             </p>
-            <span className="text-dashboard-heading text-sm leading-5">
+            <span className="text-sm leading-5 text-dashboard-heading">
               {suffix}
             </span>
           </div>

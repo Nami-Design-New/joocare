@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
-import { getTranslations } from "next-intl/server";
+import { ReactNode } from 'react';
+import { getTranslations } from 'next-intl/server';
 
-import { navLinks } from "@/features/candidate-credentials/constants";
-import HeaderLayout from "@/shared/components/HeaderLayout";
-import AddHeaderButton from "@/features/candidate-credentials/components/AddHeaderButton";
+import { navLinks } from '@/features/candidate-credentials/constants';
+import HeaderLayout from '@/shared/components/HeaderLayout';
+import AddHeaderButton from '@/features/candidate-credentials/components/AddHeaderButton';
 
 const CredentialsLayout = async ({ children }: { children: ReactNode }) => {
   const t = await getTranslations();

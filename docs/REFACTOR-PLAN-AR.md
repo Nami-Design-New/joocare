@@ -8,25 +8,25 @@
 
 ## الأرقام وقت المراجعة
 
-| الفحص | النتيجة |
-| --- | --- |
-| `npx tsc --noEmit` | ✅ ناجح |
-| `npx eslint src` | ❌ **11 error + 36 warning** (7 `no-explicit-any`، 4 `react-hooks` refs/render، 34 unused vars) |
-| ملفات `src` | 1143 ملف، منها 489 فيها `'use client'` |
-| `console.log` | 47 مرة في حوالي 25 ملف (منهم `src/auth.ts`) |
-| ملفات مش مستوردة في أي مكان (dead code) | 40 ملف |
-| `shared` بيستورد من `features` (عكس الاتجاه) | 7 ملفات |
-| raw `fetch(` خارج `apiFetch` | 33 مرة في حوالي 29 ملف |
-| `process.env.NEXT_PUBLIC_*` مباشرة | 42 مرة في حوالي 20 ملف |
-| ألوان hex (`[#...]`) | 50 |
-| ألوان palette خام (`gray-*`, `red-500`...) | 122 |
-| `bg-white` / `text-white` / `text-black` | 260 |
-| أحجام خط arbitrary (`text-[28px]`...) | 206 |
-| classes غير RTL-safe (`ml-` `mr-` `pl-` `pr-` `left-` `right-`) | 124 |
-| `locale === 'ar'` ternaries | 48 |
-| `next/link` بدل `@/i18n/navigation` | 7 |
-| عدد `<main>` | 24 (فيهم متداخلين) |
-| CI | build بس، **مفيش lint ولا type-check ولا tests** |
+| الفحص                                                           | النتيجة                                                                                         |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `npx tsc --noEmit`                                              | ✅ ناجح                                                                                         |
+| `npx eslint src`                                                | ❌ **11 error + 36 warning** (7 `no-explicit-any`، 4 `react-hooks` refs/render، 34 unused vars) |
+| ملفات `src`                                                     | 1143 ملف، منها 489 فيها `'use client'`                                                          |
+| `console.log`                                                   | 47 مرة في حوالي 25 ملف (منهم `src/auth.ts`)                                                     |
+| ملفات مش مستوردة في أي مكان (dead code)                         | 40 ملف                                                                                          |
+| `shared` بيستورد من `features` (عكس الاتجاه)                    | 7 ملفات                                                                                         |
+| raw `fetch(` خارج `apiFetch`                                    | 33 مرة في حوالي 29 ملف                                                                          |
+| `process.env.NEXT_PUBLIC_*` مباشرة                              | 42 مرة في حوالي 20 ملف                                                                          |
+| ألوان hex (`[#...]`)                                            | 50                                                                                              |
+| ألوان palette خام (`gray-*`, `red-500`...)                      | 122                                                                                             |
+| `bg-white` / `text-white` / `text-black`                        | 260                                                                                             |
+| أحجام خط arbitrary (`text-[28px]`...)                           | 206                                                                                             |
+| classes غير RTL-safe (`ml-` `mr-` `pl-` `pr-` `left-` `right-`) | 124                                                                                             |
+| `locale === 'ar'` ternaries                                     | 48                                                                                              |
+| `next/link` بدل `@/i18n/navigation`                             | 7                                                                                               |
+| عدد `<main>`                                                    | 24 (فيهم متداخلين)                                                                              |
+| CI                                                              | build بس، **مفيش lint ولا type-check ولا tests**                                                |
 
 ---
 
@@ -121,16 +121,16 @@
 
 ### 4.1 أخطاء إملائية
 
-| الحالي | الصح |
-| --- | --- |
-| `features/accout-settings/` | `features/company-account-settings/` (أو `account-settings`) |
-| `features/forEmployers/` | `features/for-employers/` |
-| `app/.../shared-copmonents-page/` | تتشال من الإنتاج أو تتنقل لـ route dev-only (شوف 4.3) |
-| `candidate-profile/services/user-skills-suggetions.ts` | `user-skills-suggestions-service.ts` |
-| `notifications/hooks/useDeleteNotifcataion.ts` | يتمسح (مش مستخدم) |
-| `shared/components/PlainBreadcramb.tsx` | `PlainBreadcrumb.tsx` |
-| `about/components/Misison.tsx` | يتمسح (مش مستخدم) |
-| `shared/util/formateDate.ts` | يتمسح (مش مستخدم) |
+| الحالي                                                 | الصح                                                         |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| `features/accout-settings/`                            | `features/company-account-settings/` (أو `account-settings`) |
+| `features/forEmployers/`                               | `features/for-employers/`                                    |
+| `app/.../shared-copmonents-page/`                      | تتشال من الإنتاج أو تتنقل لـ route dev-only (شوف 4.3)        |
+| `candidate-profile/services/user-skills-suggetions.ts` | `user-skills-suggestions-service.ts`                         |
+| `notifications/hooks/useDeleteNotifcataion.ts`         | يتمسح (مش مستخدم)                                            |
+| `shared/components/PlainBreadcramb.tsx`                | `PlainBreadcrumb.tsx`                                        |
+| `about/components/Misison.tsx`                         | يتمسح (مش مستخدم)                                            |
+| `shared/util/formateDate.ts`                           | يتمسح (مش مستخدم)                                            |
 
 ### 4.2 توحيد أسماء الفولدرات جوا الـ features
 
@@ -166,15 +166,15 @@
 
 ### 5.1 `shared` بيستورد من `features` (ممنوع حسب RULES.md)
 
-| الملف | بيستورد من |
-| --- | --- |
-| `shared/components/HeaderLayout.tsx` | company-profile |
-| `shared/components/header/HeaderActionsButtons.tsx` | candidate-profile, company-profile, notifications |
-| `shared/components/header/UserDropDown.tsx` | auth, candidate-profile, company-profile |
-| `shared/components/header/UserProfileCard.tsx` | auth, candidate-profile, company-profile |
-| `shared/components/header/DrawerScrollableContent.tsx` | notifications |
-| `shared/providers/MainProviders.tsx` | auth, settings |
-| `shared/providers/redux/store.ts` | auth, settings |
+| الملف                                                  | بيستورد من                                        |
+| ------------------------------------------------------ | ------------------------------------------------- |
+| `shared/components/HeaderLayout.tsx`                   | company-profile                                   |
+| `shared/components/header/HeaderActionsButtons.tsx`    | candidate-profile, company-profile, notifications |
+| `shared/components/header/UserDropDown.tsx`            | auth, candidate-profile, company-profile          |
+| `shared/components/header/UserProfileCard.tsx`         | auth, candidate-profile, company-profile          |
+| `shared/components/header/DrawerScrollableContent.tsx` | notifications                                     |
+| `shared/providers/MainProviders.tsx`                   | auth, settings                                    |
+| `shared/providers/redux/store.ts`                      | auth, settings                                    |
 
 **الحل المقترح:** الهيدر ده app shell مش shared UI. ينقل لـ `features/app-shell/` (أو `src/app/_components/`) ويفضل في shared الأجزاء الـ presentational بس، وهي تاخد البيانات props. الـ redux store والـ providers ينقلوا لـ `src/app/providers/` أو `src/store/`، ويتوثق إنهم composition layer مسموحلها تستورد features.
 
@@ -182,15 +182,15 @@
 
 أكبر الاعتمادات:
 
-| من | إلى | عدد الـ imports |
-| --- | --- | --- |
-| jobs | company-assessments | 15 |
-| jobs | company-talent-database | 8 |
-| shared-components | company-admin-roles | 8 |
-| company-projects | candidate-profile | 6 |
-| company-projects | candidate-credentials | 6 |
-| about | home | 6 |
-| shared-components | company-assessments | 6 |
+| من                | إلى                     | عدد الـ imports |
+| ----------------- | ----------------------- | --------------- |
+| jobs              | company-assessments     | 15              |
+| jobs              | company-talent-database | 8               |
+| shared-components | company-admin-roles     | 8               |
+| company-projects  | candidate-profile       | 6               |
+| company-projects  | candidate-credentials   | 6               |
+| about             | home                    | 6               |
+| shared-components | company-assessments     | 6               |
 
 - [ ] **اعتماد دائري:** `auth` و`accout-settings` بيستوردوا من بعض. اللي مشترك ينقل لـ `shared` أو لواحد منهم بس.
 - [ ] `features/shared-components/` اسمه بيقول shared بس هو feature بيستورد من features تانية. نحدد دوره: لو صفحة معرض، يتقفل مع 4.3. لو كومبوننتات مشتركة، ينقل لـ `shared`.
@@ -266,20 +266,20 @@
 
 > بالترتيب ده، وكل ملف في PR لوحده. نقسم حسب المسؤولية (sections + hook للـ logic + mapping functions في `utils`).
 
-| الملف | الأسطر |
-| --- | --- |
-| `features/jobs/components/JobPostStepOne.tsx` | 1265 |
-| `features/jobs/components/PostJobForm.tsx` | 911 |
-| `features/candidate-settings/components/basic-info/BasicInfoForm.tsx` | 695 |
-| `features/jobs/components/JobReviewPanel.tsx` | 636 |
-| `features/accout-settings/components/business-verification/BusinessVerificationForm.tsx` | 507 |
-| `features/auth/components/register-employer-content/FormCandidateRegister.tsx` | 472 |
-| `features/accout-settings/components/basic-info/BasicInfoForm.tsx` | 413 |
-| `features/complete-account/steps/step-two.tsx` | 408 |
-| `src/auth.ts` | 379 |
-| `features/company-projects/components/ProjectCandidatesTable.tsx` | 387 |
-| `features/candidate-credentials/components/*/…Modal.tsx` (3 ملفات) | 317–374 |
-| `app/[locale]/(shared-layout)/jobs/page.tsx` | 341 (page المفروض تبقى thin) |
+| الملف                                                                                    | الأسطر                       |
+| ---------------------------------------------------------------------------------------- | ---------------------------- |
+| `features/jobs/components/JobPostStepOne.tsx`                                            | 1265                         |
+| `features/jobs/components/PostJobForm.tsx`                                               | 911                          |
+| `features/candidate-settings/components/basic-info/BasicInfoForm.tsx`                    | 695                          |
+| `features/jobs/components/JobReviewPanel.tsx`                                            | 636                          |
+| `features/accout-settings/components/business-verification/BusinessVerificationForm.tsx` | 507                          |
+| `features/auth/components/register-employer-content/FormCandidateRegister.tsx`           | 472                          |
+| `features/accout-settings/components/basic-info/BasicInfoForm.tsx`                       | 413                          |
+| `features/complete-account/steps/step-two.tsx`                                           | 408                          |
+| `src/auth.ts`                                                                            | 379                          |
+| `features/company-projects/components/ProjectCandidatesTable.tsx`                        | 387                          |
+| `features/candidate-credentials/components/*/…Modal.tsx` (3 ملفات)                       | 317–374                      |
+| `app/[locale]/(shared-layout)/jobs/page.tsx`                                             | 341 (page المفروض تبقى thin) |
 
 - [ ] الـ 3 modals في `candidate-credentials` (Certificate، License، Qualification) شبه بعض، فيه فرصة لـ `CredentialFormModal` واحد بـ config.
 
@@ -289,16 +289,16 @@
 
 فيه **حوالي 23 ملف preview/mock** بتشغّل شاشات كاملة من غير API:
 
-| Feature | الملفات |
-| --- | --- |
-| company-projects | `project-preview-data`، `candidate-profile-preview-data`، `shared-review-preview-data`، `useCompanyProjectsPreview`، `useProjectCandidatesPreview` |
-| company-talent-database | `talent-preview-data`، `useTalentDatabasePreview` (**بيعرض "تم الإرسال" من غير API**) |
-| chat | `chat-preview`، `candidate-chat-preview` (الرسايل بتتضاف local بس) |
-| company-dashboard | `dashboard-preview`، `active-jobs-preview` |
-| company-admin-roles / users | `data/roles.data`، `permissions.data`، `members.data` |
-| candidate-* | ai-job-match، assessment، cv-builder، cv-match-ats، profile-insights، additional-info |
-| jobs | `apply-preview-data`، `candidate-answers-preview-data`، `useAiTalentMatchPreview` |
-| about / company-recruiter-activity | `commitment-preview-data`، `recruiter-activity-preview-data` |
+| Feature                            | الملفات                                                                                                                                            |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| company-projects                   | `project-preview-data`، `candidate-profile-preview-data`، `shared-review-preview-data`، `useCompanyProjectsPreview`، `useProjectCandidatesPreview` |
+| company-talent-database            | `talent-preview-data`، `useTalentDatabasePreview` (**بيعرض "تم الإرسال" من غير API**)                                                              |
+| chat                               | `chat-preview`، `candidate-chat-preview` (الرسايل بتتضاف local بس)                                                                                 |
+| company-dashboard                  | `dashboard-preview`، `active-jobs-preview`                                                                                                         |
+| company-admin-roles / users        | `data/roles.data`، `permissions.data`، `members.data`                                                                                              |
+| candidate-\*                       | ai-job-match، assessment، cv-builder، cv-match-ats، profile-insights، additional-info                                                              |
+| jobs                               | `apply-preview-data`، `candidate-answers-preview-data`، `useAiTalentMatchPreview`                                                                  |
+| about / company-recruiter-activity | `commitment-preview-data`، `recruiter-activity-preview-data`                                                                                       |
 
 - [ ] نعمل جدول جاهزية (ملف جديد في `docs/` أو قسم هنا): كل شاشة **مربوطة** أو **UI بس** أو **مستنية API**.
 - [ ] أي عملية بتعرض نجاح وهي مش بتبعت حاجة (talent database send message، chat send) تتقفل أو يظهر عليها إنها تجريبية لحد ما تتربط.
@@ -318,20 +318,21 @@
 
 ## ترتيب التنفيذ المقترح
 
-| # | المرحلة | الحجم | ليه بالترتيب ده |
-| --- | --- | --- | --- |
-| 1 | المرحلة 1: الأمان والإنتاج | صغير | خطر حقيقي على المستخدمين |
-| 2 | المرحلة 0: نظافة وأدوات + CI | صغير | كل اللي بعده يتحمى بالـ lint والـ typecheck |
-| 3 | المرحلة 2: ESLint صفر | صغير | الـ CI يبقى أخضر |
-| 4 | المرحلة 3: كود ميت | صغير | يقلل الملفات قبل ما ننقل ونسمي |
-| 5 | المرحلة 4: أسماء وفولدرات | متوسط | renames بس، من غير تغيير logic |
-| 6 | المرحلة 6: طبقة الـ API | متوسط | توحيد سلوك الطلبات |
-| 7 | المرحلة 5: الـ Layering | متوسط | أسهل بعد ما الفولدرات تتظبط |
-| 8 | المرحلة 7: الـ Design System | كبير | tokens الأول، بعدين الاستبدال feature feature |
-| 9 | المرحلة 8: الملفات الكبيرة | كبير | ملف ملف |
-| 10 | المرحلة 9 و10 | مستمر | مع الباك إند والـ QA |
+| #   | المرحلة                      | الحجم | ليه بالترتيب ده                               |
+| --- | ---------------------------- | ----- | --------------------------------------------- |
+| 1   | المرحلة 1: الأمان والإنتاج   | صغير  | خطر حقيقي على المستخدمين                      |
+| 2   | المرحلة 0: نظافة وأدوات + CI | صغير  | كل اللي بعده يتحمى بالـ lint والـ typecheck   |
+| 3   | المرحلة 2: ESLint صفر        | صغير  | الـ CI يبقى أخضر                              |
+| 4   | المرحلة 3: كود ميت           | صغير  | يقلل الملفات قبل ما ننقل ونسمي                |
+| 5   | المرحلة 4: أسماء وفولدرات    | متوسط | renames بس، من غير تغيير logic                |
+| 6   | المرحلة 6: طبقة الـ API      | متوسط | توحيد سلوك الطلبات                            |
+| 7   | المرحلة 5: الـ Layering      | متوسط | أسهل بعد ما الفولدرات تتظبط                   |
+| 8   | المرحلة 7: الـ Design System | كبير  | tokens الأول، بعدين الاستبدال feature feature |
+| 9   | المرحلة 8: الملفات الكبيرة   | كبير  | ملف ملف                                       |
+| 10  | المرحلة 9 و10                | مستمر | مع الباك إند والـ QA                          |
 
 **قواعد الشغل:**
+
 - PR لكل مرحلة، أو لكل بند لو البند كبير.
 - ماندمجش rename أو format مع تغيير logic في نفس الـ PR.
 - بعد كل PR: `npm run lint` و`npx tsc --noEmit` و`npm run build`، ونجرب الصفحات اللي اتأثرت **بالعربي والإنجليزي وعلى الموبايل**.

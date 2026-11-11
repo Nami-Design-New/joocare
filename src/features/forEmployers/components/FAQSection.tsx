@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { CircleQuestionMark, ArrowRight } from "lucide-react";
+import { useState } from 'react';
+import { CircleQuestionMark, ArrowRight } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/shared/components/ui/accordion";
-import { Button } from "@/shared/components/ui/button";
-import type { FAQSectionProps } from "../types";
-import { useTranslations } from "next-intl";
+} from '@/shared/components/ui/accordion';
+import { Button } from '@/shared/components/ui/button';
+import type { FAQSectionProps } from '../types';
+import { useTranslations } from 'next-intl';
 
 export default function FAQSection({ title, items }: FAQSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -28,7 +28,7 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
               <CircleQuestionMark size={60} />
             </div>
 
-            <h2 className="text-secondary leading-tight font-bold text-2xl md:text-5xl">
+            <h2 className="text-2xl leading-tight font-bold text-secondary md:text-5xl">
               {title}
             </h2>
           </div>
@@ -41,14 +41,14 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
                     <AccordionItem
                       key={item.id}
                       value={item.id}
-                      className="bg-muted data-[state=open]:bg-card border-border data-[state=open]:ring-border h-fit rounded-2xl border px-4 py-1 transition-all sm:px-6 sm:py-2 data-[state=open]:shadow-sm data-[state=open]:ring-1"
+                      className="h-fit rounded-2xl border border-border bg-muted px-4 py-1 transition-all data-[state=open]:bg-card data-[state=open]:shadow-sm data-[state=open]:ring-1 data-[state=open]:ring-border sm:px-6 sm:py-2"
                     >
                       <AccordionTrigger className="group py-3 hover:no-underline sm:py-4">
-                        <span className="text-foreground text-left text-sm font-bold md:text-xl">
+                        <span className="text-left text-sm font-bold text-foreground md:text-xl">
                           {item.question}
                         </span>
                       </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 sm:pb-6 leading-relaxed text-sm md:text-base">
+                      <AccordionContent className="pb-4 text-sm text-muted-foreground sm:pb-6 md:text-base">
                         {item.answer}
                       </AccordionContent>
                     </AccordionItem>
@@ -56,22 +56,23 @@ export default function FAQSection({ title, items }: FAQSectionProps) {
                 </div>
               </Accordion>
 
-              <div className="w-full flex justify-end">
+              <div className="flex w-full justify-end">
                 {items.length > initialCount && (
                   <Button
                     variant="outline"
                     size="pill"
                     hoverStyle="slidehorizontalPrimary"
-                    className="text-muted-foreground text-sm md:text-base group mt-6 items-center gap-2 border-none font-normal flex"
+                    className="group mt-6 flex items-center gap-2 border-none text-sm font-normal text-muted-foreground md:text-base"
                     onClick={() => setIsExpanded((prev) => !prev)}
                   >
-                    {isExpanded ? t("search-filter.show-less") : t("search-filter.show-more")}
+                    {isExpanded
+                      ? t('search-filter.show-less')
+                      : t('search-filter.show-more')}
 
                     <ArrowRight
                       size={28}
                       strokeWidth={1.5}
-                      className={`border-muted-foreground text-muted-foreground size-7 rounded-full border bg-white transition-transform 
-                ${isExpanded ? "rotate-270" : "rotate-90 group-hover:rotate-90"}`}
+                      className={`size-7 rounded-full border border-muted-foreground bg-white text-muted-foreground transition-transform ${isExpanded ? 'rotate-270' : 'rotate-90 group-hover:rotate-90'}`}
                     />
                   </Button>
                 )}

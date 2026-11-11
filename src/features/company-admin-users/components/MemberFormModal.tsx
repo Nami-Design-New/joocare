@@ -12,7 +12,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/components/ui/dialog';
-import type { CompanyMember, CompanyMemberFormValues } from '../types/member.types';
+import type {
+  CompanyMember,
+  CompanyMemberFormValues,
+} from '../types/member.types';
 
 type MemberFormModalProps = {
   open: boolean;
@@ -22,7 +25,9 @@ type MemberFormModalProps = {
   onSave: (values: CompanyMemberFormValues) => void;
 };
 
-function createInitialForm(member: CompanyMember | null): CompanyMemberFormValues {
+function createInitialForm(
+  member: CompanyMember | null,
+): CompanyMemberFormValues {
   return {
     name: member?.name ?? '',
     email: member?.email ?? '',
@@ -52,7 +57,7 @@ export default function MemberFormModal({
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <DialogContent
         showCloseButton
-        className="max-w-lg rounded-2xl p-5 sm:p-10 [&_label]:text-sm [&_input]:text-sm [&_button]:text-xs"
+        className="max-w-lg rounded-2xl p-5 sm:p-10 [&_button]:text-xs [&_input]:text-sm [&_label]:text-sm"
       >
         <DialogHeader>
           <DialogTitle className="text-[22px]">
@@ -65,7 +70,7 @@ export default function MemberFormModal({
             label={t('fields.name')}
             value={form.name}
             onChange={(event) => setForm({ ...form, name: event.target.value })}
-              className="h-[52px] rounded-full text-sm"
+            className="h-[52px] rounded-full text-sm"
             required
           />
           <InputField
@@ -73,7 +78,9 @@ export default function MemberFormModal({
             label={t('fields.email')}
             type="email"
             value={form.email}
-            onChange={(event) => setForm({ ...form, email: event.target.value })}
+            onChange={(event) =>
+              setForm({ ...form, email: event.target.value })
+            }
             disabled={Boolean(member)}
             className="h-[52px] rounded-full bg-muted text-sm disabled:opacity-100"
             required

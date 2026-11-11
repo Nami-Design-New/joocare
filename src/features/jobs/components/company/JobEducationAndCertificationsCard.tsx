@@ -1,11 +1,15 @@
-import Image from "next/image";
-import JobOverviewItem from "../JobOverviewItem";
-import { JobDetails } from "../../types/jobs.types";
+import Image from 'next/image';
+import JobOverviewItem from '../JobOverviewItem';
+import { JobDetails } from '../../types/jobs.types';
 
-export default function JobEducationAndCertificationsCard({ job }: { job: JobDetails }) {
+export default function JobEducationAndCertificationsCard({
+  job,
+}: {
+  job: JobDetails;
+}) {
   return (
-    <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white py-8 px-6">
-      <h2 className="text-foreground mb-4 text-lg font-semibold">
+    <div className="card min-h-36 rounded-2xl border-2 border-border bg-white px-6 py-8 shadow-card">
+      <h2 className="mb-4 text-lg font-semibold text-foreground">
         Education & Certifications section
       </h2>
       <div className="flex flex-col gap-6">
@@ -23,7 +27,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
                 height={20}
                 alt="icon"
               />
-              <p className="text-muted-foreground text-sm md:text-base">
+              <p className="text-sm text-muted-foreground md:text-base">
                 Mandatory Certifications
               </p>
             </div>
@@ -31,7 +35,7 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
               <ul className="mt-2 flex flex-col gap-2">
                 {job.mandatory_certifications?.map((item) => (
                   <li className="edu-certificate" key={item?.id}>
-                    {item.title ?? item.mandatory_certification?.title ?? "-"}
+                    {item.title ?? item.mandatory_certification?.title ?? '-'}
                   </li>
                 ))}
                 {job.mandatory_certifications?.length === 0 && (
@@ -43,10 +47,10 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
         </div>
         <JobOverviewItem
           label="Availability"
-          value={job.availability?.title ?? job.availability_title ?? "-"}
+          value={job.availability?.title ?? job.availability_title ?? '-'}
           icon="/assets/icons/case.svg"
         />
-      </div>{" "}
+      </div>{' '}
     </div>
   );
 }

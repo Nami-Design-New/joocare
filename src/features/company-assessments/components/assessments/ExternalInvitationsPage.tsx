@@ -43,15 +43,15 @@ export default function ExternalInvitationsPage({
     <div className="mx-auto flex w-full flex-col gap-6 sm:gap-11 lg:pt-5">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-assessment-dark text-2xl leading-[normal] sm:text-[28px] font-bold">
+          <h1 className="text-2xl leading-[normal] font-bold text-assessment-dark sm:text-[28px]">
             {t('title')}
           </h1>
-          <p className="text-muted-foreground text-base leading-[normal]">
+          <p className="text-base leading-[normal] text-muted-foreground">
             {t('subtitle', { assessment: assessment.title })}
           </p>
         </div>
         <Button
-          className="bg-assessment-primary h-10 rounded-[20px] px-4 text-base font-semibold"
+          className="h-10 rounded-[20px] bg-assessment-primary px-4 text-base font-semibold"
           disabled={Boolean(assessment.pausedAt)}
           onClick={() => listing.setAssignOpen(true)}
         >
@@ -72,7 +72,7 @@ export default function ExternalInvitationsPage({
           onMaxScore={listing.setMaxScore}
         />
         <AssessmentCandidateSummary summary={listing.summary} />
-        <section className="bg-card rounded-xl p-3" aria-label={t('title')}>
+        <section className="rounded-xl bg-card p-3" aria-label={t('title')}>
           <ExternalInvitationsTable
             rows={listing.rows}
             page={listing.page}

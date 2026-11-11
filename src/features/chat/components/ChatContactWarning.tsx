@@ -19,14 +19,14 @@ export default function ChatContactWarning({
   return (
     <div
       role="status"
-      className="bg-chat-warning-bg border-chat-warning-border flex items-start gap-3 rounded-2xl border p-4"
+      className="flex items-start gap-3 rounded-2xl border border-chat-warning-border bg-chat-warning-bg p-4"
     >
       <ChatIcon name="warning" width={22} />
       <div className="min-w-0 flex-1">
-        <p className="text-chat-warning text-sm leading-5 font-semibold">
+        <p className="text-sm leading-5 font-semibold text-chat-warning">
           {t('already-contacted-title')}
         </p>
-        <p className="text-chat-warning mt-1 text-xs leading-4.5">
+        <p className="mt-1 text-xs leading-4.5 text-chat-warning">
           {t('already-contacted-description', {
             name,
             recruiter,

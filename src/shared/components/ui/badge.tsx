@@ -1,40 +1,40 @@
-import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { Slot } from "@radix-ui/react-slot";
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { Slot } from '@radix-ui/react-slot';
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from '@/shared/lib/utils';
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center  border border-transparent font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
+  'inline-flex w-fit shrink-0 items-center justify-center overflow-hidden border border-transparent font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none',
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-        open: "bg-accent text-primary [a&]:hover:bg-primary/90",
-        closed: "bg-[#0A346314] text-secondary [a&]:hover:bg-secondary/90",
-        paused: "bg-[#DC262614] text-destructive [a&]:hover:bg-destructive/90",
-        draft: "bg-[#D1D0D0] text-muted-foreground [a&]:hover:bg-primary/90",
+        default: 'bg-primary text-primary-foreground [a&]:hover:bg-primary/90',
+        open: 'bg-accent text-primary [a&]:hover:bg-primary/90',
+        closed: 'bg-[#0A346314] text-secondary [a&]:hover:bg-secondary/90',
+        paused: 'bg-[#DC262614] text-destructive [a&]:hover:bg-destructive/90',
+        draft: 'bg-[#D1D0D0] text-muted-foreground [a&]:hover:bg-primary/90',
         secondary:
-          "bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
+          'bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90',
         destructive:
-          "bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          'bg-destructive text-white focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40 [a&]:hover:bg-destructive/90',
         outline:
-          "border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-        ghost: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 [a&]:hover:underline",
+          'border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
+        ghost: '[a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
+        link: 'text-primary underline-offset-4 [a&]:hover:underline',
       },
 
       size: {
-        sm: "px-2 py-0.5 text-xs gap-1 [&>svg]:size-3",
-        md: "px-3 py-1 text-sm gap-1.5 [&>svg]:size-4",
-        lg: "px-4 py-1.5 text-base gap-2 [&>svg]:size-5",
-        pill: "px-4 py-1.5 text-base rounded-full  gap-2 [&>svg]:size-5",
+        sm: 'gap-1 px-2 py-0.5 text-xs [&>svg]:size-3',
+        md: 'gap-1.5 px-3 py-1 text-sm [&>svg]:size-4',
+        lg: 'gap-2 px-4 py-1.5 text-base [&>svg]:size-5',
+        pill: 'gap-2 rounded-full px-4 py-1.5 text-base [&>svg]:size-5',
       },
     },
 
     defaultVariants: {
-      variant: "default",
-      size: "sm",
+      variant: 'default',
+      size: 'sm',
     },
   },
 );
@@ -45,9 +45,9 @@ function Badge({
   size,
   asChild = false,
   ...props
-}: React.ComponentProps<"span"> &
+}: React.ComponentProps<'span'> &
   VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "span";
+  const Comp = asChild ? Slot : 'span';
 
   return (
     <Comp

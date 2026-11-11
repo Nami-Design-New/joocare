@@ -81,7 +81,7 @@ export default function AssignAssessmentModal({
       <DialogContent
         ref={setModalContent}
         showCloseButton={false}
-        className="bg-card w-[calc(100%-2rem)] max-w-195 gap-6 rounded-3xl border-0 p-6 sm:min-w-0"
+        className="w-[calc(100%-2rem)] max-w-195 gap-6 rounded-3xl border-0 bg-card p-6 sm:min-w-0"
       >
         <CandidateModalHeader
           title={t('assign-title')}
@@ -127,7 +127,9 @@ export default function AssignAssessmentModal({
                 id="assign-assessment-assessment"
                 label={t('assessment')}
                 placeholder={t(
-                  categoryId ? 'assessment-placeholder' : 'choose-category-first',
+                  categoryId
+                    ? 'assessment-placeholder'
+                    : 'choose-category-first',
                 )}
                 options={assessmentOptions}
                 portalContainer={modalContent}
@@ -138,7 +140,7 @@ export default function AssignAssessmentModal({
               />
             )}
           />
-          <aside className="border-assessment-link-info-border bg-assessment-link-info text-assessment-link-info-text flex items-start gap-3 rounded-xl border p-4 text-xs leading-relaxed">
+          <aside className="flex items-start gap-3 rounded-xl border border-assessment-link-info-border bg-assessment-link-info p-4 text-xs leading-relaxed text-assessment-link-info-text">
             <Info aria-hidden className="mt-0.5 size-4.5 shrink-0" />
             <div>
               <h4 className="mb-1 font-semibold">{t('how-it-works')}</h4>

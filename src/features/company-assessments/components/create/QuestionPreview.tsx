@@ -16,10 +16,10 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3 text-sm">
-        <div className="border-border rounded-full border px-4 py-3">
+        <div className="rounded-full border border-border px-4 py-3">
           {t(question.type)}
         </div>
-        <div className="border-border flex justify-between rounded-full border px-4 py-3">
+        <div className="flex justify-between rounded-full border border-border px-4 py-3">
           <span>{question.score}</span>
           <span>%</span>
         </div>
@@ -34,7 +34,7 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
           className="aspect-video max-h-64 w-full rounded-xl object-contain"
         />
       )}
-      <p className="border-border rounded-3xl border px-4 py-3 text-sm">
+      <p className="rounded-3xl border border-border px-4 py-3 text-sm">
         {question.questionText}
       </p>
       {question.type === 'yes-no' ? (
@@ -58,7 +58,7 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
         </div>
       ) : (
         <div className="space-y-3">
-          <p className="text-muted-foreground text-sm">{t('answer-options')}</p>
+          <p className="text-sm text-muted-foreground">{t('answer-options')}</p>
           {question.options.map((option, index) => (
             <div key={option.id} className="flex items-center gap-3 text-sm">
               <span className="text-muted-foreground">
@@ -66,7 +66,7 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
               </span>
               <span
                 className={cn(
-                  'border-border flex-1 rounded-full border px-4 py-2',
+                  'flex-1 rounded-full border border-border px-4 py-2',
                   question.correctAnswers.includes(option.id) &&
                     'bg-primary-bg text-primary',
                 )}
@@ -75,9 +75,9 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
               </span>
             </div>
           ))}
-          <div className="border-border border-t pt-4">
+          <div className="border-t border-border pt-4">
             <p className="mb-2 text-sm font-semibold">{t('correct-answer')}</p>
-            <p className="border-border rounded-full border px-4 py-3 text-sm">
+            <p className="rounded-full border border-border px-4 py-3 text-sm">
               {question.options
                 .flatMap((option, index) =>
                   question.correctAnswers.includes(option.id)

@@ -108,7 +108,9 @@ export default function EducationFormModal({
           className="flex flex-col gap-5"
         >
           <DialogHeader>
-            <DialogTitle className="text-2xl text-black sm:text-[28px]">{title}</DialogTitle>
+            <DialogTitle className="text-2xl text-black sm:text-[28px]">
+              {title}
+            </DialogTitle>
           </DialogHeader>
 
           <InputField

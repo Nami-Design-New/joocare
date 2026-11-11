@@ -78,7 +78,7 @@ export default function ReviewCandidatesStep({
             onChange={onStatusChange}
             placeholder={t('status')}
             allowDeselect
-            className="border-border bg-card h-13"
+            className="h-13 border-border bg-card"
           />
         }
       />
@@ -100,7 +100,7 @@ export default function ReviewCandidatesStep({
         <EmptyDataState
           title={t('empty-title')}
           description={t('empty-description')}
-          className="bg-card min-h-90 rounded-xl"
+          className="min-h-90 rounded-xl bg-card"
         />
       )}
 

@@ -13,7 +13,10 @@ export function useAssessmentOptions(source?: string, categoryId?: string) {
     .filter((category) => category.source === source)
     .map((category) => ({ value: category.id, label: category.name }));
   const assessmentOptions = assessmentSeeds
-    .filter((assessment) => assessment.categoryId === categoryId && !assessment.pausedAt)
+    .filter(
+      (assessment) =>
+        assessment.categoryId === categoryId && !assessment.pausedAt,
+    )
     .map((assessment) => ({ value: assessment.id, label: assessment.title }));
 
   return { libraryOptions: LIBRARIES, categoryOptions, assessmentOptions };

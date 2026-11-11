@@ -23,21 +23,21 @@ export default function AssessmentIntro({
 
   return (
     <AssessmentCard className="flex flex-col gap-8">
-      <header className="border-border flex flex-col gap-2 border-b pb-4">
-        <h1 className="text-foreground text-2xl leading-9 font-bold sm:text-[28px]">
+      <header className="flex flex-col gap-2 border-b border-border pb-4">
+        <h1 className="text-2xl leading-9 font-bold text-foreground sm:text-[28px]">
           <bdi>{assessment.title}</bdi>
         </h1>
-        <p className="text-muted-foreground text-base">
+        <p className="text-base text-muted-foreground">
           {t('sent-by')}{' '}
-          <bdi className="text-assessment-primary font-medium">
+          <bdi className="font-medium text-assessment-primary">
             {assessment.sentBy}
           </bdi>
         </p>
       </header>
 
       <div className="flex flex-col gap-3">
-        <h2 className="text-foreground text-lg font-semibold">{t('scope')}</h2>
-        <p className="text-muted-foreground text-base leading-5">
+        <h2 className="text-lg font-semibold text-foreground">{t('scope')}</h2>
+        <p className="text-base leading-5 text-muted-foreground">
           <bdi>{assessment.scope}</bdi>
         </p>
       </div>
@@ -67,7 +67,7 @@ export default function AssessmentIntro({
           asChild
           variant="outline"
           size="pill"
-          className="border-assessment-primary text-assessment-primary hover:text-assessment-primary h-12.5 px-8"
+          className="h-12.5 border-assessment-primary px-8 text-assessment-primary hover:text-assessment-primary"
         >
           <Link href={CANDIDATE_ASSESSMENT_ROUTES.appliedJobs}>
             {t('later')}
@@ -77,7 +77,7 @@ export default function AssessmentIntro({
           type="button"
           size="pill"
           onClick={onStart}
-          className="bg-assessment-primary hover:bg-assessment-primary/90 gap-3"
+          className="gap-3 bg-assessment-primary hover:bg-assessment-primary/90"
         >
           {t('start')}
           <ChevronRight aria-hidden className="size-5 rtl:rotate-180" />

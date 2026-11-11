@@ -50,8 +50,8 @@ export default function AiJobMatchEmptyState({
           alt=""
           className="size-28"
         />
-        <h3 className="text-secondary text-xl font-semibold">{t('heading')}</h3>
-        <p className="text-muted-foreground leading-relaxed">
+        <h3 className="text-xl font-semibold text-secondary">{t('heading')}</h3>
+        <p className="leading-relaxed text-muted-foreground">
           {t('description')}
         </p>
         <Button size="pill" className="mt-4 h-12" onClick={onSetPreferences}>
@@ -64,16 +64,16 @@ export default function AiJobMatchEmptyState({
         {BENEFITS.map(({ key, icon: Icon }) => (
           <li
             key={key}
-            className="border-border flex gap-3 xl:border-e xl:px-4 xl:first:ps-0 xl:last:border-e-0 xl:last:pe-0"
+            className="flex gap-3 border-border xl:border-e xl:px-4 xl:first:ps-0 xl:last:border-e-0 xl:last:pe-0"
           >
-            <span className="bg-primary/10 text-primary flex size-12 shrink-0 items-center justify-center rounded-full">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Icon aria-hidden className="size-5" />
             </span>
             <div>
-              <h4 className="text-secondary font-semibold">
+              <h4 className="font-semibold text-secondary">
                 {t(`benefits.${key}.title`)}
               </h4>
-              <p className="text-muted-foreground mt-1 text-sm">
+              <p className="mt-1 text-sm text-muted-foreground">
                 {t(`benefits.${key}.description`)}
               </p>
             </div>

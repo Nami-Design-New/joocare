@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
-import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/shared/components/ui/button";
+import { useEffect, useMemo, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { saveSkillsAction } from "../../actions/skills-actions";
-import type { SkillOption } from "../../services/skills-client-service";
-import type { CandidateSkillViewModel } from "../../types/profile.types";
-import { MultiSelectInputSkills } from "./MultiSelectInputSkills";
-import useGetUserSkills from "../../hooks/useGetUserSkills";
-import useGetUserSkillsSuggestions from "../../hooks/useGetUserSkillsSuggestions";
+} from '@/shared/components/ui/dialog';
+import { saveSkillsAction } from '../../actions/skills-actions';
+import type { SkillOption } from '../../services/skills-client-service';
+import type { CandidateSkillViewModel } from '../../types/profile.types';
+import { MultiSelectInputSkills } from './MultiSelectInputSkills';
+import useGetUserSkills from '../../hooks/useGetUserSkills';
+import useGetUserSkillsSuggestions from '../../hooks/useGetUserSkillsSuggestions';
 
 interface AddSkillsModalProps {
   open: boolean;
@@ -37,11 +37,13 @@ export function AddSkillsModal({
   const locale = useLocale();
   const t = useTranslations();
   const { data: session } = useSession();
-  const token = session?.accessToken ?? "";
+  const token = session?.accessToken ?? '';
   const queryClient = useQueryClient();
   const [selected, setSelected] = useState<string[]>([]);
-  const [selectedSkillsCache, setSelectedSkillsCache] = useState<Map<string, SkillOption>>(new Map());
-  const [skillsSearch, setSkillsSearch] = useState("");
+  const [selectedSkillsCache, setSelectedSkillsCache] = useState<
+    Map<string, SkillOption>
+  >(new Map());
+  const [skillsSearch, setSkillsSearch] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
   const {
@@ -56,14 +58,23 @@ export function AddSkillsModal({
     useGetUserSkillsSuggestions({ token });
 
   const skillOptions: SkillOption[] = useMemo(
-    () => rawSkills.map((s) => ({ id: String(s.id), label: s.title, deleteId: String(s.id) })),
+    () =>
+      rawSkills.map((s) => ({
+        id: String(s.id),
+        label: s.title,
+        deleteId: String(s.id),
+      })),
     [rawSkills],
   );
 
   const suggestionSkills: SkillOption[] = useMemo(
     () =>
       Array.isArray(rawSuggestions)
-        ? rawSuggestions.map((s) => ({ id: String(s.id), label: s.title, deleteId: String(s.id) }))
+        ? rawSuggestions.map((s) => ({
+            id: String(s.id),
+            label: s.title,
+            deleteId: String(s.id),
+          }))
         : [],
     [rawSuggestions],
   );
@@ -80,11 +91,11 @@ export function AddSkillsModal({
   useEffect(() => {
     if (open) {
       queryClient.removeQueries({
-        queryKey: ["user-skills", locale, jobTitleId],
+        queryKey: ['user-skills', locale, jobTitleId],
         exact: false,
       });
       setSelected([]);
-      setSkillsSearch("");
+      setSkillsSearch('');
       setSelectedSkillsCache(new Map());
     }
   }, [open, jobTitleId, locale, queryClient]);
@@ -128,14 +139,16 @@ export function AddSkillsModal({
 
       const result = await saveSkillsAction({ skillIds: newSkillIds, locale });
       queryClient.invalidateQueries({
-        queryKey: ["user-skills-suggestions"]
-      })
+        queryKey: ['user-skills-suggestions'],
+      });
       toast.success(result.message);
       onSave([...skills, ...newSkills]);
       handleClose(false);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : t("candidatePage.toasts.skills-add-failed");
+        error instanceof Error
+          ? error.message
+          : t('candidatePage.toasts.skills-add-failed');
       toast.error(message);
     } finally {
       setIsSaving(false);
@@ -145,7 +158,7 @@ export function AddSkillsModal({
   const handleClose = (value: boolean) => {
     if (!value) {
       setSelected([]);
-      setSkillsSearch("");
+      setSkillsSearch('');
       setSelectedSkillsCache(new Map());
     }
     onOpenChange(value);
@@ -156,12 +169,14 @@ export function AddSkillsModal({
       <DialogContent className="max-w-150 gap-4 rounded-2xl">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-black md:text-2xl">
-            {t("candidatePage.profile.add-skills")}
+            {t('candidatePage.profile.add-skills')}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-1.5">
-          <label className="font-semibold">{t("candidatePage.profile.skill-label")}</label>
+          <label className="font-semibold">
+            {t('candidatePage.profile.skill-label')}
+          </label>
           <MultiSelectInputSkills
             selected={selected}
             onSelect={toggle}
@@ -179,7 +194,9 @@ export function AddSkillsModal({
         </div>
 
         <div className="space-y-2">
-          <p className="text-xs md:text-sm">{t("candidatePage.profile.suggested-skills-title")}</p>
+          <p className="text-xs md:text-sm">
+            {t('candidatePage.profile.suggested-skills-title')}
+          </p>
           <div className="flex flex-wrap gap-2 rounded-xl bg-[#09760A05] p-3">
             {suggestionSkills.map((skill) => {
               const isSelected = selected.includes(skill.id);
@@ -188,18 +205,19 @@ export function AddSkillsModal({
                   key={skill.id}
                   type="button"
                   onClick={() => toggle(skill.id)}
-                  className={`border-border rounded-full border px-4 py-2 text-xs transition-all md:text-sm ${isSelected
-                    ? "border-primary bg-primary text-white"
-                    : "border-muted hover:border-primary hover:text-primary bg-white text-black"
-                    }`}
+                  className={`rounded-full border border-border px-4 py-2 text-xs transition-all md:text-sm ${
+                    isSelected
+                      ? 'border-primary bg-primary text-white'
+                      : 'border-muted bg-white text-black hover:border-primary hover:text-primary'
+                  }`}
                 >
                   {skill.label}
                 </button>
               );
             })}
             {suggestionSkills.length === 0 && (
-              <p className="text-muted-foreground text-xs md:text-sm">
-                {t("candidatePage.profile.no-suggested-skills")}
+              <p className="text-xs text-muted-foreground md:text-sm">
+                {t('candidatePage.profile.no-suggested-skills')}
               </p>
             )}
           </div>
@@ -211,7 +229,9 @@ export function AddSkillsModal({
             disabled={selected.length === 0 || isSuggestionLoading || isSaving}
             className="rounded-full px-6 text-xs sm:px-10 md:text-sm"
           >
-            {isSaving ? t("candidatePage.common.saving") : t("candidatePage.common.add")}
+            {isSaving
+              ? t('candidatePage.common.saving')
+              : t('candidatePage.common.add')}
           </Button>
         </div>
       </DialogContent>

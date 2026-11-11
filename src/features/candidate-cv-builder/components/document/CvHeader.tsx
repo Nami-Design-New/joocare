@@ -36,20 +36,20 @@ export default function CvHeader({
           />
         )}
         <div className="flex min-w-0 flex-col gap-1.5">
-          <h2 className="text-foreground text-[32px] leading-tight font-bold sm:text-[38px]">
+          <h2 className="text-[32px] leading-tight font-bold text-foreground sm:text-[38px]">
             {name}
           </h2>
-          <p className="text-primary text-xl font-medium sm:text-[22px]">
+          <p className="text-xl font-medium text-primary sm:text-[22px]">
             {jobTitle}
           </p>
         </div>
       </div>
 
-      <ul className="border-border flex shrink-0 flex-col gap-3 sm:border-s sm:ps-5">
+      <ul className="flex shrink-0 flex-col gap-3 border-border sm:border-s sm:ps-5">
         {contactItems.map(({ icon: Icon, value, isLtr }) => (
           <li
             key={value}
-            className="text-secondary flex items-center gap-3 text-[15px] leading-5"
+            className="flex items-center gap-3 text-[15px] leading-5 text-secondary"
           >
             <Icon
               aria-hidden="true"

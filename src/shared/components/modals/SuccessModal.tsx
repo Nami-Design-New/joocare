@@ -126,7 +126,10 @@ export default function SuccessModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={!isSubmittedVariant}
-        className={cn('max-w-150 rounded-2xl p-5 text-center sm:p-8', className)}
+        className={cn(
+          'max-w-150 rounded-2xl p-5 text-center sm:p-8',
+          className,
+        )}
       >
         <div
           className={cn(
@@ -134,7 +137,13 @@ export default function SuccessModal({
             visualWrapperClassName,
           )}
         >
-          <div className={cn('h-50 w-50', !visualClassName && 'max-sm:size-36', visualClassName)}>
+          <div
+            className={cn(
+              'h-50 w-50',
+              !visualClassName && 'max-sm:size-36',
+              visualClassName,
+            )}
+          >
             {visual ?? (
               <Lottie
                 lottieRef={lottieRef}
@@ -148,19 +157,19 @@ export default function SuccessModal({
           </div>
         </div>
         <DialogHeader>
-          <DialogTitle className="text-foreground text-center text-2xl md:text-3xl font-bold">
+          <DialogTitle className="text-center text-2xl font-bold text-foreground md:text-3xl">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-foreground text-center text-base leading-tight mt-2 sm:text-lg">
+          <DialogDescription className="mt-2 text-center text-base leading-tight text-foreground sm:text-lg">
             {description}
           </DialogDescription>
         </DialogHeader>{' '}
         {callout ? (
-          <div className="bg-primary/10 mt-6 rounded-2xl p-4 text-start">
-            <h3 className="text-foreground text-sm font-semibold">
+          <div className="mt-6 rounded-2xl bg-primary/10 p-4 text-start">
+            <h3 className="text-sm font-semibold text-foreground">
               {callout.title}
             </h3>
-            <p className="text-muted-foreground mt-1 text-sm leading-6">
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">
               {callout.description}
             </p>
           </div>

@@ -1,54 +1,54 @@
-"use client";
+'use client';
 
-import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/shared/components/ui/button";
+import { useQueryClient } from '@tanstack/react-query';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { useEffect, useState } from "react";
+} from '@/shared/components/ui/dialog';
+import { useEffect, useState } from 'react';
 
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/shared/components/ui/input-otp";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+} from '@/shared/components/ui/input-otp';
+import { REGEXP_ONLY_DIGITS } from 'input-otp';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import {
   createPasswordOtpSchema,
   TPasswordOtpSchema,
-} from "../../validation/password-otp-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "@/i18n/navigation";
-import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
-import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
-import { useLocale, useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
-import { verifyUpdatedEmail } from "@/features/accout-settings/lib/update-email-verification";
+} from '../../validation/password-otp-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { requestNotificationPermission } from '@/shared/hooks/requestNotificationPermission';
+import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
+import { useLocale, useTranslations } from 'next-intl';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
+import { verifyUpdatedEmail } from '@/features/accout-settings/lib/update-email-verification';
 import {
   PasswordResetRole,
   requestPasswordReset,
   verifyPasswordResetOtp,
-} from "../../lib/password-reset";
-import { setPasswordResetContext } from "../../lib/password-reset-context";
+} from '../../lib/password-reset';
+import { setPasswordResetContext } from '../../lib/password-reset-context';
 import {
   confirmEmailVerification,
   requestEmailVerification,
-} from "../../lib/email-verification";
-import { signIn } from "next-auth/react";
+} from '../../lib/email-verification';
+import { signIn } from 'next-auth/react';
 
 interface OTPModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   email?: string;
   role?: PasswordResetRole;
-  purpose?: "password-reset" | "email-confirm" | "update-email" | "generic";
+  purpose?: 'password-reset' | 'email-confirm' | 'update-email' | 'generic';
   successRedirectPath?: string;
   onSuccess?: () => void | Promise<void>;
 }
@@ -58,7 +58,7 @@ export function OTPModal({
   onOpenChange,
   email,
   role,
-  purpose = "generic",
+  purpose = 'generic',
   successRedirectPath,
   onSuccess,
 }: OTPModalProps) {
@@ -69,11 +69,11 @@ export function OTPModal({
   const path = usePathname();
   const locale = useLocale();
   const { data: session } = useSession();
-  const token = session?.accessToken ?? "";
-  const forgetPasswordPage = path.includes("forget-password");
-  const registerCandidatePage = path.includes("auth/candidate/register")
-  const registerEmployerPage = path.includes("auth/employer/register");
-  const basicInfo = path.includes("basic-info");
+  const token = session?.accessToken ?? '';
+  const forgetPasswordPage = path.includes('forget-password');
+  const registerCandidatePage = path.includes('auth/candidate/register');
+  const registerEmployerPage = path.includes('auth/employer/register');
+  const basicInfo = path.includes('basic-info');
 
   const handleGenericSuccess = async () => {
     if (onSuccess) {
@@ -87,15 +87,15 @@ export function OTPModal({
     }
 
     if (forgetPasswordPage) {
-      router.push("/auth/new-password");
+      router.push('/auth/new-password');
     } else if (basicInfo) {
       onOpenChange(false);
     } else if (registerEmployerPage) {
-      router.push('/company/company-profile')
+      router.push('/company/company-profile');
     } else if (registerCandidatePage) {
-      router.push('/')
+      router.push('/');
     } else {
-      router.push("/");
+      router.push('/');
     }
   };
 
@@ -107,15 +107,15 @@ export function OTPModal({
   } = useForm<TPasswordOtpSchema>({
     resolver: zodResolver(
       createPasswordOtpSchema({
-        codeRequired: t("authPage.validation.code-required"),
-        codeLength: t("authPage.validation.code-length"),
+        codeRequired: t('authPage.validation.code-required'),
+        codeLength: t('authPage.validation.code-length'),
       }),
     ),
   });
 
   const onSubmit: SubmitHandler<TPasswordOtpSchema> = async (data) => {
     try {
-      if (purpose === "password-reset" && email && role) {
+      if (purpose === 'password-reset' && email && role) {
         const message = await verifyPasswordResetOtp({
           role,
           email,
@@ -131,11 +131,11 @@ export function OTPModal({
           otp: data.otp,
           role,
         });
-        router.push("/auth/new-password");
+        router.push('/auth/new-password');
         return;
       }
 
-      if (purpose === "email-confirm" && email && role) {
+      if (purpose === 'email-confirm' && email && role) {
         const { data: otpData } = await confirmEmailVerification({
           role,
           email,
@@ -143,12 +143,12 @@ export function OTPModal({
           locale,
         });
 
-        const accessToken = otpData?.data?.token
+        const accessToken = otpData?.data?.token;
         const user = otpData?.data?.company || otpData?.data?.user;
 
         const providerByRole: Record<string, string> = {
-          candidate: "candidate-credentials",
-          employer: "employer-credentials",
+          candidate: 'candidate-credentials',
+          employer: 'employer-credentials',
         };
 
         // login after register
@@ -168,7 +168,7 @@ export function OTPModal({
         return;
       }
 
-      if (purpose === "update-email" && email) {
+      if (purpose === 'update-email' && email) {
         const { message } = await verifyUpdatedEmail({
           email,
           otp: data.otp,
@@ -176,7 +176,7 @@ export function OTPModal({
         });
 
         toast.success(message);
-        await queryClient.invalidateQueries({ queryKey: ["company-profile"] });
+        await queryClient.invalidateQueries({ queryKey: ['company-profile'] });
         reset();
         onOpenChange(false);
         await handleGenericSuccess();
@@ -189,7 +189,7 @@ export function OTPModal({
       toast.error(
         error instanceof Error
           ? error.message
-          : t("authPage.toasts.invalid-verification-code"),
+          : t('authPage.toasts.invalid-verification-code'),
       );
     }
   };
@@ -208,7 +208,7 @@ export function OTPModal({
 
   const handleResend = async () => {
     try {
-      if (purpose === "password-reset" && email && role) {
+      if (purpose === 'password-reset' && email && role) {
         const message = await requestPasswordReset({
           role,
           email,
@@ -218,7 +218,7 @@ export function OTPModal({
         toast.success(message);
       }
 
-      if (purpose === "email-confirm" && email && role) {
+      if (purpose === 'email-confirm' && email && role) {
         const message = await requestEmailVerification({
           role,
           email,
@@ -228,24 +228,24 @@ export function OTPModal({
         toast.success(message);
       }
 
-      if (purpose === "update-email" && email && token) {
+      if (purpose === 'update-email' && email && token) {
         const { ok, message } = await apiFetch(
           `${getCompanyApiUrl()}/auth/update-email`,
           {
-            method: "POST",
+            method: 'POST',
             token,
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email }),
           },
         );
 
         if (!ok) {
-          throw new Error(message || t("authPage.toasts.failed-resend-code"));
+          throw new Error(message || t('authPage.toasts.failed-resend-code'));
         }
 
-        toast.success(message || t("authPage.toasts.verification-code-sent"));
+        toast.success(message || t('authPage.toasts.verification-code-sent'));
       }
 
       setCountdown(60);
@@ -253,7 +253,7 @@ export function OTPModal({
       toast.error(
         error instanceof Error
           ? error.message
-          : t("authPage.toasts.failed-resend-code"),
+          : t('authPage.toasts.failed-resend-code'),
       );
     }
   };
@@ -262,13 +262,13 @@ export function OTPModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-full p-6 pt-14 sm:max-w-md">
         <DialogHeader className="flex items-center">
-          <DialogTitle className="text-secondary text-[28px] font-semibold">
-            {t("authPage.otp-modal.title")}
+          <DialogTitle className="text-[28px] font-semibold text-secondary">
+            {t('authPage.otp-modal.title')}
           </DialogTitle>
           <DialogDescription className="text-center md:px-4">
-            {t("authPage.otp-modal.description-before")}{" "}
-            <span className="text-secondary font-bold">{email}</span>
-            {t("authPage.otp-modal.description-after")}
+            {t('authPage.otp-modal.description-before')}{' '}
+            <span className="font-bold text-secondary">{email}</span>
+            {t('authPage.otp-modal.description-after')}
           </DialogDescription>
         </DialogHeader>
 
@@ -283,7 +283,7 @@ export function OTPModal({
               <InputOTP
                 maxLength={5}
                 pattern={REGEXP_ONLY_DIGITS}
-                value={field.value ?? ""}
+                value={field.value ?? ''}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
               >
@@ -292,7 +292,7 @@ export function OTPModal({
                     <InputOTPSlot
                       key={index}
                       index={index}
-                      className="text-secondary bg-input focus:ring-primary h-[clamp(3rem,16vw,6.5rem)] w-[clamp(2.5rem,14vw,5.25rem)] rounded-md border border-gray-300 text-[clamp(1rem,4vw,3rem)] font-bold transition-all focus:ring-2 focus:outline-none"
+                      className="h-[clamp(3rem,16vw,6.5rem)] w-[clamp(2.5rem,14vw,5.25rem)] rounded-md border border-gray-300 bg-input text-[clamp(1rem,4vw,3rem)] font-bold text-secondary transition-all focus:ring-2 focus:ring-primary focus:outline-none"
                     />
                   ))}
                 </InputOTPGroup>
@@ -311,21 +311,23 @@ export function OTPModal({
               type="button"
               disabled={countdown > 0}
               onClick={handleResend}
-              className="text-secondary cursor-pointer disabled:opacity-50"
+              className="cursor-pointer text-secondary disabled:opacity-50"
             >
-              {t("authPage.otp-modal.resend-code")}
+              {t('authPage.otp-modal.resend-code')}
             </button>
-            <span>{`00:${countdown.toString().padStart(2, "0")}`}</span>
+            <span>{`00:${countdown.toString().padStart(2, '0')}`}</span>
           </div>
 
           <Button
             type="submit"
-            variant={"secondary"}
-            size={"pill"}
+            variant={'secondary'}
+            size={'pill'}
             className="mt-4 w-full"
             disabled={isSubmitting}
           >
-            {isSubmitting ? t("authPage.common.confirming") : t("authPage.common.confirm")}
+            {isSubmitting
+              ? t('authPage.common.confirming')
+              : t('authPage.common.confirm')}
           </Button>
         </form>
       </DialogContent>

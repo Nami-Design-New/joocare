@@ -1,8 +1,5 @@
 import type { CandidateAssessment } from '@/features/company-assessments/types/candidate-assessment.types';
-import type {
-  JOB_CANDIDATES_TABS,
-  PIPELINE_FILTER_KEYS,
-} from '../constants';
+import type { JOB_CANDIDATES_TABS, PIPELINE_FILTER_KEYS } from '../constants';
 
 export type JobCandidatesTab = (typeof JOB_CANDIDATES_TABS)[number];
 

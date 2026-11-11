@@ -13,7 +13,7 @@ export default function AssessmentPausedNotice({
   const t = useTranslations('companyPage.assessments.details');
 
   return (
-    <div className="border-warning/30 bg-warning-bg text-warning-foreground flex gap-3 rounded-xl border px-4 py-3 text-xs leading-5">
+    <div className="flex gap-3 rounded-xl border border-warning/30 bg-warning-bg px-4 py-3 text-xs leading-5 text-warning-foreground">
       <AlertTriangle aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
       <div>
         <p className="font-semibold">{t('paused-title', { date })}</p>

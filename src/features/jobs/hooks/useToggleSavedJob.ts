@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import type { InfiniteData, QueryKey } from "@tanstack/react-query";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { useLocale } from "next-intl";
-import { useState } from "react";
-import { toast } from "sonner";
+import type { InfiniteData, QueryKey } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useLocale } from 'next-intl';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
-import { CompanyJobsResponse } from "@/features/shared-company-profile/company-profile.type";
-import { toggleSavedJobService } from "../services/job-save-service";
+import { CompanyJobsResponse } from '@/features/shared-company-profile/company-profile.type';
+import { toggleSavedJobService } from '../services/job-save-service';
 
 type JobsInfiniteData = InfiniteData<CompanyJobsResponse>;
 
@@ -52,8 +52,8 @@ export function useToggleSavedJob(
 
   const mutation = useMutation({
     mutationFn: async (nextSavedState: boolean) => {
-      if (!session?.accessToken || session.authRole !== "candidate") {
-        throw new Error("Please log in as a candidate to save jobs.");
+      if (!session?.accessToken || session.authRole !== 'candidate') {
+        throw new Error('Please log in as a candidate to save jobs.');
       }
 
       await toggleSavedJobService({
@@ -69,7 +69,7 @@ export function useToggleSavedJob(
       onSavedChange?.(nextSavedState);
 
       const snapshots = queryClient.getQueriesData<JobsInfiniteData>({
-        queryKey: ["shared-company-profile-jobs"],
+        queryKey: ['shared-company-profile-jobs'],
       });
 
       snapshots.forEach(([queryKey]) => {
@@ -94,7 +94,7 @@ export function useToggleSavedJob(
         queryClient.setQueryData(queryKey as QueryKey, data);
       });
 
-      toast.error(error.message || "Failed to update saved job.");
+      toast.error(error.message || 'Failed to update saved job.');
     },
   });
 
@@ -103,8 +103,8 @@ export function useToggleSavedJob(
       return;
     }
 
-    if (status === "loading") {
-      toast.error("Please wait a moment and try again.");
+    if (status === 'loading') {
+      toast.error('Please wait a moment and try again.');
       return;
     }
 
@@ -113,8 +113,8 @@ export function useToggleSavedJob(
       return;
     }
 
-    if (session.authRole !== "candidate") {
-      toast.error("Only candidate accounts can save jobs.");
+    if (session.authRole !== 'candidate') {
+      toast.error('Only candidate accounts can save jobs.');
       return;
     }
 

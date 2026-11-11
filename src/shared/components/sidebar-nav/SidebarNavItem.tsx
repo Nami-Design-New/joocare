@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Link } from "@/i18n/navigation";
-import { cn } from "@/shared/lib/utils";
-import { ChevronDown } from "lucide-react";
-import { useState } from "react";
-import type { SidebarNavItem as SidebarNavItemType } from "./types";
-import { isSidebarNavItemActive, isSidebarNavLinkActive } from "./utils";
+import { Link } from '@/i18n/navigation';
+import { cn } from '@/shared/lib/utils';
+import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import type { SidebarNavItem as SidebarNavItemType } from './types';
+import { isSidebarNavItemActive, isSidebarNavLinkActive } from './utils';
 
 type SidebarNavItemProps = {
   item: SidebarNavItemType;
@@ -24,19 +24,19 @@ export default function SidebarNavItem({
   const hasChildren = Boolean(item.children?.length);
   const isActive = isSidebarNavItemActive(item, pathname);
   const [isOpen, setIsOpen] = useState(isActive);
-  const submenuId = `sidebar-submenu-${item.label.replace(/[^a-z0-9]+/gi, "-")}`;
+  const submenuId = `sidebar-submenu-${item.label.replace(/[^a-z0-9]+/gi, '-')}`;
 
   const itemClassName = cn(
-    "group flex min-h-10 w-full items-center gap-3 rounded-xl px-3 py-2 text-start text-sm transition-colors",
+    'group flex min-h-10 w-full items-center gap-3 rounded-xl px-3 py-2 text-start text-sm transition-colors',
     isActive
-      ? "bg-primary-bg font-semibold text-primary"
-      : "text-muted-foreground hover:bg-primary-bg hover:text-primary",
+      ? 'bg-primary-bg font-semibold text-primary'
+      : 'text-muted-foreground hover:bg-primary-bg hover:text-primary',
   );
   const iconClassName = cn(
-    "flex size-6 shrink-0 items-center justify-center rounded-md transition-colors",
+    'flex size-6 shrink-0 items-center justify-center rounded-md transition-colors',
     isActive
-      ? "bg-primary text-primary-foreground"
-      : "bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground",
+      ? 'bg-primary text-primary-foreground'
+      : 'bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground',
   );
 
   const content = (
@@ -49,8 +49,8 @@ export default function SidebarNavItem({
         <ChevronDown
           aria-hidden="true"
           className={cn(
-            "size-4 shrink-0 transition-transform",
-            isOpen && "rotate-180",
+            'size-4 shrink-0 transition-transform',
+            isOpen && 'rotate-180',
           )}
         />
       ) : null}
@@ -73,7 +73,7 @@ export default function SidebarNavItem({
         <Link
           href={item.href}
           className={itemClassName}
-          aria-current={isActive ? "page" : undefined}
+          aria-current={isActive ? 'page' : undefined}
         >
           {content}
         </Link>
@@ -93,12 +93,12 @@ export default function SidebarNavItem({
                 <Link
                   href={child.href}
                   className={cn(
-                    "block rounded-md px-2 py-1.5 text-xs transition-colors hover:text-primary",
+                    'block rounded-md px-2 py-1.5 text-xs transition-colors hover:text-primary',
                     isChildActive
-                      ? "font-semibold text-primary"
-                      : "text-muted-foreground",
+                      ? 'font-semibold text-primary'
+                      : 'text-muted-foreground',
                   )}
-                  aria-current={isChildActive ? "page" : undefined}
+                  aria-current={isChildActive ? 'page' : undefined}
                 >
                   {childLabels[index]}
                 </Link>

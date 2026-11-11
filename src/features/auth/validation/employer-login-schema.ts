@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 type CreateLoginEmployerSchemaOptions = {
   fieldRequired?: string;
@@ -8,18 +8,16 @@ type CreateLoginEmployerSchemaOptions = {
 };
 
 export const createLoginEmployerSchema = ({
-  fieldRequired = "This field is required",
-  emailInvalid = "Not valid email",
-  passwordMin = "Password is required",
+  fieldRequired = 'This field is required',
+  emailInvalid = 'Not valid email',
+  passwordMin = 'Password is required',
 }: CreateLoginEmployerSchemaOptions = {}) =>
   z.object({
     email: z
       .string()
       .min(1, { message: fieldRequired })
       .email({ message: emailInvalid }),
-    password: z
-      .string()
-      .min(1, { message: passwordMin })
+    password: z.string().min(1, { message: passwordMin }),
   });
 
 export const loginEmployerSchema = createLoginEmployerSchema();

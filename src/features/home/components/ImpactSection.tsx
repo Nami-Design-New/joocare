@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Link } from "@/i18n/navigation";
-import { buttonVariants } from "@/shared/components/ui/button";
-import { cn } from "@/shared/lib/utils";
-import { useAppSelector } from "@/shared/providers/redux/hooks";
-import Image from "next/image";
-import SectionTitle from "./SectionTitle";
-import StatCard from "./StatCard";
-import { useTranslations } from "next-intl";
+import { Link } from '@/i18n/navigation';
+import { buttonVariants } from '@/shared/components/ui/button';
+import { cn } from '@/shared/lib/utils';
+import { useAppSelector } from '@/shared/providers/redux/hooks';
+import Image from 'next/image';
+import SectionTitle from './SectionTitle';
+import StatCard from './StatCard';
+import { useTranslations } from 'next-intl';
 
 export const ImpactSection = ({
   title,
@@ -22,19 +22,26 @@ export const ImpactSection = ({
   return (
     <section className="bg-background py-10 md:py-20">
       <div className="layout-shell">
-
-        <div className="layout-content grid gap-8 lg:gap-12 lg:grid-cols-2 px-1">
+        <div className="layout-content grid gap-8 px-1 lg:grid-cols-2 lg:gap-12">
           <div className="flex flex-col justify-center">
             <SectionTitle sectionTitle={t('home.proven-hiring-impact')} />
-            <h2 className="text-foreground mt-4 mb-8">{title}</h2>
-            <p className="text-muted-foreground mb-8 max-w-132 text-sm md:text-xl">{description}</p>
+            <h2 className="mt-4 mb-8 text-foreground">{title}</h2>
+            <p className="mb-8 max-w-132 text-sm text-muted-foreground md:text-xl">
+              {description}
+            </p>
             <Link
-
               // variant="default"
               // size="pill"
               // hoverStyle="slideSecondary"
-              className={cn(buttonVariants({ variant: "default", size: "pill", hoverStyle: "slideSecondary" }), "w-fit gap-2")}
-              href={"/auth/candidate/register"}
+              className={cn(
+                buttonVariants({
+                  variant: 'default',
+                  size: 'pill',
+                  hoverStyle: 'slideSecondary',
+                }),
+                'w-fit gap-2',
+              )}
+              href={'/auth/candidate/register'}
             >
               <Image
                 src="/assets/icons/get-started-button.svg"
@@ -51,12 +58,23 @@ export const ImpactSection = ({
               value={settings?.verified_healthcare_professionals}
               label={t('home.verified-healthcare-professionals')}
             />
-            <StatCard value={settings?.active_job_opportunities} label={t('home.active-job-opportunities')} />
-            <StatCard value={settings?.healthcare_specializations_covered} label={t('home.healthcare-specializations-covered')} />
-            <StatCard value={settings?.hiring_success_rate} label={t('home.hiring-success-rate')} percentage="%" plus={false} />
+            <StatCard
+              value={settings?.active_job_opportunities}
+              label={t('home.active-job-opportunities')}
+            />
+            <StatCard
+              value={settings?.healthcare_specializations_covered}
+              label={t('home.healthcare-specializations-covered')}
+            />
+            <StatCard
+              value={settings?.hiring_success_rate}
+              label={t('home.hiring-success-rate')}
+              percentage="%"
+              plus={false}
+            />
           </div>
         </div>
       </div>
-    </section >
+    </section>
   );
 };

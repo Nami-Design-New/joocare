@@ -25,15 +25,15 @@ export default function AssessmentResultsPage({
   return (
     <div className="mx-auto flex w-full flex-col gap-8 lg:pt-3">
       <header className="space-y-1">
-        <h1 className="text-assessment-dark text-2xl leading-normal sm:text-[28px] font-bold">
+        <h1 className="text-2xl leading-normal font-bold text-assessment-dark sm:text-[28px]">
           {t('title')}
         </h1>
-        <p className="text-muted-foreground text-sm leading-5">
+        <p className="text-sm leading-5 text-muted-foreground">
           {t('description')}
         </p>
       </header>
 
-      <section className="bg-secondary/5 grid gap-4 rounded-3xl p-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_minmax(150px,0.9fr)] lg:items-end lg:gap-3">
+      <section className="grid gap-4 rounded-3xl bg-secondary/5 p-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)_minmax(150px,0.9fr)] lg:items-end lg:gap-3">
         <SelectInputField
           id="assessment-result-category"
           label={t('category-label')}
@@ -42,7 +42,7 @@ export default function AssessmentResultsPage({
           options={results.categoryOptions}
           value={results.categoryId}
           onChange={results.setCategoryId}
-          className="bg-card h-11 rounded-full border-none text-sm"
+          className="h-11 rounded-full border-none bg-card text-sm"
         />
         <SelectInputField
           id="assessment-result-assessment"
@@ -53,25 +53,25 @@ export default function AssessmentResultsPage({
           value={results.assessmentId}
           onChange={results.setAssessmentId}
           disabled={!results.categoryId}
-          className="bg-card h-11 rounded-full border-none text-sm"
+          className="h-11 rounded-full border-none bg-card text-sm"
         />
-        <p className="text-assessment-muted self-center text-xs leading-4 lg:pb-2">
+        <p className="self-center text-xs leading-4 text-assessment-muted lg:pb-2">
           {results.assessmentId ? t('selected-helper') : t('selection-helper')}
         </p>
       </section>
 
       {!results.selectedAssessment ? (
         <Card className="min-h-80 items-center justify-center gap-3 rounded-2xl border-0 px-6 py-10 text-center shadow-none sm:min-h-90">
-          <span className="bg-assessment-info flex size-14 items-center justify-center rounded-full">
+          <span className="flex size-14 items-center justify-center rounded-full bg-assessment-info">
             <Search
               aria-hidden="true"
-              className="text-assessment-primary size-7"
+              className="size-7 text-assessment-primary"
             />
           </span>
-          <h2 className="text-assessment-heading text-base leading-6 font-semibold">
+          <h2 className="text-base leading-6 font-semibold text-assessment-heading">
             {t('empty-title')}
           </h2>
-          <p className="text-assessment-muted max-w-130 text-xs leading-5">
+          <p className="max-w-130 text-xs leading-5 text-assessment-muted">
             {t('empty-description')}
           </p>
         </Card>
@@ -90,7 +90,7 @@ export default function AssessmentResultsPage({
             onMaxScore={results.invitations.setMaxScore}
           />
           <AssessmentCandidateSummary summary={results.invitations.summary} />
-          <section className="bg-card rounded-xl p-3" aria-label={t('title')}>
+          <section className="rounded-xl bg-card p-3" aria-label={t('title')}>
             <ExternalInvitationsTable
               rows={results.invitations.rows}
               page={results.invitations.page}

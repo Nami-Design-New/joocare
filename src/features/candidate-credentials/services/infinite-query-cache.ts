@@ -1,14 +1,14 @@
-import type { InfiniteData } from "@tanstack/react-query";
+import type { InfiniteData } from '@tanstack/react-query';
 
 type PageRecord = Record<string, unknown>;
 type InfinitePageData = InfiniteData<PageRecord>;
 
 function isPageRecord(value: unknown): value is PageRecord {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
 
 function isInfinitePageData(value: unknown): value is InfinitePageData {
-  if (!value || typeof value !== "object") {
+  if (!value || typeof value !== 'object') {
     return false;
   }
 
@@ -37,7 +37,7 @@ function updatePageItems<T>(
     };
   }
 
-  if (page.data && typeof page.data === "object") {
+  if (page.data && typeof page.data === 'object') {
     const nestedData = page.data as Record<string, unknown>;
 
     for (const key of collectionKeys) {
@@ -81,7 +81,9 @@ export function prependInfiniteItem<T>(
   return {
     ...current,
     pages: current.pages.map((page, index) =>
-      index === 0 ? updatePageItems<T>(page, collectionKeys, (items) => [item, ...items]) : page,
+      index === 0
+        ? updatePageItems<T>(page, collectionKeys, (items) => [item, ...items])
+        : page,
     ),
   };
 }
@@ -99,7 +101,9 @@ export function replaceInfiniteItem<T extends { id: string }>(
     ...current,
     pages: current.pages.map((page) =>
       updatePageItems<T>(page, collectionKeys, (items) =>
-        items.map((currentItem) => (currentItem.id === item.id ? item : currentItem)),
+        items.map((currentItem) =>
+          currentItem.id === item.id ? item : currentItem,
+        ),
       ),
     ),
   };

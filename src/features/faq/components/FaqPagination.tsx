@@ -6,9 +6,9 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/shared/components/ui/pagination";
-import { buildFaqPagePath, getVisiblePages } from "../utils";
-import { getTranslations } from "next-intl/server";
+} from '@/shared/components/ui/pagination';
+import { buildFaqPagePath, getVisiblePages } from '../utils';
+import { getTranslations } from 'next-intl/server';
 
 type FaqPaginationProps = {
   locale: string;
@@ -36,10 +36,12 @@ export default async function FaqPagination({
 
   return (
     <div className="flex w-full flex-wrap items-center justify-center gap-2 px-3 pb-20 md:gap-8 lg:px-20">
-      <div className="text-muted-foreground order-2 text-sm font-medium md:order-1">
-        {t("faqPage.pagination-show")}{" "}
-        <span className="font-semibold">{start} - {end}</span>{" "}
-        {t("faqPage.pagination-from")}{" "}
+      <div className="order-2 text-sm font-medium text-muted-foreground md:order-1">
+        {t('faqPage.pagination-show')}{' '}
+        <span className="font-semibold">
+          {start} - {end}
+        </span>{' '}
+        {t('faqPage.pagination-from')}{' '}
         <span className="font-semibold">{totalItems}</span>
       </div>
 
@@ -47,7 +49,11 @@ export default async function FaqPagination({
         <PaginationContent className="gap-1">
           <PaginationItem>
             <PaginationPrevious
-              href={currentPage > 1 ? buildFaqPagePath(locale, currentPage - 1) : "#"}
+              href={
+                currentPage > 1
+                  ? buildFaqPagePath(locale, currentPage - 1)
+                  : '#'
+              }
               aria-disabled={currentPage <= 1}
               className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 p-0 hover:bg-gray-200 aria-disabled:pointer-events-none aria-disabled:opacity-50"
             />
@@ -68,7 +74,9 @@ export default async function FaqPagination({
                     href={buildFaqPagePath(locale, page)}
                     isActive={page === currentPage}
                     className={`h-8 w-8 rounded-full border-none ${
-                      page === currentPage ? "bg-primary text-white" : "text-muted-foreground"
+                      page === currentPage
+                        ? 'bg-primary text-white'
+                        : 'text-muted-foreground'
                     }`}
                   >
                     {page}
@@ -80,7 +88,11 @@ export default async function FaqPagination({
 
           <PaginationItem>
             <PaginationNext
-              href={currentPage < totalPages ? buildFaqPagePath(locale, currentPage + 1) : "#"}
+              href={
+                currentPage < totalPages
+                  ? buildFaqPagePath(locale, currentPage + 1)
+                  : '#'
+              }
               aria-disabled={currentPage >= totalPages}
               className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 p-0 text-gray-600 hover:bg-gray-200 aria-disabled:pointer-events-none aria-disabled:opacity-50"
             />

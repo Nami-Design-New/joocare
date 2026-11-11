@@ -13,9 +13,9 @@ export default function AssessmentConfigurationStep() {
     formState: { errors },
   } = useFormContext<AssessmentConfiguration>();
   return (
-    <div className="bg-card space-y-8 rounded-2xl p-5 md:p-8">
+    <div className="space-y-8 rounded-2xl bg-card p-5 md:p-8">
       <section className="space-y-5">
-        <h2 className="text-muted-foreground border-border border-b pb-2 text-lg font-semibold">
+        <h2 className="border-b border-border pb-2 text-lg font-semibold text-muted-foreground">
           {t('basic-information')}
         </h2>
         <InputField
@@ -32,11 +32,11 @@ export default function AssessmentConfigurationStep() {
           placeholder={t('description-placeholder')}
           error={errors.description?.message}
           {...register('description')}
-          className="bg-muted min-h-25 resize-y rounded-2xl p-4 shadow-none"
+          className="min-h-25 resize-y rounded-2xl bg-muted p-4 shadow-none"
         />
       </section>
       <section className="space-y-5">
-        <h2 className="text-muted-foreground border-border border-b pb-2 text-lg font-semibold">
+        <h2 className="border-b border-border pb-2 text-lg font-semibold text-muted-foreground">
           {t('settings')}
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">

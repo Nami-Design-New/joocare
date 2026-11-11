@@ -19,7 +19,7 @@ export default function ApplicationsSearch({
       placeholder={t('search-placeholder')}
       aria-busy={state.pending}
       icon={<ApplicationIcon name="search" size={18} />}
-      className="bg-foreground/5 border-border h-13 rounded-full border text-base"
+      className="h-13 rounded-full border border-border bg-foreground/5 text-base"
     />
   );
 }

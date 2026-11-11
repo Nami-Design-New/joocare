@@ -37,7 +37,7 @@ export default function AssessmentUnavailable({
           <Button
             asChild
             size="pill"
-            className="bg-secondary hover:bg-secondary/90 h-12.5 sm:w-69"
+            className="h-12.5 bg-secondary hover:bg-secondary/90 sm:w-69"
           >
             <a href={`mailto:${assessment.hiringTeamEmail}`}>
               {t('email-team')}
@@ -47,7 +47,7 @@ export default function AssessmentUnavailable({
             asChild
             variant="outline"
             size="pill"
-            className="border-secondary h-12.5 sm:w-69"
+            className="h-12.5 border-secondary sm:w-69"
           >
             <Link href={CANDIDATE_ASSESSMENT_ROUTES.appliedJobs}>
               {t('close')}

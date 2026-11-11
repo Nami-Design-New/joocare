@@ -54,7 +54,7 @@ export default function ProjectShareModal({
                 type="button"
                 onClick={onClose}
                 aria-label={t('close')}
-                className="bg-primary text-primary-foreground flex size-12 shrink-0 items-center justify-center rounded-full"
+                className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
               >
                 <X aria-hidden="true" className="size-5" />
               </button>
@@ -69,7 +69,7 @@ export default function ProjectShareModal({
               value={manager}
               onChange={setManager}
               placeholder={t('select-hiring-manager')}
-              className="bg-card h-12"
+              className="h-12 bg-card"
               portalContainer={modalContent}
             />
             <div className="space-y-2">
@@ -83,7 +83,7 @@ export default function ProjectShareModal({
                 id="project-share-message"
                 value={message}
                 onChange={(event) => setMessage(event.currentTarget.value)}
-                className="bg-muted/60 min-h-48 resize-y rounded-2xl p-4 text-sm leading-6"
+                className="min-h-48 resize-y rounded-2xl bg-muted/60 p-4 text-sm leading-6"
               />
             </div>
           </div>

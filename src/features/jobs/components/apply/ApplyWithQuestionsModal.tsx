@@ -67,10 +67,10 @@ export default function ApplyWithQuestionsModal({
       <Dialog open onOpenChange={(open) => !open && requestClose()}>
         <DialogContent
           showCloseButton={false}
-          className="bg-card grid max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-255 grid-rows-[auto_auto_minmax(0,1fr)_auto] gap-6 overflow-hidden rounded-2xl p-5 sm:max-w-255 sm:px-10 sm:pt-12.5 sm:pb-7.5"
+          className="grid max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-255 grid-rows-[auto_auto_minmax(0,1fr)_auto] gap-6 overflow-hidden rounded-2xl bg-card p-5 sm:max-w-255 sm:px-10 sm:pt-12.5 sm:pb-7.5"
         >
           <div className="flex items-center justify-between gap-6">
-            <DialogTitle className="text-foreground text-xl leading-tight font-semibold sm:text-[28px]">
+            <DialogTitle className="text-xl leading-tight font-semibold text-foreground sm:text-[28px]">
               {t('title')} <bdi>{jobTitle}</bdi>
             </DialogTitle>
             <DialogDescription className="sr-only">
@@ -80,7 +80,7 @@ export default function ApplyWithQuestionsModal({
               type="button"
               onClick={requestClose}
               aria-label={t('close')}
-              className="bg-assessment-primary hover:bg-assessment-primary/90 text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full transition-colors sm:size-12"
+              className="flex size-10 shrink-0 items-center justify-center rounded-full bg-assessment-primary text-primary-foreground transition-colors hover:bg-assessment-primary/90 sm:size-12"
             >
               <X aria-hidden className="size-5" strokeWidth={2} />
             </button>

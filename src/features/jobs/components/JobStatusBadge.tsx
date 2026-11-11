@@ -17,10 +17,15 @@ type JobStatusBadgeProps = {
   className?: string;
 };
 
-export default function JobStatusBadge({ status, date, className }: JobStatusBadgeProps) {
+export default function JobStatusBadge({
+  status,
+  date,
+  className,
+}: JobStatusBadgeProps) {
   const t = useTranslations('companyPage.jobs.status');
   const locale = useLocale();
-  const formattedDate = status === 'open' ? '' : formatJobDateTime(date, locale);
+  const formattedDate =
+    status === 'open' ? '' : formatJobDateTime(date, locale);
 
   return (
     <div
@@ -30,10 +35,15 @@ export default function JobStatusBadge({ status, date, className }: JobStatusBad
         className,
       )}
     >
-      <span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-current" />
+      <span
+        aria-hidden="true"
+        className="size-2 shrink-0 rounded-full bg-current"
+      />
       <span>{t(status)}</span>
       {formattedDate ? (
-        <time className="text-muted-foreground ms-auto text-[10px]">{formattedDate}</time>
+        <time className="ms-auto text-[10px] text-muted-foreground">
+          {formattedDate}
+        </time>
       ) : null}
     </div>
   );

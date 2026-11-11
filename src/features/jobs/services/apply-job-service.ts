@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { CandidateProfileApiUser } from "@/features/candidate-profile/types/profile.types";
-import { getUserApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
-import type { ScreeningAnswer } from "../types/job-apply.types";
+import { CandidateProfileApiUser } from '@/features/candidate-profile/types/profile.types';
+import { getUserApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
+import type { ScreeningAnswer } from '../types/job-apply.types';
 
 type CandidateCvProfile = {
   cv: string | null;
@@ -30,10 +30,10 @@ function normalizeStoredCvPath(cvPath: string) {
   const trimmedPath = cvPath.trim();
 
   if (!trimmedPath) {
-    return "";
+    return '';
   }
 
-  const imagesIndex = trimmedPath.indexOf("images/");
+  const imagesIndex = trimmedPath.indexOf('images/');
 
   if (imagesIndex >= 0) {
     return trimmedPath.slice(imagesIndex);
@@ -49,15 +49,15 @@ export async function getCandidateCvProfile({
   const result = await apiFetch<CandidateProfileApiUser>(
     `${getUserApiUrl()}/auth/profile`,
     {
-      method: "GET",
+      method: 'GET',
       token,
       locale,
-      cache: "no-store",
+      cache: 'no-store',
     },
   );
 
   if (!result.ok || !result.data?.data) {
-    throw new Error(result.message || "Failed to load candidate profile.");
+    throw new Error(result.message || 'Failed to load candidate profile.');
   }
 
   return {
@@ -73,30 +73,27 @@ export async function applyToJobService({
   locale,
 }: ApplyToJobOptions): Promise<ApplyToJobResponse> {
   const formData = new FormData();
-  formData.append("job_id", String(jobId));
+  formData.append('job_id', String(jobId));
 
   if (cvPath) {
-    formData.append("cv", normalizeStoredCvPath(cvPath));
+    formData.append('cv', normalizeStoredCvPath(cvPath));
   }
 
   // Pending backend contract for screening answers.
   if (answers?.length) {
-    formData.append("screening_answers", JSON.stringify(answers));
+    formData.append('screening_answers', JSON.stringify(answers));
   }
 
-  const result = await apiFetch<ApplyToJobResponse>(
-    `${getUserApiUrl()}/jobs`,
-    {
-      method: "POST",
-      token,
-      locale,
-      body: formData,
-      cache: "no-store",
-    },
-  );
+  const result = await apiFetch<ApplyToJobResponse>(`${getUserApiUrl()}/jobs`, {
+    method: 'POST',
+    token,
+    locale,
+    body: formData,
+    cache: 'no-store',
+  });
 
   if (!result.ok) {
-    throw new Error(result.message || "Failed to submit your application.");
+    throw new Error(result.message || 'Failed to submit your application.');
   }
 
   return result.data ?? {};

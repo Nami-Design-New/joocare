@@ -1,26 +1,34 @@
-"use client";
+'use client';
 
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
-import { InputField } from "@/shared/components/InputField";
-import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import useGetDomains from "@/shared/hooks/useGetDomains";
-import { useSession } from "next-auth/react";
-import { getCountryCodeByPhoneCode, parsePhoneWithCode } from "@/shared/lib/phone";
-import { Controller, useFormContext, useWatch } from "react-hook-form";
+import useGetCompanyProfile from '@/features/company-profile/hooks/useGetCompanyProfile';
+import { InputField } from '@/shared/components/InputField';
+import { PhoneInputCode } from '@/shared/components/PhoneInputCode';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import useGetDomains from '@/shared/hooks/useGetDomains';
+import { useSession } from 'next-auth/react';
+import {
+  getCountryCodeByPhoneCode,
+  parsePhoneWithCode,
+} from '@/shared/lib/phone';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 export default function StepOne() {
   const { data: session } = useSession();
-  const token = session?.accessToken || "";
+  const token = session?.accessToken || '';
   const { data: profileData } = useGetCompanyProfile({ token });
-  const { register, control, formState: { errors }, } = useFormContext();
-  const personPhone = useWatch({ control, name: "person_phone" });
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const personPhone = useWatch({ control, name: 'person_phone' });
   // console.log("person phone", parsePhoneNumber(personPhone)?.country);
 
   const defaultCountry = (() => {
     try {
       return personPhone
-        ? parsePhoneWithCode(personPhone, profileData?.person_phone_code)?.country ||
+        ? parsePhoneWithCode(personPhone, profileData?.person_phone_code)
+            ?.country ||
             getCountryCodeByPhoneCode(profileData?.person_phone_code)
         : getCountryCodeByPhoneCode(profileData?.person_phone_code);
     } catch {
@@ -36,14 +44,13 @@ export default function StepOne() {
 
   return (
     <div className="flex flex-col gap-y-5">
-
       <InputField
         id="name"
         label="Company Name"
-        type={"text"}
+        type={'text'}
         placeholder="ex: JooCore"
         disabled={true}
-        {...register("name")}
+        {...register('name')}
         error={errors.name?.message?.toString()}
       />
 
@@ -53,7 +60,7 @@ export default function StepOne() {
         label="Official Email"
         placeholder="ex: mail@mail.com"
         disabled={true}
-        {...register("email")}
+        {...register('email')}
         error={errors.email?.message?.toString()}
       />
 
@@ -84,10 +91,9 @@ export default function StepOne() {
         label="Contact person _ full name "
         placeholder="ex: John Doe"
         disabled={true}
-        {...register("person_name")}
+        {...register('person_name')}
         error={errors.person_name?.message?.toString()}
       />
-
 
       {/* Phone Number */}
       <>
@@ -115,8 +121,6 @@ export default function StepOne() {
           </span>
         )}
       </>
-
-
     </div>
   );
 }

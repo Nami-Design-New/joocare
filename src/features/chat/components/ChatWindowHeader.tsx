@@ -29,7 +29,7 @@ export default function ChatWindowHeader({
   const closed = Boolean(conversation.closedAt);
 
   return (
-    <header className="border-border bg-card flex min-h-20 shrink-0 items-center gap-3 border-b px-4 py-3 md:px-8">
+    <header className="flex min-h-20 shrink-0 items-center gap-3 border-b border-border bg-card px-4 py-3 md:px-8">
       <Button
         type="button"
         variant="ghost"
@@ -54,10 +54,10 @@ export default function ChatWindowHeader({
       <div className="min-w-0 flex-1">
         {isCandidate ? (
           <>
-            <p className="text-secondary truncate text-base leading-5 font-semibold">
+            <p className="truncate text-base leading-5 font-semibold text-secondary">
               {conversation.name}
             </p>
-            <p className="text-muted-foreground mt-1 truncate text-xs leading-4">
+            <p className="mt-1 truncate text-xs leading-4 text-muted-foreground">
               {conversation.jobTitle}
             </p>
             <Link
@@ -65,7 +65,7 @@ export default function ChatWindowHeader({
               aria-label={tCandidate('view-company-profile', {
                 company: conversation.companyName ?? '',
               })}
-              className="text-chat-link mt-1 inline-flex max-w-full items-center gap-1.5 text-sm leading-5 hover:underline"
+              className="mt-1 inline-flex max-w-full items-center gap-1.5 text-sm leading-5 text-chat-link hover:underline"
             >
               <span className="truncate">{conversation.companyName}</span>
               <ExternalLink className="size-4 shrink-0 rtl:-scale-x-100" />
@@ -76,13 +76,13 @@ export default function ChatWindowHeader({
             <div className="flex flex-wrap items-center gap-2">
               <Link
                 href={conversation.profileHref}
-                className="text-secondary truncate text-base leading-5 font-semibold underline underline-offset-2"
+                className="truncate text-base leading-5 font-semibold text-secondary underline underline-offset-2"
               >
                 {conversation.name}
               </Link>
               {closed && <ChatClosedBadge role={role} />}
             </div>
-            <p className="text-muted-foreground mt-1 truncate text-xs leading-4">
+            <p className="mt-1 truncate text-xs leading-4 text-muted-foreground">
               {conversation.jobTitle}
             </p>
           </>

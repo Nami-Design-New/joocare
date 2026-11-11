@@ -42,9 +42,9 @@ export default function SkillsStep() {
 
           return (
             <>
-              <section className="bg-muted rounded-xl p-3">
-                <div className="bg-cv-builder-primary/2 flex flex-col items-start gap-4 rounded-2xl p-4">
-                  <h3 className="text-foreground text-base leading-5">
+              <section className="rounded-xl bg-muted p-3">
+                <div className="flex flex-col items-start gap-4 rounded-2xl bg-cv-builder-primary/2 p-4">
+                  <h3 className="text-base leading-5 text-foreground">
                     {t('recommended')}
                   </h3>
                   <ul className="flex flex-wrap gap-3">
@@ -54,7 +54,7 @@ export default function SkillsStep() {
                           type="button"
                           onClick={() => addSkills([skill])}
                           aria-label={t('add-skill', { skill })}
-                          className="border-border text-foreground hover:border-cv-builder-primary hover:text-cv-builder-primary h-9 rounded-2xl border px-4 text-base transition-colors"
+                          className="h-9 rounded-2xl border border-border px-4 text-base text-foreground transition-colors hover:border-cv-builder-primary hover:text-cv-builder-primary"
                         >
                           {skill}
                         </button>
@@ -66,7 +66,7 @@ export default function SkillsStep() {
                           type="button"
                           onClick={() => setShowAll((value) => !value)}
                           aria-expanded={showAll}
-                          className="bg-cv-builder-primary border-cv-builder-primary text-primary-foreground h-9 rounded-2xl border px-4 text-base"
+                          className="h-9 rounded-2xl border border-cv-builder-primary bg-cv-builder-primary px-4 text-base text-primary-foreground"
                         >
                           {t(showAll ? 'show-less' : 'show-more')}
                         </button>
@@ -76,10 +76,10 @@ export default function SkillsStep() {
                 </div>
               </section>
 
-              <section className="bg-cv-builder-skill-surface flex flex-col gap-3 rounded-xl p-4">
-                <h3 className="text-cv-builder-skill-text flex items-center gap-2 text-[15px] font-semibold">
+              <section className="flex flex-col gap-3 rounded-xl bg-cv-builder-skill-surface p-4">
+                <h3 className="flex items-center gap-2 text-[15px] font-semibold text-cv-builder-skill-text">
                   {t('selected')}
-                  <span className="bg-card text-cv-builder-primary flex size-6 items-center justify-center rounded-full text-[13px]">
+                  <span className="flex size-6 items-center justify-center rounded-full bg-card text-[13px] text-cv-builder-primary">
                     {selected.length}
                   </span>
                 </h3>
@@ -88,7 +88,7 @@ export default function SkillsStep() {
                     {selected.map((skill) => (
                       <li
                         key={skill}
-                        className="border-cv-builder-skill-border bg-cv-builder-skill-surface text-cv-builder-skill-text flex h-10 items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium"
+                        className="flex h-10 items-center gap-1.5 rounded-full border border-cv-builder-skill-border bg-cv-builder-skill-surface px-3.5 text-sm font-medium text-cv-builder-skill-text"
                       >
                         <button
                           type="button"

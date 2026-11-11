@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { usePathname, useRouter } from '@/i18n/navigation';
 import {
   Select,
   SelectContent,
@@ -8,15 +8,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/components/ui/select";
-import { ChevronDown, Globe } from "lucide-react";
-import { useLocale } from "next-intl";
-import { useSearchParams } from "next/navigation";
-import { buttonVariants } from "./ui/button";
-import { useState } from "react";
+} from '@/shared/components/ui/select';
+import { ChevronDown, Globe } from 'lucide-react';
+import { useLocale } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
+import { buttonVariants } from './ui/button';
+import { useState } from 'react';
 
 type LanguageToggleProps = {
-  "aria-label"?: string;
+  'aria-label'?: string;
 };
 
 export function LanguageToggle(props: LanguageToggleProps) {
@@ -26,31 +26,34 @@ export function LanguageToggle(props: LanguageToggleProps) {
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
   const handleLocaleChange = (value: string) => {
-    const nextLocale = value.toLowerCase() as "en" | "ar";
+    const nextLocale = value.toLowerCase() as 'en' | 'ar';
     const query = searchParams.toString();
     const href = query ? `${pathname}?${query}` : pathname;
 
-    if (typeof document !== "undefined") {
+    if (typeof document !== 'undefined') {
       document.cookie = `NEXT_LOCALE=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
     }
     // router.replace(href, { locale: nextLocale });
-    router.refresh()
+    router.refresh();
   };
 
   return (
-    <Select value={locale.toUpperCase()} onValueChange={handleLocaleChange}
+    <Select
+      value={locale.toUpperCase()}
+      onValueChange={handleLocaleChange}
       open={open}
       onOpenChange={setOpen}
     >
       <SelectTrigger
-        aria-label={props["aria-label"] ?? "Language toggle"}
-        className={`${buttonVariants({ variant: "ghost", hoverStyle: "slidePrimary" })} text-secondary m-0 flex min-h-13 items-center gap-2 rounded-full border-0 bg-transparent shadow-none [&>svg:last-child]:hidden`}
+        aria-label={props['aria-label'] ?? 'Language toggle'}
+        className={`${buttonVariants({ variant: 'ghost', hoverStyle: 'slidePrimary' })} m-0 flex min-h-13 items-center gap-2 rounded-full border-0 bg-transparent text-secondary shadow-none [&>svg:last-child]:hidden`}
       >
         <Globe color="var(--secondary)" />
         <SelectValue placeholder="EN" />
         <ChevronDown
-          className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-180" : ""
-            }`}
+          className={`h-4 w-4 transition-transform duration-200 ${
+            open ? 'rotate-180' : ''
+          }`}
         />
       </SelectTrigger>
       <SelectContent>

@@ -1,33 +1,33 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { useLocale, useTranslations } from "next-intl";
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import { useLocale, useTranslations } from 'next-intl';
 
-import { InputField } from "@/shared/components/InputField";
-import { Button } from "@/shared/components/ui/button";
+import { InputField } from '@/shared/components/InputField';
+import { Button } from '@/shared/components/ui/button';
 import {
   createForgetPasswordSchema,
   TForgetPasswordSchema,
-} from "../../validation/forget-password-schema";
-import { OTPModal } from "./OtpModal";
-import { usePathname } from "next/navigation";
+} from '../../validation/forget-password-schema';
+import { OTPModal } from './OtpModal';
+import { usePathname } from 'next/navigation';
 import {
   PasswordResetRole,
   requestPasswordReset,
-} from "../../lib/password-reset";
+} from '../../lib/password-reset';
 
 const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
   const t = useTranslations();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState('');
   const pathname = usePathname();
   const locale = useLocale();
-  const resetRole: PasswordResetRole = pathname.includes("/employer/")
-    ? "employer"
-    : "candidate";
+  const resetRole: PasswordResetRole = pathname.includes('/employer/')
+    ? 'employer'
+    : 'candidate';
 
   const {
     register,
@@ -36,8 +36,8 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
   } = useForm<TForgetPasswordSchema>({
     resolver: zodResolver(
       createForgetPasswordSchema({
-        emailRequired: t("authPage.validation.email-required"),
-        emailInvalid: t("authPage.validation.email-invalid-detailed"),
+        emailRequired: t('authPage.validation.email-required'),
+        emailInvalid: t('authPage.validation.email-invalid-detailed'),
       }),
     ),
   });
@@ -58,22 +58,25 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
       toast.error(
         error instanceof Error
           ? error.message
-          : t("authPage.toasts.failed-send-reset-code"),
+          : t('authPage.toasts.failed-send-reset-code'),
       );
     }
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-full flex-col gap-4"
+      >
         <InputField
           // label={usesOfficialEmail ? "Official Email" : "Email"}
-          label={t("authPage.common.email")}
+          label={t('authPage.common.email')}
           id="email"
           type="email"
           error={errors.email?.message}
-          {...register("email")}
-          placeholder={t("authPage.placeholders.email-compact")}
+          {...register('email')}
+          placeholder={t('authPage.placeholders.email-compact')}
         />
         <Button
           variant="secondary"
@@ -82,7 +85,7 @@ const FormForgetPassword = ({ btnLabel }: { btnLabel: string }) => {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? t("authPage.common.sending") : btnLabel}
+          {isSubmitting ? t('authPage.common.sending') : btnLabel}
         </Button>
       </form>
 

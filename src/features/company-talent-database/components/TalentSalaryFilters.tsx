@@ -24,7 +24,7 @@ export default function TalentSalaryFilters() {
           <legend className="mb-2 font-semibold">{t(`${range}-salary`)}</legend>
           <TalentFilterFields
             fields={fields}
-            className="grid-cols-2 gap-3 sm:gap-5 [&>*:last-child]:col-span-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_110px] md:[&>*:last-child]:col-span-1"
+            className="grid-cols-2 gap-3 sm:gap-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_110px] [&>*:last-child]:col-span-2 md:[&>*:last-child]:col-span-1"
           />
         </fieldset>
       ))}

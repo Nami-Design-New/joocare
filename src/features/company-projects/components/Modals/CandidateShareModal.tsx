@@ -51,7 +51,7 @@ export default function CandidateShareModal({
               options={hiringManagers.map((value) => ({ value, label: value }))}
               value={manager}
               onChange={setManager}
-              className="bg-card h-12"
+              className="h-12 bg-card"
             />
             <div className="space-y-2">
               <label
@@ -64,7 +64,7 @@ export default function CandidateShareModal({
                 id="candidate-share-message"
                 value={message}
                 onChange={(event) => setMessage(event.currentTarget.value)}
-                className="bg-muted/60 min-h-48 resize-y rounded-2xl p-4 text-sm leading-6"
+                className="min-h-48 resize-y rounded-2xl bg-muted/60 p-4 text-sm leading-6"
               />
             </div>
           </div>

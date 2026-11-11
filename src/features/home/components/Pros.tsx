@@ -1,7 +1,7 @@
-import SectionTitle from "./SectionTitle";
-import { LiquidGlass } from "@liquidglass/react";
-import type { HomeWhyModel } from "../types/home.types";
-import { useTranslations } from "next-intl";
+import SectionTitle from './SectionTitle';
+import { LiquidGlass } from '@liquidglass/react';
+import type { HomeWhyModel } from '../types/home.types';
+import { useTranslations } from 'next-intl';
 
 export default function Pros({
   title,
@@ -21,17 +21,22 @@ export default function Pros({
         textColor="text-white"
         icon="/assets/icons/section-title-white-icon.svg"
       />
-      <h3 className="mt-2 text-base md:text-xl font-semibold text-white">{title}</h3>
-      <p className="text-4 text-[#F7FAF7] mt-6 mb-10 text-sm md:text-base">{description}</p>
+      <h3 className="mt-2 text-base font-semibold text-white md:text-xl">
+        {title}
+      </h3>
+      <p className="text-4 mt-6 mb-10 text-sm text-[#F7FAF7] md:text-base">
+        {description}
+      </p>
       <ul className="flex flex-col items-start gap-8">
         {items.map((item, index) => (
           <li key={item.id} className="flex gap-7">
-            <div className={index < items.length - 1 ? "relative" : undefined}>
+            <div className={index < items.length - 1 ? 'relative' : undefined}>
               <div
-                className={`bg-primary flex h-10 md:h-12 w-10 md:w-12 shrink-0 items-center justify-center rounded-full ${index < items.length - 1
-                  ? "after:absolute after:top-10 md:after:top-12 after:left-1/2 after:z-40 after:h-[calc(100%-8px)] md:after:h-[calc(100%-16px)] after:w-0.5 after:bg-white after:content-['']"
-                  : ""
-                  }`}
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary md:h-12 md:w-12 ${
+                  index < items.length - 1
+                    ? "after:absolute after:top-10 after:left-1/2 after:z-40 after:h-[calc(100%-8px)] after:w-0.5 after:bg-white after:content-[''] md:after:top-12 md:after:h-[calc(100%-16px)]"
+                    : ''
+                }`}
               >
                 <LiquidGlass
                   borderRadius={9999}
@@ -47,8 +52,12 @@ export default function Pros({
               </div>
             </div>
             <div>
-              <h4 className="my-2 text-base md:text-xl font-semibold">{item.title}</h4>
-              <p className="text-[#F7FAF7] font-normal text-sm md:text-base">{item.description}</p>
+              <h4 className="my-2 text-base font-semibold md:text-xl">
+                {item.title}
+              </h4>
+              <p className="text-sm font-normal text-[#F7FAF7] md:text-base">
+                {item.description}
+              </p>
             </div>
           </li>
         ))}

@@ -13,10 +13,10 @@ export default function PermissionsOverview({
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <h2 className="text-secondary text-lg leading-[normal] font-semibold">
+      <h2 className="text-lg leading-[normal] font-semibold text-secondary">
         {t('groups')}
       </h2>
-      <p className="text-muted-foreground text-sm leading-[normal]">
+      <p className="text-sm leading-[normal] text-muted-foreground">
         {t('groupCount', { count })}
         {suffix ? <span dir="ltr"> · {suffix}</span> : null}
       </p>

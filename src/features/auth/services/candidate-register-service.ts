@@ -1,47 +1,43 @@
-
-import { getUserApiUrl } from "@/shared/lib/api-endpoints";
-import { getTimeZone } from "@/shared/lib/fetch-manager";
+import { getUserApiUrl } from '@/shared/lib/api-endpoints';
+import { getTimeZone } from '@/shared/lib/fetch-manager';
 
 export type RegisterCandidatePayload = {
-    name: string;
-    email: string;
-    phone: string;
-    phone_code: string;
-    job_title_id?: string;
-    title?: string;
-    country_id: string;
-    city_id: string;
-    password: string;
-    has_medical_license: boolean | undefined;
-    license_country_id: string;
-    license_title: string | undefined;
-    license_number: string | undefined;
-    cv: string | undefined;
-    license: string | undefined;
+  name: string;
+  email: string;
+  phone: string;
+  phone_code: string;
+  job_title_id?: string;
+  title?: string;
+  country_id: string;
+  city_id: string;
+  password: string;
+  has_medical_license: boolean | undefined;
+  license_country_id: string;
+  license_title: string | undefined;
+  license_number: string | undefined;
+  cv: string | undefined;
+  license: string | undefined;
 };
 
 export const registerCandidateService = async (
-    data: RegisterCandidatePayload,
-    locale: string = "en",
+  data: RegisterCandidatePayload,
+  locale: string = 'en',
 ) => {
-    const response = await fetch(`${getUserApiUrl()}/auth/register`, {
+  const response = await fetch(`${getUserApiUrl()}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Timezone': getTimeZone(),
+      'Accept-Language': locale,
+    },
+    body: JSON.stringify(data),
+  });
 
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-Timezone": getTimeZone(),
-            "Accept-Language": locale,
-        },
-        body: JSON.stringify(data),
-    });
+  const result = await response.json();
 
-    const result = await response.json();
+  if (result.code >= 400 || !response.ok) {
+    throw new Error(result.message || 'Something went wrong');
+  }
 
-    if (result.code >= 400 || !response.ok) {
-        throw new Error(result.message || "Something went wrong");
-    }
-
-    return result;
-
+  return result;
 };
-

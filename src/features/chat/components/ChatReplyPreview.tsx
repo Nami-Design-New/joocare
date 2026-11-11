@@ -11,7 +11,7 @@ export default function ChatReplyPreview({
   return (
     <div
       className={cn(
-        'border-chat-primary bg-chat-surface flex min-w-0 items-center gap-2 rounded-lg border-s-2 px-3 py-2',
+        'flex min-w-0 items-center gap-2 rounded-lg border-s-2 border-chat-primary bg-chat-surface px-3 py-2',
         outgoing && 'border-primary-foreground bg-primary-foreground/15',
       )}
     >
@@ -29,7 +29,7 @@ export default function ChatReplyPreview({
         <p className="truncate text-xs leading-4 font-semibold">{reply.name}</p>
         <p
           className={cn(
-            'text-muted-foreground mt-0.5 truncate text-xs leading-4',
+            'mt-0.5 truncate text-xs leading-4 text-muted-foreground',
             outgoing && 'text-primary-foreground/80',
           )}
         >

@@ -19,7 +19,7 @@ export default function ActiveJobRow({
   const t = useTranslations('common');
   const locale = useLocale();
   return (
-    <TableRow className="border-border bg-dashboard-primary/2 h-15.75 border-b">
+    <TableRow className="h-15.75 border-b border-border bg-dashboard-primary/2">
       <TableCell className="px-4 py-[15.5px] text-start">
         <bdi>{job.job_title?.title ?? job.title}</bdi>
       </TableCell>
@@ -29,7 +29,7 @@ export default function ActiveJobRow({
       <TableCell className="px-4 py-[15.5px] text-center">
         {formatDashboardNumber(job.applications_count, locale)}
       </TableCell>
-      <TableCell className="text-muted-foreground px-4 py-[15.5px] text-center font-semibold">
+      <TableCell className="px-4 py-[15.5px] text-center font-semibold text-muted-foreground">
         {formatDashboardDate(job.created_at, locale)}
       </TableCell>
       <TableCell
@@ -41,7 +41,7 @@ export default function ActiveJobRow({
         <Button
           asChild
           size="sm"
-          className="bg-dashboard-primary h-7.75 gap-1 rounded-full px-3 text-xs"
+          className="h-7.75 gap-1 rounded-full bg-dashboard-primary px-3 text-xs"
         >
           <Link href={'/company/job/candidates/' + job.id}>
             <DashboardIcon name="eye" width={14} />

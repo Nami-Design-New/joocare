@@ -31,12 +31,12 @@ export default function AssessmentStats({
   return (
     <dl className="mt-auto grid grid-cols-3 gap-2">
       {stats.map(({ key, icon: Icon, value }) => (
-        <div key={key} className="bg-muted rounded-[20px] px-3 py-2.5">
-          <dt className="text-muted-foreground flex items-center gap-1 text-[10px]">
+        <div key={key} className="rounded-[20px] bg-muted px-3 py-2.5">
+          <dt className="flex items-center gap-1 text-[10px] text-muted-foreground">
             <Icon aria-hidden="true" className="size-3.5 shrink-0" />
             {t(key)}
           </dt>
-          <dd className="text-secondary mt-1 text-sm font-semibold">{value}</dd>
+          <dd className="mt-1 text-sm font-semibold text-secondary">{value}</dd>
         </div>
       ))}
     </dl>

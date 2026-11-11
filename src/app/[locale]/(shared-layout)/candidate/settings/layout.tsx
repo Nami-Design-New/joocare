@@ -1,24 +1,22 @@
-
-import HeaderLayout from "@/shared/components/HeaderLayout"
-import { navLinks } from "@/features/candidate-settings/constants"
-import { ReactNode } from "react"
-import { getTranslations } from "next-intl/server";
-
+import HeaderLayout from '@/shared/components/HeaderLayout';
+import { navLinks } from '@/features/candidate-settings/constants';
+import { ReactNode } from 'react';
+import { getTranslations } from 'next-intl/server';
 
 const SettingsLayout = async ({ children }: { children: ReactNode }) => {
-    const t = await getTranslations();
-    const translatedNavLinks = navLinks.map((link) => ({
-        ...link,
-        label: t(link.label),
-    }));
+  const t = await getTranslations();
+  const translatedNavLinks = navLinks.map((link) => ({
+    ...link,
+    label: t(link.label),
+  }));
 
-    return (
-        <main className="flex flex-col space-y-6">
-            <HeaderLayout navLinks={translatedNavLinks} />
+  return (
+    <main className="flex flex-col space-y-6">
+      <HeaderLayout navLinks={translatedNavLinks} />
 
-            {children}
-        </main>
-    )
-}
+      {children}
+    </main>
+  );
+};
 
-export default SettingsLayout
+export default SettingsLayout;

@@ -1,7 +1,7 @@
-import { z } from "zod";
-import { stepOneSchema } from "./stepOne.schema";
-import { stepTwoSchema } from "./stepTwo.schema";
-import { stepThreeSchema } from "./stepThree.schema";
+import { z } from 'zod';
+import { stepOneSchema } from './stepOne.schema';
+import { stepTwoSchema } from './stepTwo.schema';
+import { stepThreeSchema } from './stepThree.schema';
 
 export const WizardSchema = stepOneSchema
   .merge(stepTwoSchema)

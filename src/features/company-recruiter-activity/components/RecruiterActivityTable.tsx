@@ -37,7 +37,7 @@ export default function RecruiterActivityTable({
             {recruiter.name}
           </span>
           {recruiter.isDeleted && (
-            <span className="bg-destructive/10 text-destructive rounded-full px-2 py-1 text-xs font-semibold">
+            <span className="rounded-full bg-destructive/10 px-2 py-1 text-xs font-semibold text-destructive">
               {t('deleted')}
             </span>
           )}
@@ -68,7 +68,7 @@ export default function RecruiterActivityTable({
             pathname: '/company/projects',
             query: { recruiter: recruiter.name },
           }}
-          className="hover:text-primary inline-flex items-center gap-1.5 underline underline-offset-2 transition-colors"
+          className="inline-flex items-center gap-1.5 underline underline-offset-2 transition-colors hover:text-primary"
         >
           <Folder aria-hidden="true" className="size-4" strokeWidth={1.5} />
           <span>

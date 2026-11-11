@@ -41,32 +41,32 @@ export default function AiChatMessageItem({
 
   return (
     <article className="flex flex-col gap-2">
-      <p className="text-foreground/45 text-xs">{meta}</p>
+      <p className="text-xs text-foreground/45">{meta}</p>
       <div
         className={cn(
           'flex flex-col gap-2 text-base',
-          isUser ? 'bg-muted max-w-[90%] rounded-2xl px-5 py-3' : 'pb-3',
+          isUser ? 'max-w-[90%] rounded-2xl bg-muted px-5 py-3' : 'pb-3',
         )}
       >
         {message.text ? (
-          <p className="text-foreground whitespace-pre-line">{message.text}</p>
+          <p className="whitespace-pre-line text-foreground">{message.text}</p>
         ) : null}
         {message.attachments?.map((attachment) => (
           <AttachmentView key={attachment.id} attachment={attachment} />
         ))}
       </div>
       {message.insight ? (
-        <section className="bg-muted flex flex-col gap-2 rounded-2xl p-2">
+        <section className="flex flex-col gap-2 rounded-2xl bg-muted p-2">
           <div className="flex items-center gap-2">
-            <span className="bg-primary/5 text-primary flex size-10 items-center justify-center rounded-xl">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/5 text-primary">
               <Sparkles aria-hidden="true" className="size-5" />
             </span>
-            <h3 className="text-foreground text-base">{t('insight-title')}</h3>
+            <h3 className="text-base text-foreground">{t('insight-title')}</h3>
           </div>
-          <p className="bg-card text-foreground rounded-xl p-2 text-sm font-light">
+          <p className="rounded-xl bg-card p-2 text-sm font-light text-foreground">
             {message.insight.suggestion}
           </p>
-          <p className="text-foreground/45 text-[11px] font-light">
+          <p className="text-[11px] font-light text-foreground/45">
             {message.insight.note}
           </p>
           <Button
@@ -121,7 +121,7 @@ function AttachmentView({ attachment }: { attachment: AiChatAttachment }) {
           unoptimized
           className="h-28 w-full rounded-xl object-cover"
         />
-        <figcaption className="text-muted-foreground text-[11px]">
+        <figcaption className="text-[11px] text-muted-foreground">
           {attachment.name} · {size}
         </figcaption>
       </figure>
@@ -129,11 +129,11 @@ function AttachmentView({ attachment }: { attachment: AiChatAttachment }) {
   }
 
   return (
-    <div className="bg-card/50 border-border flex items-center gap-3 rounded-xl border p-3">
-      <FileText aria-hidden="true" className="text-primary size-5 shrink-0" />
+    <div className="flex items-center gap-3 rounded-xl border border-border bg-card/50 p-3">
+      <FileText aria-hidden="true" className="size-5 shrink-0 text-primary" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-xs font-semibold">{attachment.name}</p>
-        <p className="text-muted-foreground text-[10px]">
+        <p className="text-[10px] text-muted-foreground">
           {size} • {attachment.name.split('.').pop()?.toUpperCase()}
         </p>
       </div>
@@ -142,7 +142,7 @@ function AttachmentView({ attachment }: { attachment: AiChatAttachment }) {
           href={attachment.url}
           download={attachment.name}
           aria-label={t('download-file', { name: attachment.name })}
-          className="text-primary rounded p-1"
+          className="rounded p-1 text-primary"
         >
           <Download aria-hidden="true" className="size-4" />
         </a>

@@ -58,7 +58,7 @@ export default function AssessmentBuilderActions({
           <Button
             type="button"
             size="pill"
-            className="disabled:bg-disabled gap-3 px-6 disabled:opacity-100 md:min-w-56"
+            className="gap-3 px-6 disabled:bg-disabled disabled:opacity-100 md:min-w-56"
             disabled={!canReview || pending || success}
             onClick={step === 2 ? onSubmit : onNext}
           >
@@ -69,7 +69,7 @@ export default function AssessmentBuilderActions({
         )}
       </footer>
       {step === 1 && questionCount > 0 && !canReview && (
-        <p className="text-muted-foreground mt-3 text-end text-sm">
+        <p className="mt-3 text-end text-sm text-muted-foreground">
           {t('minimum-questions', { count: MIN_ASSESSMENT_QUESTIONS })}
         </p>
       )}

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Link } from "@/i18n/navigation";
-import { useAppSelector } from "@/shared/providers/redux/hooks";
-import Image from "next/image";
-import { useSession } from "next-auth/react";
-import BackToTopButton from "./BackToTopButton";
-import { useTranslations } from "next-intl";
+import { Link } from '@/i18n/navigation';
+import { useAppSelector } from '@/shared/providers/redux/hooks';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import BackToTopButton from './BackToTopButton';
+import { useTranslations } from 'next-intl';
 
 const Footer = () => {
   const t = useTranslations();
@@ -13,46 +13,68 @@ const Footer = () => {
   const settings = useAppSelector((state) => state.settings.data);
   const { data: session } = useSession();
   const authRole = session?.authRole;
-  const isCandidate = authRole === "candidate";
-  const isEmployer = authRole === "employer";
-  const footerLogo = settings?.footer_logo || "/assets/new-logo-light-dot.svg";
-  const footerText =
-    settings?.footer_text ||
-    t("footer.description");
+  const isCandidate = authRole === 'candidate';
+  const isEmployer = authRole === 'employer';
+  const footerLogo = settings?.footer_logo || '/assets/new-logo-light-dot.svg';
+  const footerText = settings?.footer_text || t('footer.description');
   const copyrightText =
-    settings?.copyright || t("footer.copyright", { year: currentYear });
+    settings?.copyright || t('footer.copyright', { year: currentYear });
   const socialLinks = [
-    { href: settings?.linkedin, srcImg: "/assets/icons/social-icons/linkedin-footer.svg", label: "LinkedIn" },
-    { href: settings?.facebook, srcImg: "/assets/icons/social-icons/facebook-footer.svg", label: "Facebook" },
-    { href: settings?.instagram, srcImg: "/assets/icons/social-icons/instagram-footer.svg", label: "Instagram" },
-    { href: settings?.twitter, srcImg: "/assets/icons/social-icons/twitter-footer.svg", label: "Twitter" },
-    { href: settings?.snapchat, srcImg: "/assets/icons/social-icons/snap-footer.svg", label: "Snapchat" },
+    {
+      href: settings?.linkedin,
+      srcImg: '/assets/icons/social-icons/linkedin-footer.svg',
+      label: 'LinkedIn',
+    },
+    {
+      href: settings?.facebook,
+      srcImg: '/assets/icons/social-icons/facebook-footer.svg',
+      label: 'Facebook',
+    },
+    {
+      href: settings?.instagram,
+      srcImg: '/assets/icons/social-icons/instagram-footer.svg',
+      label: 'Instagram',
+    },
+    {
+      href: settings?.twitter,
+      srcImg: '/assets/icons/social-icons/twitter-footer.svg',
+      label: 'Twitter',
+    },
+    {
+      href: settings?.snapchat,
+      srcImg: '/assets/icons/social-icons/snap-footer.svg',
+      label: 'Snapchat',
+    },
   ].filter((item) => Boolean(item.href));
 
   const candidateLinks = isEmployer
-    ? [
-      { href: "/jobs", label: t("footer.explore-jobs") },
-    ]
+    ? [{ href: '/jobs', label: t('footer.explore-jobs') }]
     : isCandidate
       ? [
-        { href: "/jobs", label: t("footer.explore-jobs") },
-        { href: "/faq", label: t("footer.faq") },
-      ]
+          { href: '/jobs', label: t('footer.explore-jobs') },
+          { href: '/faq', label: t('footer.faq') },
+        ]
       : [
-        { href: "/jobs", label: t("footer.explore-jobs") },
-        { href: "/auth/candidate/register", label: t("footer.create-profile") },
-        { href: "/faq", label: t("footer.faq") },
-      ];
+          { href: '/jobs', label: t('footer.explore-jobs') },
+          {
+            href: '/auth/candidate/register',
+            label: t('footer.create-profile'),
+          },
+          { href: '/faq', label: t('footer.faq') },
+        ];
 
   const employerLinks = isCandidate
     ? []
     : [
-      { href: "/for-employers", label: t("footer.for-employers") },
-      { href: "/for-employers#how-it-works", label: t("footer.how-it-works") },
-    ];
+        { href: '/for-employers', label: t('footer.for-employers') },
+        {
+          href: '/for-employers#how-it-works',
+          label: t('footer.how-it-works'),
+        },
+      ];
 
   return (
-    <footer className="layout-shell bg-secondary py-12 text-white relative">
+    <footer className="layout-shell relative bg-secondary py-12 text-white">
       <div className="layout-content relative">
         {/* Top Section: Links & Info */}
         <div className="relative grid grid-cols-1 gap-4 pb-12 md:grid-cols-2 lg:grid-cols-5 lg:gap-12">
@@ -61,7 +83,7 @@ const Footer = () => {
             <div className="flex items-center gap-2">
               <Image
                 src={footerLogo}
-                alt={t("footer.logo-alt")}
+                alt={t('footer.logo-alt')}
                 width={140}
                 height={60}
               />
@@ -73,11 +95,14 @@ const Footer = () => {
 
           {/* Column 2: Candidates */}
           <div className="bg-before">
-            <h4>{t("footer.for-candidates")}</h4>
+            <h4>{t('footer.for-candidates')}</h4>
             <ul className="space-y-3 text-sm text-gray-300 md:space-y-4 md:text-base">
               {candidateLinks.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="transition hover:text-white">
+                  <Link
+                    href={item.href}
+                    className="transition hover:text-white"
+                  >
                     {item.label}
                   </Link>
                 </li>
@@ -88,50 +113,62 @@ const Footer = () => {
           {/* Column 3: Employers */}
           {employerLinks.length > 0 ? (
             <div className="bg-before">
-              <h4 className="text-base md:text-lg lg:text-xl">{t("footer.for-employers")}</h4>
+              <h4 className="text-base md:text-lg lg:text-xl">
+                {t('footer.for-employers')}
+              </h4>
               <ul className="space-y-3 text-sm text-gray-300 md:space-y-4 md:text-base">
                 {employerLinks.map((item) => (
                   <li key={item.label}>
-                    <Link href={item.href} className="transition hover:text-white">
+                    <Link
+                      href={item.href}
+                      className="transition hover:text-white"
+                    >
                       {item.label}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-          ) : (
-            null
-          )}
+          ) : null}
 
           {/* Column 4: Company*/}
           <div className="bg-before">
-            <h4 className="text-base md:text-lg lg:text-xl">{t("footer.company-trust")}</h4>
+            <h4 className="text-base md:text-lg lg:text-xl">
+              {t('footer.company-trust')}
+            </h4>
             <ul className="mb-8 space-y-3 text-sm text-gray-300 md:space-y-4 md:text-base">
               <li>
                 <Link href="/about" className="transition hover:text-white">
-                  {t("footer.about-joocare")}
+                  {t('footer.about-joocare')}
                 </Link>
               </li>
               <li>
-                <Link href="/privacy-policy" className="transition hover:text-white">
-                  {t("footer.data-privacy-security")}
+                <Link
+                  href="/privacy-policy"
+                  className="transition hover:text-white"
+                >
+                  {t('footer.data-privacy-security')}
                 </Link>
               </li>
               <li>
-                <Link href="/terms-conditions" className="transition hover:text-white">
-                  {t("footer.terms-conditions")}
+                <Link
+                  href="/terms-conditions"
+                  className="transition hover:text-white"
+                >
+                  {t('footer.terms-conditions')}
                 </Link>
               </li>
-
             </ul>
           </div>
 
           <div className="bg-before">
-            <h4 className="text-base md:text-lg lg:text-xl">{t("footer.get-in-touch")}</h4>
+            <h4 className="text-base md:text-lg lg:text-xl">
+              {t('footer.get-in-touch')}
+            </h4>
             <ul className="mb-8 space-y-3 text-sm text-gray-300 md:space-y-4 md:text-base">
               <li>
                 <Link href="/contact" className="transition hover:text-white">
-                  {t("footer.contact-us")}
+                  {t('footer.contact-us')}
                 </Link>
               </li>
             </ul>
@@ -139,9 +176,9 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section: Socials & Copyright */}
-        <div className="relative grid grid-cols-1 gap-4 pb-10 lg:grid-cols-5 lg:gap-12 ">
+        <div className="relative grid grid-cols-1 gap-4 pb-10 lg:grid-cols-5 lg:gap-12">
           {/* Social Icons */}
-          <div className="order-last col-span-1 flex items-center justify-center lg:justify-start gap-4 lg:order-first">
+          <div className="order-last col-span-1 flex items-center justify-center gap-4 lg:order-first lg:justify-start">
             {socialLinks.map(({ href, srcImg, label }) => (
               <Link
                 key={label}
@@ -149,22 +186,22 @@ const Footer = () => {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={label}
-                className="flex h-7 w-7 hover:scale-105 rounded-full"
+                className="flex h-7 w-7 rounded-full hover:scale-105"
               >
                 <Image src={srcImg} alt={label} width={30} height={30} />
               </Link>
             ))}
           </div>
-          <div className="relative col-span-1 h-7 w-full lg:w-[calc(100%+1rem)] lg:col-span-4 ">
+          <div className="relative col-span-1 h-7 w-full lg:col-span-4 lg:w-[calc(100%+1rem)]">
             <Image
               src="/assets/footer1.svg"
-              alt={t("footer.logo-alt")}
+              alt={t('footer.logo-alt')}
               fill
-              className="object-cover w-full lg:left-4.5!"
+              className="w-full object-cover lg:left-4.5!"
             />
-          </div>{" "}
+          </div>{' '}
         </div>
-      </div>{" "}
+      </div>{' '}
       {/* Copyright */}
       <p className="relative border-t border-[#0D0D0D73] pt-4 text-center text-sm text-white md:text-lg">
         {copyrightText}

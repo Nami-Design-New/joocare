@@ -40,7 +40,7 @@ export default function CandidateCredentialsTabs({
   };
 
   return (
-    <section className="bg-card flex flex-col gap-6 rounded-2xl border p-4">
+    <section className="flex flex-col gap-6 rounded-2xl border bg-card p-4">
       <div
         role="tablist"
         aria-label={t('credentials')}

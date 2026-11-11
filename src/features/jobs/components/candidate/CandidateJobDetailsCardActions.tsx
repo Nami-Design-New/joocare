@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Button } from "@/shared/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useJobApplyFlow } from "../../hooks/useJobApplyFlow";
-import type { ApplyScreeningQuestion } from "../../types/job-apply.types";
-import type { JobLinkedAssessment } from "../../types/jobs.types";
-import JobApplyDialogs from "../apply/JobApplyDialogs";
-import ToggleSavedJobButton from "./ToggleSavedJobButton";
+import { Button } from '@/shared/components/ui/button';
+import { ArrowRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useJobApplyFlow } from '../../hooks/useJobApplyFlow';
+import type { ApplyScreeningQuestion } from '../../types/job-apply.types';
+import type { JobLinkedAssessment } from '../../types/jobs.types';
+import JobApplyDialogs from '../apply/JobApplyDialogs';
+import ToggleSavedJobButton from './ToggleSavedJobButton';
 
 type CandidateJobDetailsCardActionsProps = {
   jobId: number;
@@ -26,13 +26,17 @@ export default function CandidateJobDetailsCardActions({
   screeningQuestions,
   assessment,
 }: CandidateJobDetailsCardActionsProps) {
-  const t = useTranslations("jobDetailsPage");
-  const applyFlow = useJobApplyFlow({ isApplied, screeningQuestions, assessment });
+  const t = useTranslations('jobDetailsPage');
+  const applyFlow = useJobApplyFlow({
+    isApplied,
+    screeningQuestions,
+    assessment,
+  });
 
   return (
     <>
       <JobApplyDialogs flow={applyFlow} jobId={jobId} jobTitle={jobTitle} />
-      <section className="flex items-center gap-4 max-md:gap-2 max-lg:mt-2">
+      <section className="flex items-center gap-4 max-lg:mt-2 max-md:gap-2">
         {!applyFlow.isEmployer ? (
           <>
             <ToggleSavedJobButton
@@ -47,9 +51,9 @@ export default function CandidateJobDetailsCardActions({
                 variant="outline"
                 size="pill"
                 disabled
-                className="border-primary text-primary flex-1 cursor-not-allowed border bg-white hover:bg-transparent max-md:h-11 max-md:px-4 max-md:py-2"
+                className="flex-1 cursor-not-allowed border border-primary bg-white text-primary hover:bg-transparent max-md:h-11 max-md:px-4 max-md:py-2"
               >
-                {t("already-applied")}
+                {t('already-applied')}
               </Button>
             ) : (
               <Button
@@ -57,7 +61,7 @@ export default function CandidateJobDetailsCardActions({
                 size="pill"
                 className="flex flex-1 items-center gap-2 max-md:h-11 max-md:px-4 max-md:py-2"
               >
-                {t("apply-now")} <ArrowRight className="rtl:rotate-180" />
+                {t('apply-now')} <ArrowRight className="rtl:rotate-180" />
               </Button>
             )}
           </>

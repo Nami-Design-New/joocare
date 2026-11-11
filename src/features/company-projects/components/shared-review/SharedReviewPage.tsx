@@ -20,7 +20,7 @@ export default function SharedReviewPage({
   if (!review.project || !review.share) return null;
 
   return (
-    <div className="bg-body-bg min-h-dvh">
+    <div className="min-h-dvh bg-body-bg">
       <SharedReviewHeader experience={experience} />
 
       <main className="mx-auto w-full max-w-360 px-4 pt-6 pb-8 sm:pt-10 sm:pb-14 md:px-7 md:pt-14.5 lg:px-13">

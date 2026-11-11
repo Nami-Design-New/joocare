@@ -40,7 +40,7 @@ export default function ProjectEditNameModal({
         showCloseButton={false}
         className="w-[calc(100%-2rem)] max-w-[800px] gap-6 rounded-[24px] p-6"
       >
-        <ModalHeader className="border-border border-b pb-4 text-start">
+        <ModalHeader className="border-b border-border pb-4 text-start">
           <div className="flex items-center justify-between gap-4">
             <ModalTitle className="text-xl font-bold sm:text-[28px]">
               {t('edit-project-title')}
@@ -49,7 +49,7 @@ export default function ProjectEditNameModal({
               type="button"
               onClick={onClose}
               aria-label={t('close')}
-              className="bg-primary text-primary-foreground flex size-12 shrink-0 items-center justify-center rounded-full"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
             >
               <X aria-hidden="true" className="size-5" />
             </button>
@@ -63,7 +63,7 @@ export default function ProjectEditNameModal({
             id="project-name"
             value={name}
             onChange={(event) => setName(event.currentTarget.value)}
-            className="bg-muted/60 h-12 rounded-full"
+            className="h-12 rounded-full bg-muted/60"
           />
         </div>
         <Button

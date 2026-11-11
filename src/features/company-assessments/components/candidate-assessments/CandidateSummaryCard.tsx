@@ -9,7 +9,7 @@ export default function CandidateSummaryCard({
   candidate,
 }: CandidateSummaryCardProps) {
   return (
-    <div className="border-primary bg-primary-bg flex items-center gap-3 rounded-2xl border p-3">
+    <div className="flex items-center gap-3 rounded-2xl border border-primary bg-primary-bg p-3">
       <Image
         src={candidate.image}
         alt=""
@@ -19,11 +19,14 @@ export default function CandidateSummaryCard({
       />
       <div className="flex min-w-0 flex-col gap-1">
         <p className="truncate font-semibold">{candidate.name}</p>
-        <p className="text-muted-foreground flex flex-wrap items-center gap-2 text-xs">
+        <p className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           {candidate.location && (
             <>
               <span>{candidate.location}</span>
-              <span aria-hidden className="bg-muted-foreground/50 size-1 rounded-full" />
+              <span
+                aria-hidden
+                className="size-1 rounded-full bg-muted-foreground/50"
+              />
             </>
           )}
           <bdi className="truncate">{candidate.email}</bdi>

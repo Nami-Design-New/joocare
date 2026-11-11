@@ -1,5 +1,5 @@
-import React from "react";
-import { Search } from "lucide-react";
+import React from 'react';
+import { Search } from 'lucide-react';
 
 interface PopularSearchItemProps {
   label: string;
@@ -10,10 +10,13 @@ const PopularSearchItem = ({ label, onClick }: PopularSearchItemProps) => {
   return (
     <button
       onClick={onClick}
-      className="border-border cursor-pointer flex w-full items-center justify-center gap-2 rounded-full border bg-white px-3 py-2"
+      className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-border bg-white px-3 py-2"
     >
-      <Search className="h-4 md:h-6 w-4 md:w-6 text-[#0D0D0D73]" strokeWidth={1.5} />
-      <p className="text-xs md:text-base text-primary font-normal">{label}</p>
+      <Search
+        className="h-4 w-4 text-[#0D0D0D73] md:h-6 md:w-6"
+        strokeWidth={1.5}
+      />
+      <p className="text-xs font-normal text-primary md:text-base">{label}</p>
     </button>
   );
 };

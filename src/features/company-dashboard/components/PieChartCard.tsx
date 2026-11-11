@@ -16,7 +16,7 @@ export default function PieChartCard({
 }: PieChartCardProps) {
   const t = useTranslations('companyPage.dashboard.design');
   return (
-    <section className="bg-card min-h-98 rounded-2xl px-5 py-6">
+    <section className="min-h-98 rounded-2xl bg-card px-5 py-6">
       <DashboardWidgetTitle
         title={t('category-title')}
         description={t('category-description')}

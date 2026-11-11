@@ -1,12 +1,16 @@
-"use client";
+'use client';
 
-import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { toast } from 'sonner';
 
-import { AuthApiRole } from "@/shared/lib/api-endpoints";
-import { NotificationsPage } from "../notifications.types";
-import { markNotificationAsRead } from "../service/notifications-service";
-import { notificationsQueryKey } from "./useGetAllNotifications";
+import { AuthApiRole } from '@/shared/lib/api-endpoints';
+import { NotificationsPage } from '../notifications.types';
+import { markNotificationAsRead } from '../service/notifications-service';
+import { notificationsQueryKey } from './useGetAllNotifications';
 
 type NotificationsInfiniteData = InfiniteData<NotificationsPage>;
 
@@ -40,7 +44,7 @@ export function useMarkAsRead(
   const mutation = useMutation({
     mutationFn: async (notificationId: number) => {
       if (!role || !token) {
-        throw new Error("Missing notification auth context.");
+        throw new Error('Missing notification auth context.');
       }
 
       const response = await markNotificationAsRead({
@@ -50,7 +54,9 @@ export function useMarkAsRead(
       });
 
       if (!response.ok) {
-        throw new Error(response.message || "Failed to mark notification as read.");
+        throw new Error(
+          response.message || 'Failed to mark notification as read.',
+        );
       }
 
       return notificationId;
@@ -63,8 +69,10 @@ export function useMarkAsRead(
       const previousData =
         queryClient.getQueryData<NotificationsInfiniteData>(queryKey);
 
-      queryClient.setQueryData<NotificationsInfiniteData>(queryKey, (currentData) =>
-        patchNotificationReadState(currentData, notificationId),
+      queryClient.setQueryData<NotificationsInfiniteData>(
+        queryKey,
+        (currentData) =>
+          patchNotificationReadState(currentData, notificationId),
       );
 
       return {
@@ -78,7 +86,7 @@ export function useMarkAsRead(
         notificationsQueryKey(role),
         context?.previousData,
       );
-      toast.error(error.message || "Failed to mark notification as read.");
+      toast.error(error.message || 'Failed to mark notification as read.');
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({

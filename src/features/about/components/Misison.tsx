@@ -1,5 +1,5 @@
-import SectionTitle from "@/features/home/components/SectionTitle";
-import Image from "next/image";
+import SectionTitle from '@/features/home/components/SectionTitle';
+import Image from 'next/image';
 
 export default function Mission() {
   return (
@@ -10,11 +10,11 @@ export default function Mission() {
             <SectionTitle sectionTitle="Our Mission" textColor="text-dark" />
           </div>
 
-          <h2 className="text-secondary mb-3 text-3xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">
+          <h2 className="mb-3 text-3xl leading-tight font-bold text-secondary sm:text-4xl lg:mb-2 lg:text-5xl">
             Our Mission
           </h2>
 
-          <p className="text-muted-foreground mb-8 max-w-xl text-left text-sm leading-relaxed sm:text-base lg:text-justify">
+          <p className="mb-8 max-w-xl text-left text-sm leading-relaxed text-muted-foreground sm:text-base lg:text-justify">
             To become the global architecture for healthcare human capital,
             where data-driven precision eliminates hiring risk and empowers
             every medical professional to reach their highest point of impact.

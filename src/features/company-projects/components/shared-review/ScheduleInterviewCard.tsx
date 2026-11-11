@@ -28,7 +28,7 @@ export default function ScheduleInterviewCard({
   const fieldId = (name: string) => `${candidate.id}-${name}`;
 
   return (
-    <article className="bg-card border-border flex flex-col gap-5 rounded-xl border p-4 md:p-6">
+    <article className="flex flex-col gap-5 rounded-xl border border-border bg-card p-4 md:p-6">
       <ReviewCandidateIdentity candidate={candidate} />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
@@ -67,7 +67,7 @@ export default function ScheduleInterviewCard({
         hint={t('optional')}
         placeholder={t('note-placeholder')}
         {...register(`interviews.${index}.note`)}
-        className="bg-muted min-h-24 rounded-2xl border-0 px-4 py-3.5 shadow-none"
+        className="min-h-24 rounded-2xl border-0 bg-muted px-4 py-3.5 shadow-none"
       />
     </article>
   );

@@ -2,7 +2,11 @@ import { formatDistanceToNowStrict } from 'date-fns';
 
 import { getBaseApiUrl } from '@/shared/lib/api-endpoints';
 import { assessmentSeeds } from '@/features/company-assessments/constants/assessment-data';
-import { JobDetails, JobLinkedAssessment, JobListItem } from './types/jobs.types';
+import {
+  JobDetails,
+  JobLinkedAssessment,
+  JobListItem,
+} from './types/jobs.types';
 import { JobsSearchFilters, JobStatus } from './types/index.types';
 
 function getSingleParam(
@@ -234,7 +238,10 @@ export function getJobSalary(job: SalaryLike, notSpecified = 'Not specified') {
   if (!job.hasSalary) return notSpecified;
   return notSpecified;
 }
-export function getJobSalaryWithCurrency(job: SalaryLike, notSpecified = 'Not specified') {
+export function getJobSalaryWithCurrency(
+  job: SalaryLike,
+  notSpecified = 'Not specified',
+) {
   const minSalary = formatSalaryAmount(job.min_salary);
   const maxSalary = formatSalaryAmount(job.max_salary);
   const hasMinSalary = minSalary !== null;
@@ -302,7 +309,10 @@ export function getPipelineFiltersHref(jobId: string | number, query = '') {
 }
 
 // "21 December 2026, 4:00 AM" in the active locale; returns '' for missing/invalid dates.
-export function formatJobDateTime(value: string | null | undefined, locale: string) {
+export function formatJobDateTime(
+  value: string | null | undefined,
+  locale: string,
+) {
   if (!value) return '';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '';
@@ -340,9 +350,15 @@ export function getInitials(name: string) {
 }
 
 // Linked assessment shown in the wizard preview (preview seeds until the assessments API exists).
-export function getLinkedAssessment(assessmentId?: string): JobLinkedAssessment | null {
+export function getLinkedAssessment(
+  assessmentId?: string,
+): JobLinkedAssessment | null {
   const assessment = assessmentSeeds.find((item) => item.id === assessmentId);
   return assessment
-    ? { id: assessment.id, title: assessment.title, category_id: assessment.categoryId }
+    ? {
+        id: assessment.id,
+        title: assessment.title,
+        category_id: assessment.categoryId,
+      }
     : null;
 }

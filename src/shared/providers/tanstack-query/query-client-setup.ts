@@ -1,4 +1,4 @@
-import { QueryClient, isServer } from "@tanstack/react-query";
+import { QueryClient, isServer } from '@tanstack/react-query';
 
 // Function to create a new QueryClient
 function makeQueryClient(): QueryClient {
@@ -8,7 +8,8 @@ function makeQueryClient(): QueryClient {
         staleTime: 60 * 1000, // 1 minute
         refetchOnMount: false,
         refetchOnWindowFocus: false,
-        refetchOnReconnect: false, retry: 1,
+        refetchOnReconnect: false,
+        retry: 1,
       },
     },
   });

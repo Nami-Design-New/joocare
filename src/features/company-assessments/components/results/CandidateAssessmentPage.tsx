@@ -30,7 +30,7 @@ export default function CandidateAssessmentPage(
     <div className="flex min-w-0 flex-col gap-6">
       <Link
         href={result.backHref}
-        className="text-assessment-primary inline-flex w-fit items-center gap-2 text-sm font-semibold"
+        className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-assessment-primary"
       >
         <ChevronLeft aria-hidden="true" className="size-4 rtl:rotate-180" />
         {t('back-to-results')}

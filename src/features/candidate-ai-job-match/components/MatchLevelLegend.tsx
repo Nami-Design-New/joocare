@@ -8,8 +8,8 @@ export default function MatchLevelLegend() {
   const format = useFormatter();
 
   return (
-    <div className="bg-muted/60 flex flex-wrap items-center gap-x-5 gap-y-2 rounded-2xl px-4 py-3 text-sm">
-      <span className="text-secondary font-semibold">{t('match-level')}</span>
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-2xl bg-muted/60 px-4 py-3 text-sm">
+      <span className="font-semibold text-secondary">{t('match-level')}</span>
       <ul className="contents">
         {MATCH_LEVELS.map(({ level, min, max }) => (
           <li key={level} className="flex items-center gap-1.5">

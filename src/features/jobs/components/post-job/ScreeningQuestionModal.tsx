@@ -52,10 +52,10 @@ export default function ScreeningQuestionModal({
           )
             event.preventDefault();
         }}
-        className="bg-card flex max-h-[90vh] w-[calc(100%-2rem)] max-w-241 flex-col gap-6 overflow-y-auto rounded-3xl p-6 sm:min-w-0"
+        className="flex max-h-[90vh] w-[calc(100%-2rem)] max-w-241 flex-col gap-6 overflow-y-auto rounded-3xl bg-card p-6 sm:min-w-0"
       >
         <div className="flex items-center justify-between gap-4">
-          <DialogTitle className="text-foreground text-2xl font-semibold sm:text-[28px]">
+          <DialogTitle className="text-2xl font-semibold text-foreground sm:text-[28px]">
             {t(question ? 'edit-title' : 'create-title')}
           </DialogTitle>
           <DialogClose asChild>

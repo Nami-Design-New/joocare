@@ -10,9 +10,9 @@ const tagPillVariants = cva(
     variants: {
       variant: {
         eyebrow:
-          'border-why-green-light/26 bg-why-green/6 text-why-green-light gap-2.5 px-3.5 py-2 text-xs tracking-[.2em]',
+          'gap-2.5 border-why-green-light/26 bg-why-green/6 px-3.5 py-2 text-xs tracking-[.2em] text-why-green-light',
         column:
-          'border-why-line text-why-ink-muted h-[26px] gap-2 bg-white/[.025] px-3 text-[10.5px] tracking-[.14em]',
+          'h-[26px] gap-2 border-why-line bg-white/[.025] px-3 text-[10.5px] tracking-[.14em] text-why-ink-muted',
       },
     },
     defaultVariants: {

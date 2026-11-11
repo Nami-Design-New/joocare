@@ -28,7 +28,7 @@ export default function DashboardRecruitersChart({
   const locale = useLocale();
   const format = new Intl.NumberFormat(locale);
   return (
-    <section className="bg-card space-y-6 rounded-2xl p-4 sm:p-6">
+    <section className="space-y-6 rounded-2xl bg-card p-4 sm:p-6">
       <div className="flex min-h-11.5 flex-wrap items-center justify-between gap-3">
         <DashboardWidgetTitle
           title={t('recruiters-title')}
@@ -62,9 +62,9 @@ export default function DashboardRecruitersChart({
               {[0, 10, 20, 30, 40].map((tick) => (
                 <span
                   key={tick}
-                  className="border-border relative h-full border-s"
+                  className="relative h-full border-s border-border"
                 >
-                  <span className="text-muted-foreground absolute top-full mt-2 -translate-x-1/2 text-xs leading-4 rtl:translate-x-1/2">
+                  <span className="absolute top-full mt-2 -translate-x-1/2 text-xs leading-4 text-muted-foreground rtl:translate-x-1/2">
                     {format.format(tick)}
                   </span>
                 </span>
@@ -76,35 +76,35 @@ export default function DashboardRecruitersChart({
                   key={recruiter.id}
                   className="relative flex h-9 items-center text-sm leading-4.5"
                 >
-                  <span className="text-muted-foreground w-6 shrink-0">
+                  <span className="w-6 shrink-0 text-muted-foreground">
                     {format.format(index + 1)}
                   </span>
                   <Link
                     href="/company/recruiter-activity"
-                    className="text-secondary w-48 shrink-0 truncate pe-4 hover:underline"
+                    className="w-48 shrink-0 truncate pe-4 text-secondary hover:underline"
                   >
                     <bdi>{recruiter.name}</bdi>
                   </Link>
                   <div className="flex min-w-0 flex-1 items-center pe-18">
                     <span
-                      className="bg-dashboard-primary h-4 rounded-e-[3px]"
+                      className="h-4 rounded-e-[3px] bg-dashboard-primary"
                       style={{ width: (recruiter.jobsPosted / 40) * 100 + '%' }}
                     />
-                    <span className="text-secondary ms-2 shrink-0 text-sm font-semibold">
+                    <span className="ms-2 shrink-0 text-sm font-semibold text-secondary">
                       {format.format(recruiter.jobsPosted)}
                     </span>
                   </div>
                 </li>
               ))}
             </ol>
-            <p className="text-muted-foreground absolute start-54 end-18 bottom-0 text-center text-xs leading-4">
+            <p className="absolute start-54 end-18 bottom-0 text-center text-xs leading-4 text-muted-foreground">
               {t('jobs-posted')}
             </p>
           </div>
         </div>
       )}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-dashboard-heading text-sm leading-4.5">
+        <p className="text-sm leading-4.5 text-dashboard-heading">
           {t('showing-recruiters', {
             count: empty ? 0 : dashboardRecruiters.length,
             total: empty ? 0 : dashboardDesignAnalytics.recruiterCount,
@@ -113,7 +113,7 @@ export default function DashboardRecruitersChart({
         <Button
           asChild
           variant="outline"
-          className="border-dashboard-primary text-dashboard-primary h-9 gap-1.5 rounded-full px-4 text-sm font-semibold"
+          className="h-9 gap-1.5 rounded-full border-dashboard-primary px-4 text-sm font-semibold text-dashboard-primary"
         >
           <Link href="/company/recruiter-activity">
             {t('view-all-recruiters')}

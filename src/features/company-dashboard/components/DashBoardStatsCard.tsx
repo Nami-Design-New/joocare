@@ -30,12 +30,12 @@ export default function DashBoardStatsCard({
   return (
     <section
       className={cn(
-        'bg-card relative flex min-h-38.75 flex-col gap-4 rounded-2xl p-4 sm:p-6',
-        compact && 'bg-dashboard-stat-bg min-h-26.75 justify-center gap-1',
+        'relative flex min-h-38.75 flex-col gap-4 rounded-2xl bg-card p-4 sm:p-6',
+        compact && 'min-h-26.75 justify-center gap-1 bg-dashboard-stat-bg',
       )}
     >
       {compact ? (
-        <h2 className="text-muted-foreground text-base leading-5 font-normal">
+        <h2 className="text-base leading-5 font-normal text-muted-foreground">
           {title}
         </h2>
       ) : (
@@ -48,21 +48,21 @@ export default function DashBoardStatsCard({
         {isPending ? (
           <Skeleton className="h-9 w-16" />
         ) : (
-          <p className="text-dashboard-primary text-2xl leading-8.75 sm:text-[28px] font-extrabold">
+          <p className="text-2xl leading-8.75 font-extrabold text-dashboard-primary sm:text-[28px]">
             <bdi>{value}</bdi>
-            <span className="text-secondary ms-1 text-base font-normal">
+            <span className="ms-1 text-base font-normal text-secondary">
               {suffix}
             </span>
           </p>
         )}
         {comparison && (
-          <div className="text-secondary absolute end-26 bottom-16 text-base leading-5">
+          <div className="absolute end-26 bottom-16 text-base leading-5 text-secondary">
             {comparison}
           </div>
         )}
       </div>
       {!compact && (
-        <p className="text-muted-foreground mt-auto text-base leading-5">
+        <p className="mt-auto text-base leading-5 text-muted-foreground">
           {description}
         </p>
       )}

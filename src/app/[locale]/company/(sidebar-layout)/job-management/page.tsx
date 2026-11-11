@@ -1,5 +1,5 @@
-import { Suspense } from "react";
-import JobManagementSection from "@/features/jobs/components/JobManagementSection";
+import { Suspense } from 'react';
+import JobManagementSection from '@/features/jobs/components/JobManagementSection';
 
 export default async function Page() {
   return (

@@ -94,7 +94,7 @@ export default function AssessmentQuestionsOverview({
           variant="ghost"
           size="icon-xs"
           aria-label={t('view-question', { number: pageStart + index + 1 })}
-          className="bg-success hover:bg-success/80 rounded-full text-white hover:text-white"
+          className="rounded-full bg-success text-white hover:bg-success/80 hover:text-white"
           onClick={() =>
             setSelectedQuestion({
               question,
@@ -113,7 +113,7 @@ export default function AssessmentQuestionsOverview({
       id="questions-overview"
       className="min-w-0 gap-3 rounded-2xl border-0 px-3 py-3 shadow-none sm:px-4 sm:py-4 md:px-5"
     >
-      <h2 className="border-border border-b pb-2 text-[13px] font-semibold">
+      <h2 className="border-b border-border pb-2 text-[13px] font-semibold">
         {t('questions-overview')}
       </h2>
       <DataTable

@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { JobStepOnePayload } from "../types/job-steps.types";
-import { jobUpdateStepOneService } from "../services/job-update-step-one-service";
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { JobStepOnePayload } from '../types/job-steps.types';
+import { jobUpdateStepOneService } from '../services/job-update-step-one-service';
 
 type UpdateStepOneParams = {
   jobId: number | string;

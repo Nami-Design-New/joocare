@@ -15,9 +15,9 @@ const actionVariants = cva('h-12.5 gap-2 px-5 text-sm font-semibold sm:px-8', {
     tone: {
       primary:
         'bg-cv-builder-primary text-primary-foreground hover:bg-cv-builder-primary/90',
-      outline: 'border-secondary text-secondary h-13',
+      outline: 'h-13 border-secondary text-secondary',
       danger:
-        'border-cv-builder-danger text-cv-builder-danger hover:bg-cv-builder-danger/5 hover:text-cv-builder-danger h-13',
+        'h-13 border-cv-builder-danger text-cv-builder-danger hover:bg-cv-builder-danger/5 hover:text-cv-builder-danger',
     },
   },
 });

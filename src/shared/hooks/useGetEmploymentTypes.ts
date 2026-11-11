@@ -1,9 +1,9 @@
-import { useInfiniteLookup } from "./useInfiniteLookup";
+import { useInfiniteLookup } from './useInfiniteLookup';
 
-export default function useGetEmploymentTypes(search = "") {
+export default function useGetEmploymentTypes(search = '') {
   const query = useInfiniteLookup({
-    endpoint: "employment-types",
-    queryKey: "employment-types",
+    endpoint: 'employment-types',
+    queryKey: 'employment-types',
     search,
   });
 

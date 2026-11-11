@@ -1,103 +1,98 @@
-import { AuthApiRole, getAuthApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch, getTimeZone } from "@/shared/lib/fetch-manager";
+import { AuthApiRole, getAuthApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch, getTimeZone } from '@/shared/lib/fetch-manager';
 import {
-    NotificationMutationResponse,
-    NotificationsPage,
-} from "../notifications.types";
+  NotificationMutationResponse,
+  NotificationsPage,
+} from '../notifications.types';
 
 type NotificationsParams = {
-    role: AuthApiRole;
-    page?: number;
-    limit?: number;
-    token: string;
-    locale?: string;
+  role: AuthApiRole;
+  page?: number;
+  limit?: number;
+  token: string;
+  locale?: string;
 };
 
 type NotificationActionParams = {
-    role: AuthApiRole;
-    token: string;
-    notificationId: number;
+  role: AuthApiRole;
+  token: string;
+  notificationId: number;
 };
 
 type MarkAllNotificationsParams = {
-    role: AuthApiRole;
-    token: string;
+  role: AuthApiRole;
+  token: string;
 };
 
 function getNotificationsBaseUrl(role: AuthApiRole) {
-    return getAuthApiUrl(role);
+  return getAuthApiUrl(role);
 }
 
-async function performNotificationAction(
-    url: string,
-    token: string,
-) {
-    // const methods = ["POST", "PATCH", "PUT"] as const;
-    let lastResponse = null;
+async function performNotificationAction(url: string, token: string) {
+  // const methods = ["POST", "PATCH", "PUT"] as const;
+  let lastResponse = null;
 
+  const response = await apiFetch<NotificationMutationResponse>(url, {
+    token,
+  });
 
-    const response = await apiFetch<NotificationMutationResponse>(url, {
+  lastResponse = response;
 
-        token,
-    });
+  if (response.ok) {
+    return response;
+  }
 
-    lastResponse = response;
+  if (!lastResponse) {
+    throw new Error('Failed to update notification.');
+  }
 
-    if (response.ok) {
-        return response;
-    }
-
-    if (!lastResponse) {
-        throw new Error("Failed to update notification.");
-    }
-
-    return lastResponse;
+  return lastResponse;
 }
 
 export async function getNotifications({
-    role,
-    page = 1,
-    limit = 10,
-    token,
-    locale = "en",
+  role,
+  page = 1,
+  limit = 10,
+  token,
+  locale = 'en',
 }: NotificationsParams) {
-    const baseUrl = getNotificationsBaseUrl(role);
+  const baseUrl = getNotificationsBaseUrl(role);
 
-    const url = `${baseUrl}/notifications?pagination=on&limit_per_page=${limit}&page=${page}`;
+  const url = `${baseUrl}/notifications?pagination=on&limit_per_page=${limit}&page=${page}`;
 
-    const res = await fetch(url, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-            "X-Timezone": getTimeZone(),
-            "Accept-Language": locale,
-        },
-        cache: "no-store",
-    });
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'X-Timezone': getTimeZone(),
+      'Accept-Language': locale,
+    },
+    cache: 'no-store',
+  });
 
-    if (!res.ok) {
-        throw new Error("Failed to load notifications.");
-    }
+  if (!res.ok) {
+    throw new Error('Failed to load notifications.');
+  }
 
-    return (await res.json()) as NotificationsPage;
+  return (await res.json()) as NotificationsPage;
 }
 
 export async function markNotificationAsRead({
-    role,
-    token,
-    notificationId,
+  role,
+  token,
+  notificationId,
 }: NotificationActionParams) {
-    const url = `${getNotificationsBaseUrl(role)}/notifications/${notificationId}`;
+  const url = `${getNotificationsBaseUrl(role)}/notifications/${notificationId}`;
 
-    return performNotificationAction(url, token);
+  return performNotificationAction(url, token);
 }
 
 export async function markAllNotificationsAsRead({
-    role,
-    token,
+  role,
+  token,
 }: MarkAllNotificationsParams) {
-    const url = `${getNotificationsBaseUrl(role)}/read-all/notifications`;
+  const url = `${getNotificationsBaseUrl(role)}/read-all/notifications`;
 
-    return performNotificationAction(url, token);
+  return performNotificationAction(url, token);
 }

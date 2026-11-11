@@ -1,6 +1,6 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { FieldValues, Resolver } from "react-hook-form";
-import type { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { FieldValues, Resolver } from 'react-hook-form';
+import type { z } from 'zod';
 
 /**
  * Typed wrapper for zodResolver that fixes Zod v4 input/output type

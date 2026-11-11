@@ -1,19 +1,18 @@
+import { Suspense } from 'react';
+import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
-import { Suspense } from "react";
-import Link from "next/link";
-import { getTranslations } from "next-intl/server";
-
-import SocialLoginButtons from "@/features/auth/components/login-content/SocialLoginButtons";
-import FormCandidateLogin from "@/features/auth/components/login-content/FormCandidateLogin";
+import SocialLoginButtons from '@/features/auth/components/login-content/SocialLoginButtons';
+import FormCandidateLogin from '@/features/auth/components/login-content/FormCandidateLogin';
 
 function LoginFormSkeleton() {
   return (
     <div aria-hidden="true" className="mt-6 flex flex-col gap-4">
-      <div className="bg-muted h-14 w-full animate-pulse rounded-2xl" />
-      <div className="bg-muted h-14 w-full animate-pulse rounded-2xl" />
-      <div className="bg-muted h-4 w-32 animate-pulse rounded" />
+      <div className="h-14 w-full animate-pulse rounded-2xl bg-muted" />
+      <div className="h-14 w-full animate-pulse rounded-2xl bg-muted" />
+      <div className="h-4 w-32 animate-pulse rounded bg-muted" />
       <div className="flex justify-center">
-        <div className="bg-muted h-11 w-1/3 animate-pulse rounded-full" />
+        <div className="h-11 w-1/3 animate-pulse rounded-full bg-muted" />
       </div>
     </div>
   );
@@ -23,15 +22,15 @@ const LoginCandidatePage = async () => {
   const t = await getTranslations();
 
   return (
-    <main className="min-h-[calc(100dvh-4.75rem)] flex items-center justify-center gap-4 ">
+    <main className="flex min-h-[calc(100dvh-4.75rem)] items-center justify-center gap-4">
       <section
         aria-labelledby="employer-login-page"
-        className="w-full md:w-3/4 mx-auto p-4"
+        className="mx-auto w-full p-4 md:w-3/4"
       >
         {/* header text */}
-        <h1>{t("authPage.pages.candidate-login.title")}</h1>
-        <p className="text-[clamp(.8rem,4vw,1rem)] mt-2 mb-8">
-          {t("authPage.pages.candidate-login.subtitle")}
+        <h1>{t('authPage.pages.candidate-login.title')}</h1>
+        <p className="mt-2 mb-8 text-[clamp(.8rem,4vw,1rem)]">
+          {t('authPage.pages.candidate-login.subtitle')}
         </p>
 
         {/* Login form */}
@@ -40,24 +39,20 @@ const LoginCandidatePage = async () => {
         </Suspense>
 
         {/* social buttons */}
-        <div
-          className="flex items-center gap-3 my-4 text-sm text-gray-500 font-medium 
-                before:content-[''] before:flex-1 before:h-px before:bg-gray-200
-                after:content-[''] after:flex-1 after:h-px after:bg-gray-200"
-        >
-          {t("authPage.common.or")}
+        <div className="my-4 flex items-center gap-3 text-sm font-medium text-gray-500 before:h-px before:flex-1 before:bg-gray-200 before:content-[''] after:h-px after:flex-1 after:bg-gray-200 after:content-['']">
+          {t('authPage.common.or')}
         </div>
 
         <SocialLoginButtons role="candidate" />
         {/* Bottom CTA */}
-        <section className="text-center border-t border-gray-100 pt-6">
+        <section className="border-t border-gray-100 pt-6 text-center">
           <p className="text-sm text-gray-600">
-            {t("authPage.common.not-member-yet")}{" "}
+            {t('authPage.common.not-member-yet')}{' '}
             <Link
               href="/auth/candidate/register"
-              className="text-primary hover:text-primary/60 underline font-medium transition-colors"
+              className="font-medium text-primary underline transition-colors hover:text-primary/60"
             >
-              {t("header.join-now")}
+              {t('header.join-now')}
             </Link>
           </p>
         </section>

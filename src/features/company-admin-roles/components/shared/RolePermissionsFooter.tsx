@@ -6,8 +6,8 @@ export default function RolePermissionsFooter() {
   const t = useTranslations('companyPage.roles.permissions');
 
   return (
-    <DialogFooter className="border-border bg-primary/[0.02] flex shrink-0 flex-row flex-wrap items-center justify-between gap-4 border-t px-5 py-5 sm:justify-between sm:gap-6 sm:px-8">
-      <p className="text-muted-foreground min-w-0 flex-1 text-sm leading-[normal]">
+    <DialogFooter className="flex shrink-0 flex-row flex-wrap items-center justify-between gap-4 border-t border-border bg-primary/[0.02] px-5 py-5 sm:justify-between sm:gap-6 sm:px-8">
+      <p className="min-w-0 flex-1 text-sm leading-[normal] text-muted-foreground">
         {t('readOnly')}
       </p>
       <DialogClose asChild>

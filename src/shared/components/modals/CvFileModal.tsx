@@ -48,7 +48,7 @@ export default function CvFileModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="mb-25 max-w-175 rounded-2xl p-5 text-center sm:p-8">
         <DialogHeader className="-mt-5 flex flex-row items-center justify-between gap-3 pr-6">
-          <DialogTitle className="text-foreground text-xl font-bold">
+          <DialogTitle className="text-xl font-bold text-foreground">
             {title}
           </DialogTitle>
           {pdfUrl && !onShowAnswers ? (
@@ -77,7 +77,7 @@ export default function CvFileModal({
             {pdfUrl ? (
               <Button
                 asChild
-                className="bg-assessment-primary hover:bg-assessment-primary/90 h-10 gap-2 rounded-full px-6 text-sm font-normal"
+                className="h-10 gap-2 rounded-full bg-assessment-primary px-6 text-sm font-normal hover:bg-assessment-primary/90"
               >
                 <a href={pdfUrl} target="_blank" rel="noreferrer">
                   {pdfIcon}

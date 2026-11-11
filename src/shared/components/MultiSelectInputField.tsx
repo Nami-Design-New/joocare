@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { cn } from "../lib/utils";
-import Image from "next/image";
+import * as React from 'react';
+import { cn } from '../lib/utils';
+import Image from 'next/image';
 import {
   Combobox,
   ComboboxCollection,
@@ -11,9 +11,9 @@ import {
   ComboboxItem,
   ComboboxList,
   ComboboxTrigger,
-} from "./ui/combobox";
-import { Button } from "./ui/button";
-import { Option } from "./SelectInputField";
+} from './ui/combobox';
+import { Button } from './ui/button';
+import { Option } from './SelectInputField';
 
 // Module-level so the Combobox gets the same function on every render;
 // a new one each render re-triggers its internal store sync.
@@ -67,7 +67,7 @@ export const MultiSelectInputField = React.forwardRef<
       hasNextPage,
       isFetchingNextPage,
       withSearchInput = false,
-      searchPlaceholder = "Search...",
+      searchPlaceholder = 'Search...',
       onSearchChange,
       portalContainer,
       preloadOptions = [],
@@ -79,7 +79,7 @@ export const MultiSelectInputField = React.forwardRef<
   ) => {
     const listRef = React.useRef<HTMLDivElement | null>(null);
     const observerRef = React.useRef<IntersectionObserver | null>(null);
-    const [searchQuery, setSearchQuery] = React.useState("");
+    const [searchQuery, setSearchQuery] = React.useState('');
     // ✅ KEEP only this:
     const [optionsCache, setOptionsCache] = React.useState<Map<string, Option>>(
       () => {
@@ -145,8 +145,8 @@ export const MultiSelectInputField = React.forwardRef<
       const query = searchQuery.trim().toLowerCase();
       const filtered = query
         ? options.filter((item) =>
-          (item.label ?? "").toLowerCase().includes(query),
-        )
+            (item.label ?? '').toLowerCase().includes(query),
+          )
         : options;
 
       return filtered.filter((item) => !selectedValuesSet.has(item.value));
@@ -179,7 +179,7 @@ export const MultiSelectInputField = React.forwardRef<
           },
           {
             root: listRef.current,
-            rootMargin: "100px",
+            rootMargin: '100px',
           },
         );
 
@@ -188,18 +188,17 @@ export const MultiSelectInputField = React.forwardRef<
       [hasNextPage, isFetchingNextPage, onReachEnd],
     );
 
-
     // const selectedOptions = options.filter((o) =>
     //   value.includes(o.value ?? ""),
     // );
 
     return (
-      <div className={cn("flex w-full flex-col", containerStyles)}>
+      <div className={cn('flex w-full flex-col', containerStyles)}>
         {label && (
           <label htmlFor={id} className="mx-1 mb-1 font-semibold">
-            {label}{" "}
+            {label}{' '}
             {hint && (
-              <span className="text-muted-foreground mx-1 text-sm font-normal">
+              <span className="mx-1 text-sm font-normal text-muted-foreground">
                 {hint}
               </span>
             )}
@@ -234,12 +233,14 @@ export const MultiSelectInputField = React.forwardRef<
                 variant="outline"
                 className={cn(
                   // ── identical base styles to SelectInputField ──
-                  "bg-muted border-input h-13 w-full justify-between rounded-full px-4 text-sm font-normal",
-                  "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                  "disabled:bg-disabled",
+                  'h-13 w-full justify-between rounded-full border-input bg-muted px-4 text-sm font-normal',
+                  'focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
+                  'disabled:bg-disabled',
                   // expand height when chips wrap
-                  selectedOptions.length > 0 && !hideSelectedChips && "h-auto min-h-13 py-2 rounded-4xl",
-                  error && "border-destructive",
+                  selectedOptions.length > 0 &&
+                    !hideSelectedChips &&
+                    'h-auto min-h-13 rounded-4xl py-2',
+                  error && 'border-destructive',
                   className,
                 )}
                 aria-invalid={!!error}
@@ -251,7 +252,7 @@ export const MultiSelectInputField = React.forwardRef<
                 {selectedOptions.map((o) => (
                   <span
                     key={o.value}
-                    className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs font-medium"
+                    className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary"
                   >
                     {o.label}
                   </span>
@@ -259,14 +260,16 @@ export const MultiSelectInputField = React.forwardRef<
               </span>
             ) : (
               <span className="flex min-w-0 flex-1 items-center justify-between gap-2">
-                <span className="text-muted-foreground truncate">
-                  {placeholder || "Select options"}
+                <span className="truncate text-muted-foreground">
+                  {placeholder || 'Select options'}
                 </span>
-                {hideSelectedChips && selectedCountLabel && selectedOptions.length > 0 && (
-                  <span className="bg-primary text-primary-foreground shrink-0 rounded-full px-2 py-0.5 text-xs font-medium">
-                    {selectedCountLabel}
-                  </span>
-                )}
+                {hideSelectedChips &&
+                  selectedCountLabel &&
+                  selectedOptions.length > 0 && (
+                    <span className="shrink-0 rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
+                      {selectedCountLabel}
+                    </span>
+                  )}
               </span>
             )}
           </ComboboxTrigger>
@@ -285,16 +288,19 @@ export const MultiSelectInputField = React.forwardRef<
             )}
             <ComboboxList ref={listRef} className="max-h-60 overflow-y-auto">
               {displayItems.length === 0 ? (
-                <div className="text-muted-foreground px-2 py-2 text-center text-sm">
+                <div className="px-2 py-2 text-center text-sm text-muted-foreground">
                   No results found.
                 </div>
               ) : (
                 <ComboboxCollection>
                   {(item: Option, index: number) => (
-                    <ComboboxItem key={item.value} value={item}
+                    <ComboboxItem
+                      key={item.value}
+                      value={item}
                       className={cn(
-                        "flex items-center gap-2",
-                        value.includes(item.value ?? "") && "bg-accent text-accent-foreground"
+                        'flex items-center gap-2',
+                        value.includes(item.value ?? '') &&
+                          'bg-accent text-accent-foreground',
                       )}
                     >
                       {item.image && (
@@ -313,7 +319,7 @@ export const MultiSelectInputField = React.forwardRef<
               <div ref={handleObserver} className="h-1" />
             </ComboboxList>
             {isFetchingNextPage && (
-              <div className="text-muted-foreground px-2 pb-2 text-center text-xs">
+              <div className="px-2 pb-2 text-center text-xs text-muted-foreground">
                 Loading...
               </div>
             )}
@@ -328,4 +334,4 @@ export const MultiSelectInputField = React.forwardRef<
   },
 );
 
-MultiSelectInputField.displayName = "MultiSelectInputField";
+MultiSelectInputField.displayName = 'MultiSelectInputField';

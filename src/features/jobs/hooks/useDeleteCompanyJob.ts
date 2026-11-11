@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
-import { deleteCompanyJobService } from "../services/company-job-delete-service";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
+import { deleteCompanyJobService } from '../services/company-job-delete-service';
 
 type UseDeleteCompanyJobOptions = {
   redirectTo?: string;
@@ -25,11 +25,11 @@ export function useDeleteCompanyJob(
   const mutation = useMutation({
     mutationFn: async () => {
       if (!jobId) {
-        throw new Error("Job id is missing.");
+        throw new Error('Job id is missing.');
       }
 
-      if (!session?.accessToken || session.authRole !== "employer") {
-        throw new Error("Only company accounts can delete jobs.");
+      if (!session?.accessToken || session.authRole !== 'employer') {
+        throw new Error('Only company accounts can delete jobs.');
       }
 
       return deleteCompanyJobService({
@@ -39,8 +39,8 @@ export function useDeleteCompanyJob(
       });
     },
     onSuccess: (response) => {
-      toast.success(response.message || "Job deleted successfully.");
-      void queryClient.invalidateQueries({ queryKey: ["company-jobs"] });
+      toast.success(response.message || 'Job deleted successfully.');
+      void queryClient.invalidateQueries({ queryKey: ['company-jobs'] });
       onSuccess?.();
 
       if (redirectTo) {
@@ -50,7 +50,7 @@ export function useDeleteCompanyJob(
       }
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to delete job.");
+      toast.error(error.message || 'Failed to delete job.');
     },
   });
 

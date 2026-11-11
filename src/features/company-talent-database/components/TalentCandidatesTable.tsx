@@ -135,7 +135,7 @@ export default function TalentCandidatesTable({
     },
   ];
   return (
-    <div className="bg-card rounded-2xl p-3">
+    <div className="rounded-2xl bg-card p-3">
       <DataTable
         columns={columns}
         data={candidates}
@@ -173,7 +173,7 @@ function getSelectionColumn(
                 : false
           }
           onCheckedChange={onToggleAll}
-          className="border-primary-foreground bg-card size-6 rounded-[3px]"
+          className="size-6 rounded-[3px] border-primary-foreground bg-card"
         />
         <span>#</span>
       </div>

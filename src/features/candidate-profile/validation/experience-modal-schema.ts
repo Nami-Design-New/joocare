@@ -65,7 +65,9 @@ export const createExperienceModalSchema = (
     })
     .refine(
       (data) =>
-        data.currentlyWorking || !data.endDate || data.endDate >= data.startDate,
+        data.currentlyWorking ||
+        !data.endDate ||
+        data.endDate >= data.startDate,
       {
         message: messages.endDateAfterStart,
         path: ['endDate'],

@@ -26,7 +26,7 @@ export default function ProfileCvLabel({
       />
       <span className="flex min-w-0 flex-1 flex-col gap-1">
         <bdi className="truncate font-semibold">{fileName}</bdi>
-        <span className="text-muted-foreground text-sm">{t('profile-cv')}</span>
+        <span className="text-sm text-muted-foreground">{t('profile-cv')}</span>
       </span>
       {canPreview ? (
         <button
@@ -36,7 +36,7 @@ export default function ProfileCvLabel({
             event.preventDefault();
             onPreview();
           }}
-          className="text-assessment-primary shrink-0 px-3 py-2 text-sm font-semibold underline underline-offset-4"
+          className="shrink-0 px-3 py-2 text-sm font-semibold text-assessment-primary underline underline-offset-4"
         >
           {t('preview')}
         </button>

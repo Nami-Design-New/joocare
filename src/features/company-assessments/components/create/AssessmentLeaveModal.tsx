@@ -41,13 +41,13 @@ export default function AssessmentLeaveModal({
             type="button"
             variant="ghost"
             size="icon-sm"
-            className="bg-muted absolute end-6 top-6 rounded-full"
+            className="absolute end-6 top-6 rounded-full bg-muted"
             aria-label={t('close')}
           >
             <X className="size-5" />
           </Button>
         </DialogClose>
-        <div className="mx-auto size-44  sm:size-60">
+        <div className="mx-auto size-44 sm:size-60">
           <Image
             src="/assets/icons/delete-file-icon.svg"
             alt=""
@@ -60,19 +60,19 @@ export default function AssessmentLeaveModal({
           <DialogTitle className="text-2xl font-bold sm:text-[30px]">
             {t('leave-title')}
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground text-base leading-7">
+          <DialogDescription className="text-base leading-7 text-muted-foreground">
             {t('leave-description')}
           </DialogDescription>
         </div>
-        <div className="bg-destructive/5 flex items-center gap-4 rounded-2xl p-5">
-          <span className="bg-destructive/10 text-destructive rounded-full p-3">
+        <div className="flex items-center gap-4 rounded-2xl bg-destructive/5 p-5">
+          <span className="rounded-full bg-destructive/10 p-3 text-destructive">
             <TriangleAlert aria-hidden="true" className="size-6" />
           </span>
-          <div className="border-destructive/20 border-s ps-4">
-            <p className="text-destructive font-semibold">
+          <div className="border-s border-destructive/20 ps-4">
+            <p className="font-semibold text-destructive">
               {t('leave-warning-title')}
             </p>
-            <p className="text-muted-foreground mt-1 text-sm leading-6">
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">
               {t('leave-warning-description')}
             </p>
           </div>

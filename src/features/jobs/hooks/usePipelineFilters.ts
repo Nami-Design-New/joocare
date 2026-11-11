@@ -2,10 +2,7 @@
 
 import { useMemo } from 'react';
 import { useUrlFilters } from '@/shared/hooks/useUrlFilters';
-import {
-  PIPELINE_FILTER_KEYS,
-  PIPELINE_FILTER_LABEL_KEYS,
-} from '../constants';
+import { PIPELINE_FILTER_KEYS, PIPELINE_FILTER_LABEL_KEYS } from '../constants';
 import type {
   PipelineFilterKey,
   PipelineFilters,

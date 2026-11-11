@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 import {
   CompanyJobStatus,
   updateCompanyJobStatusService,
-} from "../services/company-job-status-service";
+} from '../services/company-job-status-service';
 
 type UseUpdateCompanyJobStatusOptions = {
   onSuccess?: (status: CompanyJobStatus) => void;
@@ -28,11 +28,11 @@ export function useUpdateCompanyJobStatus(
   const mutation = useMutation({
     mutationFn: async (status: CompanyJobStatus) => {
       if (!jobId) {
-        throw new Error("Job id is missing.");
+        throw new Error('Job id is missing.');
       }
 
-      if (!session?.accessToken || session.authRole !== "employer") {
-        throw new Error("Only company accounts can change job status.");
+      if (!session?.accessToken || session.authRole !== 'employer') {
+        throw new Error('Only company accounts can change job status.');
       }
 
       return updateCompanyJobStatusService({
@@ -43,17 +43,21 @@ export function useUpdateCompanyJobStatus(
       });
     },
     onSuccess: (response, status) => {
-      const shouldToast = typeof showSuccessToast === 'function'
-        ? showSuccessToast(status)
-        : showSuccessToast;
-      if (shouldToast) toast.success(response.message || `Job status updated to ${status}.`);
-      void queryClient.invalidateQueries({ queryKey: ["company-jobs"] });
-      void queryClient.invalidateQueries({ queryKey: ["company-job", locale, jobId] });
+      const shouldToast =
+        typeof showSuccessToast === 'function'
+          ? showSuccessToast(status)
+          : showSuccessToast;
+      if (shouldToast)
+        toast.success(response.message || `Job status updated to ${status}.`);
+      void queryClient.invalidateQueries({ queryKey: ['company-jobs'] });
+      void queryClient.invalidateQueries({
+        queryKey: ['company-job', locale, jobId],
+      });
       router.refresh();
       onSuccess?.(status);
     },
     onError: (error) => {
-      toast.error(error.message || "Failed to update job status.");
+      toast.error(error.message || 'Failed to update job status.');
     },
   });
 

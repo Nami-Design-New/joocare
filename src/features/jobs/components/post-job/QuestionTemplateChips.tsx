@@ -4,7 +4,10 @@ import { useState } from 'react';
 import { Check, Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/lib/utils';
-import { SCREENING_QUESTION_TEMPLATES, TEMPLATES_PREVIEW_COUNT } from '../../constants';
+import {
+  SCREENING_QUESTION_TEMPLATES,
+  TEMPLATES_PREVIEW_COUNT,
+} from '../../constants';
 
 type QuestionTemplateChipsProps = {
   addedIds: string[];
@@ -26,7 +29,7 @@ export default function QuestionTemplateChips({
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-muted-foreground text-xs">{t('templates-helper')}</p>
+      <p className="text-xs text-muted-foreground">{t('templates-helper')}</p>
       <ul className="flex flex-wrap gap-2">
         {templates.map((template) => {
           const isAdded = addedIds.includes(template.id);
@@ -45,7 +48,7 @@ export default function QuestionTemplateChips({
                     ? 'border-primary bg-card text-primary'
                     : isPreviewed
                       ? 'border-secondary bg-secondary text-white'
-                      : 'bg-muted text-foreground hover:border-primary border-transparent',
+                      : 'border-transparent bg-muted text-foreground hover:border-primary',
                 )}
               >
                 <Icon aria-hidden="true" className="size-3.5" />
@@ -59,7 +62,7 @@ export default function QuestionTemplateChips({
             type="button"
             aria-expanded={expanded}
             onClick={() => setExpanded((value) => !value)}
-            className="bg-primary text-primary-foreground rounded-full px-3 py-1.5 text-xs"
+            className="rounded-full bg-primary px-3 py-1.5 text-xs text-primary-foreground"
           >
             {t(expanded ? 'show-less' : 'show-more')}
           </button>

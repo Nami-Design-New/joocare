@@ -748,7 +748,9 @@ export default function PostJobForm() {
   //  UNIFIED WIZARD — same UI for create, complete & edit
   // ═══════════════════════════════════════════════════════
   return (
-    <section className={cn('h-min-dvh mx-auto max-w-7xl px-4 py-6 sm:px-0 sm:py-12')}>
+    <section
+      className={cn('h-min-dvh mx-auto max-w-7xl px-4 py-6 sm:px-0 sm:py-12')}
+    >
       <div className="h-full rounded-2xl bg-white p-4 shadow-lg sm:p-6">
         <div className="flex max-sm:mb-6 max-sm:flex-col sm:gap-6">
           <WizardProgress step={currentStep} steps={steps} />

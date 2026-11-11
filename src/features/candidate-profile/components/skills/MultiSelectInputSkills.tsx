@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { ChevronDown, X } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from 'react';
+import { ChevronDown, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface MultiSelectInputSkillsProps {
   selected: string[];
@@ -35,7 +35,7 @@ export function MultiSelectInputSkills({
   optionsById,
 }: MultiSelectInputSkillsProps) {
   const t = useTranslations();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const [hasWrappedContent, setHasWrappedContent] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -47,8 +47,10 @@ export function MultiSelectInputSkills({
 
   const effectiveQuery = searchValue ?? query;
 
-  const selectedLabels = selected
-    .map((selectedId) => options.find((option) => option.id === selectedId)?.label ?? selectedId);
+  const selectedLabels = selected.map(
+    (selectedId) =>
+      options.find((option) => option.id === selectedId)?.label ?? selectedId,
+  );
 
   const filtered = options.filter(
     (option) =>
@@ -58,17 +60,22 @@ export function MultiSelectInputSkills({
 
   // get label in multi select input
   const getLabel = (id: string) =>
-    optionsById?.get(id)?.label ?? options.find((o) => o.id === id)?.label ?? id;
+    optionsById?.get(id)?.label ??
+    options.find((o) => o.id === id)?.label ??
+    id;
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setOpen(false);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -115,7 +122,8 @@ export function MultiSelectInputSkills({
       return;
     }
 
-    const finishedFetching = wasFetchingNextPageRef.current && !isFetchingNextPage;
+    const finishedFetching =
+      wasFetchingNextPageRef.current && !isFetchingNextPage;
     wasFetchingNextPageRef.current = Boolean(isFetchingNextPage);
 
     if (!finishedFetching) {
@@ -150,7 +158,7 @@ export function MultiSelectInputSkills({
       },
       {
         root: listRef.current,
-        rootMargin: "100px",
+        rootMargin: '100px',
       },
     );
 
@@ -160,9 +168,9 @@ export function MultiSelectInputSkills({
   const handleSelect = (skillId: string) => {
     onSelect(skillId);
     if (searchValue === undefined) {
-      setQuery("");
+      setQuery('');
     }
-    onSearchChange?.("");
+    onSearchChange?.('');
     setOpen(false);
   };
 
@@ -170,8 +178,11 @@ export function MultiSelectInputSkills({
     <div ref={containerRef} className="relative">
       <div
         ref={fieldRef}
-        className={`flex min-h-[44px] flex-wrap gap-1.5 border border-border bg-muted px-3 transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 ${hasWrappedContent ? "items-start rounded-2xl py-3" : "items-center rounded-full py-2"
-          }`}
+        className={`flex min-h-[44px] flex-wrap gap-1.5 border border-border bg-muted px-3 transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 ${
+          hasWrappedContent
+            ? 'items-start rounded-2xl py-3'
+            : 'items-center rounded-full py-2'
+        }`}
         onClick={() => setOpen(true)}
       >
         {selected.map((skillId) => (
@@ -192,7 +203,11 @@ export function MultiSelectInputSkills({
         ))}
         <input
           className="min-w-[140px] flex-1 bg-transparent text-xs text-secondary outline-none placeholder:text-muted-foreground md:text-sm"
-          placeholder={selectedLabels.length === 0 ? t("candidatePage.profile.skills-placeholder") : ""}
+          placeholder={
+            selectedLabels.length === 0
+              ? t('candidatePage.profile.skills-placeholder')
+              : ''
+          }
           value={effectiveQuery}
           onChange={(event) => {
             const nextValue = event.target.value;
@@ -205,8 +220,9 @@ export function MultiSelectInputSkills({
         />
         <ChevronDown
           size={16}
-          className={`shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""
-            } ${hasWrappedContent ? "mt-1 self-start" : ""}`}
+          className={`shrink-0 text-muted-foreground transition-transform ${
+            open ? 'rotate-180' : ''
+          } ${hasWrappedContent ? 'mt-1 self-start' : ''}`}
         />
       </div>
 
@@ -233,12 +249,14 @@ export function MultiSelectInputSkills({
           )}
 
           {(isLoading || isFetchingNextPage) && (
-            <li className="text-muted-foreground px-4 py-2 text-[10px] md:text-xs">{t("common.loading")}</li>
+            <li className="px-4 py-2 text-[10px] text-muted-foreground md:text-xs">
+              {t('common.loading')}
+            </li>
           )}
 
           {!isLoading && filtered.length === 0 && !isFetchingNextPage && (
-            <li className="text-muted-foreground px-4 py-2 text-[10px] md:text-xs">
-              {t("common.no-results-found")}
+            <li className="px-4 py-2 text-[10px] text-muted-foreground md:text-xs">
+              {t('common.no-results-found')}
             </li>
           )}
         </ul>

@@ -39,7 +39,7 @@ export default function ProjectCandidatesFilters({
         onChange={onStatusChange}
         placeholder={t('status-filter')}
         allowDeselect
-        className="border-border bg-card h-13"
+        className="h-13 border-border bg-card"
       />
     </div>
   );

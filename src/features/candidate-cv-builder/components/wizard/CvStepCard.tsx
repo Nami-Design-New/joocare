@@ -18,13 +18,13 @@ export default function CvStepCard({
 }: CvStepCardProps) {
   return (
     <section
-      className={cn('bg-muted flex flex-col gap-5 rounded-xl p-3', className)}
+      className={cn('flex flex-col gap-5 rounded-xl bg-muted p-3', className)}
     >
       <header className="flex flex-col gap-1 p-2">
-        <h2 className="text-secondary text-[21px] leading-6.5 font-semibold">
+        <h2 className="text-[21px] leading-6.5 font-semibold text-secondary">
           {title}
         </h2>
-        <p className="text-foreground/45 text-base leading-5">{description}</p>
+        <p className="text-base leading-5 text-foreground/45">{description}</p>
       </header>
       <FieldSurfaceProvider surface="muted">{children}</FieldSurfaceProvider>
     </section>

@@ -1,4 +1,4 @@
-export type AuthApiRole = "candidate" | "employer";
+export type AuthApiRole = 'candidate' | 'employer';
 
 function getRequiredEnvVar(value: string | undefined, errorMessage: string) {
   if (!value) {
@@ -11,24 +11,24 @@ function getRequiredEnvVar(value: string | undefined, errorMessage: string) {
 export function getBaseApiUrl() {
   return getRequiredEnvVar(
     process.env.NEXT_PUBLIC_BASE_URL,
-    "API endpoint is not configured.",
+    'API endpoint is not configured.',
   );
 }
 
 export function getUserApiUrl() {
   return getRequiredEnvVar(
     process.env.NEXT_PUBLIC_BASE_USER_URL,
-    "User API endpoint is not configured.",
+    'User API endpoint is not configured.',
   );
 }
 
 export function getCompanyApiUrl() {
   return getRequiredEnvVar(
     process.env.NEXT_PUBLIC_BASE_COMPANY_URL,
-    "Company API endpoint is not configured.",
+    'Company API endpoint is not configured.',
   );
 }
 
 export function getAuthApiUrl(role: AuthApiRole) {
-  return role === "candidate" ? getUserApiUrl() : getCompanyApiUrl();
+  return role === 'candidate' ? getUserApiUrl() : getCompanyApiUrl();
 }

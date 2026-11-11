@@ -9,7 +9,7 @@ const ChangePasswordPage = async () => {
   return (
     <div className="flex flex-col gap-6">
       <SettingsPageHeader title={t('title')} description={t('subtitle')} />
-      <section className="bg-card rounded-2xl p-2 md:p-6">
+      <section className="rounded-2xl bg-card p-2 md:p-6">
         <ChangePasswordForm />
       </section>
     </div>

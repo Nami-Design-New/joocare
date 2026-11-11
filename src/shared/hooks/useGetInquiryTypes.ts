@@ -1,9 +1,9 @@
-import { useInfiniteLookup } from "./useInfiniteLookup";
+import { useInfiniteLookup } from './useInfiniteLookup';
 
-export default function useGetInquiryTypes(search = "") {
+export default function useGetInquiryTypes(search = '') {
   const query = useInfiniteLookup({
-    endpoint: "inquiry-types",
-    queryKey: "inquiry-types",
+    endpoint: 'inquiry-types',
+    queryKey: 'inquiry-types',
     search,
   });
 

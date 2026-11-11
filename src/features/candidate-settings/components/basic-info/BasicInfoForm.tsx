@@ -451,7 +451,7 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
           )}
         />
         {errors.phoneNumber ? (
-          <span className="text-destructive mt-1 text-[12px]">
+          <span className="mt-1 text-[12px] text-destructive">
             {errors.phoneNumber.message}
           </span>
         ) : null}

@@ -1,31 +1,30 @@
-"use client";
+'use client';
 
-import { Link, usePathname } from "@/i18n/navigation";
-import { Menu } from "lucide-react";
-import Image from "next/image";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import HeaderActionsButtons from "./HeaderActionsButtons";
-import ResponsiveNavigationBar from "./ResponsiveNavigationBar";
-import { useTranslations } from "next-intl";
+import { Link, usePathname } from '@/i18n/navigation';
+import { Menu } from 'lucide-react';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import HeaderActionsButtons from './HeaderActionsButtons';
+import ResponsiveNavigationBar from './ResponsiveNavigationBar';
+import { useTranslations } from 'next-intl';
 
 const Header = () => {
   const t = useTranslations();
   const [toggleSideMenu, setToggleSideMenu] = useState(false);
   const path = usePathname();
   const { data: session } = useSession();
-  const companyHeader = path.includes("/company");
+  const companyHeader = path.includes('/company');
   const isActive = (pathname: string) => path === pathname;
-  const homeHref = session?.authRole === "employer" ? "/for-employers" : "/";
+  const homeHref = session?.authRole === 'employer' ? '/for-employers' : '/';
 
   const handleToggleMenu = () => {
     setToggleSideMenu((prev) => !prev);
   };
 
   return (
-
     <>
-      <header className="layout-shell shadow-header sticky top-0 z-30 flex h-19 w-full items-center justify-between bg-white py-4">
+      <header className="layout-shell sticky top-0 z-30 flex h-19 w-full items-center justify-between bg-white py-4 shadow-header">
         <div className="layout-content flex items-center justify-between">
           {/* Logo */}
           <div className="flex gap-1">
@@ -67,8 +66,9 @@ const Header = () => {
             <ul className="flex justify-center space-x-4">
               <li>
                 <Link
-                  className={`nav-link ${isActive(homeHref) ? "text-primary border-primary" : ""
-                    }`}
+                  className={`nav-link ${
+                    isActive(homeHref) ? 'border-primary text-primary' : ''
+                  }`}
                   href={homeHref}
                 >
                   {t('header.home')}
@@ -76,8 +76,9 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  className={`nav-link ${isActive("/about") ? "text-primary border-primary" : ""
-                    }`}
+                  className={`nav-link ${
+                    isActive('/about') ? 'border-primary text-primary' : ''
+                  }`}
                   href="/about"
                 >
                   {t('header.about')}
@@ -86,8 +87,9 @@ const Header = () => {
               {/* {!companyHeader && ( */}
               <li>
                 <Link
-                  className={`nav-link ${isActive("/jobs") ? "text-primary border-primary" : ""
-                    }`}
+                  className={`nav-link ${
+                    isActive('/jobs') ? 'border-primary text-primary' : ''
+                  }`}
                   href="/jobs"
                 >
                   {t('header.jobs')}
@@ -96,8 +98,9 @@ const Header = () => {
               {/* )} */}
               <li>
                 <Link
-                  className={`nav-link ${isActive("/contact") ? "text-primary border-primary" : ""
-                    }`}
+                  className={`nav-link ${
+                    isActive('/contact') ? 'border-primary text-primary' : ''
+                  }`}
                   href="/contact"
                 >
                   {t('header.contact')}
@@ -105,9 +108,7 @@ const Header = () => {
               </li>
             </ul>
           </nav>
-          <HeaderActionsButtons
-            companyHeader={companyHeader}
-          />
+          <HeaderActionsButtons companyHeader={companyHeader} />
         </div>
       </header>
       {toggleSideMenu && (

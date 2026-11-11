@@ -22,7 +22,9 @@ export default function CandidateAssessmentPage({
 }: CandidateAssessmentPageProps) {
   const attempt = useCandidateAssessment(assessment);
   const leave = useAssessmentLeaveGuard(
-    attempt.hasStarted && !attempt.submission && assessment.state === 'available',
+    attempt.hasStarted &&
+      !attempt.submission &&
+      assessment.state === 'available',
     CANDIDATE_ASSESSMENT_ROUTES.appliedJobs,
     true,
   );

@@ -1,23 +1,23 @@
-import { getBaseApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { getBaseApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
 export type termsPolicy = {
-  terms: string
+  terms: string;
 };
 
 export const termsService = async (locale: string) => {
   const { data, ok, message } = await apiFetch<termsPolicy>(
     `${getBaseApiUrl()}/terms`,
     {
-      method: "GET",
-      cache: "force-cache",
+      method: 'GET',
+      cache: 'force-cache',
       next: { revalidate: 300 },
-      locale
+      locale,
     },
   );
 
   if (!ok) {
-    throw new Error(message || "Failed to fetch terms policy");
+    throw new Error(message || 'Failed to fetch terms policy');
   }
 
   return data?.data ?? null;

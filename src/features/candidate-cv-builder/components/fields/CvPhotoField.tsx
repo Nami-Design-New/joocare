@@ -17,7 +17,7 @@ export default function CvPhotoField() {
         <div className="flex flex-col items-center gap-2">
           <label
             htmlFor="personal-photo"
-            className="bg-muted border-border hover:border-cv-builder-primary relative flex size-24 cursor-pointer items-center justify-center overflow-hidden rounded-full border transition-colors"
+            className="relative flex size-24 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border bg-muted transition-colors hover:border-cv-builder-primary"
           >
             {field.value ? (
               <Image
@@ -49,10 +49,10 @@ export default function CvPhotoField() {
             />
           </label>
           <p className="flex items-baseline gap-2 px-1">
-            <span className="text-foreground text-base leading-5 font-semibold">
+            <span className="text-base leading-5 font-semibold text-foreground">
               {t('photo')}
             </span>
-            <span className="text-muted-foreground text-sm">
+            <span className="text-sm text-muted-foreground">
               {t('optional')}
             </span>
           </p>

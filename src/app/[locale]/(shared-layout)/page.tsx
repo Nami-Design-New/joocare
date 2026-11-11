@@ -1,17 +1,17 @@
-import FAQSection from "@/features/home/components/FAQSection";
-import Hero from "@/features/home/components/Hero";
-import HowItWorks from "@/features/home/components/HowItWorks";
-import { ImpactSection } from "@/features/home/components/ImpactSection";
-import { LiveJobs } from "@/features/home/components/LiveJobs";
+import FAQSection from '@/features/home/components/FAQSection';
+import Hero from '@/features/home/components/Hero';
+import HowItWorks from '@/features/home/components/HowItWorks';
+import { ImpactSection } from '@/features/home/components/ImpactSection';
+import { LiveJobs } from '@/features/home/components/LiveJobs';
 import {
   getHomePageData,
   getPopularSearchesPage,
-} from "@/features/home/services/home-service";
-import { Testimonials } from "@/features/home/components/Testimonials";
-import TopEmployers from "@/features/home/components/TopEmployers";
-import WhyUs from "@/features/home/components/WhyUs";
-import HttpStatusState from "@/shared/components/HttpStatusState";
-import { getHttpStatusCode } from "@/shared/lib/http-error";
+} from '@/features/home/services/home-service';
+import { Testimonials } from '@/features/home/components/Testimonials';
+import TopEmployers from '@/features/home/components/TopEmployers';
+import WhyUs from '@/features/home/components/WhyUs';
+import HttpStatusState from '@/shared/components/HttpStatusState';
+import { getHttpStatusCode } from '@/shared/lib/http-error';
 
 export const revalidate = 300;
 
@@ -58,7 +58,10 @@ export default async function Home({
         popularSearchesCurrentPage={popularSearches.currentPage}
         popularSearchesLastPage={popularSearches.lastPage}
       />
-      <HowItWorks title={homeData.howItWorks.title} steps={homeData.howItWorks.steps} />
+      <HowItWorks
+        title={homeData.howItWorks.title}
+        steps={homeData.howItWorks.steps}
+      />
       <WhyUs
         title={homeData.whyJoocare.title}
         legacyModelTitle={homeData.whyJoocare.legacyModelTitle}
@@ -72,9 +75,18 @@ export default async function Home({
         title={homeData.topEmployers.title}
         companies={homeData.topEmployers.companies}
       />
-      <ImpactSection title={homeData.impact.title} description={homeData.impact.description} />
-      <LiveJobs title={homeData.recentJobs.title} jobs={homeData.recentJobs.jobs} />
-      <Testimonials title={homeData.rates.title} reviews={homeData.rates.items} />
+      <ImpactSection
+        title={homeData.impact.title}
+        description={homeData.impact.description}
+      />
+      <LiveJobs
+        title={homeData.recentJobs.title}
+        jobs={homeData.recentJobs.jobs}
+      />
+      <Testimonials
+        title={homeData.rates.title}
+        reviews={homeData.rates.items}
+      />
       <FAQSection title={homeData.faqs.title} items={homeData.faqs.items} />
     </section>
   );

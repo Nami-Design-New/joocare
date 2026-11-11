@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Button } from "@/shared/components/ui/button";
+import React from 'react';
+import { Button } from '@/shared/components/ui/button';
 import {
   getHttpErrorMessage,
   getHttpStatusCode,
   getHttpStatusMeta,
-} from "@/shared/lib/http-error";
+} from '@/shared/lib/http-error';
 
 type FallbackRenderProps = {
   error: Error;
@@ -36,7 +36,7 @@ export default class ClientErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("ClientErrorBoundary caught an error", error, errorInfo);
+    console.error('ClientErrorBoundary caught an error', error, errorInfo);
   }
 
   reset = () => {
@@ -65,14 +65,12 @@ export default class ClientErrorBoundary extends React.Component<
     const meta = getHttpStatusMeta(statusCode, getHttpErrorMessage(error));
 
     return (
-      <section className="bg-card rounded-3xl border p-6 text-center shadow-sm">
-        <p className="text-primary text-sm font-semibold">{statusCode}</p>
-        <h2 className="text-foreground mt-3 text-xl font-semibold">
+      <section className="rounded-3xl border bg-card p-6 text-center shadow-sm">
+        <p className="text-sm font-semibold text-primary">{statusCode}</p>
+        <h2 className="mt-3 text-xl font-semibold text-foreground">
           {meta.title}
         </h2>
-        <p className="text-muted-foreground mt-3 text-sm">
-          {meta.description}
-        </p>
+        <p className="mt-3 text-sm text-muted-foreground">{meta.description}</p>
         <div className="mt-6 flex justify-center">
           <Button size="pill" onClick={this.reset}>
             Try again

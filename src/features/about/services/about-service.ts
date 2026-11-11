@@ -1,6 +1,6 @@
-import { getBaseApiUrl } from "@/shared/lib/api-endpoints";
-import type { AboutPageData } from "../types/about.types";
-import { getTimeZone } from "@/shared/lib/fetch-manager";
+import { getBaseApiUrl } from '@/shared/lib/api-endpoints';
+import type { AboutPageData } from '../types/about.types';
+import { getTimeZone } from '@/shared/lib/fetch-manager';
 
 type AboutApiResponse = {
   message?: string;
@@ -57,19 +57,19 @@ type AboutApiResponse = {
 function mapImages(
   images:
     | Array<{
-      id?: number | string;
-      image?: string | null;
-      alt?: string | null;
-    }>
+        id?: number | string;
+        image?: string | null;
+        alt?: string | null;
+      }>
     | undefined,
 ) {
   return (
     images
       ?.filter((image) => image.image)
       .map((image) => ({
-        id: String(image.id ?? ""),
-        image: image.image ?? "",
-        alt: image.alt ?? "About image",
+        id: String(image.id ?? ''),
+        image: image.image ?? '',
+        alt: image.alt ?? 'About image',
       })) ?? []
   );
 }
@@ -77,9 +77,9 @@ function mapImages(
 export async function getAboutPageData(locale: string): Promise<AboutPageData> {
   const response = await fetch(`${getBaseApiUrl()}/about`, {
     headers: {
-      Accept: "application/json",
-      "Accept-Language": locale,
-      "X-Timezone": getTimeZone(),
+      Accept: 'application/json',
+      'Accept-Language': locale,
+      'X-Timezone': getTimeZone(),
     },
     next: {
       revalidate: 300,
@@ -87,47 +87,47 @@ export async function getAboutPageData(locale: string): Promise<AboutPageData> {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to load about page.");
+    throw new Error('Failed to load about page.');
   }
 
   const payload = (await response.json()) as AboutApiResponse;
   const data = payload.data;
 
   if (!data) {
-    throw new Error(payload.message || "Failed to load about page.");
+    throw new Error(payload.message || 'Failed to load about page.');
   }
 
   return {
     aboutSection: {
-      title: data.about_section?.title ?? "",
-      description: data.about_section?.description ?? "",
+      title: data.about_section?.title ?? '',
+      description: data.about_section?.description ?? '',
       items:
         data.about_section?.items?.map((item) => ({
-          id: String(item.id ?? ""),
-          title: item.title ?? "",
-          description: item.description ?? "",
+          id: String(item.id ?? ''),
+          title: item.title ?? '',
+          description: item.description ?? '',
           icon: item.icon ?? null,
         })) ?? [],
       images: mapImages(data.about_section?.images),
     },
     chooseUs: {
-      title: data.choose_us?.title ?? "",
+      title: data.choose_us?.title ?? '',
       items:
         data.choose_us?.items?.map((item) => ({
-          id: String(item.id ?? ""),
-          title: item.title ?? "",
-          content: item.description ?? "",
+          id: String(item.id ?? ''),
+          title: item.title ?? '',
+          content: item.description ?? '',
         })) ?? [],
       images: mapImages(data.choose_us?.images),
     },
     vision: {
-      title: data.our_vision?.title ?? "",
-      description: data.our_vision?.description ?? "",
+      title: data.our_vision?.title ?? '',
+      description: data.our_vision?.description ?? '',
       images: mapImages(data.our_vision?.images),
     },
     mission: {
-      title: data.our_mission?.title ?? "",
-      description: data.our_mission?.description ?? "",
+      title: data.our_mission?.title ?? '',
+      description: data.our_mission?.description ?? '',
       images: mapImages(data.our_mission?.images),
     },
   };

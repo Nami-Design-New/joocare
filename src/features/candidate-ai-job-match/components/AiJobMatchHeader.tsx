@@ -17,15 +17,15 @@ export default function AiJobMatchHeader({
     <header className="flex flex-wrap items-center justify-between gap-4">
       <div className="flex items-center gap-4">
         {icon && (
-          <span className="bg-primary/10 text-primary flex size-11 shrink-0 items-center sm:size-14 justify-center rounded-2xl">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary sm:size-14">
             {icon}
           </span>
         )}
         <div>
-          <h2 className="text-secondary text-xl font-semibold sm:text-2xl md:text-3xl">
+          <h2 className="text-xl font-semibold text-secondary sm:text-2xl md:text-3xl">
             {title}
           </h2>
-          <p className="text-muted-foreground mt-1 text-sm md:text-base">
+          <p className="mt-1 text-sm text-muted-foreground md:text-base">
             {subtitle}
           </p>
         </div>

@@ -48,7 +48,7 @@ export default function CVModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="mb-25 w-[calc(100vw-1rem)] max-w-175 rounded-2xl p-5 text-center sm:max-w-175 sm:p-8">
         <DialogHeader className="-mt-5 flex flex-row items-center justify-between pe-2">
-          <DialogTitle className="text-foreground text-xl font-bold">
+          <DialogTitle className="text-xl font-bold text-foreground">
             {title}
           </DialogTitle>
           <Button
@@ -70,7 +70,7 @@ export default function CVModal({
         {canPreview && url ? (
           <PdfViewer url={url} fileName={fileName} />
         ) : (
-          <div className="text-muted-foreground flex min-h-60 items-center justify-center rounded-2xl border border-dashed p-6 text-sm">
+          <div className="flex min-h-60 items-center justify-center rounded-2xl border border-dashed p-6 text-sm text-muted-foreground">
             {t('candidatePage.profile.pdf-preview-only')}
           </div>
         )}

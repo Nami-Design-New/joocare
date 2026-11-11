@@ -38,7 +38,7 @@ export default function CvRepeatableItem({
       onDragOver={drag.onDragOver}
       onDrop={drag.onDrop}
       className={cn(
-        'bg-card flex flex-col gap-4 rounded-lg p-4 transition-opacity',
+        'flex flex-col gap-4 rounded-lg bg-card p-4 transition-opacity',
         drag.isDragging && 'opacity-50',
       )}
     >
@@ -52,17 +52,17 @@ export default function CvRepeatableItem({
           }}
           onDragEnd={drag.onDragEnd}
           aria-hidden
-          className="text-muted-foreground cursor-grab active:cursor-grabbing"
+          className="cursor-grab text-muted-foreground active:cursor-grabbing"
         >
           <GripVertical aria-hidden className="size-5" />
         </span>
-        <h3 className="text-foreground grow text-lg leading-6">{title}</h3>
+        <h3 className="grow text-lg leading-6 text-foreground">{title}</h3>
         <button
           type="button"
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-label={t(open ? 'collapse' : 'expand', { title })}
-          className="text-foreground flex size-8 items-center justify-center rounded-full"
+          className="flex size-8 items-center justify-center rounded-full text-foreground"
         >
           <ChevronUp
             aria-hidden

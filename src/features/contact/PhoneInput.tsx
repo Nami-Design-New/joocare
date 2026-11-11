@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useMemo, useState } from "react";
+import Image from 'next/image';
+import { useMemo, useState } from 'react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/components/ui/select";
+} from '@/shared/components/ui/select';
 
 type PhoneOption = {
   value: string;
@@ -19,13 +19,13 @@ type PhoneOption = {
 
 const PHONE_OPTIONS: PhoneOption[] = [
   {
-    value: "+966",
-    label: "Saudi Arabia",
-    flag: "/assets/contact/sa.svg",
-    emoji: "🇸🇦",
+    value: '+966',
+    label: 'Saudi Arabia',
+    flag: '/assets/contact/sa.svg',
+    emoji: '🇸🇦',
   },
-  { value: "+20", label: "Egypt", emoji: "🇪🇬" },
-  { value: "+1", label: "United States", emoji: "🇺🇸" },
+  { value: '+20', label: 'Egypt', emoji: '🇪🇬' },
+  { value: '+1', label: 'United States', emoji: '🇺🇸' },
 ];
 
 export function PhoneInput() {
@@ -39,12 +39,12 @@ export function PhoneInput() {
 
   return (
     <div>
-      <label className="text-foreground mb-2 block text-sm font-semibold">
+      <label className="mb-2 block text-sm font-semibold text-foreground">
         phone Number
       </label>
       <div className="flex items-center gap-2">
         <Select value={code} onValueChange={setCode}>
-          <SelectTrigger className="border-border bg-muted text-foreground w-35 rounded-full text-sm">
+          <SelectTrigger className="w-35 rounded-full border-border bg-muted text-sm text-foreground">
             <div className="flex items-center gap-2">
               {/* {selected.flag ? (
                 <Image
@@ -61,7 +61,7 @@ export function PhoneInput() {
             </div>
           </SelectTrigger>
 
-          <SelectContent className="border-border bg-card rounded-xl">
+          <SelectContent className="rounded-xl border-border bg-card">
             {PHONE_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 <span className="flex items-center gap-2">
@@ -85,7 +85,7 @@ export function PhoneInput() {
 
         <input
           placeholder="ex:52 987 6543"
-          className="border-border bg-muted text-foreground placeholder:text-muted-foreground hover:border-primary/40 focus:border-primary focus:bg-card focus-visible:ring-ring/25 flex-1 rounded-full border px-4 py-3 text-sm transition-all duration-200 outline-none focus-visible:ring-2"
+          className="flex-1 rounded-full border border-border bg-muted px-4 py-3 text-sm text-foreground transition-all duration-200 outline-none placeholder:text-muted-foreground hover:border-primary/40 focus:border-primary focus:bg-card focus-visible:ring-2 focus-visible:ring-ring/25"
         />
       </div>
     </div>

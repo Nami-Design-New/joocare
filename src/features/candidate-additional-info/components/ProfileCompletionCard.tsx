@@ -20,15 +20,15 @@ export default function ProfileCompletionCard({
   return (
     <section
       aria-label={t('completion.label')}
-      className="bg-card flex flex-col gap-6 rounded-2xl px-6 py-3.5 md:flex-row md:items-center"
+      className="flex flex-col gap-6 rounded-2xl bg-card px-6 py-3.5 md:flex-row md:items-center"
     >
       <div className="flex min-w-0 flex-1 items-center gap-6">
         <ProgressRing value={percent} label={t('completion.label')} />
         <div className="flex flex-col gap-1">
-          <p className="text-primary text-lg font-semibold">
+          <p className="text-lg font-semibold text-primary">
             {t(complete ? 'completion.done-title' : 'completion.title')}
           </p>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {t(
               complete
                 ? 'completion.done-description'
@@ -39,7 +39,7 @@ export default function ProfileCompletionCard({
       </div>
       <span
         aria-hidden
-        className="bg-foreground/10 hidden h-14 w-px md:block"
+        className="hidden h-14 w-px bg-foreground/10 md:block"
       />
       <ul className="grid shrink-0 grid-cols-1 gap-x-5 gap-y-2.5 sm:grid-cols-2">
         {items.map(({ section, done }) => (
@@ -52,7 +52,7 @@ export default function ProfileCompletionCard({
           >
             <span
               className={cn(
-                'text-primary-foreground flex size-4.5 shrink-0 items-center justify-center rounded-full',
+                'flex size-4.5 shrink-0 items-center justify-center rounded-full text-primary-foreground',
                 done ? 'bg-primary' : 'bg-foreground/20',
               )}
             >

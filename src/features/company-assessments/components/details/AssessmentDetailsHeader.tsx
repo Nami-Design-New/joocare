@@ -27,12 +27,12 @@ export default function AssessmentDetailsHeader({
     <header className="flex flex-wrap items-center justify-between gap-4">
       <div className="min-w-0 space-y-1">
         <div className="flex flex-wrap items-center gap-2">
-          <h1 className="text-secondary text-xl font-bold md:text-2xl">
+          <h1 className="text-xl font-bold text-secondary md:text-2xl">
             {assessment.title}
           </h1>
           {isPaused ? <Badge variant="paused">{t('paused')}</Badge> : null}
         </div>
-        <p className="text-muted-foreground text-xs">
+        <p className="text-xs text-muted-foreground">
           {t('created-on', { date: createdDate })}
         </p>
       </div>

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { AuthApiRole } from "@/shared/lib/api-endpoints";
-import { Notification, NotificationsPage } from "../notifications.types";
-import { getNotifications } from "../service/notifications-service";
-import { useLocale } from "next-intl";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { AuthApiRole } from '@/shared/lib/api-endpoints';
+import { Notification, NotificationsPage } from '../notifications.types';
+import { getNotifications } from '../service/notifications-service';
+import { useLocale } from 'next-intl';
 
 type UseNotificationsInfiniteOptions = {
   enabled?: boolean;
@@ -12,7 +12,7 @@ type UseNotificationsInfiniteOptions = {
 };
 
 export function notificationsQueryKey(role?: AuthApiRole) {
-  return ["notifications", role] as const;
+  return ['notifications', role] as const;
 }
 
 export function useNotificationsInfinite(
@@ -27,7 +27,7 @@ export function useNotificationsInfinite(
     queryKey: notificationsQueryKey(role),
     queryFn: async ({ pageParam = 1 }): Promise<NotificationsPage> => {
       if (!role || !token) {
-        throw new Error("Missing notification auth context.");
+        throw new Error('Missing notification auth context.');
       }
 
       return await getNotifications({
@@ -51,7 +51,7 @@ export function useNotificationsInfinite(
       }
 
       const url = new URL(lastPage.next_page_url);
-      const page = Number(url.searchParams.get("page"));
+      const page = Number(url.searchParams.get('page'));
 
       return Number.isNaN(page) ? undefined : page;
     },

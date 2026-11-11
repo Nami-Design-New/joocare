@@ -26,7 +26,7 @@ export default function CvBuilderHero({
   const t = useTranslations('candidatePage.buildCv');
 
   return (
-    <section className="bg-card grid items-center gap-6 rounded-2xl p-4 sm:gap-8 sm:p-6 md:grid-cols-2 xl:gap-12.5">
+    <section className="grid items-center gap-6 rounded-2xl bg-card p-4 sm:gap-8 sm:p-6 md:grid-cols-2 xl:gap-12.5">
       <Image
         src={CV_BUILDER_HERO_IMAGE}
         alt={t('hero-alt')}
@@ -38,10 +38,10 @@ export default function CvBuilderHero({
 
       <div className="flex flex-col gap-4">
         <FeatureTagline>{t('badge')}</FeatureTagline>
-        <h1 className="text-secondary text-2xl leading-tight font-bold sm:text-3xl xl:text-[38px] xl:leading-12">
+        <h1 className="text-2xl leading-tight font-bold text-secondary sm:text-3xl xl:text-[38px] xl:leading-12">
           {t('title')}
         </h1>
-        <p className="text-muted-foreground text-start leading-5 sm:text-justify">
+        <p className="text-start leading-5 text-muted-foreground sm:text-justify">
           {t('description')}
         </p>
 

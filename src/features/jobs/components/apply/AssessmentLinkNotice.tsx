@@ -28,7 +28,7 @@ export default function AssessmentLinkNotice({
   };
 
   return (
-    <div className="bg-assessment-link-info border-assessment-link-info-border text-assessment-link-info-text mt-6 flex items-start gap-2.5 rounded-xl border p-4 text-start">
+    <div className="mt-6 flex items-start gap-2.5 rounded-xl border border-assessment-link-info-border bg-assessment-link-info p-4 text-start text-assessment-link-info-text">
       <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
       <div className="flex flex-col gap-1">
         <p className="text-sm font-semibold">{t('notice-title', values)}</p>

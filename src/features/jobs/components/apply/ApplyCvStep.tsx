@@ -13,8 +13,8 @@ export default function ApplyCvStep({ cv }: ApplyCvStepProps) {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-1">
-        <h3 className="text-foreground text-lg font-semibold">{t('title')}</h3>
-        <p className="text-muted-foreground text-sm">{t('description')}</p>
+        <h3 className="text-lg font-semibold text-foreground">{t('title')}</h3>
+        <p className="text-sm text-muted-foreground">{t('description')}</p>
       </div>
       <ApplyCvPicker cv={cv} layout="cards" />
     </div>

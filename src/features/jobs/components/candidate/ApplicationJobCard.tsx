@@ -47,17 +47,17 @@ export default function ApplicationJobCard({
   const tags = [details.experience, details.employmentType, details.specialty];
 
   return (
-    <Card className="group hover:border-primary border-border gap-4 rounded-2xl p-4 shadow-none">
+    <Card className="group gap-4 rounded-2xl border-border p-4 shadow-none hover:border-primary">
       <div className="flex min-h-16 items-start gap-3.5">
         <Image
           width={52}
           height={46}
           src={details.companyLogo || '/assets/new-logo-dot.svg'}
           alt={details.company}
-          className="bg-application-primary/8 h-11.5 w-13 shrink-0 rounded-xl object-contain"
+          className="h-11.5 w-13 shrink-0 rounded-xl bg-application-primary/8 object-contain"
         />
         <div className="flex min-w-0 grow flex-col gap-1">
-          <h3 className="text-secondary group-hover:text-primary truncate text-lg leading-5.75 font-semibold">
+          <h3 className="truncate text-lg leading-5.75 font-semibold text-secondary group-hover:text-primary">
             <Link href={href}>{details.title}</Link>
           </h3>
           <p className="truncate text-sm leading-4.5">{details.company}</p>
@@ -66,7 +66,7 @@ export default function ApplicationJobCard({
               dateTime={postedAt}
               suppressHydrationWarning
               className={cn(
-                'text-muted-foreground text-[11px] leading-3.5',
+                'text-[11px] leading-3.5 text-muted-foreground',
                 !application && 'text-warning',
               )}
             >
@@ -80,7 +80,7 @@ export default function ApplicationJobCard({
           <JobMatchBadge
             score={job.match_score}
             icon={<ApplicationIcon name="sparkles" />}
-            className="bg-application-primary/8 text-application-primary rounded-full"
+            className="rounded-full bg-application-primary/8 text-application-primary"
           />
         )}
       </div>
@@ -89,7 +89,7 @@ export default function ApplicationJobCard({
         {meta.map(({ icon, value }) => (
           <li
             key={icon}
-            className="text-secondary flex items-start gap-1 text-sm leading-4.5"
+            className="flex items-start gap-1 text-sm leading-4.5 text-secondary"
           >
             <ApplicationIcon name={icon} />
             {value}
@@ -100,18 +100,18 @@ export default function ApplicationJobCard({
         {tags.map((tag) => (
           <li
             key={tag}
-            className="text-muted-foreground bg-muted rounded-full px-2 py-1 text-xs leading-3.75"
+            className="rounded-full bg-muted px-2 py-1 text-xs leading-3.75 text-muted-foreground"
           >
             {tag}
           </li>
         ))}
       </ul>
-      <p className="text-muted-foreground line-clamp-2 min-h-9 max-w-63 text-sm leading-4.5">
+      <p className="line-clamp-2 min-h-9 max-w-63 text-sm leading-4.5 text-muted-foreground">
         {details.excerpt || t('card-description-fallback')}
       </p>
 
       <div className="mt-auto flex flex-col gap-4">
-        <div className="border-border flex flex-wrap items-center justify-between gap-2 border-t pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4">
           <div className="flex gap-2">
             {session?.authRole !== 'employer' && (
               <ToggleSavedJobButton
@@ -125,7 +125,7 @@ export default function ApplicationJobCard({
               variant="outline"
               size="pill"
               onClick={() => void shareJob()}
-              className="border-border text-muted-foreground bg-muted h-8.5 gap-1 px-3 text-sm font-normal"
+              className="h-8.5 gap-1 border-border bg-muted px-3 text-sm font-normal text-muted-foreground"
             >
               <ApplicationIcon name="share" size={14} />
               {t('share')}
@@ -133,7 +133,7 @@ export default function ApplicationJobCard({
           </div>
           <Link
             href={href}
-            className="bg-application-primary flex h-8.5 items-center gap-2 rounded-full px-3 py-2 text-sm text-white"
+            className="flex h-8.5 items-center gap-2 rounded-full bg-application-primary px-3 py-2 text-sm text-white"
           >
             {t('view-job')}
             <ApplicationIcon

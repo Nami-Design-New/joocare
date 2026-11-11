@@ -1,6 +1,6 @@
-import Image from "next/image";
-import SectionTitle from "../home/components/SectionTitle";
-import type { EmployerHomeImage } from "./types";
+import Image from 'next/image';
+import SectionTitle from '../home/components/SectionTitle';
+import type { EmployerHomeImage } from './types';
 
 type EmployersHeroSectionProps = {
   title: string;
@@ -9,9 +9,9 @@ type EmployersHeroSectionProps = {
 };
 
 const fallbackImages: EmployerHomeImage[] = [
-  { id: "1", image: "/assets/employers/1.png", alt: "Employer hero image 1" },
-  { id: "2", image: "/assets/employers/2.png", alt: "Employer hero image 2" },
-  { id: "3", image: "/assets/employers/3.png", alt: "Employer hero image 3" },
+  { id: '1', image: '/assets/employers/1.png', alt: 'Employer hero image 1' },
+  { id: '2', image: '/assets/employers/2.png', alt: 'Employer hero image 2' },
+  { id: '3', image: '/assets/employers/3.png', alt: 'Employer hero image 3' },
 ];
 
 export default function EmployersHeroSection({
@@ -22,8 +22,8 @@ export default function EmployersHeroSection({
   const heroImages = images.length > 0 ? images.slice(0, 3) : fallbackImages;
 
   return (
-    <section className="bg-white pt-14 py-18 lg:py-18">
-      <div className="mx-auto grid  grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
+    <section className="bg-white py-18 pt-14 lg:py-18">
+      <div className="mx-auto grid grid-cols-1 gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
         <div>
           <div className="mb-2">
             <SectionTitle
@@ -32,11 +32,11 @@ export default function EmployersHeroSection({
             />
           </div>
 
-          <h2 className="text-secondary mb-3 text-3xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">
+          <h2 className="mb-3 text-3xl leading-tight font-bold text-secondary sm:text-4xl lg:mb-2 lg:text-5xl">
             {title}
           </h2>
 
-          <p className="text-secondary mb-8 max-w-xl text-left text-sm leading-relaxed sm:text-base lg:text-justify">
+          <p className="mb-8 max-w-xl text-left text-sm leading-relaxed text-secondary sm:text-base lg:text-justify">
             {description}
           </p>
         </div>

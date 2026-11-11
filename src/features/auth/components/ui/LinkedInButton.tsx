@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
 // libraries
-import Image from "next/image";
-import { useTranslations } from "next-intl";
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 //components
-import { Button } from "@/shared/components/ui/button";
+import { Button } from '@/shared/components/ui/button';
 
 const LinkedInButton = ({
   onClick,
@@ -16,16 +16,16 @@ const LinkedInButton = ({
 
   return (
     <Button
-      variant={"outline"}
-      size={"xl"}
-      className="w-1/2 gap-2 text-base sm:text-lg border-border"
+      variant={'outline'}
+      size={'xl'}
+      className="w-1/2 gap-2 border-border text-base sm:text-lg"
       type="button"
       onClick={onClick}
     >
-      {t("authPage.social.linkedin")}
+      {t('authPage.social.linkedin')}
       <Image
         src="/assets/icons/linkedIn.svg"
-        alt={t("authPage.social.linkedin-icon")}
+        alt={t('authPage.social.linkedin-icon')}
         width={24}
         height={24}
       />

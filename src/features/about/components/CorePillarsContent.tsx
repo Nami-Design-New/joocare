@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import SectionTitle from "@/features/home/components/SectionTitle";
-import { Link } from "@/i18n/navigation";
-import { buttonVariants } from "@/shared/components/ui/button";
-import { cn } from "@/shared/lib/utils";
-import { useState } from "react";
-import type { AboutPillar } from "../types/about.types";
-import CorePillarsAccordionItem from "./CorePillarsAccordionItem";
-import { useTranslations } from "next-intl";
+import SectionTitle from '@/features/home/components/SectionTitle';
+import { Link } from '@/i18n/navigation';
+import { buttonVariants } from '@/shared/components/ui/button';
+import { cn } from '@/shared/lib/utils';
+import { useState } from 'react';
+import type { AboutPillar } from '../types/about.types';
+import CorePillarsAccordionItem from './CorePillarsAccordionItem';
+import { useTranslations } from 'next-intl';
 
 export default function CorePillarsContent({
   title,
@@ -22,10 +22,13 @@ export default function CorePillarsContent({
   return (
     <div className="px-1 sm:px-0">
       <div className="mb-4">
-        <SectionTitle sectionTitle={t("aboutPage.why-choose-us")} textColor="text-dark" />
+        <SectionTitle
+          sectionTitle={t('aboutPage.why-choose-us')}
+          textColor="text-dark"
+        />
       </div>
 
-      <h2 className="text-secondary mb-6 text-xl leading-tight font-bold sm:mb-8 sm:text-4xl lg:text-5xl">
+      <h2 className="mb-6 text-xl leading-tight font-bold text-secondary sm:mb-8 sm:text-4xl lg:text-5xl">
         {title}
       </h2>
 
@@ -41,14 +44,17 @@ export default function CorePillarsContent({
       </div>
 
       <Link
-        href={"/auth/candidate/login"}
-        className={cn(buttonVariants({
-          variant: "default"
-          , size: "pill",
-          hoverStyle: "slideSecondary"
-        }), "mt-8 w-full justify-center gap-2 sm:w-fit")}
+        href={'/auth/candidate/login'}
+        className={cn(
+          buttonVariants({
+            variant: 'default',
+            size: 'pill',
+            hoverStyle: 'slideSecondary',
+          }),
+          'mt-8 w-full justify-center gap-2 sm:w-fit',
+        )}
       >
-        {t("aboutPage.get-started-for-free")}
+        {t('aboutPage.get-started-for-free')}
       </Link>
     </div>
   );

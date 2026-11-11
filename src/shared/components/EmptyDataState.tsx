@@ -36,11 +36,11 @@ export default function EmptyDataState({
           priority={false}
         />
       )}
-      <h3 className="text-secondary mt-6 text-base md:text-lg font-semibold">
+      <h3 className="mt-6 text-base font-semibold text-secondary md:text-lg">
         {titleText ?? t(title)}
       </h3>
       {description ? (
-        <p className="text-muted-foreground mt-2 max-w-md text-sm">
+        <p className="mt-2 max-w-md text-sm text-muted-foreground">
           {description}
         </p>
       ) : null}

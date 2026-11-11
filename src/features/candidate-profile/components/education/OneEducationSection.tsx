@@ -61,7 +61,7 @@ const OneEducationSection = ({
     <>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start justify-start gap-2 p-3">
-          <div className="bg-assessment-primary/8 flex size-11 shrink-0 items-center justify-center rounded-full">
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-assessment-primary/8">
             <Image
               src={'/assets/building-office-2.svg'}
               alt={t('candidatePage.profile.building-image')}
@@ -70,19 +70,23 @@ const OneEducationSection = ({
             />
           </div>
           <div className="flex flex-col gap-2">
-            <h3 className="text-base font-semibold md:text-lg">{education.university}</h3>
-            <div className="flex gap-2 items-center">
-              <p className="text-muted-foreground text-xs font-normal md:text-sm">
-                {education.degree ?? t("candidatePage.profile.no-degree-details")}
+            <h3 className="text-base font-semibold md:text-lg">
+              {education.university}
+            </h3>
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-normal text-muted-foreground md:text-sm">
+                {education.degree ??
+                  t('candidatePage.profile.no-degree-details')}
               </p>
               {education.gpa && (
-                <p className="text-muted-foreground text-[10px] md:text-xs font-normal">
+                <p className="text-[10px] font-normal text-muted-foreground md:text-xs">
                   ( {education.gpa} )
                 </p>
               )}
             </div>
-            <span className="text-muted-foreground text-xs font-normal md:text-sm">
-              {education.educationPeriod ?? t("candidatePage.profile.no-period")}
+            <span className="text-xs font-normal text-muted-foreground md:text-sm">
+              {education.educationPeriod ??
+                t('candidatePage.profile.no-period')}
             </span>
           </div>
         </div>
@@ -92,7 +96,7 @@ const OneEducationSection = ({
             <Edit
               width={20}
               height={20}
-              className="text-muted-foreground cursor-pointer"
+              className="cursor-pointer text-muted-foreground"
               onClick={() => setOpen(true)}
             />
             <Trash2

@@ -1,9 +1,9 @@
-import { useInfiniteLookup } from "./useInfiniteLookup";
+import { useInfiniteLookup } from './useInfiniteLookup';
 
-export default function useGetRoleCategories(search = "") {
+export default function useGetRoleCategories(search = '') {
   const query = useInfiniteLookup({
-    endpoint: "role-categories",
-    queryKey: "role-categories",
+    endpoint: 'role-categories',
+    queryKey: 'role-categories',
     search,
   });
 

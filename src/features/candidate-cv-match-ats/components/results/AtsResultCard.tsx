@@ -13,7 +13,7 @@ export default function AtsResultCard({ fileName, score }: AtsResultCardProps) {
   const t = useTranslations('candidatePage.cvMatchAts.results');
 
   return (
-    <section className="bg-card flex items-center justify-between gap-6 rounded-2xl p-6 sm:gap-11">
+    <section className="flex items-center justify-between gap-6 rounded-2xl bg-card p-6 sm:gap-11">
       <div className="flex min-w-0 items-center gap-6">
         <Image
           src={ATS_ASSETS.pdfFile}
@@ -22,7 +22,7 @@ export default function AtsResultCard({ fileName, score }: AtsResultCardProps) {
           height={50}
           className="shrink-0"
         />
-        <h1 className="text-foreground truncate text-xl font-semibold sm:text-[28px] sm:leading-9">
+        <h1 className="truncate text-xl font-semibold text-foreground sm:text-[28px] sm:leading-9">
           <bdi>{fileName}</bdi>
         </h1>
       </div>

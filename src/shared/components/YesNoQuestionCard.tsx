@@ -43,19 +43,21 @@ export default function YesNoQuestionCard({
   return (
     <section
       className={cn(
-        'bg-question-card-surface border-question-card-border flex flex-col self-start rounded-3xl border-[1.5px] p-4 sm:p-6 shadow-[0_2px_8px_0_oklch(0_0_0/4%)]',
+        'flex flex-col self-start rounded-3xl border-[1.5px] border-question-card-border bg-question-card-surface p-4 shadow-[0_2px_8px_0_oklch(0_0_0/4%)] sm:p-6',
         className,
       )}
     >
       <div className="flex items-start gap-3 sm:gap-5">
-        <span className="bg-question-card-icon-bg flex size-11 shrink-0 items-center justify-center rounded-xl">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-question-card-icon-bg">
           <Image src={icon} width={24} height={24} alt="" className="size-6" />
         </span>
         <div className="flex flex-col gap-1.5">
-          <h3 className="text-question-card-title text-lg leading-6 sm:text-[21px] sm:leading-[26px] font-semibold">
+          <h3 className="text-lg leading-6 font-semibold text-question-card-title sm:text-[21px] sm:leading-[26px]">
             {title}
           </h3>
-          <p className="text-question-card-text min-h-12 text-sm leading-5 sm:text-base sm:leading-6">{description}</p>
+          <p className="min-h-12 text-sm leading-5 text-question-card-text sm:text-base sm:leading-6">
+            {description}
+          </p>
         </div>
       </div>
 
@@ -64,7 +66,7 @@ export default function YesNoQuestionCard({
         {ANSWERS.map((answer) => (
           <label
             key={answer}
-            className="text-question-card-title flex cursor-pointer items-center gap-3.5 text-base"
+            className="flex cursor-pointer items-center gap-3.5 text-base text-question-card-title"
           >
             <input
               type="radio"
@@ -77,10 +79,10 @@ export default function YesNoQuestionCard({
             <span
               aria-hidden
               className={cn(
-                'peer-focus-visible:ring-ring/50 size-6 shrink-0 rounded-full peer-focus-visible:ring-[3px]',
+                'size-6 shrink-0 rounded-full peer-focus-visible:ring-[3px] peer-focus-visible:ring-ring/50',
                 value === answer
-                  ? 'border-question-card-accent border-[5px]'
-                  : 'border-question-card-radio border-2',
+                  ? 'border-[5px] border-question-card-accent'
+                  : 'border-2 border-question-card-radio',
               )}
             />
             {t(answer)}
@@ -90,7 +92,7 @@ export default function YesNoQuestionCard({
           <button
             type="button"
             onClick={() => onChange('')}
-            className="text-primary cursor-pointer text-sm underline"
+            className="cursor-pointer text-sm text-primary underline"
           >
             {t('clear')}
           </button>
@@ -98,9 +100,9 @@ export default function YesNoQuestionCard({
       </fieldset>
 
       {value === 'yes' && (children || hint) && (
-        <div className="border-question-card-border flex flex-col gap-3 border-t pt-6">
+        <div className="flex flex-col gap-3 border-t border-question-card-border pt-6">
           {children}
-          {hint && <p className="text-question-card-hint text-sm">{hint}</p>}
+          {hint && <p className="text-sm text-question-card-hint">{hint}</p>}
         </div>
       )}
     </section>

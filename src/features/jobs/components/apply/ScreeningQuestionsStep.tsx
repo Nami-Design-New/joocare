@@ -20,7 +20,7 @@ export default function ScreeningQuestionsStep({
 
   return (
     <div className="flex flex-col gap-8">
-      <p className="text-muted-foreground text-sm">
+      <p className="text-sm text-muted-foreground">
         {t('description', { count: questions.length })}
       </p>
       {questions.map((question, index) => (

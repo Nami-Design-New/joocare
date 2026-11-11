@@ -6,12 +6,12 @@ type InputProps = {
 export function Input({ label, placeholder }: InputProps) {
   return (
     <div>
-      <label className="text-foreground mb-2 block text-sm font-semibold">
+      <label className="mb-2 block text-sm font-semibold text-foreground">
         {label}
       </label>
       <input
         placeholder={placeholder}
-        className="border-border bg-muted text-foreground placeholder:text-muted-foreground hover:border-primary/40 focus:border-primary focus:bg-card focus-visible:ring-ring/25 w-full rounded-full border px-4 py-3 text-sm transition-all duration-200 outline-none focus-visible:ring-2"
+        className="w-full rounded-full border border-border bg-muted px-4 py-3 text-sm text-foreground transition-all duration-200 outline-none placeholder:text-muted-foreground hover:border-primary/40 focus:border-primary focus:bg-card focus-visible:ring-2 focus-visible:ring-ring/25"
       />
     </div>
   );

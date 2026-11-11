@@ -44,7 +44,7 @@ export default function AssessmentCandidatePicker({
         <Button
           variant="outline"
           className={cn(
-            'border-input text-muted-foreground bg-card h-12 w-full justify-between rounded-2xl px-4 text-sm font-medium',
+            'h-12 w-full justify-between rounded-2xl border-input bg-card px-4 text-sm font-medium text-muted-foreground',
             assessmentBodyFont.className,
           )}
         >
@@ -64,11 +64,11 @@ export default function AssessmentCandidatePicker({
         align="start"
         sideOffset={8}
         className={cn(
-          'border-input bg-card w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-2xl p-0 shadow-xl',
+          'w-[var(--radix-popover-trigger-width)] overflow-hidden rounded-2xl border-input bg-card p-0 shadow-xl',
           assessmentBodyFont.className,
         )}
       >
-        <div className="border-border border-b p-3">
+        <div className="border-b border-border p-3">
           <div className="relative">
             <Image
               src={`${ASSESSMENT_ASSETS}/search.svg`}
@@ -83,7 +83,7 @@ export default function AssessmentCandidatePicker({
               placeholder={t('search-placeholder')}
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              className="border-assessment-primary focus-visible:ring-assessment-primary/10 h-11 rounded-xl bg-transparent ps-10 pe-10 text-sm shadow-none"
+              className="h-11 rounded-xl border-assessment-primary bg-transparent ps-10 pe-10 text-sm shadow-none focus-visible:ring-assessment-primary/10"
             />
             <Button
               variant="ghost"
@@ -115,7 +115,7 @@ export default function AssessmentCandidatePicker({
                 aria-pressed={selected}
                 onClick={() => onToggle(candidate.id)}
                 className={cn(
-                  'focus-visible:outline-assessment-primary flex min-h-[66px] w-full items-center gap-3 rounded-xl border border-transparent p-3 text-start focus-visible:outline-2',
+                  'flex min-h-[66px] w-full items-center gap-3 rounded-xl border border-transparent p-3 text-start focus-visible:outline-2 focus-visible:outline-assessment-primary',
                   selected
                     ? 'border-assessment-primary/20 bg-assessment-primary/8'
                     : 'hover:bg-muted',
@@ -124,7 +124,7 @@ export default function AssessmentCandidatePicker({
                 <span
                   aria-hidden="true"
                   className={cn(
-                    'border-input flex size-5 shrink-0 items-center justify-center rounded border',
+                    'flex size-5 shrink-0 items-center justify-center rounded border border-input',
                     selected &&
                       'border-assessment-primary bg-assessment-primary',
                   )}
@@ -146,10 +146,10 @@ export default function AssessmentCandidatePicker({
                   className="size-10 shrink-0 rounded-full object-cover"
                 />
                 <span className="min-w-0">
-                  <span className="text-assessment-dark block truncate text-sm leading-5 font-semibold">
+                  <span className="block truncate text-sm leading-5 font-semibold text-assessment-dark">
                     {candidate.name}
                   </span>
-                  <span className="text-muted-foreground block truncate text-xs leading-4">
+                  <span className="block truncate text-xs leading-4 text-muted-foreground">
                     {candidate.country} · {candidate.email}
                   </span>
                 </span>
@@ -157,15 +157,15 @@ export default function AssessmentCandidatePicker({
             );
           })}
           {!visibleCandidates.length ? (
-            <p className="text-muted-foreground p-5 text-center text-sm">
+            <p className="p-5 text-center text-sm text-muted-foreground">
               {t('no-candidates')}
             </p>
           ) : null}
         </div>
-        <div className="border-border border-t p-3">
+        <div className="border-t border-border p-3">
           <Button
             onClick={() => onOpenChange(false)}
-            className="bg-assessment-primary h-9 w-full rounded-[10px] text-sm font-medium"
+            className="h-9 w-full rounded-[10px] bg-assessment-primary text-sm font-medium"
           >
             {t('done-count', { count: selectedIds.length })}
           </Button>

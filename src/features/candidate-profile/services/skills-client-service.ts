@@ -1,5 +1,5 @@
-import { getUserApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { getUserApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
 export type SkillOption = {
   id: string;
@@ -14,13 +14,13 @@ export type UserSkillsCatalog = {
 };
 
 function parseSkillOption(entry: unknown): SkillOption | null {
-  if (!entry || typeof entry !== "object") {
+  if (!entry || typeof entry !== 'object') {
     return null;
   }
 
   const record = entry as Record<string, unknown>;
   const nestedSkill =
-    record.skill && typeof record.skill === "object"
+    record.skill && typeof record.skill === 'object'
       ? (record.skill as Record<string, unknown>)
       : null;
   const rawId = record.id;
@@ -33,13 +33,16 @@ function parseSkillOption(entry: unknown): SkillOption | null {
     record.label ??
     record.value;
 
-  if ((typeof id === "number" || typeof id === "string") && typeof label === "string") {
+  if (
+    (typeof id === 'number' || typeof id === 'string') &&
+    typeof label === 'string'
+  ) {
     return {
       id: String(id),
       label,
       deleteId:
         (nestedSkill || record.skill_id) &&
-          (typeof rawId === "number" || typeof rawId === "string")
+        (typeof rawId === 'number' || typeof rawId === 'string')
           ? String(rawId)
           : String(id),
     };
@@ -68,7 +71,7 @@ function getArrayAtPath(value: unknown, path: string[]) {
   let current: unknown = value;
 
   for (const key of path) {
-    if (!current || typeof current !== "object") {
+    if (!current || typeof current !== 'object') {
       return [];
     }
 
@@ -82,36 +85,42 @@ function getStringAtPath(value: unknown, path: string[]) {
   let current: unknown = value;
 
   for (const key of path) {
-    if (!current || typeof current !== "object") {
+    if (!current || typeof current !== 'object') {
       return undefined;
     }
 
     current = (current as Record<string, unknown>)[key];
   }
 
-  return typeof current === "string" ? current : undefined;
+  return typeof current === 'string' ? current : undefined;
 }
 
 function findNextPageUrl(value: unknown) {
   return (
-    getStringAtPath(value, ["next_page_url"]) ??
-    getStringAtPath(value, ["data", "next_page_url"]) ??
-    getStringAtPath(value, ["data", "data", "next_page_url"]) ??
-    getStringAtPath(value, ["skills", "next_page_url"]) ??
-    getStringAtPath(value, ["data", "skills", "next_page_url"]) ??
-    getStringAtPath(value, ["data", "data", "skills", "next_page_url"]) ??
-    getStringAtPath(value, ["skills", "original", "next_page_url"]) ??
-    getStringAtPath(value, ["data", "skills", "original", "next_page_url"]) ??
-    getStringAtPath(value, ["data", "data", "skills", "original", "next_page_url"])
+    getStringAtPath(value, ['next_page_url']) ??
+    getStringAtPath(value, ['data', 'next_page_url']) ??
+    getStringAtPath(value, ['data', 'data', 'next_page_url']) ??
+    getStringAtPath(value, ['skills', 'next_page_url']) ??
+    getStringAtPath(value, ['data', 'skills', 'next_page_url']) ??
+    getStringAtPath(value, ['data', 'data', 'skills', 'next_page_url']) ??
+    getStringAtPath(value, ['skills', 'original', 'next_page_url']) ??
+    getStringAtPath(value, ['data', 'skills', 'original', 'next_page_url']) ??
+    getStringAtPath(value, [
+      'data',
+      'data',
+      'skills',
+      'original',
+      'next_page_url',
+    ])
   );
 }
 
 export async function getUserSkills({
-  locale = "en",
+  locale = 'en',
   token,
   jobTitleId,
   page = 1,
-  search = "",
+  search = '',
 }: {
   locale?: string;
   token: string;
@@ -120,56 +129,63 @@ export async function getUserSkills({
   search?: string;
 }) {
   const params = new URLSearchParams();
-  params.set("pagination", "on");
-  params.set("limit_per_page", "10");
-  params.set("page", String(page));
+  params.set('pagination', 'on');
+  params.set('limit_per_page', '10');
+  params.set('page', String(page));
 
   if (jobTitleId) {
-    params.set("job_title_id", jobTitleId);
+    params.set('job_title_id', jobTitleId);
   }
 
   if (search.trim()) {
-    params.set("search", search.trim());
+    params.set('search', search.trim());
   }
 
   const { ok, data, message } = await apiFetch(
     `${getUserApiUrl()}/user-skills?${params.toString()}`,
     {
-      method: "GET",
+      method: 'GET',
       locale,
       token,
     },
   );
 
   if (!ok) {
-    throw new Error(message || "Failed to load skills.");
+    throw new Error(message || 'Failed to load skills.');
   }
   // console.log("skills response :::", data);
 
   return {
     next_page_url: findNextPageUrl(data),
     suggested: mergeSkillOptions(
-      getArrayAtPath(data, ["suggested"]),
-      getArrayAtPath(data, ["data", "suggested"]),
-      getArrayAtPath(data, ["data", "data", "suggested"]),
+      getArrayAtPath(data, ['suggested']),
+      getArrayAtPath(data, ['data', 'suggested']),
+      getArrayAtPath(data, ['data', 'data', 'suggested']),
     ),
     skills: mergeSkillOptions(
-      getArrayAtPath(data, ["skills"]),
-      getArrayAtPath(data, ["data", "skills"]),
-      getArrayAtPath(data, ["data", "data", "skills"]),
-      getArrayAtPath(data, ["skills", "original", "data"]),
-      getArrayAtPath(data, ["data", "skills", "original", "data"]),
-      getArrayAtPath(data, ["data", "data", "skills", "original", "data"]),
-      getArrayAtPath(data, ["skills", "original", "data", "data"]),
-      getArrayAtPath(data, ["data", "skills", "original", "data", "data"]),
-      getArrayAtPath(data, ["data", "data", "skills", "original", "data", "data"]),
+      getArrayAtPath(data, ['skills']),
+      getArrayAtPath(data, ['data', 'skills']),
+      getArrayAtPath(data, ['data', 'data', 'skills']),
+      getArrayAtPath(data, ['skills', 'original', 'data']),
+      getArrayAtPath(data, ['data', 'skills', 'original', 'data']),
+      getArrayAtPath(data, ['data', 'data', 'skills', 'original', 'data']),
+      getArrayAtPath(data, ['skills', 'original', 'data', 'data']),
+      getArrayAtPath(data, ['data', 'skills', 'original', 'data', 'data']),
+      getArrayAtPath(data, [
+        'data',
+        'data',
+        'skills',
+        'original',
+        'data',
+        'data',
+      ]),
     ),
   } satisfies UserSkillsCatalog;
 }
 
 export async function addUserSkills({
   skillIds,
-  locale = "en",
+  locale = 'en',
   token,
 }: {
   skillIds: string[];
@@ -179,31 +195,28 @@ export async function addUserSkills({
   if (skillIds.length === 0) {
     return {
       data: null,
-      message: "No new skills to add.",
+      message: 'No new skills to add.',
     };
   }
 
   const formData = new FormData();
   skillIds.forEach((id) => {
-    formData.append("skills[]", id);
+    formData.append('skills[]', id);
   });
-  console.log("[addUserSkills] request payload:", {
+  console.log('[addUserSkills] request payload:', {
     locale,
     skillIds,
     entries: Array.from(formData.entries()),
   });
-  console.log("[addUserSkills] request formData:",
-    formData
-  );
-
+  console.log('[addUserSkills] request formData:', formData);
 
   const result = await apiFetch(`${getUserApiUrl()}/user-skills`, {
-    method: "POST",
+    method: 'POST',
     locale,
     token,
     body: formData,
   });
-  console.log("[addUserSkills] api response:", {
+  console.log('[addUserSkills] api response:', {
     ok: result.ok,
     statusCode: result.statusCode,
     message: result.message,
@@ -212,7 +225,7 @@ export async function addUserSkills({
   const { ok, data, message } = result;
 
   if (!ok) {
-    throw new Error(message || "Failed to save skills.");
+    throw new Error(message || 'Failed to save skills.');
   }
 
   return {
@@ -223,7 +236,7 @@ export async function addUserSkills({
 
 export async function updateUserSkills({
   skillIds,
-  locale = "en",
+  locale = 'en',
   token,
 }: {
   skillIds: string[];
@@ -233,33 +246,30 @@ export async function updateUserSkills({
   if (skillIds.length === 0) {
     return {
       data: null,
-      message: "No skills to delete.",
+      message: 'No skills to delete.',
     };
   }
 
   const formData = new FormData();
   skillIds.forEach((id) => {
-    formData.append("skills[]", id);
+    formData.append('skills[]', id);
   });
-  formData.append("_method", "put");
+  formData.append('_method', 'put');
 
-  console.log("[updateUserSkills] request payload:", {
+  console.log('[updateUserSkills] request payload:', {
     locale,
     skillIds,
     entries: Array.from(formData.entries()),
   });
-  console.log("[updateUserSkills] request formData:",
-    formData
-  );
+  console.log('[updateUserSkills] request formData:', formData);
 
   const result = await apiFetch(`${getUserApiUrl()}/user-skills`, {
-    method: "POST",
+    method: 'POST',
     locale,
     token,
     body: formData,
-
   });
-  console.log("[updateUserSkills] api response:", {
+  console.log('[updateUserSkills] api response:', {
     ok: result.ok,
     statusCode: result.statusCode,
     message: result.message,
@@ -268,7 +278,7 @@ export async function updateUserSkills({
   const { ok, data, message } = result;
 
   if (!ok) {
-    throw new Error(message || "Failed to update skills.");
+    throw new Error(message || 'Failed to update skills.');
   }
 
   return {

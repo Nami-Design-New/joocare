@@ -1,15 +1,15 @@
-import SectionTitle from "../home/components/SectionTitle";
-import Image from "next/image";
-import { Button } from "@/shared/components/ui/button";
-import type { ContactRole } from "./types";
-import { useTranslations } from "next-intl";
+import SectionTitle from '../home/components/SectionTitle';
+import Image from 'next/image';
+import { Button } from '@/shared/components/ui/button';
+import type { ContactRole } from './types';
+import { useTranslations } from 'next-intl';
 
 type SocialPlatform =
-  | "linkedin"
-  | "facebook"
-  | "instagram"
-  | "twitter"
-  | "snapchat";
+  | 'linkedin'
+  | 'facebook'
+  | 'instagram'
+  | 'twitter'
+  | 'snapchat';
 
 type SocialLink = {
   href: string;
@@ -30,21 +30,36 @@ type SideCardProps = {
 };
 
 const socialItems = {
-  linkedin: { src: "/assets/icons/social-icons/linkedin-contact.svg", label: "LinkedIn" },
-  facebook: { src: "/assets/icons/social-icons/facebook-contact.svg", label: "Facebook" },
-  instagram: { src: "/assets/icons/social-icons/instagram-contact.svg", label: "Instagram" },
-  twitter: { src: "/assets/icons/social-icons/twitter-contact.svg", label: "X" },
-  snapchat: { src: "/assets/icons/social-icons/snapchat-contact.svg", label: "Snapchat" },
+  linkedin: {
+    src: '/assets/icons/social-icons/linkedin-contact.svg',
+    label: 'LinkedIn',
+  },
+  facebook: {
+    src: '/assets/icons/social-icons/facebook-contact.svg',
+    label: 'Facebook',
+  },
+  instagram: {
+    src: '/assets/icons/social-icons/instagram-contact.svg',
+    label: 'Instagram',
+  },
+  twitter: {
+    src: '/assets/icons/social-icons/twitter-contact.svg',
+    label: 'X',
+  },
+  snapchat: {
+    src: '/assets/icons/social-icons/snapchat-contact.svg',
+    label: 'Snapchat',
+  },
 };
 
 export default function SideCard({
-  role = "candidate",
+  role = 'candidate',
   canSwitchRole = false,
   onSwitchRole,
-  title = "Contact Us",
-  subtitle = "Get in Touch with us",
+  title = 'Contact Us',
+  subtitle = 'Get in Touch with us',
   imageSrc,
-  imageAlt = "illustration",
+  imageAlt = 'illustration',
   buttonText,
   showSocial = true,
   socialLinks = [],
@@ -52,21 +67,21 @@ export default function SideCard({
   const t = useTranslations();
   const resolvedImageSrc =
     imageSrc ??
-    (role === "employer"
-      ? "/assets/contact/employer.png"
-      : "/assets/contact/candidate.png");
+    (role === 'employer'
+      ? '/assets/contact/employer.png'
+      : '/assets/contact/candidate.png');
 
   const resolvedButtonText =
     buttonText ??
-    (role === "employer"
-      ? t("contactPage.for-candidate")
-      : t("contactPage.for-employer"));
+    (role === 'employer'
+      ? t('contactPage.for-candidate')
+      : t('contactPage.for-employer'));
 
   return (
-    <div className="bg-muted flex h-full flex-col rounded-3xl p-4 text-left sm:p-5 lg:p-6">
+    <div className="flex h-full flex-col rounded-3xl bg-muted p-4 text-left sm:p-5 lg:p-6">
       <div className="w-fit">
         <SectionTitle sectionTitle={title} />
-        <h2 className="text-secondary my-4 text-xl md:text-2xl leading-tight font-bold">
+        <h2 className="my-4 text-xl leading-tight font-bold text-secondary md:text-2xl">
           {subtitle}
         </h2>
       </div>
@@ -83,8 +98,8 @@ export default function SideCard({
 
       {showSocial && socialLinks.length > 0 ? (
         <div className="mt-auto pt-10">
-          <p className="text-foreground mb-3 text-sm font-semibold">
-            {t("contactPage.follow-us")}
+          <p className="mb-3 text-sm font-semibold text-foreground">
+            {t('contactPage.follow-us')}
           </p>
           <div className="flex items-center gap-2.5">
             {socialLinks.map(({ href, platform }) => {
@@ -96,15 +111,10 @@ export default function SideCard({
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:scale-105  h-7 md:h-10 w-7 md:w-10"
+                  className="h-7 w-7 hover:scale-105 md:h-10 md:w-10"
                   aria-label={label}
                 >
-                  <Image
-                    src={srcImg}
-                    alt={label}
-                    width={40}
-                    height={40}
-                  />
+                  <Image src={srcImg} alt={label} width={40} height={40} />
                 </a>
               );
             })}

@@ -36,7 +36,7 @@ export default function ProjectShareLogModal({
       renderCell: (log) => (
         <div className="flex flex-col text-start">
           <span>{log.date}</span>
-          <span className="text-muted-foreground text-xs">{log.time}</span>
+          <span className="text-xs text-muted-foreground">{log.time}</span>
         </div>
       ),
     },
@@ -48,7 +48,7 @@ export default function ProjectShareLogModal({
       renderCell: (log) => (
         <div className="flex flex-col text-start">
           <span>{log.sharedBy}</span>
-          <span className="text-muted-foreground text-xs">
+          <span className="text-xs text-muted-foreground">
             {t('recruiter-role')}
           </span>
         </div>
@@ -62,7 +62,7 @@ export default function ProjectShareLogModal({
       renderCell: (log) => (
         <div className="flex flex-col text-start">
           <span>{log.manager}</span>
-          <span className="text-muted-foreground text-xs">
+          <span className="text-xs text-muted-foreground">
             {log.managerEmail}
           </span>
         </div>
@@ -85,7 +85,7 @@ export default function ProjectShareLogModal({
               type="button"
               onClick={onClose}
               aria-label={t('close')}
-              className="bg-primary text-primary-foreground flex size-12 shrink-0 items-center justify-center rounded-full"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
             >
               <X aria-hidden="true" className="size-5" />
             </button>
@@ -98,7 +98,7 @@ export default function ProjectShareLogModal({
           </ModalDescription>
         </ModalHeader>
 
-        <div className="border-border overflow-hidden rounded-xl border">
+        <div className="overflow-hidden rounded-xl border border-border">
           {project.shareLogs.length ? (
             <DataTable
               columns={columns}
@@ -106,12 +106,12 @@ export default function ProjectShareLogModal({
               getRowKey={(log) => log.id}
               ariaLabel={t('share-log-title')}
               containerClassName="bg-white"
-              className="[&_th]:bg-muted/70 min-w-[700px] [&_td]:py-3 [&_td]:text-start [&_td]:text-sm [&_th]:py-3 [&_th]:text-start [&_th]:text-xs"
+              className="min-w-[700px] [&_td]:py-3 [&_td]:text-start [&_td]:text-sm [&_th]:bg-muted/70 [&_th]:py-3 [&_th]:text-start [&_th]:text-xs"
               headerRowClassName="border-0"
               rowClassName="border-t border-border align-top"
             />
           ) : (
-            <p className="text-muted-foreground px-4 py-10 text-center text-sm">
+            <p className="px-4 py-10 text-center text-sm text-muted-foreground">
               {t('no-share-logs')}
             </p>
           )}

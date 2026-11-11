@@ -58,9 +58,9 @@ export default function ChatMessageItem({
       >
         <div
           className={cn(
-            'bg-chat-surface w-105 max-w-full space-y-3 rounded-2xl rounded-ss-none p-4',
+            'w-105 max-w-full space-y-3 rounded-2xl rounded-ss-none bg-chat-surface p-4',
             outgoing &&
-              'bg-chat-primary text-primary-foreground w-108 rounded-ss-2xl rounded-se-none',
+              'w-108 rounded-ss-2xl rounded-se-none bg-chat-primary text-primary-foreground',
             hasImage && 'w-100',
           )}
         >
@@ -91,7 +91,7 @@ export default function ChatMessageItem({
         </div>
         <time
           dateTime={message.sentAt}
-          className="text-muted-foreground text-[10px] leading-3.25"
+          className="text-[10px] leading-3.25 text-muted-foreground"
         >
           <bdi>{formatChatDate(message.sentAt, locale)}</bdi>
         </time>
@@ -104,7 +104,7 @@ export default function ChatMessageItem({
           className={cn(
             'mt-3 shrink-0 rounded-full opacity-70 hover:opacity-100 focus-visible:opacity-100 md:opacity-0 md:group-hover/message:opacity-100',
             hasImage &&
-              'border-border mt-0 h-8 w-5 self-center rounded-full border opacity-100 md:opacity-100',
+              'mt-0 h-8 w-5 self-center rounded-full border border-border opacity-100 md:opacity-100',
             outgoing && 'order-first',
           )}
           aria-label={t('reply-to-message')}

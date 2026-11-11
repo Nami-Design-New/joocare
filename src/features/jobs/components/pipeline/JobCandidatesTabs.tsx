@@ -23,7 +23,7 @@ export default function JobCandidatesTabs({
   return (
     <nav
       aria-label={t('label')}
-      className="bg-card grid grid-cols-2 gap-2 rounded-full p-2 shadow-xs"
+      className="grid grid-cols-2 gap-2 rounded-full bg-card p-2 shadow-xs"
     >
       {JOB_CANDIDATES_TABS.map((tab) => {
         const isActive = tab === activeTab;

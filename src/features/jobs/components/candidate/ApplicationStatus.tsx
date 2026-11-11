@@ -39,11 +39,11 @@ export default function ApplicationStatus({
           )}
         </div>
       )} */}
-      <div className="bg-application-primary/8 text-application-primary flex min-h-6 flex-wrap items-center justify-between gap-1 rounded-xl px-2 py-0.75">
+      <div className="flex min-h-6 flex-wrap items-center justify-between gap-1 rounded-xl bg-application-primary/8 px-2 py-0.75 text-application-primary">
         <span className="flex items-center gap-1 text-sm leading-4.5">
           <span
             aria-hidden
-            className="bg-application-primary size-2 rounded-full"
+            className="size-2 rounded-full bg-application-primary"
           />
           {t('applied')}
         </span>
@@ -52,7 +52,7 @@ export default function ApplicationStatus({
             dateTime={
               Number.isNaN(Date.parse(appliedAt)) ? undefined : appliedAt
             }
-            className="text-muted-foreground text-[10px] leading-3.25"
+            className="text-[10px] leading-3.25 text-muted-foreground"
           >
             {formatApplicationDate(appliedAt, locale)}
           </time>

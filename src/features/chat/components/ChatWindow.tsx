@@ -48,7 +48,7 @@ export default function ChatWindow({
   return (
     <section
       className={cn(
-        'bg-card flex min-w-0 flex-1 flex-col',
+        'flex min-w-0 flex-1 flex-col bg-card',
         !mobileConversationOpen && 'hidden md:flex',
       )}
     >

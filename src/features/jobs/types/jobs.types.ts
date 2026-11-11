@@ -4,7 +4,7 @@ import type { ApplicationAssessment } from './candidate-applications.types';
 // BASE / SHARED ENTITIES
 // ==============================
 
-import { CompanyBase } from "@/features/shared-company-profile/company-profile.type";
+import { CompanyBase } from '@/features/shared-company-profile/company-profile.type';
 
 export type NamedEntity = {
   id: number;
@@ -58,8 +58,6 @@ export type Currency = {
 // ==============================
 // COMPANY
 // ==============================
-
-
 
 export type CompanyDetails = CompanyBase & {
   email: string;
@@ -159,8 +157,7 @@ export type JobListItem = {
     status: string;
     created_at: string;
     updated_at: string;
-  }
-
+  };
 };
 
 // ==============================
@@ -282,7 +279,7 @@ export type JobCreator = {
 // SIMILAR JOBS
 // ==============================
 
-export type SimilarJob = JobListItem
+export type SimilarJob = JobListItem;
 
 // ==============================
 // API RESPONSES

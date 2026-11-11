@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { Controller, SubmitHandler, useForm, useWatch } from 'react-hook-form';
 
-import { InputField } from "@/shared/components/InputField";
-import PasswordRequirements from "@/shared/components/PasswordRequirements";
-import LabelCheckbox from "@/shared/components/LabelCheckbox";
-import { PhoneInputCode } from "@/shared/components/PhoneInputCode";
-import { SelectInputField } from "@/shared/components/SelectInputField";
-import { Button } from "@/shared/components/ui/button";
-import useGetDomains from "@/shared/hooks/useGetDomains";
-import { useState } from "react";
-import { parsePhoneNumber } from "react-phone-number-input";
-import { useRegisterEmployer } from "../../hooks/useRegisterEmployer";
+import { InputField } from '@/shared/components/InputField';
+import PasswordRequirements from '@/shared/components/PasswordRequirements';
+import LabelCheckbox from '@/shared/components/LabelCheckbox';
+import { PhoneInputCode } from '@/shared/components/PhoneInputCode';
+import { SelectInputField } from '@/shared/components/SelectInputField';
+import { Button } from '@/shared/components/ui/button';
+import useGetDomains from '@/shared/hooks/useGetDomains';
+import { useState } from 'react';
+import { parsePhoneNumber } from 'react-phone-number-input';
+import { useRegisterEmployer } from '../../hooks/useRegisterEmployer';
 import {
   createRegisterEmployerSchema,
   TRegisterEmployerSchema,
-} from "../../validation/employer-register-schema";
-import { OTPModal } from "../forget-password/OtpModal";
+} from '../../validation/employer-register-schema';
+import { OTPModal } from '../forget-password/OtpModal';
 
 const FormEmployerRegister = () => {
   const t = useTranslations();
@@ -41,30 +41,32 @@ const FormEmployerRegister = () => {
   } = useForm<TRegisterEmployerSchema>({
     resolver: zodResolver(
       createRegisterEmployerSchema({
-        companyNameRequired: t("authPage.validation.company-name-required"),
-        companyNameMin: t("authPage.validation.company-name-min"),
-        companyNameMax: t("authPage.validation.company-name-max"),
-        emailRequired: t("authPage.validation.email-required"),
-        emailInvalid: t("authPage.validation.email-invalid"),
-        domainRequired: t("authPage.validation.domain-required"),
-        personFullNameRequired: t("authPage.validation.person-full-name-required"),
-        personFullNameMin: t("authPage.validation.person-full-name-min"),
-        personFullNameMax: t("authPage.validation.person-full-name-max"),
-        phoneRequired: t("authPage.validation.phone-required"),
-        phoneMax: t("authPage.validation.phone-max"),
-        passwordRequired: t("authPage.validation.password-required"),
-        passwordMin: t("common.password-validation.minimum-error"),
-        passwordMax: t("authPage.validation.password-max"),
-        passwordRules: t("common.password-validation.invalid"),
-        confirmAuthorized: t("authPage.validation.confirm-authorized"),
-        termsRequired: t("authPage.validation.terms-required"),
+        companyNameRequired: t('authPage.validation.company-name-required'),
+        companyNameMin: t('authPage.validation.company-name-min'),
+        companyNameMax: t('authPage.validation.company-name-max'),
+        emailRequired: t('authPage.validation.email-required'),
+        emailInvalid: t('authPage.validation.email-invalid'),
+        domainRequired: t('authPage.validation.domain-required'),
+        personFullNameRequired: t(
+          'authPage.validation.person-full-name-required',
+        ),
+        personFullNameMin: t('authPage.validation.person-full-name-min'),
+        personFullNameMax: t('authPage.validation.person-full-name-max'),
+        phoneRequired: t('authPage.validation.phone-required'),
+        phoneMax: t('authPage.validation.phone-max'),
+        passwordRequired: t('authPage.validation.password-required'),
+        passwordMin: t('common.password-validation.minimum-error'),
+        passwordMax: t('authPage.validation.password-max'),
+        passwordRules: t('common.password-validation.invalid'),
+        confirmAuthorized: t('authPage.validation.confirm-authorized'),
+        termsRequired: t('authPage.validation.terms-required'),
       }),
     ),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
-  const email = useWatch({ control, name: "officialEmail" });
-  const createPassword = useWatch({ control, name: "createPassword" });
+  const email = useWatch({ control, name: 'officialEmail' });
+  const createPassword = useWatch({ control, name: 'createPassword' });
   const domainsOptions = domains.map(
     (jt: { id: number | string; name?: string; title?: string }) => ({
       label: jt.name ?? jt.title ?? String(jt.id),
@@ -85,8 +87,8 @@ const FormEmployerRegister = () => {
       domain_id: Number(data.domain),
       password: data.createPassword,
       person_name: data.personFullName,
-      person_phone: parsed?.nationalNumber ?? "",
-      person_phone_code: `+${parsed?.countryCallingCode ?? ""}`,
+      person_phone: parsed?.nationalNumber ?? '',
+      person_phone_code: `+${parsed?.countryCallingCode ?? ''}`,
     });
   };
 
@@ -98,19 +100,19 @@ const FormEmployerRegister = () => {
       >
         <InputField
           id="companyName"
-          label={t("authPage.common.company-name")}
-          type={"text"}
-          placeholder={t("authPage.placeholders.company-name")}
-          {...register("companyName")}
+          label={t('authPage.common.company-name')}
+          type={'text'}
+          placeholder={t('authPage.placeholders.company-name')}
+          {...register('companyName')}
           error={errors.companyName?.message}
         />
 
         <InputField
           id="officialEmail"
           type="email"
-          label={t("authPage.common.business-email")}
-          placeholder={t("authPage.placeholders.email")}
-          {...register("officialEmail")}
+          label={t('authPage.common.business-email')}
+          placeholder={t('authPage.placeholders.email')}
+          {...register('officialEmail')}
           error={errors.officialEmail?.message}
         />
 
@@ -120,8 +122,8 @@ const FormEmployerRegister = () => {
           render={({ field }) => (
             <SelectInputField
               id="domain"
-              label={t("authPage.common.domain")}
-              placeholder={t("authPage.placeholders.domain")}
+              label={t('authPage.common.domain')}
+              placeholder={t('authPage.placeholders.domain')}
               withSearchInput={true}
               {...field}
               error={
@@ -139,16 +141,16 @@ const FormEmployerRegister = () => {
         <InputField
           id="personFullName"
           type="text"
-          label={t("authPage.common.contact-person-full-name")}
-          placeholder={t("authPage.placeholders.contact-person-full-name")}
-          {...register("personFullName")}
+          label={t('authPage.common.contact-person-full-name')}
+          placeholder={t('authPage.placeholders.contact-person-full-name')}
+          {...register('personFullName')}
           error={errors.personFullName?.message}
         />
 
         {/* Phone number */}
         <>
           <label htmlFor="phoneNumber" className="mx-1 -mb-4 font-semibold">
-            {t("authPage.common.contact-person-phone-number")}
+            {t('authPage.common.contact-person-phone-number')}
           </label>
           <Controller
             name="phoneNumber"
@@ -159,7 +161,7 @@ const FormEmployerRegister = () => {
                 defaultCountry="AE"
                 id="phoneNumber"
                 className="w-full"
-                placeholder={t("authPage.placeholders.phone-number")}
+                placeholder={t('authPage.placeholders.phone-number')}
                 onChange={(value) => field.onChange(value)}
                 error={errors.phoneNumber?.message ? true : false}
               />
@@ -177,14 +179,14 @@ const FormEmployerRegister = () => {
           type="password"
           hidePasswordErrorMessage
           aria-describedby="createPassword-password-rules"
-          label={t("authPage.common.create-password")}
+          label={t('authPage.common.create-password')}
           placeholder="******"
-          {...register("createPassword")}
+          {...register('createPassword')}
           error={errors.createPassword?.message}
         />
         <PasswordRequirements
           id="createPassword-password-rules"
-          value={createPassword ?? ""}
+          value={createPassword ?? ''}
           hasError={!!errors.createPassword}
         />
 
@@ -199,7 +201,7 @@ const FormEmployerRegister = () => {
               error={errors.confirmRegister?.message}
               className="text-sm md:text-base"
             >
-              {t("authPage.forms.employer-register.confirm-authorized")}
+              {t('authPage.forms.employer-register.confirm-authorized')}
             </LabelCheckbox>
           )}
         />
@@ -215,21 +217,21 @@ const FormEmployerRegister = () => {
               error={errors.termsAndConditions?.message}
               className="text-sm md:text-base"
             >
-              {t("authPage.forms.employer-register.i-agree-to")}{" "}
+              {t('authPage.forms.employer-register.i-agree-to')}{' '}
               <Link
                 href="/terms-conditions"
                 target="_blank"
                 className="underline-primary text-secondary underline"
               >
-                {t("footer.terms-conditions")}
-              </Link>
-              {" "}{t("authPage.forms.employer-register.and")}{" "}
+                {t('footer.terms-conditions')}
+              </Link>{' '}
+              {t('authPage.forms.employer-register.and')}{' '}
               <Link
                 href="/privacy-policy"
                 target="_blank"
                 className="underline-primary text-secondary underline"
               >
-                {t("footer.data-privacy-security")}
+                {t('footer.data-privacy-security')}
               </Link>
             </LabelCheckbox>
           )}
@@ -237,13 +239,15 @@ const FormEmployerRegister = () => {
 
         <div className="mt-2.5 flex justify-center">
           <Button
-            hoverStyle={"slideSecondary"}
+            hoverStyle={'slideSecondary'}
             className="w-1/3"
-            size={"pill"}
+            size={'pill'}
             type="submit"
-          // disabled={isSubmitting}
+            // disabled={isSubmitting}
           >
-            {isPending ? t("authPage.common.registering") : t("authPage.common.register")}
+            {isPending
+              ? t('authPage.common.registering')
+              : t('authPage.common.register')}
           </Button>
         </div>
       </form>

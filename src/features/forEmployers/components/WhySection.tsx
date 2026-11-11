@@ -1,11 +1,11 @@
-import { MoveLeft, MoveRight } from "lucide-react";
-import { Link } from "@/i18n/navigation";
-import { buttonVariants } from "@/shared/components/ui/button";
-import SectionTitle from "../../home/components/SectionTitle";
-import { FeatureItem } from "./FeatureItem";
-import type { WhySectionProps } from "../types";
-import { cn } from "@/shared/lib/utils";
-import { getLocale, getTranslations } from "next-intl/server";
+import { MoveLeft, MoveRight } from 'lucide-react';
+import { Link } from '@/i18n/navigation';
+import { buttonVariants } from '@/shared/components/ui/button';
+import SectionTitle from '../../home/components/SectionTitle';
+import { FeatureItem } from './FeatureItem';
+import type { WhySectionProps } from '../types';
+import { cn } from '@/shared/lib/utils';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 export default async function WhySection({
   title,
@@ -22,33 +22,36 @@ export default async function WhySection({
           <div className="lg:col-span-5">
             <div className="mb-2">
               <SectionTitle
-                sectionTitle={t("forEmployersPage.why-section-title")}
+                sectionTitle={t('forEmployersPage.why-section-title')}
                 textColor="text-dark"
               />
             </div>
 
-            <h2 className="my-4 text-2xl font-bold sm:my-5 text-[#1C2628] md:text-5xl ">
+            <h2 className="my-4 text-2xl font-bold text-[#1C2628] sm:my-5 md:text-5xl">
               {title}
             </h2>
 
-            <p className="mb-8 text-sm sm:text-base md:text-xl text-[#1C2628] lg:text-justify">
+            <p className="mb-8 text-sm text-[#1C2628] sm:text-base md:text-xl lg:text-justify">
               {description}
             </p>
 
             <Link
               href="/auth/employer/register"
-              className={cn(buttonVariants({
-                variant: "default"
-                , size: "pill"
-                , hoverStyle: "slideSecondary"
-              }), "mt-5 flex w-full items-center justify-center gap-2 sm:mt-5 sm:w-fit")}
+              className={cn(
+                buttonVariants({
+                  variant: 'default',
+                  size: 'pill',
+                  hoverStyle: 'slideSecondary',
+                }),
+                'mt-5 flex w-full items-center justify-center gap-2 sm:mt-5 sm:w-fit',
+              )}
             >
-              {t("forEmployersPage.get-started-for-free")}
-              {locale === "ar" ? <MoveLeft className="mt-0.75" size={16} /> :
+              {t('forEmployersPage.get-started-for-free')}
+              {locale === 'ar' ? (
+                <MoveLeft className="mt-0.75" size={16} />
+              ) : (
                 <MoveRight className="mt-0.75" size={16} />
-              }
-
-
+              )}
             </Link>
           </div>
 

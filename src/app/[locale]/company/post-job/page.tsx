@@ -1,7 +1,7 @@
-import { Suspense } from "react";
-import PostJobForm from "@/features/jobs/components/PostJobForm";
-import Header from "@/shared/components/header/Header";
-import { JobPostStepOneSkeleton } from "@/features/jobs/components/JobPostStepOneSkeleton";
+import { Suspense } from 'react';
+import PostJobForm from '@/features/jobs/components/PostJobForm';
+import Header from '@/shared/components/header/Header';
+import { JobPostStepOneSkeleton } from '@/features/jobs/components/JobPostStepOneSkeleton';
 
 export default function page() {
   return (

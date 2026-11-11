@@ -106,11 +106,11 @@ export default function CategoryFormModal({
             error={errors.description?.message}
             {...register('description')}
             disabled={isSubmitting}
-            className="bg-muted min-h-25 resize-y rounded-2xl p-4"
+            className="min-h-25 resize-y rounded-2xl bg-muted p-4"
             containerStyles="[&>span]:text-destructive"
           />
           {errors.root ? (
-            <p role="alert" className="text-destructive text-sm">
+            <p role="alert" className="text-sm text-destructive">
               {errors.root.message}
             </p>
           ) : null}

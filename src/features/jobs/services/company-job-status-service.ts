@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { getCompanyApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
-export type CompanyJobStatus = "open" | "paused" | "closed";
+export type CompanyJobStatus = 'open' | 'paused' | 'closed';
 
 type UpdateCompanyJobStatusOptions = {
   jobId: number | string;
@@ -24,21 +24,21 @@ export async function updateCompanyJobStatusService({
   locale,
 }: UpdateCompanyJobStatusOptions): Promise<UpdateCompanyJobStatusResponse> {
   const formData = new FormData();
-  formData.append("status", status);
+  formData.append('status', status);
 
   const result = await apiFetch<UpdateCompanyJobStatusResponse>(
     `${getCompanyApiUrl()}/jobs/${jobId}/status`,
     {
-      method: "POST",
+      method: 'POST',
       token,
       locale,
       body: formData,
-      cache: "no-store",
+      cache: 'no-store',
     },
   );
 
   if (!result.ok) {
-    throw new Error(result.message || "Failed to update job status.");
+    throw new Error(result.message || 'Failed to update job status.');
   }
 
   return result.data ?? {};

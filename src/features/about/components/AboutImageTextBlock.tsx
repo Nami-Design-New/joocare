@@ -24,11 +24,11 @@ export default function AboutImageTextBlock({
           <SectionTitle sectionTitle={eyebrow} textColor="text-foreground" />
         </div>
 
-        <h2 className="text-secondary my-4 text-2xl leading-tight font-bold sm:my-7 sm:text-4xl xl:text-5xl">
+        <h2 className="my-4 text-2xl leading-tight font-bold text-secondary sm:my-7 sm:text-4xl xl:text-5xl">
           {title}
         </h2>
 
-        <p className="text-muted-foreground my-4 sm:my-7 max-w-4xl text-start text-sm whitespace-pre-line sm:text-xl xl:text-justify">
+        <p className="my-4 max-w-4xl text-start text-sm whitespace-pre-line text-muted-foreground sm:my-7 sm:text-xl xl:text-justify">
           {description}
         </p>
       </div>

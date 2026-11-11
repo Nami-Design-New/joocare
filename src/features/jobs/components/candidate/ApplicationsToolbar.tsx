@@ -18,7 +18,7 @@ export default async function ApplicationsToolbar({
     <div className="flex flex-col gap-4 pt-4 sm:flex-row sm:items-center">
       <nav
         aria-label={t('tabs-label')}
-        className="bg-card shadow-foreground/5 flex w-fit shrink-0 gap-3 rounded-full p-2 shadow-lg"
+        className="flex w-fit shrink-0 gap-3 rounded-full bg-card p-2 shadow-lg shadow-foreground/5"
       >
         {(['saved', 'applied'] as const).map((item) => (
           <Link
@@ -27,7 +27,7 @@ export default async function ApplicationsToolbar({
             scroll={false}
             aria-current={item === tab ? 'page' : undefined}
             className={cn(
-              'focus-visible:ring-ring rounded-full px-4 py-2 text-base leading-5.75 sm:px-5 sm:py-2.5 sm:text-lg transition-colors focus-visible:ring-2',
+              'rounded-full px-4 py-2 text-base leading-5.75 transition-colors focus-visible:ring-2 focus-visible:ring-ring sm:px-5 sm:py-2.5 sm:text-lg',
               item === tab
                 ? 'bg-application-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground',

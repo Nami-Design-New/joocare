@@ -1,29 +1,27 @@
-
-import { JobsListingResponse } from "../jobs/types/jobs.types";
+import { JobsListingResponse } from '../jobs/types/jobs.types';
 
 export type CompanyBase = {
-    id: number;
-    name: string | null;
-    image: string | null;
-    cover: string | null;
+  id: number;
+  name: string | null;
+  image: string | null;
+  cover: string | null;
 };
 
-
 export type CompanyProfile = CompanyBase & {
-    website: string;
-    facebook: string;
-    twitter: string;
-    linkedin: string;
-    instagram: string;
-    snapchat: string;
-    bio: string;
-    created_at: string;
-    updated_at: string;
+  website: string;
+  facebook: string;
+  twitter: string;
+  linkedin: string;
+  instagram: string;
+  snapchat: string;
+  bio: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type CompanyProfileApiResponse = {
-    message: string,
-    data: { company: CompanyProfile }
+  message: string;
+  data: { company: CompanyProfile };
 };
 
 export type CompanyJobsResponse = JobsListingResponse;

@@ -87,8 +87,8 @@ export default function LicenseCard({
           <h2 className="text-lg font-semibold text-black">{license.title}</h2>
           <div className="flex w-full items-center justify-between">
             <div>
-              <p className="text-muted-foreground text-sm">{license.number}</p>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-sm text-muted-foreground">{license.number}</p>
+              <p className="text-sm text-muted-foreground">
                 {license.countryName ??
                   t('candidatePage.profile.country-not-provided')}
               </p>
@@ -99,7 +99,7 @@ export default function LicenseCard({
                   onClick={() => setOpen(true)}
                   width={22}
                   height={22}
-                  className="text-muted-foreground cursor-pointer"
+                  className="cursor-pointer text-muted-foreground"
                 />
                 <Trash2
                   onClick={() => setDeleteLicense(true)}

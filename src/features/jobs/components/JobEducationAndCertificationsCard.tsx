@@ -1,20 +1,27 @@
-import Image from "next/image";
-import { JobDetails } from "../types/jobs.types";
-import JobOverviewItem from "./JobOverviewItem";
-import { getTranslations } from "next-intl/server";
+import Image from 'next/image';
+import { JobDetails } from '../types/jobs.types';
+import JobOverviewItem from './JobOverviewItem';
+import { getTranslations } from 'next-intl/server';
 
-export default async function JobEducationAndCertificationsCard({ job }: { job: JobDetails }) {
+export default async function JobEducationAndCertificationsCard({
+  job,
+}: {
+  job: JobDetails;
+}) {
   const t = await getTranslations();
-  const availability = job.availability?.title ?? job.availability_title ?? t("jobsPage.not-specified");
+  const availability =
+    job.availability?.title ??
+    job.availability_title ??
+    t('jobsPage.not-specified');
 
   return (
-    <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-4 md:p-8">
-      <h2 className="max-md:text-base max-md:leading-6 text-foreground mb-4 text-lg font-semibold">
-        {t("jobDetailsPage.education-certifications")}
+    <div className="card min-h-36 rounded-2xl border-2 border-border bg-white p-4 shadow-card md:p-8">
+      <h2 className="mb-4 text-lg font-semibold text-foreground max-md:text-base max-md:leading-6">
+        {t('jobDetailsPage.education-certifications')}
       </h2>
       <div className="flex flex-col gap-6">
         <JobOverviewItem
-          label={t("jobDetailsPage.education-level")}
+          label={t('jobDetailsPage.education-level')}
           value={job.education_levels}
           icon="/assets/icons/exp.svg"
         />
@@ -25,31 +32,29 @@ export default async function JobEducationAndCertificationsCard({ job }: { job: 
                 src="/assets/icons/case.svg"
                 width={20}
                 height={20}
-                alt={t("jobDetailsPage.icon")}
+                alt={t('jobDetailsPage.icon')}
               />
-              <p className="max-md:text-xs max-md:leading-4 text-muted-foreground text-sm md:text-base">
-                {t("jobDetailsPage.mandatory-certifications")}
+              <p className="text-sm text-muted-foreground max-md:text-xs max-md:leading-4 md:text-base">
+                {t('jobDetailsPage.mandatory-certifications')}
               </p>
             </div>
             <div>
               <ul className="mt-2 flex flex-col gap-2">
-                {
-                  job.mandatory_certifications.map((item) =>
-                    <li className="edu-certificate" key={item?.id}>
-                      {item.title ?? item.mandatory_certification?.title ?? "-"}
-                    </li>
-                  )
-                }
+                {job.mandatory_certifications.map((item) => (
+                  <li className="edu-certificate" key={item?.id}>
+                    {item.title ?? item.mandatory_certification?.title ?? '-'}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </div>
         <JobOverviewItem
-          label={t("jobsPage.filters.availability")}
+          label={t('jobsPage.filters.availability')}
           value={availability}
           icon="/assets/icons/case.svg"
         />
-      </div>{" "}
+      </div>{' '}
     </div>
   );
 }

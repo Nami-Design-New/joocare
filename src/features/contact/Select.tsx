@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
+import { useMemo, useState } from 'react';
 import {
   Select as UiSelect,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/components/ui/select";
+} from '@/shared/components/ui/select';
 
 type OptionType = {
   value: string;
@@ -23,10 +23,10 @@ type SelectProps = {
 };
 
 const DEFAULT_OPTIONS: OptionType[] = [
-  { value: "type", label: "ex:Type of inquiry" },
-  { value: "technical", label: "Technical support" },
-  { value: "sales", label: "Sales inquiry" },
-  { value: "general", label: "General inquiry" },
+  { value: 'type', label: 'ex:Type of inquiry' },
+  { value: 'technical', label: 'Technical support' },
+  { value: 'sales', label: 'Sales inquiry' },
+  { value: 'general', label: 'General inquiry' },
 ];
 
 export function Select({
@@ -36,7 +36,7 @@ export function Select({
   value,
   onChange,
 }: SelectProps) {
-  const firstValue = useMemo(() => options[0]?.value ?? "", [options]);
+  const firstValue = useMemo(() => options[0]?.value ?? '', [options]);
   const [internalValue, setInternalValue] = useState<string>(
     value ?? firstValue,
   );
@@ -46,7 +46,7 @@ export function Select({
   return (
     <div>
       {label && (
-        <label className="text-foreground mb-2 block text-sm font-semibold">
+        <label className="mb-2 block text-sm font-semibold text-foreground">
           {label}
         </label>
       )}
@@ -59,10 +59,10 @@ export function Select({
           onChange?.(nextValue);
         }}
       >
-        <SelectTrigger className="border-border bg-muted w-full text-sm">
-          <SelectValue placeholder={placeholder ?? "Select"} />
+        <SelectTrigger className="w-full border-border bg-muted text-sm">
+          <SelectValue placeholder={placeholder ?? 'Select'} />
         </SelectTrigger>
-        <SelectContent className="border-border bg-card rounded-xl">
+        <SelectContent className="rounded-xl border-border bg-card">
           {options.map((option) => (
             <SelectItem key={option.value} value={option.value}>
               {option.label}

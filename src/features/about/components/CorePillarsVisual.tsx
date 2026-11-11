@@ -1,11 +1,15 @@
-import { Plus, Search } from "lucide-react";
-import Image from "next/image";
-import type { AboutImage } from "../types/about.types";
-import { useLocale, useTranslations } from "next-intl";
+import { Plus, Search } from 'lucide-react';
+import Image from 'next/image';
+import type { AboutImage } from '../types/about.types';
+import { useLocale, useTranslations } from 'next-intl';
 
-export default function CorePillarsVisual({ images }: { images: AboutImage[] }) {
+export default function CorePillarsVisual({
+  images,
+}: {
+  images: AboutImage[];
+}) {
   const t = useTranslations();
-  const locale = useLocale()
+  const locale = useLocale();
   const firstImage = images[0];
   const secondImage = images[1];
   const thirdImage = images[2];
@@ -16,14 +20,16 @@ export default function CorePillarsVisual({ images }: { images: AboutImage[] }) 
     <div className="relative mx-auto flex h-fit w-full max-w-85 flex-col gap-4 sm:sm:max-w-130 sm:gap-6 lg:mx-0 lg:max-w-none">
       <div className="relative h-45 w-[78%] overflow-hidden rounded-tl-[40px] rounded-br-[40px] sm:h-55 sm:w-85 sm:rounded-tl-[50px] sm:rounded-br-[50px] lg:h-50 lg:w-[320px]">
         <Image
-          src={firstImage?.image ?? "/assets/about/corePillar1.jpg"}
-          alt={firstImage?.alt ?? "Medical recruitment workflow"}
+          src={firstImage?.image ?? '/assets/about/corePillar1.jpg'}
+          alt={firstImage?.alt ?? 'Medical recruitment workflow'}
           fill
           className="object-cover"
         />
       </div>
 
-      <div className={`absolute top-1  sm:top-0 ${locale === 'ar' ? "left-20" : "right-20"}`}>
+      <div
+        className={`absolute top-1 sm:top-0 ${locale === 'ar' ? 'left-20' : 'right-20'}`}
+      >
         <Image
           src="/assets/about/dots.png"
           alt="Decorative dots"
@@ -33,18 +39,22 @@ export default function CorePillarsVisual({ images }: { images: AboutImage[] }) 
         />
       </div>
 
-      <div className={`absolute top-15 flex w-[72%] items-center gap-2 sm:top-17.5 sm:w-[60%] sm:gap-4 ${locale === 'ar' ? "left-0" : "right-0"}`}>
+      <div
+        className={`absolute top-15 flex w-[72%] items-center gap-2 sm:top-17.5 sm:w-[60%] sm:gap-4 ${locale === 'ar' ? 'left-0' : 'right-0'}`}
+      >
         <div className="min-w-0 flex-1 rounded-xl bg-white px-4 py-2 shadow-lg sm:px-6 sm:py-3">
           <span className="text-sm text-gray-500 sm:text-base">
             {t('aboutPage.search-jobs')}
           </span>
         </div>
-        <div className="bg-primary rounded-lg p-2.5 text-white sm:p-3">
+        <div className="rounded-lg bg-primary p-2.5 text-white sm:p-3">
           <Search size={20} />
         </div>
       </div>
 
-      <div className={`absolute top-47.5 z-10 sm:top-60 lg:top-55 ${locale === 'ar' ? "left-0" : "right-0"}`}>
+      <div
+        className={`absolute top-47.5 z-10 sm:top-60 lg:top-55 ${locale === 'ar' ? 'left-0' : 'right-0'}`}
+      >
         <div className="rounded-xl bg-white px-4 py-2 shadow-lg sm:px-6 sm:py-3">
           <span className="flex items-center gap-2 text-sm font-bold sm:text-base">
             <Image
@@ -62,8 +72,8 @@ export default function CorePillarsVisual({ images }: { images: AboutImage[] }) 
       <div className="flex gap-3 sm:gap-6">
         <div className="`h-42.5 relative w-[44%] overflow-hidden rounded-tr-[40px] rounded-bl-[40px] sm:h-50 sm:w-50 sm:rounded-tr-[50px] sm:rounded-bl-[50px]">
           <Image
-            src={secondImage?.image ?? "/assets/about/corePillar2.jpg"}
-            alt={secondImage?.alt ?? "Healthcare professional"}
+            src={secondImage?.image ?? '/assets/about/corePillar2.jpg'}
+            alt={secondImage?.alt ?? 'Healthcare professional'}
             fill
             className="object-cover"
           />
@@ -71,32 +81,34 @@ export default function CorePillarsVisual({ images }: { images: AboutImage[] }) 
 
         <div className="relative h-[240px] w-[56%] overflow-hidden rounded-tl-[40px] rounded-br-[40px] sm:h-[300px] sm:w-[260px] sm:rounded-tl-[50px] sm:rounded-br-[50px]">
           <Image
-            src={thirdImage?.image ?? "/assets/about/corePillar3.jpg"}
-            alt={thirdImage?.alt ?? "Clinical team"}
+            src={thirdImage?.image ?? '/assets/about/corePillar3.jpg'}
+            alt={thirdImage?.alt ?? 'Clinical team'}
             fill
             className="object-cover"
           />
         </div>
       </div>
 
-      <div className={`absolute bottom-4 rounded-2xl bg-white p-4 shadow-xl sm:-bottom-12.5 sm:p-6 ${locale === 'ar' ? "right-4 sm:right-20" : "left-4 sm:left-20"}`}>
-        <p className="text-foreground text-sm font-semibold sm:text-base">
+      <div
+        className={`absolute bottom-4 rounded-2xl bg-white p-4 shadow-xl sm:-bottom-12.5 sm:p-6 ${locale === 'ar' ? 'right-4 sm:right-20' : 'left-4 sm:left-20'}`}
+      >
+        <p className="text-sm font-semibold text-foreground sm:text-base">
           12k+{t('aboutPage.verified-doctors')}
         </p>
 
         <div className="mt-3 flex items-center">
           <Image
-            src={fourthImage?.image ?? "/assets/about/doc1.jpg"}
+            src={fourthImage?.image ?? '/assets/about/doc1.jpg'}
             width={36}
             height={36}
-            alt={fourthImage?.alt ?? "Verified doctor"}
+            alt={fourthImage?.alt ?? 'Verified doctor'}
             className="h-8 w-8 rounded-full border-2 border-white object-cover sm:h-9 sm:w-9"
           />
           <Image
-            src={fifthImage?.image ?? "/assets/about/doc2.jpg"}
+            src={fifthImage?.image ?? '/assets/about/doc2.jpg'}
             width={36}
             height={36}
-            alt={fifthImage?.alt ?? "Verified doctor"}
+            alt={fifthImage?.alt ?? 'Verified doctor'}
             className="-ml-3 h-8 w-8 rounded-full border-2 border-white object-cover sm:h-9 sm:w-9"
           />
           <Image
@@ -106,7 +118,7 @@ export default function CorePillarsVisual({ images }: { images: AboutImage[] }) 
             alt="Verified doctor"
             className="-ml-3 h-8 w-8 rounded-full border-2 border-white object-cover sm:h-9 sm:w-9"
           />
-          <div className="text-primary -ml-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#EBEFF5] sm:h-9 sm:w-9">
+          <div className="-ml-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#EBEFF5] text-primary sm:h-9 sm:w-9">
             <Plus size={12} />
           </div>
         </div>

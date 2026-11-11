@@ -59,12 +59,12 @@ export default function ChatComposer(props: ChatComposerProps) {
         )}
       />
       {reply && (
-        <div className="bg-chat-surface before:bg-chat-primary relative flex items-center gap-2 rounded-xl px-3 py-2 before:absolute before:start-3 before:top-2 before:h-8 before:w-[3px]">
+        <div className="relative flex items-center gap-2 rounded-xl bg-chat-surface px-3 py-2 before:absolute before:start-3 before:top-2 before:h-8 before:w-[3px] before:bg-chat-primary">
           <div className="min-w-0 flex-1 ps-3">
-            <p className="text-chat-primary truncate text-xs leading-4 font-semibold">
+            <p className="truncate text-xs leading-4 font-semibold text-chat-primary">
               {t('replying-to', { name: reply.name })}
             </p>
-            <p className="text-muted-foreground mt-0.5 truncate text-xs leading-4">
+            <p className="mt-0.5 truncate text-xs leading-4 text-muted-foreground">
               {reply.text}
             </p>
           </div>
@@ -84,7 +84,7 @@ export default function ChatComposer(props: ChatComposerProps) {
           {attachments.map((attachment) => (
             <div
               key={attachment.id}
-              className="bg-card border-border relative flex size-16 items-center justify-center rounded-xl border"
+              className="relative flex size-16 items-center justify-center rounded-xl border border-border bg-card"
             >
               {attachment.kind === 'image' && attachment.url ? (
                 <Image
@@ -113,7 +113,7 @@ export default function ChatComposer(props: ChatComposerProps) {
           <Button
             type="button"
             variant="ghost"
-            className="border-chat-dashed size-16 rounded-xl border border-dashed"
+            className="size-16 rounded-xl border border-dashed border-chat-dashed"
             onClick={() => openFilePicker()}
             aria-label={t('add-more-files')}
           >
@@ -121,7 +121,7 @@ export default function ChatComposer(props: ChatComposerProps) {
           </Button>
         </div>
       )}
-      <div className="bg-chat-surface border-border flex items-end gap-3 rounded-2xl border px-3 py-[11px]">
+      <div className="flex items-end gap-3 rounded-2xl border border-border bg-chat-surface px-3 py-[11px]">
         <Button
           type="button"
           variant="ghost"
@@ -156,7 +156,7 @@ export default function ChatComposer(props: ChatComposerProps) {
           }
           error={form.formState.errors.text?.message}
           containerStyles="min-w-0 flex-1"
-          className="placeholder:text-chat-search field-sizing-content max-h-36 min-h-8.5 resize-none rounded-none border-0 bg-transparent px-0 py-2 text-sm leading-4.5 shadow-none focus-visible:ring-0"
+          className="field-sizing-content max-h-36 min-h-8.5 resize-none rounded-none border-0 bg-transparent px-0 py-2 text-sm leading-4.5 shadow-none placeholder:text-chat-search focus-visible:ring-0"
           onKeyDown={(event) => {
             if (
               event.key === 'Enter' &&
@@ -171,7 +171,7 @@ export default function ChatComposer(props: ChatComposerProps) {
         <Button
           type="submit"
           disabled={!canSend}
-          className="bg-chat-primary h-8.5 w-9 rounded-xl p-0 disabled:opacity-60"
+          className="h-8.5 w-9 rounded-xl bg-chat-primary p-0 disabled:opacity-60"
           aria-label={t('send-message')}
         >
           <ChatIcon

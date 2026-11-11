@@ -11,14 +11,14 @@ export default function AssessmentFactCard({
   value,
 }: AssessmentFactCardProps) {
   return (
-    <div className="bg-muted flex flex-col gap-1 rounded-xl p-3 text-start">
-      <span className="text-muted-foreground text-sm font-semibold">
+    <div className="flex flex-col gap-1 rounded-xl bg-muted p-3 text-start">
+      <span className="text-sm font-semibold text-muted-foreground">
         {label}
       </span>
       {/* Dates are formatted in the viewer's timezone, which can differ from the server's. */}
       <span
         suppressHydrationWarning
-        className="text-foreground text-lg leading-6 font-semibold"
+        className="text-lg leading-6 font-semibold text-foreground"
       >
         {value}
       </span>

@@ -42,7 +42,7 @@ export default function AssignAssessmentDialog({
         animated={false}
         showCloseButton={false}
         className={cn(
-          'border-assessment-border bg-card w-[calc(100%-2rem)] gap-0 overflow-y-auto rounded-[20px] p-0 sm:min-w-0',
+          'w-[calc(100%-2rem)] gap-0 overflow-y-auto rounded-[20px] border-assessment-border bg-card p-0 sm:min-w-0',
           assignment.assigned
             ? 'max-w-[700px] rounded-3xl border-0'
             : 'max-w-[1024px]',
@@ -56,9 +56,9 @@ export default function AssignAssessmentDialog({
           />
         ) : (
           <>
-            <div className="border-assessment-border flex items-center justify-between border-b px-6 py-5 sm:px-8">
+            <div className="flex items-center justify-between border-b border-assessment-border px-6 py-5 sm:px-8">
               <div>
-                <DialogTitle className="text-assessment-heading text-xl leading-8 sm:text-2xl font-semibold">
+                <DialogTitle className="text-xl leading-8 font-semibold text-assessment-heading sm:text-2xl">
                   {t('title')}
                 </DialogTitle>
                 <DialogDescription className="sr-only">
@@ -69,25 +69,25 @@ export default function AssignAssessmentDialog({
                 <Button
                   size="icon"
                   aria-label={t('close')}
-                  className="bg-assessment-action size-9 rounded-full shadow-sm"
+                  className="size-9 rounded-full bg-assessment-action shadow-sm"
                 >
                   <X className="size-4" />
                 </Button>
               </DialogClose>
             </div>
             <div className="grid md:grid-cols-2">
-              <section className="border-assessment-border border-b p-6 md:border-e md:border-b-0 md:p-8">
+              <section className="border-b border-assessment-border p-6 md:border-e md:border-b-0 md:p-8">
                 <div className="flex gap-3 pb-5">
-                  <span className="bg-assessment-action text-primary-foreground flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-semibold">
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-assessment-action text-sm font-semibold text-primary-foreground">
                     1
                   </span>
                   <div>
-                    <h3 className="text-assessment-heading text-base leading-6 font-semibold">
+                    <h3 className="text-base leading-6 font-semibold text-assessment-heading">
                       {t('candidates')}
                     </h3>
                     <p
                       className={cn(
-                        'text-assessment-muted mt-1 text-sm leading-5',
+                        'mt-1 text-sm leading-5 text-assessment-muted',
                         assessmentBodyFont.className,
                       )}
                     >
@@ -107,7 +107,7 @@ export default function AssignAssessmentDialog({
                     assessmentBodyFont.className,
                   )}
                 >
-                  <span className="text-assessment-heading font-semibold">
+                  <span className="font-semibold text-assessment-heading">
                     {t('selected-count', {
                       count: assignment.selectedIds.length,
                     })}
@@ -115,7 +115,7 @@ export default function AssignAssessmentDialog({
                   <button
                     type="button"
                     onClick={() => assignment.setPickerOpen(true)}
-                    className="text-assessment-action font-medium"
+                    className="font-medium text-assessment-action"
                   >
                     {t('manage')}
                   </button>
@@ -131,7 +131,7 @@ export default function AssignAssessmentDialog({
                     .map((candidate) => (
                       <span
                         key={candidate.id}
-                        className="border-assessment-border bg-assessment-surface text-assessment-heading rounded-full border px-3 py-1.5 font-medium"
+                        className="rounded-full border border-assessment-border bg-assessment-surface px-3 py-1.5 font-medium text-assessment-heading"
                       >
                         {candidate.shortName}
                       </span>
@@ -139,7 +139,7 @@ export default function AssignAssessmentDialog({
                   {assignment.selectedIds.length > 2 ? (
                     <button
                       onClick={() => assignment.setPickerOpen(true)}
-                      className="bg-assessment-action/10 text-assessment-action border-assessment-action/20 rounded-full border px-3 py-1.5 font-semibold"
+                      className="rounded-full border border-assessment-action/20 bg-assessment-action/10 px-3 py-1.5 font-semibold text-assessment-action"
                     >
                       {t('more-count', {
                         count: assignment.selectedIds.length - 2,
@@ -150,16 +150,16 @@ export default function AssignAssessmentDialog({
               </section>
               <section className="p-6 md:p-8">
                 <div className="flex gap-3 pb-5">
-                  <span className="bg-assessment-action text-primary-foreground flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-semibold">
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-assessment-action text-sm font-semibold text-primary-foreground">
                     2
                   </span>
                   <div>
-                    <h3 className="text-assessment-heading text-base leading-6 font-semibold">
+                    <h3 className="text-base leading-6 font-semibold text-assessment-heading">
                       {t('email-title')}
                     </h3>
                     <p
                       className={cn(
-                        'text-assessment-muted mt-1 text-sm leading-5',
+                        'mt-1 text-sm leading-5 text-assessment-muted',
                         assessmentBodyFont.className,
                       )}
                     >
@@ -171,7 +171,7 @@ export default function AssignAssessmentDialog({
                   variant="outline"
                   onClick={() => assignment.setEmailOpen(true)}
                   className={cn(
-                    'border-assessment-border bg-assessment-control text-assessment-action h-12 w-full gap-2 rounded-2xl border-dashed text-sm font-medium',
+                    'h-12 w-full gap-2 rounded-2xl border-dashed border-assessment-border bg-assessment-control text-sm font-medium text-assessment-action',
                     assessmentBodyFont.className,
                   )}
                 >
@@ -181,14 +181,14 @@ export default function AssignAssessmentDialog({
                 {assignment.emails.length ? (
                   <div
                     className={cn(
-                      'border-assessment-border bg-assessment-surface mt-4 flex min-h-20 flex-wrap content-start gap-2 rounded-2xl border p-3',
+                      'mt-4 flex min-h-20 flex-wrap content-start gap-2 rounded-2xl border border-assessment-border bg-assessment-surface p-3',
                       assessmentBodyFont.className,
                     )}
                   >
                     {assignment.emails.map((email) => (
                       <span
                         key={email}
-                        className="border-assessment-border text-assessment-heading bg-card flex h-[34px] items-center gap-2 rounded-full border py-1.5 ps-3 pe-1.5 text-xs font-medium"
+                        className="flex h-[34px] items-center gap-2 rounded-full border border-assessment-border bg-card py-1.5 ps-3 pe-1.5 text-xs font-medium text-assessment-heading"
                       >
                         <span className="max-w-48 truncate">{email}</span>
                         <button
@@ -205,20 +205,20 @@ export default function AssignAssessmentDialog({
                 ) : null}
               </section>
             </div>
-            <div className="border-assessment-border border-t px-6 py-6 sm:px-8">
-              <div className="bg-assessment-warning/20 flex items-start gap-2 rounded-2xl p-4">
-                <AlertCircle className="text-assessment-warning mt-0.5 size-5 shrink-0" />
+            <div className="border-t border-assessment-border px-6 py-6 sm:px-8">
+              <div className="flex items-start gap-2 rounded-2xl bg-assessment-warning/20 p-4">
+                <AlertCircle className="mt-0.5 size-5 shrink-0 text-assessment-warning" />
                 <div>
-                  <p className="text-assessment-warning text-sm leading-5 font-semibold">
+                  <p className="text-sm leading-5 font-semibold text-assessment-warning">
                     {t('how-title')}
                   </p>
-                  <p className="text-gray-45 mt-1 text-sm leading-normal">
+                  <p className="mt-1 text-sm leading-normal text-gray-45">
                     {t('how-description')}
                   </p>
                 </div>
               </div>
               <div className="flex flex-wrap items-center justify-between gap-2 py-5 text-sm leading-5">
-                <span className="text-assessment-heading font-semibold">
+                <span className="font-semibold text-assessment-heading">
                   {t('recipients')}
                 </span>
                 <span
@@ -237,7 +237,7 @@ export default function AssignAssessmentDialog({
               <Button
                 disabled={!assignment.totalRecipients}
                 onClick={() => assignment.setAssigned(true)}
-                className="bg-assessment-action h-13 w-full rounded-2xl text-base font-semibold"
+                className="h-13 w-full rounded-2xl bg-assessment-action text-base font-semibold"
               >
                 {t('title')}
               </Button>

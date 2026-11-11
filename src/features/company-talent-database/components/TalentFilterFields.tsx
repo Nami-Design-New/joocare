@@ -43,7 +43,12 @@ export default function TalentFilterFields({
     [fields, t],
   );
   return (
-    <div className={cn('grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3', className)}>
+    <div
+      className={cn(
+        'grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3',
+        className,
+      )}
+    >
       {fields.map((field) => {
         const id = `talent-${field.key}`;
         const label = t(`fields.${field.key}`);

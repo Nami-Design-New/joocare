@@ -30,7 +30,7 @@ export default function SharedReviewHeader({
     : EMPLOYER_LOGIN_HREF;
 
   return (
-    <header className="layout-shell shadow-header sticky top-0 z-30 flex h-19 w-full items-center bg-white py-4">
+    <header className="layout-shell sticky top-0 z-30 flex h-19 w-full items-center bg-white py-4 shadow-header">
       <div className="layout-content flex items-center justify-between">
         <Link href={homeHref} aria-label={t('home')}>
           <Image
@@ -45,7 +45,7 @@ export default function SharedReviewHeader({
 
         <div className="flex items-center gap-2 md:gap-4">
           <Suspense
-            fallback={<div className="bg-muted h-13 w-24 rounded-full" />}
+            fallback={<div className="h-13 w-24 rounded-full bg-muted" />}
           >
             <LanguageToggle aria-label={t('language')} />
           </Suspense>

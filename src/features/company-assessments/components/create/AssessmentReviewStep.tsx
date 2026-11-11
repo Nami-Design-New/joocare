@@ -95,26 +95,26 @@ export default function AssessmentReviewStep({
   ];
   return (
     <div className="space-y-6">
-      <section className="bg-card space-y-5 rounded-2xl p-5 md:p-6">
-        <h2 className="border-border border-b pb-2 text-base font-semibold">
+      <section className="space-y-5 rounded-2xl bg-card p-5 md:p-6">
+        <h2 className="border-b border-border pb-2 text-base font-semibold">
           {t('summary')}
         </h2>
         <div>
           <h3 className="font-semibold">{configuration.title}</h3>
-          <p className="text-muted-foreground mt-2 text-sm leading-6">
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
             {configuration.description}
           </p>
         </div>
         <dl className="grid grid-cols-2 gap-3 md:grid-cols-4">
           {metrics.map((metric) => (
-            <div key={metric.label} className="bg-muted rounded-xl px-3 py-2">
-              <dt className="text-muted-foreground text-xs">{metric.label}</dt>
+            <div key={metric.label} className="rounded-xl bg-muted px-3 py-2">
+              <dt className="text-xs text-muted-foreground">{metric.label}</dt>
               <dd className="mt-1 text-sm font-semibold">{metric.value}</dd>
             </div>
           ))}
         </dl>
         <div>
-          <p className="text-muted-foreground mb-2 text-xs">
+          <p className="mb-2 text-xs text-muted-foreground">
             {t('allowed-question-types')}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -125,7 +125,7 @@ export default function AssessmentReviewStep({
               return count > 0 ? (
                 <span
                   key={type}
-                  className="bg-primary-bg text-primary rounded-full px-3 py-1 text-xs font-semibold"
+                  className="rounded-full bg-primary-bg px-3 py-1 text-xs font-semibold text-primary"
                 >
                   {count} {t(type)}
                 </span>
@@ -136,9 +136,9 @@ export default function AssessmentReviewStep({
       </section>
       <section
         id="assessment-review-questions"
-        className="bg-card scroll-mt-24 space-y-5 rounded-2xl p-5 md:p-6"
+        className="scroll-mt-24 space-y-5 rounded-2xl bg-card p-5 md:p-6"
       >
-        <h2 className="border-border border-b pb-2 text-base font-semibold">
+        <h2 className="border-b border-border pb-2 text-base font-semibold">
           {t('questions-overview')}
         </h2>
         <DataTable

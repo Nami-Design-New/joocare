@@ -22,12 +22,12 @@ export default function AssessmentStatusCard({
     <AssessmentCard className="flex flex-col items-center gap-7 py-10 text-center lg:py-16">
       {visual}
       <div className="flex max-w-187 flex-col gap-2">
-        <h1 className="text-foreground text-2xl font-bold sm:text-[28px] sm:leading-9">
+        <h1 className="text-2xl font-bold text-foreground sm:text-[28px] sm:leading-9">
           {title}
         </h1>
         <p
           suppressHydrationWarning
-          className="text-muted-foreground text-base leading-5"
+          className="text-base leading-5 text-muted-foreground"
         >
           {description}
         </p>

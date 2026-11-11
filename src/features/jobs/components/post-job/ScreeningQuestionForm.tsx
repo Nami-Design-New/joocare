@@ -99,7 +99,7 @@ export default function ScreeningQuestionForm({
           />
           {isChoice ? (
             <fieldset className="flex flex-col gap-4">
-              <legend className="text-foreground/80 mb-4 text-[13px] font-semibold">
+              <legend className="mb-4 text-[13px] font-semibold text-foreground/80">
                 {t('answer-options')}
               </legend>
               <div className="flex flex-col gap-3">
@@ -110,7 +110,7 @@ export default function ScreeningQuestionForm({
                       key={field.fieldKey}
                       className="flex items-start gap-3"
                     >
-                      <span className="text-muted-foreground mt-2 w-6 text-lg">
+                      <span className="mt-2 w-6 text-lg text-muted-foreground">
                         {letter}.
                       </span>
                       <InputField
@@ -118,7 +118,7 @@ export default function ScreeningQuestionForm({
                         aria-label={t('option-label', { letter })}
                         placeholder={t('option-placeholder')}
                         error={errors.options?.[index]?.text?.message}
-                        className="bg-card border-border h-10 text-sm shadow-none"
+                        className="h-10 border-border bg-card text-sm shadow-none"
                         containerStyles="flex-1"
                         {...form.register(`options.${index}.text`)}
                       />
@@ -131,7 +131,7 @@ export default function ScreeningQuestionForm({
                           options.fields.length <= SCREENING_OPTION_LIMITS.min
                         }
                         onClick={() => removeOption(index)}
-                        className="text-destructive hover:text-destructive mt-1 rounded-full"
+                        className="mt-1 rounded-full text-destructive hover:text-destructive"
                       >
                         <Trash2 aria-hidden="true" className="size-5" />
                       </Button>
@@ -160,7 +160,7 @@ export default function ScreeningQuestionForm({
       </div>
 
       {type === 'single' ? (
-        <div className="border-border border-t pt-6">
+        <div className="border-t border-border pt-6">
           <SelectInputField
             id={`${idPrefix}-correct`}
             label={t('correct-answer')}
@@ -177,7 +177,7 @@ export default function ScreeningQuestionForm({
           />
         </div>
       ) : type === 'multi' ? (
-        <div className="border-border border-t pt-6">
+        <div className="border-t border-border pt-6">
           <MultiSelectInputField
             id={`${idPrefix}-correct`}
             label={t('correct-many')}
@@ -196,7 +196,7 @@ export default function ScreeningQuestionForm({
         </div>
       ) : (
         <div className="-mt-2 flex flex-col gap-3">
-          <p className="text-foreground px-1 font-semibold">
+          <p className="px-1 font-semibold text-foreground">
             {t('correct-answer')}
           </p>
           <SegmentedPills
@@ -225,7 +225,7 @@ export default function ScreeningQuestionForm({
       />
 
       {isSubmitted && summary ? (
-        <p role="alert" className="text-destructive text-center text-sm">
+        <p role="alert" className="text-center text-sm text-destructive">
           {summary}
         </p>
       ) : null}

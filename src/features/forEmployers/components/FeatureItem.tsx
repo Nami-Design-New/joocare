@@ -1,5 +1,5 @@
-import Image from "next/image";
-import type { FeatureItemProps } from "../types";
+import Image from 'next/image';
+import type { FeatureItemProps } from '../types';
 
 export function FeatureItem({ title, desc }: FeatureItemProps) {
   return (
@@ -15,8 +15,10 @@ export function FeatureItem({ title, desc }: FeatureItemProps) {
         </div>
 
         <div className="min-w-0">
-          <h3 className="text-base md:text-lg font-semibold text-secondary">{title}</h3>
-          <p className="mt-1 text-xs md:text-sm leading-relaxed text-pretty text-gray-600">
+          <h3 className="text-base font-semibold text-secondary md:text-lg">
+            {title}
+          </h3>
+          <p className="mt-1 text-xs leading-relaxed text-pretty text-gray-600 md:text-sm">
             {desc}
           </p>
         </div>

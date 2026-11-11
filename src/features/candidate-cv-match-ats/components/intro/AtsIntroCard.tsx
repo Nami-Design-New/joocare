@@ -14,7 +14,7 @@ export default function AtsIntroCard({ onAnalyze }: AtsIntroCardProps) {
   const t = useTranslations('candidatePage.cvMatchAts');
 
   return (
-    <section className="bg-card grid items-center gap-6 rounded-2xl p-4 sm:gap-8 sm:p-6 md:grid-cols-2 xl:gap-12.5">
+    <section className="grid items-center gap-6 rounded-2xl bg-card p-4 sm:gap-8 sm:p-6 md:grid-cols-2 xl:gap-12.5">
       <Image
         src={ATS_ASSETS.intro}
         alt={t('image-alt')}
@@ -27,7 +27,7 @@ export default function AtsIntroCard({ onAnalyze }: AtsIntroCardProps) {
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-5 px-4">
           <FeatureTagline>{t('tagline')}</FeatureTagline>
-          <h1 className="text-secondary text-2xl leading-tight font-bold sm:text-3xl xl:text-[38px] xl:leading-12">
+          <h1 className="text-2xl leading-tight font-bold text-secondary sm:text-3xl xl:text-[38px] xl:leading-12">
             {t('title')}
           </h1>
         </div>
@@ -36,7 +36,7 @@ export default function AtsIntroCard({ onAnalyze }: AtsIntroCardProps) {
           type="button"
           size="pill"
           onClick={onAnalyze}
-          className="bg-ats-primary hover:bg-ats-primary/90 h-12.5 w-fit px-8 text-sm font-semibold"
+          className="h-12.5 w-fit bg-ats-primary px-8 text-sm font-semibold hover:bg-ats-primary/90"
         >
           {t('analyze')}
         </Button>

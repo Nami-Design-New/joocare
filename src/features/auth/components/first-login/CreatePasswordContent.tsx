@@ -16,7 +16,11 @@ export default async function CreatePasswordContent() {
           <h1 className="text-2xl leading-tight sm:text-3xl lg:text-[40px]">
             {t('title')}
           </h1>
-          <p dir="ltr" lang="en" className="text-start text-base leading-[23px] sm:text-lg">
+          <p
+            dir="ltr"
+            lang="en"
+            className="text-start text-base leading-[23px] sm:text-lg"
+          >
             {english('welcome', {
               name: english('member-name'),
               workspace: english('workspace-name'),
@@ -32,10 +36,10 @@ export default async function CreatePasswordContent() {
               workspace: arabic('workspace-name'),
             })}
           </p>
-          <div className="border-warning/50 bg-warning/12 text-warning-strong flex items-center gap-2.5 rounded-xl border px-4 py-3 text-sm leading-[18px]">
+          <div className="flex items-center gap-2.5 rounded-xl border border-warning/50 bg-warning/12 px-4 py-3 text-sm leading-[18px] text-warning-strong">
             <span
               aria-hidden="true"
-              className="bg-warning text-primary-foreground flex size-5 shrink-0 items-center justify-center rounded-full text-[13px] font-semibold"
+              className="flex size-5 shrink-0 items-center justify-center rounded-full bg-warning text-[13px] font-semibold text-primary-foreground"
             >
               !
             </span>

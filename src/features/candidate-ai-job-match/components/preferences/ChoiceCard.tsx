@@ -22,8 +22,8 @@ export default function ChoiceCard({
   return (
     <label
       className={cn(
-        'border-border flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm transition-colors',
-        'has-focus-visible:ring-ring/50 has-focus-visible:ring-[3px]',
+        'flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-border px-4 py-3 text-sm transition-colors',
+        'has-focus-visible:ring-[3px] has-focus-visible:ring-ring/50',
         checked
           ? 'border-primary bg-primary/10 text-primary'
           : 'text-secondary hover:border-primary/50',
@@ -40,7 +40,7 @@ export default function ChoiceCard({
       <span
         aria-hidden
         className={cn(
-          'border-input flex size-5 shrink-0 items-center justify-center border',
+          'flex size-5 shrink-0 items-center justify-center border border-input',
           type === 'radio' ? 'rounded-full' : 'rounded-[4px]',
           checked && 'border-primary',
           checked &&
@@ -50,7 +50,7 @@ export default function ChoiceCard({
       >
         {checked && type === 'checkbox' && <Check className="size-3.5" />}
         {checked && type === 'radio' && (
-          <span className="bg-primary size-2.5 rounded-full" />
+          <span className="size-2.5 rounded-full bg-primary" />
         )}
       </span>
       {label}

@@ -45,14 +45,14 @@ function PasswordRuleItem({
       data-password-rule={ruleKey}
       data-valid={isValid}
       className={cn(
-        'text-muted-foreground flex items-center gap-2',
+        'flex items-center gap-2 text-muted-foreground',
         isValid && 'text-success',
       )}
     >
       <span
         aria-hidden
         className={cn(
-          'border-foreground/30 flex size-4.5 shrink-0 items-center justify-center rounded-full border-[1.5px]',
+          'flex size-4.5 shrink-0 items-center justify-center rounded-full border-[1.5px] border-foreground/30',
           isFailed && 'border-destructive',
           isValid && 'border-success bg-success text-success-foreground',
         )}
@@ -85,12 +85,9 @@ export default function PasswordRequirements({
   return (
     <div
       id={id}
-      className={cn(
-        ' flex w-full flex-col gap-2 text-start text-sm',
-        className,
-      )}
+      className={cn('flex w-full flex-col gap-2 text-start text-sm', className)}
     >
-      <p className="text-secondary font-medium">{t('title')}</p>
+      <p className="font-medium text-secondary">{t('title')}</p>
       <ul aria-live="polite" className="flex flex-col gap-2">
         {PASSWORD_RULE_KEYS.map((key) => (
           <PasswordRuleItem

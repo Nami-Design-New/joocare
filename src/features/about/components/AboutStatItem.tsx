@@ -4,9 +4,9 @@ type AboutStatItemProps = {
 };
 
 export default function AboutStatItem({ value, label }: AboutStatItemProps) {
-  const hasPlus = value.startsWith("+");
-  const hasPercent = value.endsWith("%");
-  const normalizedValue = value.replace("+", "").replace("%", "");
+  const hasPlus = value.startsWith('+');
+  const hasPercent = value.endsWith('%');
+  const normalizedValue = value.replace('+', '').replace('%', '');
 
   return (
     <div className="px-2">

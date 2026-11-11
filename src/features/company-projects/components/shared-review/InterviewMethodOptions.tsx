@@ -41,8 +41,8 @@ export default function InterviewMethodOptions({
               className={cn(
                 'flex h-13 items-center gap-2.5 rounded-full border px-4 text-sm transition-colors',
                 isSelected
-                  ? 'border-primary bg-primary-bg text-primary border-[1.5px] font-semibold'
-                  : 'bg-muted text-foreground hover:bg-secondary/10 border-transparent',
+                  ? 'border-[1.5px] border-primary bg-primary-bg font-semibold text-primary'
+                  : 'border-transparent bg-muted text-foreground hover:bg-secondary/10',
               )}
             >
               <span
@@ -50,8 +50,8 @@ export default function InterviewMethodOptions({
                 className={cn(
                   'size-4.5 shrink-0 rounded-full bg-white',
                   isSelected
-                    ? 'border-primary border-[5px]'
-                    : 'border-secondary/40 border-[1.5px] bg-transparent',
+                    ? 'border-[5px] border-primary'
+                    : 'border-[1.5px] border-secondary/40 bg-transparent',
                 )}
               />
               {t(method)}

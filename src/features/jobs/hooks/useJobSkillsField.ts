@@ -13,15 +13,24 @@ export function useJobSkillsField(existingJob?: JobDetails | null) {
   const { watch } = useFormContext<JobFormData>();
   const [search, setSearch] = useState('');
   // Labels of picked skills, kept after the search results change.
-  const [pickedLabels, setPickedLabels] = useState<Map<string, string>>(() => new Map());
+  const [pickedLabels, setPickedLabels] = useState<Map<string, string>>(
+    () => new Map(),
+  );
   const jobTitle = watch('title') ?? '';
   const jobTitleId = jobTitle === OTHER_OPTION_VALUE ? '' : jobTitle;
   const selected = watch('skills') ?? [];
 
   const query = useGetSkills(search, jobTitleId, Boolean(jobTitleId));
-  const options = query.skills.map((item) => ({ label: item.title, value: String(item.id) }));
+  const options = query.skills.map((item) => ({
+    label: item.title,
+    value: String(item.id),
+  }));
   const existingOptions = useMemo(
-    () => (existingJob?.skills ?? []).map((skill) => ({ label: skill.title, value: String(skill.id) })),
+    () =>
+      (existingJob?.skills ?? []).map((skill) => ({
+        label: skill.title,
+        value: String(skill.id),
+      })),
     [existingJob],
   );
   const recommended = useRecommendedSkills(jobTitleId, selected);
@@ -34,7 +43,8 @@ export function useJobSkillsField(existingJob?: JobDetails | null) {
     return map;
   }, [existingOptions, recommended.options, options]);
 
-  const getLabel = (value: string) => pickedLabels.get(value) ?? knownLabels.get(value) ?? value;
+  const getLabel = (value: string) =>
+    pickedLabels.get(value) ?? knownLabels.get(value) ?? value;
 
   const rememberLabels = (values: string[]) =>
     setPickedLabels((current) => {

@@ -19,11 +19,11 @@
 //   }
 // }
 // next-auth.d.ts
-import { AuthSessionUser } from "@/shared/types";
+import { AuthSessionUser } from '@/shared/types';
 
-type AuthRole = "candidate" | "employer";
+type AuthRole = 'candidate' | 'employer';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     user: AuthSessionUser;
     accessToken: string;
@@ -40,7 +40,7 @@ declare module "next-auth" {
   }
 }
 
-declare module "next-auth/jwt" {
+declare module 'next-auth/jwt' {
   interface JWT {
     user?: AuthSessionUser;
     accessToken?: string;

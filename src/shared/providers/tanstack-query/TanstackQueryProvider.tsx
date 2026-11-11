@@ -1,9 +1,9 @@
-"use client";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useLocale } from "next-intl";
-import { useEffect, useRef } from "react";
-import { getQueryClient } from "./query-client-setup";
+'use client';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useLocale } from 'next-intl';
+import { useEffect, useRef } from 'react';
+import { getQueryClient } from './query-client-setup';
 
 export default function TanstackQueryProvider({
   children,

@@ -1,171 +1,174 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Camera } from "lucide-react";
-import { cn } from "@/shared/lib/utils";
-import { useSession } from "next-auth/react";
-import { TCompanyProfileViewModel } from "../types";
-import { useUpdateCompanyImagesFlow } from "../hooks/useUpdateCompanyImagesFlow";
-import { useLocale, useTranslations } from "next-intl";
+import Image from 'next/image';
+import { useRef } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Camera } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
+import { useSession } from 'next-auth/react';
+import { TCompanyProfileViewModel } from '../types';
+import { useUpdateCompanyImagesFlow } from '../hooks/useUpdateCompanyImagesFlow';
+import { useLocale, useTranslations } from 'next-intl';
 
 type FormValues = {
-    uploadCoverImage?: File | string;
-    uploadLogoImage?: File | string;
+  uploadCoverImage?: File | string;
+  uploadLogoImage?: File | string;
 };
 
 const ProfileHeader = ({
-    companyProfileData,
-    isPending,
+  companyProfileData,
+  isPending,
 }: {
-    companyProfileData: TCompanyProfileViewModel;
-    isPending: boolean;
+  companyProfileData: TCompanyProfileViewModel;
+  isPending: boolean;
 }) => {
-    const t = useTranslations();
-    const locale = useLocale()
+  const t = useTranslations();
+  const locale = useLocale();
 
-    const { data: session } = useSession();
-    const token = session?.accessToken || "";
+  const { data: session } = useSession();
+  const token = session?.accessToken || '';
 
-    const {
-        handleChangeImage,
-        loadingField,
-    } = useUpdateCompanyImagesFlow({ token });
+  const { handleChangeImage, loadingField } = useUpdateCompanyImagesFlow({
+    token,
+  });
 
-    const { watch, control } = useForm<FormValues>();
+  const { watch, control } = useForm<FormValues>();
 
-    const uploadCoverImage = watch("uploadCoverImage");
-    const uploadLogoImage = watch("uploadLogoImage");
+  const uploadCoverImage = watch('uploadCoverImage');
+  const uploadLogoImage = watch('uploadLogoImage');
 
-    const coverPreview = uploadCoverImage && uploadCoverImage instanceof File
-        ? URL.createObjectURL(uploadCoverImage)
-        : companyProfileData?.cover;
+  const coverPreview =
+    uploadCoverImage && uploadCoverImage instanceof File
+      ? URL.createObjectURL(uploadCoverImage)
+      : companyProfileData?.cover;
 
-    const logoPreview = uploadLogoImage && uploadLogoImage instanceof File
-        ? URL.createObjectURL(uploadLogoImage)
-        : companyProfileData?.image;
+  const logoPreview =
+    uploadLogoImage && uploadLogoImage instanceof File
+      ? URL.createObjectURL(uploadLogoImage)
+      : companyProfileData?.image;
 
-    const coverRef = useRef<HTMLInputElement>(null);
-    const logoRef = useRef<HTMLInputElement>(null);
+  const coverRef = useRef<HTMLInputElement>(null);
+  const logoRef = useRef<HTMLInputElement>(null);
 
-    return (
-        <div className="w-full h-48 mb-14 sm:h-93.75 sm:mb-20">
-            <div className="relative">
-                {/* COVER */}
-                <Controller
-                    name="uploadCoverImage"
-                    control={control}
-                    render={({ field: { onChange } }) => (
-                        <div className="relative w-full h-48 rounded-3xl overflow-hidden border sm:h-93.75 sm:rounded-[40px]">
-                            {isPending ? (
-                                <div className="w-full h-full flex items-center justify-center">
-                                    {t("common.loading")}
-                                </div>
-                            ) : (
-                                <Image
-                                    src={coverPreview || "/image.png"}
-                                    alt={t("companyPage.profile.cover-alt")}
-                                    fill
-                                    className="object-cover"
-                                />
-                            )}
-                            {loadingField === "cover" && (
-                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white">
-                                    {t("common.uploading")}
-                                </div>
-                            )}
-
-                            <input
-                                ref={coverRef}
-                                type="file"
-                                hidden
-                                accept="image/*"
-                                onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (!file) return;
-
-                                    onChange(file);
-
-                                    handleChangeImage(file, "cover").then((success) => {
-                                        if (!success) {
-                                            onChange(undefined);
-                                        }
-                                    });
-                                }}
-                            />
-
-                            <button
-                                onClick={() => coverRef.current?.click()}
-                                className="absolute top-4 right-4 w-10 h-10 bg-black/60 rounded-full flex items-center justify-center cursor-pointer"
-                            >
-                                <Camera className="text-white w-5 h-5" />
-                            </button>
-                        </div>
-                    )}
+  return (
+    <div className="mb-14 h-48 w-full sm:mb-20 sm:h-93.75">
+      <div className="relative">
+        {/* COVER */}
+        <Controller
+          name="uploadCoverImage"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <div className="relative h-48 w-full overflow-hidden rounded-3xl border sm:h-93.75 sm:rounded-[40px]">
+              {isPending ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  {t('common.loading')}
+                </div>
+              ) : (
+                <Image
+                  src={coverPreview || '/image.png'}
+                  alt={t('companyPage.profile.cover-alt')}
+                  fill
+                  className="object-cover"
                 />
+              )}
+              {loadingField === 'cover' && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-white">
+                  {t('common.uploading')}
+                </div>
+              )}
 
-                {/* LOGO */}
-                <Controller
-                    name="uploadLogoImage"
-                    control={control}
-                    render={({ field: { onChange } }) => (
-                        <div className={cn(
-                            `absolute -bottom-8 sm:-bottom-12 ${locale === "ar" ? "right-4 sm:right-8" : "left-4 sm:left-8"}`,
-                            "size-24 sm:size-37.5 rounded-full border bg-white",
-                            "flex items-center justify-center cursor-pointer",
-                            "ring-4 ring-white",
-                        )}>
-                            {isPending ? (
-                                <div className="w-full h-full flex items-center justify-center">
-                                    {t("common.uploading")}
-                                </div>
-                            ) : (
-                                <Image
-                                    src={logoPreview || "/image.png"}
-                                    alt={t("companyPage.profile.logo-alt")}
-                                    fill
-                                    className="object-cover rounded-full"
-                                />
-                            )}
+              <input
+                ref={coverRef}
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
 
-                            {loadingField === "logo" && (
-                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-xs rounded-full">
-                                    {t("common.uploading")}
-                                </div>
-                            )}
+                  onChange(file);
 
-                            <input
-                                ref={logoRef}
-                                type="file"
-                                hidden
-                                accept="image/*"
-                                onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (!file) return;
+                  handleChangeImage(file, 'cover').then((success) => {
+                    if (!success) {
+                      onChange(undefined);
+                    }
+                  });
+                }}
+              />
 
-                                    onChange(file);
-
-                                    handleChangeImage(file, "logo").then((success) => {
-                                        if (!success) {
-                                            onChange(undefined);
-                                        }
-                                    });
-                                }}
-                            />
-
-                            <button
-                                onClick={() => logoRef.current?.click()}
-                                className="w-7 h-7 absolute bottom-0 right-3 bg-secondary transition flex items-center justify-center  rounded-full cursor-pointer"
-                            >
-                                <Camera className="text-white w-3 h-3 " />
-                            </button>
-                        </div>
-                    )}
-                />
+              <button
+                onClick={() => coverRef.current?.click()}
+                className="absolute top-4 right-4 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black/60"
+              >
+                <Camera className="h-5 w-5 text-white" />
+              </button>
             </div>
-        </div>
-    );
+          )}
+        />
+
+        {/* LOGO */}
+        <Controller
+          name="uploadLogoImage"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <div
+              className={cn(
+                `absolute -bottom-8 sm:-bottom-12 ${locale === 'ar' ? 'right-4 sm:right-8' : 'left-4 sm:left-8'}`,
+                'size-24 rounded-full border bg-white sm:size-37.5',
+                'flex cursor-pointer items-center justify-center',
+                'ring-4 ring-white',
+              )}
+            >
+              {isPending ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  {t('common.uploading')}
+                </div>
+              ) : (
+                <Image
+                  src={logoPreview || '/image.png'}
+                  alt={t('companyPage.profile.logo-alt')}
+                  fill
+                  className="rounded-full object-cover"
+                />
+              )}
+
+              {loadingField === 'logo' && (
+                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 text-xs text-white">
+                  {t('common.uploading')}
+                </div>
+              )}
+
+              <input
+                ref={logoRef}
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  onChange(file);
+
+                  handleChangeImage(file, 'logo').then((success) => {
+                    if (!success) {
+                      onChange(undefined);
+                    }
+                  });
+                }}
+              />
+
+              <button
+                onClick={() => logoRef.current?.click()}
+                className="absolute right-3 bottom-0 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-secondary transition"
+              >
+                <Camera className="h-3 w-3 text-white" />
+              </button>
+            </div>
+          )}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default ProfileHeader;

@@ -43,7 +43,7 @@ export default function AssessmentSentSuccess({
           size="icon"
           variant="ghost"
           aria-label={t('close')}
-          className="bg-assessment-close absolute end-6 top-6 size-10 rounded-full"
+          className="absolute end-6 top-6 size-10 rounded-full bg-assessment-close"
         >
           <Image
             src={`${ASSESSMENT_ASSETS}/close-success.svg`}
@@ -53,7 +53,7 @@ export default function AssessmentSentSuccess({
           />
         </Button>
       </DialogClose>
-      <div className="relative h-[168px] w-[160px] shrink-0 sm:h-[242px] sm:w-[230px] overflow-hidden">
+      <div className="relative h-[168px] w-[160px] shrink-0 overflow-hidden sm:h-[242px] sm:w-[230px]">
         <Image
           src={`${ASSESSMENT_ASSETS}/sent-success.png`}
           width={265}
@@ -63,20 +63,20 @@ export default function AssessmentSentSuccess({
         />
       </div>
       <div className="w-full space-y-2.5 text-center">
-        <DialogTitle className="text-assessment-main text-2xl leading-[1.2] sm:text-[30px] font-bold">
+        <DialogTitle className="text-2xl leading-[1.2] font-bold text-assessment-main sm:text-[30px]">
           {t('success-title')}
         </DialogTitle>
-        <DialogDescription className="text-assessment-copy text-[17px] leading-[1.5]">
+        <DialogDescription className="text-[17px] leading-[1.5] text-assessment-copy">
           {t('success-description')}
         </DialogDescription>
       </div>
-      <div className="bg-assessment-info divide-assessment-info-border flex w-full flex-col divide-y rounded-[18px] px-4 py-[22px] sm:min-h-[176px] sm:flex-row sm:divide-x sm:divide-y-0 rtl:divide-x-reverse">
+      <div className="flex w-full flex-col divide-y divide-assessment-info-border rounded-[18px] bg-assessment-info px-4 py-[22px] sm:min-h-[176px] sm:flex-row sm:divide-x sm:divide-y-0 rtl:divide-x-reverse">
         {items.map((item) => (
           <div
             key={item.title}
             className="flex min-w-0 flex-1 flex-col items-center gap-1.5 px-2 py-3 text-center sm:py-0"
           >
-            <span className="bg-assessment-info-icon mb-2.5 flex size-12 items-center justify-center rounded-full">
+            <span className="mb-2.5 flex size-12 items-center justify-center rounded-full bg-assessment-info-icon">
               <Image
                 src={`${ASSESSMENT_ASSETS}/${item.icon}`}
                 width={24}
@@ -84,10 +84,10 @@ export default function AssessmentSentSuccess({
                 alt=""
               />
             </span>
-            <p className="text-assessment-main text-base leading-[1.3] font-semibold">
+            <p className="text-base leading-[1.3] font-semibold text-assessment-main">
               {t(item.title)}
             </p>
-            <p className="text-assessment-copy text-sm leading-[1.4]">
+            <p className="text-sm leading-[1.4] text-assessment-copy">
               {t(item.description)}
             </p>
           </div>
@@ -97,13 +97,13 @@ export default function AssessmentSentSuccess({
         <Button
           variant="outline"
           onClick={onAssignAnother}
-          className="border-assessment-outline text-assessment-main h-13 flex-1 rounded-full border-[1.5px] px-4 text-base font-semibold"
+          className="h-13 flex-1 rounded-full border-[1.5px] border-assessment-outline px-4 text-base font-semibold text-assessment-main"
         >
           {t('assign-another')}
         </Button>
         <Button
           asChild
-          className="bg-assessment-primary h-13 flex-1 gap-2.5 rounded-full px-4 text-base font-semibold"
+          className="h-13 flex-1 gap-2.5 rounded-full bg-assessment-primary px-4 text-base font-semibold"
         >
           <Link href={statusHref} onClick={onClose}>
             {t('view-status')}

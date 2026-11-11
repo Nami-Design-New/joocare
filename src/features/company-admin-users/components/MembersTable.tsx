@@ -2,7 +2,9 @@
 
 import { Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import DataTable, { type DataTableColumn } from '@/shared/components/common/DataTable';
+import DataTable, {
+  type DataTableColumn,
+} from '@/shared/components/common/DataTable';
 import { Button } from '@/shared/components/ui/button';
 import type { CompanyMember } from '../types/member.types';
 
@@ -37,14 +39,18 @@ export default function MembersTable({
       header: t('columns.name'),
       headerClassName: 'min-w-44 text-start',
       cellClassName: 'max-w-48 text-start',
-      renderCell: (member) => <span className="block truncate">{member.name}</span>,
+      renderCell: (member) => (
+        <span className="block truncate">{member.name}</span>
+      ),
     },
     {
       id: 'email',
       header: t('columns.email'),
       headerClassName: 'min-w-36',
       cellClassName: 'max-w-36',
-      renderCell: (member) => <span className="block truncate">{member.email}</span>,
+      renderCell: (member) => (
+        <span className="block truncate">{member.email}</span>
+      ),
     },
     {
       id: 'phone',
@@ -116,7 +122,7 @@ export default function MembersTable({
         dir={direction}
         ariaLabel={t('title')}
         containerClassName="rounded-lg bg-[#f8faf8]"
-        className="min-w-[1000px] [&_th]:text-base [&_td]:text-[15px]"
+        className="min-w-[1000px] [&_td]:text-[15px] [&_th]:text-base"
         headerRowClassName="bg-[#f3f4f3]"
         rowClassName="border-b border-[#e6e8e6] last:border-0"
       />

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { FilePond } from "react-filepond";
+import { FilePond } from 'react-filepond';
 
-import "./filepondPlugins";
+import './filepondPlugins';
 // styles
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import "filepond/dist/filepond.min.css";
-import { useTranslations } from "next-intl";
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import 'filepond/dist/filepond.min.css';
+import { useTranslations } from 'next-intl';
 
 interface FilepondUploadProps {
   files?: File[];
@@ -22,7 +22,7 @@ interface FilepondUploadProps {
   error?: string | boolean;
   hint?: string;
 
-  value?: string;                          // stores data.image path
+  value?: string; // stores data.image path
   onUploadSuccess: (imagePath: string) => void; // called after upload
   onRemove?: () => void;
   maxSize?: number;
@@ -35,7 +35,7 @@ export function FilepondUpload({
   onUploadSuccess,
   onRemove,
   label,
-  name = "files",
+  name = 'files',
   allowMultiple = false,
   maxFiles = 1,
   required = false,
@@ -66,24 +66,21 @@ export function FilepondUpload({
         return true;
       }
 
-      if (
-        normalizedType === "application/pdf" &&
-        fileName.endsWith(".pdf")
-      ) {
+      if (normalizedType === 'application/pdf' && fileName.endsWith('.pdf')) {
         return true;
       }
 
       if (
-        normalizedType === "application/msword" &&
-        fileName.endsWith(".doc")
+        normalizedType === 'application/msword' &&
+        fileName.endsWith('.doc')
       ) {
         return true;
       }
 
       if (
         normalizedType ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" &&
-        fileName.endsWith(".docx")
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document' &&
+        fileName.endsWith('.docx')
       ) {
         return true;
       }
@@ -94,11 +91,11 @@ export function FilepondUpload({
 
   const validateFile = (file: File) => {
     if (file.size > MAX_SIZE) {
-      return t("authPage.validation.max-file-size-5mb");
+      return t('authPage.validation.max-file-size-5mb');
     }
 
     if (!matchesAcceptedType(file)) {
-      return invalidTypeMessage ?? t("authPage.validation.invalid-file-type");
+      return invalidTypeMessage ?? t('authPage.validation.invalid-file-type');
     }
 
     return null;
@@ -111,16 +108,15 @@ export function FilepondUpload({
           {label}
           {required && <span className="mx-1 text-red-500">*</span>}
           {hint && (
-            <span className="text-muted-foreground text-sm font-normal">
-              {hint}{" "}
+            <span className="text-sm font-normal text-muted-foreground">
+              {hint}{' '}
             </span>
           )}
         </label>
       )}
 
-
       <FilePond
-        id={error ? "filepond-error" : ""}
+        id={error ? 'filepond-error' : ''}
         allowImagePreview={allowImagePreview}
         allowMultiple={allowMultiple}
         maxFiles={maxFiles}
@@ -136,14 +132,14 @@ export function FilepondUpload({
               onUploadError?.(validationMessage);
 
               return {
-                abort: () => { },
+                abort: () => {},
               };
             }
             const formData = new FormData();
-            formData.append("image", file);
+            formData.append('image', file);
 
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", `${process.env.NEXT_PUBLIC_BASE_URL}/images`);
+            xhr.open('POST', `${process.env.NEXT_PUBLIC_BASE_URL}/images`);
 
             xhr.upload.onprogress = (e) => {
               progress(e.lengthComputable, e.loaded, e.total);
@@ -157,14 +153,18 @@ export function FilepondUpload({
                 onUploadSuccess(imagePath);
                 load(String(response.data.id)); // ✅ must be a string
               } else {
-                const uploadFailedMessage = t("authPage.validation.upload-failed");
+                const uploadFailedMessage = t(
+                  'authPage.validation.upload-failed',
+                );
                 onUploadError?.(uploadFailedMessage);
                 error(uploadFailedMessage);
               }
             };
 
             xhr.onerror = () => {
-              const uploadFailedMessage = t("authPage.validation.upload-failed");
+              const uploadFailedMessage = t(
+                'authPage.validation.upload-failed',
+              );
               onUploadError?.(uploadFailedMessage);
               error(uploadFailedMessage);
             };
@@ -185,8 +185,12 @@ export function FilepondUpload({
         onaddfile={(addFileError, fileItem) => {
           if (addFileError) {
             const file = fileItem?.file;
-            const validationMessage = file ? validateFile(file as File) : invalidTypeMessage;
-            onUploadError?.(validationMessage ?? t("authPage.validation.upload-failed"));
+            const validationMessage = file
+              ? validateFile(file as File)
+              : invalidTypeMessage;
+            onUploadError?.(
+              validationMessage ?? t('authPage.validation.upload-failed'),
+            );
             return;
           }
 
@@ -204,8 +208,8 @@ export function FilepondUpload({
         }}
         labelIdle={`
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
-            <img src="/assets/icons/Group.svg" alt="${t("authPage.file-upload.icon-alt")}" width="20" height="20"/>
-            <span style="font-size:14px;">${t("authPage.file-upload.drag-drop-or-browse")}</span>
+            <img src="/assets/icons/Group.svg" alt="${t('authPage.file-upload.icon-alt')}" width="20" height="20"/>
+            <span style="font-size:14px;">${t('authPage.file-upload.drag-drop-or-browse')}</span>
           </div>
         `}
       />

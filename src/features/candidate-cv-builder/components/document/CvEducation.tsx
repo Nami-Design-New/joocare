@@ -17,22 +17,22 @@ export default function CvEducation({
   return (
     <section className="flex flex-col gap-3.5 p-1">
       <CvSectionTitle icon={GraduationCap} title={title} />
-      <ul className="divide-border flex flex-col divide-y">
+      <ul className="flex flex-col divide-y divide-border">
         {educations.map((education) => (
           <li
             key={education.id}
             className="flex flex-col py-3 first:pt-0 last:pb-0"
           >
-            <p className="text-foreground text-[15px] font-medium">
+            <p className="text-[15px] font-medium text-foreground">
               {education.degree}
             </p>
-            <p className="text-secondary text-sm">{education.institution}</p>
+            <p className="text-sm text-secondary">{education.institution}</p>
             {education.gpa ? (
-              <p className="text-secondary text-sm">
+              <p className="text-sm text-secondary">
                 {formatGpa(education.gpa)}
               </p>
             ) : null}
-            <p className="text-gray-45 text-xs" dir="ltr">
+            <p className="text-xs text-gray-45" dir="ltr">
               {education.period}
             </p>
           </li>

@@ -38,37 +38,39 @@ export default function AssessmentSummary({
 
   return (
     <Card className="min-w-0 gap-3 rounded-2xl border-0 px-3 py-3 shadow-none sm:px-4 sm:py-4 md:px-5">
-      <h2 className="border-border border-b pb-2 text-[13px] font-semibold">
+      <h2 className="border-b border-border pb-2 text-[13px] font-semibold">
         {labels.summary ?? t('summary')}
       </h2>
       <div>
         {labels.titleLabel ? (
-          <p className="text-muted-foreground text-[10px]">{labels.titleLabel}</p>
+          <p className="text-[10px] text-muted-foreground">
+            {labels.titleLabel}
+          </p>
         ) : null}
         <h3 className="text-[13px] font-semibold">{detail.summaryTitle}</h3>
-        <p className="text-muted-foreground mt-1 text-xs leading-5">
+        <p className="mt-1 text-xs leading-5 text-muted-foreground">
           {detail.summary}
         </p>
       </div>
       <dl className="grid grid-cols-2 gap-2 md:grid-cols-4">
         {metrics.map(({ label, value }) => (
-          <div key={label} className="bg-muted rounded-lg px-3 py-2">
-            <dt className="text-muted-foreground text-[10px]">{label}</dt>
-            <dd className="text-secondary mt-0.5 text-[13px] font-bold">
+          <div key={label} className="rounded-lg bg-muted px-3 py-2">
+            <dt className="text-[10px] text-muted-foreground">{label}</dt>
+            <dd className="mt-0.5 text-[13px] font-bold text-secondary">
               {value}
             </dd>
           </div>
         ))}
       </dl>
       <div>
-        <p className="text-muted-foreground mb-1.5 text-[10px] uppercase">
+        <p className="mb-1.5 text-[10px] text-muted-foreground uppercase">
           {labels.questionTypes ?? t('allowed-question-types')}
         </p>
         <div className="flex flex-wrap gap-1.5">
           {detail.allowedQuestionTypes.map((type) => (
             <Badge
               key={type.label}
-              className="bg-primary-bg text-primary rounded-full border-0 px-2.5 py-1 text-[10px] font-medium"
+              className="rounded-full border-0 bg-primary-bg px-2.5 py-1 text-[10px] font-medium text-primary"
             >
               {type.count} {type.label}
             </Badge>

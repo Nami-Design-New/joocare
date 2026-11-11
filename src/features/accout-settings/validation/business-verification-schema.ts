@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const dateField = (requiredMessage: string) =>
   z.string().min(1, { message: requiredMessage });
@@ -46,83 +46,102 @@ export const createBusinessVerificationSchema = ({
     .object({
       commercial_registration_number: z
         .string()
-        .min(1, { message: messages?.required ?? "This field is required" })
+        .min(1, { message: messages?.required ?? 'This field is required' })
         .max(100, {
           message:
             messages?.commercialRegistrationNumberMax ??
-            "Commercial registration number must be at most 100 characters",
+            'Commercial registration number must be at most 100 characters',
         }),
       license_issue_country_id: z
         .string({
-          error: messages?.issuingCountryRequired ?? "Issuing country is required",
+          error:
+            messages?.issuingCountryRequired ?? 'Issuing country is required',
         })
         .min(1, {
-          message: messages?.issuingCountryRequired ?? "Issuing country is required",
+          message:
+            messages?.issuingCountryRequired ?? 'Issuing country is required',
         }),
       organization_size_id: z
         .string({
-          error: messages?.organizationSizeRequired ?? "Organization size is required",
+          error:
+            messages?.organizationSizeRequired ??
+            'Organization size is required',
         })
         .min(1, {
-          message: messages?.organizationSizeRequired ?? "Organization size is required",
+          message:
+            messages?.organizationSizeRequired ??
+            'Organization size is required',
         }),
       commercial_registration_issue_date: dateField(
-        messages?.commercialIssueDateRequired ?? "Issue date is required",
+        messages?.commercialIssueDateRequired ?? 'Issue date is required',
       ),
       commercial_registration_expiry_date: dateField(
-        messages?.commercialExpiryDateRequired ?? "Expiry date is required",
+        messages?.commercialExpiryDateRequired ?? 'Expiry date is required',
       ),
       commercial_registration_image: z.any().optional(),
-      employer_type_id: z
-        .string()
-        .min(1, { message: messages?.employerTypeRequired ?? "Employer type is required" }),
+      employer_type_id: z.string().min(1, {
+        message: messages?.employerTypeRequired ?? 'Employer type is required',
+      }),
       medical_facility_license_number: z
         .string()
-        .min(1, { message: messages?.required ?? "This field is required" })
+        .min(1, { message: messages?.required ?? 'This field is required' })
         .max(100, {
           message:
             messages?.medicalFacilityLicenseNumberMax ??
-            "Medical facility license number must be at most 100 characters",
+            'Medical facility license number must be at most 100 characters',
         }),
       license_issuing_authority: z
         .string()
         .min(3, {
           message:
             messages?.licenseIssuingAuthorityMin ??
-            "License issuing authority must be at least 3 characters",
+            'License issuing authority must be at least 3 characters',
         })
         .max(150, {
           message:
             messages?.licenseIssuingAuthorityMax ??
-            "License issuing authority must be at most 150 characters",
+            'License issuing authority must be at most 150 characters',
         }),
       specialty_title: z
         .string({
-          error: messages?.specialtyRequired ?? "Specialty / scope of practice is required",
+          error:
+            messages?.specialtyRequired ??
+            'Specialty / scope of practice is required',
         })
         .min(1, {
-          message: messages?.specialtyRequired ?? "Specialty / scope of practice is required",
+          message:
+            messages?.specialtyRequired ??
+            'Specialty / scope of practice is required',
         }),
       medical_license_issue_date: dateField(
-        messages?.medicalIssueDateRequired ?? "Medical issue date is required",
+        messages?.medicalIssueDateRequired ?? 'Medical issue date is required',
       ),
       medical_license_expiry_date: dateField(
-        messages?.medicalExpiryDateRequired ?? "Medical expiry date is required",
+        messages?.medicalExpiryDateRequired ??
+          'Medical expiry date is required',
       ),
       medical_license_image: z.any().optional(),
     })
-    .refine((data) => parseDateValue(data.commercial_registration_issue_date) <= getToday(), {
-      message:
-        messages?.commercialIssueDatePast ??
-        "Commercial registration issue date must be today or a past date",
-      path: ["commercial_registration_issue_date"],
-    })
-    .refine((data) => parseDateValue(data.commercial_registration_expiry_date) >= getToday(), {
-      message:
-        messages?.commercialExpiryDateFuture ??
-        "Commercial registration expiry date must be today or a future date",
-      path: ["commercial_registration_expiry_date"],
-    })
+    .refine(
+      (data) =>
+        parseDateValue(data.commercial_registration_issue_date) <= getToday(),
+      {
+        message:
+          messages?.commercialIssueDatePast ??
+          'Commercial registration issue date must be today or a past date',
+        path: ['commercial_registration_issue_date'],
+      },
+    )
+    .refine(
+      (data) =>
+        parseDateValue(data.commercial_registration_expiry_date) >= getToday(),
+      {
+        message:
+          messages?.commercialExpiryDateFuture ??
+          'Commercial registration expiry date must be today or a future date',
+        path: ['commercial_registration_expiry_date'],
+      },
+    )
     .refine(
       (data) =>
         parseDateValue(data.commercial_registration_expiry_date) >
@@ -130,36 +149,42 @@ export const createBusinessVerificationSchema = ({
       {
         message:
           messages?.commercialExpiryAfterIssue ??
-          "Commercial registration expiry date must be after issue date",
-        path: ["commercial_registration_expiry_date"],
+          'Commercial registration expiry date must be after issue date',
+        path: ['commercial_registration_expiry_date'],
       },
     )
-    .refine((data) => parseDateValue(data.medical_license_issue_date) <= getToday(), {
-      message:
-        messages?.medicalIssueDatePast ?? "Medical issue date must be today or a past date",
-      path: ["medical_license_issue_date"],
-    })
-    .refine((data) => parseDateValue(data.medical_license_expiry_date) >= getToday(), {
-      message:
-        messages?.medicalExpiryDateFuture ??
-        "Medical license expiry date must be today or a future date",
-      path: ["medical_license_expiry_date"],
-    })
+    .refine(
+      (data) => parseDateValue(data.medical_license_issue_date) <= getToday(),
+      {
+        message:
+          messages?.medicalIssueDatePast ??
+          'Medical issue date must be today or a past date',
+        path: ['medical_license_issue_date'],
+      },
+    )
+    .refine(
+      (data) => parseDateValue(data.medical_license_expiry_date) >= getToday(),
+      {
+        message:
+          messages?.medicalExpiryDateFuture ??
+          'Medical license expiry date must be today or a future date',
+        path: ['medical_license_expiry_date'],
+      },
+    )
     .refine(
       (data) =>
         parseDateValue(data.medical_license_expiry_date) >
         parseDateValue(data.medical_license_issue_date),
       {
         message:
-          messages?.medicalExpiryAfterIssue ?? "Medical expiry date must be after issue date",
-        path: ["medical_license_expiry_date"],
+          messages?.medicalExpiryAfterIssue ??
+          'Medical expiry date must be after issue date',
+        path: ['medical_license_expiry_date'],
       },
     );
 
 export const BusinessVerificationSchema = createBusinessVerificationSchema();
 
-
 export type TBusinessVerificationSchema = z.infer<
   typeof BusinessVerificationSchema
 >;
-

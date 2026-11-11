@@ -18,8 +18,12 @@ export default function QuestionRequirementField({
   return (
     <div className="flex flex-col gap-3">
       <p className="flex flex-wrap items-baseline gap-x-2 px-1">
-        <span className="text-foreground font-semibold">{t('requirement-title')}</span>
-        <span className="text-foreground/65 text-sm">{t('requirement-description')}</span>
+        <span className="font-semibold text-foreground">
+          {t('requirement-title')}
+        </span>
+        <span className="text-sm text-foreground/65">
+          {t('requirement-description')}
+        </span>
       </p>
       <SegmentedPills
         name={name}

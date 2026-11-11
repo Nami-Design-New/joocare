@@ -28,7 +28,7 @@ export default function AiTalentMatchTab({ jobId }: AiTalentMatchTabProps) {
 
   return (
     <>
-      <div className="bg-muted flex flex-col gap-4 rounded-3xl p-3">
+      <div className="flex flex-col gap-4 rounded-3xl bg-muted p-3">
         <JobCandidatesTabs jobId={jobId} activeTab="ai-match" />
         <AiTalentMatchFilters aiMatch={aiMatch} />
       </div>

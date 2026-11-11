@@ -1,19 +1,19 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth";
+import { revalidatePath } from 'next/cache';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
 import {
   createQualification,
   deleteQualification,
   updateQualification,
-} from "../services/qualification-mutation-service";
+} from '../services/qualification-mutation-service';
 
 async function resolveCandidateToken() {
   const session = await getServerSession(authOptions);
 
-  if (!session?.accessToken || session.authRole !== "candidate") {
-    throw new Error("Your session has expired. Please log in again.");
+  if (!session?.accessToken || session.authRole !== 'candidate') {
+    throw new Error('Your session has expired. Please log in again.');
   }
 
   return session.accessToken;
@@ -31,7 +31,7 @@ export async function createQualificationAction({
   startDate,
   endDate,
   image,
-  locale = "en",
+  locale = 'en',
 }: {
   degree: string;
   university: string;
@@ -56,7 +56,7 @@ export async function createQualificationAction({
   revalidateQualificationPaths(locale);
 
   return {
-    message: result?.message ?? "Qualification added successfully.",
+    message: result?.message ?? 'Qualification added successfully.',
   };
 }
 
@@ -68,7 +68,7 @@ export async function updateQualificationAction({
   startDate,
   endDate,
   image,
-  locale = "en",
+  locale = 'en',
 }: {
   id: string;
   degree: string;
@@ -94,13 +94,13 @@ export async function updateQualificationAction({
   revalidateQualificationPaths(locale);
 
   return {
-    message: result?.message ?? "Qualification updated successfully.",
+    message: result?.message ?? 'Qualification updated successfully.',
   };
 }
 
 export async function deleteQualificationAction({
   id,
-  locale = "en",
+  locale = 'en',
 }: {
   id: string;
   locale?: string;
@@ -115,6 +115,6 @@ export async function deleteQualificationAction({
   revalidateQualificationPaths(locale);
 
   return {
-    message: result?.message ?? "Qualification deleted successfully.",
+    message: result?.message ?? 'Qualification deleted successfully.',
   };
 }

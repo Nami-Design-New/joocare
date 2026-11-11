@@ -59,7 +59,7 @@ function EmailForm({
           placeholder={t('email-placeholder')}
           {...register('email')}
           error={errors.email?.message}
-          className="border-assessment-border text-assessment-muted bg-card mt-1 h-12 rounded-2xl px-4 text-sm shadow-none"
+          className="mt-1 h-12 rounded-2xl border-assessment-border bg-card px-4 text-sm text-assessment-muted shadow-none"
           containerStyles="text-sm leading-5"
         />
       </div>
@@ -68,14 +68,14 @@ function EmailForm({
           type="button"
           variant="outline"
           onClick={onCancel}
-          className="border-assessment-border bg-assessment-control text-assessment-heading h-9 rounded-[10px] px-4 text-sm font-medium shadow-sm"
+          className="h-9 rounded-[10px] border-assessment-border bg-assessment-control px-4 text-sm font-medium text-assessment-heading shadow-sm"
         >
           {t('cancel')}
         </Button>
         <Button
           type="submit"
           disabled={!isValid}
-          className="bg-assessment-action h-9 rounded-[10px] px-4 text-sm font-medium shadow-sm"
+          className="h-9 rounded-[10px] bg-assessment-action px-4 text-sm font-medium shadow-sm"
         >
           {t('add')}
         </Button>
@@ -94,10 +94,10 @@ export default function AssessmentEmailDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="border-assessment-border bg-card w-[calc(100%-2rem)] max-w-[448px] gap-0 rounded-[20px] p-6 sm:min-w-0"
+        className="w-[calc(100%-2rem)] max-w-[448px] gap-0 rounded-[20px] border-assessment-border bg-card p-6 sm:min-w-0"
       >
         <div className="flex h-9 items-center justify-between">
-          <DialogTitle className="text-assessment-heading text-xl leading-7 font-semibold">
+          <DialogTitle className="text-xl leading-7 font-semibold text-assessment-heading">
             {t('add-email-title')}
           </DialogTitle>
           <DialogClose asChild>

@@ -25,7 +25,7 @@ export default function CandidateAnswerCard({
   return (
     <AccordionItem
       value={question.id}
-      className="border-border rounded-xl border px-5 last:border-b"
+      className="rounded-xl border border-border px-5 last:border-b"
     >
       <AccordionTrigger
         iconType="arrow"
@@ -41,7 +41,7 @@ export default function CandidateAnswerCard({
             </AnswerTag>
             <AnswerTag tone={result}>{t(`result.${result}`)}</AnswerTag>
           </span>
-          <span className="text-foreground text-base font-semibold">
+          <span className="text-base font-semibold text-foreground">
             <bdi>{question.question}</bdi>
           </span>
         </span>
@@ -59,7 +59,7 @@ export default function CandidateAnswerCard({
           ))}
         </ul>
         {result === 'missing' ? (
-          <p className="bg-answer-missing/8 text-answer-missing rounded-lg px-3 py-2.5 text-[13px] font-medium">
+          <p className="rounded-lg bg-answer-missing/8 px-3 py-2.5 text-[13px] font-medium text-answer-missing">
             {t(
               question.required
                 ? 'missing-note-mandatory'

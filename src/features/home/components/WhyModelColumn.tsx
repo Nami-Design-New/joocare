@@ -23,7 +23,7 @@ export default function WhyModelColumn({
         {tag}
       </WhyTagPill>
       <h3 className="mt-1.5 text-2xl leading-tight font-semibold">{title}</h3>
-      <p className="text-why-ink-muted mb-1.5 text-sm leading-relaxed font-light">
+      <p className="mb-1.5 text-sm leading-relaxed font-light text-why-ink-muted">
         {description}
       </p>
       {items.map((item) => (

@@ -10,7 +10,7 @@ export default function CandidateProfileChips({
       {items.map((item) => (
         <li
           key={item}
-          className="bg-accent text-primary rounded-2xl px-2.5 py-1.5 text-sm font-semibold"
+          className="rounded-2xl bg-accent px-2.5 py-1.5 text-sm font-semibold text-primary"
         >
           {item}
         </li>

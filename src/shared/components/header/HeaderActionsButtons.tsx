@@ -1,50 +1,46 @@
-"use client";
+'use client';
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from 'react';
 import {
   notificationsQueryKey,
   useNotificationsInfinite,
-} from "@/features/notifications/hooks/useGetAllNotifications";
-import { Link } from "@/i18n/navigation";
-import { requestNotificationPermission } from "@/shared/hooks/requestNotificationPermission";
-import { listenForMessages } from "@/shared/util/firebase-notifications";
-import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { LanguageToggle } from "../LanguageToggle";
-import { Button, buttonVariants } from "../ui/button";
-import { DrawerScrollableContent } from "./DrawerScrollableContent";
-import UserDropDown from "./UserDropDown";
-import HeaderChatLink from "./HeaderChatLink";
-import { useLocale, useTranslations } from "next-intl";
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
-import useGetCandidateProfile from "@/features/candidate-profile/hooks/useGetCandidateProfile";
+} from '@/features/notifications/hooks/useGetAllNotifications';
+import { Link } from '@/i18n/navigation';
+import { requestNotificationPermission } from '@/shared/hooks/requestNotificationPermission';
+import { listenForMessages } from '@/shared/util/firebase-notifications';
+import { useQueryClient } from '@tanstack/react-query';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { LanguageToggle } from '../LanguageToggle';
+import { Button, buttonVariants } from '../ui/button';
+import { DrawerScrollableContent } from './DrawerScrollableContent';
+import UserDropDown from './UserDropDown';
+import HeaderChatLink from './HeaderChatLink';
+import { useLocale, useTranslations } from 'next-intl';
+import useGetCompanyProfile from '@/features/company-profile/hooks/useGetCompanyProfile';
+import useGetCandidateProfile from '@/features/candidate-profile/hooks/useGetCandidateProfile';
 
 let hasRequestedNotificationPermissionAfterAuth = false;
 
 const CHAT_HREF = {
-  company: "/company/chat",
-  candidate: "/candidate/chat",
+  company: '/company/chat',
+  candidate: '/candidate/chat',
 } as const;
 
 function LanguageToggleSkeleton() {
   return (
     <div
       aria-hidden="true"
-      className="bg-muted hidden h-12 w-24 animate-pulse rounded-full md:flex"
+      className="hidden h-12 w-24 animate-pulse rounded-full bg-muted md:flex"
     />
   );
 }
 
-function HeaderActionsButtons({
-  companyHeader,
-}: {
-  companyHeader: boolean;
-}) {
+function HeaderActionsButtons({ companyHeader }: { companyHeader: boolean }) {
   const t = useTranslations();
-  const locale = useLocale()
+  const locale = useLocale();
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -53,26 +49,24 @@ function HeaderActionsButtons({
   const { data: session, status } = useSession();
   const role = session?.authRole;
 
-  const isEmployer = session?.authRole === "employer" || companyHeader;
-  const isCandidate = role === "candidate" && !companyHeader;
-  const token = session?.accessToken || "";
+  const isEmployer = session?.authRole === 'employer' || companyHeader;
+  const isCandidate = role === 'candidate' && !companyHeader;
+  const token = session?.accessToken || '';
 
   const { data: companyProfileData } = useGetCompanyProfile({
-    token: isEmployer ? token : "",
+    token: isEmployer ? token : '',
   });
   const { data: candidateProfileData } = useGetCandidateProfile({
-    token: !isEmployer ? token : "",
+    token: !isEmployer ? token : '',
   });
 
   const unCountNotification =
     (isEmployer
       ? companyProfileData?.unread_notifications_count
-      : candidateProfileData?.unread_notifications_count)
-    ?? 0
+      : candidateProfileData?.unread_notifications_count) ?? 0;
 
-
-  const isLoading = status === "loading";
-  const isAuthed = status === "authenticated";
+  const isLoading = status === 'loading';
+  const isAuthed = status === 'authenticated';
   const chatHref = companyHeader
     ? CHAT_HREF.company
     : isCandidate
@@ -112,7 +106,6 @@ function HeaderActionsButtons({
     void requestNotificationPermission();
   }, [isAuthed, open]);
 
-
   return (
     <>
       <div
@@ -122,7 +115,7 @@ function HeaderActionsButtons({
       >
         {/*  Loading Skeleton (prevents flashing) */}
         {isLoading && (
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden items-center gap-3 lg:flex">
             <div className="h-8 w-20 animate-pulse rounded-full bg-muted" />
             <div className="h-8 w-24 animate-pulse rounded-full bg-muted" />
           </div>
@@ -132,7 +125,7 @@ function HeaderActionsButtons({
         {!isLoading && !isAuthed && (
           <>
             <Button
-              onClick={() => router.push("/auth/candidate/login")}
+              onClick={() => router.push('/auth/candidate/login')}
               variant="default"
               hoverStyle="slideSecondary"
               size="pill"
@@ -142,7 +135,7 @@ function HeaderActionsButtons({
             </Button>
 
             <Button
-              onClick={() => router.push("/auth/candidate/register")}
+              onClick={() => router.push('/auth/candidate/register')}
               variant="outline"
               hoverStyle="slidePrimary"
               size="pill"
@@ -160,7 +153,7 @@ function HeaderActionsButtons({
           <div className="hidden items-center gap-4 md:flex">
             <Button
               variant="outline"
-              className="border-border relative"
+              className="relative border-border"
               size="icon-circle"
               aria-label="Notifications"
               onClick={() => setOpen(true)}
@@ -173,7 +166,7 @@ function HeaderActionsButtons({
               />
 
               {Number(unCountNotification) > 0 && (
-                <span className="bg-primary absolute top-0 right-0 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white">
+                <span className="absolute top-0 right-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-bold text-white">
                   {Number(unCountNotification)}
                 </span>
               )}
@@ -192,7 +185,7 @@ function HeaderActionsButtons({
         {!isLoading && isAuthed && (
           <Button
             variant="outline"
-            className="border-border relative h-8 w-8 md:hidden"
+            className="relative h-8 w-8 border-border md:hidden"
             size="icon-circle"
             aria-label="Notifications"
             onClick={() => setOpen(true)}
@@ -205,7 +198,7 @@ function HeaderActionsButtons({
             />
 
             {Number(unCountNotification) > 0 && (
-              <span className="bg-primary absolute top-0 right-0 flex min-h-3 min-w-3 items-center justify-center rounded-full px-1 text-[8px] font-bold text-white">
+              <span className="absolute top-0 right-0 flex min-h-3 min-w-3 items-center justify-center rounded-full bg-primary px-1 text-[8px] font-bold text-white">
                 {Number(unCountNotification)}
               </span>
             )}
@@ -216,16 +209,20 @@ function HeaderActionsButtons({
         {!isLoading && !isAuthed && (
           <Link
             href="/for-employers"
-            className={`text-secondary flex items-center justify-center text-lg ${buttonVariants(
+            className={`flex items-center justify-center text-lg text-secondary ${buttonVariants(
               {
-                variant: "outline",
-                size: "xl",
-                hoverStyle: "hoverBorder",
+                variant: 'outline',
+                size: 'xl',
+                hoverStyle: 'hoverBorder',
               },
             )}`}
           >
             {t('header.for-employer')}
-            {locale === 'ar' ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
+            {locale === 'ar' ? (
+              <ChevronLeft size={24} />
+            ) : (
+              <ChevronRight size={24} />
+            )}
           </Link>
         )}
       </div>
@@ -233,7 +230,7 @@ function HeaderActionsButtons({
       {/*  Drawer */}
       {open && (
         <DrawerScrollableContent
-          title={t("header.notification")}
+          title={t('header.notification')}
           open={open}
           onOpenChange={setOpen}
         />

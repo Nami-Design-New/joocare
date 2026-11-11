@@ -6,11 +6,14 @@ export type QualificationApiItem = {
   university?: string | null;
   institution?: string | null;
   country_id?: number | string | null;
-  country?: {
-    id?: number | string;
-    name?: string | null;
-    title?: string | null;
-  } | string | null;
+  country?:
+    | {
+        id?: number | string;
+        name?: string | null;
+        title?: string | null;
+      }
+    | string
+    | null;
   start_date?: string | null;
   end_date?: string | null;
   image?: string | null;

@@ -145,7 +145,7 @@ export default function ExperienceFormModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent ref={setPortalContainer} className="max-w-175 gap-5">
         <DialogHeader>
-          <DialogTitle className="text-foreground text-2xl sm:text-[28px]">
+          <DialogTitle className="text-2xl text-foreground sm:text-[28px]">
             {title}
           </DialogTitle>
         </DialogHeader>
@@ -308,7 +308,9 @@ export default function ExperienceFormModal({
                   <Button
                     type="button"
                     variant="ghost"
-                    aria-label={t('candidatePage.profile.remove-responsibility')}
+                    aria-label={t(
+                      'candidatePage.profile.remove-responsibility',
+                    )}
                     onClick={() => responsibilities.remove(index)}
                     className={`bg-muted text-secondary ${ROUND_BUTTON}`}
                   >
@@ -319,7 +321,7 @@ export default function ExperienceFormModal({
             ))}
             {errors.responsibilities?.root?.message ||
             errors.responsibilities?.message ? (
-              <p className="text-destructive text-xs">
+              <p className="text-xs text-destructive">
                 {errors.responsibilities?.root?.message ??
                   errors.responsibilities?.message}
               </p>
@@ -328,7 +330,7 @@ export default function ExperienceFormModal({
 
           <DialogFooter className="flex items-center justify-center!">
             <Button
-              className="hover:bg-primary/70 w-1/3"
+              className="w-1/3 hover:bg-primary/70"
               size="pill"
               type="submit"
               disabled={isSubmitting}

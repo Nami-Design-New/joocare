@@ -37,7 +37,7 @@ export default function AssessmentCategoriesHeader({
             onClick: onCreate,
           }}
         />
-        <p className="text-muted-foreground text-sm">{t('description')}</p>
+        <p className="text-sm text-muted-foreground">{t('description')}</p>
       </div>
       {modal ? (
         <CategoryFormModal

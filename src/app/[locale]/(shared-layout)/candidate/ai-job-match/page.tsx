@@ -7,6 +7,6 @@ type PageProps = {
 
 export default async function Page({ searchParams }: PageProps) {
   const { scenario } = await searchParams;
-  const view: AiJobMatchScenario = scenario === 'empty' ? 'empty' : 'empty';  
+  const view: AiJobMatchScenario = scenario === 'empty' ? 'empty' : 'empty';
   return <AiJobMatchPage key={view} scenario={view} />;
 }

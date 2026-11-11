@@ -1,19 +1,19 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 // libraries
-import FormEmployerLogin from "@/features/auth/components/login-content/FormEmployerLogin";
-import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import FormEmployerLogin from '@/features/auth/components/login-content/FormEmployerLogin';
+import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 //components
 
 function LoginFormSkeleton() {
   return (
     <div aria-hidden="true" className="mt-6 flex flex-col gap-4">
-      <div className="bg-muted h-14 w-full animate-pulse rounded-2xl" />
-      <div className="bg-muted h-14 w-full animate-pulse rounded-2xl" />
-      <div className="bg-muted h-4 w-32 animate-pulse rounded" />
+      <div className="h-14 w-full animate-pulse rounded-2xl bg-muted" />
+      <div className="h-14 w-full animate-pulse rounded-2xl bg-muted" />
+      <div className="h-4 w-32 animate-pulse rounded bg-muted" />
       <div className="flex justify-center">
-        <div className="bg-muted h-11 w-1/3 animate-pulse rounded-full" />
+        <div className="h-11 w-1/3 animate-pulse rounded-full bg-muted" />
       </div>
     </div>
   );
@@ -23,16 +23,16 @@ const LoginEmployerPage = async () => {
   const t = await getTranslations();
 
   return (
-    <div className="min-h-[calc(100dvh-4.75rem)] flex items-center justify-center gap-4 ">
-      <div className="w-full md:w-3/4  mx-auto p-4">
+    <div className="flex min-h-[calc(100dvh-4.75rem)] items-center justify-center gap-4">
+      <div className="mx-auto w-full p-4 md:w-3/4">
         {/* header text */}
         <h1>
-          {t("authPage.pages.employer-login.title-line-1")}
+          {t('authPage.pages.employer-login.title-line-1')}
           <br />
           {/* {t("authPage.pages.employer-login.title-line-2")} */}
         </h1>
-        <p className="text-[clamp(.8rem,4vw,1rem)] mt-2 mb-8">
-          {t("authPage.pages.employer-login.subtitle")}
+        <p className="mt-2 mb-8 text-[clamp(.8rem,4vw,1rem)]">
+          {t('authPage.pages.employer-login.subtitle')}
         </p>
 
         {/* Login form */}
@@ -50,14 +50,14 @@ const LoginEmployerPage = async () => {
         <SocialLoginButtons role="employer" /> */}
 
         {/* Bottom CTA */}
-        <section className="text-center border-t border-gray-100 pt-6">
+        <section className="border-t border-gray-100 pt-6 text-center">
           <p className="text-sm text-gray-600">
-            {t("authPage.common.not-member-yet")}{" "}
+            {t('authPage.common.not-member-yet')}{' '}
             <Link
               href="/auth/employer/register"
-              className="text-primary hover:text-primary/60 underline font-medium transition-colors"
+              className="font-medium text-primary underline transition-colors hover:text-primary/60"
             >
-              {t("header.join-now")}
+              {t('header.join-now')}
             </Link>
           </p>
         </section>

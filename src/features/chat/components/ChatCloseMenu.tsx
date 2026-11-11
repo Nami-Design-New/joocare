@@ -36,11 +36,11 @@ export default function ChatCloseMenu({
       <DropdownMenuContent
         align="end"
         sideOffset={12}
-        className="shadow-card w-48 rounded-2xl border-0 p-2"
+        className="w-48 rounded-2xl border-0 p-2 shadow-card"
       >
         <DropdownMenuItem
           onSelect={closed ? onReopen : onClose}
-          className="text-chat-danger bg-chat-danger-bg focus:bg-chat-danger-bg focus:text-chat-danger gap-2 rounded-lg px-3 py-2.5 text-sm"
+          className="gap-2 rounded-lg bg-chat-danger-bg px-3 py-2.5 text-sm text-chat-danger focus:bg-chat-danger-bg focus:text-chat-danger"
         >
           <ChatIcon name="close-chat" width={18} />
           {t(closed ? 'reopen-chat' : 'close-chat')}

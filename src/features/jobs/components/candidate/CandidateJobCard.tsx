@@ -64,7 +64,7 @@ export default function CandidateJobCard({
   const isEmployer = session?.authRole === 'employer';
 
   return (
-    <Card className="group hover:border-primary shadow-xl">
+    <Card className="group shadow-xl hover:border-primary">
       <CardHeader className="flex gap-2 max-lg:px-2">
         <Image
           width={52}
@@ -74,40 +74,54 @@ export default function CandidateJobCard({
           className="h-12 w-14 rounded-2xl"
         />
         <div className="flex grow flex-col gap-1">
-          <h6 className="text-secondary group-hover:text-primary text-sm md:text-lg font-semibold">
+          <h6 className="text-sm font-semibold text-secondary group-hover:text-primary md:text-lg">
             <Link href={href}>{title}</Link>
           </h6>
-          <p className="text-foreground text-sm md:text-base font-normal">{company}</p>
-          <time className="text-muted-foreground text-xs font-normal">
+          <p className="text-sm font-normal text-foreground md:text-base">
+            {company}
+          </p>
+          <time className="text-xs font-normal text-muted-foreground">
             {postedAtLabel}
           </time>
         </div>
         <JobMatchBadge score={job.match_score} />
       </CardHeader>
-      <CardContent className="max-lg:px-2 grow">
-        <div className=" flex flex-col gap-4  ">
-          <ul className="items-start flex flex-wrap gap-2">
-            <li className="text-secondary flex items-start gap-1 text-xs md:text-sm font-normal">
-              <MapPin size={16} color="var(--muted-foreground)" className="shrink-0" />
+      <CardContent className="grow max-lg:px-2">
+        <div className="flex flex-col gap-4">
+          <ul className="flex flex-wrap items-start gap-2">
+            <li className="flex items-start gap-1 text-xs font-normal text-secondary md:text-sm">
+              <MapPin
+                size={16}
+                color="var(--muted-foreground)"
+                className="shrink-0"
+              />
               {location}
             </li>
-            <li className="text-secondary flex items-start gap-1 text-xs md:text-sm font-normal">
-              <Briefcase size={16} color="var(--muted-foreground)" className="shrink-0" />
+            <li className="flex items-start gap-1 text-xs font-normal text-secondary md:text-sm">
+              <Briefcase
+                size={16}
+                color="var(--muted-foreground)"
+                className="shrink-0"
+              />
               {category}
             </li>
-            <li className="text-secondary flex items-start gap-1 text-xs md:text-sm font-normal">
-              <CircleDollarSign size={16} color="var(--muted-foreground)" className="shrink-0" />
+            <li className="flex items-start gap-1 text-xs font-normal text-secondary md:text-sm">
+              <CircleDollarSign
+                size={16}
+                color="var(--muted-foreground)"
+                className="shrink-0"
+              />
               {salary}
             </li>
           </ul>
           <ul className="items-cente flex gap-2">
-            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] md:text-xs font-normal">
+            <li className="flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-[10px] font-normal text-muted-foreground md:text-xs">
               {experience}
             </li>
-            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] md:text-xs font-normal">
+            <li className="flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-[10px] font-normal text-muted-foreground md:text-xs">
               {employmentType}
             </li>
-            <li className="text-muted-foreground bg-muted flex items-center gap-1 rounded-full px-2 py-1 text-[10px] md:text-xs font-normal">
+            <li className="flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-[10px] font-normal text-muted-foreground md:text-xs">
               {specialty}
             </li>
           </ul>
@@ -117,7 +131,7 @@ export default function CandidateJobCard({
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4 max-lg:px-2">
-        <div className="border-b-border flex w-full flex-wrap items-center justify-between gap-2 border-t pt-4">
+        <div className="flex w-full flex-wrap items-center justify-between gap-2 border-t border-b-border pt-4">
           <div className="flex gap-2">
             {!isEmployer ? (
               <ToggleSavedJobButton
@@ -130,25 +144,25 @@ export default function CandidateJobCard({
             <Button
               variant="outline"
               size="pill"
-              className="border-border text-muted-foreground bg-muted h-9 px-4 py-2 text-sm"
+              className="h-9 border-border bg-muted px-4 py-2 text-sm text-muted-foreground"
               onClick={() => void shareJob()}
             >
-              <Share className="mx-1 size-4 md:size-5" /> {t("jobsPage.share")}
+              <Share className="mx-1 size-4 md:size-5" /> {t('jobsPage.share')}
             </Button>
           </div>
 
           {shouldShowAppliedBadge ? (
-            <Button className="border-border bg-primary/10 flex h-9 cursor-default items-center gap-2 rounded-full px-3 py-2 text-sm text-white">
-              <span className="text-primary font-semibold">
+            <Button className="flex h-9 cursor-default items-center gap-2 rounded-full border-border bg-primary/10 px-3 py-2 text-sm text-white">
+              <span className="font-semibold text-primary">
                 {t('jobsPage.applied')}
               </span>
-              <span className="text-muted-foreground grow text-end text-xs">
+              <span className="grow text-end text-xs text-muted-foreground">
                 {appliedLabel}
               </span>
             </Button>
           ) : (
             <Link
-              className={`border-border bg-primary flex h-9 items-center gap-2 rounded-full px-3 py-2 text-xs md:text-sm text-white`}
+              className={`flex h-9 items-center gap-2 rounded-full border-border bg-primary px-3 py-2 text-xs text-white md:text-sm`}
               href={href}
             >
               {t('jobsPage.view-job')}

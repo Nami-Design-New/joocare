@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { getBaseApiUrl } from "@/shared/lib/api-endpoints";
-import { apiFetch } from "@/shared/lib/fetch-manager";
+import { getBaseApiUrl } from '@/shared/lib/api-endpoints';
+import { apiFetch } from '@/shared/lib/fetch-manager';
 
 type StoredImageResponse = {
   id: number;
@@ -12,18 +12,18 @@ type StoredImageResponse = {
 
 export async function storeUploadedFile({
   file,
-  locale = "en",
+  locale = 'en',
 }: {
   file: File;
   locale?: string;
 }) {
   const uploadFormData = new FormData();
-  uploadFormData.append("image", file);
+  uploadFormData.append('image', file);
 
   const { ok, data, message } = await apiFetch<StoredImageResponse>(
     `${getBaseApiUrl()}/images`,
     {
-      method: "POST",
+      method: 'POST',
       locale,
       body: uploadFormData,
     },
@@ -32,11 +32,11 @@ export async function storeUploadedFile({
   const storedFilePath = data?.data?.image;
 
   if (!ok || !storedFilePath) {
-    throw new Error(message || "Failed to upload file.");
+    throw new Error(message || 'Failed to upload file.');
   }
 
   return {
     path: storedFilePath,
-    message: message || data?.message || "Success",
+    message: message || data?.message || 'Success',
   };
 }

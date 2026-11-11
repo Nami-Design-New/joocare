@@ -1,8 +1,8 @@
-import React from "react";
-import SectionTitle from "./SectionTitle";
-import Image from "next/image";
-import type { HomeEmployer } from "../types/home.types";
-import { useTranslations } from "next-intl";
+import React from 'react';
+import SectionTitle from './SectionTitle';
+import Image from 'next/image';
+import type { HomeEmployer } from '../types/home.types';
+import { useTranslations } from 'next-intl';
 
 export default function TopEmployers({
   title,
@@ -15,23 +15,22 @@ export default function TopEmployers({
 
   return (
     <section className="bg-white">
-      <section className="layout-shell  py-10 text-center md:py-20">
+      <section className="layout-shell py-10 text-center md:py-20">
         <section className="layout-content flex flex-col items-center gap-8">
-
-          <div className="flex mx-auto max-w-103 flex-col items-center gap-4">
+          <div className="mx-auto flex max-w-103 flex-col items-center gap-4">
             <SectionTitle sectionTitle={t('home.top-employers')} />
 
             <h2>{title}</h2>
           </div>
 
-          <div className="grid w-full grid-cols-3 items-center gap-4 sm:gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+          <div className="grid w-full grid-cols-3 items-center gap-4 sm:grid-cols-3 sm:gap-8 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
             {companies.map((company) => (
               <div
                 key={company.id}
-                className="relative h-16 lg:h-18 w-full rounded-lg"
+                className="relative h-16 w-full rounded-lg lg:h-18"
               >
                 <Image
-                  src={company.image ?? "/assets/icons/top-empoyers/kbc.svg"}
+                  src={company.image ?? '/assets/icons/top-empoyers/kbc.svg'}
                   alt="Employer logo"
                   fill
                   className="object-contain transition"

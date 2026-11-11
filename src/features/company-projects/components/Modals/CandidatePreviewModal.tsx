@@ -48,9 +48,9 @@ export default function CandidatePreviewModal({
         <ModalHeader className="text-start">
           <ModalTitle className="flex items-center gap-2 text-xl font-bold">
             {type === 'profile' ? (
-              <UserRound className="text-primary size-5" />
+              <UserRound className="size-5 text-primary" />
             ) : (
-              <FileText className="text-primary size-5" />
+              <FileText className="size-5 text-primary" />
             )}
             {t(titleKey[type])}
           </ModalTitle>
@@ -58,7 +58,7 @@ export default function CandidatePreviewModal({
         </ModalHeader>
 
         {type === 'profile' && (
-          <div className="bg-body-bg grid gap-3 rounded-2xl p-4 text-sm">
+          <div className="grid gap-3 rounded-2xl bg-body-bg p-4 text-sm">
             <p>
               <strong>{t('nationality')}:</strong> {candidate.nationality}
             </p>
@@ -75,22 +75,22 @@ export default function CandidatePreviewModal({
         )}
 
         {type === 'cv' && (
-          <div className="border-border bg-body-bg text-muted-foreground flex min-h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed">
-            <FileText className="text-primary size-10" />
+          <div className="flex min-h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border bg-body-bg text-muted-foreground">
+            <FileText className="size-10 text-primary" />
             <p className="font-medium">{t('sample-cv-preview')}</p>
             <p className="text-xs">{candidate.name}</p>
           </div>
         )}
 
         {type === 'result' && (
-          <div className="bg-body-bg flex min-h-36 flex-col items-center justify-center gap-2 rounded-2xl">
-            <span className="text-success text-sm font-semibold">
+          <div className="flex min-h-36 flex-col items-center justify-center gap-2 rounded-2xl bg-body-bg">
+            <span className="text-sm font-semibold text-success">
               {t(assessmentKey)}
             </span>
-            <span className="text-foreground text-3xl font-bold sm:text-4xl">
+            <span className="text-3xl font-bold text-foreground sm:text-4xl">
               {candidate.score ?? 0}%
             </span>
-            <span className="text-muted-foreground text-xs">
+            <span className="text-xs text-muted-foreground">
               {t('assessment-score')}
             </span>
           </div>

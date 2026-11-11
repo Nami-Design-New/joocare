@@ -16,12 +16,12 @@ export default function AssessmentFilter({
 }: AssessmentFilterProps) {
   const t = useTranslations('companyPage.assessments');
   return (
-    <div className="border-border bg-muted/60 shadow-soft flex items-center gap-2 rounded-full border p-2">
+    <div className="flex items-center gap-2 rounded-full border border-border bg-muted/60 p-2 shadow-soft">
       <div className="min-w-0 flex-1">{children}</div>
       <Button
         variant="ghost"
         size="icon-circle"
-        className="bg-muted text-secondary size-12"
+        className="size-12 bg-muted text-secondary"
         aria-label={t('reset-filter')}
         title={t('reset-filter')}
         onClick={onReset}

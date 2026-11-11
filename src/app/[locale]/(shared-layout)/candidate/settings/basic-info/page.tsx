@@ -15,13 +15,13 @@ const BasicInfoPage = async () => {
         title={t('basic-info.title')}
         description={t('basic-info.subtitle')}
       />
-      <section className="bg-card rounded-2xl p-6">
+      <section className="rounded-2xl bg-card p-6">
         {profile ? (
           <BasicInfoForm
             profile={mapCandidateProfileToSettingsProfile(profile)}
           />
         ) : (
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {t('unable-load-profile')}
           </p>
         )}

@@ -117,8 +117,14 @@ export default async function Page({ params, searchParams }: PageProps) {
       label: t('jobsPage.filters.professional-license'),
       name: 'professional_licenses[]',
       options: [
-        { value: 'with_medical_license', label: t('jobsPage.filters.with-medical-license') },
-        { value: 'without_medical_license', label: t('jobsPage.filters.without-medical-license') },
+        {
+          value: 'with_medical_license',
+          label: t('jobsPage.filters.with-medical-license'),
+        },
+        {
+          value: 'without_medical_license',
+          label: t('jobsPage.filters.without-medical-license'),
+        },
       ],
     },
     {
@@ -266,7 +272,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   };
 
   return (
-    <section className="bg-body-bg mb-8">
+    <section className="mb-8 bg-body-bg">
       <GpuFixClient />
       <Breadcrumb
         title={t('header.jobs')}

@@ -1,5 +1,5 @@
-import Image from "next/image";
-import React from "react";
+import Image from 'next/image';
+import React from 'react';
 
 type valueProps = {
   id: number | string;
@@ -16,25 +16,34 @@ const JobOverviewItem: React.FC<JobOverviewItemProps> = ({
   label,
   value,
   icon,
-  emptyValueLabel = "Not specified",
+  emptyValueLabel = 'Not specified',
 }) => {
   return (
     <div>
       <div className="flex items-start gap-2">
         {icon && <Image src={icon} width={20} height={20} alt="" />}
-        <p className="max-md:text-xs max-md:leading-4 text-muted-foreground text-sm md:text-base">{label}</p>
+        <p className="text-sm text-muted-foreground max-md:text-xs max-md:leading-4 md:text-base">
+          {label}
+        </p>
       </div>
       <div>
         {Array.isArray(value) ? (
           value.map((item) => (
-            <p className="max-md:text-sm max-md:leading-5 text-foreground font-semibold" key={item.id}>
+            <p
+              className="font-semibold text-foreground max-md:text-sm max-md:leading-5"
+              key={item.id}
+            >
               {item.title}
             </p>
           ))
         ) : value ? (
-          <p className="max-md:text-sm max-md:leading-5 text-foreground font-semibold text-base md:text-lg mt-2">{value}</p>
+          <p className="mt-2 text-base font-semibold text-foreground max-md:text-sm max-md:leading-5 md:text-lg">
+            {value}
+          </p>
         ) : (
-          <p className="max-md:text-sm max-md:leading-5 text-foreground font-semibold text-base md:text-lg mt-2">{emptyValueLabel}</p>
+          <p className="mt-2 text-base font-semibold text-foreground max-md:text-sm max-md:leading-5 md:text-lg">
+            {emptyValueLabel}
+          </p>
         )}
       </div>
     </div>

@@ -41,7 +41,7 @@ export default function AssessmentQuestionsStep({
 
   return (
     <section
-      className="bg-card space-y-6 rounded-2xl p-5 md:p-8"
+      className="space-y-6 rounded-2xl bg-card p-5 md:p-8"
       aria-label={t('questions')}
     >
       {!questions.length ? (
@@ -55,7 +55,7 @@ export default function AssessmentQuestionsStep({
             className="mb-5 size-25"
           />
           <h2 className="text-xl font-semibold">{t('empty-title')}</h2>
-          <p className="text-muted-foreground mt-3 text-sm leading-6">
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
             {t('empty-description')}
             <br />
             {t('minimum-questions', { count: MIN_ASSESSMENT_QUESTIONS })}
@@ -85,7 +85,7 @@ export default function AssessmentQuestionsStep({
       <Button
         type="button"
         variant="outline"
-        className="border-primary text-primary h-15 w-full gap-2 rounded-full border-dashed"
+        className="h-15 w-full gap-2 rounded-full border-dashed border-primary text-primary"
         onClick={onAdd}
       >
         <Plus className="size-4" />

@@ -15,16 +15,16 @@ export default function OptimizationPoints({
   const t = useTranslations('candidatePage.cvMatchAts.results');
 
   return (
-    <section className="bg-card flex flex-col gap-4 rounded-2xl p-3">
-      <div className="bg-muted flex flex-col gap-5 rounded-xl p-3">
-        <h2 className="text-foreground/45 text-[21px] leading-6.5 font-semibold">
+    <section className="flex flex-col gap-4 rounded-2xl bg-card p-3">
+      <div className="flex flex-col gap-5 rounded-xl bg-muted p-3">
+        <h2 className="text-[21px] leading-6.5 font-semibold text-foreground/45">
           {t('optimization-points')}
         </h2>
         <ol className="flex flex-col gap-5 px-1">
           {points.map((point, index) => (
             <li
               key={point.title}
-              className="text-foreground flex gap-0.5 text-base leading-5 font-semibold"
+              className="flex gap-0.5 text-base leading-5 font-semibold text-foreground"
             >
               <span className="shrink-0">{index + 1}-</span>
               {/* One isolate for the whole mock sentence: two separate bdi runs around
@@ -41,7 +41,7 @@ export default function OptimizationPoints({
       <Button
         asChild
         size="pill"
-        className="bg-secondary hover:bg-secondary/90 h-13 w-56 self-center text-base font-semibold"
+        className="h-13 w-56 self-center bg-secondary text-base font-semibold hover:bg-secondary/90"
       >
         <Link href={CV_BUILDER_ROUTES.root}>{t('create-cv')}</Link>
       </Button>

@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { Link } from "@/i18n/navigation";
-import { X } from "lucide-react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { createPortal } from "react-dom";
-import { Button } from "../ui/button";
-import UserProfileCard from "./UserProfileCard";
-import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { Link } from '@/i18n/navigation';
+import { X } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { createPortal } from 'react-dom';
+import { Button } from '../ui/button';
+import UserProfileCard from './UserProfileCard';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 
 export default function ResponsiveNavigationBar({
   setToggleSideMenu,
@@ -24,25 +24,30 @@ export default function ResponsiveNavigationBar({
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMounted(true);
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     };
   }, []);
 
-  const isAuthed = status === "authenticated";
-  const isLoading = status === "loading";
-  const homeHref = session?.authRole === "employer" ? "/for-employers" : "/";
+  const isAuthed = status === 'authenticated';
+  const isLoading = status === 'loading';
+  const homeHref = session?.authRole === 'employer' ? '/for-employers' : '/';
 
   if (!isMounted) return null;
 
   return createPortal(
-    <section className="fixed inset-0 z-50 flex h-dvh flex-col gap-6 bg-white px-4 py-6 lg:hidden no-scrollbar">
+    <section className="fixed inset-0 z-50 no-scrollbar flex h-dvh flex-col gap-6 bg-white px-4 py-6 lg:hidden">
       <header className="flex w-full items-center justify-between">
-        <Image src="/assets/new-logo-dot.svg" width={70} height={30} alt="Logo" />
+        <Image
+          src="/assets/new-logo-dot.svg"
+          width={70}
+          height={30}
+          alt="Logo"
+        />
         <button
           className="cursor-pointer"
           onClick={() => setToggleSideMenu(false)}
@@ -106,9 +111,9 @@ export default function ResponsiveNavigationBar({
         )}
         {!isLoading && !isAuthed && (
           <>
-            {" "}
+            {' '}
             <Button
-              onClick={() => router.push("/auth/candidate/login")}
+              onClick={() => router.push('/auth/candidate/login')}
               variant="default"
               hoverStyle="slideSecondary"
               size="pill"
@@ -117,7 +122,7 @@ export default function ResponsiveNavigationBar({
               {t('header.login')}
             </Button>
             <Button
-              onClick={() => router.push("/auth/candidate/register")}
+              onClick={() => router.push('/auth/candidate/register')}
               variant="outline"
               hoverStyle="slidePrimary"
               size="pill"

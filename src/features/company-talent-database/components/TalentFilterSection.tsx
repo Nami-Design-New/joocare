@@ -8,8 +8,8 @@ export default function TalentFilterSection({
   children,
 }: TalentFilterSectionProps) {
   return (
-    <details open className="group bg-muted rounded-2xl p-2 sm:p-3">
-      <summary className="text-muted-foreground focus-visible:outline-ring flex cursor-pointer list-none items-center justify-between gap-4 rounded-lg p-2 text-lg font-semibold sm:text-[21px] focus-visible:outline-2 [&::-webkit-details-marker]:hidden">
+    <details open className="group rounded-2xl bg-muted p-2 sm:p-3">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-lg p-2 text-lg font-semibold text-muted-foreground focus-visible:outline-2 focus-visible:outline-ring sm:text-[21px] [&::-webkit-details-marker]:hidden">
         {title}
         <ChevronDown
           aria-hidden

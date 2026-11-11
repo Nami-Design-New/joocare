@@ -26,16 +26,16 @@ export default function CategoryCard({
 }: CategoryCardProps) {
   const t = useTranslations('companyPage.assessments');
   return (
-    <Card className="hover:border-primary relative gap-0 overflow-hidden rounded-2xl p-4 shadow-none transition-colors">
+    <Card className="relative gap-0 overflow-hidden rounded-2xl p-4 shadow-none transition-colors hover:border-primary">
       <div className="flex items-start gap-3">
-        <span className="bg-primary-bg text-primary flex size-12 shrink-0 items-center justify-center rounded-full">
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary-bg text-primary">
           <ClipboardList
             aria-hidden="true"
             className="size-6"
             strokeWidth={1.5}
           />
         </span>
-        <h3 className="text-secondary min-w-0 flex-1 self-center text-base font-semibold">
+        <h3 className="min-w-0 flex-1 self-center text-base font-semibold text-secondary">
           <span className="line-clamp-2">{category.name}</span>
         </h3>
         {category.source === 'company' && onEdit && onDelete ? (
@@ -44,7 +44,7 @@ export default function CategoryCard({
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-muted-foreground relative z-10 size-7 rounded-full"
+                className="relative z-10 size-7 rounded-full text-muted-foreground"
                 aria-label={t('category-actions', { name: category.name })}
               >
                 <CircleEllipsis aria-hidden="true" className="size-5" />
@@ -68,14 +68,14 @@ export default function CategoryCard({
       </div>
       <Link
         aria-label={category.name}
-        className="focus-visible:after:ring-ring absolute inset-0 z-0 rounded-2xl focus-visible:outline-none focus-visible:after:absolute focus-visible:after:inset-0 focus-visible:after:rounded-2xl focus-visible:after:ring-2"
+        className="absolute inset-0 z-0 rounded-2xl focus-visible:outline-none focus-visible:after:absolute focus-visible:after:inset-0 focus-visible:after:rounded-2xl focus-visible:after:ring-2 focus-visible:after:ring-ring"
         href={`/company/assessments/${category.id}`}
       />
-      <div className="border-border mt-4 border-t pt-4">
-        <p className="text-muted-foreground line-clamp-2 min-h-10 text-xs leading-5">
+      <div className="mt-4 border-t border-border pt-4">
+        <p className="line-clamp-2 min-h-10 text-xs leading-5 text-muted-foreground">
           {category.description}
         </p>
-        <p className="text-primary mt-3 text-xs font-semibold">
+        <p className="mt-3 text-xs font-semibold text-primary">
           {t('assessment-count', { count: category.assessmentCount })}
         </p>
       </div>

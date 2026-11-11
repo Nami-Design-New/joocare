@@ -63,8 +63,8 @@ export default function CandidateNameCell({
       >
         <Star
           className={cn(
-            'text-muted-foreground size-6',
-            isStarred && 'text-warning fill-warning',
+            'size-6 text-muted-foreground',
+            isStarred && 'fill-warning text-warning',
           )}
         />
       </button>
@@ -75,7 +75,7 @@ export default function CandidateNameCell({
             variant="ghost"
             size="icon-xs"
             aria-label={t('candidate-actions', { name })}
-            className="group bg-muted text-muted-foreground data-[state=open]:bg-primary data-[state=open]:text-primary-foreground size-6 rounded-full p-0"
+            className="group size-6 rounded-full bg-muted p-0 text-muted-foreground data-[state=open]:bg-primary data-[state=open]:text-primary-foreground"
           >
             <ChevronDown
               aria-hidden

@@ -32,7 +32,7 @@ export default function DashboardPeriodSelect({
     >
       <SelectTrigger
         aria-label={t('period-for', { widget: label })}
-        className="border-border bg-card h-7.5 w-30.75 gap-1 rounded-full px-3 py-1.5 text-xs leading-4 shadow-none [&>svg]:hidden"
+        className="h-7.5 w-30.75 gap-1 rounded-full border-border bg-card px-3 py-1.5 text-xs leading-4 shadow-none [&>svg]:hidden"
       >
         <DashboardIcon name="calendar" width={16} />
         <SelectValue />

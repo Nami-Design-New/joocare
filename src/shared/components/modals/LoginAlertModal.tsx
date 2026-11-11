@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter } from "@/i18n/navigation";
-import AlertModal from "./AlertModal";
+import { useRouter } from '@/i18n/navigation';
+import AlertModal from './AlertModal';
 
 type LoginAlertModalProps = {
   open: boolean;
@@ -24,7 +24,7 @@ export default function LoginAlertModal({
       hasCancelButton={false}
       onConfirm={() => {
         onOpenChange(false);
-        router.push("/auth/candidate/login");
+        router.push('/auth/candidate/login');
       }}
     />
   );

@@ -1,8 +1,8 @@
-import Image from "next/image";
-import SectionTitle from "../../home/components/SectionTitle";
-import type { EmployersHeroSectionProps } from "../types";
-import { employerHeroFallbackImages } from "../utils";
-import { getTranslations } from "next-intl/server";
+import Image from 'next/image';
+import SectionTitle from '../../home/components/SectionTitle';
+import type { EmployersHeroSectionProps } from '../types';
+import { employerHeroFallbackImages } from '../utils';
+import { getTranslations } from 'next-intl/server';
 
 export default async function EmployersHeroSection({
   title,
@@ -15,20 +15,20 @@ export default async function EmployersHeroSection({
 
   return (
     <section className="bg-white pt-8 pb-10 sm:pb-18 md:pt-14">
-      <div className="mx-auto grid  grid-cols-1 gap-8 px-0 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
+      <div className="mx-auto grid grid-cols-1 gap-8 px-0 sm:gap-12 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-0">
         <div>
           <div className="mb-2">
             <SectionTitle
-              sectionTitle={t("forEmployersPage.hero-section-title")}
+              sectionTitle={t('forEmployersPage.hero-section-title')}
               textColor="text-dark"
             />
           </div>
 
-          <h2 className="text-secondary mb-3 text-2xl leading-tight font-bold sm:text-4xl lg:mb-2 lg:text-5xl">
+          <h2 className="mb-3 text-2xl leading-tight font-bold text-secondary sm:text-4xl lg:mb-2 lg:text-5xl">
             {title}
           </h2>
 
-          <p className="text-secondary mb-8 max-w-xl text-left text-sm leading-relaxed sm:text-base lg:text-justify">
+          <p className="mb-8 max-w-xl text-left text-sm leading-relaxed text-secondary sm:text-base lg:text-justify">
             {description}
           </p>
         </div>
@@ -37,7 +37,7 @@ export default async function EmployersHeroSection({
           {heroImages.map((image) => (
             <div
               key={image.id}
-              className="relative h-72 w-[220px] sm:h-100 overflow-hidden rounded-3xl sm:w-[260px]"
+              className="relative h-72 w-[220px] overflow-hidden rounded-3xl sm:h-100 sm:w-[260px]"
             >
               <Image
                 src={image.image}

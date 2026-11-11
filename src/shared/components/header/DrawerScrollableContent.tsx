@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useRouter } from "@/i18n/navigation";
-import { Button } from "@/shared/components/ui/button";
+import { useRouter } from '@/i18n/navigation';
+import { Button } from '@/shared/components/ui/button';
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
-  DrawerTitle
-} from "@/shared/components/ui/drawer";
-import { X } from "lucide-react";
-import NotificationCard from "../../../features/notifications/components/NotificationCard";
-import { useInfiniteScroll } from "@/features/notifications/hooks/useInfiniteScroll";
-import { useSession } from "next-auth/react";
-import { useNotificationsInfinite } from "@/features/notifications/hooks/useGetAllNotifications";
-import { useMarkAllAsRead } from "@/features/notifications/hooks/useMarkAllAsRead";
-import { useMarkAsRead } from "@/features/notifications/hooks/useMarkAsRead";
-import { Notification } from "@/features/notifications/notifications.types";
-import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useRef } from "react";
+  DrawerTitle,
+} from '@/shared/components/ui/drawer';
+import { X } from 'lucide-react';
+import NotificationCard from '../../../features/notifications/components/NotificationCard';
+import { useInfiniteScroll } from '@/features/notifications/hooks/useInfiniteScroll';
+import { useSession } from 'next-auth/react';
+import { useNotificationsInfinite } from '@/features/notifications/hooks/useGetAllNotifications';
+import { useMarkAllAsRead } from '@/features/notifications/hooks/useMarkAllAsRead';
+import { useMarkAsRead } from '@/features/notifications/hooks/useMarkAsRead';
+import { Notification } from '@/features/notifications/notifications.types';
+import { useTranslations } from 'next-intl';
+import { useCallback, useEffect, useRef } from 'react';
 
 export function DrawerScrollableContent({
   title,
@@ -31,16 +31,10 @@ export function DrawerScrollableContent({
   const t = useTranslations();
   const router = useRouter();
   const { data: session } = useSession();
-  const token = session?.accessToken || "";
+  const token = session?.accessToken || '';
   const role = session?.authRole;
-  const {
-    data,
-    unreadCount,
-    loadMore,
-    hasMore,
-    loading,
-    isFetchingNextPage,
-  } = useNotificationsInfinite(role, token);
+  const { data, unreadCount, loadMore, hasMore, loading, isFetchingNextPage } =
+    useNotificationsInfinite(role, token);
   const { markAsReadAsync, isPending, pendingNotificationId } = useMarkAsRead(
     role,
     token,
@@ -75,7 +69,7 @@ export function DrawerScrollableContent({
   const { setRootRef, setTargetRef } = useInfiniteScroll({
     enabled: open && hasMore && !loading,
     onLoadMore: handleLoadMore,
-    rootMargin: "300px 0px",
+    rootMargin: '300px 0px',
     threshold: 0,
   });
 
@@ -119,36 +113,35 @@ export function DrawerScrollableContent({
       }
     }
 
-    if (role !== "employer") {
+    if (role !== 'employer') {
       return;
     }
 
     if (
-      item.action === "expired_commercial_registration" ||
-      item.action === "expired_license" ||
-      item.action === "rejected_profile"
+      item.action === 'expired_commercial_registration' ||
+      item.action === 'expired_license' ||
+      item.action === 'rejected_profile'
     ) {
       onOpenChange(false);
-      router.push("/company/account-settings/business-verification");
+      router.push('/company/account-settings/business-verification');
       return;
     }
 
-    if (item.action === "received_application" && item.data.job_id) {
+    if (item.action === 'received_application' && item.data.job_id) {
       onOpenChange(false);
       router.push(`/company/job/candidates/${item.data.job_id}`);
       return;
     }
 
-    if (item.action === "approved_profile") {
+    if (item.action === 'approved_profile') {
       return;
     }
   }
   // console.log('data notify:::', data);
 
-
   return (
     <Drawer direction="right" open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="bg-white overflow-hidden flex flex-col">
+      <DrawerContent className="flex flex-col overflow-hidden bg-white">
         <DrawerHeader className="flex flex-row items-center justify-between">
           <div className="flex items-center gap-3">
             <DrawerTitle>{title}</DrawerTitle>
@@ -181,35 +174,31 @@ export function DrawerScrollableContent({
           </div>
         </DrawerHeader>
 
-        <div className="flex-1 min-h-0 overflow-hidden">
+        <div className="min-h-0 flex-1 overflow-hidden">
           <div
             ref={setScrollContainerRef}
-            className="no-scrollbar z-10 h-full space-y-3 overflow-y-auto px-4"
-            style={{ maxHeight: "80vh" }}
+            className="z-10 no-scrollbar h-full space-y-3 overflow-y-auto px-4"
+            style={{ maxHeight: '80vh' }}
           >
-          {data.map((item) => (
-            <NotificationCard
-              key={item.id}
-              title={item.title}
-              message={item.message}
-              createdAt={item.created_at}
-              isRead={item.is_read}
-              isPending={pendingNotificationId === item.id && isPending}
-              onClick={() => void handleNotificationClick(item)}
-            />
-          ))}
+            {data.map((item) => (
+              <NotificationCard
+                key={item.id}
+                title={item.title}
+                message={item.message}
+                createdAt={item.created_at}
+                isRead={item.is_read}
+                isPending={pendingNotificationId === item.id && isPending}
+                onClick={() => void handleNotificationClick(item)}
+              />
+            ))}
 
-          {loading && (
-            <p className="text-sm text-gray-500">
-              {t("header.loading")}
-            </p>
-          )}
+            {loading && (
+              <p className="text-sm text-gray-500">{t('header.loading')}</p>
+            )}
 
-          {isFetchingNextPage && (
-            <p className="text-sm text-gray-500">
-              {t("header.loading")}
-            </p>
-          )}
+            {isFetchingNextPage && (
+              <p className="text-sm text-gray-500">{t('header.loading')}</p>
+            )}
 
             <div
               ref={setTargetRef}
@@ -217,18 +206,17 @@ export function DrawerScrollableContent({
               aria-hidden="true"
             />
 
-          {!hasMore && data.length > 0 && (
-            <p className="text-sm text-gray-400 text-center">
-              {t("header.no-more-notifications")}
-            </p>
-          )}
+            {!hasMore && data.length > 0 && (
+              <p className="text-center text-sm text-gray-400">
+                {t('header.no-more-notifications')}
+              </p>
+            )}
 
-          {!loading && data.length === 0 && (
-            <p className="text-sm text-gray-400 text-center py-6">
-              {t("header.no-notifications-yet")}
-            </p>
-          )}
-
+            {!loading && data.length === 0 && (
+              <p className="py-6 text-center text-sm text-gray-400">
+                {t('header.no-notifications-yet')}
+              </p>
+            )}
           </div>
         </div>
       </DrawerContent>

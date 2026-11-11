@@ -65,7 +65,7 @@ export default function ChatImageDialog({
         {attachment && (
           <Button
             type="button"
-            className="bg-chat-primary justify-self-end rounded-xl"
+            className="justify-self-end rounded-xl bg-chat-primary"
             onClick={() => onDownload(attachment)}
           >
             {t('download')}

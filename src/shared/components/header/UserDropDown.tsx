@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import useGetCandidateProfile from "@/features/candidate-profile/hooks/useGetCandidateProfile";
-import useGetCompanyProfile from "@/features/company-profile/hooks/useGetCompanyProfile";
+import useGetCandidateProfile from '@/features/candidate-profile/hooks/useGetCandidateProfile';
+import useGetCompanyProfile from '@/features/company-profile/hooks/useGetCompanyProfile';
 import {
   Bookmark,
   ChevronDown,
@@ -9,9 +9,9 @@ import {
   LogOut,
   Settings,
   UserRoundCogIcon,
-} from "lucide-react";
-import Image from "next/image";
-import { Button, buttonVariants } from "../ui/button";
+} from 'lucide-react';
+import Image from 'next/image';
+import { Button, buttonVariants } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,16 +19,16 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Link } from "@/i18n/navigation";
-import { cn } from "@/shared/lib/utils";
-import { useState } from "react";
-import { useLogout } from "@/features/auth/hooks/useLogout";
-import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
+} from '../ui/dropdown-menu';
+import { Link } from '@/i18n/navigation';
+import { cn } from '@/shared/lib/utils';
+import { useState } from 'react';
+import { useLogout } from '@/features/auth/hooks/useLogout';
+import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 
 export function getSafeImageSrc(value: unknown, fallback: string) {
-  return typeof value === "string" && value.trim() ? value : fallback;
+  return typeof value === 'string' && value.trim() ? value : fallback;
 }
 
 export default function UserDropDown({
@@ -42,55 +42,60 @@ export default function UserDropDown({
   const { data: session } = useSession();
   const toggleOpen = () => setOpen((prev) => !prev);
 
-  const isEmployer = session?.authRole === "employer" || companyHeader;
-  const token = session?.accessToken || "";
+  const isEmployer = session?.authRole === 'employer' || companyHeader;
+  const token = session?.accessToken || '';
 
   const { data: companyProfileData } = useGetCompanyProfile({
-    token: isEmployer ? token : "",
+    token: isEmployer ? token : '',
   });
   const { data: candidateProfileData } = useGetCandidateProfile({
-    token: !isEmployer ? token : "",
+    token: !isEmployer ? token : '',
   });
 
   const profileHref = isEmployer
-    ? "/company/company-profile"
-    : "/candidate/profile";
+    ? '/company/company-profile'
+    : '/candidate/profile';
   const displayName =
     (isEmployer
-      ? companyProfileData?.name || t("header.user")
-      : candidateProfileData?.name) || t("header.user");
+      ? companyProfileData?.name || t('header.user')
+      : candidateProfileData?.name) || t('header.user');
   const subtitle = isEmployer
-    ? t("header.company-account")
-    : t("header.candidate-account");
+    ? t('header.company-account')
+    : t('header.candidate-account');
 
   const fallbackImage = isEmployer
-    ? "/assets/new-logo-dot.svg"
-    : "/assets/profile_image.svg";
+    ? '/assets/new-logo-dot.svg'
+    : '/assets/profile_image.svg';
 
   const imageSrc = getSafeImageSrc(
-    (isEmployer ? (companyProfileData?.image ? companyProfileData?.image : '/assets/new-logo-dot.svg') : (candidateProfileData?.image ? candidateProfileData?.image : '/assets/profile_image.svg')) ??
-    session?.user?.image,
-    fallbackImage
+    (isEmployer
+      ? companyProfileData?.image
+        ? companyProfileData?.image
+        : '/assets/new-logo-dot.svg'
+      : candidateProfileData?.image
+        ? candidateProfileData?.image
+        : '/assets/profile_image.svg') ?? session?.user?.image,
+    fallbackImage,
   );
   const itemClass =
-    "group cursor-pointer  flex items-center gap-2 text-base font-semibold text-muted-foreground " +
-    "bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent " +
-    "hover:text-primary focus:text-primary transition-colors";
+    'group cursor-pointer  flex items-center gap-2 text-base font-semibold text-muted-foreground ' +
+    'bg-transparent hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent ' +
+    'hover:text-primary focus:text-primary transition-colors';
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="border-border group relative h-13.75 w-13.75 rounded-full"
+          className="group relative h-13.75 w-13.75 rounded-full border-border"
         >
           <Image
             src={imageSrc}
             alt="User Avatar"
             fill
-            className="rounded-full "
-          />{" "}
-          <span className="border-border absolute -right-3 -bottom-2 flex h-6 w-6 items-center justify-center rounded-full border bg-white">
+            className="rounded-full"
+          />{' '}
+          <span className="absolute -right-3 -bottom-2 flex h-6 w-6 items-center justify-center rounded-full border border-border bg-white">
             <ChevronDown
               size={20}
               strokeWidth={1.25}
@@ -109,11 +114,13 @@ export default function UserDropDown({
                 alt="Profile"
                 width={60}
                 height={60}
-                className="rounded-full h-13.75 w-13.75"
+                className="h-13.75 w-13.75 rounded-full"
               />
               <div>
-                <p className="text-lg font-semibold text-black">{displayName as string}</p>
-                <p className="text-base text-muted-foreground font-normal">
+                <p className="text-lg font-semibold text-black">
+                  {displayName as string}
+                </p>
+                <p className="text-base font-normal text-muted-foreground">
                   {subtitle}
                 </p>
               </div>
@@ -122,16 +129,16 @@ export default function UserDropDown({
             <Link
               className={cn(
                 buttonVariants({
-                  variant: "outline",
-                  size: "pill",
-                  hoverStyle: "slidePrimary",
+                  variant: 'outline',
+                  size: 'pill',
+                  hoverStyle: 'slidePrimary',
                 }),
-                "border-secondary h-8.5 w-full border",
+                'h-8.5 w-full border border-secondary',
               )}
               href={profileHref}
               onClick={() => toggleOpen()}
             >
-              {t("header.view-profile")}
+              {t('header.view-profile')}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -139,31 +146,29 @@ export default function UserDropDown({
 
         {/* Menu Items */}
         <DropdownMenuGroup>
-
           {isEmployer ? (
             <>
               <DropdownMenuItem className={itemClass}>
                 <UserRoundCogIcon
-                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
+                  className="h-5 w-5 text-muted-foreground group-hover:text-primary"
                   strokeWidth={2.5}
                 />
                 <Link
-                  href={"/company/job-management"}
+                  href={'/company/job-management'}
                   onClick={() => toggleOpen()}
                 >
-                  {t("header.job-management")}
+                  {t('header.job-management')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className={itemClass}>
                 <Gauge
-                  className="text-muted-foreground group-hover:text-primary h-5 w-5"
+                  className="h-5 w-5 text-muted-foreground group-hover:text-primary"
                   strokeWidth={2.5}
                 />
-                <Link href={"/company/dashboard"} onClick={() => toggleOpen()}>
-                  {t("header.dashboard")}
-                </Link>{" "}
+                <Link href={'/company/dashboard'} onClick={() => toggleOpen()}>
+                  {t('header.dashboard')}
+                </Link>{' '}
               </DropdownMenuItem>
-
             </>
           ) : (
             <DropdownMenuItem className={itemClass}>
@@ -171,25 +176,28 @@ export default function UserDropDown({
                 className="text-muted-foreground group-hover:text-primary"
                 strokeWidth={2.5}
               />
-              <Link href={"/candidate/applications?tab=saved"} onClick={() => toggleOpen()}>
-                {t("header.saved")}
+              <Link
+                href={'/candidate/applications?tab=saved'}
+                onClick={() => toggleOpen()}
+              >
+                {t('header.saved')}
               </Link>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem className={itemClass}>
             <Settings
-              className="text-muted-foreground group-hover:text-primary h-5 w-5"
+              className="h-5 w-5 text-muted-foreground group-hover:text-primary"
               strokeWidth={2.5}
             />
             <Link
               href={
                 isEmployer
-                  ? "/company/account-settings/basic-info"
-                  : "/candidate/settings/basic-info"
+                  ? '/company/account-settings/basic-info'
+                  : '/candidate/settings/basic-info'
               }
               onClick={() => toggleOpen()}
             >
-              {t("header.account-management")}
+              {t('header.account-management')}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -199,15 +207,15 @@ export default function UserDropDown({
         {/* Logout */}
         <DropdownMenuGroup>
           <DropdownMenuItem
-            className="group text-base text-destructive hover:text-destructive/80 flex cursor-pointer items-center gap-2 bg-transparent font-semibold transition-colors hover:bg-transparent focus:bg-transparent data-[highlighted]:bg-transparent"
+            className="group flex cursor-pointer items-center gap-2 bg-transparent text-base font-semibold text-destructive transition-colors hover:bg-transparent hover:text-destructive/80 focus:bg-transparent data-[highlighted]:bg-transparent"
             onClick={async () => {
               toggleOpen();
               await logout();
             }}
           >
-            <LogOut className="text-destructive group-hover:text-destructive/80 h-5 w-5 transition-colors" />
+            <LogOut className="h-5 w-5 text-destructive transition-colors group-hover:text-destructive/80" />
             <p className="text-destructive group-hover:text-destructive/80">
-              {t("header.log-out")}
+              {t('header.log-out')}
             </p>
           </DropdownMenuItem>
         </DropdownMenuGroup>
