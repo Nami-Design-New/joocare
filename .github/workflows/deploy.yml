@@ -68,11 +68,13 @@ jobs:
               if [ "$(id -u)" = "0" ]; then sudo -u quickzap -H bash -lc "cd '$APP_DIR' && $1"
               else bash -lc "cd '$APP_DIR' && $1"; fi
             }
-            as_root() {
-              if [ "$(id -u)" = "0" ]; then bash -lc "$1"
-              else sudo -n -i bash -lc "$1"; fi
+            # pm2 belongs to root; quickzap may run only /usr/bin/pm2 via sudoers (NOPASSWD)
+            pm2_root() {
+              if [ "$(id -u)" = "0" ]; then /usr/bin/pm2 "$@"
+              else sudo -n /usr/bin/pm2 "$@"; fi
             }
 
             as_owner "git pull origin '$BRANCH'"
             as_owner "npm ci && npm run build"
-            as_root "pm2 restart '$PM2_NAME' --update-env && pm2 save"
+            pm2_root restart "$PM2_NAME" --update-env
+            pm2_root save
