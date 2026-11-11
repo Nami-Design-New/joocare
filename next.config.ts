@@ -18,7 +18,8 @@ const nextConfig: NextConfig = {
             value: "joocare.com",
           },
         ],
-        destination: "https://www.joocare.com/:path*",
+        // destination: "https://www.joocare.com/:path*",
+        destination: "https://www.joocare.cloud/:path*",
         permanent: true,
         basePath: false,
       },
@@ -37,6 +38,14 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "admin.joocare.com",
+      },
+      {
+        protocol: "https",
+        hostname: "admin.joocare.cloud",
+      },
+      {
+        protocol: "http",
+        hostname: "admin.joocare.cloud",
       },
       {
         protocol: "https",
