@@ -17,7 +17,7 @@ export default async function JobDescriptionCard({
   const t = await getTranslations();
 
   return (
-    <div className="card font-noto-sans bg-body-bg text-foreground col-span-2 rounded-2xl p-4 md:p-7">
+    <div className="card font-noto-sans bg-body-bg text-foreground col-span-2 rounded-2xl p-2 md:p-7">
       <h3 className="text-primary mb-4 text-lg font-bold md:text-xl">
         {t('jobDetailsPage.job-description')}
       </h3>

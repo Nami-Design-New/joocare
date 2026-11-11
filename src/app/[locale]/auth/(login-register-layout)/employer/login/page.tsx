@@ -23,7 +23,7 @@ const LoginEmployerPage = async () => {
   const t = await getTranslations();
 
   return (
-    <div className="h-[calc(100vh-75px)] flex items-center justify-center gap-4 ">
+    <div className="min-h-[calc(100dvh-4.75rem)] flex items-center justify-center gap-4 ">
       <div className="w-full md:w-3/4  mx-auto p-4">
         {/* header text */}
         <h1>

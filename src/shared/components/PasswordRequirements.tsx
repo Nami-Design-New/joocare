@@ -86,7 +86,7 @@ export default function PasswordRequirements({
     <div
       id={id}
       className={cn(
-        'mt-4 flex w-full flex-col gap-2 text-start text-sm',
+        ' flex w-full flex-col gap-2 text-start text-sm',
         className,
       )}
     >
