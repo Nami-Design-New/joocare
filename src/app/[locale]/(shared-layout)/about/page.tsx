@@ -27,12 +27,14 @@ export default async function AboutPage({
           { label: t('header.about') },
         ]}
       />
+
       <AboutHeroSection
         title={aboutData.aboutSection.title}
         description={aboutData.aboutSection.description}
         items={aboutData.aboutSection.items}
         images={aboutData.aboutSection.images}
       />
+
       <div className="layout-shell">
         <div className="layout-content">
           <CorePillarsSection
@@ -42,6 +44,7 @@ export default async function AboutPage({
           />
         </div>
       </div>
+
       <AboutVisionSection
         title={aboutData.vision.title}
         description={aboutData.vision.description}
@@ -56,6 +59,7 @@ export default async function AboutPage({
           />
         </div>
       </div>
+
       <AboutCommitmentSection
         title={ABOUT_COMMITMENT_PREVIEW_DATA.title}
         description={ABOUT_COMMITMENT_PREVIEW_DATA.description}
