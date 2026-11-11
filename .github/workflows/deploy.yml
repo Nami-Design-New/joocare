@@ -1,0 +1,80 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main, development]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # public URLs only (no secrets): main -> .com (live), development -> .cloud (test)
+      DOMAIN: ${{ github.ref_name == 'main' && 'joocare.com' || 'joocare.cloud' }}
+    steps:
+      - name: Set build env
+        run: |
+          {
+            echo "NEXTAUTH_URL=https://$DOMAIN"
+            echo "NEXT_PUBLIC_SITE_URL=https://$DOMAIN"
+            echo "NEXT_PUBLIC_BASE_URL=https://admin.$DOMAIN/api"
+            echo "NEXT_PUBLIC_BASE_USER_URL=https://admin.$DOMAIN/api/user"
+            echo "NEXT_PUBLIC_BASE_COMPANY_URL=https://admin.$DOMAIN/api/company"
+            echo "NEXTAUTH_SECRET=ci-build-only"
+          } >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pick target
+        id: target
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "dir=/home/quickzap/joocare.com" >> "$GITHUB_OUTPUT"
+            echo "pm2=joocare" >> "$GITHUB_OUTPUT"
+          else
+            echo "dir=/home/quickzap/joocare.cloud" >> "$GITHUB_OUTPUT"
+            echo "pm2=joocare.cloud" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          port: ${{ secrets.VPS_PORT }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 30m
+          script: |
+            set -e
+            APP_DIR="${{ steps.target.outputs.dir }}"
+            BRANCH="${{ github.ref_name }}"
+            PM2_NAME="${{ steps.target.outputs.pm2 }}"
+
+            # git/npm run as the repo owner (quickzap), pm2 runs as root
+            as_owner() {
+              if [ "$(id -u)" = "0" ]; then sudo -u quickzap -H bash -lc "cd '$APP_DIR' && $1"
+              else bash -lc "cd '$APP_DIR' && $1"; fi
+            }
+            # pm2 belongs to root; quickzap may run only /usr/bin/pm2 via sudoers (NOPASSWD)
+            pm2_root() {
+              if [ "$(id -u)" = "0" ]; then /usr/bin/pm2 "$@"
+              else sudo -n /usr/bin/pm2 "$@"; fi
+            }
+
+            as_owner "git pull --ff-only origin '$BRANCH'"
+            as_owner "npm ci && npm run build"
+            pm2_root restart "$PM2_NAME" --update-env
+            pm2_root save
