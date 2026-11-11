@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 
-// export const runtime = "edge";
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 function clampText(value: string, max: number) {
   const trimmed = value.trim();
