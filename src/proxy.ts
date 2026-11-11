@@ -5,6 +5,7 @@ import {
   shouldLogOnly429,
   shouldLogRequests,
 } from '@/shared/lib/request-logging';
+import { getSafeRedirectPath } from '@/shared/lib/safe-redirect';
 import createMiddleware from 'next-intl/middleware';
 import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
@@ -279,8 +280,10 @@ export default async function proxy(request: NextRequest) {
   // 4. Redirect: Authenticated user trying to access login pages
   //    → Go back to callbackUrl or fallback to "/"
   if (isAuth && isAuthRoute) {
-    const callbackUrl = request.nextUrl.searchParams.get('callbackUrl');
-    const redirectTo = callbackUrl ?? getDefaultPath(locale, authRole);
+    const redirectTo = getSafeRedirectPath(
+      request.nextUrl.searchParams.get('callbackUrl'),
+      getDefaultPath(locale, authRole),
+    );
     const redirectUrl = new URL(redirectTo, request.url);
     logProxyRequest({
       request,

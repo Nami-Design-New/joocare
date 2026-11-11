@@ -62,16 +62,17 @@
 ## المرحلة 1: الأمان والإنتاج (P0، قبل أي حاجة تانية)
 
 - [ ] **⚠️ redirect الإنتاج:** `next.config.ts` فيه redirect **permanent (308)** من `joocare.com` إلى `https://www.joocare.cloud`. الـ CI بيعمل deploy لـ `main` على `joocare.com` (live) و`.cloud` هو بيئة التست. لو مش مقصود، **أي حد يفتح الموقع الحقيقي بيتحول لبيئة التست**، والمتصفحات بتعمل cache للـ permanent redirect. القيمة القديمة المتعلق عليها كانت `www.joocare.com`. **لازم يتأكد فورًا.**
-- [ ] **تسريب بيانات في اللوج:** `src/auth.ts:104` فيه `console.log("USER FOUND:", data)`، وده بيطبع response تسجيل الدخول كامل بالتوكن. و`src/auth.ts:304` بيطبع إيميل المستخدم.
-- [ ] **Open redirect:** `src/proxy.ts:270-271` بياخد `callbackUrl` من الـ query ويعمل redirect من غير ما يتأكد إنه path داخلي. الحل: نقبل بس قيم بتبدأ بـ `/` ومش بتبدأ بـ `//`، أو نقارن الـ origin.
-- [ ] **XSS محتمل من HTML جاي من الـ API** (`dangerouslySetInnerHTML` من غير sanitize):
-  - `src/features/jobs/components/JobDescriptionCard.tsx:28`
-  - `src/features/jobs/components/JobReviewPanel.tsx:603`
-  - `src/features/about/components/SimilarJobCard.tsx:76`
-  - `src/app/[locale]/(shared-layout)/privacy-policy/page.tsx:16`
-  - `src/app/[locale]/(shared-layout)/terms-conditions/page.tsx:15`
-  - الحل: helper واحد `sanitizeHtml` (مثلًا `isomorphic-dompurify`) يتستخدم في كل الأماكن دي، أو تأكيد مكتوب من الباك إند إن المحتوى متنضف.
-- [ ] **JSON-LD:** `jobs/page.tsx:280` و`faq/page.tsx:134` بيعملوا `JSON.stringify(schema)` جوا `<script>`. لو فيه بيانات من الـ API فيها `</script>` الصفحة ممكن تتكسر أو يحصل injection. الحل: `.replace(/</g, '\\u003c')`.
+- [x] **تسريب بيانات في اللوج:** اتشال `console.log("USER FOUND:", data)` (اللي كان بيطبع response الدخول بالتوكن) و`console.log('LOGIN ATTEMPT:', email)` من `src/auth.ts`.
+- [x] **Open redirect:** helper جديد `getSafeRedirectPath` في `src/shared/lib/safe-redirect.ts`، بيقبل بس paths جوا الموقع (بيحل الـ URL ويقارن الـ origin، فبيرفض `https://...` و`//...` و`/\...` و`/\t/...`). اتستخدم في مكانين: `src/proxy.ts` و`features/auth/hooks/useLogin.ts` (التحويل بعد تسجيل الدخول).
+- [ ] **XSS محتمل من HTML جاي من الـ API** (`dangerouslySetInnerHTML` من غير sanitize). **اتأجل بقرار:** اتعمل واترجع زي ما كان. الأماكن:
+  - `src/features/jobs/components/JobDescriptionCard.tsx`
+  - `src/features/jobs/components/JobReviewPanel.tsx`
+  - `src/features/about/components/SimilarJobCard.tsx`
+  - `src/app/[locale]/(shared-layout)/privacy-policy/page.tsx`
+  - `src/app/[locale]/(shared-layout)/terms-conditions/page.tsx`
+  - الحل لما يتقرر: helper واحد `sanitizeHtml` (مثلًا `isomorphic-dompurify`)، أو تأكيد مكتوب من الباك إند إن المحتوى متنضف.
+- [ ] **JSON-LD:** `jobs/page.tsx` و`faq/page.tsx` بيعملوا `JSON.stringify(schema)` جوا `<script>` من غير escape لـ `<`. **اتأجل بقرار:** اتعمل واترجع زي ما كان.
+- [x] **`/en/en` بعد تسجيل الدخول:** الـ proxy بيحفظ `callbackUrl` باللغة (`/en/...`) وراوتر next-intl بيضيف اللغة تاني. `useLogin` بقى يفصل اللغة من المسار قبل `router.push` (مشكلة كانت موجودة قبل التعديلات).
 - [ ] **`api/pdf-proxy` و`api/download-cv`:** سياسة موحدة للدومينات المسموحة والـ redirects والـ timeout وحجم الملف.
 
 ---
