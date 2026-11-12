@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { JOB_SKILLS_ENABLED } from "../config";
 
 const optionalSalaryNumber = z.preprocess((value) => {
   if (value === "" || value == null) {
@@ -179,7 +180,9 @@ export const step2Schema = z.object({
 
   // SelectInputField stores a single string value per selection.
   // If you later switch to a multi-select, change to z.array(z.string())
-  skills: z.array(z.string()).min(1, "companyPage.postJob.validation.atLeastOneSkillRequired"),
+  skills: JOB_SKILLS_ENABLED
+    ? z.array(z.string()).min(1, "companyPage.postJob.validation.atLeastOneSkillRequired")
+    : z.array(z.string()).optional(),
 });
 
 // ─────────────────────────────────────────────

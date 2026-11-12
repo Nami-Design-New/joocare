@@ -8,6 +8,7 @@ import { JobDetails } from "../types/jobs.types";
 import { getJobSalary } from "../utils";
 import JobOverviewItem from "./JobOverviewItem";
 import { useTranslations } from "next-intl";
+import { JOB_SKILLS_ENABLED } from "../config";
 
 type JobPreviewLabels = Partial<{
   title: string;
@@ -621,17 +622,19 @@ export default function JobReviewPanel({
                 labels?.noDescriptionHtml,
             }}
           />
-          <div>
-            <h3 className="text-primary font-outfit mt-5 text-xl font-bold">
-              {tPostJob("review.skillsTitle")}
-            </h3>
-            <ul className="dashed-list mt-5 flex flex-col gap-1.5 ps-7 text-sm">
-              {skills.map((skill) => (
-                <li key={skill}>{skill}</li>
-              ))}
-              {skills.length === 0 && <li>{tPostJob("review.noSkillsSelected")}</li>}
-            </ul>
-          </div>
+          {JOB_SKILLS_ENABLED && (
+            <div>
+              <h3 className="text-primary font-outfit mt-5 text-xl font-bold">
+                {tPostJob("review.skillsTitle")}
+              </h3>
+              <ul className="dashed-list mt-5 flex flex-col gap-1.5 ps-7 text-sm">
+                {skills.map((skill) => (
+                  <li key={skill}>{skill}</li>
+                ))}
+                {skills.length === 0 && <li>{tPostJob("review.noSkillsSelected")}</li>}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="col-span-1 flex flex-col gap-8 max-sm:order-1">

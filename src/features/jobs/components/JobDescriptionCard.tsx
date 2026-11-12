@@ -2,6 +2,7 @@ import { JobDetails } from "../types/jobs.types";
 import DescriptionSection from "./DescriptionSection";
 import ItemList from "./ItemList";
 import { getTranslations } from "next-intl/server";
+import { JOB_SKILLS_ENABLED } from "../config";
 
 export default async function JobDescriptionCard({ job }: { job: JobDetails }) {
   const t = await getTranslations();
@@ -26,16 +27,20 @@ export default async function JobDescriptionCard({ job }: { job: JobDetails }) {
         {/* <ItemList items={qualificationItems} variant="disc" /> */}
       </DescriptionSection>
 
-      <div className="my-4">
-        {/* <DescriptionSection title="Benefits"> */}
-        {/* <ItemList items={benefitItems} variant="decimal" /> */}
-        {/* </DescriptionSection> */}
-      </div>
+      {JOB_SKILLS_ENABLED && (
+        <>
+          <div className="my-4">
+            {/* <DescriptionSection title="Benefits"> */}
+            {/* <ItemList items={benefitItems} variant="decimal" /> */}
+            {/* </DescriptionSection> */}
+          </div>
 
-      <div>
-        <h3 className="text-primary font-outfit text-xl font-bold">{t("jobDetailsPage.skills")}</h3>
-        <ItemList items={job?.skills} variant="dashed" />
-      </div>
+          <div>
+            <h3 className="text-primary font-outfit text-xl font-bold">{t("jobDetailsPage.skills")}</h3>
+            <ItemList items={job?.skills} variant="dashed" />
+          </div>
+        </>
+      )}
     </div>
   );
 }

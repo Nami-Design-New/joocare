@@ -12,6 +12,7 @@ import useGetSkills from "@/shared/hooks/useGetSkills";
 import { useSearchParams } from "next/navigation";
 import { JobDetails } from "../types/jobs.types";
 import { useTranslations } from "next-intl";
+import { JOB_SKILLS_ENABLED } from "../config";
 
 export default function JobPostStepTwo({
   onPreviewLabelChange,
@@ -40,7 +41,7 @@ export default function JobPostStepTwo({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetSkills(skillsSearch, id ?? "");
+  } = useGetSkills(skillsSearch, id ?? "", JOB_SKILLS_ENABLED);
   const skillOptions = skills.map((item) => ({
     label: item.title,
     value: String(item.id),
@@ -103,50 +104,52 @@ export default function JobPostStepTwo({
             )}
           />
         </div>
-        <div>
-          <Controller
-            control={control}
-            name="skills"
-            render={({ field }) => {
-              return (
-                <MultiSelectInputField
-                  {...field}
-                  id="skills"
-                  label={t("companyPage.postJob.fields.skills.label")}
-                  placeholder={t("companyPage.postJob.fields.skills.placeholder")}
-                  withSearchInput
-                  error={
-                    (errors.skills?.message
-                      ? translateMessage(errors.skills.message)
-                      : undefined) ??
-                    (skillsError instanceof Error
-                      ? skillsError.message
-                      : undefined)
-                  }
-                  options={skillOptions}
-                  onChange={(value) => {
-                    field.onChange(value);
-                    onPreviewLabelChange?.(
-                      "skills",
-                      getOptionLabels(value),
-                    );
-                  }}
-                  disabled={isSkillsLoading}
-                  preloadOptions={
-                    existingSkillOptions.length > 0
-                      ? existingSkillOptions
-                      : skillOptions
-                  }
-                  onReachEnd={() => fetchNextPage()}
-                  hasNextPage={Boolean(hasNextPage)}
-                  isFetchingNextPage={isFetchingNextPage}
-                  onSearchChange={setSkillsSearch}
-                />
-              );
-            }}
-          />
+        {JOB_SKILLS_ENABLED && (
+          <div>
+            <Controller
+              control={control}
+              name="skills"
+              render={({ field }) => {
+                return (
+                  <MultiSelectInputField
+                    {...field}
+                    id="skills"
+                    label={t("companyPage.postJob.fields.skills.label")}
+                    placeholder={t("companyPage.postJob.fields.skills.placeholder")}
+                    withSearchInput
+                    error={
+                      (errors.skills?.message
+                        ? translateMessage(errors.skills.message)
+                        : undefined) ??
+                      (skillsError instanceof Error
+                        ? skillsError.message
+                        : undefined)
+                    }
+                    options={skillOptions}
+                    onChange={(value) => {
+                      field.onChange(value);
+                      onPreviewLabelChange?.(
+                        "skills",
+                        getOptionLabels(value),
+                      );
+                    }}
+                    disabled={isSkillsLoading}
+                    preloadOptions={
+                      existingSkillOptions.length > 0
+                        ? existingSkillOptions
+                        : skillOptions
+                    }
+                    onReachEnd={() => fetchNextPage()}
+                    hasNextPage={Boolean(hasNextPage)}
+                    isFetchingNextPage={isFetchingNextPage}
+                    onSearchChange={setSkillsSearch}
+                  />
+                );
+              }}
+            />
 
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
