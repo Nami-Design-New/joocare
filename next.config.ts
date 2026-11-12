@@ -22,6 +22,18 @@ const nextConfig: NextConfig = {
         permanent: true,
         basePath: false,
       },
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'joocare.cloud',
+          },
+        ],
+        destination: 'https://www.joocare.cloud/:path*',
+        permanent: true,
+        basePath: false,
+      },
     ];
   },
   images: {
