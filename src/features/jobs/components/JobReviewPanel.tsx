@@ -514,26 +514,25 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
               )}
             </ul>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <Image
-                src="/assets/icons/case.svg"
-                width={20} height={20}
-                alt=""
-              />
-              <p className="text-muted-foreground text-md">{tPostJob("review.fields.mandatoryCertifications")}</p>
+          {preview.mandatoryCertifications.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/assets/icons/case.svg"
+                  width={20} height={20}
+                  alt=""
+                />
+                <p className="text-muted-foreground text-md">{tPostJob("review.fields.mandatoryCertifications")}</p>
+              </div>
+              <ul className="mt-2 flex flex-col gap-2">
+                {preview.mandatoryCertifications.map((item) => (
+                  <li className="edu-certificate" key={item}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="mt-2 flex flex-col gap-2">
-              {preview.mandatoryCertifications.map((item) => (
-                <li className="edu-certificate" key={item}>
-                  {item}
-                </li>
-              ))}
-              {preview.mandatoryCertifications.length === 0 && (
-                <li className="edu-certificate">-</li>
-              )}
-            </ul>
-          </div>
+          )}
           <JobOverviewItem
             label={tPostJob("review.fields.availability")}
             value={preview.availability}

@@ -6,6 +6,7 @@ import { getTranslations } from "next-intl/server";
 export default async function JobEducationAndCertificationsCard({ job }: { job: JobDetails }) {
   const t = await getTranslations();
   const availability = job.availability?.title ?? job.availability_title ?? t("jobsPage.not-specified");
+  const certifications = job.mandatory_certifications ?? [];
 
   return (
     <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white p-8">
@@ -18,32 +19,34 @@ export default async function JobEducationAndCertificationsCard({ job }: { job: 
           value={job.education_levels}
           icon="/assets/icons/exp.svg"
         />
-        <div>
+        {certifications.length > 0 && (
           <div>
-            <div className="flex items-center gap-2">
-              <Image
-                src="/assets/icons/case.svg"
-                width={20}
-                height={20}
-                alt={t("jobDetailsPage.icon")}
-              />
-              <p className="text-muted-foreground text-md">
-                {t("jobDetailsPage.mandatory-certifications")}
-              </p>
-            </div>
             <div>
-              <ul className="mt-2 flex flex-col gap-2">
-                {
-                  job.mandatory_certifications.map((item) =>
-                    <li className="edu-certificate" key={item?.id}>
-                      {item.title ?? item.mandatory_certification?.title ?? "-"}
-                    </li>
-                  )
-                }
-              </ul>
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/assets/icons/case.svg"
+                  width={20}
+                  height={20}
+                  alt={t("jobDetailsPage.icon")}
+                />
+                <p className="text-muted-foreground text-md">
+                  {t("jobDetailsPage.mandatory-certifications")}
+                </p>
+              </div>
+              <div>
+                <ul className="mt-2 flex flex-col gap-2">
+                  {
+                    certifications.map((item) =>
+                      <li className="edu-certificate" key={item?.id}>
+                        {item.title ?? item.mandatory_certification?.title ?? "-"}
+                      </li>
+                    )
+                  }
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <JobOverviewItem
           label={t("jobsPage.filters.availability")}
           value={availability}

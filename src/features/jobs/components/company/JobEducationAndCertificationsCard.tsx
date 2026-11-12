@@ -3,6 +3,8 @@ import JobOverviewItem from "../JobOverviewItem";
 import { JobDetails } from "../../types/jobs.types";
 
 export default function JobEducationAndCertificationsCard({ job }: { job: JobDetails }) {
+  const certifications = job.mandatory_certifications ?? [];
+
   return (
     <div className="card border-border shadow-card min-h-36 rounded-2xl border-2 bg-white py-8 px-6">
       <h2 className="text-foreground mb-4 text-lg font-semibold">
@@ -14,33 +16,32 @@ export default function JobEducationAndCertificationsCard({ job }: { job: JobDet
           value={job?.education_levels}
           icon="/assets/icons/exp.svg"
         />
-        <div>
+        {certifications.length > 0 && (
           <div>
-            <div className="flex items-center gap-2">
-              <Image
-                src="/assets/icons/case.svg"
-                width={20}
-                height={20}
-                alt="icon"
-              />
-              <p className="text-muted-foreground text-md">
-                Mandatory Certifications
-              </p>
-            </div>
             <div>
-              <ul className="mt-2 flex flex-col gap-2">
-                {job.mandatory_certifications?.map((item) => (
-                  <li className="edu-certificate" key={item?.id}>
-                    {item.title ?? item.mandatory_certification?.title ?? "-"}
-                  </li>
-                ))}
-                {job.mandatory_certifications?.length === 0 && (
-                  <li className="edu-certificate">-</li>
-                )}
-              </ul>
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/assets/icons/case.svg"
+                  width={20}
+                  height={20}
+                  alt="icon"
+                />
+                <p className="text-muted-foreground text-md">
+                  Mandatory Certifications
+                </p>
+              </div>
+              <div>
+                <ul className="mt-2 flex flex-col gap-2">
+                  {certifications.map((item) => (
+                    <li className="edu-certificate" key={item?.id}>
+                      {item.title ?? item.mandatory_certification?.title ?? "-"}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <JobOverviewItem
           label="Availability"
           value={job.availability?.title ?? job.availability_title ?? "-"}

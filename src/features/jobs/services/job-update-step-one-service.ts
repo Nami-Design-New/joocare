@@ -44,7 +44,9 @@ export async function jobUpdateStepOneService(
   formData.append("specialty_title", String(payload.specialty_title));
   formData.append("employment_type_id", String(payload.employment_type_id));
   formData.append("role_category_id", String(payload.role_category_id));
-  formData.append("seniority_level_id", String(payload.seniority_level_id));
+  if (payload.seniority_level_id !== undefined) {
+    formData.append("seniority_level_id", String(payload.seniority_level_id));
+  }
   formData.append("country_id", String(payload.country_id));
   formData.append("city_id", String(payload.city_id));
   if (payload.experience_id !== undefined) {

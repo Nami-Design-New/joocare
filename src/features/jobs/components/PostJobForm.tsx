@@ -382,7 +382,7 @@ export default function PostJobForm() {
       specialty_title: data.specialty,
       employment_type_id: Number(data.employmentType),
       role_category_id: Number(data.roleCategory),
-      seniority_level_id: Number(data.seniorityLevel || 0),
+      seniority_level_id: toOptionalNumber(data.seniorityLevel),
       country_id: Number(data.country),
       city_id: Number(data.city),
       experience_id:
@@ -436,7 +436,7 @@ export default function PostJobForm() {
       specialty_title: data.specialty,
       employment_type_id: Number(data.employmentType),
       role_category_id: Number(data.roleCategory),
-      seniority_level_id: Number(data.seniorityLevel || 0),
+      seniority_level_id: toOptionalNumber(data.seniorityLevel),
       country_id: Number(data.country),
       city_id: Number(data.city),
       experience_id:
