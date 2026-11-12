@@ -66,9 +66,7 @@ export const step1Schema = z
     educationLevel: z
       .array(z.string())
       .min(1, "companyPage.postJob.validation.educationLevelRequired"),
-    mandatoryCertifications: z
-      .array(z.string())
-      .min(1, "companyPage.postJob.validation.mandatoryCertificationsRequired"),
+    mandatoryCertifications: z.array(z.string()).optional(),
     availability: z.string().min(1, "companyPage.postJob.validation.availabilityRequired"),
     otherAvailabilityTitle: z.string().optional(),
   }).superRefine((data, ctx) => {

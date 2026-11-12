@@ -24,6 +24,7 @@ export type Option = {
 
 type SelectInputFieldProps = {
   label?: string;
+  hint?: string;
   id: string;
   error?: string | boolean;
   containerStyles?: string;
@@ -54,6 +55,7 @@ export const SelectInputField = React.forwardRef<
   (
     {
       label,
+      hint,
       id,
       error,
       options,
@@ -117,7 +119,12 @@ export const SelectInputField = React.forwardRef<
       <div className={cn("flex w-full flex-col", containerStyles)}>
         {label && (
           <label htmlFor={id} className="mx-1 mb-1 font-semibold">
-            {label}
+            {label}{" "}
+            {hint && (
+              <span className="text-muted-foreground mx-1 text-sm font-normal">
+                {hint}
+              </span>
+            )}
           </label>
         )}
 

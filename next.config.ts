@@ -1,5 +1,6 @@
-import { NextConfig } from "next";
-import createNextIntlPlugin from "next-intl/plugin";
+import path from 'node:path';
+import { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -10,14 +11,15 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/:path*",
+        source: '/:path*',
         has: [
           {
-            type: "host",
-            value: "joocare.com",
+            type: 'host',
+            value: 'joocare.com',
           },
         ],
-        destination: "https://www.joocare.com/:path*",
+        // destination: "https://www.joocare.com/:path*",
+        destination: 'https://www.joocare.cloud/:path*',
         permanent: true,
         basePath: false,
       },
@@ -26,34 +28,46 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "joocare.nami-tec.com",
+        protocol: 'https',
+        hostname: 'joocare.nami-tec.com',
       },
       {
-        protocol: "https",
-        hostname: "admin.joocare.com",
+        protocol: 'https',
+        hostname: 'admin.joocare.com',
       },
       {
-        protocol: "http",
-        hostname: "admin.joocare.com",
+        protocol: 'http',
+        hostname: 'admin.joocare.com',
       },
       {
-        protocol: "https",
-        hostname: "media.licdn.com",
+        protocol: 'https',
+        hostname: 'admin.joocare.cloud',
       },
       {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
+        protocol: 'http',
+        hostname: 'admin.joocare.cloud',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.licdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
       },
     ],
   },
   webpack: (config) => {
     config.resolve.alias.canvas = false;
+    // pdf.mjs declares its own webpack runtime vars, which crash under the dev eval wrapper.
+    config.resolve.alias['pdfjs-dist$'] = require.resolve(
+      'pdfjs-dist/build/pdf.min.mjs',
+      { paths: [path.dirname(require.resolve('react-pdf'))] },
+    );
 
     return config;
   },
 };
-
 
 const withNextIntl = createNextIntlPlugin();
 export default withNextIntl(nextConfig);

@@ -899,6 +899,7 @@ function JobPostStepOneContent({
                   {...field}
                   id="seniority-level"
                   label={t("companyPage.postJob.fields.seniorityLevel.label")}
+                  hint={t("companyPage.common.optional")}
                   placeholder={t("common.select")}
                   className="bg-white"
                   error={
@@ -1113,6 +1114,7 @@ function JobPostStepOneContent({
                     {...field}
                     id="mandatory-certifications"
                     label={t("companyPage.postJob.fields.mandatoryCertifications.label")}
+                    hint={t("companyPage.common.optional")}
                     placeholder={t("common.select")}
                     className="bg-white"
                     error={

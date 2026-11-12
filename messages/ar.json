@@ -155,7 +155,7 @@
     "specialty": "التخصص",
     "education-certifications": "قسم التعليم والشهادات",
     "education-level": "المستوى التعليمي",
-    "mandatory-certifications": "الشهادات الإلزامية",
+    "mandatory-certifications": "الشهادات المطلوبه",
     "share-this-job": "شارك هذه الوظيفة:",
     "copy-link": "نسخ الرابط",
     "check-out-this-job": "اطلع على هذه الوظيفة",
@@ -848,7 +848,7 @@
           "label": "المستوى التعليمي"
         },
         "mandatoryCertifications": {
-          "label": "الشهادات الإلزامية"
+          "label": "الشهادات المطلوبه"
         },
         "addNewCertification": {
           "label": "إضافة شهادة جديدة",
@@ -891,7 +891,7 @@
           "roleCategory": "الوظيفة",
           "seniorityLevel": "المستوى الوظيفي",
           "educationLevel": "المستوى التعليمي",
-          "mandatoryCertifications": "الشهادات الإلزامية",
+          "mandatoryCertifications": "الشهادات المطلوبه",
           "availability": "التوفر"
         }
       },
@@ -907,7 +907,7 @@
         "cityRequired": "المدينة مطلوبة",
         "yearsOfExperienceRequired": "سنوات الخبرة مطلوبة",
         "educationLevelRequired": "المستوى التعليمي مطلوب",
-        "mandatoryCertificationsRequired": "الشهادات الإلزامية مطلوبة",
+        "mandatoryCertificationsRequired": "الشهادات المطلوبه مطلوبة",
         "availabilityRequired": "التوفر مطلوب",
         "otherJobTitleRequired": "يرجى إدخال المسمى الوظيفي الآخر",
         "otherCategoryRequired": "يرجى إدخال الفئة الأخرى",
