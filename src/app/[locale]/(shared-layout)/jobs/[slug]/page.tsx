@@ -194,7 +194,7 @@ export default async function page({
         ]}
       />
       <section className="layout-shell">
-        <section className="layout-content mt-4 lg:-mt-20">
+        <section className="layout-content relative z-10 mt-4 lg:-mt-20">
           <JobDetailsHeader job={jobDetails?.job} />
           <div className="grid grid-cols-1 max-lg:gap-y-5 lg:gap-5 pt-7 lg:grid-cols-3">
             <div className="col-span-2 flex flex-col gap-8">

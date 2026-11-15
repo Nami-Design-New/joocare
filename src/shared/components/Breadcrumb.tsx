@@ -25,7 +25,8 @@ export default function Breadcrumb({
     <div className="layout-shell relative py-4 lg:pt-12 lg:pb-38">
 
       <div
-        className={`absolute inset-0 -z-10 ${gradient ? "bg-primary-gradient" : "bg-transparent"
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 -z-10 ${gradient ? "bg-primary-gradient" : "bg-transparent"
           }`}
       />
 
