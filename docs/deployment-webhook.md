@@ -120,3 +120,5 @@ above, and only the four mapped branches. Everything else returns `200` with
   for the previous run.
 - **Fallback**: run the *Deploy* workflow manually from the Actions tab, or use
   `deploy.sh` over SSH.
+
+<!-- verified 2026-11-17T09:45:23Z -->
