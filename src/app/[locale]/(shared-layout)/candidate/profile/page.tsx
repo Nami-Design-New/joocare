@@ -21,8 +21,8 @@ const CandidateProfilePage = async () => {
         <ProfileTabs />
         <AboutSection profile={profile} />
         <EducationSection profile={profile} />
-        <SkillsSection profile={profile} />
         <ExperienceSectionData profile={profile} />
+        <SkillsSection profile={profile} />
       </section>
 
       <section className="col-span-12 max-lg:-order-1 lg:col-span-4">
