@@ -1,8 +1,9 @@
 name: Deploy
 
+# Pushes are deployed by the server-side webhook:
+#   GitHub push -> https://www.joocare.cloud/api/deploy-hook -> /home/quickzap/deploy/deploy.sh
+# See docs/deployment-webhook.md. This workflow is a manual fallback only.
 on:
-  push:
-    branches: [main, development]
   workflow_dispatch:
 
 concurrency:
