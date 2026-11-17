@@ -1,0 +1,112 @@
+# Deployment (server webhook)
+
+Push deploys are handled by the server itself, not by GitHub Actions:
+
+```
+git push
+   │
+   ├─ GitHub webhook (push) ──► POST https://www.joocare.cloud/api/deploy-hook
+   │                                   │  verifies X-Hub-Signature-256 (HMAC SHA-256)
+   │                                   │  maps repo + branch to a target
+   │                                   └─► spawns /home/quickzap/deploy/deploy.sh <target>
+   │
+   └─ server script: git pull --ff-only → install → build/artisan → restart pm2 → health check
+```
+
+The GitHub Actions workflows are kept as a **manual fallback** (`workflow_dispatch` only).
+
+## Targets
+
+| Target | Repo / branch | Server directory | Runtime |
+|---|---|---|---|
+| `next-live` | `Nami-Design-New/joocare` / `main` | `/home/quickzap/joocare.com` | pm2 `joocare` (port 3000) |
+| `next-test` | `Nami-Design-New/joocare` / `development` | `/home/quickzap/joocare.cloud` | pm2 `joocare.cloud` (port 3001) |
+| `laravel-live` | `Nami-BackEnd/JooCare` / `main` | `/home/quickzap/admin.joocare.com` | php-fpm + nginx |
+| `laravel-test` | `Nami-BackEnd/JooCare` / `phase-2` | `/home/quickzap/admin.joocare.cloud` | php-fpm + nginx |
+
+## Server setup
+
+Everything lives under `/home/quickzap/deploy` and runs as `quickzap`:
+
+- `deploy.sh` — the deployer (mode `750`, owner `quickzap`).
+- `logs/<target>.log` — per-target log, rotated once at 5 MB (`<target>.log.1`).
+- `state/<target>.status` — last result: `ok|noop|ok-docs-only|failed <sha> <utc timestamp>`.
+- `deploy.lock` — `flock`; only one deploy runs at a time across all targets.
+
+The Next app needs two variables in `.env` (both live and test):
+
+```
+DEPLOY_HOOK_SECRET=<openssl rand -hex 32>
+DEPLOY_SCRIPT=/home/quickzap/deploy/deploy.sh
+```
+
+`pm2` is owned by root; `quickzap` may only call `/usr/bin/pm2` through the
+existing `NOPASSWD` sudoers rule (`/etc/sudoers.d/quickzap-pm2`).
+
+### What the script does
+
+Both kinds: verify it is running as `quickzap`, take the lock, `git fetch`,
+refuse to deploy if the working tree is dirty, `git pull --ff-only`, and skip
+build/restart when only docs, markdown or `.github/` files changed.
+
+- **Next**: `npm ci` only when `package-lock.json` changed (or `node_modules`
+  is missing), `npm run build`, `pm2 restart`, `pm2 save`, HTTP health check.
+- **Laravel**: `composer install`, `php artisan migrate --force`, Vite build
+  only when `resources/` or the lockfile changed, `cache:clear` (tolerant —
+  `www-data` owns some cache files), config/route/view/event clears,
+  `config:cache`, `view:cache`, HTTP health check.
+
+A failed build aborts before the restart, so the previous process keeps serving.
+
+### Manual use
+
+```bash
+~/deploy/deploy.sh next-test           # deploy only if GitHub has new commits
+~/deploy/deploy.sh laravel-test        # same for the Laravel test env
+~/deploy/deploy.sh next-live --force   # reinstall/build/restart even when up to date
+```
+
+To undo a deploy, reset the checkout to the previous commit and run the same
+command with `--force`:
+
+```bash
+cd ~/joocare.cloud && git reset --hard <previous-sha> && ~/deploy/deploy.sh next-test --force
+```
+
+## GitHub setup
+
+One webhook per repository (Settings → Webhooks → Add webhook):
+
+- **Payload URL**: `https://www.joocare.cloud/api/deploy-hook`
+- **Content type**: `application/json`
+- **Secret**: the value of `DEPLOY_HOOK_SECRET`
+- **SSL verification**: enabled
+- **Events**: *Just the push event*
+- **Active**: checked
+
+The endpoint accepts only `push` and `ping` events from the two repositories
+above, and only the four mapped branches. Everything else returns `200` with
+`skipped` or `401` when the signature does not match.
+
+## Security notes
+
+- Requests are authenticated with GitHub's `X-Hub-Signature-256` HMAC and a
+  constant-time comparison; the raw body is never logged.
+- The target is selected from a hard-coded map — the request cannot choose a
+  path or a shell command.
+- The script runs as `quickzap` (never root), uses `git pull --ff-only`, and
+  refuses to run with a dirty working tree, so local edits are never lost.
+- A push during a running deploy is queued by the lock; the second run sees the
+  new HEAD and exits as `noop`.
+- Rotate the secret by updating `DEPLOY_HOOK_SECRET` in both `.env` files,
+  restarting the Next app, then updating the secret in both GitHub webhooks.
+
+## Troubleshooting
+
+- **GitHub → Webhooks → Recent Deliveries**: response `202` means the deploy
+  was accepted; `401` means the secret does not match.
+- **Server log**: `tail -f /home/quickzap/deploy/logs/<target>.log`.
+- **Stuck deploy**: check `deploy.lock`; `flock -w 900` waits up to 15 minutes
+  for the previous run.
+- **Fallback**: run the *Deploy* workflow manually from the Actions tab, or use
+  `deploy.sh` over SSH.
