@@ -4,12 +4,16 @@ import EducationSection from '@/features/candidate-profile/components/education/
 import { ExperienceSectionData } from '@/features/candidate-profile/components/experience/ExperienceSectionData';
 import SideContentInfos from '@/features/candidate-profile/components/SideContentInfos';
 import SkillsSection from '@/features/candidate-profile/components/skills/SkillsSection';
+import { getCandidatePersonalDetails } from '@/features/candidate-profile/services/profile-details-service';
 import { getCandidateProfile } from '@/features/candidate-profile/services/profile-service';
 import { getProfessionalProfile } from '@/features/candidate-profile/services/profile-taxonomy-service';
 
 const CandidateProfilePage = async () => {
-  const profile = await getCandidateProfile();
-  const professional = await getProfessionalProfile(profile);
+  const [profile, personal] = await Promise.all([
+    getCandidateProfile(),
+    getCandidatePersonalDetails(),
+  ]);
+  const professional = await getProfessionalProfile(profile, personal.domain);
 
   return (
     <main className="grid w-full grid-cols-12 items-start gap-4">
@@ -22,7 +26,11 @@ const CandidateProfilePage = async () => {
       </section>
 
       <section className="col-span-12 max-lg:-order-1 lg:col-span-4">
-        <SideContentInfos profile={profile} professional={professional} />
+        <SideContentInfos
+          profile={profile}
+          professional={professional}
+          personal={personal}
+        />
       </section>
     </main>
   );

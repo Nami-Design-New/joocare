@@ -135,15 +135,20 @@ export type CandidateProfileViewModel = {
   experiences: CandidateExperienceViewModel[];
   hiring_readiness_score?: number | null;
   missing_score_items: string[];
-  // Pending backend fields (Figma profile side panel); shown as "-" until the profile API
+  // Pending backend fields (Figma profile side panel); shown as "-" until the API
   // returns them.
   isVerified?: boolean;
-  gender?: string | null;
   religion?: string | null;
-  maritalStatus?: string | null;
-  languages?: string[];
-  drivingLicense?: boolean | null;
-  licenseCountries?: string[];
+};
+
+// Personal rows of the profile side panel, from `GET USER/profile-details`.
+export type CandidatePersonalDetails = {
+  domain: string | null;
+  gender: string | null;
+  maritalStatus: string | null;
+  languages: string[];
+  drivingLicense: boolean | null;
+  licenseCountries: string[];
 };
 
 // Specialty / domain rows of the profile side panel (domain / category names come from their lookups).

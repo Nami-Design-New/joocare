@@ -33,8 +33,11 @@ async function getTaxonomyTitle(
 }
 
 // Specialty / domain / category rows of the profile home side panel.
+// `savedDomain` is the domain saved from the Additional info tab (profile details),
+// used when the profile has no `domain_id`.
 export async function getProfessionalProfile(
   profile: CandidateProfileViewModel | null,
+  savedDomain: string | null = null,
 ): Promise<CandidateProfessionalProfile> {
   const locale = await getLocale();
   const [domain, category] = await Promise.all([
@@ -45,7 +48,7 @@ export async function getProfessionalProfile(
   return {
     specialty: profile?.specialty_title ?? null,
     subspecialty: profile?.subspecialtyTitle ?? null,
-    domain,
+    domain: domain ?? savedDomain,
     category,
   };
 }

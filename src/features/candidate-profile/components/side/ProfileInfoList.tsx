@@ -16,6 +16,7 @@ import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import type {
+  CandidatePersonalDetails,
   CandidateProfessionalProfile,
   CandidateProfileViewModel,
 } from '../../types/profile.types';
@@ -25,6 +26,7 @@ import ProfileInfoRow from './ProfileInfoRow';
 type ProfileInfoListProps = {
   profile: CandidateProfileViewModel | null;
   professional: CandidateProfessionalProfile;
+  personal: CandidatePersonalDetails;
 };
 
 type InfoRow = {
@@ -40,6 +42,7 @@ const ICON_STROKE = 1.5;
 export default function ProfileInfoList({
   profile,
   professional,
+  personal,
 }: ProfileInfoListProps) {
   const t = useTranslations('candidatePage.profile');
   const tCommon = useTranslations('common');
@@ -47,9 +50,9 @@ export default function ProfileInfoList({
   const list = (items?: string[]) =>
     items?.length ? new Intl.ListFormat(locale).format(items) : null;
   const drivingLicense =
-    profile?.drivingLicense === undefined || profile.drivingLicense === null
+    personal.drivingLicense === null
       ? null
-      : tCommon(profile.drivingLicense ? 'yes' : 'no');
+      : tCommon(personal.drivingLicense ? 'yes' : 'no');
 
   const rows: InfoRow[] = [
     {
@@ -112,7 +115,7 @@ export default function ProfileInfoList({
       key: 'gender',
       icon: <VenusAndMars strokeWidth={ICON_STROKE} />,
       label: t('gender'),
-      value: profile?.gender,
+      value: personal.gender,
     },
     {
       key: 'religion',
@@ -131,13 +134,13 @@ export default function ProfileInfoList({
       key: 'marital-status',
       icon: <Heart strokeWidth={ICON_STROKE} />,
       label: t('marital-status'),
-      value: profile?.maritalStatus,
+      value: personal.maritalStatus,
     },
     {
       key: 'languages',
       icon: <Languages strokeWidth={ICON_STROKE} />,
       label: t('languages-known'),
-      value: list(profile?.languages),
+      value: list(personal.languages),
     },
     {
       key: 'driving-license',
@@ -149,7 +152,7 @@ export default function ProfileInfoList({
       key: 'issuing-countries',
       icon: <Globe strokeWidth={ICON_STROKE} />,
       label: t('issuing-countries'),
-      value: list(profile?.licenseCountries),
+      value: list(personal.licenseCountries),
     },
   ];
 
