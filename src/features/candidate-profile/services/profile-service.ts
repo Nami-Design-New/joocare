@@ -160,6 +160,8 @@ function resolveStoredFileUrl(path: string | null | undefined) {
   return `https://joocare.nami-tec.com/storage/${normalizedPath}`;
 }
 
+const toLookupId = (id: number | null | undefined) => (id ? String(id) : null);
+
 export async function getCandidateProfile() {
   const session = await getServerSession(authOptions);
 
@@ -217,8 +219,10 @@ export async function getCandidateProfile() {
     jobTitleId: user.job_title_id ? String(user.job_title_id) : null,
     specialty_title: specialtyTitle,
     subspecialtyTitle: user.subspecialty_title ?? null,
-    domainId: user.domain_id ? String(user.domain_id) : null,
-    categoryId: user.category_id ? String(user.category_id) : null,
+    domainId: toLookupId(user.domain_id ?? user.domain?.id),
+    domainTitle: user.domain?.title ?? user.domain?.name ?? null,
+    categoryId: toLookupId(user.category_id ?? user.category?.id),
+    categoryTitle: user.category?.title ?? user.category?.name ?? null,
     experienceId: user.experience_id ? String(user.experience_id) : null,
     countryId: user.country_id ? String(user.country_id) : null,
     cityId: user.city_id ? String(user.city_id) : null,

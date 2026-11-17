@@ -77,8 +77,11 @@ export type CandidateProfileApiUser = {
   specialty: CandidateProfileApiLookup | null;
   specialty_title: string | null;
   subspecialty_title?: string | null;
+  // Domain / category: ids and, once the backend adds them, `{ id, title }` objects.
   domain_id?: number | null;
+  domain?: CandidateProfileApiLookup | null;
   category_id?: number | null;
+  category?: CandidateProfileApiLookup | null;
   cv: string | null;
   image: string | null;
   experience_id: number | null;
@@ -117,7 +120,9 @@ export type CandidateProfileViewModel = {
   specialty_title?: string | null;
   subspecialtyTitle?: string | null;
   domainId?: string | null;
+  domainTitle?: string | null;
   categoryId?: string | null;
+  categoryTitle?: string | null;
   experienceId?: string | null;
   countryId?: string | null;
   cityId?: string | null;
