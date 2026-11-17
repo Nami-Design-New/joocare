@@ -33,7 +33,7 @@ These screens are built in the app but run on sample data. The endpoints exist i
 
 | Flow in the app | Matching endpoints | Ready? |
 |---|---|---|
-| Additional info `/candidate/profile/additional-info` | GET/POST `USER/profile-details` + 19 new lookups (genders, languages, language-proficiency-levels, marital-statuses, visa-statuses, sponsorship-requirements, job-search-statuses, license-statuses, license-verification-statuses, ...) | Yes. Response confirmed. Missing only a nationality lookup (Q-B8) |
+| Additional info `/candidate/profile/additional-info` | GET/POST `USER/profile-details` + 19 new lookups (genders, languages, language-proficiency-levels, marital-statuses, visa-statuses, sponsorship-requirements, job-search-statuses, license-statuses, license-verification-statuses, ...) | Yes. Response confirmed. Nationality uses `/countries` (decided 2026-11-17). Professional license is not sent on save for now (Q-B19) |
 | Build CV `/candidate/build-cv` + 10-step wizard | GET `USER/cv`, GET `USER/cv/progress`, POST `USER/cv/step-one` ... `step-ten`, POST `USER/cv/upload-cv` | Mostly. No PDF download / delete draft (Q-B9), no nationality / sub-specialty lookups (Q-B8) |
 | AI job match `/candidate/ai-job-match` | GET/POST `USER/preferences`, GET `USER/preferences/jobs` | Yes. Preferred companies list stays static until a companies lookup exists (Q-B8) |
 | Profile insights `/candidate/profile-insights` | GET `USER/visits` | Yes. Item shape unknown, test account has no visits (Q-B10) |
@@ -70,6 +70,13 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 - **`GET USER/visits`, `GET USER/messages`:** Laravel pagination, no records on the test account.
 - **Missing lookups:** `/nationalities`, `/sub-specialties`, `/companies` return 404.
 
+- **`POST USER/profile-details`** (tested 2026-11-17 with the test candidate, then restored):
+  - Updates only the fields it receives; fields not sent keep their value (total `experience_id` and `domain_id` are safe).
+  - An empty value clears a field: `gender=` for single values and `relocation_country_ids=` (no `[]`) for lists. `relocation_country_ids[]=` (empty item) is rejected.
+  - Returns the saved details in the same shape as the GET.
+  - Bruno's example proficiency `advanced` is invalid; valid levels are `basic`, `intermediate`, `fluent`, `native`.
+  - `license` comes back as `{id, number, country, status, verification_status}`; languages as `{language: {value, label}, proficiency_level: {value, label}}`; clinical privileges as `{id, title}`; salaries as `"5000.00"`.
+
 ## 7. Open questions
 
 ### Backend team
@@ -83,7 +90,7 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 | Q-B5 | Register: does it accept `cv` and `license_image` as uploaded paths (`images/...`) like other endpoints, or only as files? Is the field `license` or `license_image`? | Register |
 | Q-B6 | Should education accept `gpa`, and experience accept `country_id` / `city_id`? The app sends them today. | Education, experience modals |
 | Q-B7 | Is it intended that `preferences`, `preferences/jobs` and `cv` return 404 when empty? A 200 with empty data would be easier. | AI job match, Build CV |
-| Q-B8 | Can you add lookups for nationalities, sub-specialties and companies (for preferred companies)? | Additional info, Build CV, AI job match |
+| Q-B8 | Can you add lookups for sub-specialties and companies (for preferred companies)? Nationality: decided to use `/countries`, so `nationality_id` is a country ID; please confirm the backend accepts that. | Additional info, Build CV, AI job match |
 | Q-B9 | Build CV: is there an endpoint to download the generated CV as PDF and to delete a draft? | Build CV landing |
 | Q-B10 | What does one item in `GET visits` look like, and does it support `search` by company name? | Profile insights |
 | Q-B11 | Chat: is there an endpoint for the conversation list, attachments, and closing a conversation? What is `company_admin_id` and where does the candidate get it? | Chat |
@@ -92,6 +99,12 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 | Q-B14 | Languages are display names in CV step 1 but codes (`ar`/`en`) in `profile-details`; responsibilities are objects in CV step 7 but strings in `user-experiences`. Which format is correct? | Build CV, Additional info |
 | Q-B15 | `assessments/{id}/start`, `notifications/{id}` (mark read) and `read-all/notifications` change data over GET. Can they become POST? | Assessment, notifications |
 | Q-B16 | In Bruno, `email/confirm` uses the company token, and `verify-otp` / `reset-password` send a bearer token before login. Are these needed? | Auth (Bruno cleanup) |
+| Q-B17 | For seniority, how does Basic info `category_id` map to a role category? Does the profile return it, and does the seniority lookup accept `role_category_id` or `role_category_ids[]`? | Additional info seniority filtering |
+| Q-B18 | How should custom certifications be saved alongside `mandatory_certification_ids[]`? | Additional info custom certifications |
+| Q-B19 | Can the candidate select a professional license by name and country? The profile-details save contract lists `license_number`, but no license ID. **Until answered, the Additional info save does not send the professional license.** | Additional info professional license |
+| Q-B20 | How should multiple sponsorship requirements be submitted and returned? Bruno documents one `sponsorship_requirement`. | Additional info sponsorship multi-select |
+| Q-B21 | License country is now a multi-select in the design. How should several countries be submitted and returned? Bruno documents one `license_country_id`. The field also has an "Other" choice that sends a free-text country name: which field should carry it? | Additional info license country |
+| Q-B22 | Does `GET /licenses` support searching by country name as well as license name (or a `country_id` filter)? | Additional info professional license search |
 
 ### Product / design
 
@@ -115,7 +128,7 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 
 - In scope: candidate profile and settings, notifications, AI match preferences, CV builder, profile insights, chat and CV match ATS, subject to the decisions below.
 - Out of scope: job applications, assessments and job listings, including AI match job results. Keep the findings above for reference; they are not implementation tasks in this plan.
-- Use one branch per feature from an up-to-date `development`, with one focused PR per branch. Branch names below are proposals; none is created by this plan.
+- Before each feature, fetch and fast-forward `development` from `origin/development`, then create its feature branch from that updated `development`. Use one focused PR per branch. Branch names below are proposals unless already created.
 - The current `fix/candidate-api-alignment` branch has uncommitted changes, including application changes and a separate `package.json` edit. Preserve them; do not carry them into feature branches without reviewing ownership and scope. Preserve this untracked document when switching branches.
 - The API observations above are a dated baseline, not a guarantee of current behavior. Recheck each relevant contract and existing implementation before editing. Do not use sample values as real user data.
 - Follow `docs/RULES.md`: inspect the nearest implementation and shared components, keep API calls in services and queries/mutations in hooks, use translated English and Arabic text, and handle loading, empty, error and pending states. Run `npm run lint` and `npx tsc --noEmit` as appropriate, report pre-existing failures, and manually verify the relevant flow in both locales when feasible. Do not commit unless requested.
@@ -129,7 +142,8 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 - Map the grouped response into form values and form values back to the flat request. Preserve fields the user did not edit where the API contract requires it.
 - Connect lookups and save with query invalidation; replace preview data for supported fields. Handle initial data, validation, save errors and pending state.
 - Verify loading an existing profile, editing and saving, reloading persisted values, and empty/error states. Cover mapping with focused tests if needed.
-- **Open:** Q-B8 nationality lookup and Q-B14 language format. Do not invent lookup data or silently discard unsupported fields; confirm behavior with backend/product.
+- **Decided:** nationality uses `/countries`; the professional license is not sent on save until Q-B19 is answered.
+- **Open:** Q-B14 language format. Do not invent lookup data or silently discard unsupported fields; confirm behavior with backend/product.
 
 ### 2. Notifications
 

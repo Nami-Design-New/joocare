@@ -2,6 +2,8 @@
 
 These instructions apply to every AI agent working in this repository.
 
+**Mandatory repository conventions:** Follow the repository's conventions, architecture, and folder structure. If a task appears to require an exception, ask the user for approval before making that exception.
+
 ## Before writing or editing code
 
 1. **Read the [Coding Rules in docs/RULES.md](docs/RULES.md) first.** They are mandatory.
