@@ -4,15 +4,19 @@ import { useTranslations } from 'next-intl';
 import { useSession } from 'next-auth/react';
 import useGetCompanyProfile from '@/features/company-profile/hooks/useGetCompanyProfile';
 import { SelectInputField } from '@/shared/components/SelectInputField';
-import { useAssessmentCategories } from '../../hooks/useAssessmentCategories';
-import AssessmentFilter from '../shared/AssessmentFilter';
-import CategoryLibrary from './CategoryLibrary';
 import DeleteModal from '@/shared/components/modals/DeleteModal';
+import {
+  getCategoryOptionValue,
+  useAssessmentCategories,
+} from '../../hooks/useAssessmentCategories';
+import AssessmentFilter from '../shared/AssessmentFilter';
 import AssessmentCategoriesHeader from './AssessmentCategoriesHeader';
+import CategoryLibrary from './CategoryLibrary';
 
 export default function AssessmentCategoriesPage() {
   const t = useTranslations('companyPage.assessments');
   const catalog = useAssessmentCategories();
+  const { filter } = catalog;
   const { data: session } = useSession();
   const { data: company } = useGetCompanyProfile({
     token: session?.accessToken ?? '',
@@ -21,42 +25,39 @@ export default function AssessmentCategoriesPage() {
   return (
     <div className="flex flex-col gap-6 sm:gap-10 lg:mt-1">
       <AssessmentCategoriesHeader
-        count={catalog.categories.length}
+        count={catalog.totalCount}
         onCreate={catalog.openCreate}
         modal={catalog.modal}
         onCloseModal={catalog.closeModal}
         onSave={catalog.save}
       />
 
-      {/* filter */}
-      <AssessmentFilter onReset={() => catalog.setSelectedCategoryId('')}>
+      <AssessmentFilter onReset={filter.onReset}>
         <SelectInputField
           id="assessment-category-filter"
           aria-label={t('filter-category')}
           placeholder={t('category')}
-          options={catalog.categories.map((category) => ({
+          options={filter.options.map((option) => ({
             label: t('category-option', {
-              category: category.name,
-              library: t(
-                category.source === 'joocare'
-                  ? 'joocare-library'
-                  : 'your-library',
-              ),
+              category: option.name,
+              library: option.libraryLabel,
             }),
-            value: category.id,
+            value: getCategoryOptionValue(option),
           }))}
           withSearchInput
-          value={catalog.selectedCategoryId}
-          onChange={catalog.setSelectedCategoryId}
+          value={filter.value}
+          onChange={filter.onChange}
+          onSearchChange={filter.onSearchChange}
+          onReachEnd={filter.onReachEnd}
+          hasNextPage={filter.hasNextPage}
+          isFetchingNextPage={filter.isFetchingNextPage}
           className="h-13 border-none bg-card text-sm shadow-none"
         />
       </AssessmentFilter>
 
-      {/* category libraries */}
       <CategoryLibrary
         title={t('joocare-library')}
-        categories={catalog.joocareCategories}
-        filterId={catalog.selectedCategoryId}
+        library={catalog.joocareLibrary}
       />
       <CategoryLibrary
         title={
@@ -64,23 +65,22 @@ export default function AssessmentCategoriesPage() {
             ? t('company-library', { company: company.name })
             : t('your-library')
         }
-        categories={catalog.companyCategories}
-        filterId={catalog.selectedCategoryId}
+        library={catalog.companyLibrary}
         onEdit={catalog.openEdit}
         onDelete={catalog.requestDelete}
       />
 
-      {/* modals */}
       <DeleteModal
         open={Boolean(catalog.deletingCategory)}
         onOpenChange={(open) => {
-          if (!open) catalog.closeDeleteModal();
+          if (!open && !catalog.isDeleting) catalog.closeDeleteModal();
         }}
         title={t('delete-category-title')}
         description={t('delete-category-description')}
         confirmLabel={t('confirm-deletion')}
         cancelLabel={t('cancel')}
-        onConfirm={catalog.confirmDelete}
+        isLoading={catalog.isDeleting}
+        onConfirm={() => void catalog.confirmDelete()}
       />
     </div>
   );

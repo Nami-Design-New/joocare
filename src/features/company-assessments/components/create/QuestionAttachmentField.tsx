@@ -13,17 +13,21 @@ import { useAttachmentPreview } from '../../hooks/useAttachmentPreview';
 type QuestionAttachmentFieldProps = {
   enabled: boolean;
   file: File | null;
+  existingUrl?: string;
   error?: string;
   onEnabledChange: (enabled: boolean) => void;
   onChange: (file: File | null) => void;
+  onRemoveExisting: () => void;
 };
 
 export default function QuestionAttachmentField({
   enabled,
   file,
+  existingUrl,
   error,
   onEnabledChange,
   onChange,
+  onRemoveExisting,
 }: QuestionAttachmentFieldProps) {
   const t = useTranslations('companyPage.assessments.builder');
   const input = useRef<HTMLInputElement>(null);
@@ -109,6 +113,35 @@ export default function QuestionAttachmentField({
                     {t('remove-image')}
                   </Button>
                 </div>
+              </div>
+            </div>
+          ) : existingUrl ? (
+            <div className="flex flex-col gap-5 rounded-2xl border border-border p-4 sm:flex-row sm:items-center">
+              <Image
+                src={existingUrl}
+                alt={t('attachment-preview')}
+                width={288}
+                height={162}
+                unoptimized
+                className="aspect-video w-full rounded-lg object-contain sm:w-64"
+              />
+              <div className="flex gap-4">
+                <Button
+                  variant="link"
+                  type="button"
+                  className="h-auto p-0 underline"
+                  onClick={() => input.current?.click()}
+                >
+                  {t('replace-image')}
+                </Button>
+                <Button
+                  variant="link"
+                  type="button"
+                  className="h-auto p-0 text-destructive underline"
+                  onClick={onRemoveExisting}
+                >
+                  {t('remove-image')}
+                </Button>
               </div>
             </div>
           ) : (

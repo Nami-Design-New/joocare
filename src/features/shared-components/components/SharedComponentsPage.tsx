@@ -202,7 +202,7 @@ export default function SharedComponentsPage() {
               onCreate={() => setCategoryModalOpen(true)}
               modal={categoryModalOpen ? { category: null } : null}
               onCloseModal={() => setCategoryModalOpen(false)}
-              onSave={() => {
+              onSave={async () => {
                 setCategoryModalOpen(false);
                 return true;
               }}
@@ -233,8 +233,16 @@ export default function SharedComponentsPage() {
           <ComponentPreview>
             <CategoryLibrary
               title="Company Assessment Library"
-              categories={[exampleCategory]}
-              filterId=""
+              library={{
+                categories: [exampleCategory],
+                isLoading: false,
+                isError: false,
+                isFiltered: false,
+                hasNextPage: false,
+                isFetchingNextPage: false,
+                onLoadMore: () => undefined,
+                onRetry: () => undefined,
+              }}
               onEdit={() => setCategoryModalOpen(true)}
               onDelete={toastPreviewAction}
             />

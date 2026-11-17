@@ -40,6 +40,10 @@ export function useAssessmentQuestionForm(question: BuilderQuestion | null) {
     name: 'attachmentEnabled',
   });
   const attachment = useWatch({ control: form.control, name: 'attachment' });
+  const existingAttachment = useWatch({
+    control: form.control,
+    name: 'existingAttachment',
+  });
   const answers = useWatch({ control: form.control, name: 'correctAnswers' });
 
   function changeType(value: string) {
@@ -72,6 +76,7 @@ export function useAssessmentQuestionForm(question: BuilderQuestion | null) {
     type,
     attachmentEnabled,
     attachment,
+    existingAttachment,
     answers,
     changeType,
     removeOption,

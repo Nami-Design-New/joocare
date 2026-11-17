@@ -9,19 +9,21 @@ import type {
   CategoryFormValues,
 } from '../../types/assessment.types';
 
+type AssessmentCategoriesHeaderProps = {
+  count: number;
+  onCreate: () => void;
+  modal: { category: AssessmentCategory | null } | null;
+  onCloseModal: () => void;
+  onSave: (values: CategoryFormValues) => Promise<boolean>;
+};
+
 export default function AssessmentCategoriesHeader({
   count,
   onCreate,
   modal,
   onCloseModal,
   onSave,
-}: {
-  count: number;
-  onCreate: () => void;
-  modal: { category: AssessmentCategory | null } | null;
-  onCloseModal: () => void;
-  onSave: (values: CategoryFormValues) => boolean;
-}) {
+}: AssessmentCategoriesHeaderProps) {
   const t = useTranslations('companyPage.assessments');
 
   return (

@@ -4,9 +4,8 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
-import { categorySeeds } from '../constants/assessment-data';
 import {
+  ASSESSMENT_QUESTIONS_PAGE_SIZE,
   CONFIGURATION_DEFAULTS,
   MIN_ASSESSMENT_QUESTIONS,
 } from '../constants/assessment-builder';
@@ -17,12 +16,29 @@ import type {
   BuilderQuestion,
   QuestionFormValues,
 } from '../types/assessment-builder.types';
+import { useDeleteAssessmentQuestion } from './useDeleteAssessmentQuestion';
+import { useGetAssessment } from './useGetAssessment';
+import { useGetAssessmentQuestions } from './useGetAssessmentQuestions';
+import { useSaveAssessment } from './useSaveAssessment';
+import { useSaveAssessmentQuestion } from './useSaveAssessmentQuestion';
 
+// Updates `?assessmentId=` without a navigation, so the builder keeps its state.
+function syncAssessmentIdInUrl(assessmentId: string | null) {
+  const url = new URL(window.location.href);
+  if (assessmentId) url.searchParams.set('assessmentId', assessmentId);
+  else url.searchParams.delete('assessmentId');
+  window.history.replaceState(null, '', url);
+}
+
+function getLastPage(count: number) {
+  return Math.max(1, Math.ceil(count / ASSESSMENT_QUESTIONS_PAGE_SIZE));
+}
+
+// Each step saves to the API: step 1 stores the assessment, step 2 stores
+// every question as it is added, and step 3 reviews the saved assessment.
 export function useAssessmentBuilder({
   categoryId,
-  category,
-  initialDraft,
-  onSubmit,
+  initialAssessment,
 }: AssessmentBuilderProps) {
   const t = useTranslations('companyPage.assessments.builder');
   const schema = useMemo(
@@ -39,108 +55,135 @@ export function useAssessmentBuilder({
   );
   const form = useForm<AssessmentConfiguration>({
     resolver: zodResolver(schema),
-    defaultValues: initialDraft?.configuration ?? CONFIGURATION_DEFAULTS,
+    defaultValues: initialAssessment?.configuration ?? CONFIGURATION_DEFAULTS,
     shouldUnregister: false,
   });
   const [step, setStep] = useState(0);
-  const [questions, setQuestions] = useState<BuilderQuestion[]>(
-    initialDraft?.questions ?? [],
+  const [assessmentId, setAssessmentId] = useState<string | null>(
+    initialAssessment?.id ?? null,
   );
+  const [questionsPage, setQuestionsPage] = useState(1);
   const [questionModal, setQuestionModal] = useState<{
     question: BuilderQuestion | null;
-    readOnly?: boolean;
   } | null>(null);
+  const [previewQuestionId, setPreviewQuestionId] = useState<string | null>(
+    null,
+  );
   const [deletingQuestion, setDeletingQuestion] =
     useState<BuilderQuestion | null>(null);
   const [success, setSuccess] = useState(false);
-  const [pending, setPending] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-  const totalScore = questions.reduce(
-    (total, question) => total + Number(question.score),
-    0,
-  );
-  const canReview = questions.length >= MIN_ASSESSMENT_QUESTIONS;
 
-  function saveQuestion(values: QuestionFormValues) {
-    const question = {
-      ...values,
-      attachment: values.attachmentEnabled ? values.attachment : null,
-      id: questionModal?.question?.id ?? crypto.randomUUID(),
-    };
-    setQuestions((current) =>
-      questionModal?.question
-        ? current.map((item) => (item.id === question.id ? question : item))
-        : [...current, question],
-    );
-    setQuestionModal(null);
+  const saveAssessment = useSaveAssessment();
+  const saveQuestionMutation = useSaveAssessmentQuestion();
+  const deleteQuestion = useDeleteAssessmentQuestion();
+  const assessment = useGetAssessment(assessmentId);
+  const questionCount = assessment.data?.questionCount ?? 0;
+  const currentQuestionsPage = Math.min(
+    questionsPage,
+    getLastPage(questionCount),
+  );
+  const questions = useGetAssessmentQuestions(
+    assessmentId,
+    currentQuestionsPage,
+  );
+  const canReview = questionCount >= MIN_ASSESSMENT_QUESTIONS;
+
+  async function saveConfiguration() {
+    const configuration = form.getValues();
+    if (assessmentId && !form.formState.isDirty) return true;
+    try {
+      const savedId = await saveAssessment.mutateAsync({
+        assessmentId,
+        categoryId,
+        configuration,
+      });
+      form.reset(configuration);
+      if (!assessmentId) {
+        setAssessmentId(savedId);
+        syncAssessmentIdInUrl(savedId);
+      }
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   async function next() {
-    if (step === 0 && (await form.trigger())) setStep(1);
-    else if (step === 1 && canReview) setStep(2);
+    if (step === 0) {
+      if ((await form.trigger()) && (await saveConfiguration())) setStep(1);
+      return;
+    }
+    if (step === 1 && canReview) setStep(2);
   }
 
-  async function submit() {
-    if (pending || success || !canReview || !(await form.trigger())) return;
-    setPending(true);
-    setSubmitError('');
+  async function saveQuestion(values: QuestionFormValues) {
+    if (!assessmentId) return;
+    const original = questionModal?.question ?? null;
+    const originalFileId = original?.existingAttachment?.id;
+    const keepsOriginalFile =
+      values.attachmentEnabled &&
+      Boolean(values.existingAttachment) &&
+      !values.attachment;
     try {
-      await onSubmit?.({
-        categoryId,
-        configuration: form.getValues(),
-        questions,
+      await saveQuestionMutation.mutateAsync({
+        questionId: original?.id ?? null,
+        assessmentId,
+        values,
+        deleteFileIds:
+          originalFileId && !keepsOriginalFile ? [originalFileId] : [],
       });
-      setSuccess(true);
+      setQuestionModal(null);
     } catch {
-      setSubmitError(t('save-error'));
-      toast.error(t('save-error'));
-    } finally {
-      setPending(false);
+      // The mutation hook shows the error toast; keep the modal open to retry.
+    }
+  }
+
+  async function confirmDelete() {
+    if (!deletingQuestion) return;
+    try {
+      await deleteQuestion.mutateAsync(deletingQuestion.id);
+      setDeletingQuestion(null);
+    } catch {
+      // The mutation hook shows the error toast; keep the dialog open to retry.
     }
   }
 
   function reset() {
     form.reset(CONFIGURATION_DEFAULTS);
-    setQuestions([]);
+    setAssessmentId(null);
     setStep(0);
+    setQuestionsPage(1);
     setSuccess(false);
-    setSubmitError('');
+    syncAssessmentIdInUrl(null);
   }
 
   return {
-    category:
-      category ??
-      categorySeeds.find(
-        (item) => item.id === categoryId && item.source === 'company',
-      ),
     form,
     step,
+    assessment,
     questions,
+    questionsPage: currentQuestionsPage,
+    setQuestionsPage,
+    questionCount,
+    totalScore: assessment.data?.totalScore ?? 0,
+    canReview,
+    isSavingConfiguration: saveAssessment.isPending,
     questionModal,
     setQuestionModal,
+    saveQuestion,
+    previewQuestionId,
+    setPreviewQuestionId,
     deletingQuestion,
     setDeletingQuestion,
+    isDeletingQuestion: deleteQuestion.isPending,
+    confirmDelete,
     success,
-    setSuccess,
-    pending,
-    submitError,
-    totalScore,
-    canReview,
-    saveQuestion,
-    next,
-    submit,
-    reset,
-    isDirty:
-      !success &&
-      (form.formState.isDirty ||
-        JSON.stringify(questions) !==
-          JSON.stringify(initialDraft?.questions ?? [])),
-    previous: () => setStep((current) => Math.max(0, current - 1)),
-    confirmDelete: () => {
-      setQuestions((current) =>
-        current.filter((question) => question.id !== deletingQuestion?.id),
-      );
-      setDeletingQuestion(null);
+    submit: () => {
+      if (canReview) setSuccess(true);
     },
+    reset,
+    next,
+    previous: () => setStep((current) => Math.max(0, current - 1)),
+    isDirty: !success && form.formState.isDirty,
   };
 }

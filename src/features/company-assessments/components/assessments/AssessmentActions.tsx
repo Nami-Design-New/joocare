@@ -33,7 +33,8 @@ export default function AssessmentActions({
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
       <Button className="h-9 flex-1 rounded-full px-3 text-xs">
         <Link href={`/company/job-management`}>
-          {t('associated-jobs', { count: assessment.associatedJobs })}
+          {/* `#` marks static counts until the assessments API returns them. */}
+          {t('associated-jobs', { count: assessment.associatedJobs })} #
         </Link>
       </Button>
       {isCompany ? (
@@ -47,7 +48,8 @@ export default function AssessmentActions({
           >
             {t('external-invitations', {
               count: assessment.externalInvitations,
-            })}
+            })}{' '}
+            #
           </Link>
         </Button>
       ) : null}

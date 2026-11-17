@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
 import type { AssessmentCategory } from '../../types/assessment.types';
+import { getCategoryHref } from '../../utils/assessment-source';
 
 type CategoryCardProps = {
   category: AssessmentCategory;
@@ -69,14 +70,15 @@ export default function CategoryCard({
       <Link
         aria-label={category.name}
         className="absolute inset-0 z-0 rounded-2xl focus-visible:outline-none focus-visible:after:absolute focus-visible:after:inset-0 focus-visible:after:rounded-2xl focus-visible:after:ring-2 focus-visible:after:ring-ring"
-        href={`/company/assessments/${category.id}`}
+        href={getCategoryHref(category.id, category.source)}
       />
       <div className="mt-4 border-t border-border pt-4">
         <p className="line-clamp-2 min-h-10 text-xs leading-5 text-muted-foreground">
           {category.description}
         </p>
+        {/* `#` marks a static count until the categories API returns it. */}
         <p className="mt-3 text-xs font-semibold text-primary">
-          {t('assessment-count', { count: category.assessmentCount })}
+          {t('assessment-count', { count: category.assessmentCount })} #
         </p>
       </div>
     </Card>
