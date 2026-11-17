@@ -27,6 +27,7 @@ import type {
   Assessment,
   AssessmentSource,
 } from '../../types/assessment.types';
+import { useAssessmentActions } from '../../hooks/useAssessmentActions';
 import AssessmentStats from './AssessmentStats';
 import AssessmentActions from './AssessmentActions';
 
@@ -34,20 +35,21 @@ type AssessmentCardProps = {
   assessment: Assessment;
   source: AssessmentSource;
   href?: string;
-  onPause?: () => void;
-  onDelete?: () => void;
+  isDeleting?: boolean;
+  onDelete?: () => Promise<void>;
 };
 
 export default function AssessmentCard({
   assessment,
   source,
   href,
-  onPause,
+  isDeleting = false,
   onDelete,
 }: AssessmentCardProps) {
   const t = useTranslations('companyPage.assessments');
   const detailsT = useTranslations('companyPage.assessments.details');
   const format = useFormatter();
+  const { showComingSoon } = useAssessmentActions();
   const [pauseOpen, setPauseOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const isPaused = Boolean(assessment.pausedAt);
@@ -76,14 +78,7 @@ export default function AssessmentCard({
           <p className="text-xs text-muted-foreground">
             {source === 'joocare'
               ? t('admin')
-              : t('created-on', {
-                  date: format.dateTime(new Date(assessment.createdAt), {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                    timeZone: 'UTC',
-                  }),
-                })}
+              : t('created-at', { time: assessment.createdAt })}
           </p>
         </div>
         {source === 'company' ? (
@@ -164,20 +159,24 @@ export default function AssessmentCard({
         cancelLabel={t('cancel')}
         confirmButtonVariant={isPaused ? 'default' : 'destructive'}
         onConfirm={() => {
-          onPause?.();
+          showComingSoon();
           setPauseOpen(false);
         }}
       />
       <DeleteModal
         open={deleteOpen}
-        onOpenChange={setDeleteOpen}
+        onOpenChange={(open) => {
+          if (!isDeleting) setDeleteOpen(open);
+        }}
         title={t('delete-assessment-title')}
         description={t('delete-assessment-description')}
         confirmLabel={t('confirm-delete-assessment')}
         cancelLabel={t('cancel')}
+        isLoading={isDeleting}
         onConfirm={() => {
-          onDelete?.();
-          setDeleteOpen(false);
+          void onDelete?.()
+            .then(() => setDeleteOpen(false))
+            .catch(() => undefined);
         }}
       />
     </Card>

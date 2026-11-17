@@ -30,6 +30,7 @@ function toBuilderQuestion(question: AssessmentQuestion): BuilderQuestion {
     correctAnswers: isYesNo ? ['yes'] : [options[0].id],
     attachmentEnabled: false,
     attachment: null,
+    existingAttachment: null,
   };
 }
 
@@ -142,7 +143,6 @@ export default function AssessmentQuestionsOverview({
           question={toBuilderQuestion(selectedQuestion.question)}
           readOnly
           onClose={() => setSelectedQuestion(null)}
-          onSave={() => undefined}
         />
       ) : null}
     </Card>

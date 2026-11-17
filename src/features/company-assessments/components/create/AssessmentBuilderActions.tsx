@@ -51,7 +51,13 @@ export default function AssessmentBuilderActions({
           </Button>
         )}
         {step === 0 ? (
-          <Button type="submit" size="pill" className="min-w-56">
+          <Button
+            type="submit"
+            size="pill"
+            className="min-w-56 gap-3"
+            disabled={pending}
+          >
+            {pending && <LoaderCircle className="size-4 animate-spin" />}
             {t('next')}
           </Button>
         ) : (

@@ -13,21 +13,20 @@ import {
   QUESTION_TYPES,
 } from '../../constants/assessment-builder';
 import type {
-  AssessmentConfiguration,
-  BuilderQuestion,
+  SavedAssessment,
+  SavedAssessmentQuestion,
 } from '../../types/assessment-builder.types';
 
 type AssessmentReviewStepProps = {
-  configuration: AssessmentConfiguration;
-  questions: BuilderQuestion[];
-  onPreview: (question: BuilderQuestion) => void;
+  assessment: SavedAssessment;
+  onPreview: (questionId: string) => void;
 };
 
 export default function AssessmentReviewStep({
-  configuration,
-  questions,
+  assessment,
   onPreview,
 }: AssessmentReviewStepProps) {
+  const { configuration, questions } = assessment;
   const t = useTranslations('companyPage.assessments.builder');
   const locale = useLocale();
   const [page, setPage] = useState(1);
@@ -37,15 +36,15 @@ export default function AssessmentReviewStep({
   );
   const start = (currentPage - 1) * QUESTION_REVIEW_PAGE_SIZE;
   const metrics = [
-    { label: t('questions'), value: questions.length },
+    { label: t('questions'), value: assessment.questionCount },
     { label: t('passing-score'), value: `${configuration.passScore}%` },
     {
       label: t('assessment-duration'),
       value: t('minutes', { count: Number(configuration.durationMinutes) }),
     },
-    { label: t('permitted-attempts'), value: 1 },
+    { label: t('permitted-attempts'), value: assessment.attemptsCount },
   ];
-  const columns: DataTableColumn<BuilderQuestion>[] = [
+  const columns: DataTableColumn<SavedAssessmentQuestion>[] = [
     {
       id: 'number',
       header: '#',
@@ -66,7 +65,7 @@ export default function AssessmentReviewStep({
       header: t('question-type'),
       headerClassName: 'px-3 py-3 text-start text-xs font-normal',
       cellClassName: 'px-3 py-4 text-start text-xs',
-      renderCell: (question) => t(question.type),
+      renderCell: (question) => question.typeLabel,
     },
     {
       id: 'score',
@@ -86,7 +85,7 @@ export default function AssessmentReviewStep({
           size="icon-sm"
           className="rounded-full"
           aria-label={t('view-question', { number: start + index + 1 })}
-          onClick={() => onPreview(question)}
+          onClick={() => onPreview(question.id)}
         >
           <Eye className="size-4" />
         </Button>
@@ -119,9 +118,7 @@ export default function AssessmentReviewStep({
           </p>
           <div className="flex flex-wrap gap-2">
             {QUESTION_TYPES.map((type) => {
-              const count = questions.filter(
-                (question) => question.type === type,
-              ).length;
+              const count = assessment.questionTypeCounts[type];
               return count > 0 ? (
                 <span
                   key={type}

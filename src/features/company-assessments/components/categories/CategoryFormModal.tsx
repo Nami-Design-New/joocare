@@ -23,7 +23,7 @@ import type {
 type CategoryFormModalProps = {
   category: AssessmentCategory | null;
   onClose: () => void;
-  onSave: (values: CategoryFormValues) => boolean;
+  onSave: (values: CategoryFormValues) => Promise<boolean>;
 };
 
 export default function CategoryFormModal({
@@ -86,8 +86,9 @@ export default function CategoryFormModal({
         <form
           noValidate
           className="space-y-6"
-          onSubmit={handleSubmit((values) => {
-            if (!onSave(values)) setError('root', { message: t('save-error') });
+          onSubmit={handleSubmit(async (values) => {
+            if (!(await onSave(values)))
+              setError('root', { message: t('save-error') });
           })}
         >
           <InputField

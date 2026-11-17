@@ -10,9 +10,12 @@ type QuestionPreviewProps = { question: BuilderQuestion };
 
 export default function QuestionPreview({ question }: QuestionPreviewProps) {
   const t = useTranslations('companyPage.assessments.builder');
-  const preview = useAttachmentPreview(
+  const filePreview = useAttachmentPreview(
     question.attachmentEnabled ? question.attachment : null,
   );
+  const preview =
+    filePreview ||
+    (question.attachmentEnabled ? question.existingAttachment?.url : '');
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3 text-sm">

@@ -1,8 +1,4 @@
 import CreateAssessmentPage from '@/features/company-assessments/components/create/CreateAssessmentPage';
-import {
-  assessmentSeeds,
-  createAssessmentDraft,
-} from '@/features/company-assessments/constants/assessment-data';
 
 export default async function Page({
   params,
@@ -11,21 +7,18 @@ export default async function Page({
   params: Promise<{ categoryId: string }>;
   searchParams: Promise<{ assessmentId?: string }>;
 }) {
-  const { categoryId } = await params;
-  const { assessmentId } = await searchParams;
-  const assessment = assessmentSeeds.find(
-    (item) =>
-      item.id === assessmentId &&
-      item.categoryId === categoryId &&
-      item.categoryId.startsWith('company-'),
-  );
+  const [{ categoryId }, { assessmentId }] = await Promise.all([
+    params,
+    searchParams,
+  ]);
 
+  // Keyed by category only: the builder adds `?assessmentId=` after step 1
+  // and must keep its state when that happens.
   return (
     <CreateAssessmentPage
-      key={`${categoryId}-${assessment?.id ?? 'new'}`}
+      key={categoryId}
       categoryId={categoryId}
-      isEditing={Boolean(assessment)}
-      initialDraft={assessment ? createAssessmentDraft(assessment) : undefined}
+      assessmentId={assessmentId}
     />
   );
 }

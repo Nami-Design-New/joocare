@@ -1,61 +1,51 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import {
-  ASSESSMENT_PAGE_SIZE,
-  assessmentSeeds,
-  categorySeeds,
-} from '../constants/assessment-data';
+import { useState } from 'react';
+import { ASSESSMENT_SEARCH_DEBOUNCE_MS } from '../constants/assessment-queries';
+import type { AssessmentSource } from '../types/assessment.types';
+import { useDebouncedValue } from './useDebouncedValue';
+import { useDeleteAssessment } from './useDeleteAssessment';
+import { useGetAssessmentCategory } from './useGetAssessmentCategory';
+import { useGetCategoryAssessments } from './useGetCategoryAssessments';
 
-export function useCategoryAssessments(categoryId: string) {
+export function useCategoryAssessments(
+  categoryId: string,
+  source: AssessmentSource,
+) {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [assessments, setAssessments] = useState(assessmentSeeds);
-  const category = categorySeeds.find((item) => item.id === categoryId);
-  const filtered = useMemo(() => {
-    const normalized = search.trim().toLocaleLowerCase();
-    return assessments.filter(
-      (assessment) =>
-        assessment.categoryId === categoryId &&
-        assessment.title.toLocaleLowerCase().includes(normalized),
-    );
-  }, [assessments, categoryId, search]);
-  const currentPage = Math.min(
-    page,
-    Math.max(1, Math.ceil(filtered.length / ASSESSMENT_PAGE_SIZE)),
+  const debouncedSearch = useDebouncedValue(
+    search.trim(),
+    ASSESSMENT_SEARCH_DEBOUNCE_MS,
   );
+  const category = useGetAssessmentCategory(categoryId, source);
+  const assessments = useGetCategoryAssessments(
+    categoryId,
+    debouncedSearch,
+    page,
+  );
+  const deleteMutation = useDeleteAssessment();
+  const meta = assessments.data?.meta;
 
   return {
     category,
+    assessments,
+    items: assessments.data?.items ?? [],
+    total: meta?.total ?? 0,
+    pageSize: meta?.perPage ?? 0,
+    page,
+    setPage,
     search,
+    hasSearch: Boolean(debouncedSearch),
     setSearch: (value: string) => {
       setSearch(value);
       setPage(1);
     },
-    page: currentPage,
-    setPage,
-    pageSize: ASSESSMENT_PAGE_SIZE,
-    total: filtered.length,
-    assessments: filtered.slice(
-      (currentPage - 1) * ASSESSMENT_PAGE_SIZE,
-      currentPage * ASSESSMENT_PAGE_SIZE,
-    ),
-    togglePaused: (assessmentId: string) => {
-      setAssessments((current) =>
-        current.map((assessment) =>
-          assessment.id === assessmentId
-            ? {
-                ...assessment,
-                pausedAt: assessment.pausedAt ? null : new Date().toISOString(),
-              }
-            : assessment,
-        ),
-      );
-    },
-    deleteAssessment: (assessmentId: string) => {
-      setAssessments((current) =>
-        current.filter((assessment) => assessment.id !== assessmentId),
-      );
+    isDeleting: deleteMutation.isPending,
+    deleteAssessment: async (assessmentId: string) => {
+      const isLastOnPage = assessments.data?.items.length === 1;
+      await deleteMutation.mutateAsync(assessmentId);
+      if (isLastOnPage && page > 1) setPage(page - 1);
     },
   };
 }

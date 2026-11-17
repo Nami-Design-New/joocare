@@ -66,6 +66,9 @@ export function createAssessmentQuestionSchema(
           (value) => typeof File !== 'undefined' && value instanceof File,
         )
         .nullable(),
+      existingAttachment: z
+        .object({ id: z.number(), url: z.string() })
+        .nullable(),
     })
     .superRefine((value, context) => {
       const add = (path: string, message: string) =>
@@ -94,11 +97,14 @@ export function createAssessmentQuestionSchema(
         )
           add('correctAnswers', messages.answer);
       }
+      if (!value.attachmentEnabled) return;
+      if (!value.attachment) {
+        if (!value.existingAttachment) add('attachment', messages.attachment);
+        return;
+      }
       if (
-        value.attachmentEnabled &&
-        (!value.attachment ||
-          !['image/jpeg', 'image/png'].includes(value.attachment.type) ||
-          value.attachment.size > MAX_ATTACHMENT_BYTES)
+        !['image/jpeg', 'image/png'].includes(value.attachment.type) ||
+        value.attachment.size > MAX_ATTACHMENT_BYTES
       )
         add('attachment', messages.attachment);
     });

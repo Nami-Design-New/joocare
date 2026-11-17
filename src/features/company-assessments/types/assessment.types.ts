@@ -8,9 +8,64 @@ export type AssessmentCategory = {
   assessmentCount: number;
 };
 
+export type AssessmentCategoryOption = {
+  id: string;
+  source: AssessmentSource;
+  name: string;
+  libraryLabel: string;
+};
+
 export type CategoryFormValues = {
   name: string;
   description: string;
+};
+
+export type PaginationMeta = {
+  total: number;
+  perPage: number;
+  nextPage: number | null;
+};
+
+export type PaginatedResult<T> = {
+  items: T[];
+  meta: PaginationMeta;
+};
+
+export type AssessmentCategoryApiItem = {
+  id: number;
+  name: string;
+  description: string | null;
+};
+
+export type AssessmentCategoryOptionApiItem = {
+  id: number;
+  name: string;
+  is_global: boolean;
+  library_label: string;
+};
+
+export type AssessmentQuestionSummaryApiItem = {
+  id: number;
+  type: string;
+  type_label: string;
+  score: number;
+  question: string;
+};
+
+export type AssessmentApiItem = {
+  id: number;
+  name: string;
+  description: string | null;
+  assessment_category_id: number;
+  passing_score: number;
+  time_limit: number;
+  attempts_count: number;
+  questions_count: number;
+  single_choice_questions_count: number;
+  multi_choice_questions_count: number;
+  yes_no_questions_count: number;
+  questions?: AssessmentQuestionSummaryApiItem[];
+  created_at: string;
 };
 
 export type CategorySeed = {

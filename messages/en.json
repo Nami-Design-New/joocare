@@ -3107,7 +3107,12 @@
           "options": "Enter between 2 and 5 non-empty answer options.",
           "answer": "Select a valid correct answer.",
           "attachment": "Choose one JPG or PNG image, no larger than 2 MB."
-        }
+        },
+        "question-added": "Question added successfully.",
+        "question-updated": "Question updated successfully.",
+        "question-deleted": "Question deleted successfully.",
+        "delete-error": "Something went wrong while deleting. Please try again.",
+        "load-question-error": "Unable to load this question. Please try again."
       },
       "title": "Assessment Categories",
       "description": "Streamline candidate evaluation through structured assessment libraries. Create, manage, and reuse assessments across multiple positions to ensure consistent, data-driven hiring decisions.",
@@ -3440,7 +3445,13 @@
         "preview-assessment-title": "Assessment Title",
         "preview-passing-score": "Passing Score",
         "preview-structure": "Assessment Structure"
-      }
+      },
+      "created-at": "Created {time}",
+      "delete-error": "Something went wrong while deleting. Please try again.",
+      "assessment-deleted": "Assessment deleted successfully.",
+      "assessment-not-found": "Assessment not found",
+      "assessment-not-found-description": "This assessment may have been deleted or the link is incorrect.",
+      "back-to-assessments": "Back to assessments"
     },
     "recruiter-activity": {
       "title": "Recruiters",

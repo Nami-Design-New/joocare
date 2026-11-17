@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
-import { ArrowRight, X } from 'lucide-react';
+import { ArrowRight, LoaderCircle, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { InputField } from '@/shared/components/InputField';
 import { SelectInputField } from '@/shared/components/SelectInputField';
 import { Button } from '@/shared/components/ui/button';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import {
   Dialog,
   DialogClose,
@@ -15,6 +16,7 @@ import {
 } from '@/shared/components/ui/dialog';
 import { QUESTION_TYPES } from '../../constants/assessment-builder';
 import { useAssessmentQuestionForm } from '../../hooks/useAssessmentQuestionForm';
+import { useGetQuestionTypes } from '../../hooks/useGetQuestionTypes';
 import type {
   BuilderQuestion,
   QuestionFormValues,
@@ -26,30 +28,45 @@ import QuestionPreview from './QuestionPreview';
 type AssessmentQuestionModalProps = {
   question: BuilderQuestion | null;
   readOnly?: boolean;
+  isLoading?: boolean;
+  isError?: boolean;
   onClose: () => void;
-  onSave: (values: QuestionFormValues) => void;
+  onSave?: (values: QuestionFormValues) => Promise<void>;
 };
 
 export default function AssessmentQuestionModal({
   question,
   readOnly = false,
+  isLoading = false,
+  isError = false,
   onClose,
   onSave,
 }: AssessmentQuestionModalProps) {
   const t = useTranslations('companyPage.assessments.builder');
   const locale = useLocale();
   const questionForm = useAssessmentQuestionForm(question);
-  const { form, type, changeType, attachmentEnabled, attachment } =
-    questionForm;
+  const {
+    form,
+    type,
+    changeType,
+    attachmentEnabled,
+    attachment,
+    existingAttachment,
+  } = questionForm;
+  const questionTypes = useGetQuestionTypes();
+  // Labels come from the API; local labels cover the first load.
+  const typeOptions = questionTypes.data?.length
+    ? questionTypes.data
+    : QUESTION_TYPES.map((value) => ({ value, label: t(value) }));
   const [portalContainer, setPortalContainer] = useState<HTMLDivElement | null>(
     null,
   );
-  const { errors } = form.formState;
+  const { errors, isSubmitting } = form.formState;
   return (
     <Dialog
       open
       onOpenChange={(open) => {
-        if (!open) onClose();
+        if (!open && !isSubmitting) onClose();
       }}
     >
       <DialogContent
@@ -83,17 +100,34 @@ export default function AssessmentQuestionModal({
               variant="ghost"
               size="icon-sm"
               aria-label={t('close')}
+              disabled={isSubmitting}
             >
               <X className="size-6" />
             </Button>
           </DialogClose>
         </div>
-        {readOnly && question ? (
-          <QuestionPreview question={question} />
+        {readOnly ? (
+          <>
+            {question ? <QuestionPreview question={question} /> : null}
+            {isLoading ? (
+              <div aria-busy="true" className="space-y-4">
+                <Skeleton className="h-12 w-full rounded-full" />
+                <Skeleton className="h-12 w-full rounded-3xl" />
+                <Skeleton className="h-40 w-full rounded-2xl" />
+              </div>
+            ) : null}
+            {isError ? (
+              <p role="alert" className="text-sm text-destructive">
+                {t('load-question-error')}
+              </p>
+            ) : null}
+          </>
         ) : (
           <form
             noValidate
-            onSubmit={form.handleSubmit(onSave)}
+            onSubmit={form.handleSubmit(async (values) => {
+              await onSave?.(values);
+            })}
             className="space-y-4"
           >
             <div className="grid gap-3 sm:grid-cols-2">
@@ -104,10 +138,7 @@ export default function AssessmentQuestionModal({
                   <SelectInputField
                     id="assessment-question-type"
                     aria-label={t('question-type')}
-                    options={QUESTION_TYPES.map((value) => ({
-                      value,
-                      label: t(value),
-                    }))}
+                    options={typeOptions}
                     value={field.value}
                     onChange={changeType}
                     portalContainer={portalContainer}
@@ -139,8 +170,14 @@ export default function AssessmentQuestionModal({
                 <QuestionAttachmentField
                   enabled={attachmentEnabled}
                   file={attachment}
+                  existingUrl={existingAttachment?.url}
                   error={errors.attachment?.message}
                   onChange={field.onChange}
+                  onRemoveExisting={() =>
+                    form.setValue('existingAttachment', null, {
+                      shouldDirty: true,
+                    })
+                  }
                   onEnabledChange={(value) => {
                     form.setValue('attachmentEnabled', value, {
                       shouldDirty: true,
@@ -210,9 +247,17 @@ export default function AssessmentQuestionModal({
                 variant="secondary"
                 size="pill"
                 className="w-full gap-3 sm:w-56"
+                disabled={isSubmitting}
               >
                 {t(question ? 'save' : 'add')}
-                <ArrowRight className="size-4 rtl:rotate-180" />
+                {isSubmitting ? (
+                  <LoaderCircle
+                    aria-hidden="true"
+                    className="size-4 animate-spin"
+                  />
+                ) : (
+                  <ArrowRight className="size-4 rtl:rotate-180" />
+                )}
               </Button>
             </div>
           </form>
