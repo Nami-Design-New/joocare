@@ -10,6 +10,7 @@ import { FIELD_CLASS_NAME } from '../fields/FormSelectField';
 import LookupSelectField from '../fields/LookupSelectField';
 import InfoSection from '../InfoSection';
 import InfoSubsection from '../InfoSubsection';
+import { cn } from '@/shared/lib/utils';
 
 export default function SalarySection() {
   const t = useTranslations('candidatePage.additional-info');
@@ -65,7 +66,7 @@ export default function SalarySection() {
               placeholder={t(`placeholders.${name}`)}
               error={errors[name]?.message}
               icon={<CurrencySymbol currencyId={expectedCurrency} />}
-              className={FIELD_CLASS_NAME}
+              className={cn(FIELD_CLASS_NAME, 'flex-1')}
               {...register(name)}
             />
           ))}
@@ -74,7 +75,7 @@ export default function SalarySection() {
             placeholder={t('fields.currency')}
             useLookup={useCurrencyLookup}
             containerStyles="w-auto shrink-0"
-            className="h-13 w-24 border-0 bg-secondary px-5 text-[13px] font-semibold text-secondary-foreground shadow-none [&_[data-slot=combobox-trigger-icon]]:text-secondary-foreground"
+            className="h-13 w-28 border-0 bg-secondary px-5 text-sm font-semibold text-secondary-foreground shadow-none [&_[data-slot=combobox-trigger-icon]]:text-secondary-foreground"
           />
         </div>
       </InfoSubsection>

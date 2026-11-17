@@ -1,18 +1,18 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { LICENSE_STATUSES, VERIFICATION_STATUSES } from '../../constants';
 import {
   useCertificationLookup,
   useCountryLookup,
   useEducationLevelLookup,
   useExperienceLookup,
   useLicenseLookup,
+  useLicenseStatusLookup,
   useSeniorityLookup,
+  useVerificationStatusLookup,
 } from '../../hooks/useLookupOptions';
-import LookupMultiSelectField from '../fields/LookupMultiSelectField';
 import LookupSelectField from '../fields/LookupSelectField';
-import OptionsSelectField from '../fields/OptionsSelectField';
+import MultiSelectWithOtherField from '../fields/MultiSelectWithOtherField';
 import InfoSection from '../InfoSection';
 import InfoSubsection from '../InfoSubsection';
 
@@ -47,10 +47,12 @@ export default function QualificationsSection() {
             placeholder={t('placeholders.select-education')}
             useLookup={useEducationLevelLookup}
           />
-          <LookupMultiSelectField
+          <MultiSelectWithOtherField
             name="certifications"
+            otherName="otherCertification"
             label={t('fields.certifications')}
             placeholder={t('placeholders.add-certifications')}
+            otherPlaceholder={t('placeholders.other-certification')}
             useLookup={useCertificationLookup}
           />
           <LookupSelectField
@@ -59,23 +61,27 @@ export default function QualificationsSection() {
             placeholder={t('placeholders.select-license')}
             useLookup={useLicenseLookup}
           />
-          <LookupSelectField
-            name="licenseCountry"
+          <MultiSelectWithOtherField
+            name="professionalLicenseCountries"
+            otherName="otherLicenseCountry"
             label={t('fields.license-country')}
             placeholder={t('placeholders.select-country')}
+            otherPlaceholder={t('placeholders.other-license-country')}
             useLookup={useCountryLookup}
           />
-          <OptionsSelectField
+          <LookupSelectField
             name="licenseStatus"
             label={t('fields.license-status')}
             placeholder={t('placeholders.select-status')}
-            options={LICENSE_STATUSES}
+            useLookup={useLicenseStatusLookup}
+            searchable={false}
           />
-          <OptionsSelectField
+          <LookupSelectField
             name="verificationStatus"
             label={t('fields.verification-status')}
             placeholder={t('placeholders.select-status')}
-            options={VERIFICATION_STATUSES}
+            useLookup={useVerificationStatusLookup}
+            searchable={false}
           />
         </div>
       </InfoSubsection>

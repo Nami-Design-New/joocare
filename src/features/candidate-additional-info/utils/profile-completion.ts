@@ -26,7 +26,7 @@ const SECTION_FIELDS: Record<
     'educationLevel',
     'certifications',
     'professionalLicense',
-    'licenseCountry',
+    'professionalLicenseCountries',
     'licenseStatus',
     'verificationStatus',
   ],

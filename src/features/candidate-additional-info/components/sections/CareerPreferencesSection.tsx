@@ -1,10 +1,10 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { INDUSTRY_OPTIONS } from '../../constants/additional-info-preview-data';
 import {
   useAvailabilityLookup,
   useCountryLookup,
+  useDomainLookup,
   useJobTitleLookup,
 } from '../../hooks/useLookupOptions';
 import JobSearchStatusField from '../fields/JobSearchStatusField';
@@ -34,7 +34,7 @@ export default function CareerPreferencesSection() {
           name="industries"
           label={t('fields.industries')}
           placeholder={t('placeholders.search-industries')}
-          options={INDUSTRY_OPTIONS}
+          useLookup={useDomainLookup}
         />
       </div>
       <LookupSelectField

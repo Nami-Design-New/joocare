@@ -898,7 +898,9 @@
       "saved": "Your additional information has been saved",
       "errors": {
         "invalid-amount": "Enter a valid amount",
-        "salary-range": "Maximum salary must be greater than the minimum"
+        "salary-range": "Maximum salary must be greater than the minimum",
+        "other-required": "Enter a value for \"Other\"",
+        "save-failed": "Your changes couldn't be saved. Try again."
       },
       "completion": {
         "label": "Profile completion",
@@ -988,7 +990,9 @@
         "privilege": "ex: Endoscopy",
         "current-salary": "Current Salary",
         "expectedMin": "Min",
-        "expectedMax": "Max"
+        "expectedMax": "Max",
+        "other-certification": "Enter the certification name",
+        "other-license-country": "Enter the country name"
       },
       "mobility": {
         "relocation-title": "Relocation Preference",
@@ -1003,41 +1007,18 @@
       },
       "career": {
         "job-search-status": "Job Search Status",
-        "job-search-status-hint": "shown to employers as a badge on your profile",
-        "statuses": {
-          "open-to-work": "Open to Work",
-          "actively-looking": "Actively Looking",
-          "open-to-opportunities": "Open to Opportunities"
-        }
+        "job-search-status-hint": "shown to employers as a badge on your profile"
       },
       "professional": {
         "privileges-hint": "Add each privilege separately — every entry is used as a separate keyword in AI job matching"
       },
       "options": {
-        "valid": "Valid",
-        "expired": "Expired",
-        "pending": "Pending",
-        "verified": "Verified",
-        "not-verified": "Not Verified",
-        "basic": "Basic",
-        "intermediate": "Intermediate",
-        "advanced": "Advanced",
-        "fluent": "Fluent",
-        "native": "Native",
-        "male": "Male",
-        "female": "Female",
-        "single": "Single",
-        "married": "Married",
-        "divorced": "Divorced",
-        "widowed": "Widowed",
-        "citizen": "Citizen",
-        "resident": "Resident",
-        "work-visa": "Work Visa",
-        "visit-visa": "Visit Visa",
-        "no-visa": "No Visa",
-        "required": "Required",
-        "not-required": "Not Required"
-      }
+        "lookup-error": "Options could not be loaded.",
+        "other": "Other",
+        "back-to-list": "Back to the list"
+      },
+      "load-error": "Your additional information couldn't be loaded.",
+      "saving": "Saving..."
     },
     "buildCv": {
       "badge": "Smart CV Builder",

@@ -26,7 +26,7 @@ const QUESTIONS = [
 
 export default function MobilitySection() {
   const t = useTranslations('candidatePage.additional-info.mobility');
-  const { control } = useFormContext<AdditionalInfoValues>();
+  const { control, setValue } = useFormContext<AdditionalInfoValues>();
 
   return (
     <InfoSection section="mobility">
@@ -43,7 +43,12 @@ export default function MobilitySection() {
                 title={t(`${key}-title`)}
                 description={t(`${key}-description`)}
                 value={field.value}
-                onChange={field.onChange}
+                onChange={(value) => {
+                  field.onChange(value);
+                  if (value === 'no') {
+                    setValue(countries, [], { shouldDirty: true });
+                  }
+                }}
                 hint={t(`${key}-hint`)}
               >
                 <LookupMultiSelectField

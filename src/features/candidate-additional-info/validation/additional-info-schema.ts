@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { OTHER_OPTION } from '../constants';
 
 const yesNo = z.enum(['yes', 'no', '']);
 // Empty or a non-negative number.
@@ -7,6 +8,7 @@ const AMOUNT_PATTERN = /^\d*(\.\d+)?$/;
 export function createAdditionalInfoSchema(messages: {
   invalidAmount: string;
   salaryRange: string;
+  otherRequired: string;
 }) {
   const salary = z.string().regex(AMOUNT_PATTERN, messages.invalidAmount);
 
@@ -17,8 +19,10 @@ export function createAdditionalInfoSchema(messages: {
       seniorityLevel: z.string(),
       educationLevel: z.string(),
       certifications: z.array(z.string()),
+      otherCertification: z.string(),
       professionalLicense: z.string(),
-      licenseCountry: z.string(),
+      professionalLicenseCountries: z.array(z.string()),
+      otherLicenseCountry: z.string(),
       licenseStatus: z.string(),
       verificationStatus: z.string(),
       // Languages
@@ -35,11 +39,7 @@ export function createAdditionalInfoSchema(messages: {
       workLocations: z.array(z.string()),
       industries: z.array(z.string()),
       noticePeriod: z.string(),
-      jobSearchStatus: z.enum([
-        'open-to-work',
-        'actively-looking',
-        'open-to-opportunities',
-      ]),
+      jobSearchStatus: z.string(),
       // Professional information
       clinicalPrivileges: z.array(z.string()),
       // Personal details
@@ -48,7 +48,7 @@ export function createAdditionalInfoSchema(messages: {
       visaStatus: z.string(),
       gender: z.string(),
       currentCity: z.string(),
-      sponsorship: z.string(),
+      sponsorship: z.array(z.string()),
       maritalStatus: z.string(),
       // Salary
       currentSalary: salary,
@@ -58,6 +58,22 @@ export function createAdditionalInfoSchema(messages: {
       expectedCurrency: z.string(),
     })
     .superRefine((values, context) => {
+      const otherFields = [
+        ['certifications', 'otherCertification'],
+        ['professionalLicenseCountries', 'otherLicenseCountry'],
+      ] as const;
+      otherFields.forEach(([listName, otherName]) => {
+        if (
+          values[listName].includes(OTHER_OPTION) &&
+          !values[otherName].trim()
+        ) {
+          context.addIssue({
+            code: 'custom',
+            path: [otherName],
+            message: messages.otherRequired,
+          });
+        }
+      });
       if (
         values.expectedMin &&
         values.expectedMax &&
