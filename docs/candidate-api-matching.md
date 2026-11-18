@@ -35,7 +35,7 @@ These screens are built in the app but run on sample data. The endpoints exist i
 |---|---|---|
 | Additional info `/candidate/profile/additional-info` | GET/POST `USER/profile-details` + 19 new lookups (genders, languages, language-proficiency-levels, marital-statuses, visa-statuses, sponsorship-requirements, job-search-statuses, license-statuses, license-verification-statuses, ...) | Yes. Response confirmed. Nationality uses `/countries` (decided 2026-11-17). Professional license is not sent on save for now (Q-B19) |
 | Build CV `/candidate/build-cv` + 10-step wizard | GET `USER/cv`, GET `USER/cv/progress`, POST `USER/cv/step-one` ... `step-ten`, POST `USER/cv/upload-cv` | Mostly. No PDF download / delete draft (Q-B9), no nationality / sub-specialty lookups (Q-B8) |
-| AI job match `/candidate/ai-job-match` | GET/POST `USER/preferences`, GET `USER/preferences/jobs` | Yes. Preferred companies list stays static until a companies lookup exists (Q-B8) |
+| AI job match `/candidate/ai-job-match` | GET/POST `USER/preferences`, GET `USER/preferences/jobs`, GET `USER/companies` | Yes. Preferences, recommended jobs and preferred-company lookup are connected. |
 | Profile insights `/candidate/profile-insights` | GET `USER/visits` | Yes. Item shape unknown, test account has no visits (Q-B10) |
 | Assessment `/candidate/assessment/[id]` | GET `USER/assessments/{id}`, GET `.../start`, POST `.../answer` | Partly. Screen can be wired, but nothing links the candidate to it (Q-B1, Q-B2) |
 | Chat `/candidate/chat` | GET/POST `USER/messages` | Partly. Text with one company admin only; no conversation list, attachments or closed state (Q-B11) |
@@ -65,7 +65,7 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 - **`GET USER/auth/update-profile/form-data`:** `jobTitles`, `countries`, `cities`, `specialties`, `experiences`, titles as `{en, ar}` objects.
 - **`GET USER/profile-details`:** grouped: `occupational`, `qualifications`, `languages`, `mobility`, `career_preferences`, `clinical_privileges`, `personal_details`, `salary`. Save takes flat fields, so the form needs a mapper both ways.
 - **New selects:** `{data: [{value, label}]}`, no pagination.
-- **`GET USER/preferences`, `GET USER/preferences/jobs`, `GET USER/cv`:** 404 with `data: []` when nothing is saved yet. Treat as empty state.
+- **`GET USER/preferences`:** returns `data.preference` with `domains`, `job_titles`, `companies` and `seniority_levels` as related objects. The documented save contract uses a single `country_id`; the AI match location field therefore uses one country. `GET USER/preferences/jobs` and `GET USER/cv` return 404 with `data: []` when nothing is saved yet; treat this as an empty state.
 - **`GET USER/cv/progress`:** `{current_step, completed_steps[], steps: {"1": {completed, missing[]}, ...}}`.
 - **`GET USER/visits`, `GET USER/messages`:** Laravel pagination, no records on the test account.
 - **Missing lookups:** `/nationalities`, `/sub-specialties`, `/companies` return 404.
@@ -90,7 +90,7 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 | Q-B5 | Register: does it accept `cv` and `license_image` as uploaded paths (`images/...`) like other endpoints, or only as files? Is the field `license` or `license_image`? | Register |
 | Q-B6 | Should education accept `gpa`, and experience accept `country_id` / `city_id`? The app sends them today. | Education, experience modals |
 | Q-B7 | Is it intended that `preferences`, `preferences/jobs` and `cv` return 404 when empty? A 200 with empty data would be easier. | AI job match, Build CV |
-| Q-B8 | Can you add lookups for sub-specialties and companies (for preferred companies)? Nationality: decided to use `/countries`, so `nationality_id` is a country ID; please confirm the backend accepts that. | Additional info, Build CV, AI job match |
+| Q-B8 | Can you add a lookup for sub-specialties? `GET /companies` is now available for preferred companies. Nationality: decided to use `/countries`, so `nationality_id` is a country ID; please confirm the backend accepts that. | Additional info, Build CV |
 | Q-B9 | Build CV: is there an endpoint to download the generated CV as PDF and to delete a draft? | Build CV landing |
 | Q-B10 | What does one item in `GET visits` look like, and does it support `search` by company name? | Profile insights |
 | Q-B11 | Chat: is there an endpoint for the conversation list, attachments, and closing a conversation? What is `company_admin_id` and where does the candidate get it? | Chat |
@@ -103,6 +103,7 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 | Q-B18 | How should custom certifications be saved alongside `mandatory_certification_ids[]`? | Additional info custom certifications |
 | Q-B19 | **Answered (2026-11-18).** The professional license is a choice from `GET /primary-licenses` (`{ id, title }`, search and pagination). Additional info sends `primary_license_id` to `POST USER/profile-details` (replacing `license_number`), and the response returns `qualifications.license.primary_license` as `{ id, title }`. | Additional info professional license |
 | Q-B20 | How should multiple sponsorship requirements be submitted and returned? Bruno documents one `sponsorship_requirement`. | Additional info sponsorship multi-select |
+| Q-B21 | Does `job_function` accept a role-category ID, or does it require a free-text job function? Bruno sends text while the AI match UI selects a role category. | AI job match preferences |
 | Q-B21 | License country is now a multi-select in the design. How should several countries be submitted and returned? Bruno documents one `license_country_id`. The field also has an "Other" choice that sends a free-text country name: which field should carry it? | Additional info license country |
 | Q-B22 | Does `GET /primary-licenses` search by country as well as license name? (Titles include the country, e.g. "DHA (Dubai Health Authority) - Dubai, UAE".) | Additional info professional license search |
 | Q-B23 | **Religion (agreed; endpoint not deployed yet).** Agreed with backend (2026-11-18): `GET /religions` returns `{ id, title }` items with `search` and pagination (`pagination=on`, `limit_per_page`, `page`), like `/countries`; `POST USER/profile-details` accepts `religion_id` (empty clears); `GET USER/profile-details` returns `personal_details.religion` as `{ id, title }` or `null`. Field name `religion_id` and the `{ id, title }` response confirmed by backend. | Additional info personal details, profile side panel |
@@ -128,7 +129,7 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 ### Scope and working approach
 
 - In scope: candidate profile and settings, notifications, AI match preferences, CV builder, profile insights, chat and CV match ATS, subject to the decisions below.
-- Out of scope: job applications, assessments and job listings, including AI match job results. Keep the findings above for reference; they are not implementation tasks in this plan.
+- Out of scope: job applications, assessments and job listings. AI match recommendations are in scope when requested, through `USER/preferences/jobs` only.
 - Before each feature, fetch and fast-forward `development` from `origin/development`, then create its feature branch from that updated `development`. Use one focused PR per branch. Branch names below are proposals unless already created.
 - The current `fix/candidate-api-alignment` branch has uncommitted changes, including application changes and a separate `package.json` edit. Preserve them; do not carry them into feature branches without reviewing ownership and scope. Preserve this untracked document when switching branches.
 - The API observations above are a dated baseline, not a guarantee of current behavior. Recheck each relevant contract and existing implementation before editing. Do not use sample values as real user data.

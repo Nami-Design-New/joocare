@@ -9,7 +9,7 @@ export const JOB_MATCH_PREVIEW_TOTAL = 57;
 
 export const JOB_MATCH_PREVIEW: JobMatch[] = [
   {
-    id: 'match-1',
+    id: '1',
     title: 'Medical Approval',
     companyName: 'Saudi German Hospital',
     companyLogo: COMPANY_LOGO,
@@ -20,7 +20,7 @@ export const JOB_MATCH_PREVIEW: JobMatch[] = [
     highlights: HIGHLIGHTS,
   },
   {
-    id: 'match-2',
+    id: '2',
     title: 'Medical Approval',
     companyName: 'Saudi German Hospital',
     companyLogo: COMPANY_LOGO,
@@ -31,7 +31,7 @@ export const JOB_MATCH_PREVIEW: JobMatch[] = [
     highlights: HIGHLIGHTS,
   },
   {
-    id: 'match-3',
+    id: '3',
     title: 'Staff Nurse – ICU',
     companyName: 'Dr. Sulaiman Al Habib',
     companyLogo: COMPANY_LOGO,
@@ -42,7 +42,7 @@ export const JOB_MATCH_PREVIEW: JobMatch[] = [
     highlights: HIGHLIGHTS,
   },
   {
-    id: 'match-4',
+    id: '4',
     title: 'Clinical Pharmacist',
     companyName: 'Cleopatra Hospitals',
     companyLogo: COMPANY_LOGO,

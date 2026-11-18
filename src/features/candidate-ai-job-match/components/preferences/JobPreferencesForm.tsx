@@ -20,6 +20,7 @@ type JobPreferencesFormProps = {
   preferences: JobPreferences | null;
   portalContainer: HTMLElement | null;
   onSave: (values: JobPreferences) => void;
+  isSaving: boolean;
 };
 
 export default function JobPreferencesForm({
@@ -27,6 +28,7 @@ export default function JobPreferencesForm({
   preferences,
   portalContainer,
   onSave,
+  isSaving,
 }: JobPreferencesFormProps) {
   const t = useTranslations('candidatePage.aiJobMatch.preferences');
   const { form, jobFunction, onSubmit } = useJobPreferencesForm({
@@ -39,14 +41,20 @@ export default function JobPreferencesForm({
     <form onSubmit={onSubmit} className="flex flex-col gap-6">
       <PreferredDomainsField control={control} />
       <JobFunctionField control={control} />
-      <JobTitlesField control={control} portalContainer={portalContainer} />
+      <JobTitlesField
+        control={control}
+        portalContainer={portalContainer}
+        savedOptions={preferences?.jobTitleOptions ?? []}
+      />
       <PreferredCompaniesField
         control={control}
         portalContainer={portalContainer}
+        savedOptions={preferences?.companyOptions ?? []}
       />
       <PreferredCountriesField
         control={control}
         portalContainer={portalContainer}
+        savedOption={preferences?.countryOption ?? null}
       />
       <SeniorityLevelsField
         control={control}
@@ -58,7 +66,7 @@ export default function JobPreferencesForm({
         type="submit"
         size="pill"
         className="mx-auto h-12"
-        disabled={form.formState.isSubmitting}
+        disabled={form.formState.isSubmitting || isSaving}
       >
         {t(mode === 'add' ? 'save-and-find' : 'update-matches')}
       </Button>

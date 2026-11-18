@@ -7,15 +7,18 @@ import useGetJobTitles from '@/shared/hooks/useGetJobTitles';
 import { toLookupOptions } from '@/features/candidate-profile/utils/lookup-options';
 import type { TJobPreferencesSchema } from '../../validation/job-preferences-schema';
 import MultiSelectChipsField from '@/shared/components/MultiSelectChipsField';
+import type { Option } from '@/shared/components/SelectInputField';
 
 type JobTitlesFieldProps = {
   control: Control<TJobPreferencesSchema>;
   portalContainer: HTMLElement | null;
+  savedOptions: Option[];
 };
 
 export default function JobTitlesField({
   control,
   portalContainer,
+  savedOptions,
 }: JobTitlesFieldProps) {
   const t = useTranslations('candidatePage.aiJobMatch.preferences');
   const [search, setSearch] = useState('');
@@ -26,7 +29,14 @@ export default function JobTitlesField({
     isFetchingNextPage,
     fetchNextPage,
   } = useGetJobTitles(search);
-  const options = useMemo(() => toLookupOptions(jobTitles), [jobTitles]);
+  const options = useMemo(() => {
+    const lookupOptions = toLookupOptions(jobTitles);
+    const savedValues = new Set(savedOptions.map((option) => option.value));
+    return [
+      ...savedOptions,
+      ...lookupOptions.filter((option) => !savedValues.has(option.value)),
+    ];
+  }, [jobTitles, savedOptions]);
 
   return (
     <MultiSelectChipsField

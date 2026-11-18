@@ -26,14 +26,14 @@ export default function JobMatchCard({ job }: JobMatchCardProps) {
     { icon: JOB_MATCH_META_ICONS.location, value: job.location },
     { icon: JOB_MATCH_META_ICONS.salary, value: job.salary },
     { icon: JOB_MATCH_META_ICONS.jobType, value: job.employmentType },
-  ];
+  ].filter(({ value }) => Boolean(value));
 
   return (
     <Card className="gap-5 rounded-2xl border-border p-4 shadow-header">
       <div className="flex items-start gap-4">
         <div className="flex min-w-0 flex-1 items-start gap-3.5">
           <Image
-            src={job.companyLogo}
+            src={job.companyLogo || '/assets/new-logo-dot.svg'}
             width={52}
             height={46}
             alt=""

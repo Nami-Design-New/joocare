@@ -835,6 +835,10 @@
       "no-matches-title": "No high-match jobs yet",
       "no-matches-description": "Turn off \"Show only high-match jobs\" or update your preferences to see more jobs.",
       "preferences-saved": "Your preferences have been saved.",
+      "preferences-save-failed": "Your preferences could not be saved. Try again.",
+      "preferences-load-failed": "Your preferences could not be loaded. Try again.",
+      "matches-load-failed": "Your recommended jobs could not be loaded. Try again.",
+      "retry": "Try again",
       "matches-updated": "Your matches have been updated.",
       "empty": {
         "title": "Recommended Jobs for You",
