@@ -56,6 +56,9 @@ and skip build/restart when only docs, markdown or `.github/` files changed.
   (`state/<target>-deps.sha256`, from `package-lock.json` or `package.json`)
   changed. After installing, a tracked lockfile is restored and a generated one
   is deleted, so the checkout stays clean for the next pull.
+- **Cache hygiene**: `.next` is chowned to quickzap and the fetch cache is
+  cleared before each build, so stale API responses (e.g. old backend URL)
+  can never be served.
 - **Next**: `npm run build`, `pm2 restart`, `pm2 save`, HTTP health check.
 - **Laravel**: `composer install`, `php artisan migrate --force`, Vite build
   only when `resources/`, `vite.config.js`, `package.json` changed or
