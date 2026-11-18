@@ -1411,7 +1411,9 @@
       "empty-title": "No one has viewed your profile yet",
       "empty-description": "When a company views your profile, it will appear here.",
       "no-results-title": "No companies found",
-      "no-results-description": "No company matching \"{search}\" has viewed your profile."
+      "no-results-description": "No company matching \"{search}\" has viewed your profile.",
+      "load-error": "We couldn't load your profile viewers. Please try again.",
+      "retry": "Try again"
     }
   },
   "legalPages": {

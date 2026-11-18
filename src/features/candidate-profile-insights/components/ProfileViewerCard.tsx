@@ -33,9 +33,11 @@ export default function ProfileViewerCard({ viewer }: ProfileViewerCardProps) {
         <h2 className="truncate text-lg leading-6 font-semibold text-foreground">
           <bdi>{viewer.companyName}</bdi>
         </h2>
-        <p className="text-base text-muted-foreground">
-          <bdi>{viewer.companyType}</bdi>
-        </p>
+        {viewer.companyType ? (
+          <p className="text-base text-muted-foreground">
+            <bdi>{viewer.companyType}</bdi>
+          </p>
+        ) : null}
         <p className="text-sm text-foreground/45">
           {t('viewed-on', { date: formatViewedDate(viewer.viewedAt, locale) })}
         </p>

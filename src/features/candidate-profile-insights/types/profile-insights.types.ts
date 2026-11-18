@@ -5,7 +5,7 @@ export type ProfileViewer = {
   companyName: string;
   companyType: string;
   logo: string | null;
-  /** ISO date of the visit. */
+  /** Date label supplied by the visits API. */
   viewedAt: string;
 };
 
@@ -20,3 +20,31 @@ export type ProfileInsightsQuery = {
   search: string;
   page: number;
 };
+
+export type ApiProfileVisit = {
+  id?: number | string;
+  company?: {
+    id?: number | string;
+    name?: string;
+    type?: string;
+    image?: string | null;
+  } | null;
+  created_at?: string | null;
+  visited_at?: string | null;
+};
+
+export type ApiProfileVisitsPage = {
+  data?: ApiProfileVisit[];
+  current_page?: number | string;
+  per_page?: number | string;
+  total?: number | string;
+  last_page?: number | string;
+  meta?: {
+    current_page?: number | string;
+    per_page?: number | string;
+    total?: number | string;
+    last_page?: number | string;
+  };
+};
+
+export type ApiProfileVisitsResponse = ApiProfileVisit[] | ApiProfileVisitsPage;
