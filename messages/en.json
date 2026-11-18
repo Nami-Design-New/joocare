@@ -2030,6 +2030,7 @@
         "category-label": "Assessment Category",
         "assessment-label": "Assessment",
         "preview": "Preview assessment",
+        "locked-hint": "The assessment can’t be changed after the job is created.",
         "fit-title": "Is this assessment the right fit for this job?",
         "fit-description": "Candidates applying for this job will be asked to take “{title}” ({count} questions). Make sure it matches the job’s specialty and seniority level before you continue.",
         "fit-confirm": "Yes, continue",
@@ -3440,11 +3441,7 @@
         "not-found-description": "This assessment is unavailable. Return to the category to choose another assessment.",
         "preview-title": "Assessment Preview",
         "preview-subtitle": "Review the assessment structure, scoring criteria and questions before linking it to this job.",
-        "preview-close": "Close preview",
-        "preview-summary": "Assessment Summary",
-        "preview-assessment-title": "Assessment Title",
-        "preview-passing-score": "Passing Score",
-        "preview-structure": "Assessment Structure"
+        "preview-close": "Close preview"
       },
       "created-at": "Created {time}",
       "delete-error": "Something went wrong while deleting. Please try again.",

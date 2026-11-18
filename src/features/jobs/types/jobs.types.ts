@@ -258,6 +258,8 @@ export type JobDetails = {
   updated_at: string;
   // Pending backend fields; the UI renders them only when present.
   screening_questions?: ScreeningQuestion[];
+  assessment_id?: number | null;
+  // Candidate apply flow only; the company job response returns `assessment_id`.
   assessment?: JobLinkedAssessment | null;
   created_by?: JobCreator | null;
 };

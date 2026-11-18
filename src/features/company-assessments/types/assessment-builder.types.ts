@@ -1,3 +1,5 @@
+import type { AssessmentSource } from './assessment.types';
+
 export type QuestionType = 'yes-no' | 'single-choice' | 'multiple-choice';
 
 export type AssessmentConfiguration = {
@@ -37,6 +39,8 @@ export type SavedAssessmentQuestion = {
 export type SavedAssessment = {
   id: string;
   categoryId: string;
+  categoryName: string;
+  source: AssessmentSource;
   configuration: AssessmentConfiguration;
   attemptsCount: number;
   questionCount: number;

@@ -44,7 +44,7 @@ export default async function JobDescriptionCard({
         <div className="mt-6 flex flex-col gap-4 empty:hidden">
           <JobAttachmentsCard
             questions={job.screening_questions}
-            assessment={job.assessment}
+            assessmentId={job.assessment_id}
           />
           {job.created_by ? (
             <JobPostedByCard

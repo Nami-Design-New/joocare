@@ -1,12 +1,7 @@
 import { formatDistanceToNowStrict } from 'date-fns';
 
 import { getBaseApiUrl } from '@/shared/lib/api-endpoints';
-import { assessmentSeeds } from '@/features/company-assessments/constants/assessment-data';
-import {
-  JobDetails,
-  JobLinkedAssessment,
-  JobListItem,
-} from './types/jobs.types';
+import { JobDetails, JobListItem } from './types/jobs.types';
 import { JobsSearchFilters, JobStatus } from './types/index.types';
 
 function getSingleParam(
@@ -347,18 +342,4 @@ export function getInitials(name: string) {
     .map((part) => part[0])
     .join('')
     .toUpperCase();
-}
-
-// Linked assessment shown in the wizard preview (preview seeds until the assessments API exists).
-export function getLinkedAssessment(
-  assessmentId?: string,
-): JobLinkedAssessment | null {
-  const assessment = assessmentSeeds.find((item) => item.id === assessmentId);
-  return assessment
-    ? {
-        id: assessment.id,
-        title: assessment.title,
-        category_id: assessment.categoryId,
-      }
-    : null;
 }

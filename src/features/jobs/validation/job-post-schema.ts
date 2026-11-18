@@ -38,6 +38,8 @@ export const step1Schema = z
 
     addSalary: z.boolean().default(false),
     assessmentEnabled: z.boolean().default(false),
+    // The backend fixes the assessment when the job is created (step one).
+    assessmentLocked: z.boolean().default(false),
     assessmentSource: z.string().optional(),
     assessmentCategoryId: z.string().optional(),
     assessmentId: z.string().optional(),
@@ -93,7 +95,7 @@ export const step1Schema = z
     otherAvailabilityTitle: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    if (data.assessmentEnabled) {
+    if (data.assessmentEnabled && !data.assessmentLocked) {
       if (!data.assessmentSource) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -276,6 +278,7 @@ export const jobFormDefaults: Partial<JobFormData> = {
   license: '',
   addSalary: false,
   assessmentEnabled: false,
+  assessmentLocked: false,
   assessmentSource: '',
   assessmentCategoryId: '',
   assessmentId: '',

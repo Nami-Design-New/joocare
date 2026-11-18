@@ -2227,6 +2227,7 @@
         "category-label": "فئة التقييم",
         "assessment-label": "التقييم",
         "preview": "معاينة التقييم",
+        "locked-hint": "لا يمكن تغيير التقييم بعد إنشاء الوظيفة.",
         "fit-title": "هل هذا التقييم مناسب لهذه الوظيفة؟",
         "fit-description": "سيُطلب من المرشحين المتقدمين لهذه الوظيفة إكمال «{title}» ({count} سؤالًا). تأكد من توافقه مع تخصص الوظيفة ومستواها الوظيفي قبل المتابعة.",
         "fit-confirm": "نعم، تابع",
@@ -3400,11 +3401,7 @@
         "not-found-description": "هذا التقييم غير متاح. ارجع إلى التصنيف لاختيار تقييم آخر.",
         "preview-title": "معاينة التقييم",
         "preview-subtitle": "راجع هيكل التقييم ومعايير التقييم والأسئلة قبل ربطه بهذه الوظيفة.",
-        "preview-close": "إغلاق المعاينة",
-        "preview-summary": "ملخص التقييم",
-        "preview-assessment-title": "عنوان التقييم",
-        "preview-passing-score": "درجة النجاح",
-        "preview-structure": "هيكل التقييم"
+        "preview-close": "إغلاق المعاينة"
       },
       "candidate-assessments": {
         "close": "إغلاق",

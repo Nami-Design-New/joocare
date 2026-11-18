@@ -32,8 +32,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { Option } from '@/shared/components/SelectInputField';
 import { useTranslations } from 'next-intl';
 import { OTHER_OPTION_VALUE } from '../constants';
-import { categorySeeds } from '@/features/company-assessments/constants/assessment-data';
-import { assessmentSeeds } from '@/features/company-assessments/constants/assessment-data';
+import { useGetAssessment } from '@/features/company-assessments/hooks/useGetAssessment';
 import PostJobResultModals from './post-job/PostJobResultModals';
 
 // ─── Form mode ──────────────────────────────────────────
@@ -133,16 +132,10 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
     otherCategoryTitle: job.category_id == null ? customCategoryTitle : '',
     license: job.professional_license ?? '',
     addSalary: hasSalary,
-    assessmentEnabled: Boolean(job.assessment),
-    assessmentSource: job.assessment
-      ? (categorySeeds.find(
-          (category) => category.id === String(job.assessment?.category_id),
-        )?.source ?? '')
-      : '',
-    assessmentCategoryId: job.assessment
-      ? String(job.assessment.category_id)
-      : '',
-    assessmentId: job.assessment ? String(job.assessment.id) : '',
+    // The job already exists, so its assessment can no longer change.
+    assessmentEnabled: job.assessment_id != null,
+    assessmentLocked: true,
+    assessmentId: job.assessment_id != null ? String(job.assessment_id) : '',
     salary: hasSalary
       ? {
           min: toOptionalNumber(job.min_salary),
@@ -258,8 +251,15 @@ export default function PostJobForm() {
     mode: 'onChange',
   });
 
-  const { handleSubmit, trigger, getValues, reset, setError, watch } = methods;
+  const { handleSubmit, trigger, getValues, reset, setError, setValue, watch } =
+    methods;
   const previewFormData = watch();
+  // Feeds the "assessment fit" confirmation before step one is saved.
+  const selectedAssessment = useGetAssessment(
+    previewFormData.assessmentEnabled && !previewFormData.assessmentLocked
+      ? previewFormData.assessmentId || null
+      : null,
+  );
 
   // ─── Hydrate form when existing job arrives ───────────
   useEffect(() => {
@@ -433,7 +433,11 @@ export default function PostJobForm() {
           : undefined,
       professional_license: data.license,
       has_salary: hasSalary,
-      assessment_id: data.assessmentEnabled ? data.assessmentId : null,
+      // Only the create request can link an assessment; updates ignore it.
+      assessment_id:
+        !data.assessmentLocked && data.assessmentEnabled
+          ? Number(data.assessmentId)
+          : undefined,
       category_id:
         data.category === OTHER_OPTION_VALUE
           ? undefined
@@ -494,7 +498,6 @@ export default function PostJobForm() {
           : undefined,
       professional_license: data.license,
       has_salary: data.addSalary ? 1 : 0,
-      assessment_id: data.assessmentEnabled ? data.assessmentId : null,
       category_id:
         data.category === OTHER_OPTION_VALUE
           ? undefined
@@ -608,6 +611,7 @@ export default function PostJobForm() {
             );
           setCreatedJobId(id);
           setReviewJob(savedJob);
+          setValue('assessmentLocked', true);
         }
       } else {
         await persistStepTwo(getValues());
@@ -624,17 +628,11 @@ export default function PostJobForm() {
   const handleNext = () => {
     if (operationInProgress.current || isBusy || postSuccess) return;
     const values = getValues();
-    const assessmentChanged =
-      String(existingJob?.assessment?.id ?? '') !==
-      String(values.assessmentId ?? '');
-    const selectedAssessment = assessmentSeeds.find(
-      (assessment) => assessment.id === values.assessmentId,
-    );
     if (
       currentStep === 0 &&
       values.assessmentEnabled &&
-      selectedAssessment &&
-      (mode !== 'edit' || assessmentChanged)
+      !values.assessmentLocked &&
+      selectedAssessment.data
     ) {
       setAssessmentFitOpen(true);
       return;
@@ -882,14 +880,8 @@ export default function PostJobForm() {
         onOpenChange={setAssessmentFitOpen}
         title={t('companyPage.postJob.assessment.fit-title')}
         description={t('companyPage.postJob.assessment.fit-description', {
-          title:
-            assessmentSeeds.find(
-              (assessment) => assessment.id === getValues('assessmentId'),
-            )?.title ?? '',
-          count:
-            assessmentSeeds.find(
-              (assessment) => assessment.id === getValues('assessmentId'),
-            )?.questionCount ?? 0,
+          title: selectedAssessment.data?.configuration.title ?? '',
+          count: selectedAssessment.data?.questionCount ?? 0,
         })}
         confirmLabel={t('companyPage.postJob.assessment.fit-confirm')}
         cancelLabel={t('companyPage.postJob.assessment.fit-cancel')}

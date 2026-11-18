@@ -7,15 +7,15 @@
 | الجزء                                                     | الحالة                              |
 | --------------------------------------------------------- | ----------------------------------- |
 | 1. مكتبة التقييمات عند الشركة (تصنيفات + تقييمات + أسئلة) | **تم الربط وتم اختباره في المتصفح** |
-| 2. Post Job: اختيار التقييم في الخطوة الأولى              | لم يبدأ — **الخطوة التالية**        |
-| 3. Post Job: أسئلة التقديم في الخطوة الثانية              | لم يبدأ                             |
+| 2. Post Job: اختيار التقييم في الخطوة الأولى              | **تم الربط** — لم يُختبر في المتصفح |
+| 3. Post Job: أسئلة التقديم في الخطوة الثانية              | لم يبدأ — **الخطوة التالية**        |
 | 4. المعاينة والمسودة والنشر والتعديل                      | لم يبدأ (يتبع 2 و3)                 |
 | 5. المرشح: عرض الوظيفة وإرسال إجابات أسئلة التقديم        | لم يبدأ                             |
 | 6. دعوة التقييم بعد التقديم / الإسناد اليدوي              | لم يبدأ — يحتاج رد الـ backend      |
 | 7. المرشح: أداء التقييم حتى التسليم                       | لم يبدأ — يحتاج رد الـ backend      |
 | 8. حالة التقييم للمرشح ومراجعة الشركة للنتائج             | لم يبدأ — يحتاج رد الـ backend      |
 
-التغييرات الحالية **لم تُعمل لها commit** بعد على الفرع `feat/updates-phase2`.
+الجزء 1 دخل `development` (PR #187). تغييرات الجزء 2 **لم تُعمل لها commit** بعد على الفرع `development`.
 
 قبل كتابة أي كود: اقرأ [RULES.md](RULES.md) و`AGENTS.md`، واتبع نفس نمط `src/features/company-assessments` الذي نُفّذ في الجزء 1 (services + hook لكل query/mutation + query keys في constants + ترجمة en/ar + `tsc` و`eslint`).
 
@@ -36,11 +36,11 @@
 
 **Step 1 — تفاصيل الوظيفة + ربط الـ assessment**
 
-- [ ] قوائم المكتبة (Joocare / الشركة) والتصنيف والـ assessment لسه من بيانات تجريبية (`useAssessmentOptions`). لازم تيجي من الـ assessments اللي اتعملت فعلًا، وبالـ IDs الحقيقية.
-- [ ] زرار المعاينة (العين) بيفتح `AssessmentPreviewDialog` من بيانات تجريبية؛ لازم يعرض الـ assessment الحقيقي وأسئلته.
-- [ ] نافذة "Assessment fit" قبل Next بتاخد العنوان وعدد الأسئلة من بيانات تجريبية.
-- [ ] في التعديل / استكمال المسودة: المكتبة والتصنيف بيتحسبوا من `categorySeeds`؛ لازم يتملوا من بيانات الوظيفة الحقيقية.
-- [ ] التأكد إن ربط الـ assessment وإلغاءه (switch off) بيتحفظ ويرجع بعد refresh، في الإنشاء وفي التعديل الشامل.
+- [x] قوائم المكتبة والتصنيف والـ assessment من الـ API (تفاصيل في الجزء 2).
+- [x] زرار المعاينة و`AssessmentPreviewDialog` بالـ assessment الحقيقي وأسئلته.
+- [x] نافذة "Assessment fit" من `GET C/assessments/{id}`.
+- [x] التعديل / المسودة: القسم مقفول ويعرض الـ assessment المحفوظ من `assessment_id`.
+- [ ] اختبار في المتصفح (إنشاء بـ assessment وبدونه، رجوع للخطوة الأولى، مسودة، تعديل، عربي/إنجليزي، موبايل).
 - (باقي حقول Step 1 مربوطة بالفعل.)
 
 **Step 2 — الوصف والمهارات وأسئلة التقديم**
@@ -192,18 +192,27 @@
 - يلزم التحقق من أن اختيار تقييم أو إزالته يُحفظ ويعود في قراءة الوظيفة، بما في ذلك قبول القيمة الفارغة لإلغاء الربط. لا يكفي وجود `assessment_id` في FormData.
 - مثال التعديل الشامل `Company/Jobs/التعديل (خطوة واحدة).yml` لا يتضمن `assessment_id`، رغم أن الكود يرسله. يلزم تأكيد عقد تعديل الربط وإلغائه في هذا الوضع أيضًا.
 
-**المطلوب:** توصيل قوائم التصنيفات والتقييمات والمعاينة، استخدام المعرّفات الحقيقية، والتحقق من استرجاع الربط بعد الحفظ وإعادة فتح المسودة والتعديل.
+**الحالة (18 نوفمبر 2026): تم الربط، ولم يُختبر في المتصفح بعد.**
 
-**خطة التنفيذ المقترحة (بعد إنجاز الجزء 1):**
+**قاعدة العمل المعتمدة:** الـ assessment يتحدد مرة واحدة عند إنشاء الوظيفة (`jobs-step-one`) ولا يتغير بعدها: لا إضافة ولا تغيير ولا حذف، سواء كانت الوظيفة مسودة أو منشورة، وحتى عند الرجوع للخطوة الأولى أثناء الإنشاء.
 
-- المكتبة (Joocare / الشركة) + التصنيف: استخدام `GET C/all-assessment-categories` (فيه `is_global`) عبر `useGetAssessmentCategoryOptions` من `company-assessments`، وتصفية الاختيارات حسب المكتبة المختارة. أو استخدام `global-assessment-categories` / `assessment-categories` حسب المكتبة — يُحسم مع المستخدم.
-- التقييم: `GET C/assessments?category_id={id}` (نفس `getCategoryAssessments`). ملاحظة: هل يرجع تقييمات تصنيفات Joocare؟ لم يُختبر لعدم وجود بيانات.
-- المعاينة ونافذة التأكيد: `GET C/assessments/{id}` (`useGetAssessment`) لعدد الأسئلة والمدة والدرجة.
-- وضع التعديل / المسودة: يلزم معرفة شكل `job.assessment` في `GET C/jobs/{id}` (هل فيه `category` و`is_global`؟) لملء المكتبة والتصنيف بدل البحث في `categorySeeds`.
-- الاستيراد من feature أخرى يكون بـ `@/features/company-assessments/...` حسب RULES.
-- **أسئلة للمستخدم قبل البدء:** response الـ `GET C/jobs/{id}` بجزء `assessment`، وهل إلغاء الربط يُرسل `assessment_id` فارغًا، وهل التعديل الشامل يقبل `assessment_id`.
+**عقود مؤكدة بطلبات حية (الوظيفة التجريبية 327، مسودة مربوطة بـ assessment 5):**
 
-**الأدلة:** [المسار الفعلي](../src/app/[locale]/company/post-job/page.tsx)، [قوائم التقييم التجريبية](../src/features/jobs/hooks/useAssessmentOptions.ts)، [حقول الربط](../src/features/jobs/components/post-job/JobAssessmentFields.tsx)، [النموذج وتحويل بيانات التعديل](../src/features/jobs/components/PostJobForm.tsx)، [خدمة الخطوة الأولى](../src/features/jobs/services/job-step-one-service.ts).
+- `GET C/jobs/{id}` يرجع `assessment_id` فقط، بدون object `assessment`، والأسئلة في `questions` (وليس `screening_questions`).
+- `jobs-update-step-one` يتجاهل `assessment_id` تمامًا (فاضي، `null`، `0`، أو ID آخر)، ويحفظ باقي الحقول. ده متوافق مع القاعدة.
+- `GET C/assessments/{id}` يرجع `category: { id, name, is_global }`، ومنه تُعرف المكتبة والتصنيف.
+
+**التنفيذ:**
+
+- المكتبة: Joocare / الشركة ثابتة. التصنيفات: `global-assessment-categories` أو `assessment-categories` حسب المكتبة (`useGetAssessmentCategories` مع `enabled`). التقييمات: `GET C/assessments?category_id=` (infinite) عبر `useGetCategoryAssessmentOptions`.
+- المعاينة: `AssessmentPreviewDialog` يستخدم `useGetAssessment` ويعرض `AssessmentReviewStep` ومعاينة السؤال من الـ builder.
+- حقل `assessmentLocked` في الفورم: `true` لأي وظيفة محمّلة أو بعد نجاح `jobs-step-one`. وقتها `LockedAssessmentFields` يعرض القيم للقراءة فقط، والتحقق من حقول الـ assessment يتوقف، و`assessment_id` لا يُرسل.
+- `JobAttachmentsCard` (المعاينة وصفحة الوظيفة عند الشركة) يستقبل `assessmentId` ويجيب العنوان من `useGetAssessment`، والزرار يفتح نافذة المعاينة.
+- اتشال `useAssessmentOptions` و`getLinkedAssessment`. `job.assessment` و`JobLinkedAssessment` باقيين لفلو المرشح (الجزء 5).
+- مكتبة Joocare فاضية على السيرفر حاليًا، فلم يُختبر هل `assessments?category_id=` يرجع تقييمات تصنيفاتها.
+- endpoints في الكولكشن لم تكن مذكورة: `GET C/assessments-list` (id + name)، و`GET C/assessment-results` (يتطلب `assessment_category_id`) و`assessment-results/{id}` وnotes النتائج. دي تخص الجزء 8.
+
+**الأدلة:** [المسار الفعلي](../src/app/[locale]/company/post-job/page.tsx)، [حقول الربط](../src/features/jobs/components/post-job/JobAssessmentFields.tsx)، [العرض المقفول](../src/features/jobs/components/post-job/LockedAssessmentFields.tsx)، [النموذج وتحويل بيانات التعديل](../src/features/jobs/components/PostJobForm.tsx)، [خدمة الخطوة الأولى](../src/features/jobs/services/job-step-one-service.ts).
 
 **مرجع الطلب:** [إنشاء الخطوة الأولى](<postman-collection-joocare/Company/Jobs/store-step-one (الخطوة الأولى للإضافة).yml>).
 
@@ -407,8 +416,8 @@
 
 - [x] **تجهيز التقييم عند الشركة:** تم (الجزء 1). عقود الفئات والتقييمات والأسئلة مؤكدة.
 - [ ] **1 — تثبيت العقود المتبقية:** استجابة `GET C/jobs/{id}` (company) و`GET U/jobs/{id}` (candidate) بجزء الأسئلة والتقييم، واستجابة `POST U/jobs`، وعقود أداء التقييم والنتائج (انظر "نقاط تحتاج ردًا").
-- [ ] **2 — Post Job / الخطوة الأولى (التالي):** ربط اختيار المكتبة والتصنيف والتقييم والمعاينة بالـ API (انظر خطة الجزء 2)، وحذف `useAssessmentOptions` المعتمد على seeds.
-- [ ] **3 — Post Job / الخطوة الثانية:** تحميل `question-templates` و`question-templates-hints`، وتحويل `screening_questions` إلى `question_templates[i][id|correct_answer]` و`custom_questions[i][question|is_required|type|answer][j]`، ثم القراءة والتعديل مع المسودة والنشر.
+- [x] **2 — Post Job / الخطوة الأولى:** تم الربط (انظر الجزء 2)؛ باقي اختبار المتصفح.
+- [ ] **3 — Post Job / الخطوة الثانية (التالي):** تحميل `question-templates` و`question-templates-hints`، وتحويل `screening_questions` إلى `question_templates[i][id|correct_answer]` و`custom_questions[i][question|is_required|type|answer][j]`، ثم القراءة والتعديل مع المسودة والنشر.
 - [ ] **4 — التقديم:** إلغاء preview fallbacks، تحويل أسئلة API، إرسال `answers` بالمعرّفات الصحيحة، وعرض الدعوة الحقيقية بعد النجاح.
 - [ ] **5 — أداء التقييم:** القراءة والبدء وحفظ كل إجابة والتوقيت والتسليم والحالات النهائية، مع فشل الشبكة وإعادة الفتح.
 - [ ] **6 — إكمال الحلقة:** حالة ورابط التقييم داخل تقديمات المرشح، وإجابات التقديم ونتائج المحاولة عند الشركة.

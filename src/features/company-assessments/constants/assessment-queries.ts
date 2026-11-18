@@ -31,6 +31,12 @@ export const assessmentQueryKeys = {
     search: string,
     page: number,
   ) => ['assessments', locale, categoryId, search, page],
+  assessmentOptions: (locale: string, categoryId: string) => [
+    'assessments',
+    locale,
+    categoryId,
+    'options',
+  ],
   assessment: (locale: string, assessmentId: string) => [
     'assessment',
     locale,

@@ -4,7 +4,7 @@ import React from 'react';
 import { JobFormData } from '../validation/job-post-schema';
 import Image from 'next/image';
 import { JobDetails } from '../types/jobs.types';
-import { getJobSalary, getLinkedAssessment } from '../utils';
+import { getJobSalary } from '../utils';
 import JobOverviewItem from './JobOverviewItem';
 import { useTranslations } from 'next-intl';
 import JobAttachmentsCard from './JobAttachmentsCard';
@@ -646,10 +646,9 @@ export default function JobReviewPanel({
             <div className="mt-6">
               <JobAttachmentsCard
                 questions={data.screeningQuestions}
-                assessment={getLinkedAssessment(
-                  data.assessmentEnabled ? data.assessmentId : undefined,
-                )}
-                previewAssessment
+                assessmentId={
+                  data.assessmentEnabled ? data.assessmentId : undefined
+                }
               />
             </div>
           </div>

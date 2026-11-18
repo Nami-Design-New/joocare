@@ -9,12 +9,15 @@ import { getAssessmentCategories } from '../services/assessment-categories-servi
 import type { AssessmentSource } from '../types/assessment.types';
 import { useAssessmentRequestOptions } from './useAssessmentRequestOptions';
 
-export function useGetAssessmentCategories(source: AssessmentSource) {
+export function useGetAssessmentCategories(
+  source: AssessmentSource,
+  { enabled = true }: { enabled?: boolean } = {},
+) {
   const { token, locale, isReady } = useAssessmentRequestOptions();
   const query = useInfiniteQuery({
     queryKey: assessmentQueryKeys.categories(locale, source),
     initialPageParam: 1,
-    enabled: isReady,
+    enabled: isReady && enabled,
     queryFn: ({ pageParam }) =>
       getAssessmentCategories(source, pageParam, CATEGORY_PAGE_SIZE, {
         token,

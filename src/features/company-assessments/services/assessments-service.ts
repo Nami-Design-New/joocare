@@ -45,6 +45,8 @@ function mapSavedAssessment(item: AssessmentApiItem): SavedAssessment {
   return {
     id: String(item.id),
     categoryId: String(item.assessment_category_id),
+    categoryName: item.category?.name ?? '',
+    source: item.category?.is_global ? 'joocare' : 'company',
     configuration: {
       title: item.name,
       description: item.description ?? '',
