@@ -20,7 +20,7 @@ export type ProfileDetails = {
     mandatory_certifications?: ProfileDetailsLookup[];
     license?: {
       id: number;
-      number: string | null;
+      primary_license?: ProfileDetailsLookup | null;
       country?: ProfileDetailsLookup | null;
       status?: unknown;
       verification_status?: unknown;
@@ -47,6 +47,7 @@ export type ProfileDetails = {
     city?: ProfileDetailsLookup | null;
     gender?: unknown;
     marital_status?: unknown;
+    religion?: ProfileDetailsLookup | null;
     visa_status?: unknown;
     sponsorship_requirement?: unknown;
   };

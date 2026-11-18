@@ -14,6 +14,7 @@ const EMPTY_DETAILS: CandidatePersonalDetails = {
   domain: null,
   gender: null,
   maritalStatus: null,
+  religion: null,
   languages: [],
   drivingLicense: null,
   licenseCountries: [],
@@ -63,11 +64,13 @@ export async function getCandidatePersonalDetails(): Promise<CandidatePersonalDe
   }
 
   const domain = details.occupational?.domain;
+  const religion = details.personal_details?.religion;
 
   return {
     domain: domain?.title ?? domain?.name ?? null,
     gender: toLabel(details.personal_details?.gender),
     maritalStatus: toLabel(details.personal_details?.marital_status),
+    religion: religion?.title ?? religion?.name ?? null,
     languages: (details.languages ?? []).flatMap(
       (item) => (isRecord(item) && toLabel(item.language)) || [],
     ),

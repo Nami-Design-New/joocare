@@ -44,6 +44,7 @@ export default function SalarySection() {
               name="currentCurrency"
               placeholder={t('fields.currency')}
               useLookup={useCurrencyLookup}
+              clearable={false}
               containerStyles="w-auto"
               className="h-11 w-24 border-0 bg-transparent px-3 text-[13px] font-semibold shadow-none"
             />
@@ -74,6 +75,7 @@ export default function SalarySection() {
             name="expectedCurrency"
             placeholder={t('fields.currency')}
             useLookup={useCurrencyLookup}
+            clearable={false}
             containerStyles="w-auto shrink-0"
             className="h-13 w-28 border-0 bg-secondary px-5 text-sm font-semibold text-secondary-foreground shadow-none [&_[data-slot=combobox-trigger-icon]]:text-secondary-foreground"
           />

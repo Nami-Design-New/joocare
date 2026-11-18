@@ -19,6 +19,8 @@ type LookupMultiSelectFieldProps = {
   /** Options shown before the API options (e.g. "Other"). */
   leadingOptions?: Option[];
   chipVariant?: 'outline' | 'mobility';
+  /** Disables the field on top of the lookup's own loading / error state. */
+  disabled?: boolean;
 };
 
 // Multi-select with a "N selected" badge and the selection as chips under the field.
@@ -29,6 +31,7 @@ export default function LookupMultiSelectField({
   useLookup,
   leadingOptions = [],
   chipVariant = 'outline',
+  disabled = false,
 }: LookupMultiSelectFieldProps) {
   const { control } = useFormContext<AdditionalInfoValues>();
   const [search, setSearch] = useState('');
@@ -47,6 +50,7 @@ export default function LookupMultiSelectField({
           [...leadingOptions, ...lookup.options],
           search ? [] : saved,
         )}
+        disabled={disabled || lookup.disabled}
         onSearchChange={setSearch}
         showSelectedCount={chipVariant === 'outline'}
         chipVariant={chipVariant}

@@ -29,6 +29,9 @@ export const MOBILITY_ICONS = {
 // Value of the "Other" choice in the multi-selects that accept free text.
 export const OTHER_OPTION = 'other';
 
+// Value of the "Clear selection" option that empties a single select.
+export const CLEAR_OPTION = '__clear__';
+
 // Status dot colors by `/job-search-statuses` value (labels come from the API).
 export const JOB_SEARCH_STATUS_DOTS: Record<string, string> = {
   open_to_work: 'bg-job-status-open',
@@ -79,6 +82,7 @@ export const EMPTY_ADDITIONAL_INFO: AdditionalInfoValues = {
   currentCity: '',
   sponsorship: [],
   maritalStatus: '',
+  religion: '',
   currentSalary: '',
   currentCurrency: DEFAULT_CURRENCY_ID,
   expectedMin: '',

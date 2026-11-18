@@ -15,15 +15,19 @@ type LookupSelectFieldProps = {
   useLookup: LookupHook;
   /** Show the search input (off for short fixed lists). */
   searchable?: boolean;
+  /** Disables the field on top of the lookup's own loading / error state. */
+  disabled?: boolean;
   className?: string;
   containerStyles?: string;
   onValueChange?: (value: string) => void;
+  clearable?: boolean;
 };
 
 // Select backed by an API lookup (searchable and paginated when the API supports it).
 export default function LookupSelectField({
   useLookup,
   searchable = true,
+  disabled = false,
   containerStyles,
   ...props
 }: LookupSelectFieldProps) {
@@ -37,6 +41,7 @@ export default function LookupSelectField({
         {...props}
         {...lookup}
         options={withSavedOptions(lookup.options, search ? [] : saved)}
+        disabled={disabled || lookup.disabled}
         onSearchChange={searchable ? setSearch : undefined}
       />
       {isError && <LookupError />}

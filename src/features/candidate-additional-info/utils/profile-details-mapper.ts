@@ -107,6 +107,7 @@ export function toSavedOptions(details: ProfileDetails): SavedOptions {
     seniorityLevel: one(qualifications?.seniority_level),
     educationLevel: one(qualifications?.education_level),
     certifications: toOptions(qualifications?.mandatory_certifications),
+    professionalLicense: one(qualifications?.license?.primary_license),
     professionalLicenseCountries: one(qualifications?.license?.country),
     preferredCountries: toOptions(mobility?.relocation_countries),
     licenseCountries: toOptions(mobility?.driving_license_countries),
@@ -117,14 +118,13 @@ export function toSavedOptions(details: ProfileDetails): SavedOptions {
     nationality: one(personal?.nationality),
     currentCountry: one(personal?.country),
     currentCity: one(personal?.city),
+    religion: one(personal?.religion),
     currentCurrency: oneCurrency(salary?.current_salary_currency),
     expectedCurrency: oneCurrency(salary?.expected_salary_currency),
   };
 }
 
 // Maps the grouped API response to the flat form values.
-// The professional license field stays empty: the API stores a license number,
-// not a `/licenses` choice (Q-B19).
 export function toAdditionalInfoForm(
   details: ProfileDetails,
 ): AdditionalInfoValues {
@@ -150,6 +150,7 @@ export function toAdditionalInfoForm(
     seniorityLevel: firstId('seniorityLevel'),
     educationLevel: firstId('educationLevel'),
     certifications: ids('certifications'),
+    professionalLicense: firstId('professionalLicense'),
     professionalLicenseCountries: ids('professionalLicenseCountries'),
     licenseStatus: toEnumValue(license?.status),
     verificationStatus: toEnumValue(license?.verification_status),
@@ -171,6 +172,7 @@ export function toAdditionalInfoForm(
     currentCity: firstId('currentCity'),
     sponsorship: sponsorship ? [sponsorship] : [],
     maritalStatus: toEnumValue(personal?.marital_status),
+    religion: firstId('religion'),
     currentSalary: toAmount(salary?.current_salary),
     currentCurrency:
       firstId('currentCurrency') || EMPTY_ADDITIONAL_INFO.currentCurrency,

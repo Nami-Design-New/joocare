@@ -50,6 +50,7 @@ export function createAdditionalInfoSchema(messages: {
       currentCity: z.string(),
       sponsorship: z.array(z.string()),
       maritalStatus: z.string(),
+      religion: z.string(),
       // Salary
       currentSalary: salary,
       currentCurrency: z.string(),

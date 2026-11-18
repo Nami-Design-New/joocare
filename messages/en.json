@@ -968,6 +968,7 @@
         "current-city": "Current City",
         "sponsorship": "Sponsorship Requirements",
         "marital-status": "Marital Status",
+        "religion": "Religion",
         "current-salary": "Current Salary",
         "expected-salary": "Expected Salary Range",
         "currency": "Currency"
@@ -978,12 +979,14 @@
         "select-seniority": "Select seniority",
         "select-education": "Select highest level",
         "add-certifications": "Add certifications",
+        "select-license-first": "Select a license first",
         "select-license": "Select license",
         "select-country": "Select country",
         "select-country-first": "Select a country first",
         "select-status": "Select status",
         "select-language": "Select language",
         "select-marital-status": "Select marital status",
+        "select-religion": "Select religion",
         "search-titles": "Search titles",
         "search-countries": "Search countries",
         "search-industries": "Search industries",
@@ -1015,6 +1018,7 @@
       "options": {
         "lookup-error": "Options could not be loaded.",
         "other": "Other",
+        "clear-selection": "Clear selection",
         "back-to-list": "Back to the list"
       },
       "load-error": "Your additional information couldn't be loaded.",

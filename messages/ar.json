@@ -968,6 +968,7 @@
         "current-city": "المدينة الحالية",
         "sponsorship": "متطلبات الكفالة",
         "marital-status": "الحالة الاجتماعية",
+        "religion": "الديانة",
         "current-salary": "الراتب الحالي",
         "expected-salary": "نطاق الراتب المتوقع",
         "currency": "العملة"
@@ -978,12 +979,14 @@
         "select-seniority": "اختر المستوى الوظيفي",
         "select-education": "اختر أعلى مستوى",
         "add-certifications": "أضف الشهادات",
+        "select-license-first": "اختر الترخيص أولًا",
         "select-license": "اختر الترخيص",
         "select-country": "اختر الدولة",
         "select-country-first": "اختر الدولة أولًا",
         "select-status": "اختر الحالة",
         "select-language": "اختر اللغة",
         "select-marital-status": "اختر الحالة الاجتماعية",
+        "select-religion": "اختر الديانة",
         "search-titles": "ابحث عن المسميات",
         "search-countries": "ابحث عن الدول",
         "search-industries": "ابحث عن القطاعات",
@@ -1015,6 +1018,7 @@
       "options": {
         "lookup-error": "تعذر تحميل الخيارات.",
         "other": "أخرى",
+        "clear-selection": "إلغاء الاختيار",
         "back-to-list": "العودة إلى القائمة"
       },
       "load-error": "تعذر تحميل معلوماتك الإضافية.",

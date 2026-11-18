@@ -17,6 +17,7 @@ type MultiSelectWithOtherFieldProps = {
   placeholder: string;
   otherPlaceholder: string;
   useLookup: LookupHook;
+  disabled?: boolean;
 };
 
 // Multi-select with "Other" first; choosing "Other" turns the field into a text
@@ -28,6 +29,7 @@ export default function MultiSelectWithOtherField({
   placeholder,
   otherPlaceholder,
   useLookup,
+  disabled = false,
 }: MultiSelectWithOtherFieldProps) {
   const t = useTranslations('candidatePage.additional-info.options');
   const { control, register, setValue, formState } =
@@ -52,6 +54,7 @@ export default function MultiSelectWithOtherField({
         className={`${FIELD_CLASS_NAME} pe-10`}
         error={formState.errors[otherName]?.message}
         autoFocus
+        disabled={disabled}
         icon={
           <button
             type="button"
@@ -74,6 +77,7 @@ export default function MultiSelectWithOtherField({
       placeholder={placeholder}
       useLookup={useLookup}
       leadingOptions={[{ value: OTHER_OPTION, label: t('other') }]}
+      disabled={disabled}
     />
   );
 }

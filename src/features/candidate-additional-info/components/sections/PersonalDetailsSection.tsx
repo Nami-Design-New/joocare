@@ -6,6 +6,7 @@ import {
   useCountryLookup,
   useGenderLookup,
   useMaritalStatusLookup,
+  useReligionLookup,
   useSponsorshipLookup,
   useVisaStatusLookup,
 } from '../../hooks/useLookupOptions';
@@ -62,6 +63,12 @@ export default function PersonalDetailsSection() {
           placeholder={t('placeholders.select-marital-status')}
           useLookup={useMaritalStatusLookup}
           searchable={false}
+        />
+        <LookupSelectField
+          name="religion"
+          label={t('fields.religion')}
+          placeholder={t('placeholders.select-religion')}
+          useLookup={useReligionLookup}
         />
       </div>
     </InfoSection>

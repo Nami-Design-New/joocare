@@ -11,7 +11,8 @@ import LookupError from './LookupError';
 
 const SKELETONS = [0, 1, 2];
 
-// Single choice status shown to employers as a badge on the profile.
+// Single choice status shown to employers as a badge on the profile; clicking
+// the selected card again clears it.
 export default function JobSearchStatusField() {
   const t = useTranslations('candidatePage.additional-info.career');
   const { control } = useFormContext<AdditionalInfoValues>();
@@ -53,6 +54,8 @@ export default function JobSearchStatusField() {
                     value={value}
                     checked={checked}
                     onChange={() => field.onChange(value)}
+                    // Clicking the selected card again clears the status.
+                    onClick={() => checked && field.onChange('')}
                     className="sr-only"
                   />
                   <span

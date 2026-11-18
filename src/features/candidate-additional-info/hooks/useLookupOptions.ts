@@ -7,8 +7,9 @@ import useGetDomains from '@/shared/hooks/useGetDomains';
 import useGetEducationLevels from '@/shared/hooks/useGetEducationLevels';
 import useGetExperiences from '@/shared/hooks/useGetExperiences';
 import useGetJobTitles from '@/shared/hooks/useGetJobTitles';
-import useGetLicenses from '@/shared/hooks/useGetLicenses';
 import useGetMandatoryCertifications from '@/shared/hooks/useGetMandatoryCertifications';
+import useGetPrimaryLicenses from '@/shared/hooks/useGetPrimaryLicenses';
+import useGetReligions from '@/shared/hooks/useGetReligions';
 import { useInfiniteLookup } from '@/shared/hooks/useInfiniteLookup';
 import type { EnumLookupEndpoint } from '../services/lookup-service';
 import {
@@ -17,6 +18,7 @@ import {
   toLookupField,
 } from '../utils/lookup-field';
 import useGetEnumLookup from './useGetEnumLookup';
+import useProfileCategoryId from './useProfileCategoryId';
 
 // Lookup hooks for the select fields; each takes the field's search text.
 export type LookupHook = (search: string) => LookupFieldProps;
@@ -71,9 +73,14 @@ export const useCertificationLookup: LookupHook = (search) => {
   return toLookupField(query, query.mandatoryCertifications);
 };
 
-export const useLicenseLookup: LookupHook = (search) => {
-  const query = useGetLicenses(search);
-  return toLookupField(query, query.licenses);
+export const usePrimaryLicenseLookup: LookupHook = (search) => {
+  const query = useGetPrimaryLicenses(search);
+  return toLookupField(query, query.primaryLicenses);
+};
+
+export const useReligionLookup: LookupHook = (search) => {
+  const query = useGetReligions(search);
+  return toLookupField(query, query.religions);
 };
 
 export const useAvailabilityLookup: LookupHook = (search) => {
@@ -92,14 +99,16 @@ export const useCurrencyLookup: LookupHook = (search) => {
   );
 };
 
-// Levels depend on the Basic info category, but the profile API doesn't return
-// one yet, so every level is shown.
+// Levels are filtered by the category chosen in Basic info.
 export const useSeniorityLookup: LookupHook = (search) => {
+  const { categoryId, isPending } = useProfileCategoryId();
   const query = useInfiniteLookup({
     endpoint: 'seniority-levels',
     queryKey: 'seniority-levels',
     search,
     limitPerPage: 100,
+    extraParams: { category_id: categoryId },
+    enabled: !isPending,
   });
   return toLookupField(
     query,

@@ -128,7 +128,7 @@ export default function ProfileInfoList({
         />
       ),
       label: t('religion'),
-      value: profile?.religion,
+      value: personal.religion,
     },
     {
       key: 'marital-status',

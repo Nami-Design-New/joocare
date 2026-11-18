@@ -42,6 +42,7 @@ const SECTION_FIELDS: Record<
     'currentCity',
     'sponsorship',
     'maritalStatus',
+    'religion',
   ],
   salary: ['currentSalary', 'expectedMin', 'expectedMax'],
 };

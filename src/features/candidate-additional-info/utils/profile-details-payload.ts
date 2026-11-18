@@ -9,9 +9,8 @@ const YES_NO: Record<AdditionalInfoValues['relocation'], string> = {
 
 // Builds the `POST USER/profile-details` form. The endpoint only updates the fields
 // it receives, and an empty value clears a field (`name=` also clears a list).
-// Not sent: the professional license (Q-B19) and the free-text "Other" values
-// (Q-B18, Q-B21). Sponsorship and license country accept one value for now
-// (Q-B20, Q-B21), so only the first choice is sent.
+// Not sent: the free-text "Other" values (Q-B18, Q-B21). Sponsorship and license
+// country accept one value for now (Q-B20, Q-B21), so only the first choice is sent.
 export function toProfileDetailsFormData(
   values: AdditionalInfoValues,
 ): FormData {
@@ -33,6 +32,7 @@ export function toProfileDetailsFormData(
   single('seniority_level_id', values.seniorityLevel);
   single('education_level_id', values.educationLevel);
   list('mandatory_certification_ids', values.certifications);
+  single('primary_license_id', values.professionalLicense);
   single('license_country_id', first(values.professionalLicenseCountries));
   single('license_status', values.licenseStatus);
   single('license_verification_status', values.verificationStatus);
@@ -69,6 +69,7 @@ export function toProfileDetailsFormData(
   single('gender', values.gender);
   single('sponsorship_requirement', first(values.sponsorship));
   single('marital_status', values.maritalStatus);
+  single('religion_id', values.religion);
 
   single('current_salary', values.currentSalary);
   single('current_salary_currency_id', values.currentCurrency);
