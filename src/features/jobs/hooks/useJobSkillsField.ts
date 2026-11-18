@@ -20,7 +20,8 @@ export function useJobSkillsField(existingJob?: JobDetails | null) {
   const jobTitleId = jobTitle === OTHER_OPTION_VALUE ? '' : jobTitle;
   const selected = watch('skills') ?? [];
 
-  const query = useGetSkills(search, jobTitleId, Boolean(jobTitleId));
+  // Manual skill selection stays available for custom job titles as well.
+  const query = useGetSkills(search);
   const options = query.skills.map((item) => ({
     label: item.title,
     value: String(item.id),
@@ -60,6 +61,7 @@ export function useJobSkillsField(existingJob?: JobDetails | null) {
     options,
     existingOptions,
     recommended,
+    showRecommended: Boolean(jobTitleId),
     setSearch,
     query,
     getLabel,

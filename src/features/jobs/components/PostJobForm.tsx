@@ -381,7 +381,10 @@ export default function PostJobForm() {
       jobId,
       payload: {
         description: data.description,
-        skills: (data.skills ?? []).map(Number),
+        skills:
+          data.title === OTHER_OPTION_VALUE
+            ? []
+            : (data.skills ?? []).map(Number),
         questions: data.screeningQuestions,
       },
     });
@@ -451,7 +454,7 @@ export default function PostJobForm() {
       specialty_title: data.specialty,
       employment_type_id: Number(data.employmentType),
       role_category_id: Number(data.roleCategory),
-      seniority_level_id: Number(data.seniorityLevel || 0),
+      seniority_level_id: toOptionalNumber(data.seniorityLevel),
       country_id: Number(data.country),
       city_id: Number(data.city),
       experience_id:
@@ -629,7 +632,10 @@ export default function PostJobForm() {
         jobId: existingJobId,
         payload: {
           description: data.description,
-          skills: (data.skills ?? []).map(Number),
+          skills:
+            data.title === OTHER_OPTION_VALUE
+              ? []
+              : (data.skills ?? []).map(Number),
           questions: data.screeningQuestions,
         },
       });

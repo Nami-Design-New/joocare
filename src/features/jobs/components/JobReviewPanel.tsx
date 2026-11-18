@@ -9,6 +9,7 @@ import JobOverviewItem from './JobOverviewItem';
 import { useTranslations } from 'next-intl';
 import JobAttachmentsCard from './JobAttachmentsCard';
 import PositionCard from './PositionCard';
+import { OTHER_OPTION_VALUE } from '../constants';
 
 type JobPreviewLabels = Partial<{
   title: string;
@@ -173,8 +174,6 @@ function buildEditPreviewData(
       )
     : '';
 
-  // console.log("data job preview panel:::::::::", data);
-
   return {
     title:
       data.title === '__other__'
@@ -190,13 +189,15 @@ function buildEditPreviewData(
     ),
     description: data.description || labels.noDescriptionHtml,
     skills:
-      previewLabels.skills ??
-      data.skills?.map(
-        (skillId) =>
-          job?.skills?.find((skill) => String(skill.id) === skillId)?.title ??
-          skillId,
-      ) ??
-      [],
+      data.title === OTHER_OPTION_VALUE
+        ? []
+        : (previewLabels.skills ??
+          data.skills?.map(
+            (skillId) =>
+              job?.skills?.find((skill) => String(skill.id) === skillId)
+                ?.title ?? skillId,
+          ) ??
+          []),
     salary,
     currencyCode,
     salaryType,
@@ -528,29 +529,28 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
               )}
             </ul>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <Image
-                src="/assets/icons/case.svg"
-                width={20}
-                height={20}
-                alt=""
-              />
-              <p className="text-sm text-muted-foreground md:text-base">
-                {tPostJob('review.fields.mandatoryCertifications')}
-              </p>
+          {preview.mandatoryCertifications.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/assets/icons/case.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+                <p className="text-sm text-muted-foreground md:text-base">
+                  {tPostJob('review.fields.mandatoryCertifications')}
+                </p>
+              </div>
+              <ul className="mt-2 flex flex-col gap-2">
+                {preview.mandatoryCertifications.map((item) => (
+                  <li className="edu-certificate" key={item}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="mt-2 flex flex-col gap-2">
-              {preview.mandatoryCertifications.map((item) => (
-                <li className="edu-certificate" key={item}>
-                  {item}
-                </li>
-              ))}
-              {preview.mandatoryCertifications.length === 0 && (
-                <li className="edu-certificate">-</li>
-              )}
-            </ul>
-          </div>
+          )}
           <JobOverviewItem
             label={tPostJob('review.fields.availability')}
             value={preview.availability}

@@ -260,7 +260,7 @@
     "specialty": "Specialty",
     "education-certifications": "Education & Certifications section",
     "education-level": "Education Level",
-    "mandatory-certifications": "Mandatory Certifications",
+    "mandatory-certifications": "Required Certifications",
     "share-this-job": "Share this job:",
     "copy-link": "Copy Link",
     "check-out-this-job": "Check out this job",
@@ -2145,7 +2145,7 @@
           "label": "Education Level"
         },
         "mandatoryCertifications": {
-          "label": "Mandatory Certifications"
+          "label": "Required Certifications"
         },
         "addNewCertification": {
           "label": "Add new certification",
@@ -2193,7 +2193,7 @@
           "roleCategory": "Job Function",
           "seniorityLevel": "Seniority Level",
           "educationLevel": "Education Level",
-          "mandatoryCertifications": "Mandatory Certifications",
+          "mandatoryCertifications": "Required Certifications",
           "availability": "Availability"
         }
       },
