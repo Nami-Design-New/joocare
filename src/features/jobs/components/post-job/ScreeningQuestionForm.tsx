@@ -41,6 +41,7 @@ export default function ScreeningQuestionForm({
   const t = useTranslations('companyPage.postJob.questions.builder');
   const {
     form,
+    isTemplate,
     options,
     type,
     correctOptionIds,
@@ -80,6 +81,7 @@ export default function ScreeningQuestionForm({
           id={`${idPrefix}-type`}
           aria-label={t('question-type')}
           value={type}
+          disabled={isTemplate}
           options={SCREENING_QUESTION_TYPES.map((value) => ({
             value,
             label: t(value),
@@ -94,6 +96,7 @@ export default function ScreeningQuestionForm({
             aria-label={t('question-label')}
             placeholder={t('question-placeholder')}
             error={errors.question?.message}
+            readOnly={isTemplate}
             className={FIELD_CLASS}
             {...form.register('question')}
           />

@@ -17,7 +17,8 @@ function toFormValues(
   question?: ScreeningQuestion | null,
 ): TScreeningQuestionSchema {
   return {
-    type: question?.type ?? 'single',
+    type:
+      question?.source === 'template' ? 'yes-no' : (question?.type ?? 'single'),
     question: question?.question ?? '',
     options:
       question && question.type !== 'yes-no'
@@ -34,6 +35,7 @@ export function useScreeningQuestionForm(
   onSubmit: (question: ScreeningQuestion) => void,
 ) {
   const t = useTranslations('companyPage.postJob.questions.builder');
+  const isTemplate = question?.source === 'template';
   const schema = useMemo(
     () =>
       createScreeningQuestionSchema({
@@ -63,6 +65,7 @@ export function useScreeningQuestionForm(
   const validateAnswers = { shouldValidate: form.formState.isSubmitted };
 
   function changeType(value: string) {
+    if (isTemplate) return;
     const next = value as TScreeningQuestionSchema['type'];
     if (!next || next === type) return;
     // Keep the correct answers that still fit the new type (handoff rule).
@@ -112,15 +115,15 @@ export function useScreeningQuestionForm(
     );
   }
 
-  const submit = form.handleSubmit((values) =>
+  const submit = form.handleSubmit((values) => {
     onSubmit({
       id: question?.id ?? crypto.randomUUID(),
       source: question?.source ?? 'custom',
       templateId: question?.templateId,
-      type: values.type,
+      type: isTemplate ? 'yes-no' : values.type,
       // Mark has no field in the design; keep the existing one, new questions get 1.
       mark: question?.mark ?? 1,
-      question: values.question.trim(),
+      question: isTemplate ? question.question : values.question.trim(),
       options:
         values.type === 'yes-no'
           ? YES_NO_OPTION_IDS.map((id) => ({ id, text: t(id) }))
@@ -130,10 +133,11 @@ export function useScreeningQuestionForm(
             })),
       correctOptionIds: values.correctOptionIds,
       required: values.required,
-    }),
-  );
+    });
+  });
 
   return {
+    isTemplate,
     form,
     options,
     type,

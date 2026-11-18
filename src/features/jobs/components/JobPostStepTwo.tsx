@@ -111,7 +111,12 @@ export default function JobPostStepTwo({
             />
           </StepSectionCard>
         </Accordion>
-        <ScreeningQuestionsSection />
+        <ScreeningQuestionsSection
+          error={translateError(
+            errors.screeningQuestions?.message ??
+              errors.screeningQuestions?.root?.message,
+          )}
+        />
       </div>
       {showPanel ? (
         <AiJdBuilderPanel onClose={() => toggleAiBuilder(false)} />

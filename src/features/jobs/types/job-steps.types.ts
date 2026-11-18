@@ -27,7 +27,7 @@ export type JobStepOnePayload = {
 export type JobStepTwoPayload = {
   description: string;
   skills: number[];
-  screening_questions?: ScreeningQuestion[];
+  questions: ScreeningQuestion[];
 };
 
 export type ScreeningQuestionOption = { id: string; text: string };

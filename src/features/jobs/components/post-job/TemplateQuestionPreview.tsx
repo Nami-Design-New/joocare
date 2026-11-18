@@ -13,6 +13,7 @@ type TemplateQuestionPreviewProps = {
   question: string;
   onCancel: () => void;
   onAdd: (answer: string, required: boolean) => void;
+  isAtLimit: boolean;
 };
 
 // Preview of a picked template before it is added (Figma 11531:116889).
@@ -21,6 +22,7 @@ export default function TemplateQuestionPreview({
   question,
   onCancel,
   onAdd,
+  isAtLimit,
 }: TemplateQuestionPreviewProps) {
   const t = useTranslations('companyPage.postJob.questions');
   const [answer, setAnswer] = useState<string>('yes');
@@ -81,6 +83,7 @@ export default function TemplateQuestionPreview({
           variant="secondary"
           className="h-11 gap-2 rounded-full px-8 font-semibold sm:w-56"
           onClick={() => onAdd(answer, required)}
+          disabled={isAtLimit}
         >
           {t('add-question')}
           <ArrowRight aria-hidden="true" className="size-4 rtl:rotate-180" />

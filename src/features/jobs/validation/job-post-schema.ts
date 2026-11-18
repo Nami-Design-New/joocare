@@ -1,4 +1,16 @@
 import { z } from 'zod';
+import { MAX_SCREENING_QUESTIONS } from '../constants';
+import { createScreeningQuestionSchema } from './screening-question-schema';
+
+const incompleteQuestionMessage =
+  'companyPage.postJob.validation.questionsIncomplete';
+const savedScreeningQuestionSchema = createScreeningQuestionSchema({
+  questionRequired: incompleteQuestionMessage,
+  optionRequired: incompleteQuestionMessage,
+  optionDuplicate: incompleteQuestionMessage,
+  chooseExactlyOne: incompleteQuestionMessage,
+  chooseAtLeastOne: incompleteQuestionMessage,
+});
 
 const optionalSalaryNumber = z.preprocess((value) => {
   if (value === '' || value == null) {
@@ -234,7 +246,7 @@ export const step2Schema = z.object({
   skills: z
     .array(z.string())
     .min(1, 'companyPage.postJob.validation.atLeastOneSkillRequired'),
-  // Screening questions remain client preview data until the backend accepts this field.
+  // Sent with step two as `question_templates` + `custom_questions`.
   screeningQuestions: z
     .array(
       z.object({
@@ -248,6 +260,20 @@ export const step2Schema = z.object({
         correctOptionIds: z.array(z.string()),
         required: z.boolean(),
       }),
+    )
+    .max(
+      MAX_SCREENING_QUESTIONS,
+      'companyPage.postJob.validation.questionsLimit',
+    )
+    // Saved questions come back without their answers (pending backend), so
+    // block saving until each one has its options and correct answer again.
+    .refine(
+      (questions) =>
+        questions.every(
+          (question) =>
+            savedScreeningQuestionSchema.safeParse(question).success,
+        ),
+      'companyPage.postJob.validation.questionsIncomplete',
     )
     .default([]),
 });

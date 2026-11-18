@@ -1,9 +1,13 @@
 'use client';
 
-import { FileQuestion, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import DeleteModal from '@/shared/components/modals/DeleteModal';
 import { Accordion } from '@/shared/components/ui/accordion';
+import { Skeleton } from '@/shared/components/ui/skeleton';
+import { MAX_SCREENING_QUESTIONS } from '../../constants';
+import { Button } from '@/shared/components/ui/button';
+import EmptyDataState from '@/shared/components/EmptyDataState';
 import {
   CUSTOM_SECTION,
   TEMPLATES_SECTION,
@@ -16,8 +20,14 @@ import StepSectionCard from './StepSectionCard';
 import TemplateQuestionPreview from './TemplateQuestionPreview';
 import Image from 'next/image';
 
+type ScreeningQuestionsSectionProps = {
+  error?: string;
+};
+
 // Grey "Questions" group: Question Templates + Custom Question (Figma 10086:87426).
-export default function ScreeningQuestionsSection() {
+export default function ScreeningQuestionsSection({
+  error,
+}: ScreeningQuestionsSectionProps) {
   const t = useTranslations('companyPage.postJob.questions');
   const tCommon = useTranslations('common');
   const state = useScreeningQuestions();
@@ -28,6 +38,17 @@ export default function ScreeningQuestionsSection() {
       <h2 className="px-1 pt-2 text-xl font-semibold text-muted-foreground sm:text-[21px]">
         {t('title')}
       </h2>
+      <p className="px-1 text-sm text-muted-foreground" aria-live="polite">
+        {t('limit-helper', {
+          count: questions.length,
+          max: MAX_SCREENING_QUESTIONS,
+        })}
+      </p>
+      {error ? (
+        <p role="alert" className="px-1 text-sm text-destructive">
+          {error}
+        </p>
+      ) : null}
       <Accordion
         type="multiple"
         value={state.openSections}
@@ -40,16 +61,48 @@ export default function ScreeningQuestionsSection() {
           mutedBody
         >
           <div className="flex flex-col gap-5">
-            {state.previewTemplate ? (
+            {state.previewTemplateId && state.previewTemplate.data ? (
               <TemplateQuestionPreview
-                key={state.previewTemplate.id}
-                templateId={state.previewTemplate.id}
-                question={state.previewTemplate.question}
+                key={state.previewTemplateId}
+                templateId={state.previewTemplateId}
+                question={state.previewTemplate.data.question}
                 onCancel={() => state.setPreviewTemplateId(null)}
                 onAdd={state.addTemplate}
+                isAtLimit={state.isAtLimit}
+              />
+            ) : null}
+            {state.previewTemplateId && state.previewTemplate.isPending ? (
+              <Skeleton aria-busy="true" className="h-56 rounded-2xl" />
+            ) : null}
+            {state.previewTemplateId && state.previewTemplate.isError ? (
+              <div role="alert" className="flex flex-wrap items-center gap-3">
+                <p className="text-sm text-destructive">
+                  {t('template-load-error')}
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={state.previewTemplate.isFetching}
+                  onClick={() => void state.previewTemplate.refetch()}
+                >
+                  {t('templates-retry')}
+                </Button>
+              </div>
+            ) : null}
+            {state.previewTemplateId &&
+            state.previewTemplate.isSuccess &&
+            !state.previewTemplate.data ? (
+              <EmptyDataState
+                titleText={t('template-unavailable')}
+                className="min-h-0 bg-transparent py-4"
               />
             ) : null}
             <QuestionTemplateChips
+              hints={state.hints.data ?? []}
+              isLoading={state.hints.isPending}
+              isError={state.hints.isError}
+              onRetry={() => void state.hints.refetch()}
+              isAtLimit={state.isAtLimit}
               addedIds={state.addedTemplateIds}
               previewId={state.previewTemplateId}
               onSelect={state.setPreviewTemplateId}
@@ -109,7 +162,8 @@ export default function ScreeningQuestionsSection() {
             <button
               type="button"
               onClick={() => state.setBuilderOpen(true)}
-              className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-dashed border-primary text-sm font-semibold text-primary transition-colors hover:bg-primary-bg"
+              disabled={state.isAtLimit}
+              className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-dashed border-primary text-sm font-semibold text-primary transition-colors hover:bg-primary-bg disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Plus aria-hidden="true" className="size-4" />
               {t('custom-button')}

@@ -1,34 +1,32 @@
 import { apiFetch } from '@/shared/lib/fetch-manager';
+import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
 import { JobStepTwoPayload } from '../types/job-steps.types';
+import { appendScreeningQuestions } from './screening-questions-mapper';
 
+// Used when creating a job and when editing it (draft or published).
 export async function jobStepTwoService(
-  jobId: number,
+  jobId: number | string,
   payload: JobStepTwoPayload,
-  { token }: { token: string },
+  { token, locale }: { token: string; locale: string },
 ) {
   const formData = new FormData();
   formData.append('description', payload.description);
   payload.skills.forEach((skillId, index) => {
     formData.append(`skills[${index}]`, String(skillId));
   });
-  // Pending backend support; keep the field name documented by the jobs handoff.
-  if (payload.screening_questions) {
-    formData.append(
-      'screening_questions',
-      JSON.stringify(payload.screening_questions),
-    );
-  }
+  appendScreeningQuestions(formData, payload.questions);
 
   const response = await apiFetch(
-    `${process.env.NEXT_PUBLIC_BASE_COMPANY_URL}/jobs-step-two/${jobId}`,
+    `${getCompanyApiUrl()}/jobs-step-two/${jobId}`,
     {
       method: 'POST',
       body: formData,
       token,
+      locale,
     },
   );
   if (!response.ok) {
-    throw new Error(response.message ?? 'Failed to submit step two');
+    throw new Error(response.message ?? '');
   }
 
   return response;

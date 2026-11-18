@@ -4,9 +4,11 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { SCREENING_QUESTION_TEMPLATES } from '../constants';
+import { MAX_SCREENING_QUESTIONS } from '../constants';
 import type { ScreeningQuestion } from '../types/job-steps.types';
 import type { JobFormData } from '../validation/job-post-schema';
+import { useGetQuestionTemplate } from './useGetQuestionTemplate';
+import { useGetQuestionTemplateHints } from './useGetQuestionTemplateHints';
 
 const HIGHLIGHT_MS = 2500;
 export const TEMPLATES_SECTION = 'templates';
@@ -15,11 +17,17 @@ export const CUSTOM_SECTION = 'custom';
 // Step 2 screening questions: kept in the wizard form and sent with step 2.
 export function useScreeningQuestions() {
   const t = useTranslations('companyPage.postJob.questions');
-  const { setValue, watch } = useFormContext<JobFormData>();
+  const { setValue, watch, getValues } = useFormContext<JobFormData>();
   const questions = watch('screeningQuestions') ?? [];
-  const [openSections, setOpenSections] = useState<string[]>([
-    TEMPLATES_SECTION,
-  ]);
+  const isAtLimit = questions.length >= MAX_SCREENING_QUESTIONS;
+  // Saved questions may arrive after this section mounts. Keep the default
+  // responsive to hydration until the user chooses which sections to open.
+  const [selectedSections, setOpenSections] = useState<string[] | null>(null);
+  const openSections =
+    selectedSections ??
+    (questions.length
+      ? [TEMPLATES_SECTION, CUSTOM_SECTION]
+      : [TEMPLATES_SECTION]);
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(
     null,
   );
@@ -41,26 +49,35 @@ export function useScreeningQuestions() {
     setValue('screeningQuestions', next, {
       shouldDirty: true,
       shouldTouch: true,
+      shouldValidate: true,
     });
 
   const add = (question: ScreeningQuestion) => {
-    save([...questions, question]);
+    const currentQuestions = getValues('screeningQuestions') ?? [];
+    if (currentQuestions.length >= MAX_SCREENING_QUESTIONS) {
+      toast.error(t('limit-reached', { max: MAX_SCREENING_QUESTIONS }));
+      return;
+    }
+    save([...currentQuestions, question]);
     setHighlightedId(question.id);
     // The custom list opens once a question exists (Figma 11531:118333).
-    setOpenSections((current) =>
-      current.includes(CUSTOM_SECTION) ? current : [...current, CUSTOM_SECTION],
+    setOpenSections(
+      openSections.includes(CUSTOM_SECTION)
+        ? openSections
+        : [...openSections, CUSTOM_SECTION],
     );
     toast.success(t('added-toast'));
   };
 
-  const previewTemplate = SCREENING_QUESTION_TEMPLATES.find(
-    (template) => template.id === previewTemplateId,
-  );
+  const hints = useGetQuestionTemplateHints();
+  const previewTemplate = useGetQuestionTemplate(previewTemplateId);
 
   return {
     questions,
+    isAtLimit,
     openSections,
     setOpenSections,
+    hints,
     previewTemplate,
     previewTemplateId,
     setPreviewTemplateId,
@@ -82,13 +99,14 @@ export function useScreeningQuestions() {
     closeEdit: () => setEditingId(null),
     addCustom: add,
     addTemplate: (answer: string, required: boolean) => {
-      if (!previewTemplate) return;
+      const template = previewTemplate.data;
+      if (!template) return;
       add({
         id: crypto.randomUUID(),
         source: 'template',
-        templateId: previewTemplate.id,
+        templateId: String(template.id),
         type: 'yes-no',
-        question: previewTemplate.question,
+        question: template.question,
         mark: 1,
         options: [
           { id: 'yes', text: t('yes') },
