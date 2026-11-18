@@ -58,7 +58,7 @@ export default function AssessmentPreviewDialog({
     >
       <DialogContent
         showCloseButton={false}
-        className="flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-269 flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-3xl border-0 bg-muted p-4 sm:min-w-0 sm:gap-6 sm:p-8"
+        className="flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-269 flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-3xl border-0 bg-white p-4 sm:min-w-0 sm:gap-6 sm:p-8"
       >
         <div className="flex items-start justify-between gap-3 sm:gap-4">
           <DialogHeader className="min-w-0 gap-1 text-start sm:gap-2">
@@ -79,7 +79,7 @@ export default function AssessmentPreviewDialog({
             </Button>
           </DialogClose>
         </div>
-        {renderContent()}
+        <div className="rounded-2xl bg-muted p-2 sm:p-4">{renderContent()}</div>
       </DialogContent>
       {previewQuestionId ? (
         <AssessmentQuestionPreviewModal

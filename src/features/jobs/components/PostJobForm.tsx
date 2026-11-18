@@ -108,10 +108,6 @@ function toOptionalNumber(value: string | number | null | undefined) {
   return Number.isFinite(parsedValue) ? parsedValue : undefined;
 }
 
-function getJobStatus(job: JobDetails) {
-  return job.status?.toLowerCase() ?? '';
-}
-
 // ─── Map API job → form defaults ────────────────────────
 function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
   const hasSalary = Boolean(job.has_salary);
@@ -317,13 +313,11 @@ export default function PostJobForm() {
         skills: existingJob.skills?.map((item) => item.title) ?? [],
       });
 
-      // In complete mode, set the createdJobId so step-by-step flow works
+      // In complete mode, set the createdJobId so step-by-step flow works.
+      // Step one is already saved, so the wizard stays on step two (the API
+      // returns a translated status label, which can't be compared reliably).
       if (mode === 'complete') {
         setCreatedJobId(existingJob.id);
-        const existingJobStatus = getJobStatus(existingJob);
-        setCurrentStep(
-          existingJobStatus === 'draft' || existingJobStatus === 'open' ? 1 : 0,
-        );
       }
 
       setFormHydrated(true);
