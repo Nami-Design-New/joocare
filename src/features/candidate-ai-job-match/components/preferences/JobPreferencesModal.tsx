@@ -16,6 +16,7 @@ type JobPreferencesModalProps = {
   preferences: JobPreferences | null;
   onOpenChange: (open: boolean) => void;
   onSave: (values: JobPreferences) => void;
+  isSaving: boolean;
 };
 
 export default function JobPreferencesModal({
@@ -24,6 +25,7 @@ export default function JobPreferencesModal({
   preferences,
   onOpenChange,
   onSave,
+  isSaving,
 }: JobPreferencesModalProps) {
   const t = useTranslations('candidatePage.aiJobMatch.preferences');
   const [contentElement, setContentElement] = useState<HTMLDivElement | null>(
@@ -46,6 +48,7 @@ export default function JobPreferencesModal({
             preferences={preferences}
             portalContainer={contentElement}
             onSave={onSave}
+            isSaving={isSaving}
           />
         )}
       </DialogContent>

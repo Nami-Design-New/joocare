@@ -6,7 +6,7 @@ export const jobPreferencesSchema = z.object({
   jobFunction: z.string(),
   jobTitleIds: z.array(z.string()),
   companyIds: z.array(z.string()),
-  countryIds: z.array(z.string()),
+  countryId: z.string(),
   seniorityLevelIds: z.array(z.string()),
   highMatchOnly: z.boolean(),
 });

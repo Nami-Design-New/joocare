@@ -20,11 +20,29 @@ export function useJobPreferencesForm({
 }: UseJobPreferencesFormOptions) {
   const form = useForm<TJobPreferencesSchema>({
     resolver: zodResolver(jobPreferencesSchema),
-    defaultValues: preferences ?? EMPTY_JOB_PREFERENCES,
+    defaultValues: {
+      domainIds: preferences?.domainIds ?? EMPTY_JOB_PREFERENCES.domainIds,
+      jobFunction: preferences?.jobFunction ?? EMPTY_JOB_PREFERENCES.jobFunction,
+      jobTitleIds:
+        preferences?.jobTitleIds ?? EMPTY_JOB_PREFERENCES.jobTitleIds,
+      companyIds: preferences?.companyIds ?? EMPTY_JOB_PREFERENCES.companyIds,
+      countryId: preferences?.countryId ?? EMPTY_JOB_PREFERENCES.countryId,
+      seniorityLevelIds:
+        preferences?.seniorityLevelIds ?? EMPTY_JOB_PREFERENCES.seniorityLevelIds,
+      highMatchOnly:
+        preferences?.highMatchOnly ?? EMPTY_JOB_PREFERENCES.highMatchOnly,
+    },
   });
   const jobFunction = useWatch({ control: form.control, name: 'jobFunction' });
 
-  const onSubmit = form.handleSubmit((values) => onSave(values));
+  const onSubmit = form.handleSubmit((values) =>
+    onSave({
+      ...values,
+      jobTitleOptions: preferences?.jobTitleOptions ?? [],
+      companyOptions: preferences?.companyOptions ?? [],
+      countryOption: preferences?.countryOption ?? null,
+    }),
+  );
 
   return { form, jobFunction, onSubmit };
 }

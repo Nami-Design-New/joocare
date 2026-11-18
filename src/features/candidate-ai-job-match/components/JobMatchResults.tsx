@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
-import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import { Button } from '@/shared/components/ui/button';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import type { JobMatch } from '../types/ai-job-match.types';
 import AiJobMatchHeader from './AiJobMatchHeader';
 import JobMatchCard from './JobMatchCard';
@@ -9,20 +9,18 @@ import MatchLevelLegend from './MatchLevelLegend';
 
 type JobMatchResultsProps = {
   matches: JobMatch[];
-  totalMatches: number;
-  page: number;
-  pageSize: number;
-  onPageChange: (page: number) => void;
   onEditPreferences: () => void;
+  isLoading: boolean;
+  isError: boolean;
+  onRetry: () => void;
 };
 
 export default function JobMatchResults({
   matches,
-  totalMatches,
-  page,
-  pageSize,
-  onPageChange,
   onEditPreferences,
+  isLoading,
+  isError,
+  onRetry,
 }: JobMatchResultsProps) {
   const t = useTranslations('candidatePage.aiJobMatch');
 
@@ -39,7 +37,19 @@ export default function JobMatchResults({
       />
       <MatchLevelLegend />
 
-      {matches.length === 0 ? (
+      {isLoading ? (
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <Skeleton className="h-72 w-full" />
+          <Skeleton className="h-72 w-full" />
+        </div>
+      ) : isError ? (
+        <div className="flex flex-col items-center gap-4 py-12 text-center">
+          <p className="text-muted-foreground">{t('matches-load-failed')}</p>
+          <Button size="pill" onClick={onRetry}>
+            {t('retry')}
+          </Button>
+        </div>
+      ) : matches.length === 0 ? (
         <EmptyDataState
           titleText={t('no-matches-title')}
           description={t('no-matches-description')}
@@ -54,16 +64,6 @@ export default function JobMatchResults({
         </ul>
       )}
 
-      {totalMatches > pageSize && (
-        <CustomPagination
-          currentPage={page}
-          totalItems={totalMatches}
-          pageSize={pageSize}
-          onPageChange={onPageChange}
-          align="start"
-          statusPosition="start"
-        />
-      )}
     </div>
   );
 }

@@ -20,8 +20,11 @@ export const EMPTY_JOB_PREFERENCES: JobPreferences = {
   domainIds: [],
   jobFunction: '',
   jobTitleIds: [],
+  jobTitleOptions: [],
   companyIds: [],
-  countryIds: [],
+  companyOptions: [],
+  countryId: '',
+  countryOption: null,
   seniorityLevelIds: [],
   highMatchOnly: false,
 };
