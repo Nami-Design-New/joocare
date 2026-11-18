@@ -1,22 +1,21 @@
 'use client';
 
-import { FormProvider } from 'react-hook-form';
+import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import { Button } from '@/shared/components/ui/button';
-import { useAdditionalInfoForm } from '../hooks/useAdditionalInfoForm';
-import ProfileCompletionCard from './ProfileCompletionCard';
-import CareerPreferencesSection from './sections/CareerPreferencesSection';
-import LanguagesSection from './sections/LanguagesSection';
-import MobilitySection from './sections/MobilitySection';
-import PersonalDetailsSection from './sections/PersonalDetailsSection';
-import ProfessionalInfoSection from './sections/ProfessionalInfoSection';
-import QualificationsSection from './sections/QualificationsSection';
-import SalarySection from './sections/SalarySection';
+import useGetProfileDetails from '../hooks/useGetProfileDetails';
+import { toAdditionalInfoForm } from '../utils/profile-details-mapper';
+import AdditionalInfoError from './AdditionalInfoError';
+import AdditionalInfoForm from './AdditionalInfoForm';
+import AdditionalInfoSkeleton from './AdditionalInfoSkeleton';
 
-// Profile "Additional Information" tab: completion summary and the editable form.
+// Profile "Additional Information" tab: loads the saved profile details into the form.
 export default function AdditionalInfoPage() {
   const t = useTranslations('candidatePage.additional-info');
-  const { form, completion, onSubmit, onCancel } = useAdditionalInfoForm();
+  const { data, isPending, isError, refetch } = useGetProfileDetails();
+  const initialValues = useMemo(
+    () => (data ? toAdditionalInfoForm(data) : null),
+    [data],
+  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -27,46 +26,13 @@ export default function AdditionalInfoPage() {
         <p className="text-muted-foreground">{t('subtitle')}</p>
       </header>
 
-      <ProfileCompletionCard
-        percent={completion.percent}
-        items={completion.items}
-      />
-
-      <FormProvider {...form}>
-        <form
-          noValidate
-          onSubmit={onSubmit}
-          className="flex flex-col gap-6 rounded-2xl bg-card px-4 pt-7.5 pb-6 md:px-10"
-        >
-          <QualificationsSection />
-          <LanguagesSection />
-          <MobilitySection />
-          <CareerPreferencesSection />
-          <ProfessionalInfoSection />
-          <PersonalDetailsSection />
-          <SalarySection />
-
-          <div className="flex flex-wrap justify-end gap-4">
-            <Button
-              type="button"
-              variant="outline"
-              size="pill"
-              onClick={onCancel}
-              className="h-12.5 w-full border-secondary text-sm font-semibold text-secondary sm:w-auto sm:min-w-40"
-            >
-              {t('cancel')}
-            </Button>
-            <Button
-              type="submit"
-              variant="secondary"
-              size="pill"
-              className="h-12.5 w-full text-sm font-semibold sm:w-auto sm:min-w-56"
-            >
-              {t('save')}
-            </Button>
-          </div>
-        </form>
-      </FormProvider>
+      {isError ? (
+        <AdditionalInfoError onRetry={() => void refetch()} />
+      ) : isPending || !initialValues ? (
+        <AdditionalInfoSkeleton />
+      ) : (
+        <AdditionalInfoForm initialValues={initialValues} />
+      )}
     </div>
   );
 }

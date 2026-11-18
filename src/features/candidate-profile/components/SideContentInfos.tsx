@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import type {
+  CandidatePersonalDetails,
   CandidateProfessionalProfile,
   CandidateProfileViewModel,
 } from '../types/profile.types';
@@ -13,6 +14,7 @@ import UploadCvSection from './UploadCvSection';
 type SideContentInfosProps = {
   profile: CandidateProfileViewModel | null;
   professional: CandidateProfessionalProfile;
+  personal: CandidatePersonalDetails;
 };
 
 const DEFAULT_PROFILE_IMAGE = '/assets/profile_image.svg';
@@ -21,6 +23,7 @@ const DEFAULT_PROFILE_IMAGE = '/assets/profile_image.svg';
 export default function SideContentInfos({
   profile,
   professional,
+  personal,
 }: SideContentInfosProps) {
   const t = useTranslations('candidatePage.profile');
 
@@ -47,7 +50,11 @@ export default function SideContentInfos({
         missingItems={profile?.missing_score_items ?? []}
       />
 
-      <ProfileInfoList profile={profile} professional={professional} />
+      <ProfileInfoList
+        profile={profile}
+        professional={professional}
+        personal={personal}
+      />
 
       <UploadCvSection cvUrl={profile?.cv ?? null} />
     </aside>

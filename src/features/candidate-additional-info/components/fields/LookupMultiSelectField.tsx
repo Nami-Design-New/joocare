@@ -5,53 +5,59 @@ import { type FieldPathByValue, useFormContext } from 'react-hook-form';
 import MultiSelectChipsField from '@/shared/components/MultiSelectChipsField';
 import type { Option } from '@/shared/components/SelectInputField';
 import type { LookupHook } from '../../hooks/useLookupOptions';
+import { useSavedOptions } from '../../hooks/useSavedOptions';
+import { withSavedOptions } from '../../utils/lookup-field';
 import type { AdditionalInfoValues } from '../../types/additional-info.types';
 import { FIELD_CLASS_NAME } from './FormSelectField';
+import LookupError from './LookupError';
 
 type LookupMultiSelectFieldProps = {
   name: FieldPathByValue<AdditionalInfoValues, string[]>;
   label: string;
   placeholder: string;
-  /** API lookup; omit it and pass `options` for a fixed list. */
-  useLookup?: LookupHook;
-  options?: Option[];
+  useLookup: LookupHook;
+  /** Options shown before the API options (e.g. "Other"). */
+  leadingOptions?: Option[];
   chipVariant?: 'outline' | 'mobility';
+  /** Disables the field on top of the lookup's own loading / error state. */
+  disabled?: boolean;
 };
-
-const useNoLookup: LookupHook = () => ({
-  options: [],
-  disabled: false,
-  onReachEnd: () => undefined,
-  hasNextPage: false,
-  isFetchingNextPage: false,
-});
 
 // Multi-select with a "N selected" badge and the selection as chips under the field.
 export default function LookupMultiSelectField({
   name,
   label,
   placeholder,
-  useLookup = useNoLookup,
-  options,
+  useLookup,
+  leadingOptions = [],
   chipVariant = 'outline',
+  disabled = false,
 }: LookupMultiSelectFieldProps) {
   const { control } = useFormContext<AdditionalInfoValues>();
   const [search, setSearch] = useState('');
   const lookup = useLookup(search);
+  const saved = useSavedOptions(name);
 
   return (
-    <MultiSelectChipsField
-      control={control}
-      name={name}
-      label={label}
-      placeholder={placeholder}
-      {...lookup}
-      options={options ?? lookup.options}
-      onSearchChange={options ? undefined : setSearch}
-      showSelectedCount={chipVariant === 'outline'}
-      chipVariant={chipVariant}
-      chipClassName={chipVariant === 'outline' ? 'text-primary' : undefined}
-      className={FIELD_CLASS_NAME}
-    />
+    <div className="flex min-w-0 flex-col gap-1">
+      <MultiSelectChipsField
+        control={control}
+        name={name}
+        label={label}
+        placeholder={placeholder}
+        {...lookup}
+        options={withSavedOptions(
+          [...leadingOptions, ...lookup.options],
+          search ? [] : saved,
+        )}
+        disabled={disabled || lookup.disabled}
+        onSearchChange={setSearch}
+        showSelectedCount={chipVariant === 'outline'}
+        chipVariant={chipVariant}
+        chipClassName={chipVariant === 'outline' ? 'text-primary' : undefined}
+        className={FIELD_CLASS_NAME}
+      />
+      {lookup.isError && <LookupError />}
+    </div>
   );
 }

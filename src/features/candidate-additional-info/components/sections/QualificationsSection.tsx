@@ -1,18 +1,20 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { LICENSE_STATUSES, VERIFICATION_STATUSES } from '../../constants';
+import { useFormContext, useWatch } from 'react-hook-form';
 import {
   useCertificationLookup,
   useCountryLookup,
   useEducationLevelLookup,
   useExperienceLookup,
-  useLicenseLookup,
+  usePrimaryLicenseLookup,
+  useLicenseStatusLookup,
   useSeniorityLookup,
+  useVerificationStatusLookup,
 } from '../../hooks/useLookupOptions';
-import LookupMultiSelectField from '../fields/LookupMultiSelectField';
+import type { AdditionalInfoValues } from '../../types/additional-info.types';
 import LookupSelectField from '../fields/LookupSelectField';
-import OptionsSelectField from '../fields/OptionsSelectField';
+import MultiSelectWithOtherField from '../fields/MultiSelectWithOtherField';
 import InfoSection from '../InfoSection';
 import InfoSubsection from '../InfoSubsection';
 
@@ -20,6 +22,21 @@ const GRID = 'grid grid-cols-1 items-start gap-5 md:grid-cols-2';
 
 export default function QualificationsSection() {
   const t = useTranslations('candidatePage.additional-info');
+  const { control, setValue } = useFormContext<AdditionalInfoValues>();
+  const hasLicense = Boolean(
+    useWatch({ control, name: 'professionalLicense' }),
+  );
+
+  // License country and statuses belong to the selected license.
+  const clearLicenseDetails = (license: string) => {
+    if (license) return;
+    setValue('professionalLicenseCountries', [], { shouldDirty: true });
+    setValue('otherLicenseCountry', '', { shouldDirty: true });
+    setValue('licenseStatus', '', { shouldDirty: true });
+    setValue('verificationStatus', '', { shouldDirty: true });
+  };
+  const licenseDetailPlaceholder = (placeholder: string) =>
+    hasLicense ? placeholder : t('placeholders.select-license-first');
 
   return (
     <InfoSection section="qualifications">
@@ -47,35 +64,51 @@ export default function QualificationsSection() {
             placeholder={t('placeholders.select-education')}
             useLookup={useEducationLevelLookup}
           />
-          <LookupMultiSelectField
+          <MultiSelectWithOtherField
             name="certifications"
+            otherName="otherCertification"
             label={t('fields.certifications')}
             placeholder={t('placeholders.add-certifications')}
+            otherPlaceholder={t('placeholders.other-certification')}
             useLookup={useCertificationLookup}
           />
           <LookupSelectField
             name="professionalLicense"
             label={t('fields.professional-license')}
             placeholder={t('placeholders.select-license')}
-            useLookup={useLicenseLookup}
+            useLookup={usePrimaryLicenseLookup}
+            onValueChange={clearLicenseDetails}
+          />
+          <MultiSelectWithOtherField
+            name="professionalLicenseCountries"
+            otherName="otherLicenseCountry"
+            label={t('fields.license-country')}
+            placeholder={licenseDetailPlaceholder(
+              t('placeholders.select-country'),
+            )}
+            otherPlaceholder={t('placeholders.other-license-country')}
+            useLookup={useCountryLookup}
+            disabled={!hasLicense}
           />
           <LookupSelectField
-            name="licenseCountry"
-            label={t('fields.license-country')}
-            placeholder={t('placeholders.select-country')}
-            useLookup={useCountryLookup}
-          />
-          <OptionsSelectField
             name="licenseStatus"
             label={t('fields.license-status')}
-            placeholder={t('placeholders.select-status')}
-            options={LICENSE_STATUSES}
+            placeholder={licenseDetailPlaceholder(
+              t('placeholders.select-status'),
+            )}
+            useLookup={useLicenseStatusLookup}
+            searchable={false}
+            disabled={!hasLicense}
           />
-          <OptionsSelectField
+          <LookupSelectField
             name="verificationStatus"
             label={t('fields.verification-status')}
-            placeholder={t('placeholders.select-status')}
-            options={VERIFICATION_STATUSES}
+            placeholder={licenseDetailPlaceholder(
+              t('placeholders.select-status'),
+            )}
+            useLookup={useVerificationStatusLookup}
+            searchable={false}
+            disabled={!hasLicense}
           />
         </div>
       </InfoSubsection>

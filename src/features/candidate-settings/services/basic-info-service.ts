@@ -20,6 +20,9 @@ export type CandidateSettingsProfile = {
   subspecialtyTitle: string;
   domainId: string;
   categoryId: string;
+  // Saved choices with their labels, for selects whose loaded options miss them.
+  domain: CandidateSettingsOption | null;
+  category: CandidateSettingsOption | null;
   experienceId: string;
   countryId: string;
   cityId: string;
@@ -71,6 +74,13 @@ function resolveStoredFileUrl(path: string | null | undefined) {
   return `${STORAGE_BASE_URL}/${path.replace(/^\/+/, '')}`;
 }
 
+function toSavedOption(
+  id: string | null | undefined,
+  label: string | null | undefined,
+): CandidateSettingsOption | null {
+  return id && label ? { id, label } : null;
+}
+
 export function mapCandidateProfileToSettingsProfile(
   profile: CandidateProfileViewModel,
 ): CandidateSettingsProfile {
@@ -85,6 +95,8 @@ export function mapCandidateProfileToSettingsProfile(
     subspecialtyTitle: profile.subspecialtyTitle ?? '',
     domainId: profile.domainId ?? '',
     categoryId: profile.categoryId ?? '',
+    domain: toSavedOption(profile.domainId, profile.domainTitle),
+    category: toSavedOption(profile.categoryId, profile.categoryTitle),
     experienceId: profile.experienceId ?? '',
     countryId: profile.countryId ?? '',
     cityId: profile.cityId ?? '',

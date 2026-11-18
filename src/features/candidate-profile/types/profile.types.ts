@@ -77,8 +77,11 @@ export type CandidateProfileApiUser = {
   specialty: CandidateProfileApiLookup | null;
   specialty_title: string | null;
   subspecialty_title?: string | null;
+  // Domain / category: ids and, once the backend adds them, `{ id, title }` objects.
   domain_id?: number | null;
+  domain?: CandidateProfileApiLookup | null;
   category_id?: number | null;
+  category?: CandidateProfileApiLookup | null;
   cv: string | null;
   image: string | null;
   experience_id: number | null;
@@ -117,7 +120,9 @@ export type CandidateProfileViewModel = {
   specialty_title?: string | null;
   subspecialtyTitle?: string | null;
   domainId?: string | null;
+  domainTitle?: string | null;
   categoryId?: string | null;
+  categoryTitle?: string | null;
   experienceId?: string | null;
   countryId?: string | null;
   cityId?: string | null;
@@ -135,15 +140,20 @@ export type CandidateProfileViewModel = {
   experiences: CandidateExperienceViewModel[];
   hiring_readiness_score?: number | null;
   missing_score_items: string[];
-  // Pending backend fields (Figma profile side panel); shown as "-" until the profile API
-  // returns them.
+  // Pending backend field (Figma profile side panel); shown as "-" until the API
+  // returns it.
   isVerified?: boolean;
-  gender?: string | null;
-  religion?: string | null;
-  maritalStatus?: string | null;
-  languages?: string[];
-  drivingLicense?: boolean | null;
-  licenseCountries?: string[];
+};
+
+// Personal rows of the profile side panel, from `GET USER/profile-details`.
+export type CandidatePersonalDetails = {
+  domain: string | null;
+  gender: string | null;
+  maritalStatus: string | null;
+  religion: string | null;
+  languages: string[];
+  drivingLicense: boolean | null;
+  licenseCountries: string[];
 };
 
 // Specialty / domain rows of the profile side panel (domain / category names come from their lookups).

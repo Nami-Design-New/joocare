@@ -3,21 +3,54 @@
 import useGetAvailabilities from '@/shared/hooks/useGetAvailabilities';
 import useGetCountries from '@/shared/hooks/useGetCountries';
 import useGetCurrencies from '@/shared/hooks/useGetCurrencies';
+import useGetDomains from '@/shared/hooks/useGetDomains';
 import useGetEducationLevels from '@/shared/hooks/useGetEducationLevels';
 import useGetExperiences from '@/shared/hooks/useGetExperiences';
 import useGetJobTitles from '@/shared/hooks/useGetJobTitles';
-import useGetLicenses from '@/shared/hooks/useGetLicenses';
 import useGetMandatoryCertifications from '@/shared/hooks/useGetMandatoryCertifications';
-import useGetRoleCategories from '@/shared/hooks/useGetRoleCategories';
-import useGetSeniorityLevels from '@/shared/hooks/useGetSeniorityLevels';
-import { type LookupFieldProps, toLookupField } from '../utils/lookup-field';
+import useGetPrimaryLicenses from '@/shared/hooks/useGetPrimaryLicenses';
+import useGetReligions from '@/shared/hooks/useGetReligions';
+import { useInfiniteLookup } from '@/shared/hooks/useInfiniteLookup';
+import type { EnumLookupEndpoint } from '../services/lookup-service';
+import {
+  type LookupFieldProps,
+  toEnumLookupField,
+  toLookupField,
+} from '../utils/lookup-field';
+import useGetEnumLookup from './useGetEnumLookup';
+import useProfileCategoryId from './useProfileCategoryId';
 
 // Lookup hooks for the select fields; each takes the field's search text.
 export type LookupHook = (search: string) => LookupFieldProps;
 
+// Fixed-choice lookups: one request, no search or paging.
+function useEnumLookup(endpoint: EnumLookupEndpoint) {
+  return toEnumLookupField(useGetEnumLookup(endpoint));
+}
+
+export const useGenderLookup: LookupHook = () => useEnumLookup('genders');
+export const useLanguageLookup: LookupHook = () => useEnumLookup('languages');
+export const useProficiencyLookup: LookupHook = () =>
+  useEnumLookup('language-proficiency-levels');
+export const useLicenseStatusLookup: LookupHook = () =>
+  useEnumLookup('license-statuses');
+export const useVerificationStatusLookup: LookupHook = () =>
+  useEnumLookup('license-verification-statuses');
+export const useMaritalStatusLookup: LookupHook = () =>
+  useEnumLookup('marital-statuses');
+export const useSponsorshipLookup: LookupHook = () =>
+  useEnumLookup('sponsorship-requirements');
+export const useVisaStatusLookup: LookupHook = () =>
+  useEnumLookup('visa-statuses');
+
 export const useCountryLookup: LookupHook = (search) => {
   const query = useGetCountries(search);
   return toLookupField(query, query.countries);
+};
+
+export const useDomainLookup: LookupHook = (search) => {
+  const query = useGetDomains(search);
+  return toLookupField(query, query.domains);
 };
 
 export const useJobTitleLookup: LookupHook = (search) => {
@@ -40,9 +73,14 @@ export const useCertificationLookup: LookupHook = (search) => {
   return toLookupField(query, query.mandatoryCertifications);
 };
 
-export const useLicenseLookup: LookupHook = (search) => {
-  const query = useGetLicenses(search);
-  return toLookupField(query, query.licenses);
+export const usePrimaryLicenseLookup: LookupHook = (search) => {
+  const query = useGetPrimaryLicenses(search);
+  return toLookupField(query, query.primaryLicenses);
+};
+
+export const useReligionLookup: LookupHook = (search) => {
+  const query = useGetReligions(search);
+  return toLookupField(query, query.religions);
 };
 
 export const useAvailabilityLookup: LookupHook = (search) => {
@@ -61,14 +99,19 @@ export const useCurrencyLookup: LookupHook = (search) => {
   );
 };
 
-// Seniority levels of every role category, since the form does not ask for one.
+// Levels are filtered by the category chosen in Basic info.
 export const useSeniorityLookup: LookupHook = (search) => {
-  const { roleCategories } = useGetRoleCategories();
-  const query = useGetSeniorityLevels(
+  const { categoryId, isPending } = useProfileCategoryId();
+  const query = useInfiniteLookup({
+    endpoint: 'seniority-levels',
+    queryKey: 'seniority-levels',
     search,
-    roleCategories.map((category: { id: number | string }) =>
-      Number(category.id),
-    ),
+    limitPerPage: 100,
+    extraParams: { category_id: categoryId },
+    enabled: !isPending,
+  });
+  return toLookupField(
+    query,
+    query.data?.pages.flatMap((page) => page.data) ?? [],
   );
-  return toLookupField(query, query.seniorityLevels);
 };

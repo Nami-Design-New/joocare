@@ -32,20 +32,26 @@ async function getTaxonomyTitle(
   return data.data.find((item) => String(item.id) === id)?.title.trim() ?? null;
 }
 
-// Specialty / domain / category rows of the profile home side panel.
+// Specialty / domain / category rows of the profile home side panel. Titles come from
+// the profile when it returns the domain / category objects, else from their lookups.
+// `savedDomain` is the domain saved from the Additional info tab (profile details),
+// used when the profile has no domain.
 export async function getProfessionalProfile(
   profile: CandidateProfileViewModel | null,
+  savedDomain: string | null = null,
 ): Promise<CandidateProfessionalProfile> {
   const locale = await getLocale();
   const [domain, category] = await Promise.all([
-    getTaxonomyTitle('domains', profile?.domainId, locale),
-    getTaxonomyTitle('categories', profile?.categoryId, locale),
+    profile?.domainTitle ??
+      getTaxonomyTitle('domains', profile?.domainId, locale),
+    profile?.categoryTitle ??
+      getTaxonomyTitle('categories', profile?.categoryId, locale),
   ]);
 
   return {
     specialty: profile?.specialty_title ?? null,
     subspecialty: profile?.subspecialtyTitle ?? null,
-    domain,
+    domain: domain ?? savedDomain,
     category,
   };
 }

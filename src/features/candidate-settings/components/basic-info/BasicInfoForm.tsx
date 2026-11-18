@@ -543,6 +543,8 @@ const BasicInfoForm = ({ profile }: BasicInfoFormProps) => {
         control={control}
         register={register}
         errors={errors}
+        savedDomain={profile.domain}
+        savedCategory={profile.category}
       />
 
       <div>

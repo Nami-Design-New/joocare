@@ -2,6 +2,8 @@
 
 These rules apply to every change, whether it is written by a developer or by an AI agent (Codex, Claude, ...). The goal is a codebase that looks like it was written by one person: same structure, same patterns, clean and reusable components.
 
+**Mandatory:** Follow the repository's conventions, architecture, and folder structure. If a task appears to require an exception, ask the user for approval before making that exception.
+
 When a rule conflicts with old code, **follow the rule for new code** and leave old code alone unless you are already working on it. Existing violations are not patterns to copy.
 
 ## 1. Architecture and Folder Structure

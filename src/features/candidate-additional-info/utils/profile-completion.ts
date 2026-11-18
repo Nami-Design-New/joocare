@@ -26,7 +26,7 @@ const SECTION_FIELDS: Record<
     'educationLevel',
     'certifications',
     'professionalLicense',
-    'licenseCountry',
+    'professionalLicenseCountries',
     'licenseStatus',
     'verificationStatus',
   ],
@@ -42,6 +42,7 @@ const SECTION_FIELDS: Record<
     'currentCity',
     'sponsorship',
     'maritalStatus',
+    'religion',
   ],
   salary: ['currentSalary', 'expectedMin', 'expectedMax'],
 };

@@ -9,6 +9,8 @@ import {
   type Option,
   SelectInputField,
 } from '@/shared/components/SelectInputField';
+import { useTranslations } from 'next-intl';
+import { CLEAR_OPTION } from '../../constants';
 import type { AdditionalInfoValues } from '../../types/additional-info.types';
 
 export type StringFieldName = FieldPathByValue<AdditionalInfoValues, string>;
@@ -29,6 +31,8 @@ type FormSelectFieldProps = {
   isFetchingNextPage?: boolean;
   /** Runs after the value changes (e.g. to reset a dependent field). */
   onValueChange?: (value: string) => void;
+  /** Adds a "Clear selection" option while a value is selected (default on). */
+  clearable?: boolean;
 };
 
 export default function FormSelectField({
@@ -39,9 +43,15 @@ export default function FormSelectField({
   className = FIELD_CLASS_NAME,
   onSearchChange,
   onValueChange,
+  clearable = true,
   ...props
 }: FormSelectFieldProps) {
+  const t = useTranslations('candidatePage.additional-info.options');
   const { control } = useFormContext<AdditionalInfoValues>();
+  const clearOption: Option = {
+    value: CLEAR_OPTION,
+    label: t('clear-selection'),
+  };
 
   return (
     <Controller
@@ -53,9 +63,12 @@ export default function FormSelectField({
           label={label}
           aria-label={label ? undefined : placeholder}
           placeholder={placeholder}
-          options={options}
+          options={
+            clearable && field.value ? [clearOption, ...options] : options
+          }
           value={field.value}
-          onChange={(value) => {
+          onChange={(selected) => {
+            const value = selected === CLEAR_OPTION ? '' : selected;
             field.onChange(value);
             onValueChange?.(value);
           }}

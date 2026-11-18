@@ -898,7 +898,9 @@
       "saved": "تم حفظ معلوماتك الإضافية",
       "errors": {
         "invalid-amount": "أدخل مبلغًا صحيحًا",
-        "salary-range": "يجب أن يكون الحد الأقصى للراتب أكبر من الحد الأدنى"
+        "salary-range": "يجب أن يكون الحد الأقصى للراتب أكبر من الحد الأدنى",
+        "other-required": "أدخل قيمة للخيار \"أخرى\"",
+        "save-failed": "تعذر حفظ التغييرات. حاول مرة أخرى."
       },
       "completion": {
         "label": "اكتمال الملف الشخصي",
@@ -966,6 +968,7 @@
         "current-city": "المدينة الحالية",
         "sponsorship": "متطلبات الكفالة",
         "marital-status": "الحالة الاجتماعية",
+        "religion": "الديانة",
         "current-salary": "الراتب الحالي",
         "expected-salary": "نطاق الراتب المتوقع",
         "currency": "العملة"
@@ -976,19 +979,23 @@
         "select-seniority": "اختر المستوى الوظيفي",
         "select-education": "اختر أعلى مستوى",
         "add-certifications": "أضف الشهادات",
+        "select-license-first": "اختر الترخيص أولًا",
         "select-license": "اختر الترخيص",
         "select-country": "اختر الدولة",
         "select-country-first": "اختر الدولة أولًا",
         "select-status": "اختر الحالة",
         "select-language": "اختر اللغة",
         "select-marital-status": "اختر الحالة الاجتماعية",
+        "select-religion": "اختر الديانة",
         "search-titles": "ابحث عن المسميات",
         "search-countries": "ابحث عن الدول",
         "search-industries": "ابحث عن القطاعات",
         "privilege": "مثال: المناظير",
         "current-salary": "الراتب الحالي",
         "expectedMin": "الحد الأدنى",
-        "expectedMax": "الحد الأقصى"
+        "expectedMax": "الحد الأقصى",
+        "other-certification": "أدخل اسم الشهادة",
+        "other-license-country": "أدخل اسم الدولة"
       },
       "mobility": {
         "relocation-title": "الاستعداد للانتقال",
@@ -1003,41 +1010,19 @@
       },
       "career": {
         "job-search-status": "حالة البحث عن عمل",
-        "job-search-status-hint": "تظهر لأصحاب العمل كشارة على ملفك الشخصي",
-        "statuses": {
-          "open-to-work": "متاح للعمل",
-          "actively-looking": "أبحث بنشاط",
-          "open-to-opportunities": "منفتح على الفرص"
-        }
+        "job-search-status-hint": "تظهر لأصحاب العمل كشارة على ملفك الشخصي"
       },
       "professional": {
         "privileges-hint": "أضف كل امتياز على حدة — كل إدخال يُستخدم ككلمة مفتاحية مستقلة في مطابقة الوظائف بالذكاء الاصطناعي"
       },
       "options": {
-        "valid": "سارية",
-        "expired": "منتهية",
-        "pending": "قيد المراجعة",
-        "verified": "تم التحقق",
-        "not-verified": "لم يتم التحقق",
-        "basic": "مبتدئ",
-        "intermediate": "متوسط",
-        "advanced": "متقدم",
-        "fluent": "طليق",
-        "native": "لغة أم",
-        "male": "ذكر",
-        "female": "أنثى",
-        "single": "أعزب",
-        "married": "متزوج",
-        "divorced": "مطلق",
-        "widowed": "أرمل",
-        "citizen": "مواطن",
-        "resident": "مقيم",
-        "work-visa": "تأشيرة عمل",
-        "visit-visa": "تأشيرة زيارة",
-        "no-visa": "بدون تأشيرة",
-        "required": "مطلوبة",
-        "not-required": "غير مطلوبة"
-      }
+        "lookup-error": "تعذر تحميل الخيارات.",
+        "other": "أخرى",
+        "clear-selection": "إلغاء الاختيار",
+        "back-to-list": "العودة إلى القائمة"
+      },
+      "load-error": "تعذر تحميل معلوماتك الإضافية.",
+      "saving": "جارٍ الحفظ..."
     },
     "buildCv": {
       "badge": "منشئ السيرة الذاتية الذكي",

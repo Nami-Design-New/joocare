@@ -3,16 +3,17 @@
 import { useFormContext } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import {
-  GENDERS,
-  MARITAL_STATUSES,
-  SPONSORSHIP_OPTIONS,
-  VISA_STATUSES,
-} from '../../constants';
-import { useCountryLookup } from '../../hooks/useLookupOptions';
+  useCountryLookup,
+  useGenderLookup,
+  useMaritalStatusLookup,
+  useReligionLookup,
+  useSponsorshipLookup,
+  useVisaStatusLookup,
+} from '../../hooks/useLookupOptions';
 import type { AdditionalInfoValues } from '../../types/additional-info.types';
 import CurrentCityField from '../fields/CurrentCityField';
+import LookupMultiSelectField from '../fields/LookupMultiSelectField';
 import LookupSelectField from '../fields/LookupSelectField';
-import OptionsSelectField from '../fields/OptionsSelectField';
 import InfoSection from '../InfoSection';
 
 export default function PersonalDetailsSection() {
@@ -35,30 +36,39 @@ export default function PersonalDetailsSection() {
           useLookup={useCountryLookup}
           onValueChange={() => setValue('currentCity', '')}
         />
-        <OptionsSelectField
+        <LookupSelectField
           name="visaStatus"
           label={t('fields.visa-status')}
           placeholder={t('placeholders.select')}
-          options={VISA_STATUSES}
+          useLookup={useVisaStatusLookup}
+          searchable={false}
         />
-        <OptionsSelectField
+        <LookupSelectField
           name="gender"
           label={t('fields.gender')}
           placeholder={t('placeholders.select')}
-          options={GENDERS}
+          useLookup={useGenderLookup}
+          searchable={false}
         />
         <CurrentCityField />
-        <OptionsSelectField
+        <LookupMultiSelectField
           name="sponsorship"
           label={t('fields.sponsorship')}
           placeholder={t('placeholders.select')}
-          options={SPONSORSHIP_OPTIONS}
+          useLookup={useSponsorshipLookup}
         />
-        <OptionsSelectField
+        <LookupSelectField
           name="maritalStatus"
           label={t('fields.marital-status')}
           placeholder={t('placeholders.select-marital-status')}
-          options={MARITAL_STATUSES}
+          useLookup={useMaritalStatusLookup}
+          searchable={false}
+        />
+        <LookupSelectField
+          name="religion"
+          label={t('fields.religion')}
+          placeholder={t('placeholders.select-religion')}
+          useLookup={useReligionLookup}
         />
       </div>
     </InfoSection>

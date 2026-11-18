@@ -2,14 +2,21 @@
 
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import { cn } from '@/shared/lib/utils';
-import { JOB_SEARCH_STATUSES } from '../../constants';
+import { JOB_SEARCH_STATUS_DOTS } from '../../constants';
+import useGetEnumLookup from '../../hooks/useGetEnumLookup';
 import type { AdditionalInfoValues } from '../../types/additional-info.types';
+import LookupError from './LookupError';
 
-// Single choice status shown to employers as a badge on the profile.
+const SKELETONS = [0, 1, 2];
+
+// Single choice status shown to employers as a badge on the profile; clicking
+// the selected card again clears it.
 export default function JobSearchStatusField() {
   const t = useTranslations('candidatePage.additional-info.career');
   const { control } = useFormContext<AdditionalInfoValues>();
+  const statuses = useGetEnumLookup('job-search-statuses');
 
   return (
     <Controller
@@ -24,7 +31,11 @@ export default function JobSearchStatusField() {
             </span>
           </legend>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-            {JOB_SEARCH_STATUSES.map(({ value, dotClassName }) => {
+            {statuses.isPending &&
+              SKELETONS.map((index) => (
+                <Skeleton key={index} className="h-13 rounded-full" />
+              ))}
+            {statuses.data?.map(({ value, label }) => {
               const checked = field.value === value;
               return (
                 <label
@@ -43,6 +54,8 @@ export default function JobSearchStatusField() {
                     value={value}
                     checked={checked}
                     onChange={() => field.onChange(value)}
+                    // Clicking the selected card again clears the status.
+                    onClick={() => checked && field.onChange('')}
                     className="sr-only"
                   />
                   <span
@@ -56,13 +69,17 @@ export default function JobSearchStatusField() {
                   />
                   <span
                     aria-hidden
-                    className={cn('size-2 shrink-0 rounded-full', dotClassName)}
+                    className={cn(
+                      'size-2 shrink-0 rounded-full',
+                      JOB_SEARCH_STATUS_DOTS[value] ?? 'bg-muted-foreground',
+                    )}
                   />
-                  {t(`statuses.${value}`)}
+                  {label}
                 </label>
               );
             })}
           </div>
+          {statuses.isError && <LookupError />}
         </fieldset>
       )}
     />

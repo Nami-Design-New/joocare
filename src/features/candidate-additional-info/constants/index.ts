@@ -1,6 +1,6 @@
 import type {
   AdditionalInfoSectionKey,
-  JobSearchStatus,
+  AdditionalInfoValues,
 } from '../types/additional-info.types';
 
 // Number of language rows in the form (the design allows up to 3 languages).
@@ -26,44 +26,18 @@ export const MOBILITY_ICONS = {
   drivingLicense: '/assets/icons/mobility/car.svg',
 } as const;
 
-// Fixed choices owned by the UI; labels come from `candidatePage.additional-info.options`.
-export const LICENSE_STATUSES = ['valid', 'expired', 'pending'] as const;
-export const VERIFICATION_STATUSES = [
-  'verified',
-  'pending',
-  'not-verified',
-] as const;
-export const PROFICIENCY_LEVELS = [
-  'basic',
-  'intermediate',
-  'advanced',
-  'fluent',
-  'native',
-] as const;
-export const GENDERS = ['male', 'female'] as const;
-export const MARITAL_STATUSES = [
-  'single',
-  'married',
-  'divorced',
-  'widowed',
-] as const;
-export const VISA_STATUSES = [
-  'citizen',
-  'resident',
-  'work-visa',
-  'visit-visa',
-  'no-visa',
-] as const;
-export const SPONSORSHIP_OPTIONS = ['required', 'not-required'] as const;
+// Value of the "Other" choice in the multi-selects that accept free text.
+export const OTHER_OPTION = 'other';
 
-export const JOB_SEARCH_STATUSES: readonly {
-  value: JobSearchStatus;
-  dotClassName: string;
-}[] = [
-  { value: 'open-to-work', dotClassName: 'bg-job-status-open' },
-  { value: 'actively-looking', dotClassName: 'bg-job-status-active' },
-  { value: 'open-to-opportunities', dotClassName: 'bg-job-status-passive' },
-];
+// Value of the "Clear selection" option that empties a single select.
+export const CLEAR_OPTION = '__clear__';
+
+// Status dot colors by `/job-search-statuses` value (labels come from the API).
+export const JOB_SEARCH_STATUS_DOTS: Record<string, string> = {
+  open_to_work: 'bg-job-status-open',
+  actively_looking: 'bg-job-status-active',
+  open_to_opportunities: 'bg-job-status-passive',
+};
 
 // Sections tracked by the profile completion checklist (in display order).
 export const COMPLETION_SECTIONS: readonly AdditionalInfoSectionKey[] = [
@@ -74,3 +48,44 @@ export const COMPLETION_SECTIONS: readonly AdditionalInfoSectionKey[] = [
   'professional',
   'personal',
 ];
+
+// Form values before anything is saved.
+export const EMPTY_ADDITIONAL_INFO: AdditionalInfoValues = {
+  yearsInRole: '',
+  seniorityLevel: '',
+  educationLevel: '',
+  certifications: [],
+  otherCertification: '',
+  professionalLicense: '',
+  professionalLicenseCountries: [],
+  otherLicenseCountry: '',
+  licenseStatus: '',
+  verificationStatus: '',
+  languages: Array.from({ length: LANGUAGE_SLOTS }, () => ({
+    language: '',
+    proficiency: '',
+  })),
+  relocation: '',
+  preferredCountries: [],
+  drivingLicense: '',
+  licenseCountries: [],
+  designations: [],
+  workLocations: [],
+  industries: [],
+  noticePeriod: '',
+  jobSearchStatus: '',
+  clinicalPrivileges: [],
+  nationality: '',
+  currentCountry: '',
+  visaStatus: '',
+  gender: '',
+  currentCity: '',
+  sponsorship: [],
+  maritalStatus: '',
+  religion: '',
+  currentSalary: '',
+  currentCurrency: DEFAULT_CURRENCY_ID,
+  expectedMin: '',
+  expectedMax: '',
+  expectedCurrency: DEFAULT_CURRENCY_ID,
+};

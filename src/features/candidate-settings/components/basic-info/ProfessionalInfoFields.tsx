@@ -17,6 +17,7 @@ import {
 import useGetCategories from '@/shared/hooks/useGetCategories';
 import useGetDomains from '@/shared/hooks/useGetDomains';
 
+import type { CandidateSettingsOption } from '../../services/basic-info-service';
 import type { BasicInfoLookupItem } from '../../types/basic-info.types';
 import type { TSettingBasicInfoSchema } from '../../validation/basic-info-schema';
 
@@ -24,6 +25,8 @@ type ProfessionalInfoFieldsProps = {
   control: Control<TSettingBasicInfoSchema>;
   register: UseFormRegister<TSettingBasicInfoSchema>;
   errors: FieldErrors<TSettingBasicInfoSchema>;
+  savedDomain: CandidateSettingsOption | null;
+  savedCategory: CandidateSettingsOption | null;
 };
 
 function toLookupOptions(items: BasicInfoLookupItem[]): Option[] {
@@ -35,6 +38,18 @@ function toLookupOptions(items: BasicInfoLookupItem[]): Option[] {
     .filter((option) => option.label);
 }
 
+// Adds the saved choice when the loaded options miss it, so its label still shows.
+function withSavedOption(
+  options: Option[],
+  saved: CandidateSettingsOption | null,
+  search: string,
+): Option[] {
+  if (!saved || search || options.some((option) => option.value === saved.id)) {
+    return options;
+  }
+  return [...options, { value: saved.id, label: saved.label }];
+}
+
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : undefined;
 }
@@ -43,6 +58,8 @@ export default function ProfessionalInfoFields({
   control,
   register,
   errors,
+  savedDomain,
+  savedCategory,
 }: ProfessionalInfoFieldsProps) {
   const t = useTranslations('candidateSettingsPage');
   const tAuth = useTranslations('authPage.common');
@@ -67,8 +84,16 @@ export default function ProfessionalInfoFields({
     isFetchingNextPage: isFetchingMoreCategories,
   } = useGetCategories(categorySearch);
 
-  const domainOptions = toLookupOptions(domains);
-  const categoryOptions = toLookupOptions(categories);
+  const domainOptions = withSavedOption(
+    toLookupOptions(domains),
+    savedDomain,
+    domainSearch,
+  );
+  const categoryOptions = withSavedOption(
+    toLookupOptions(categories),
+    savedCategory,
+    categorySearch,
+  );
 
   return (
     <>

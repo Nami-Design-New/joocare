@@ -11,11 +11,6 @@ export type AdditionalInfoSectionKey =
   | 'personal'
   | 'salary';
 
-export type JobSearchStatus =
-  | 'open-to-work'
-  | 'actively-looking'
-  | 'open-to-opportunities';
-
 export type CompletionItem = {
   section: AdditionalInfoSectionKey;
   done: boolean;
