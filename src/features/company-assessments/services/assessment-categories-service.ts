@@ -28,7 +28,7 @@ function mapCategory(
     source,
     name: item.name,
     description: item.description ?? '',
-    assessmentCount: STATIC_CATEGORY_ASSESSMENT_COUNT,
+    assessmentCount: item.assessment_count,
   };
 }
 
