@@ -1,5 +1,6 @@
 import { getUserApiUrl } from '@/shared/lib/api-endpoints';
 import { createHttpStatusError } from '@/shared/lib/http-error';
+import { getNextAuthToken } from '@/shared/util/auth.util';
 import { getLocale } from 'next-intl/server';
 import {
   CompanyJobsResponse,
@@ -15,11 +16,15 @@ export async function getCompanyProfile(
   slug: string,
 ): Promise<CompanyProfileApiResponse['data']> {
   const locale = await getLocale();
+  const authSession = await getNextAuthToken();
   const response = await fetch(`${getUserApiUrl()}/companies/${slug}`, {
     headers: {
       Accept: 'application/json',
       'Accept-Language': locale,
       'X-Timezone': getTimeZone(),
+      ...(authSession?.accessToken
+        ? { Authorization: `Bearer ${authSession.accessToken}` }
+        : {}),
     },
     cache: 'no-store',
   });
