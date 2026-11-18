@@ -260,7 +260,7 @@
     "specialty": "التخصص",
     "education-certifications": "قسم التعليم والشهادات",
     "education-level": "المستوى التعليمي",
-    "mandatory-certifications": "الشهادات الإلزامية",
+    "mandatory-certifications": "الشهادات المطلوبة",
     "share-this-job": "شارك هذه الوظيفة:",
     "copy-link": "نسخ الرابط",
     "check-out-this-job": "اطلع على هذه الوظيفة",
@@ -2119,7 +2119,7 @@
           "label": "المستوى التعليمي"
         },
         "mandatoryCertifications": {
-          "label": "الشهادات الإلزامية"
+          "label": "الشهادات المطلوبة"
         },
         "addNewCertification": {
           "label": "إضافة شهادة جديدة",
@@ -2167,7 +2167,7 @@
           "roleCategory": "الوظيفة",
           "seniorityLevel": "المستوى الوظيفي",
           "educationLevel": "المستوى التعليمي",
-          "mandatoryCertifications": "الشهادات الإلزامية",
+          "mandatoryCertifications": "الشهادات المطلوبة",
           "availability": "التوفر"
         }
       },
@@ -2199,7 +2199,9 @@
         "atLeastOneSkillRequired": "يجب اختيار مهارة واحدة على الأقل",
         "assessmentLibraryRequired": "اختر مكتبة تقييمات.",
         "assessmentCategoryRequired": "اختر فئة التقييم.",
-        "assessmentRequired": "اختر تقييمًا."
+        "assessmentRequired": "اختر تقييمًا.",
+        "questionsIncomplete": "بعض الأسئلة ينقصها خيارات أو إجابة صحيحة. عدّلها واختر الإجابات مرة أخرى.",
+        "questionsLimit": "يمكنك إضافة 10 أسئلة كحد أقصى إجمالًا من القوالب والأسئلة المخصصة."
       },
       "editor": {
         "normal-text": "نص عادي",
@@ -2216,6 +2218,7 @@
         "category-label": "فئة التقييم",
         "assessment-label": "التقييم",
         "preview": "معاينة التقييم",
+        "locked-hint": "لا يمكن تغيير التقييم بعد إنشاء الوظيفة.",
         "fit-title": "هل هذا التقييم مناسب لهذه الوظيفة؟",
         "fit-description": "سيُطلب من المرشحين المتقدمين لهذه الوظيفة إكمال «{title}» ({count} سؤالًا). تأكد من توافقه مع تخصص الوظيفة ومستواها الوظيفي قبل المتابعة.",
         "fit-confirm": "نعم، تابع",
@@ -2251,6 +2254,15 @@
         "title": "الأسئلة",
         "templates-title": "قوالب الأسئلة",
         "templates-helper": "اختر أي قالب لإضافة سؤال فرز مُعد مسبقًا بسرعة.",
+        "templates-empty": "لا توجد قوالب أسئلة متاحة حاليًا.",
+        "templates-error": "تعذّر تحميل قوالب الأسئلة.",
+        "templates-retry": "حاول مرة أخرى",
+        "limit-helper": "إضافة الأسئلة اختيارية. تمت إضافة {count} من {max} من القوالب والأسئلة المخصصة معًا.",
+        "limit-reached": "يمكنك إضافة {max} أسئلة كحد أقصى إجمالًا من القوالب والأسئلة المخصصة.",
+        "template-load-error": "تعذّر تحميل هذا السؤال. حاول مرة أخرى.",
+        "template-unavailable": "قالب السؤال هذا لم يعد متاحًا.",
+        "save-success": "تم حفظ أسئلة الوظيفة ومحتواها بنجاح.",
+        "save-error": "تعذّر حفظ أسئلة الوظيفة ومحتواها. حاول مرة أخرى.",
         "question-type": "نوع السؤال",
         "templates-hint": "القوالب متاحة بنمط نعم أو لا فقط",
         "yes-no": "نعم / لا",
@@ -2276,34 +2288,6 @@
         "delete-title": "هل تريد حذف هذا السؤال؟",
         "delete-description": "سيُحذف هذا السؤال من أسئلة الفرز الخاصة بالوظيفة ولا يمكن استعادته.",
         "delete-confirm": "تأكيد الحذف",
-        "template-labels": {
-          "education": "التعليم",
-          "professional-license": "الترخيص المهني",
-          "medical-license": "الترخيص الطبي",
-          "years-experience": "سنوات الخبرة",
-          "board-certification": "شهادة البورد",
-          "specialty": "التخصص",
-          "hospital-experience": "الخبرة في المستشفى",
-          "icu-experience": "خبرة العناية المركزة",
-          "emergency-experience": "خبرة الطوارئ",
-          "surgery-experience": "خبرة الجراحة",
-          "language": "اللغة",
-          "english-proficiency": "إتقان الإنجليزية",
-          "arabic-proficiency": "إتقان العربية",
-          "availability": "التوفر",
-          "night-shift": "العمل الليلي",
-          "weekend-shift": "العمل في عطلة نهاية الأسبوع",
-          "relocation": "الانتقال",
-          "current-location": "الموقع الحالي",
-          "work-authorization": "تصريح العمل",
-          "visa-status": "حالة التأشيرة",
-          "background-check": "التحقق من الخلفية",
-          "drug-test": "فحص المخدرات",
-          "reference-check": "التحقق من المراجع",
-          "drivers-license": "رخصة القيادة",
-          "computer-skills": "مهارات الحاسوب",
-          "communication-skills": "مهارات التواصل"
-        },
         "builder": {
           "create-title": "إنشاء سؤال فرز",
           "question-type": "نوع السؤال",
@@ -3389,11 +3373,7 @@
         "not-found-description": "هذا التقييم غير متاح. ارجع إلى التصنيف لاختيار تقييم آخر.",
         "preview-title": "معاينة التقييم",
         "preview-subtitle": "راجع هيكل التقييم ومعايير التقييم والأسئلة قبل ربطه بهذه الوظيفة.",
-        "preview-close": "إغلاق المعاينة",
-        "preview-summary": "ملخص التقييم",
-        "preview-assessment-title": "عنوان التقييم",
-        "preview-passing-score": "درجة النجاح",
-        "preview-structure": "هيكل التقييم"
+        "preview-close": "إغلاق المعاينة"
       },
       "candidate-assessments": {
         "close": "إغلاق",

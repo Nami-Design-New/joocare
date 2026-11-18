@@ -66,14 +66,16 @@ export default function JobSkillsField({
               isFetchingNextPage={query.isFetchingNextPage}
               onSearchChange={skills.setSearch}
             />
-            <RecommendedSkills
-              skills={recommended.visible}
-              canShowMore={recommended.canShowMore}
-              isLoadingMore={recommended.isLoadingMore}
-              disabled={query.isLoading}
-              onSelect={(skillId) => change([...value, skillId])}
-              onShowMore={recommended.showMore}
-            />
+            {skills.showRecommended ? (
+              <RecommendedSkills
+                skills={recommended.visible}
+                canShowMore={recommended.canShowMore}
+                isLoadingMore={recommended.isLoadingMore}
+                disabled={query.isLoading}
+                onSelect={(skillId) => change([...value, skillId])}
+                onShowMore={recommended.showMore}
+              />
+            ) : null}
             <SelectedSkills
               skills={value.map((skillId) => ({
                 value: skillId,

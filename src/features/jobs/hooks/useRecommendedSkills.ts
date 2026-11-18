@@ -4,8 +4,7 @@ import { useState } from 'react';
 import useGetSkills from '@/shared/hooks/useGetSkills';
 import { RECOMMENDED_SKILLS_STEP } from '../constants';
 
-// Uses the skills list the form already loads for this job title.
-// Swap the source here when the recommended-skills endpoint is ready.
+// Recommendations are skills filtered by the title chosen in step one.
 export function useRecommendedSkills(jobTitleId: string, selected: string[]) {
   const { skills, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useGetSkills('', jobTitleId, Boolean(jobTitleId));

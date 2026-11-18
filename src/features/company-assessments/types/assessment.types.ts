@@ -65,6 +65,7 @@ export type AssessmentApiItem = {
   single_choice_questions_count: number;
   multi_choice_questions_count: number;
   yes_no_questions_count: number;
+  category?: { id: number; name: string; is_global: boolean };
   questions?: AssessmentQuestionSummaryApiItem[];
   created_at: string;
 };

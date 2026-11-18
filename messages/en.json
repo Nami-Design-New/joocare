@@ -260,7 +260,7 @@
     "specialty": "Specialty",
     "education-certifications": "Education & Certifications section",
     "education-level": "Education Level",
-    "mandatory-certifications": "Mandatory Certifications",
+    "mandatory-certifications": "Required Certifications",
     "share-this-job": "Share this job:",
     "copy-link": "Copy Link",
     "check-out-this-job": "Check out this job",
@@ -2019,6 +2019,7 @@
         "category-label": "Assessment Category",
         "assessment-label": "Assessment",
         "preview": "Preview assessment",
+        "locked-hint": "The assessment can’t be changed after the job is created.",
         "fit-title": "Is this assessment the right fit for this job?",
         "fit-description": "Candidates applying for this job will be asked to take “{title}” ({count} questions). Make sure it matches the job’s specialty and seniority level before you continue.",
         "fit-confirm": "Yes, continue",
@@ -2133,7 +2134,7 @@
           "label": "Education Level"
         },
         "mandatoryCertifications": {
-          "label": "Mandatory Certifications"
+          "label": "Required Certifications"
         },
         "addNewCertification": {
           "label": "Add new certification",
@@ -2181,7 +2182,7 @@
           "roleCategory": "Job Function",
           "seniorityLevel": "Seniority Level",
           "educationLevel": "Education Level",
-          "mandatoryCertifications": "Mandatory Certifications",
+          "mandatoryCertifications": "Required Certifications",
           "availability": "Availability"
         }
       },
@@ -2213,7 +2214,9 @@
         "atLeastOneSkillRequired": "At least one skill is required",
         "assessmentLibraryRequired": "Select an assessment library.",
         "assessmentCategoryRequired": "Select an assessment category.",
-        "assessmentRequired": "Select an assessment."
+        "assessmentRequired": "Select an assessment.",
+        "questionsIncomplete": "Some questions are missing their options or correct answer. Edit them and choose the answers again.",
+        "questionsLimit": "You can add up to 10 questions in total, including templates and custom questions."
       },
       "editor": {
         "normal-text": "Normal text",
@@ -2251,6 +2254,15 @@
         "title": "Questions",
         "templates-title": "Question Templates",
         "templates-helper": "Click any template to quickly add a pre-configured screening question.",
+        "templates-empty": "No question templates are available yet.",
+        "templates-error": "Couldn’t load question templates.",
+        "templates-retry": "Try again",
+        "limit-helper": "Questions are optional. {count}/{max} added across templates and custom questions.",
+        "limit-reached": "You can add up to {max} questions in total, including templates and custom questions.",
+        "template-load-error": "Couldn’t load this question. Please try again.",
+        "template-unavailable": "This question template is no longer available.",
+        "save-success": "Job questions and content saved successfully.",
+        "save-error": "Couldn’t save the job questions and content. Please try again.",
         "question-type": "Question Type",
         "templates-hint": "Templates are Yes / No only",
         "yes-no": "Yes / No",
@@ -2276,34 +2288,6 @@
         "delete-title": "Delete this question?",
         "delete-description": "This question will be removed from the job’s screening questions and can’t be restored.",
         "delete-confirm": "Confirm deletion",
-        "template-labels": {
-          "education": "Education",
-          "professional-license": "Professional License",
-          "medical-license": "Medical License",
-          "years-experience": "Years of Experience",
-          "board-certification": "Board Certification",
-          "specialty": "Specialty",
-          "hospital-experience": "Hospital Experience",
-          "icu-experience": "ICU Experience",
-          "emergency-experience": "Emergency Experience",
-          "surgery-experience": "Surgery Experience",
-          "language": "Language",
-          "english-proficiency": "English Proficiency",
-          "arabic-proficiency": "Arabic Proficiency",
-          "availability": "Availability",
-          "night-shift": "Night Shift",
-          "weekend-shift": "Weekend Shift",
-          "relocation": "Relocation",
-          "current-location": "Current Location",
-          "work-authorization": "Work Authorization",
-          "visa-status": "Visa Status",
-          "background-check": "Background Check",
-          "drug-test": "Drug Test",
-          "reference-check": "Reference Check",
-          "drivers-license": "Driver’s License",
-          "computer-skills": "Computer Skills",
-          "communication-skills": "Communication Skills"
-        },
         "builder": {
           "create-title": "Create Screening Question",
           "question-type": "Question Type",
@@ -3429,11 +3413,7 @@
         "not-found-description": "This assessment is unavailable. Return to the category to choose another assessment.",
         "preview-title": "Assessment Preview",
         "preview-subtitle": "Review the assessment structure, scoring criteria and questions before linking it to this job.",
-        "preview-close": "Close preview",
-        "preview-summary": "Assessment Summary",
-        "preview-assessment-title": "Assessment Title",
-        "preview-passing-score": "Passing Score",
-        "preview-structure": "Assessment Structure"
+        "preview-close": "Close preview"
       },
       "created-at": "Created {time}",
       "delete-error": "Something went wrong while deleting. Please try again.",

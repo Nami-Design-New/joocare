@@ -256,11 +256,36 @@ export type JobDetails = {
 
   created_at: string;
   updated_at: string;
-  // Pending backend fields; the UI renders them only when present.
+  // Company job response: application questions (templates + custom).
+  questions?: JobQuestionApiItem[];
+  // Candidate apply flow only, pending backend fields.
   screening_questions?: ScreeningQuestion[];
+  assessment_id?: number | null;
+  // Candidate apply flow only; the company job response returns `assessment_id`.
   assessment?: JobLinkedAssessment | null;
   created_by?: JobCreator | null;
 };
+
+export type JobQuestionAnswerApiItem = {
+  id: number;
+  answer: string;
+  is_correct: boolean;
+};
+
+export type JobQuestionApiItem = {
+  id: number;
+  type: string;
+  question: string;
+  is_required: boolean;
+  // Pending backend fields: `answers` is missing from GET jobs/{id},
+  // `template_id` and `mark` aren't returned yet.
+  answers?: JobQuestionAnswerApiItem[];
+  template_id?: number | null;
+  mark?: number | null;
+};
+
+export type QuestionTemplateHint = { id: number; hint: string };
+export type QuestionTemplate = { id: number; question: string };
 
 export type JobLinkedAssessment = {
   id: number | string;

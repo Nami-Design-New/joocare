@@ -22,7 +22,6 @@ import { usePostStepTwo } from '../hooks/usePostStepTwo';
 import { usePostStepThree } from '../hooks/usePostStepThree';
 import { useGetCompanyJob } from '../hooks/useGetCompanyJob';
 import { useUpdateStepOne } from '../hooks/useUpdateStepOne';
-import { useUpdateJob } from '../hooks/useUpdateJob';
 import { JobStepOnePayload } from '../types/job-steps.types';
 import { JobDetails } from '../types/jobs.types';
 import JobPostStepOne from './JobPostStepOne';
@@ -32,9 +31,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { Option } from '@/shared/components/SelectInputField';
 import { useTranslations } from 'next-intl';
 import { OTHER_OPTION_VALUE } from '../constants';
-import { categorySeeds } from '@/features/company-assessments/constants/assessment-data';
-import { assessmentSeeds } from '@/features/company-assessments/constants/assessment-data';
+import { useGetAssessment } from '@/features/company-assessments/hooks/useGetAssessment';
 import PostJobResultModals from './post-job/PostJobResultModals';
+import {
+  mapJobQuestions,
+  type YesNoLabels,
+} from '../services/screening-questions-mapper';
 
 // ─── Form mode ──────────────────────────────────────────
 // create  → fresh form, step-by-step, saves each step
@@ -109,12 +111,11 @@ function toOptionalNumber(value: string | number | null | undefined) {
   return Number.isFinite(parsedValue) ? parsedValue : undefined;
 }
 
-function getJobStatus(job: JobDetails) {
-  return job.status?.toLowerCase() ?? '';
-}
-
 // ─── Map API job → form defaults ────────────────────────
-function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
+function mapJobToFormData(
+  job: JobDetails,
+  yesNoLabels: YesNoLabels,
+): Partial<JobFormData> {
   const hasSalary = Boolean(job.has_salary);
   const customCategoryTitle =
     job.category_title?.trim() || job.category?.title || '';
@@ -133,16 +134,10 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
     otherCategoryTitle: job.category_id == null ? customCategoryTitle : '',
     license: job.professional_license ?? '',
     addSalary: hasSalary,
-    assessmentEnabled: Boolean(job.assessment),
-    assessmentSource: job.assessment
-      ? (categorySeeds.find(
-          (category) => category.id === String(job.assessment?.category_id),
-        )?.source ?? '')
-      : '',
-    assessmentCategoryId: job.assessment
-      ? String(job.assessment.category_id)
-      : '',
-    assessmentId: job.assessment ? String(job.assessment.id) : '',
+    // The job already exists, so its assessment can no longer change.
+    assessmentEnabled: job.assessment_id != null,
+    assessmentLocked: true,
+    assessmentId: job.assessment_id != null ? String(job.assessment_id) : '',
     salary: hasSalary
       ? {
           min: toOptionalNumber(job.min_salary),
@@ -185,7 +180,7 @@ function mapJobToFormData(job: JobDetails): Partial<JobFormData> {
       job.availability_id == null ? customAvailabilityTitle : '',
     description: job.description ?? '',
     skills: (job.skills ?? []).map((s) => String(s.id)),
-    screeningQuestions: job.screening_questions ?? [],
+    screeningQuestions: mapJobQuestions(job.questions ?? [], yesNoLabels),
   };
 }
 
@@ -241,9 +236,6 @@ export default function PostJobForm() {
     usePostStepThree({ token });
   const { mutateAsync: updateStepOne, isPending: isUpdatingStepOne } =
     useUpdateStepOne({ token });
-  const { mutateAsync: updateJob, isPending: isUpdatingJob } = useUpdateJob({
-    token,
-  });
 
   // ─── Modals ────────────────────────────────────────────
   const [saveSuccessOpen, setSaveSuccessOpen] = useState(false);
@@ -258,13 +250,23 @@ export default function PostJobForm() {
     mode: 'onChange',
   });
 
-  const { handleSubmit, trigger, getValues, reset, setError, watch } = methods;
+  const { handleSubmit, trigger, getValues, reset, setError, setValue, watch } =
+    methods;
   const previewFormData = watch();
+  // Feeds the "assessment fit" confirmation before step one is saved.
+  const selectedAssessment = useGetAssessment(
+    previewFormData.assessmentEnabled && !previewFormData.assessmentLocked
+      ? previewFormData.assessmentId || null
+      : null,
+  );
 
   // ─── Hydrate form when existing job arrives ───────────
   useEffect(() => {
     if (existingJob && !formHydrated) {
-      const mappedData = mapJobToFormData(existingJob);
+      const mappedData = mapJobToFormData(existingJob, {
+        yes: t('companyPage.postJob.questions.yes'),
+        no: t('companyPage.postJob.questions.no'),
+      });
       reset({ ...jobFormDefaults, ...mappedData } as JobFormData);
       setReviewJob(existingJob);
       setStepOneDisplayOptions({
@@ -317,18 +319,16 @@ export default function PostJobForm() {
         skills: existingJob.skills?.map((item) => item.title) ?? [],
       });
 
-      // In complete mode, set the createdJobId so step-by-step flow works
+      // In complete mode, set the createdJobId so step-by-step flow works.
+      // Step one is already saved, so the wizard stays on step two (the API
+      // returns a translated status label, which can't be compared reliably).
       if (mode === 'complete') {
         setCreatedJobId(existingJob.id);
-        const existingJobStatus = getJobStatus(existingJob);
-        setCurrentStep(
-          existingJobStatus === 'draft' || existingJobStatus === 'open' ? 1 : 0,
-        );
       }
 
       setFormHydrated(true);
     }
-  }, [existingJob, formHydrated, mode, reset]);
+  }, [existingJob, formHydrated, mode, reset, t]);
 
   const handleStepOneOptionChange = (
     key: StepOneOptionKey,
@@ -381,8 +381,11 @@ export default function PostJobForm() {
       jobId,
       payload: {
         description: data.description,
-        skills: (data.skills ?? []).map(Number),
-        screening_questions: data.screeningQuestions,
+        skills:
+          data.title === OTHER_OPTION_VALUE
+            ? []
+            : (data.skills ?? []).map(Number),
+        questions: data.screeningQuestions,
       },
     });
     const savedJob = getJobFromMutationResponse(response.data);
@@ -394,6 +397,8 @@ export default function PostJobForm() {
     operationInProgress.current = true;
     setIsSubmitting(true);
     try {
+      // Never save questions that lost their answers (see step two schema).
+      if (!(await trigger('screeningQuestions'))) return;
       const data = getValues();
       const contentChanged = [
         'description',
@@ -433,7 +438,11 @@ export default function PostJobForm() {
           : undefined,
       professional_license: data.license,
       has_salary: hasSalary,
-      assessment_id: data.assessmentEnabled ? data.assessmentId : null,
+      // Only the create request can link an assessment; updates ignore it.
+      assessment_id:
+        !data.assessmentLocked && data.assessmentEnabled
+          ? Number(data.assessmentId)
+          : undefined,
       category_id:
         data.category === OTHER_OPTION_VALUE
           ? undefined
@@ -445,7 +454,7 @@ export default function PostJobForm() {
       specialty_title: data.specialty,
       employment_type_id: Number(data.employmentType),
       role_category_id: Number(data.roleCategory),
-      seniority_level_id: Number(data.seniorityLevel || 0),
+      seniority_level_id: toOptionalNumber(data.seniorityLevel),
       country_id: Number(data.country),
       city_id: Number(data.city),
       experience_id:
@@ -468,71 +477,6 @@ export default function PostJobForm() {
         data.availability === OTHER_OPTION_VALUE
           ? (data.otherAvailabilityTitle?.trim() ?? '')
           : undefined,
-    };
-
-    if (!data.addSalary) {
-      return basePayload;
-    }
-
-    return {
-      ...basePayload,
-      min_salary: toOptionalNumber(data.salary?.min),
-      max_salary: toOptionalNumber(data.salary?.max),
-      currency_id: toOptionalNumber(data.salary?.currency),
-      salary_type_id: toOptionalNumber(data.salary?.type),
-    };
-  };
-
-  const buildUpdatePayload = (data: JobFormData) => {
-    const basePayload = {
-      _method: 'put' as const,
-      job_title_id:
-        data.title === OTHER_OPTION_VALUE ? undefined : Number(data.title),
-      title:
-        data.title === OTHER_OPTION_VALUE
-          ? (data.otherJobTitle?.trim() ?? '')
-          : undefined,
-      professional_license: data.license,
-      has_salary: data.addSalary ? 1 : 0,
-      assessment_id: data.assessmentEnabled ? data.assessmentId : null,
-      category_id:
-        data.category === OTHER_OPTION_VALUE
-          ? undefined
-          : Number(data.category),
-      category_title:
-        data.category === OTHER_OPTION_VALUE
-          ? (data.otherCategoryTitle?.trim() ?? '')
-          : undefined,
-      specialty_title: data.specialty,
-      employment_type_id: Number(data.employmentType),
-      role_category_id: Number(data.roleCategory),
-      seniority_level_id: Number(data.seniorityLevel || 0),
-      country_id: Number(data.country),
-      city_id: Number(data.city),
-      experience_id:
-        data.yearsOfExperience === OTHER_OPTION_VALUE
-          ? undefined
-          : Number(data.yearsOfExperience),
-      experience_title:
-        data.yearsOfExperience === OTHER_OPTION_VALUE
-          ? (data.otherExperienceTitle?.trim() ?? '')
-          : undefined,
-      mandatory_certifications: (data.mandatoryCertifications ?? []).map(
-        normalizeMandatoryCertificationValue,
-      ),
-      education_levels: (data.educationLevel ?? []).map((item) => Number(item)),
-      availability_id:
-        data.availability === OTHER_OPTION_VALUE
-          ? undefined
-          : Number(data.availability),
-      availability_title:
-        data.availability === OTHER_OPTION_VALUE
-          ? (data.otherAvailabilityTitle?.trim() ?? '')
-          : undefined,
-      description: data.description,
-      skills: (data.skills ?? []).map((skillId) => Number(skillId)),
-      screening_questions: data.screeningQuestions,
-      status: 'open',
     };
 
     if (!data.addSalary) {
@@ -608,6 +552,7 @@ export default function PostJobForm() {
             );
           setCreatedJobId(id);
           setReviewJob(savedJob);
+          setValue('assessmentLocked', true);
         }
       } else {
         await persistStepTwo(getValues());
@@ -624,17 +569,11 @@ export default function PostJobForm() {
   const handleNext = () => {
     if (operationInProgress.current || isBusy || postSuccess) return;
     const values = getValues();
-    const assessmentChanged =
-      String(existingJob?.assessment?.id ?? '') !==
-      String(values.assessmentId ?? '');
-    const selectedAssessment = assessmentSeeds.find(
-      (assessment) => assessment.id === values.assessmentId,
-    );
     if (
       currentStep === 0 &&
       values.assessmentEnabled &&
-      selectedAssessment &&
-      (mode !== 'edit' || assessmentChanged)
+      !values.assessmentLocked &&
+      selectedAssessment.data
     ) {
       setAssessmentFitOpen(true);
       return;
@@ -683,12 +622,24 @@ export default function PostJobForm() {
     operationInProgress.current = true;
     setIsSubmitting(true);
     try {
-      const payload = buildUpdatePayload(data);
-      await updateJob({ jobId: existingJobId, payload });
-      setPostSuccess(true);
-      queryClient.invalidateQueries({
-        queryKey: ['company-job'],
+      // Same requests the backend uses for editing: step one, then step two
+      // (description, skills and questions). The job stays published.
+      await updateStepOne({
+        jobId: existingJobId,
+        payload: buildStepOnePayload(data),
       });
+      await postStepTwo({
+        jobId: existingJobId,
+        payload: {
+          description: data.description,
+          skills:
+            data.title === OTHER_OPTION_VALUE
+              ? []
+              : (data.skills ?? []).map(Number),
+          questions: data.screeningQuestions,
+        },
+      });
+      setPostSuccess(true);
     } catch {
       // errors are already handled in mutation onError toast
     } finally {
@@ -739,8 +690,7 @@ export default function PostJobForm() {
     isPostingStepOne ||
     isPostingStepTwo ||
     isPostingStepThree ||
-    isUpdatingStepOne ||
-    isUpdatingJob;
+    isUpdatingStepOne;
   const isStepOneEditLoading =
     isEditMode && currentStep === 0 && (isLoadingJob || !formHydrated);
 
@@ -882,14 +832,8 @@ export default function PostJobForm() {
         onOpenChange={setAssessmentFitOpen}
         title={t('companyPage.postJob.assessment.fit-title')}
         description={t('companyPage.postJob.assessment.fit-description', {
-          title:
-            assessmentSeeds.find(
-              (assessment) => assessment.id === getValues('assessmentId'),
-            )?.title ?? '',
-          count:
-            assessmentSeeds.find(
-              (assessment) => assessment.id === getValues('assessmentId'),
-            )?.questionCount ?? 0,
+          title: selectedAssessment.data?.configuration.title ?? '',
+          count: selectedAssessment.data?.questionCount ?? 0,
         })}
         confirmLabel={t('companyPage.postJob.assessment.fit-confirm')}
         cancelLabel={t('companyPage.postJob.assessment.fit-cancel')}

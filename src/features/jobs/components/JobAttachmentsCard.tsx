@@ -9,16 +9,13 @@ import {
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import AssessmentPreviewDialog from '@/features/company-assessments/components/details/AssessmentPreviewDialog';
-import { Link } from '@/i18n/navigation';
-import type { JobLinkedAssessment } from '../types/jobs.types';
+import { useGetAssessment } from '@/features/company-assessments/hooks/useGetAssessment';
 import type { ScreeningQuestion } from '../types/job-steps.types';
 import JobScreeningQuestionsModal from './JobScreeningQuestionsModal';
 
 type JobAttachmentsCardProps = {
   questions?: ScreeningQuestion[];
-  assessment?: JobLinkedAssessment | null;
-  // Inside the post-job wizard, open the preview instead of leaving the page.
-  previewAssessment?: boolean;
+  assessmentId?: number | string | null;
 };
 
 const LINK_CLASS =
@@ -27,13 +24,14 @@ const LINK_CLASS =
 // "Screening questions & assessment attached to this job" (Figma 11531:97096).
 export default function JobAttachmentsCard({
   questions = [],
-  assessment,
-  previewAssessment = false,
+  assessmentId,
 }: JobAttachmentsCardProps) {
   const t = useTranslations('companyPage.jobs.attachments');
   const [questionsOpen, setQuestionsOpen] = useState(false);
-  const [previewId, setPreviewId] = useState<string | null>(null);
-  if (!questions.length && !assessment) return null;
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const linkedAssessmentId = assessmentId != null ? String(assessmentId) : '';
+  const assessment = useGetAssessment(linkedAssessmentId || null);
+  if (!questions.length && !linkedAssessmentId) return null;
 
   const requiredCount = questions.filter(
     (question) => question.required,
@@ -74,28 +72,19 @@ export default function JobAttachmentsCard({
               }
             />
           ) : null}
-          {assessment ? (
+          {linkedAssessmentId ? (
             <AttachmentRow
               icon={<CheckCircle2 aria-hidden="true" className="size-4.5" />}
               label={t('assessment')}
-              meta={assessment.title}
+              meta={assessment.data?.configuration.title ?? ''}
               link={
-                previewAssessment ? (
-                  <button
-                    type="button"
-                    onClick={() => setPreviewId(String(assessment.id))}
-                    className={LINK_CLASS}
-                  >
-                    {linkContent(t('view-assessment'))}
-                  </button>
-                ) : (
-                  <Link
-                    href={`/company/assessments/${assessment.category_id}/${assessment.id}`}
-                    className={LINK_CLASS}
-                  >
-                    {linkContent(t('view-assessment'))}
-                  </Link>
-                )
+                <button
+                  type="button"
+                  onClick={() => setPreviewOpen(true)}
+                  className={LINK_CLASS}
+                >
+                  {linkContent(t('view-assessment'))}
+                </button>
               }
             />
           ) : null}
@@ -106,12 +95,10 @@ export default function JobAttachmentsCard({
         onOpenChange={setQuestionsOpen}
         questions={questions}
       />
-      {previewAssessment ? (
-        <AssessmentPreviewDialog
-          assessmentId={previewId}
-          onClose={() => setPreviewId(null)}
-        />
-      ) : null}
+      <AssessmentPreviewDialog
+        assessmentId={previewOpen ? linkedAssessmentId : null}
+        onClose={() => setPreviewOpen(false)}
+      />
     </>
   );
 }

@@ -55,6 +55,19 @@ export const createScreeningQuestionSchema = (
       }
 
       const correctCount = values.correctOptionIds.length;
+      if (
+        isChoice &&
+        (new Set(values.correctOptionIds).size !== correctCount ||
+          values.correctOptionIds.some(
+            (id) => !values.options.some((option) => option.id === id),
+          ))
+      ) {
+        ctx.addIssue({
+          code: 'custom',
+          message: messages.chooseAtLeastOne,
+          path: ['correctOptionIds'],
+        });
+      }
       if (values.type === 'multi' && correctCount < 1) {
         ctx.addIssue({
           code: 'custom',

@@ -3,11 +3,11 @@
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { Sparkles } from 'lucide-react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { Accordion } from '@/shared/components/ui/accordion';
 import { Button } from '@/shared/components/ui/button';
-import { AI_JD_BUILDER_MODE } from '../constants';
+import { AI_JD_BUILDER_MODE, OTHER_OPTION_VALUE } from '../constants';
 import { JobDetails } from '../types/jobs.types';
 import { JobFormData } from '../validation/job-post-schema';
 import AiJdBuilderPanel from './post-job/ai-builder/AiJdBuilderPanel';
@@ -38,6 +38,8 @@ export default function JobPostStepTwo({
     control,
     formState: { errors },
   } = useFormContext<JobFormData>();
+  const jobTitle = useWatch({ control, name: 'title' });
+  const showSkills = Boolean(jobTitle && jobTitle !== OTHER_OPTION_VALUE);
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const isPanel = AI_JD_BUILDER_MODE === 'panel';
   const showPanel = isPanel && aiPanelOpen;
@@ -98,20 +100,27 @@ export default function JobPostStepTwo({
               )}
             />
           </StepSectionCard>
-          <StepSectionCard
-            value="skills"
-            title={t('companyPage.postJob.fields.skills.label')}
-          >
-            <JobSkillsField
-              existingJob={existingJob}
-              translateError={translateError}
-              onLabelsChange={(labels) =>
-                onPreviewLabelChange?.('skills', labels)
-              }
-            />
-          </StepSectionCard>
+          {showSkills ? (
+            <StepSectionCard
+              value="skills"
+              title={t('companyPage.postJob.fields.skills.label')}
+            >
+              <JobSkillsField
+                existingJob={existingJob}
+                translateError={translateError}
+                onLabelsChange={(labels) =>
+                  onPreviewLabelChange?.('skills', labels)
+                }
+              />
+            </StepSectionCard>
+          ) : null}
         </Accordion>
-        <ScreeningQuestionsSection />
+        <ScreeningQuestionsSection
+          error={translateError(
+            errors.screeningQuestions?.message ??
+              errors.screeningQuestions?.root?.message,
+          )}
+        />
       </div>
       {showPanel ? (
         <AiJdBuilderPanel onClose={() => toggleAiBuilder(false)} />

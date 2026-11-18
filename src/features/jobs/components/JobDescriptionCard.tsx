@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { mapJobQuestions } from '../services/screening-questions-mapper';
 import { JobDetails } from '../types/jobs.types';
 import DescriptionSection from './DescriptionSection';
 import ItemList from './ItemList';
@@ -43,8 +44,11 @@ export default async function JobDescriptionCard({
       {showEmployerDetails ? (
         <div className="mt-6 flex flex-col gap-4 empty:hidden">
           <JobAttachmentsCard
-            questions={job.screening_questions}
-            assessment={job.assessment}
+            questions={mapJobQuestions(job.questions ?? [], {
+              yes: t('companyPage.postJob.questions.yes'),
+              no: t('companyPage.postJob.questions.no'),
+            })}
+            assessmentId={job.assessment_id}
           />
           {job.created_by ? (
             <JobPostedByCard

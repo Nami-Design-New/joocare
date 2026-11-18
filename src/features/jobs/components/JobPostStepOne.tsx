@@ -1181,6 +1181,7 @@ function JobPostStepOneContent({
                     label={t(
                       'companyPage.postJob.fields.mandatoryCertifications.label',
                     )}
+                    hint={t('companyPage.common.optional')}
                     placeholder={t('common.select')}
                     className="bg-white whitespace-normal"
                     error={

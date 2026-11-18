@@ -10,7 +10,7 @@ export type JobStepOnePayload = {
   specialty_title: string;
   employment_type_id: number;
   role_category_id: number;
-  seniority_level_id: number;
+  seniority_level_id?: number;
   country_id: number;
   city_id: number;
   experience_id?: number;
@@ -27,7 +27,7 @@ export type JobStepOnePayload = {
 export type JobStepTwoPayload = {
   description: string;
   skills: number[];
-  screening_questions?: ScreeningQuestion[];
+  questions: ScreeningQuestion[];
 };
 
 export type ScreeningQuestionOption = { id: string; text: string };

@@ -1,4 +1,16 @@
 import { z } from 'zod';
+import { MAX_SCREENING_QUESTIONS, OTHER_OPTION_VALUE } from '../constants';
+import { createScreeningQuestionSchema } from './screening-question-schema';
+
+const incompleteQuestionMessage =
+  'companyPage.postJob.validation.questionsIncomplete';
+const savedScreeningQuestionSchema = createScreeningQuestionSchema({
+  questionRequired: incompleteQuestionMessage,
+  optionRequired: incompleteQuestionMessage,
+  optionDuplicate: incompleteQuestionMessage,
+  chooseExactlyOne: incompleteQuestionMessage,
+  chooseAtLeastOne: incompleteQuestionMessage,
+});
 
 const optionalSalaryNumber = z.preprocess((value) => {
   if (value === '' || value == null) {
@@ -38,6 +50,8 @@ export const step1Schema = z
 
     addSalary: z.boolean().default(false),
     assessmentEnabled: z.boolean().default(false),
+    // The backend fixes the assessment when the job is created (step one).
+    assessmentLocked: z.boolean().default(false),
     assessmentSource: z.string().optional(),
     assessmentCategoryId: z.string().optional(),
     assessmentId: z.string().optional(),
@@ -84,16 +98,14 @@ export const step1Schema = z
     educationLevel: z
       .array(z.string())
       .min(1, 'companyPage.postJob.validation.educationLevelRequired'),
-    mandatoryCertifications: z
-      .array(z.string())
-      .min(1, 'companyPage.postJob.validation.mandatoryCertificationsRequired'),
+    mandatoryCertifications: z.array(z.string()).optional(),
     availability: z
       .string()
       .min(1, 'companyPage.postJob.validation.availabilityRequired'),
     otherAvailabilityTitle: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    if (data.assessmentEnabled) {
+    if (data.assessmentEnabled && !data.assessmentLocked) {
       if (!data.assessmentSource) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -217,44 +229,74 @@ export const step1Schema = z
 // Fields: description (CKEditor HTML), skills (multi-select → string[])
 // ─────────────────────────────────────────────
 
-export const step2Schema = z.object({
-  // CKEditor emits an HTML string; strip tags to measure real content length
-  description: z
-    .string()
-    .min(1, 'companyPage.postJob.validation.descriptionRequired'),
-  // .refine(
-  //   (val) => val.replace(/<[^>]*>/g, "").trim().length >= 20,
-  //   "Description must be at least 20 characters",
-  // ),
+function validateJobSkills(
+  data: { title: string; skills: string[] },
+  ctx: z.RefinementCtx,
+) {
+  if (data.title !== OTHER_OPTION_VALUE && data.skills.length === 0) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['skills'],
+      message: 'companyPage.postJob.validation.atLeastOneSkillRequired',
+    });
+  }
+}
 
-  // SelectInputField stores a single string value per selection.
-  // If you later switch to a multi-select, change to z.array(z.string())
-  skills: z
-    .array(z.string())
-    .min(1, 'companyPage.postJob.validation.atLeastOneSkillRequired'),
-  // Screening questions remain client preview data until the backend accepts this field.
-  screeningQuestions: z
-    .array(
-      z.object({
-        id: z.string(),
-        source: z.enum(['template', 'custom']),
-        templateId: z.string().optional(),
-        type: z.enum(['single', 'multi', 'yes-no']),
-        question: z.string(),
-        mark: z.number().int().positive(),
-        options: z.array(z.object({ id: z.string(), text: z.string() })),
-        correctOptionIds: z.array(z.string()),
-        required: z.boolean(),
-      }),
-    )
-    .default([]),
-});
+export const step2Schema = z
+  .object({
+    title: step1Schema.shape.title,
+    // CKEditor emits an HTML string; strip tags to measure real content length
+    description: z
+      .string()
+      .min(1, 'companyPage.postJob.validation.descriptionRequired'),
+    // .refine(
+    //   (val) => val.replace(/<[^>]*>/g, "").trim().length >= 20,
+    //   "Description must be at least 20 characters",
+    // ),
+
+    // SelectInputField stores a single string value per selection.
+    // If you later switch to a multi-select, change to z.array(z.string())
+    skills: z.array(z.string()),
+    // Sent with step two as `question_templates` + `custom_questions`.
+    screeningQuestions: z
+      .array(
+        z.object({
+          id: z.string(),
+          source: z.enum(['template', 'custom']),
+          templateId: z.string().optional(),
+          type: z.enum(['single', 'multi', 'yes-no']),
+          question: z.string(),
+          mark: z.number().int().positive(),
+          options: z.array(z.object({ id: z.string(), text: z.string() })),
+          correctOptionIds: z.array(z.string()),
+          required: z.boolean(),
+        }),
+      )
+      .max(
+        MAX_SCREENING_QUESTIONS,
+        'companyPage.postJob.validation.questionsLimit',
+      )
+      // Saved questions come back without their answers (pending backend), so
+      // block saving until each one has its options and correct answer again.
+      .refine(
+        (questions) =>
+          questions.every(
+            (question) =>
+              savedScreeningQuestionSchema.safeParse(question).success,
+          ),
+        'companyPage.postJob.validation.questionsIncomplete',
+      )
+      .default([]),
+  })
+  .superRefine(validateJobSkills);
 
 // ─────────────────────────────────────────────
 // COMBINED SCHEMA  (used by useForm resolver)
 // ─────────────────────────────────────────────
 
-export const jobFormSchema = step1Schema.merge(step2Schema);
+export const jobFormSchema = step1Schema
+  .merge(step2Schema)
+  .superRefine(validateJobSkills);
 export type JobFormData = z.infer<typeof jobFormSchema>;
 
 // ─────────────────────────────────────────────
@@ -276,6 +318,7 @@ export const jobFormDefaults: Partial<JobFormData> = {
   license: '',
   addSalary: false,
   assessmentEnabled: false,
+  assessmentLocked: false,
   assessmentSource: '',
   assessmentCategoryId: '',
   assessmentId: '',

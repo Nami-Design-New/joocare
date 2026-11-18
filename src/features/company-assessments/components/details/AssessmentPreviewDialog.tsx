@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/components/ui/button';
@@ -11,10 +12,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/components/ui/dialog';
-import { assessmentSeeds } from '../../constants/assessment-data';
-import { assessmentDetailSeeds } from '../../constants/assessment-detail-data';
-import AssessmentQuestionsOverview from './AssessmentQuestionsOverview';
-import AssessmentSummary from './AssessmentSummary';
+import { Skeleton } from '@/shared/components/ui/skeleton';
+import { useGetAssessment } from '../../hooks/useGetAssessment';
+import AssessmentQuestionPreviewModal from '../create/AssessmentQuestionPreviewModal';
+import AssessmentReviewStep from '../create/AssessmentReviewStep';
+import AssessmentsErrorState from '../shared/AssessmentsErrorState';
 
 type AssessmentPreviewDialogProps = {
   assessmentId: string | null;
@@ -27,15 +29,31 @@ export default function AssessmentPreviewDialog({
   onClose,
 }: AssessmentPreviewDialogProps) {
   const t = useTranslations('companyPage.assessments.details');
-  const assessment = assessmentSeeds.find((item) => item.id === assessmentId);
-  // Preview data: detail seeds exist for a few assessments only.
-  const detail =
-    assessmentDetailSeeds.find((item) => item.assessmentId === assessmentId) ??
-    assessmentDetailSeeds[0];
+  const assessment = useGetAssessment(assessmentId);
+  const [previewQuestionId, setPreviewQuestionId] = useState<string | null>(
+    null,
+  );
+
+  function renderContent() {
+    if (assessment.data) {
+      return (
+        <AssessmentReviewStep
+          assessment={assessment.data}
+          onPreview={setPreviewQuestionId}
+        />
+      );
+    }
+    if (assessment.isError) {
+      return (
+        <AssessmentsErrorState onRetry={() => void assessment.refetch()} />
+      );
+    }
+    return <Skeleton aria-busy="true" className="h-96 rounded-2xl" />;
+  }
 
   return (
     <Dialog
-      open={Boolean(assessment)}
+      open={Boolean(assessmentId)}
       onOpenChange={(open) => !open && onClose()}
     >
       <DialogContent
@@ -61,22 +79,15 @@ export default function AssessmentPreviewDialog({
             </Button>
           </DialogClose>
         </div>
-        {assessment && detail ? (
-          <>
-            <AssessmentSummary
-              assessment={assessment}
-              detail={{ ...detail, summaryTitle: assessment.title }}
-              labels={{
-                summary: t('preview-summary'),
-                titleLabel: t('preview-assessment-title'),
-                score: t('preview-passing-score'),
-                questionTypes: t('preview-structure'),
-              }}
-            />
-            <AssessmentQuestionsOverview questions={detail.questions} />
-          </>
-        ) : null}
+        <div className="rounded-2xl bg-muted p-2 sm:p-4">{renderContent()}</div>
       </DialogContent>
+      {previewQuestionId ? (
+        <AssessmentQuestionPreviewModal
+          key={previewQuestionId}
+          questionId={previewQuestionId}
+          onClose={() => setPreviewQuestionId(null)}
+        />
+      ) : null}
     </Dialog>
   );
 }
