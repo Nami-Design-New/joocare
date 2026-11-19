@@ -3179,6 +3179,11 @@
       "edit-action": "Edit",
       "delete-action": "Delete",
       "assignment": {
+        "assigning": "Assigning…",
+        "assign-error": "Unable to assign the assessment. Please try again.",
+        "invalid-recipients": "Select at least one valid candidate or email address.",
+        "loading-candidates": "Loading candidates…",
+        "load-more": "Load more candidates",
         "add-email-title": "Add Email Address",
         "email-label": "Email address",
         "email-placeholder": "example@email.com",

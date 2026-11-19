@@ -111,6 +111,7 @@ export default function AssessmentDetailsActions({
         }}
       />
       <AssignAssessmentDialog
+        assessmentId={assessmentId}
         open={assignOpen}
         onOpenChange={setAssignOpen}
         assessmentTitle={assessmentTitle}

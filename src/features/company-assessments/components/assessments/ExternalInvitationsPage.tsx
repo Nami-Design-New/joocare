@@ -96,6 +96,7 @@ export default function ExternalInvitationsPage({
         </section>
       </div>
       <AssignAssessmentDialog
+        assessmentId={assessmentId}
         open={listing.assignOpen}
         onOpenChange={listing.setAssignOpen}
         assessmentTitle={assessment.title}

@@ -3179,6 +3179,11 @@
       "edit-action": "تعديل",
       "delete-action": "حذف",
       "assignment": {
+        "assigning": "جارٍ الإسناد…",
+        "assign-error": "تعذر إسناد التقييم. حاول مرة أخرى.",
+        "invalid-recipients": "اختر مرشحًا واحدًا على الأقل أو عنوان بريد إلكتروني صالحًا.",
+        "loading-candidates": "جارٍ تحميل المرشحين…",
+        "load-more": "تحميل المزيد من المرشحين",
         "add-email-title": "إضافة عنوان بريد إلكتروني",
         "email-label": "البريد الإلكتروني",
         "email-placeholder": "example@email.com",
