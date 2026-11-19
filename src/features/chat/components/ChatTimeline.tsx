@@ -60,14 +60,15 @@ export default function ChatTimeline({
         <div className="space-y-6 pt-6">
           {conversation.messages.map((message, index) => (
             <Fragment key={message.id}>
-              {(index === 0 ||
-                conversation.messages[index - 1].day !== message.day) && (
-                <div className="flex justify-center">
-                  <span className="rounded-full bg-chat-surface px-3 py-1 text-xs leading-3.75 text-muted-foreground">
-                    {t(message.day)}
-                  </span>
-                </div>
-              )}
+              {message.day &&
+                (index === 0 ||
+                  conversation.messages[index - 1].day !== message.day) && (
+                  <div className="flex justify-center">
+                    <span className="rounded-full bg-chat-surface px-3 py-1 text-xs leading-3.75 text-muted-foreground">
+                      {t(message.day)}
+                    </span>
+                  </div>
+                )}
               <ChatMessageItem
                 message={message}
                 avatar={conversation.avatar}

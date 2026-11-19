@@ -15,10 +15,13 @@ import ChatIcon from './ChatIcon';
 type ChatComposerProps = {
   name: string;
   replyMessage: ChatMessage | null;
-  onSend: (message: SendChatMessage) => void;
+  onSend: (
+    message: SendChatMessage,
+  ) => void | boolean | Promise<void | boolean>;
   onCancelReply: () => void;
   createObjectUrl: (file: File) => string;
   initialAttachments?: ChatAttachment[];
+  imagesOnly?: boolean;
 };
 
 export default function ChatComposer(props: ChatComposerProps) {
@@ -51,9 +54,9 @@ export default function ChatComposer(props: ChatComposerProps) {
             onBlur={field.onBlur}
             type="file"
             multiple
-            accept={CHAT_ATTACHMENT_ACCEPT}
+            accept={props.imagesOnly ? 'image/*' : CHAT_ATTACHMENT_ACCEPT}
             className="hidden"
-            aria-label={t('attach-files')}
+            aria-label={t(props.imagesOnly ? 'attach-images' : 'attach-files')}
             onChange={(event) => addFiles(event.target.files)}
           />
         )}
@@ -127,12 +130,12 @@ export default function ChatComposer(props: ChatComposerProps) {
           variant="ghost"
           size="icon"
           className="h-8.5 w-7 shrink-0 rounded-lg"
-          aria-label={t('attach-files')}
-          onClick={() => openFilePicker()}
+          aria-label={t(props.imagesOnly ? 'attach-images' : 'attach-files')}
+          onClick={() => openFilePicker(Boolean(props.imagesOnly))}
         >
           <ChatIcon name="attach" width={13} height={20} />
         </Button>
-        {expanded && (
+        {expanded && !props.imagesOnly && (
           <Button
             type="button"
             variant="ghost"

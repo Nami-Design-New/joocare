@@ -16,6 +16,7 @@ export default function ChatAttachmentCard({
   onDownload,
 }: ChatAttachmentCardProps) {
   const t = useTranslations('companyPage.chat');
+  const name = attachment.name || t('image-attachment');
   if (attachment.kind === 'image' && attachment.url) {
     return (
       <div className="min-w-0 space-y-2">
@@ -23,20 +24,21 @@ export default function ChatAttachmentCard({
           type="button"
           className="block w-full cursor-pointer overflow-hidden rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-chat-primary"
           onClick={() => onPreview(attachment)}
-          aria-label={t('preview-image', { name: attachment.name })}
+          aria-label={t('preview-image', { name })}
         >
           <Image
             src={attachment.url}
             width={368}
             height={170}
-            alt={attachment.name}
+            alt={name}
             unoptimized
             className="max-h-64 w-full object-cover"
           />
         </button>
         <p className="truncate text-[11px] leading-3.5 text-muted-foreground">
           <bdi>
-            {attachment.name} · {attachment.size}
+            {name}
+            {attachment.size ? ` · ${attachment.size}` : ''}
           </bdi>
         </p>
       </div>

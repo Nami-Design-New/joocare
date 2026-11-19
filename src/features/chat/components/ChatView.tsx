@@ -2,14 +2,24 @@
 
 import { cn } from '@/shared/lib/utils';
 import type { ChatState } from '../hooks/useChat';
-import type { ChatMessage, ChatRole } from '../types/chat.types';
+import type {
+  ChatConversation,
+  ChatMessage,
+  ChatRole,
+  SendChatMessage,
+} from '../types/chat.types';
 import ChatConversationList from './ChatConversationList';
 import ChatImageDialog from './ChatImageDialog';
 import ChatWindow from './ChatWindow';
 
 type ChatViewProps = {
   role: ChatRole;
-  chat: ChatState;
+  chat: Omit<ChatState, 'activeConversation' | 'sendMessage'> & {
+    activeConversation?: ChatConversation;
+    sendMessage: (
+      message: SendChatMessage,
+    ) => void | boolean | Promise<void | boolean>;
+  };
   className?: string;
   superAdmin?: boolean;
   initialReplyMessage?: ChatMessage;

@@ -36,7 +36,7 @@ export default function ChatImageDialog({
       >
         <div className="flex min-w-0 items-center justify-between gap-3">
           <DialogTitle className="truncate text-base">
-            <bdi>{attachment?.name}</bdi>
+            <bdi>{attachment?.name || t('image-attachment')}</bdi>
           </DialogTitle>
           <DialogClose asChild>
             <Button
@@ -57,7 +57,7 @@ export default function ChatImageDialog({
             src={attachment.url}
             width={1104}
             height={510}
-            alt={attachment.name}
+            alt={attachment.name || t('image-attachment')}
             unoptimized
             className="max-h-[65dvh] w-full rounded-lg object-contain"
           />

@@ -1,16 +1,25 @@
 'use client';
 
 import { useCandidateChat } from '../hooks/useCandidateChat';
-import type { ChatScenario } from '../types/chat.types';
 import ChatView from './ChatView';
+import ChatLoading from './ChatLoading';
+import ChatError from './ChatError';
 
 type CandidateChatPageProps = {
-  scenario: ChatScenario;
   conversationId?: string;
 };
 
 export default function CandidateChatPage(props: CandidateChatPageProps) {
   const chat = useCandidateChat(props);
+  if (chat.isLoading) return <ChatLoading />;
+  if (chat.isError) {
+    const error =
+      chat.error instanceof Error
+        ? chat.error
+        : new Error();
+    return <ChatError error={error} reset={() => void chat.refetch()} />;
+  }
+
   return (
     <ChatView
       role="candidate"

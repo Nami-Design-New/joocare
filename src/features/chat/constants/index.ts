@@ -14,3 +14,12 @@ export const CHAT_ROUTES = {
   company: '/company/chat',
   candidate: '/candidate/chat',
 } as const;
+
+export const candidateChatQueryKeys = {
+  conversations: (locale: string) => ['candidate-chat-conversations', locale],
+  messages: (locale: string, companyAdminId: string) => [
+    'candidate-chat-messages',
+    locale,
+    companyAdminId,
+  ],
+} as const;

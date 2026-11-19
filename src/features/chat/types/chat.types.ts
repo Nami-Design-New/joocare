@@ -4,9 +4,11 @@ export type ChatAttachment = {
   kind: 'image' | 'file';
   size: string;
   url?: string;
+  file?: File;
 };
 
 export type ChatReply = {
+  id?: string;
   name: string;
   text: string;
   image?: string;
@@ -17,7 +19,7 @@ export type ChatMessage = {
   direction: 'incoming' | 'outgoing';
   text: string;
   sentAt: string;
-  day: 'yesterday' | 'today';
+  day?: 'yesterday' | 'today';
   avatar?: string;
   attachments?: ChatAttachment[];
   reply?: ChatReply;
@@ -29,7 +31,7 @@ export type ChatRole = 'company' | 'candidate';
 export type ChatConversation = {
   id: string;
   /** Profile of the other party: the candidate for companies, the company for candidates. */
-  profileHref: string;
+  profileHref?: string;
   name: string;
   jobTitle: string;
   /** Candidate conversations only: the employer the recruiter works for. */
