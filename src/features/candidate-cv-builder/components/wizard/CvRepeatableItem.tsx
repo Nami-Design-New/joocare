@@ -2,18 +2,27 @@
 
 import { ChevronUp, GripVertical } from 'lucide-react';
 import Image from 'next/image';
-import { useState, type DragEvent, type ReactNode } from 'react';
+import {
+  useState,
+  type KeyboardEvent,
+  type PointerEvent,
+  type ReactNode,
+} from 'react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/shared/lib/utils';
 import { CV_BUILDER_ICONS } from '../../constants';
 import { FieldSurfaceProvider } from '../fields/field-surface';
 
 export type CvItemDragProps = {
-  onDragStart: (event: DragEvent<HTMLElement>) => void;
-  onDragOver: (event: DragEvent<HTMLElement>) => void;
-  onDrop: (event: DragEvent<HTMLElement>) => void;
-  onDragEnd: () => void;
+  index: number;
+  disabled: boolean;
+  onPointerDown: (event: PointerEvent<HTMLButtonElement>) => void;
+  onPointerMove: (event: PointerEvent<HTMLButtonElement>) => void;
+  onPointerUp: (event: PointerEvent<HTMLButtonElement>) => void;
+  onPointerCancel: () => void;
+  onKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
   isDragging: boolean;
+  isDropTarget: boolean;
 };
 
 type CvRepeatableItemProps = {
@@ -35,27 +44,28 @@ export default function CvRepeatableItem({
 
   return (
     <article
-      onDragOver={drag.onDragOver}
-      onDrop={drag.onDrop}
+      data-cv-reorder-index={drag.index}
       className={cn(
         'flex flex-col gap-4 rounded-lg bg-card p-4 transition-opacity',
         drag.isDragging && 'opacity-50',
+        drag.isDropTarget && 'ring-2 ring-cv-builder-primary',
       )}
     >
       <header className="flex min-h-8 items-center gap-4">
-        <span
-          draggable
-          onDragStart={(event) => {
-            const card = event.currentTarget.closest('article');
-            if (card) event.dataTransfer.setDragImage(card, 24, 24);
-            drag.onDragStart(event);
-          }}
-          onDragEnd={drag.onDragEnd}
-          aria-hidden
-          className="cursor-grab text-muted-foreground active:cursor-grabbing"
+        <button
+          type="button"
+          disabled={drag.disabled}
+          onPointerDown={drag.onPointerDown}
+          onPointerMove={drag.onPointerMove}
+          onPointerUp={drag.onPointerUp}
+          onPointerCancel={drag.onPointerCancel}
+          onKeyDown={drag.onKeyDown}
+          aria-label={t('reorder', { title })}
+          aria-keyshortcuts="ArrowUp ArrowDown"
+          className="flex size-8 touch-none items-center justify-center text-muted-foreground enabled:cursor-grab enabled:active:cursor-grabbing"
         >
           <GripVertical aria-hidden className="size-5" />
-        </span>
+        </button>
         <h3 className="grow text-lg leading-6 text-foreground">{title}</h3>
         <button
           type="button"

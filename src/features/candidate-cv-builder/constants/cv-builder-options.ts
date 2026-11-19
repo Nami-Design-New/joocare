@@ -6,15 +6,6 @@ const toOptions = (labels: readonly string[]): Option[] =>
 
 export const OTHER_JOB_TITLE = 'Other';
 
-export const NATIONALITY_OPTIONS = toOptions([
-  'Egyptian',
-  'Emirati',
-  'Saudi',
-  'Jordanian',
-  'Indian',
-  'Filipino',
-]);
-
 export const MARITAL_STATUS_OPTIONS = toOptions([
   'Single',
   'Married',
@@ -63,14 +54,6 @@ export const JOB_TITLE_OPTIONS = toOptions([
   'Radiographer',
   'Pharmacist',
   OTHER_JOB_TITLE,
-]);
-
-export const YEARS_OF_EXPERIENCE_OPTIONS = toOptions([
-  'Less than 1 year',
-  '1–3 years',
-  '3–5 years',
-  '5–10 years',
-  '10+ years',
 ]);
 
 export const EMPLOYMENT_TYPE_OPTIONS = toOptions([

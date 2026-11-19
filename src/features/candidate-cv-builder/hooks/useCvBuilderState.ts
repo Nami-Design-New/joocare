@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { CvBuilderState } from '../types/cv-builder.types';
+import { useDeleteCvDraft } from './useDeleteCvDraft';
 
 type LandingModal = 'show-cv' | 'delete-draft' | null;
 
@@ -9,6 +10,11 @@ type LandingModal = 'show-cv' | 'delete-draft' | null;
 export function useCvBuilderState(initialState: CvBuilderState) {
   const [state, setState] = useState(initialState);
   const [modal, setModal] = useState<LandingModal>(null);
+  const deleteDraft = useDeleteCvDraft();
+
+  useEffect(() => {
+    setState(initialState);
+  }, [initialState]);
 
   return {
     state,
@@ -16,9 +22,14 @@ export function useCvBuilderState(initialState: CvBuilderState) {
     closeModal: () => setModal(null),
     openShowCv: () => setModal('show-cv'),
     openDeleteDraft: () => setModal('delete-draft'),
+    isDeletingDraft: deleteDraft.isPending,
     confirmDeleteDraft: () => {
-      setModal(null);
-      setState('intro');
+      deleteDraft.mutate(undefined, {
+        onSuccess: () => {
+          setModal(null);
+          setState('intro');
+        },
+      });
     },
   };
 }

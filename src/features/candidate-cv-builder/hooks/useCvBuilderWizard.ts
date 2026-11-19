@@ -1,55 +1,69 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from '@/i18n/navigation';
 import { typedZodResolver } from '@/shared/lib/typed-zod-resolver';
-import {
-  CV_BUILDER_PREVIEW_SUMMARY,
-  CV_BUILDER_ROUTES,
-  CV_BUILDER_STEPS,
-} from '../constants';
-import {
-  CV_BUILDER_PREVIEW_VALUES,
-  getDraftCvValues,
-} from '../constants/cv-builder-preview-data';
-import type { CvBuilderMode, CvBuilderValues } from '../types/cv-builder.types';
+import { CV_BUILDER_ROUTES, CV_BUILDER_STEPS } from '../constants';
+import type {
+  CvBuilderMode,
+  CvBuilderRemoteData,
+  CvBuilderValues,
+} from '../types/cv-builder.types';
 import { getEmptyCvValues } from '../utils/cv-builder-defaults';
 import { useCvBuilderSchema } from './useCvBuilderSchema';
+import { useSaveCvBuilderStepOne } from './useSaveCvBuilderStepOne';
+import { useSaveCvBuilderStep } from './useSaveCvBuilderStep';
+import { useDeleteCvDraft } from './useDeleteCvDraft';
 
 const LAST_STEP = CV_BUILDER_STEPS.length - 1;
 
-function getInitialValues(mode: CvBuilderMode): CvBuilderValues {
-  if (mode === 'edit') return CV_BUILDER_PREVIEW_VALUES;
-  if (mode === 'draft') return getDraftCvValues();
+function getInitialValues(
+  mode: CvBuilderMode,
+  remoteCv: CvBuilderRemoteData | null,
+): CvBuilderValues {
+  if (mode !== 'new' && remoteCv?.values) return remoteCv.values;
   return getEmptyCvValues();
-}
-
-// Steps already done when the wizard opens (a draft resumes after its saved steps).
-function getCompletedCount(mode: CvBuilderMode) {
-  if (mode === 'edit') return CV_BUILDER_STEPS.length;
-  if (mode === 'draft') return CV_BUILDER_PREVIEW_SUMMARY.completedSteps;
-  return 0;
 }
 
 export type CvBuilderModal = 'saved' | 'delete-draft' | 'preview' | null;
 
 // Wizard state: one form for all steps, the current step and the footer actions.
-// Design only: values stay on this page until the CV builder API is ready.
-export function useCvBuilderWizard(mode: CvBuilderMode) {
+export function useCvBuilderWizard(
+  mode: CvBuilderMode,
+  remoteCv: CvBuilderRemoteData | null,
+) {
   const router = useRouter();
   const schema = useCvBuilderSchema();
+  const saveStepOne = useSaveCvBuilderStepOne();
+  const saveStep = useSaveCvBuilderStep();
+  const deleteDraft = useDeleteCvDraft();
   const form = useForm<CvBuilderValues>({
     resolver: typedZodResolver(schema),
-    defaultValues: getInitialValues(mode),
+    defaultValues: getInitialValues(mode, remoteCv),
     mode: 'onTouched',
   });
-  const initialCompleted = getCompletedCount(mode);
+  const initialCompleted =
+    mode === 'edit'
+      ? CV_BUILDER_STEPS.length
+      : Math.max((remoteCv?.currentStep ?? 1) - 1, 0);
   const [completedCount, setCompletedCount] = useState(initialCompleted);
   const [stepIndex, setStepIndex] = useState(
-    mode === 'draft' ? initialCompleted : 0,
+    mode === 'draft'
+      ? Math.min(Math.max((remoteCv?.currentStep ?? 1) - 1, 0), LAST_STEP)
+      : 0,
   );
   const [modal, setModal] = useState<CvBuilderModal>(null);
+  const savedSteps = useRef<Map<number, string> | null>(null);
+
+  if (savedSteps.current === null) {
+    savedSteps.current = new Map(
+      CV_BUILDER_STEPS.slice(0, initialCompleted).map((step, index) => [
+        index,
+        JSON.stringify(form.getValues(step.key)),
+      ]),
+    );
+  }
 
   const goToStep = (index: number) => {
     setStepIndex(index);
@@ -57,12 +71,38 @@ export function useCvBuilderWizard(mode: CvBuilderMode) {
   };
 
   const next = async () => {
+    const step = CV_BUILDER_STEPS[stepIndex];
+    const currentValues = JSON.stringify(form.getValues(step.key));
+    if (savedSteps.current?.get(stepIndex) === currentValues) {
+      if (stepIndex === LAST_STEP) setModal('preview');
+      else goToStep(stepIndex + 1);
+      return;
+    }
+
     // Array form: the error update then reaches every nested field of the step.
-    const isValid = await form.trigger([CV_BUILDER_STEPS[stepIndex].key], {
+    const isValid = await form.trigger([step.key], {
       shouldFocus: true,
     });
     if (!isValid) return;
 
+    try {
+      if (stepIndex === 0) {
+        await saveStepOne.mutateAsync({
+          personal: form.getValues('personal'),
+          photoChanged: form.getFieldState('personal.photo', form.formState)
+            .isDirty,
+        });
+      } else {
+        await saveStep.mutateAsync({
+          step: stepIndex + 1,
+          values: form.getValues(),
+        });
+      }
+    } catch {
+      return;
+    }
+
+    savedSteps.current?.set(stepIndex, currentValues);
     setCompletedCount((count) => Math.max(count, stepIndex + 1));
     if (stepIndex === LAST_STEP) setModal('preview');
     else goToStep(stepIndex + 1);
@@ -79,13 +119,19 @@ export function useCvBuilderWizard(mode: CvBuilderMode) {
     isStepCompleted: (index: number) => index < completedCount,
     goToStep,
     next,
+    isSaving: saveStepOne.isPending || saveStep.isPending,
+    isDeletingDraft: deleteDraft.isPending,
     prev: () => goToStep(Math.max(0, stepIndex - 1)),
     modal,
     setModal,
     closeModal: () => setModal(null),
     confirmDeleteDraft: () => {
-      setModal(null);
-      router.push(CV_BUILDER_ROUTES.root);
+      deleteDraft.mutate(undefined, {
+        onSuccess: () => {
+          setModal(null);
+          router.push(CV_BUILDER_ROUTES.root);
+        },
+      });
     },
   };
 }

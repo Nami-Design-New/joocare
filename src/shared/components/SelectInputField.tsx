@@ -47,7 +47,10 @@ type SelectInputFieldProps = {
   onSearchChange?: (value: string) => void;
   portalContainer?: HTMLElement | null;
   allowDeselect?: boolean;
+  clearOptionLabel?: string;
 };
+
+const CLEAR_OPTION = '__clear__';
 
 export const SelectInputField = React.forwardRef<
   HTMLButtonElement,
@@ -75,6 +78,7 @@ export const SelectInputField = React.forwardRef<
       onSearchChange,
       portalContainer,
       allowDeselect = false,
+      clearOptionLabel,
       ...props
     },
     ref,
@@ -83,6 +87,8 @@ export const SelectInputField = React.forwardRef<
     const resolvedSearchPlaceholder = searchPlaceholder || t('common.search');
     const listRef = React.useRef<HTMLDivElement | null>(null);
     const observerRef = React.useRef<IntersectionObserver | null>(null);
+    const [rememberedOption, setRememberedOption] =
+      React.useState<Option | null>(null);
 
     //  stable callback
     const handleObserver = React.useCallback(
@@ -114,7 +120,21 @@ export const SelectInputField = React.forwardRef<
       [hasNextPage, isFetchingNextPage, onReachEnd],
     );
 
-    const selectedOption = options?.find((o) => o.value === value);
+    const loadedSelectedOption = options?.find((o) => o.value === value);
+    React.useEffect(() => {
+      if (loadedSelectedOption) setRememberedOption(loadedSelectedOption);
+    }, [loadedSelectedOption]);
+    const selectedOption =
+      loadedSelectedOption ??
+      (rememberedOption?.value === value ? rememberedOption : undefined);
+    const lookupOptions =
+      selectedOption && !loadedSelectedOption
+        ? [selectedOption, ...options]
+        : options;
+    const displayedOptions =
+      clearOptionLabel && value
+        ? [{ value: CLEAR_OPTION, label: clearOptionLabel }, ...lookupOptions]
+        : lookupOptions;
 
     return (
       <div className={cn('flex w-full flex-col', containerStyles)}>
@@ -131,7 +151,7 @@ export const SelectInputField = React.forwardRef<
 
         <Combobox
           id={id}
-          items={options}
+          items={displayedOptions}
           value={selectedOption ?? null}
           // Without a visible search input there is nothing for the user to
           // type, so the list must never be filtered down (it should behave
@@ -141,6 +161,11 @@ export const SelectInputField = React.forwardRef<
           filter={withSearchInput ? undefined : null}
           onValueChange={(option) => {
             const nextValue = (option as Option | null)?.value ?? '';
+
+            if (nextValue === CLEAR_OPTION) {
+              onChange?.('');
+              return;
+            }
 
             if (allowDeselect && nextValue === value) {
               onChange?.('');
@@ -229,7 +254,7 @@ export const SelectInputField = React.forwardRef<
                     {item.label}
                   </ComboboxItem>
 
-                  {item === options[options.length - 1] && (
+                  {item === displayedOptions[displayedOptions.length - 1] && (
                     <div ref={handleObserver} className="h-1" />
                   )}
                 </React.Fragment>

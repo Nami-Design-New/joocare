@@ -1,10 +1,9 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import {
-  COUNTRY_OPTIONS,
-  PUBLICATION_YEAR_OPTIONS,
-} from '../../constants/cv-builder-options';
+import useGetCountries from '@/shared/hooks/useGetCountries';
+import { PUBLICATION_YEAR_OPTIONS } from '../../constants/cv-builder-options';
 import { emptyPublication } from '../../utils/cv-builder-defaults';
 import CvSelectField from '../fields/CvSelectField';
 import CvTextField from '../fields/CvTextField';
@@ -14,6 +13,18 @@ import CvSwitchEntries from '../wizard/CvSwitchEntries';
 // Step 9: research papers and publications (optional).
 export default function ResearchStep() {
   const t = useTranslations('candidatePage.buildCv.research');
+  const [countrySearch, setCountrySearch] = useState('');
+  const countries = useGetCountries(countrySearch);
+  const countryOptions = useMemo(
+    () =>
+      countries.countries
+        .map((country) => ({
+          label: String(country.title ?? country.name ?? ''),
+          value: String(country.id ?? ''),
+        }))
+        .filter((country) => country.label && country.value),
+    [countries.countries],
+  );
 
   return (
     <CvStepCard title={t('title')} description={t('description')}>
@@ -42,7 +53,14 @@ export default function ResearchStep() {
                 name={`research.items.${index}.country`}
                 label={t('country')}
                 placeholder={t('country-placeholder')}
-                options={COUNTRY_OPTIONS}
+                options={countryOptions}
+                disabled={countries.isLoading}
+                withSearchInput
+                onSearchChange={setCountrySearch}
+                clearable
+                onReachEnd={() => void countries.fetchNextPage()}
+                hasNextPage={countries.hasNextPage}
+                isFetchingNextPage={countries.isFetchingNextPage}
               />
             </div>
             <CvSelectField
@@ -50,6 +68,8 @@ export default function ResearchStep() {
               label={t('year')}
               placeholder={t('year-placeholder')}
               options={PUBLICATION_YEAR_OPTIONS}
+              withSearchInput
+              clearable
             />
           </>
         )}

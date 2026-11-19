@@ -53,6 +53,7 @@ export type ExperienceSelectField = {
   onReachEnd?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
+  clearOptionLabel?: string;
 };
 
 type ExperienceFormModalProps = {
@@ -187,6 +188,7 @@ export default function ExperienceFormModal({
                 onReachEnd={jobTitleField.onReachEnd}
                 hasNextPage={jobTitleField.hasNextPage}
                 isFetchingNextPage={jobTitleField.isFetchingNextPage}
+                clearOptionLabel={jobTitleField.clearOptionLabel}
                 error={fieldState.error?.message ?? jobTitleField.error}
               />
             )}
@@ -235,6 +237,7 @@ export default function ExperienceFormModal({
                 onReachEnd={employmentTypeField.onReachEnd}
                 hasNextPage={employmentTypeField.hasNextPage}
                 isFetchingNextPage={employmentTypeField.isFetchingNextPage}
+                clearOptionLabel={employmentTypeField.clearOptionLabel}
                 error={fieldState.error?.message ?? employmentTypeField.error}
               />
             )}

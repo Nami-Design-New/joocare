@@ -22,6 +22,7 @@ export default function CvBuilderFooter({ wizard }: CvBuilderFooterProps) {
         size="pill"
         variant={isDraft ? 'destructive' : 'default'}
         onClick={() => wizard.setModal(isDraft ? 'delete-draft' : 'saved')}
+        disabled={wizard.isSaving || wizard.isDeletingDraft}
         className={
           isDraft
             ? buttonClassName
@@ -38,6 +39,7 @@ export default function CvBuilderFooter({ wizard }: CvBuilderFooterProps) {
             variant="outline"
             size="pill"
             onClick={wizard.prev}
+            disabled={wizard.isSaving}
             className={`${buttonClassName} max-sm:flex-1`}
           >
             {t('prev')}
@@ -47,9 +49,12 @@ export default function CvBuilderFooter({ wizard }: CvBuilderFooterProps) {
           type="button"
           size="pill"
           onClick={() => void wizard.next()}
+          disabled={wizard.isSaving}
           className={`${buttonClassName} bg-secondary hover:bg-secondary/90 max-sm:flex-1`}
         >
-          {t(wizard.isLastStep ? 'preview-cv' : 'next')}
+          {wizard.isSaving
+            ? t('saving')
+            : t(wizard.isLastStep ? 'preview-cv' : 'next')}
         </Button>
       </div>
     </footer>

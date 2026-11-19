@@ -5,9 +5,15 @@ import { FormProvider } from 'react-hook-form';
 import { useRouter } from '@/i18n/navigation';
 import DeleteModal from '@/shared/components/modals/DeleteModal';
 import SuccessModal from '@/shared/components/modals/SuccessModal';
+import { Button } from '@/shared/components/ui/button';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import { CV_BUILDER_ROUTES, CV_BUILDER_STEPS } from '../../constants';
+import { useGetCvBuilder } from '../../hooks/useGetCvBuilder';
 import { useCvBuilderWizard } from '../../hooks/useCvBuilderWizard';
-import type { CvBuilderMode } from '../../types/cv-builder.types';
+import type {
+  CvBuilderMode,
+  CvBuilderRemoteData,
+} from '../../types/cv-builder.types';
 import CvViewModal from '../view/CvViewModal';
 import CvBuilderFooter from './CvBuilderFooter';
 import CvBuilderStepper from './CvBuilderStepper';
@@ -17,11 +23,51 @@ type CvBuilderWizardProps = {
   mode: CvBuilderMode;
 };
 
-// "Create CV" wizard: vertical stepper, current step and footer actions (design only).
+// "Create CV" wizard: vertical stepper, current step and footer actions.
 export default function CvBuilderWizard({ mode }: CvBuilderWizardProps) {
   const t = useTranslations('candidatePage.buildCv');
+  const remoteCv = useGetCvBuilder();
+
+  if (remoteCv.isLoading) {
+    return <Skeleton className="h-160 w-full rounded-2xl" />;
+  }
+
+  if (remoteCv.isError) {
+    return (
+      <section className="flex min-h-80 flex-col items-center justify-center gap-4 rounded-2xl bg-card p-6 text-center shadow-card">
+        <p className="text-sm text-destructive">{t('load-error')}</p>
+        <Button type="button" onClick={() => void remoteCv.refetch()}>
+          {t('retry')}
+        </Button>
+      </section>
+    );
+  }
+
+  const resolvedMode =
+    mode === 'new' && remoteCv.data?.values
+      ? remoteCv.data.state === 'exists'
+        ? 'edit'
+        : 'draft'
+      : mode;
+
+  return (
+    <CvBuilderWizardForm
+      key={resolvedMode}
+      mode={resolvedMode}
+      remoteCv={remoteCv.data ?? null}
+    />
+  );
+}
+
+type CvBuilderWizardFormProps = {
+  mode: CvBuilderMode;
+  remoteCv: CvBuilderRemoteData | null;
+};
+
+function CvBuilderWizardForm({ mode, remoteCv }: CvBuilderWizardFormProps) {
+  const t = useTranslations('candidatePage.buildCv');
   const router = useRouter();
-  const wizard = useCvBuilderWizard(mode);
+  const wizard = useCvBuilderWizard(mode, remoteCv);
   const step = CV_BUILDER_STEPS[wizard.stepIndex];
 
   return (
@@ -60,6 +106,7 @@ export default function CvBuilderWizard({ mode }: CvBuilderWizardProps) {
         description={t('delete-modal.description')}
         confirmLabel={t('delete-modal.confirm')}
         cancelLabel={t('delete-modal.cancel')}
+        isLoading={wizard.isDeletingDraft}
         onConfirm={wizard.confirmDeleteDraft}
       />
       {wizard.modal === 'preview' && (
