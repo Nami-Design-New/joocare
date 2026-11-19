@@ -1,87 +1,79 @@
-import { useState } from 'react';
-import type {
-  CandidateAssessment,
-  CandidateAssessmentAnswers,
-  CandidateAssessmentSubmission,
-} from '../types/candidate-assessment.types';
-import { useCountdown } from './useCountdown';
+'use client';
 
-const MINUTE_MS = 60 * 1000;
+import { useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import { getHttpErrorMessage } from '@/shared/lib/http-error';
+import type { AssessmentAttempt } from '../types/assessment-api.types';
+import { useStartCandidateAssessment } from './useStartCandidateAssessment';
+import { useAnswerCandidateAssessment } from './useAnswerCandidateAssessment';
 
-// Taking an assessment: intro → one locked question at a time → submit (also when time runs out).
-// Design only: answers stay on the page until the assessment API is ready.
-export function useCandidateAssessment(assessment: CandidateAssessment) {
-  const [startedAt, setStartedAt] = useState<number | null>(null);
-  const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState<CandidateAssessmentAnswers>({});
-  const [submission, setSubmission] =
-    useState<CandidateAssessmentSubmission | null>(
-      assessment.submission ?? null,
+export function useCandidateAssessment(id: string) {
+  const t = useTranslations('candidatePage.assessment.api');
+  const startMutation = useStartCandidateAssessment(id);
+  const answerMutation = useAnswerCandidateAssessment(id);
+  const [attempt, setAttempt] = useState<AssessmentAttempt | null>(null);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [hasError, setHasError] = useState(false);
+  const [submittedModalOpen, setSubmittedModalOpen] = useState(false);
+  const locked = useRef(false);
+  const question = attempt?.next_question;
+  const start = async () => {
+    if (locked.current) return;
+    locked.current = true;
+    try {
+      const result = await startMutation.mutateAsync();
+      setAttempt(result);
+      if (result.next_question?.id !== question?.id) setSelectedIds([]);
+      setHasError(false);
+    } catch (error) {
+      setHasError(true);
+      toast.error(getHttpErrorMessage(error) || t('request-error'));
+    } finally {
+      locked.current = false;
+    }
+  };
+  const next = async () => {
+    if (locked.current || !question || !selectedIds.length) return;
+    locked.current = true;
+    try {
+      const result = await answerMutation.mutateAsync({
+        question_id: question.id,
+        answer_ids: selectedIds,
+      });
+      setAttempt(result);
+      setSelectedIds([]);
+      setHasError(false);
+      if (result.is_submitted) setSubmittedModalOpen(true);
+    } catch (error) {
+      setHasError(true);
+      toast.error(getHttpErrorMessage(error) || t('request-error'));
+    } finally {
+      locked.current = false;
+    }
+  };
+  const toggleOption = (value: string) => {
+    if (locked.current || !question) return;
+    const optionId = Number(value);
+    if (!question.answers.some((answer) => answer.id === optionId)) return;
+    setSelectedIds((current) =>
+      question.type !== 'multi_choice'
+        ? [optionId]
+        : current.includes(optionId)
+          ? current.filter((id) => id !== optionId)
+          : [...current, optionId],
     );
-  const [isSubmittedModalOpen, setSubmittedModalOpen] = useState(false);
-
-  const total = assessment.questions.length;
-  const question = assessment.questions[index];
-  const isLastQuestion = index === total - 1;
-  // Ends at the time limit or when the 72-hour link expires, whichever comes first.
-  const deadline =
-    startedAt === null || submission
-      ? null
-      : Math.min(
-          startedAt + assessment.timeLimitMinutes * MINUTE_MS,
-          new Date(assessment.expiresAt).getTime(),
-        );
-
-  const submit = () => {
-    const now = Date.now();
-    setSubmission({
-      submittedAt: new Date(now).toISOString(),
-      durationSeconds: Math.round((now - (startedAt ?? now)) / 1000),
-    });
-    setSubmittedModalOpen(true);
   };
-
-  const remainingSeconds = useCountdown(deadline, submit);
-
-  const start = () => setStartedAt(Date.now());
-
-  const toggleOption = (optionId: string) => {
-    if (!question) return;
-    setAnswers((current) => {
-      const picked = current[question.id] ?? [];
-      if (question.type !== 'multi')
-        return { ...current, [question.id]: [optionId] };
-      const next = picked.includes(optionId)
-        ? picked.filter((id) => id !== optionId)
-        : [...picked, optionId];
-      return { ...current, [question.id]: next };
-    });
-  };
-
-  // "No going back": the answer is locked once the candidate moves on.
-  const next = () => {
-    if (!question || !answers[question.id]?.length) return;
-    if (isLastQuestion) submit();
-    else setIndex((current) => current + 1);
-  };
-
   return {
-    hasStarted: startedAt !== null,
-    submission,
+    attempt,
     question,
-    questionNumber: index + 1,
-    total,
-    // Answered questions out of all, shown as "% Complete".
-    progress: total
-      ? Math.round((Object.keys(answers).length / total) * 100)
-      : 0,
-    selectedOptionIds: (question ? answers[question.id] : undefined) ?? [],
-    isLastQuestion,
-    remainingSeconds,
-    isSubmittedModalOpen,
-    setSubmittedModalOpen,
+    selectedIds,
     start,
-    toggleOption,
     next,
+    toggleOption,
+    hasError,
+    submittedModalOpen,
+    setSubmittedModalOpen,
+    isPending: startMutation.isPending || answerMutation.isPending,
   };
 }

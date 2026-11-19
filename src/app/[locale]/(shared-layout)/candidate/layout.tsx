@@ -2,6 +2,7 @@ import CandidateBreadcrumb from '@/features/candidate-profile/components/Candida
 import CandidateLayoutColumns from '@/features/candidate-profile/components/CandidateLayoutColumns';
 import CandidateSideContentLinks from '@/features/candidate-profile/components/SideContentLinks';
 import { getCandidateProfile } from '@/features/candidate-profile/services/profile-service';
+import CandidateAssessmentRouteLayout from '@/features/candidate-assessment/components/CandidateAssessmentRouteLayout';
 
 export default async function CandidateProfileLayout({
   children,
@@ -10,21 +11,27 @@ export default async function CandidateProfileLayout({
 }) {
   const profile = await getCandidateProfile();
   return (
-    <section className="min-h-dvh bg-body-bg">
-      <CandidateBreadcrumb />
-      <main className="layout-shell pb-12">
-        <section className="layout-content">
-          <CandidateLayoutColumns
-            sidebar={
-              <CandidateSideContentLinks
-                isCompleted={profile?.isProfileComplete}
-              />
-            }
-          >
-            {children}
-          </CandidateLayoutColumns>
+    <CandidateAssessmentRouteLayout
+      regularLayout={
+        <section className="min-h-dvh bg-body-bg">
+          <CandidateBreadcrumb />
+          <main className="layout-shell pb-12">
+            <section className="layout-content">
+              <CandidateLayoutColumns
+                sidebar={
+                  <CandidateSideContentLinks
+                    isCompleted={profile?.isProfileComplete}
+                  />
+                }
+              >
+                {children}
+              </CandidateLayoutColumns>
+            </section>
+          </main>
         </section>
-      </main>
-    </section>
+      }
+    >
+      {children}
+    </CandidateAssessmentRouteLayout>
   );
 }

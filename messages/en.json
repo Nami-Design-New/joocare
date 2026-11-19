@@ -1338,11 +1338,38 @@
       "leave": {
         "close": "Close",
         "leave-title": "Leave Assessment?",
-        "leave-description": "You are about to exit the assessment. Leaving or going back will end your attempt immediately, and you will not be able to return to it.",
-        "leave-warning-title": "Your attempt will end now",
-        "leave-warning-description": "Only your locked answers will be submitted. Unanswered questions will be marked as not answered. No Going Back: Answers are locked once you click \"Next\", and previous questions cannot be re-visited.",
+        "leave-description": "You are about to leave the assessment page.",
+        "leave-warning-title": "Your current selection has not been saved",
+        "leave-warning-description": "Answers are saved when you move to the next question. Leaving does not pause the time limit. You can check your saved progress when you return, while the attempt remains available.",
         "continue-creating": "Continue Assessment",
-        "discard-leave": "Leave & End Attempt"
+        "discard-leave": "Leave Assessment"
+      },
+      "api": {
+        "submitted-at": "Submitted",
+        "duration": "Time taken",
+        "status": "Status",
+        "score": "Score",
+        "loading": "Loading assessment…",
+        "load-error": "Unable to load this assessment",
+        "request-error": "Unable to complete the request. Please try again.",
+        "retry": "Try again",
+        "back": "Back to applications",
+        "saving": "Saving…",
+        "resume": "Resume assessment",
+        "recover": "Check saved progress and resume",
+        "submitted": "Your assessment has been submitted successfully.",
+        "expired": "This assessment invitation has expired.",
+        "paused": "This assessment is currently unavailable.",
+        "expires": "Invitation expires: {date}",
+        "expires-label": "Invitation expires",
+        "hiring-team": "Hiring team",
+        "home": "Go to homepage",
+        "logo": "Joocare",
+        "language": "Choose language",
+        "taken-description": "You have submitted “{title}”. Your answers are available for review.",
+        "unavailable-description": "This assessment has been paused and is currently unavailable. Please contact the hiring team for more information.",
+        "server-timer": "Time limit: {minutes} minutes. The assessment server controls when the attempt ends.",
+        "attachment": "Open question attachment {number}"
       },
       "intro": {
         "sent-by": "Sent by",
@@ -1353,7 +1380,7 @@
           "questions": "<strong>{count, plural, one {# Question} other {# Questions}}</strong>: A mix of yes/no, single-select and multi-select questions.",
           "no-going-back": "<strong>No Going Back</strong>: Once you click \"Next\", your answer is locked. Previous questions cannot be re-visited.",
           "continuous-session": "<strong>Continuous Session</strong>: Recommended to complete in one setting, but progress is saved if you need to resume.",
-          "passing-criteria": "<strong>Passing Criteria</strong>: Achieve <highlight>{score}%</highlight> or higher to pass to the interview round."
+          "passing-criteria": "<strong>Passing Criteria</strong>: Achieve <highlight>{score}%</highlight> or higher to pass this assessment."
         },
         "time-limit": "Time Limit",
         "total-questions": "Total Questions",
@@ -1400,7 +1427,9 @@
         }
       },
       "submitted": {
+        "close": "Close",
         "title": "Assessment Submitted Successfully",
+        "description-generic": "Your answers have been sent to the hiring team for review. You can follow your assessment and application status anytime from Applied Jobs.",
         "description": "Your answers have been sent to the hiring team at <company></company>. You can follow your assessment and application status anytime from Applied Jobs",
         "go-to-applied-jobs": "Go to Applied Jobs",
         "browse-jobs": "Browse more jobs"

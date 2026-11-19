@@ -1,8 +1,7 @@
-import type { LucideIcon } from 'lucide-react';
+import Image from 'next/image';
 import { cn } from '@/shared/lib/utils';
 
 type AssessmentStatusIconProps = {
-  icon: LucideIcon;
   tone: 'warning' | 'success';
 };
 
@@ -13,7 +12,6 @@ const TONES = {
 
 // 112px tinted circle with a status icon (expired clock, submitted check).
 export default function AssessmentStatusIcon({
-  icon: Icon,
   tone,
 }: AssessmentStatusIconProps) {
   return (
@@ -24,7 +22,12 @@ export default function AssessmentStatusIcon({
         TONES[tone],
       )}
     >
-      <Icon className="size-10 sm:size-14" strokeWidth={2.5} />
+      <Image
+        src={`/assets/candidate-assessment/figma/${tone === 'warning' ? 'expired' : 'taken'}.svg`}
+        alt=""
+        width={tone === 'warning' ? 56 : 44.8}
+        height={tone === 'warning' ? 56 : 44.8}
+      />
     </span>
   );
 }

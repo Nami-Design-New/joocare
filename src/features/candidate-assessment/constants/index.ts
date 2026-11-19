@@ -3,6 +3,7 @@ import type { CandidateAssessmentState } from '../types/candidate-assessment.typ
 
 // An assessment link stays valid for 72 hours after it is emailed.
 export const ASSESSMENT_LINK_VALIDITY_HOURS = 72;
+export const ASSESSMENT_MAX_ATTEMPTS = 1;
 
 // The timer turns into a warning in the last 5 minutes.
 export const ASSESSMENT_TIMER_WARNING_SECONDS = 5 * 60;

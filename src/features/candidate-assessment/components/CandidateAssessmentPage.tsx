@@ -1,86 +1,44 @@
 'use client';
 
-import { useCandidateAssessment } from '../hooks/useCandidateAssessment';
-import AssessmentLeaveModal from '@/features/company-assessments/components/create/AssessmentLeaveModal';
-import { useAssessmentLeaveGuard } from '@/features/company-assessments/hooks/useAssessmentLeaveGuard';
+import { useTranslations } from 'next-intl';
+import { useGetCandidateAssessment } from '../hooks/useGetCandidateAssessment';
+import AssessmentCard from './AssessmentCard';
+import CandidateAssessmentContent from './CandidateAssessmentContent';
+import HttpStatusState from '@/shared/components/HttpStatusState';
+import { Button } from '@/shared/components/ui/button';
+import {
+  getHttpErrorMessage,
+  getHttpStatusCode,
+} from '@/shared/lib/http-error';
 import { CANDIDATE_ASSESSMENT_ROUTES } from '../constants';
-import type { CandidateAssessment } from '../types/candidate-assessment.types';
-import AssessmentSubmittedModal from './AssessmentSubmittedModal';
-import AssessmentIntro from './intro/AssessmentIntro';
-import AssessmentQuestionScreen from './questions/AssessmentQuestionScreen';
-import AssessmentExpired from './status/AssessmentExpired';
-import AssessmentTaken from './status/AssessmentTaken';
-import AssessmentUnavailable from './status/AssessmentUnavailable';
 
-type CandidateAssessmentPageProps = {
-  assessment: CandidateAssessment;
-};
-
-// Candidate's assessment page (72h link validity, time limit, yes/no, single and multi-select questions).
 export default function CandidateAssessmentPage({
-  assessment,
-}: CandidateAssessmentPageProps) {
-  const attempt = useCandidateAssessment(assessment);
-  const leave = useAssessmentLeaveGuard(
-    attempt.hasStarted &&
-      !attempt.submission &&
-      assessment.state === 'available',
-    CANDIDATE_ASSESSMENT_ROUTES.appliedJobs,
-    true,
-  );
-
-  const renderContent = () => {
-    if (assessment.state === 'expired')
-      return <AssessmentExpired assessment={assessment} />;
-    if (assessment.state === 'unavailable') {
-      return <AssessmentUnavailable assessment={assessment} />;
-    }
-    if (attempt.submission) {
-      return (
-        <AssessmentTaken
-          assessment={assessment}
-          submission={attempt.submission}
-        />
-      );
-    }
-    if (
-      !attempt.hasStarted ||
-      !attempt.question ||
-      attempt.remainingSeconds === null
-    ) {
-      return (
-        <AssessmentIntro assessment={assessment} onStart={attempt.start} />
-      );
-    }
+  assessmentId,
+}: {
+  assessmentId: string;
+}) {
+  const t = useTranslations('candidatePage.assessment.api');
+  const query = useGetCandidateAssessment(assessmentId);
+  if (query.isPending)
     return (
-      <AssessmentQuestionScreen
-        question={attempt.question}
-        questionNumber={attempt.questionNumber}
-        total={attempt.total}
-        progress={attempt.progress}
-        remainingSeconds={attempt.remainingSeconds}
-        selectedOptionIds={attempt.selectedOptionIds}
-        isLastQuestion={attempt.isLastQuestion}
-        onToggleOption={attempt.toggleOption}
-        onNext={attempt.next}
-      />
+      <AssessmentCard>
+        <p role="status">{t('loading')}</p>
+      </AssessmentCard>
     );
-  };
-
-  return (
-    <>
-      {renderContent()}
-      <AssessmentLeaveModal
-        open={leave.leaveOpen}
-        onOpenChange={leave.setLeaveOpen}
-        onConfirm={leave.confirmLeave}
-        translationNamespace="candidatePage.assessment.leave"
-      />
-      <AssessmentSubmittedModal
-        open={attempt.isSubmittedModalOpen}
-        onOpenChange={attempt.setSubmittedModalOpen}
-        company={assessment.sentBy}
-      />
-    </>
-  );
+  if (!query.data)
+    return (
+      <>
+        <HttpStatusState
+          statusCode={getHttpStatusCode(query.error) ?? 500}
+          title={t('load-error')}
+          description={getHttpErrorMessage(query.error) ?? t('request-error')}
+          primaryHref={CANDIDATE_ASSESSMENT_ROUTES.appliedJobs}
+          primaryLabel={t('back')}
+        />
+        <div className="flex justify-center">
+          <Button onClick={() => void query.refetch()}>{t('retry')}</Button>
+        </div>
+      </>
+    );
+  return <CandidateAssessmentContent key={assessmentId} details={query.data} />;
 }
