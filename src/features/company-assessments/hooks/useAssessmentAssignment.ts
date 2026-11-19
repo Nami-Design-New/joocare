@@ -1,27 +1,33 @@
 'use client';
 
 import { useState } from 'react';
-import { assignmentCandidates } from '../constants/assessment-invitations';
+import type { AssignmentCandidate } from '../types/assessment-invitation.types';
+import { useAssignAssessment } from './useAssignAssessment';
 
-export function useAssessmentAssignment() {
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+export function useAssessmentAssignment(assessmentId: string) {
+  const [selectedCandidates, setSelectedCandidates] = useState<
+    AssignmentCandidate[]
+  >([]);
   const [emails, setEmails] = useState<string[]>([]);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
   const [assigned, setAssigned] = useState(false);
+  const mutation = useAssignAssessment(() => setAssigned(true));
+  const selectedIds = selectedCandidates.map((candidate) => candidate.id);
 
-  const toggleCandidate = (id: string) =>
-    setSelectedIds((current) =>
-      current.includes(id)
-        ? current.filter((item) => item !== id)
-        : [...current, id],
+  const toggleCandidate = (candidate: AssignmentCandidate) =>
+    setSelectedCandidates((current) =>
+      current.some((item) => item.id === candidate.id)
+        ? current.filter((item) => item.id !== candidate.id)
+        : [...current, candidate],
     );
   const reset = () => {
-    setSelectedIds([]);
+    setSelectedCandidates([]);
     setEmails([]);
     setPickerOpen(false);
     setEmailOpen(false);
     setAssigned(false);
+    mutation.reset();
   };
 
   return {
@@ -32,16 +38,19 @@ export function useAssessmentAssignment() {
     assigned,
     setPickerOpen,
     setEmailOpen,
-    setAssigned,
-    selectedCandidates: assignmentCandidates.filter((candidate) =>
-      selectedIds.includes(candidate.id),
-    ),
+    selectedCandidates,
+    isPending: mutation.isPending,
+    assign: () =>
+      mutation.assign({ assessmentId, userIds: selectedIds, emails }),
     totalRecipients: selectedIds.length + emails.length,
     toggleCandidate,
     reset,
     addEmail: (email: string) => {
+      const normalizedEmail = email.trim().toLowerCase();
       setEmails((current) =>
-        current.includes(email) ? current : [...current, email],
+        current.includes(normalizedEmail)
+          ? current
+          : [...current, normalizedEmail],
       );
       setEmailOpen(false);
     },

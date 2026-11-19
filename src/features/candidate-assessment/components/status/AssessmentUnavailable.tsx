@@ -1,48 +1,33 @@
 'use client';
 
-import Lottie from 'lottie-react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
-import warningAnimation from '../../../../../public/assets/lottie/warning.json';
 import { CANDIDATE_ASSESSMENT_ROUTES } from '../../constants';
-import type { CandidateAssessment } from '../../types/candidate-assessment.types';
 import AssessmentStatusCard from './AssessmentStatusCard';
 
-type AssessmentUnavailableProps = {
-  assessment: CandidateAssessment;
-};
-
 // The employer paused the assessment.
-export default function AssessmentUnavailable({
-  assessment,
-}: AssessmentUnavailableProps) {
+export default function AssessmentUnavailable() {
   const t = useTranslations('candidatePage.assessment.status.unavailable');
+  const api = useTranslations('candidatePage.assessment.api');
 
   return (
     <AssessmentStatusCard
       visual={
-        <div aria-hidden className="size-20 sm:size-28">
-          <Lottie animationData={warningAnimation} loop autoplay />
+        <div aria-hidden className="size-36 sm:size-50">
+          <Image
+            src="/assets/candidate-assessment/figma/paused.png"
+            alt=""
+            width={200}
+            height={200}
+          />
         </div>
       }
       title={t('title')}
-      description={t.rich('description', {
-        company: () => <bdi>{assessment.sentBy}</bdi>,
-        title: () => <bdi>{assessment.title}</bdi>,
-        email: () => <bdi>{assessment.hiringTeamEmail}</bdi>,
-      })}
+      description={api('unavailable-description')}
       actions={
         <>
-          <Button
-            asChild
-            size="pill"
-            className="h-12.5 bg-secondary hover:bg-secondary/90 sm:w-69"
-          >
-            <a href={`mailto:${assessment.hiringTeamEmail}`}>
-              {t('email-team')}
-            </a>
-          </Button>
           <Button
             asChild
             variant="outline"

@@ -88,6 +88,7 @@ export default function AssessmentActions({
         <SquareArrowOutUpRight aria-hidden="true" className="size-4" />
       </Button>
       <AssignAssessmentDialog
+        assessmentId={assessment.id}
         open={assignOpen}
         onOpenChange={setAssignOpen}
         assessmentTitle={title}

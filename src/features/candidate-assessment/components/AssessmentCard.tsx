@@ -14,7 +14,7 @@ export default function AssessmentCard({
   return (
     <section
       className={cn(
-        'rounded-2xl border border-border bg-card p-5 sm:p-8 lg:p-10',
+        'rounded-2xl bg-card p-5 sm:p-8 lg:p-10',
         className,
       )}
     >

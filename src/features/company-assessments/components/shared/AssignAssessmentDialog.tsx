@@ -21,6 +21,7 @@ type AssignAssessmentDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   assessmentTitle: string;
+  assessmentId: string;
   statusHref?: string;
 };
 
@@ -28,11 +29,13 @@ export default function AssignAssessmentDialog({
   open,
   onOpenChange,
   assessmentTitle,
+  assessmentId,
   statusHref = '/company/assessments',
 }: AssignAssessmentDialogProps) {
   const t = useTranslations('companyPage.assessments.assignment');
-  const assignment = useAssessmentAssignment();
+  const assignment = useAssessmentAssignment(assessmentId);
   const changeOpen = (value: boolean) => {
+    if (assignment.isPending) return;
     onOpenChange(value);
     if (!value) assignment.reset();
   };
@@ -68,6 +71,7 @@ export default function AssignAssessmentDialog({
               <DialogClose asChild>
                 <Button
                   size="icon"
+                  disabled={assignment.isPending}
                   aria-label={t('close')}
                   className="size-9 rounded-full bg-assessment-action shadow-sm"
                 >
@@ -100,6 +104,7 @@ export default function AssignAssessmentDialog({
                   onOpenChange={assignment.setPickerOpen}
                   selectedIds={assignment.selectedIds}
                   onToggle={assignment.toggleCandidate}
+                  disabled={assignment.isPending}
                 />
                 <div
                   className={cn(
@@ -114,6 +119,7 @@ export default function AssignAssessmentDialog({
                   </span>
                   <button
                     type="button"
+                    disabled={assignment.isPending}
                     onClick={() => assignment.setPickerOpen(true)}
                     className="font-medium text-assessment-action"
                   >
@@ -133,12 +139,13 @@ export default function AssignAssessmentDialog({
                         key={candidate.id}
                         className="rounded-full border border-assessment-border bg-assessment-surface px-3 py-1.5 font-medium text-assessment-heading"
                       >
-                        {candidate.shortName}
+                        {candidate.name}
                       </span>
                     ))}
                   {assignment.selectedIds.length > 2 ? (
                     <button
                       onClick={() => assignment.setPickerOpen(true)}
+                      disabled={assignment.isPending}
                       className="rounded-full border border-assessment-action/20 bg-assessment-action/10 px-3 py-1.5 font-semibold text-assessment-action"
                     >
                       {t('more-count', {
@@ -169,6 +176,7 @@ export default function AssignAssessmentDialog({
                 </div>
                 <Button
                   variant="outline"
+                  disabled={assignment.isPending}
                   onClick={() => assignment.setEmailOpen(true)}
                   className={cn(
                     'h-12 w-full gap-2 rounded-2xl border-dashed border-assessment-border bg-assessment-control text-sm font-medium text-assessment-action',
@@ -193,6 +201,7 @@ export default function AssignAssessmentDialog({
                         <span className="max-w-48 truncate">{email}</span>
                         <button
                           type="button"
+                          disabled={assignment.isPending}
                           aria-label={t('remove-email', { email })}
                           onClick={() => assignment.removeEmail(email)}
                           className="flex size-5 items-center justify-center rounded-full"
@@ -212,7 +221,7 @@ export default function AssignAssessmentDialog({
                   <p className="text-sm leading-5 font-semibold text-assessment-warning">
                     {t('how-title')}
                   </p>
-                  <p className="mt-1 text-sm leading-normal text-gray-45">
+                  <p className="mt-1 text-sm leading-normal text-assessment-muted">
                     {t('how-description')}
                   </p>
                 </div>
@@ -235,11 +244,12 @@ export default function AssignAssessmentDialog({
                 </span>
               </div>
               <Button
-                disabled={!assignment.totalRecipients}
-                onClick={() => assignment.setAssigned(true)}
+                disabled={!assignment.totalRecipients || assignment.isPending}
+                onClick={assignment.assign}
+                aria-busy={assignment.isPending}
                 className="h-13 w-full rounded-2xl bg-assessment-action text-base font-semibold"
               >
-                {t('title')}
+                {t(assignment.isPending ? 'assigning' : 'title')}
               </Button>
             </div>
             <AssessmentEmailDialog

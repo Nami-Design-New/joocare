@@ -9,7 +9,8 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { Button, buttonVariants } from '../ui/button';
-import { useRef } from 'react';
+import { useRef, type ReactNode } from 'react';
+import { cn } from '@/shared/lib/utils';
 import animationData from '../../../../public/assets/lottie/warning.json';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import { VariantProps } from 'class-variance-authority';
@@ -27,6 +28,8 @@ type ConfirmDialogProps = {
   onConfirm: () => void;
   onCancel?: () => void;
   isLoading?: boolean;
+  className?: string;
+  visual?: ReactNode;
 };
 
 export default function AlertModal({
@@ -41,6 +44,8 @@ export default function AlertModal({
   hasCancelButton = true,
   onCancel,
   isLoading = false,
+  className,
+  visual,
 }: ConfirmDialogProps) {
   const t = useTranslations();
   const lottieRef = useRef<LottieRefCurrentProps>(null);
@@ -50,17 +55,24 @@ export default function AlertModal({
   };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-150 rounded-2xl p-5 text-center sm:p-8">
+      <DialogContent
+        className={cn(
+          'max-w-150 rounded-2xl p-5 text-center sm:p-8',
+          className,
+        )}
+      >
         <div className="mt-8 mb-6 flex w-full items-center justify-center sm:mt-15 sm:mb-12">
           <div className="h-40 w-40 sm:h-50 sm:w-50">
-            <Lottie
-              lottieRef={lottieRef}
-              animationData={animationData}
-              height={200}
-              width={200}
-              autoplay={true}
-              loop={true}
-            />
+            {visual ?? (
+              <Lottie
+                lottieRef={lottieRef}
+                animationData={animationData}
+                height={200}
+                width={200}
+                autoplay={true}
+                loop={true}
+              />
+            )}
           </div>
         </div>
         <DialogHeader className="">

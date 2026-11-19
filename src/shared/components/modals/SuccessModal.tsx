@@ -22,6 +22,7 @@ type SuccessModalAction = {
   onClick?: () => void;
   closeOnClick?: boolean;
   variant?: 'default' | 'outline' | 'link';
+  className?: string;
 };
 
 type SuccessModalCallout = {
@@ -43,6 +44,9 @@ type ConfirmDialogProps = {
   secondaryAction?: SuccessModalAction;
   className?: string;
   actionsClassName?: string;
+  headerClassName?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
   children?: ReactNode;
   /** Closes the modal by itself after this many ms; `false` keeps it open until closed. */
   autoCloseMs?: number | false;
@@ -64,6 +68,9 @@ export default function SuccessModal({
   secondaryAction,
   className,
   actionsClassName,
+  headerClassName,
+  titleClassName,
+  descriptionClassName,
   children,
   autoCloseMs = DEFAULT_AUTO_CLOSE_MS,
 }: ConfirmDialogProps) {
@@ -92,7 +99,7 @@ export default function SuccessModal({
           asChild
           variant={action.variant ?? buttonVariant}
           size="pill"
-          className="h-11 flex-1 gap-2"
+          className={cn('h-11 flex-1 gap-2', action.className)}
         >
           <Link href={action.href} onClick={() => onOpenChange(false)}>
             {action.label}
@@ -110,6 +117,7 @@ export default function SuccessModal({
         className={cn(
           'h-11 flex-1 gap-2',
           action.variant === 'link' && 'h-auto min-h-8 p-0 underline',
+          action.className,
         )}
         onClick={() => {
           action.onClick?.();
@@ -156,11 +164,21 @@ export default function SuccessModal({
             )}
           </div>
         </div>
-        <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-bold text-foreground md:text-3xl">
+        <DialogHeader className={headerClassName}>
+          <DialogTitle
+            className={cn(
+              'text-center text-2xl font-bold text-foreground md:text-3xl',
+              titleClassName,
+            )}
+          >
             {title}
           </DialogTitle>
-          <DialogDescription className="mt-2 text-center text-base leading-tight text-foreground sm:text-lg">
+          <DialogDescription
+            className={cn(
+              'mt-2 text-center text-base leading-tight text-foreground sm:text-lg',
+              descriptionClassName,
+            )}
+          >
             {description}
           </DialogDescription>
         </DialogHeader>{' '}

@@ -14,6 +14,8 @@ type InfiniteLookupOptions = {
     string | number | Array<string | number> | undefined | null
   >;
   enabled?: boolean;
+  loadPage?: (page: number) => Promise<{ next_page_url?: string | null }>;
+  scope?: string;
 };
 
 export function useInfiniteLookup({
@@ -23,14 +25,24 @@ export function useInfiniteLookup({
   limitPerPage = 10,
   extraParams,
   enabled = true,
+  loadPage,
+  scope,
 }: InfiniteLookupOptions) {
   const locale = useLocale();
 
   return useInfiniteQuery({
-    queryKey: [queryKey, locale, search, limitPerPage, extraParams],
+    queryKey: [
+      queryKey,
+      locale,
+      search,
+      limitPerPage,
+      extraParams,
+      ...(scope === undefined ? [] : [scope]),
+    ],
     initialPageParam: 1,
     enabled,
     queryFn: async ({ pageParam }) => {
+      if (loadPage) return loadPage(pageParam);
       const params = new URLSearchParams({
         page: String(pageParam),
         pagination: 'on',

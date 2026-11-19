@@ -1,15 +1,13 @@
-import { Clock3 } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { ASSESSMENT_LINK_VALIDITY_HOURS } from '../../constants';
-import type { CandidateAssessment } from '../../types/candidate-assessment.types';
-import { formatAssessmentDateTime } from '../../utils/assessment-format';
+import type { AssessmentDetails } from '../../types/assessment-api.types';
 import AssessmentFactCard from '../AssessmentFactCard';
 import AssessmentStatusCard from './AssessmentStatusCard';
 import AssessmentStatusIcon from './AssessmentStatusIcon';
 import AssessmentStatusLinks from './AssessmentStatusLinks';
 
 type AssessmentExpiredProps = {
-  assessment: CandidateAssessment;
+  assessment: AssessmentDetails;
 };
 
 // The 72-hour link window is over.
@@ -17,26 +15,29 @@ export default function AssessmentExpired({
   assessment,
 }: AssessmentExpiredProps) {
   const t = useTranslations('candidatePage.assessment.status.expired');
-  const locale = useLocale();
 
   return (
     <AssessmentStatusCard
-      visual={<AssessmentStatusIcon icon={Clock3} tone="warning" />}
+      visual={<AssessmentStatusIcon tone="warning" />}
       title={t('title')}
       description={t.rich('description', {
         hours: ASSESSMENT_LINK_VALIDITY_HOURS,
-        title: () => <bdi>{assessment.title}</bdi>,
+        title: () => <bdi>{assessment.assessment.name}</bdi>,
       })}
       facts={
         <>
-          <AssessmentFactCard
-            label={t('sent-on')}
-            value={formatAssessmentDateTime(assessment.sentAt, locale)}
-          />
-          <AssessmentFactCard
-            label={t('expired-on')}
-            value={formatAssessmentDateTime(assessment.expiresAt, locale)}
-          />
+          {assessment.invited_at ? (
+            <AssessmentFactCard
+              label={t('sent-on')}
+              value={assessment.invited_at}
+            />
+          ) : null}
+          {assessment.expires_at ? (
+            <AssessmentFactCard
+              label={t('expired-on')}
+              value={assessment.expires_at}
+            />
+          ) : null}
         </>
       }
       actions={<AssessmentStatusLinks />}
