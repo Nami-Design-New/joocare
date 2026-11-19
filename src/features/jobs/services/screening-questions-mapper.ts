@@ -39,7 +39,7 @@ export function appendScreeningQuestions(
       `${key}[correct_answer]`,
       question.correctOptionIds[0] ?? 'yes',
     );
-    // Pending backend support: the template is saved as required for now.
+    // Template requirement persistence still needs backend confirmation.
     formData.append(`${key}[is_required]`, question.required ? '1' : '0');
     formData.append(`${key}[mark]`, String(question.mark));
   });

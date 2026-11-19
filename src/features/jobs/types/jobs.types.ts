@@ -277,14 +277,18 @@ export type JobQuestionApiItem = {
   type: string;
   question: string;
   is_required: boolean;
-  // Pending backend fields: `answers` is missing from GET jobs/{id},
-  // `template_id` and `mark` aren't returned yet.
+  // Answers are returned by company job details. Keep optional for incomplete
+  // records; template identity and marks still need backend confirmation.
   answers?: JobQuestionAnswerApiItem[];
   template_id?: number | null;
   mark?: number | null;
 };
 
-export type QuestionTemplateHint = { id: number; hint: string };
+export type QuestionTemplateHint = {
+  id: number;
+  hint: string;
+  is_used?: boolean;
+};
 export type QuestionTemplate = { id: number; question: string };
 
 export type JobLinkedAssessment = {

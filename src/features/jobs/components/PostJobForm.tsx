@@ -18,7 +18,7 @@ import {
   stepSchemas,
 } from '../validation/job-post-schema';
 import { usePostStepOne } from '../hooks/usePostStepOne';
-import { usePostStepTwo } from '../hooks/usePostStepTwo';
+import { usePersistJobStepTwo } from '../hooks/usePersistJobStepTwo';
 import { usePostStepThree } from '../hooks/usePostStepThree';
 import { useGetCompanyJob } from '../hooks/useGetCompanyJob';
 import { useUpdateStepOne } from '../hooks/useUpdateStepOne';
@@ -27,12 +27,12 @@ import { JobDetails } from '../types/jobs.types';
 import JobPostStepOne from './JobPostStepOne';
 import JobPostStepTwo from './JobPostStepTwo';
 import JobReviewPanel from './JobReviewPanel';
-import { useQueryClient } from '@tanstack/react-query';
 import type { Option } from '@/shared/components/SelectInputField';
 import { useTranslations } from 'next-intl';
 import { OTHER_OPTION_VALUE } from '../constants';
 import { useGetAssessment } from '@/features/company-assessments/hooks/useGetAssessment';
 import PostJobResultModals from './post-job/PostJobResultModals';
+import PostJobDataState from './post-job/PostJobDataState';
 import {
   mapJobQuestions,
   type YesNoLabels,
@@ -200,8 +200,8 @@ export default function PostJobForm() {
   const isEditMode = mode === 'edit';
 
   // ─── Fetch existing job data (complete / edit) ────────
-  const { data: existingJob, isLoading: isLoadingJob } =
-    useGetCompanyJob(existingJobId);
+  const existingJobQuery = useGetCompanyJob(existingJobId);
+  const { data: existingJob } = existingJobQuery;
 
   // ─── State ─────────────────────────────────────────────
   const [currentStep, setCurrentStep] = useState(jobIdParam ? 1 : 0);
@@ -216,7 +216,6 @@ export default function PostJobForm() {
 
   const { data: session } = useSession();
   const token = session?.accessToken || '';
-  const queryClient = useQueryClient();
 
   const steps = useMemo(
     () => [
@@ -230,8 +229,11 @@ export default function PostJobForm() {
   // ─── Mutations ─────────────────────────────────────────
   const { mutateAsync: postStepOne, isPending: isPostingStepOne } =
     usePostStepOne({ token });
-  const { mutateAsync: postStepTwo, isPending: isPostingStepTwo } =
-    usePostStepTwo({ token });
+  const {
+    persist: persistContent,
+    markSaved: markContentSaved,
+    isPending: isPostingStepTwo,
+  } = usePersistJobStepTwo(token);
   const { mutateAsync: postStepThree, isPending: isPostingStepThree } =
     usePostStepThree({ token });
   const { mutateAsync: updateStepOne, isPending: isUpdatingStepOne } =
@@ -267,7 +269,9 @@ export default function PostJobForm() {
         yes: t('companyPage.postJob.questions.yes'),
         no: t('companyPage.postJob.questions.no'),
       });
-      reset({ ...jobFormDefaults, ...mappedData } as JobFormData);
+      const formData = { ...jobFormDefaults, ...mappedData } as JobFormData;
+      reset(formData);
+      markContentSaved(existingJob.id, formData);
       setReviewJob(existingJob);
       setStepOneDisplayOptions({
         title: existingJob.title
@@ -328,7 +332,7 @@ export default function PostJobForm() {
 
       setFormHydrated(true);
     }
-  }, [existingJob, formHydrated, mode, reset, t]);
+  }, [existingJob, formHydrated, mode, reset, t, markContentSaved]);
 
   const handleStepOneOptionChange = (
     key: StepOneOptionKey,
@@ -377,17 +381,8 @@ export default function PostJobForm() {
     const jobId = resolveJobId();
     if (!jobId)
       throw new Error('Job id is missing. Please complete step one first.');
-    const response = await postStepTwo({
-      jobId,
-      payload: {
-        description: data.description,
-        skills:
-          data.title === OTHER_OPTION_VALUE
-            ? []
-            : (data.skills ?? []).map(Number),
-        questions: data.screeningQuestions,
-      },
-    });
+    const response = await persistContent(jobId, data);
+    if (!response) return;
     const savedJob = getJobFromMutationResponse(response.data);
     if (savedJob) setReviewJob(savedJob);
   };
@@ -417,7 +412,6 @@ export default function PostJobForm() {
       }
       await submitStepThreeStatus('draft');
       setSaveSuccessOpen(true);
-      void queryClient.invalidateQueries({ queryKey: ['company-jobs'] });
     } catch {
       // Mutation hooks display errors. Never show success if saving fails.
     } finally {
@@ -600,7 +594,6 @@ export default function PostJobForm() {
     try {
       await submitStepThreeStatus('open');
       setPostSuccess(true);
-      queryClient.invalidateQueries({ queryKey: ['company-jobs'] });
     } catch {
       // errors are already handled in mutation onError toast
     } finally {
@@ -628,17 +621,7 @@ export default function PostJobForm() {
         jobId: existingJobId,
         payload: buildStepOnePayload(data),
       });
-      await postStepTwo({
-        jobId: existingJobId,
-        payload: {
-          description: data.description,
-          skills:
-            data.title === OTHER_OPTION_VALUE
-              ? []
-              : (data.skills ?? []).map(Number),
-          questions: data.screeningQuestions,
-        },
-      });
+      await persistContent(existingJobId, data);
       setPostSuccess(true);
     } catch {
       // errors are already handled in mutation onError toast
@@ -648,37 +631,14 @@ export default function PostJobForm() {
     }
   };
 
-  // ─── Loading gate test ────────────────────
-  if (mode === 'complete' && isLoadingJob) {
+  // Existing jobs must load successfully before any editable form is shown.
+  if (existingJobId && (existingJobQuery.isError || !formHydrated)) {
     return (
-      <section className="h-min-dvh mx-auto max-w-255 px-4 py-6 sm:px-0 sm:py-12">
-        <div className="flex h-full items-center justify-center rounded-2xl bg-white p-6">
-          <div className="flex flex-col items-center gap-4">
-            <svg
-              className="h-8 w-8 animate-spin text-gray-500"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8H4z"
-              />
-            </svg>
-            <p className="text-muted-foreground">
-              {t('companyPage.postJob.loadingJobData')}
-            </p>
-          </div>
-        </div>
-      </section>
+      <PostJobDataState
+        isLoading={!existingJobQuery.isError}
+        error={existingJobQuery.error}
+        onRetry={() => void existingJobQuery.refetch()}
+      />
     );
   }
 
@@ -691,8 +651,6 @@ export default function PostJobForm() {
     isPostingStepTwo ||
     isPostingStepThree ||
     isUpdatingStepOne;
-  const isStepOneEditLoading =
-    isEditMode && currentStep === 0 && (isLoadingJob || !formHydrated);
 
   // ═══════════════════════════════════════════════════════
   //  UNIFIED WIZARD — same UI for create, complete & edit
@@ -714,7 +672,9 @@ export default function PostJobForm() {
               disabled={isSubmitting || isBusy || postSuccess}
               onClick={handleSaveDraft}
             >
-              {t('companyPage.postJob.actions.saveAsDraft')}
+              {isSubmitting
+                ? t('common.saving')
+                : t('companyPage.postJob.actions.saveAsDraft')}
             </Button>
           )}
         </div>
@@ -735,7 +695,6 @@ export default function PostJobForm() {
             <div className="min-h-80">
               {currentStep === 0 && (
                 <JobPostStepOne
-                  isLoading={isStepOneEditLoading}
                   persistedOptions={stepOneDisplayOptions}
                   onPersistOption={handleStepOneOptionChange}
                   onPreviewLabelChange={handlePreviewLabelChange}
@@ -744,6 +703,7 @@ export default function PostJobForm() {
               )}
               {currentStep === 1 && (
                 <JobPostStepTwo
+                  jobId={resolveJobId()}
                   onPreviewLabelChange={handlePreviewLabelChange}
                   existingJob={existingJob}
                   aiPanelOpen={aiPanelOpen}
@@ -754,7 +714,6 @@ export default function PostJobForm() {
                 <JobReviewPanel
                   data={previewFormData as JobFormData}
                   job={reviewJob}
-                  isEditMode={isEditMode}
                   previewLabels={previewLabels}
                 />
               )}
@@ -779,12 +738,7 @@ export default function PostJobForm() {
                 <Button
                   type="button"
                   onClick={handleNext}
-                  disabled={
-                    isSubmitting ||
-                    isBusy ||
-                    isStepOneEditLoading ||
-                    postSuccess
-                  }
+                  disabled={isSubmitting || isBusy || postSuccess}
                   variant="secondary"
                   hoverStyle="slidePrimary"
                   size="pill"
@@ -798,12 +752,7 @@ export default function PostJobForm() {
                 <Button
                   type="button"
                   onClick={() => handleSubmit(onSubmit)()}
-                  disabled={
-                    isSubmitting ||
-                    isBusy ||
-                    isStepOneEditLoading ||
-                    postSuccess
-                  }
+                  disabled={isSubmitting || isBusy || postSuccess}
                   variant="secondary"
                   size="pill"
                   hoverStyle="slidePrimary"

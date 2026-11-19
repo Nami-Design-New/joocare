@@ -1,15 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { apiFetch } from '@/shared/lib/fetch-manager';
-import { JobDetails } from '../types/jobs.types';
+import { getCompanyJob } from '../services/company-job-service';
 import { useLocale } from 'next-intl';
-
-type JobResponse = {
-  data: {
-    job: JobDetails;
-  };
-  message: string;
-};
 
 /**
  * Client-side hook to fetch a single company job by ID.
@@ -22,30 +14,7 @@ export function useGetCompanyJob(jobId: number | string | null) {
 
   return useQuery({
     queryKey: ['company-job', locale, jobId],
-    queryFn: async () => {
-      const result = await apiFetch<JobResponse>(
-        `${process.env.NEXT_PUBLIC_BASE_COMPANY_URL}/jobs/${jobId}`,
-        {
-          method: 'GET',
-          token,
-          locale,
-        },
-      );
-
-      if (!result.ok || !result.data) {
-        throw new Error(result.message || 'Failed to fetch job details');
-      }
-
-      // Handle nested data structure: result.data can be { data: { job } } or { job }
-      const jobData =
-        (result.data as any)?.data?.job ?? (result.data as any)?.job ?? null;
-
-      if (!jobData) {
-        throw new Error('Job data is missing from response');
-      }
-
-      return jobData as JobDetails;
-    },
+    queryFn: () => getCompanyJob(jobId ?? '', { token, locale }),
     enabled: !!jobId && !!token,
     staleTime: 0,
   });

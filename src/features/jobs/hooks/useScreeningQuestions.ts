@@ -15,7 +15,7 @@ export const TEMPLATES_SECTION = 'templates';
 export const CUSTOM_SECTION = 'custom';
 
 // Step 2 screening questions: kept in the wizard form and sent with step 2.
-export function useScreeningQuestions() {
+export function useScreeningQuestions(jobId: number | string | null) {
   const t = useTranslations('companyPage.postJob.questions');
   const { setValue, watch, getValues } = useFormContext<JobFormData>();
   const questions = watch('screeningQuestions') ?? [];
@@ -69,8 +69,16 @@ export function useScreeningQuestions() {
     toast.success(t('added-toast'));
   };
 
-  const hints = useGetQuestionTemplateHints();
+  const hints = useGetQuestionTemplateHints(jobId);
   const previewTemplate = useGetQuestionTemplate(previewTemplateId);
+  const addedTemplateIds = Array.from(
+    new Set([
+      ...questions.flatMap((question) => question.templateId ?? []),
+      ...(hints.data ?? [])
+        .filter((hint) => hint.is_used)
+        .map((hint) => String(hint.id)),
+    ]),
+  );
 
   return {
     questions,
@@ -81,9 +89,7 @@ export function useScreeningQuestions() {
     previewTemplate,
     previewTemplateId,
     setPreviewTemplateId,
-    addedTemplateIds: questions.flatMap(
-      (question) => question.templateId ?? [],
-    ),
+    addedTemplateIds,
     expandedId,
     toggleExpanded: (id: string) =>
       setExpandedId((current) => (current === id ? null : id)),
@@ -100,7 +106,7 @@ export function useScreeningQuestions() {
     addCustom: add,
     addTemplate: (answer: string, required: boolean) => {
       const template = previewTemplate.data;
-      if (!template) return;
+      if (!template || addedTemplateIds.includes(String(template.id))) return;
       add({
         id: crypto.randomUUID(),
         source: 'template',

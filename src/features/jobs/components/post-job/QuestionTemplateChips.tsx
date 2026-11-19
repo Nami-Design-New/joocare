@@ -77,7 +77,7 @@ export default function QuestionTemplateChips({
               <button
                 type="button"
                 disabled={isAdded || isAtLimit}
-                aria-pressed={isPreviewed}
+                aria-pressed={isAdded || isPreviewed}
                 onClick={() => onSelect(id)}
                 className={cn(
                   'flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition-colors',

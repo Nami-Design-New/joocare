@@ -8,13 +8,14 @@ import type {
 type RequestOptions = { token: string; locale: string };
 
 // Short labels shown as chips under "Question Templates".
-export async function getQuestionTemplateHints({
-  token,
-  locale,
-}: RequestOptions): Promise<QuestionTemplateHint[]> {
+export async function getQuestionTemplateHints(
+  jobId: number | string,
+  { token, locale }: RequestOptions,
+): Promise<QuestionTemplateHint[]> {
+  const params = new URLSearchParams({ job_id: String(jobId) });
   const { ok, data, message } = await apiFetch<QuestionTemplateHint[]>(
-    `${getCompanyApiUrl()}/question-templates-hints`,
-    { token, locale },
+    `${getCompanyApiUrl()}/question-templates-hints?${params.toString()}`,
+    { token, locale, cache: 'no-store' },
   );
   if (!ok) throw new Error(message ?? '');
   return data?.data ?? [];

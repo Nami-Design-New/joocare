@@ -433,7 +433,6 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
           </h4>
           <p className="text-base font-semibold text-primary">
             {preview.salary}
-            {/* {preview.salaryType !== "-" ? preview.currencyCode : ""} */}
           </p>
           <span className="text-sm text-muted-foreground">
             {preview.salaryType}
@@ -566,12 +565,10 @@ function ReviewSidebarCards({ preview }: { preview: ReviewSidebarData }) {
 export default function JobReviewPanel({
   data,
   job,
-  isEditMode = false,
   previewLabels = {},
 }: {
   data: JobFormData;
   job: JobDetails | null;
-  isEditMode?: boolean;
   previewLabels?: JobPreviewLabels;
 }) {
   const t = useTranslations();
@@ -583,7 +580,7 @@ export default function JobReviewPanel({
     noDescriptionHtml: `<p>${tPostJob('review.noDescriptionHtml')}</p>`,
   };
 
-  if (!job && !isEditMode) {
+  if (!job) {
     return (
       <section className="p-6">
         <p className="text-sm text-muted-foreground">
@@ -593,12 +590,9 @@ export default function JobReviewPanel({
     );
   }
 
-  const preview = isEditMode
-    ? buildEditPreviewData(data, job, previewLabels, labels)
-    : null;
+  const preview = buildEditPreviewData(data, job, previewLabels, labels);
   const sidebarPreview = buildSidebarData(data, job, previewLabels, labels);
-  const skills =
-    preview?.skills ?? job?.skills?.map((skill) => skill.title) ?? [];
+  const skills = preview.skills;
 
   return (
     <section>
@@ -618,7 +612,7 @@ export default function JobReviewPanel({
       </div>
 
       <div className="grid grid-cols-1 max-lg:gap-y-5 lg:grid-cols-3 lg:gap-5 lg:p-7">
-        <div className="col-span-2 font-noto-sans text-[#212529] max-sm:order-2">
+        <div className="col-span-2 font-noto-sans text-foreground max-sm:order-2">
           <h3 className="mb-4 text-xl font-bold text-primary">
             {tPostJob('review.jobDescriptionTitle')}
           </h3>
@@ -632,17 +626,21 @@ export default function JobReviewPanel({
             }}
           />
           <div>
-            <h3 className="mt-5 font-outfit text-xl font-bold text-primary">
-              {tPostJob('review.skillsTitle')}
-            </h3>
-            <ul className="dashed-list mt-5 flex flex-col gap-1.5 ps-7 text-sm">
-              {skills.map((skill) => (
-                <li key={skill}>{skill}</li>
-              ))}
-              {skills.length === 0 && (
-                <li>{tPostJob('review.noSkillsSelected')}</li>
-              )}
-            </ul>
+            {data.title !== OTHER_OPTION_VALUE ? (
+              <>
+                <h3 className="mt-5 font-outfit text-xl font-bold text-primary">
+                  {tPostJob('review.skillsTitle')}
+                </h3>
+                <ul className="dashed-list mt-5 flex flex-col gap-1.5 ps-7 text-sm">
+                  {skills.map((skill) => (
+                    <li key={skill}>{skill}</li>
+                  ))}
+                  {skills.length === 0 && (
+                    <li>{tPostJob('review.noSkillsSelected')}</li>
+                  )}
+                </ul>
+              </>
+            ) : null}
             <div className="mt-6">
               <JobAttachmentsCard
                 questions={data.screeningQuestions}

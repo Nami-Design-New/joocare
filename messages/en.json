@@ -2002,6 +2002,12 @@
         "jobPreview": "Preview"
       },
       "loadingJobData": "Loading job data...",
+      "load-error-title": "Unable to load this job",
+      "load-error-description": "The job could not be loaded. Try again before editing or saving it.",
+      "back-to-management": "Back to Job Management",
+      "save-status-error": "Couldn’t save the job status. Please try again.",
+      "update-success": "Job details saved successfully.",
+      "update-error": "Couldn’t save the job details. Please try again.",
       "actions": {
         "saveAsDraft": "Save as draft",
         "prev": "Prev",

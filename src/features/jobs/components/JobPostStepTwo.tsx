@@ -19,6 +19,7 @@ import StepSectionCard from './post-job/StepSectionCard';
 const CustomEditor = dynamic(() => import('./CustomEditor'), { ssr: true });
 
 type JobPostStepTwoProps = {
+  jobId: number | string | null;
   onPreviewLabelChange?: (key: 'skills', value: string[]) => void;
   existingJob?: JobDetails | null;
   // AI JD Builder panel is controlled by the wizard so it can widen the layout.
@@ -28,6 +29,7 @@ type JobPostStepTwoProps = {
 
 // Step 2 "Requirements & Content" (Figma 10086:87426).
 export default function JobPostStepTwo({
+  jobId,
   onPreviewLabelChange,
   existingJob,
   aiPanelOpen = false,
@@ -116,6 +118,7 @@ export default function JobPostStepTwo({
           ) : null}
         </Accordion>
         <ScreeningQuestionsSection
+          jobId={jobId}
           error={translateError(
             errors.screeningQuestions?.message ??
               errors.screeningQuestions?.root?.message,
