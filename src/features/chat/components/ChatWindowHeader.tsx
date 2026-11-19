@@ -45,6 +45,7 @@ export default function ChatWindowHeader({
         width={isCandidate ? 56 : 40}
         height={isCandidate ? 56 : 40}
         alt=""
+        unoptimized
         className={
           isCandidate
             ? 'size-11 shrink-0 rounded-xl object-cover sm:size-14'
@@ -60,26 +61,38 @@ export default function ChatWindowHeader({
             <p className="mt-1 truncate text-xs leading-4 text-muted-foreground">
               {conversation.jobTitle}
             </p>
-            <Link
-              href={conversation.profileHref}
-              aria-label={tCandidate('view-company-profile', {
-                company: conversation.companyName ?? '',
-              })}
-              className="mt-1 inline-flex max-w-full items-center gap-1.5 text-sm leading-5 text-chat-link hover:underline"
-            >
-              <span className="truncate">{conversation.companyName}</span>
-              <ExternalLink className="size-4 shrink-0 rtl:-scale-x-100" />
-            </Link>
+            {conversation.profileHref ? (
+              <Link
+                href={conversation.profileHref}
+                aria-label={tCandidate('view-company-profile', {
+                  company: conversation.companyName ?? '',
+                })}
+                className="mt-1 inline-flex max-w-full items-center gap-1.5 text-sm leading-5 text-chat-link hover:underline"
+              >
+                <span className="truncate">{conversation.companyName}</span>
+                <ExternalLink className="size-4 shrink-0 rtl:-scale-x-100" />
+              </Link>
+            ) : (
+              <p className="mt-1 truncate text-sm leading-5 text-chat-link">
+                {conversation.companyName}
+              </p>
+            )}
           </>
         ) : (
           <>
             <div className="flex flex-wrap items-center gap-2">
-              <Link
-                href={conversation.profileHref}
-                className="truncate text-base leading-5 font-semibold text-secondary underline underline-offset-2"
-              >
-                {conversation.name}
-              </Link>
+              {conversation.profileHref ? (
+                <Link
+                  href={conversation.profileHref}
+                  className="truncate text-base leading-5 font-semibold text-secondary underline underline-offset-2"
+                >
+                  {conversation.name}
+                </Link>
+              ) : (
+                <p className="truncate text-base leading-5 font-semibold text-secondary">
+                  {conversation.name}
+                </p>
+              )}
               {closed && <ChatClosedBadge role={role} />}
             </div>
             <p className="mt-1 truncate text-xs leading-4 text-muted-foreground">

@@ -27,10 +27,13 @@ import type {
 type UseChatComposerOptions = {
   name: string;
   replyMessage: ChatMessage | null;
-  onSend: (message: SendChatMessage) => void;
+  onSend: (
+    message: SendChatMessage,
+  ) => void | boolean | Promise<void | boolean>;
   onCancelReply: () => void;
   createObjectUrl: (file: File) => string;
   initialAttachments?: ChatAttachment[];
+  imagesOnly?: boolean;
 };
 
 export function useChatComposer({
@@ -40,6 +43,7 @@ export function useChatComposer({
   onCancelReply,
   createObjectUrl,
   initialAttachments = [],
+  imagesOnly = false,
 }: UseChatComposerOptions) {
   const t = useTranslations('companyPage.chat');
   const locale = useLocale();
@@ -59,6 +63,7 @@ export function useChatComposer({
   const submitting = useRef(false);
   const reply: ChatReply | undefined = replyMessage
     ? {
+        id: replyMessage.id,
         name: replyMessage.direction === 'incoming' ? name : t('you'),
         text: replyMessage.text,
         image: replyMessage.attachments?.find((item) => item.kind === 'image')
@@ -77,10 +82,12 @@ export function useChatComposer({
       selectedFiles.some(
         (file) =>
           file.size > MAX_ATTACHMENT_BYTES ||
-          !CHAT_ACCEPTED_TYPES.includes(file.type),
+          (imagesOnly
+            ? !file.type.startsWith('image/')
+            : !CHAT_ACCEPTED_TYPES.includes(file.type)),
       )
     ) {
-      toast.error(t('invalid-file'));
+      toast.error(t(imagesOnly ? 'invalid-image' : 'invalid-file'));
       return;
     }
     const newAttachments = selectedFiles.map((file) => {
@@ -93,6 +100,7 @@ export function useChatComposer({
           : ('file' as const),
         size: formatChatFileSize(file.size, locale),
         url,
+        file,
       };
     });
     form.setValue('attachments', [...attachments, ...newAttachments], {
@@ -101,11 +109,13 @@ export function useChatComposer({
     if (fileInput.current) fileInput.current.value = '';
   }
 
-  function openFilePicker(imagesOnly = false) {
+  function openFilePicker(forceImagesOnly = false) {
     if (!fileInput.current) return;
     fileInput.current.accept = imagesOnly
-      ? CHAT_IMAGE_ACCEPT
-      : CHAT_ATTACHMENT_ACCEPT;
+      ? 'image/*'
+      : forceImagesOnly
+        ? CHAT_IMAGE_ACCEPT
+        : CHAT_ATTACHMENT_ACCEPT;
     fileInput.current.click();
   }
 
@@ -120,12 +130,13 @@ export function useChatComposer({
     );
   }
 
-  const submit = form.handleSubmit((value) => {
+  const submit = form.handleSubmit(async (value) => {
     if (submitting.current || (!value.text.trim() && attachments.length === 0))
       return;
     submitting.current = true;
     try {
-      onSend({ text: value.text, attachments, reply });
+      const result = await onSend({ text: value.text, attachments, reply });
+      if (result === false) return;
       form.reset({ text: '', attachments: [] });
       onCancelReply();
     } finally {

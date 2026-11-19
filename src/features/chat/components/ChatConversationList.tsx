@@ -87,6 +87,7 @@ export default function ChatConversationList({
                   width={48}
                   height={48}
                   alt=""
+                  unoptimized
                   className="size-12 rounded-xl object-cover"
                 />
                 {conversation.unread > 0 && (

@@ -1,5 +1,6 @@
 export function formatChatDate(value: string, locale: string) {
   const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
   const dateFormatter = new Intl.DateTimeFormat(locale, {
     day: '2-digit',
     month: 'short',

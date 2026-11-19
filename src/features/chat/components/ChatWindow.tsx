@@ -22,7 +22,9 @@ type ChatWindowProps = {
   /** Company only: close / reopen the conversation. */
   onClose?: () => void;
   onReopen?: () => void;
-  onSend: (message: SendChatMessage) => void;
+  onSend: (
+    message: SendChatMessage,
+  ) => void | boolean | Promise<void | boolean>;
   onDismissWarning: () => void;
   onPreview: (attachment: ChatAttachment) => void;
   onDownload: (attachment: ChatAttachment) => void;
@@ -88,6 +90,7 @@ export default function ChatWindow({
             )}
             <ChatComposer
               initialAttachments={initialReplyMessage?.attachments}
+              imagesOnly={role === 'candidate'}
               name={conversation.name}
               replyMessage={replyMessage}
               onCancelReply={cancelReply}
