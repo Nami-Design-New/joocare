@@ -20,6 +20,7 @@ export function createCvEducationSchema(
     degree: required,
     university: required,
     country: z.string(),
+    countryLabel: z.string().optional(),
     startDate: z.string(),
     endDate: z.string(),
     gpa: required.refine(isValidGpa, messages.invalidGpa),
@@ -30,9 +31,11 @@ export function createCvEducationSchema(
 export function createCvExperienceItemSchema() {
   return z.object({
     jobTitle: z.string(),
+    jobTitleLabel: z.string().optional(),
     otherJobTitle: z.string(),
     organization: z.string(),
     employmentType: z.string(),
+    employmentTypeLabel: z.string().optional(),
     startDate: z.string(),
     endDate: z.string(),
     currentlyWorking: z.boolean(),
@@ -71,6 +74,7 @@ export function createCvBuilderSchema(messages: CvBuilderSchemaMessages) {
     title: optional,
     link: optionalUrl,
     country: optional,
+    countryLabel: z.string().optional(),
     year: optional,
   });
   const conference = z.object({
@@ -83,11 +87,14 @@ export function createCvBuilderSchema(messages: CvBuilderSchemaMessages) {
     personal: z.object({
       photo: optional,
       fullName: required,
-      nationality: optional,
+      nationality: required,
+      nationalityLabel: z.string().optional(),
       yearOfBirth: optional,
       maritalStatus: optional,
-      country: optional,
-      city: optional,
+      country: required,
+      countryLabel: z.string().optional(),
+      city: required,
+      cityLabel: z.string().optional(),
       languages: z.array(language),
     }),
     contact: z.object({
@@ -97,8 +104,11 @@ export function createCvBuilderSchema(messages: CvBuilderSchemaMessages) {
     }),
     jobProfile: z.object({
       jobTitle: required,
+      jobTitleLabel: z.string().optional(),
       yearsOfExperience: optional,
+      experienceLabel: z.string().optional(),
       specialty: optional,
+      specialtyLabel: z.string().optional(),
       subspecialty: optional,
       hasLicense: z.boolean(),
       availableNow: z.boolean(),
@@ -125,7 +135,15 @@ export function createCvBuilderSchema(messages: CvBuilderSchemaMessages) {
           }
         });
       }),
-    skills: z.array(z.string()),
+    skills: z.array(
+      z.object({
+        /** Skill id for chosen suggestions; a local key for custom skills. */
+        id: z.string(),
+        label: z.string(),
+        /** Custom skill: sent as `skill_title` instead of `skill_id`. */
+        isCustom: z.boolean().optional(),
+      }),
+    ),
     research: z
       .object({ enabled: z.boolean(), items: z.array(publication) })
       .superRefine((value, context) => {

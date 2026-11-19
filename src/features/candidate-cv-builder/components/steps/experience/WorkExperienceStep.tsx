@@ -1,14 +1,14 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
-import ExperienceFormModal from '@/shared/components/modals/ExperienceFormModal';
-import {
-  EMPLOYMENT_TYPE_OPTIONS,
-  JOB_TITLE_OPTIONS,
-  OTHER_JOB_TITLE,
-} from '../../../constants/cv-builder-options';
+import ExperienceFormModal, {
+  type ExperienceSelectField,
+} from '@/shared/components/modals/ExperienceFormModal';
+import useGetEmploymentTypes from '@/shared/hooks/useGetEmploymentTypes';
+import useGetJobTitles from '@/shared/hooks/useGetJobTitles';
+import { OTHER_JOB_TITLE } from '../../../constants/cv-builder-options';
 import { FRESH_GRADUATE_PROFILE } from '../../../constants/cv-builder-preview-data';
 import type { CvBuilderValues } from '../../../types/cv-builder.types';
 import { emptyExperience } from '../../../utils/cv-builder-defaults';
@@ -28,10 +28,14 @@ function CvExperienceModal({
   title,
   onAdd,
   onClose,
+  jobTitleField,
+  employmentTypeField,
 }: {
   title: string;
   onAdd: (item: CvExperience) => void;
   onClose: () => void;
+  jobTitleField: ExperienceSelectField;
+  employmentTypeField: ExperienceSelectField;
 }) {
   const tWizard = useTranslations('candidatePage.buildCv.wizard');
   const tErrors = useTranslations('candidatePage.buildCv.errors');
@@ -49,8 +53,8 @@ function CvExperienceModal({
       schema={schema}
       dateType="month"
       otherJobTitleValue={OTHER_JOB_TITLE}
-      jobTitleField={{ options: JOB_TITLE_OPTIONS }}
-      employmentTypeField={{ options: EMPLOYMENT_TYPE_OPTIONS }}
+      jobTitleField={jobTitleField}
+      employmentTypeField={employmentTypeField}
       onSubmit={(values) => {
         onAdd(values);
         onClose();
@@ -62,10 +66,53 @@ function CvExperienceModal({
 // Step 7: work experience, or an editable profile + strengths text for fresh graduates.
 export default function WorkExperienceStep() {
   const t = useTranslations('candidatePage.buildCv.experience');
+  const tOptions = useTranslations('candidatePage.buildCv.options');
+  const [jobTitleSearch, setJobTitleSearch] = useState('');
+  const [employmentTypeSearch, setEmploymentTypeSearch] = useState('');
+  const jobTitles = useGetJobTitles(jobTitleSearch);
+  const employmentTypes = useGetEmploymentTypes(employmentTypeSearch);
   const { getValues, setValue } = useFormContext<CvBuilderValues>();
   const freshGraduate = useWatch<CvBuilderValues, 'experience.freshGraduate'>({
     name: 'experience.freshGraduate',
   });
+  const jobTitleOptions = useMemo(
+    () =>
+      jobTitles.jobTitles
+        .map((item) => ({
+          label: String(item.title ?? item.name ?? ''),
+          value: String(item.id ?? ''),
+        }))
+        .filter((item) => item.label && item.value),
+    [jobTitles.jobTitles],
+  );
+  const employmentTypeOptions = useMemo(
+    () =>
+      employmentTypes.employmentTypes
+        .map((item) => ({
+          label: String(item.title ?? item.name ?? ''),
+          value: String(item.id ?? ''),
+        }))
+        .filter((item) => item.label && item.value),
+    [employmentTypes.employmentTypes],
+  );
+  const jobTitleField: ExperienceSelectField = {
+    options: jobTitleOptions,
+    isLoading: jobTitles.isLoading,
+    onSearchChange: setJobTitleSearch,
+    onReachEnd: () => void jobTitles.fetchNextPage(),
+    hasNextPage: jobTitles.hasNextPage,
+    isFetchingNextPage: jobTitles.isFetchingNextPage,
+    clearOptionLabel: tOptions('clear-selection'),
+  };
+  const employmentTypeField: ExperienceSelectField = {
+    options: employmentTypeOptions,
+    isLoading: employmentTypes.isLoading,
+    onSearchChange: setEmploymentTypeSearch,
+    onReachEnd: () => void employmentTypes.fetchNextPage(),
+    hasNextPage: employmentTypes.hasNextPage,
+    isFetchingNextPage: employmentTypes.isFetchingNextPage,
+    clearOptionLabel: tOptions('clear-selection'),
+  };
 
   return (
     <CvStepCard title={t('title')} description={t('description')}>
@@ -97,7 +144,13 @@ export default function WorkExperienceStep() {
           getTitle={(number) => t('item', { number })}
           addTitle={t('add-title')}
           createItem={emptyExperience}
-          renderFields={(index) => <ExperienceItemFields index={index} />}
+          renderFields={(index) => (
+            <ExperienceItemFields
+              index={index}
+              jobTitleField={jobTitleField}
+              employmentTypeField={employmentTypeField}
+            />
+          )}
           renderAdd={(add) => (
             <CvAddButton variant="pill" label={t('add')} onClick={add} />
           )}
@@ -106,6 +159,8 @@ export default function WorkExperienceStep() {
               title={t('add-title')}
               onAdd={onAdd}
               onClose={onClose}
+              jobTitleField={jobTitleField}
+              employmentTypeField={employmentTypeField}
             />
           )}
         />

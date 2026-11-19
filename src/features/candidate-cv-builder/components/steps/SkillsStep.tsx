@@ -4,40 +4,53 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
-import { InputField } from '@/shared/components/InputField';
+import { Input } from '@/shared/components/ui/input';
 import { CV_BUILDER_ICONS, SKILLS_VISIBLE_COUNT } from '../../constants';
-import { RECOMMENDED_SKILLS } from '../../constants/cv-builder-options';
+import { useGetSuggestedCvSkills } from '../../hooks/useGetSuggestedCvSkills';
 import type { CvBuilderValues } from '../../types/cv-builder.types';
 import CvAddButton from '../wizard/CvAddButton';
 import CvStepCard from '../wizard/CvStepCard';
 
-// Step 8: pick recommended skills or type new ones; selected skills show as removable chips.
+// Step 8: pick suggested skills or add another; selected skills show as chips.
 export default function SkillsStep() {
   const t = useTranslations('candidatePage.buildCv.skills');
-  const [input, setInput] = useState('');
   const [showAll, setShowAll] = useState(false);
+  const [customSkill, setCustomSkill] = useState('');
+  const suggestions = useGetSuggestedCvSkills();
+  const skillOptions = suggestions.data ?? [];
 
   return (
     <CvStepCard title={t('title')} description={t('description')}>
       <Controller<CvBuilderValues, 'skills'>
         name="skills"
         render={({ field: { value: selected, onChange } }) => {
-          const recommended = RECOMMENDED_SKILLS.filter(
-            (skill) => !selected.includes(skill),
+          const selectedIds = selected.map((skill) => skill.id);
+          const recommended = skillOptions.filter(
+            (skill) => !selectedIds.includes(skill.id),
           );
           const visible = showAll
             ? recommended
             : recommended.slice(0, SKILLS_VISIBLE_COUNT);
-          const addSkills = (skills: string[]) =>
-            onChange([...new Set([...selected, ...skills])]);
-          const addTyped = () => {
-            addSkills(
-              input
-                .split(/[,،]/)
-                .map((skill) => skill.trim())
-                .filter(Boolean),
+          const addSkill = (skill: { id: string; label: string }) => {
+            if (selectedIds.includes(skill.id)) return;
+            onChange([...selected, skill]);
+          };
+          const addCustomSkill = () => {
+            const label = customSkill.trim();
+            if (!label) return;
+
+            setCustomSkill('');
+
+            const alreadySelected = selected.some(
+              (skill) => skill.label.trim().toLowerCase() === label.toLowerCase(),
             );
-            setInput('');
+            if (alreadySelected) return;
+
+            // Custom skills have no lookup id, so they are sent by title.
+            onChange([
+              ...selected,
+              { id: `custom-${label}`, label, isCustom: true },
+            ]);
           };
 
           return (
@@ -48,15 +61,37 @@ export default function SkillsStep() {
                     {t('recommended')}
                   </h3>
                   <ul className="flex flex-wrap gap-3">
-                    {visible.map((skill) => (
-                      <li key={skill}>
+                    {suggestions.isLoading && (
+                      <li className="text-sm text-muted-foreground">
+                        {t('suggestions-loading')}
+                      </li>
+                    )}
+                    {suggestions.isError && (
+                      <li className="flex items-center gap-3 text-sm text-destructive">
+                        {t('suggestions-error')}
                         <button
                           type="button"
-                          onClick={() => addSkills([skill])}
-                          aria-label={t('add-skill', { skill })}
+                          onClick={() => void suggestions.refetch()}
+                          className="font-semibold underline"
+                        >
+                          {t('retry')}
+                        </button>
+                      </li>
+                    )}
+                    {suggestions.isSuccess && recommended.length === 0 && (
+                      <li className="text-sm text-muted-foreground">
+                        {t('suggestions-empty')}
+                      </li>
+                    )}
+                    {visible.map((skill) => (
+                      <li key={skill.id}>
+                        <button
+                          type="button"
+                          onClick={() => addSkill(skill)}
+                          aria-label={t('add-skill', { skill: skill.label })}
                           className="h-9 rounded-2xl border border-border px-4 text-base text-foreground transition-colors hover:border-cv-builder-primary hover:text-cv-builder-primary"
                         >
-                          {skill}
+                          {skill.label}
                         </button>
                       </li>
                     ))}
@@ -87,15 +122,19 @@ export default function SkillsStep() {
                   <ul className="flex flex-wrap gap-2">
                     {selected.map((skill) => (
                       <li
-                        key={skill}
+                        key={skill.id}
                         className="flex h-10 items-center gap-1.5 rounded-full border border-cv-builder-skill-border bg-cv-builder-skill-surface px-3.5 text-sm font-medium text-cv-builder-skill-text"
                       >
                         <button
                           type="button"
                           onClick={() =>
-                            onChange(selected.filter((item) => item !== skill))
+                            onChange(
+                              selected.filter((item) => item.id !== skill.id),
+                            )
                           }
-                          aria-label={t('remove-skill', { skill })}
+                          aria-label={t('remove-skill', {
+                            skill: skill.label,
+                          })}
                           className="rounded-full"
                         >
                           <Image
@@ -105,30 +144,29 @@ export default function SkillsStep() {
                             height={24}
                           />
                         </button>
-                        <bdi>{skill}</bdi>
+                        <bdi>{skill.label}</bdi>
                       </li>
                     ))}
                   </ul>
                 )}
-                <div className="flex items-center gap-2.5">
-                  <InputField
-                    id="skills-input"
-                    aria-label={t('add-placeholder')}
-                    placeholder={t('add-placeholder')}
-                    value={input}
-                    onChange={(event) => setInput(event.currentTarget.value)}
+                <div className="flex items-center gap-3">
+                  <Input
+                    value={customSkill}
+                    onChange={(event) => setCustomSkill(event.target.value)}
                     onKeyDown={(event) => {
-                      if (event.key === 'Enter') {
-                        event.preventDefault();
-                        addTyped();
-                      }
+                      if (event.key !== 'Enter') return;
+                      event.preventDefault();
+                      addCustomSkill();
                     }}
+                    placeholder={t('add-placeholder')}
+                    aria-label={t('add-placeholder')}
+                    className="bg-card"
                   />
                   <CvAddButton
                     variant="dark"
                     label={t('add')}
-                    disabled={!input.trim()}
-                    onClick={addTyped}
+                    onClick={addCustomSkill}
+                    disabled={!customSkill.trim()}
                   />
                 </div>
               </section>

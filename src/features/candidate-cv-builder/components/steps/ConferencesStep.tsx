@@ -33,6 +33,8 @@ export default function ConferencesStep() {
               label={t('location')}
               placeholder={t('location-placeholder')}
               options={CONFERENCE_LOCATION_OPTIONS}
+              withSearchInput
+              clearable
             />
             <CvTextField
               name={`conferences.items.${index}.date`}

@@ -3,16 +3,21 @@ import type {
   CandidateCvDetail,
   CandidateCvExperience,
 } from '../types/cv-document.types';
-import { OTHER_JOB_TITLE } from '../constants/cv-builder-options';
 import type { CvBuilderValues } from '../types/cv-builder.types';
 
-const LANGUAGE_RATING: Record<string, number> = {
-  Native: 5,
-  Fluent: 5,
-  Advanced: 4,
-  Intermediate: 3,
-  Beginner: 2,
+// Saved CVs return the level lowercased (`native`, `fluent`, ...), so look it
+// up case-insensitively and keep the level text readable.
+const LANGUAGE_LEVELS: Record<string, { level: string; rating: number }> = {
+  native: { level: 'Native', rating: 5 },
+  fluent: { level: 'Fluent', rating: 5 },
+  advanced: { level: 'Advanced', rating: 4 },
+  intermediate: { level: 'Intermediate', rating: 3 },
+  beginner: { level: 'Beginner', rating: 2 },
 };
+
+function toLanguageLevel(proficiency: string) {
+  return LANGUAGE_LEVELS[proficiency.trim().toLowerCase()];
+}
 
 // Translated UI labels the CV document needs (data values stay as entered).
 export type CvDocumentLabels = {
@@ -20,14 +25,13 @@ export type CvDocumentLabels = {
   freshGraduate: string;
   professionalProfile: string;
   professionalStrengths: string;
-  yearsOfExperience: (value: string) => string;
   specialty: (value: string) => string;
   subspecialty: (value: string) => string;
   licensed: string;
   availableNow: string;
 };
 
-const join = (parts: string[], separator = ', ') =>
+const join = (parts: Array<string | undefined>, separator = ', ') =>
   parts.filter(Boolean).join(separator);
 
 // "2014-07" → "7 / 2014".
@@ -68,7 +72,7 @@ function toExperiences(
   }
 
   return experience.items
-    .filter((item) => item.organization || item.jobTitle)
+    .filter((item) => item.organization || item.jobTitleLabel)
     .map((item, index) => ({
       id: `experience-${index}`,
       label: formatPeriod(
@@ -76,9 +80,8 @@ function toExperiences(
         item.currentlyWorking ? '' : item.endDate,
         item.currentlyWorking ? labels.present : '',
       ),
-      title:
-        item.jobTitle === OTHER_JOB_TITLE ? item.otherJobTitle : item.jobTitle,
-      description: join([item.organization, item.employmentType], ' · '),
+      title: item.jobTitleLabel || item.otherJobTitle,
+      description: join([item.organization, item.employmentTypeLabel], ' · '),
       strengthsTitle: '',
       strengths: item.responsibilities
         .map(({ value }) => value)
@@ -102,7 +105,7 @@ export function toCvDocument(
         }).format(new Date(date))
       : '';
   const additionalInfo: CandidateCvDetail[] = [
-    { key: 'nationality', value: personal.nationality },
+    { key: 'nationality', value: personal.nationalityLabel ?? '' },
     { key: 'year-of-birth', value: personal.yearOfBirth.slice(0, 4) },
     { key: 'marital-status', value: personal.maritalStatus },
   ];
@@ -110,15 +113,15 @@ export function toCvDocument(
   return {
     name: personal.fullName,
     photo: personal.photo,
-    jobTitle: jobProfile.jobTitle,
+    jobTitle: jobProfile.jobTitleLabel ?? '',
     contact: {
       phone: contact.phone,
       email: contact.email,
-      location: join([personal.city, personal.country]),
+      location: join([personal.cityLabel ?? '', personal.countryLabel ?? '']),
       linkedin: contact.linkedin.replace(/^https?:\/\/(www\.)?/, ''),
     },
     summary: values.summary.text,
-    skills: values.skills,
+    skills: values.skills.map((skill) => skill.label),
     experiences: toExperiences(values, labels),
     publications: values.research.enabled
       ? values.research.items
@@ -126,7 +129,7 @@ export function toCvDocument(
           .map((item, index) => ({
             id: `publication-${index}`,
             title: item.title,
-            meta: join([item.country, item.year], ' · '),
+            meta: join([item.countryLabel, item.year], ' · '),
             url: item.link || undefined,
           }))
       : [],
@@ -140,9 +143,8 @@ export function toCvDocument(
           }))
       : [],
     highlights: [
-      jobProfile.yearsOfExperience &&
-        labels.yearsOfExperience(jobProfile.yearsOfExperience),
-      jobProfile.specialty && labels.specialty(jobProfile.specialty),
+      jobProfile.experienceLabel,
+      jobProfile.specialtyLabel && labels.specialty(jobProfile.specialtyLabel),
       jobProfile.subspecialty && labels.subspecialty(jobProfile.subspecialty),
       jobProfile.hasLicense && labels.licensed,
       jobProfile.availableNow && labels.availableNow,
@@ -160,18 +162,21 @@ export function toCvDocument(
       .map((item, index) => ({
         id: `education-${index}`,
         degree: item.degree,
-        institution: join([item.university, item.country]),
+        institution: join([item.university, item.countryLabel]),
         period: formatPeriod(item.startDate, item.endDate),
         gpa: item.gpa,
       })),
     languages: personal.languages
       .filter((item) => item.language)
-      .map((item, index) => ({
-        id: `language-${index}`,
-        name: item.language,
-        level: item.proficiency,
-        rating: LANGUAGE_RATING[item.proficiency] ?? 0,
-      })),
+      .map((item, index) => {
+        const known = toLanguageLevel(item.proficiency);
+        return {
+          id: `language-${index}`,
+          name: item.language,
+          level: known?.level ?? item.proficiency,
+          rating: known?.rating ?? 0,
+        };
+      }),
     additionalInfo: additionalInfo.filter((detail) => detail.value),
   };
 }

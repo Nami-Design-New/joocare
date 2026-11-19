@@ -39,7 +39,7 @@ export default function CvRepeatableList<N extends CvListName>({
     CvBuilderValues,
     N
   >({ name });
-  const getDragProps = useItemReorder(move);
+  const getDragProps = useItemReorder(move, fields.length);
   const [adding, setAdding] = useState(false);
 
   return (

@@ -3,11 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import LabelCheckbox from '@/shared/components/LabelCheckbox';
-import {
-  EMPLOYMENT_TYPE_OPTIONS,
-  JOB_TITLE_OPTIONS,
-  OTHER_JOB_TITLE,
-} from '../../../constants/cv-builder-options';
+import type { ExperienceSelectField } from '@/shared/components/modals/ExperienceFormModal';
+import { OTHER_JOB_TITLE } from '../../../constants/cv-builder-options';
 import type { CvBuilderValues } from '../../../types/cv-builder.types';
 import CvSelectField from '../../fields/CvSelectField';
 import CvTextField from '../../fields/CvTextField';
@@ -16,11 +13,15 @@ import ResponsibilitiesField from './ResponsibilitiesField';
 
 type ExperienceItemFieldsProps = {
   index: number;
+  jobTitleField: ExperienceSelectField;
+  employmentTypeField: ExperienceSelectField;
 };
 
 // Fields of one work-experience card. "Other" job title asks for the title.
 export default function ExperienceItemFields({
   index,
+  jobTitleField,
+  employmentTypeField,
 }: ExperienceItemFieldsProps) {
   const t = useTranslations('candidatePage.buildCv.experience');
   const { setValue } = useFormContext<CvBuilderValues>();
@@ -37,7 +38,14 @@ export default function ExperienceItemFields({
         name={`${path}.jobTitle`}
         label={t('job-title')}
         placeholder={t('job-title-placeholder')}
-        options={JOB_TITLE_OPTIONS}
+        options={jobTitleField.options}
+        disabled={jobTitleField.isLoading}
+        withSearchInput
+        onSearchChange={jobTitleField.onSearchChange}
+        clearable
+        onReachEnd={jobTitleField.onReachEnd}
+        hasNextPage={jobTitleField.hasNextPage}
+        isFetchingNextPage={jobTitleField.isFetchingNextPage}
       />
       {jobTitle === OTHER_JOB_TITLE && (
         <CvTextField
@@ -55,7 +63,14 @@ export default function ExperienceItemFields({
         name={`${path}.employmentType`}
         label={t('employment-type')}
         placeholder={t('employment-type-placeholder')}
-        options={EMPLOYMENT_TYPE_OPTIONS}
+        options={employmentTypeField.options}
+        disabled={employmentTypeField.isLoading}
+        withSearchInput
+        onSearchChange={employmentTypeField.onSearchChange}
+        clearable
+        onReachEnd={employmentTypeField.onReachEnd}
+        hasNextPage={employmentTypeField.hasNextPage}
+        isFetchingNextPage={employmentTypeField.isFetchingNextPage}
       />
       <div className="grid gap-3 sm:grid-cols-2">
         <CvTextField

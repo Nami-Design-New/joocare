@@ -46,6 +46,7 @@ export type EducationCountryField = {
   onReachEnd?: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
+  clearOptionLabel?: string;
 };
 
 type EducationFormModalProps = {
@@ -164,6 +165,7 @@ export default function EducationFormModal({
                 onReachEnd={countryField.onReachEnd}
                 hasNextPage={countryField.hasNextPage}
                 isFetchingNextPage={countryField.isFetchingNextPage}
+                clearOptionLabel={countryField.clearOptionLabel}
                 error={errors.country?.message}
               />
             )}

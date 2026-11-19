@@ -31,16 +31,16 @@ export const CV_BUILDER_MODE_BY_STATE: Record<CvBuilderState, CvBuilderMode> = {
 };
 
 export const CV_BUILDER_STEPS: readonly CvBuilderStep[] = [
-  { key: 'personal', label: 'personal' },
-  { key: 'contact', label: 'contact' },
-  { key: 'jobProfile', label: 'job-profile' },
-  { key: 'summary', label: 'summary' },
-  { key: 'educations', label: 'education' },
-  { key: 'certificates', label: 'certificates' },
-  { key: 'experience', label: 'experience' },
-  { key: 'skills', label: 'skills' },
-  { key: 'research', label: 'research' },
-  { key: 'conferences', label: 'conferences' },
+  { key: 'personal', label: 'personal', endpoint: 'step-one' },
+  { key: 'contact', label: 'contact', endpoint: 'step-two' },
+  { key: 'jobProfile', label: 'job-profile', endpoint: 'step-three' },
+  { key: 'summary', label: 'summary', endpoint: 'step-four' },
+  { key: 'educations', label: 'education', endpoint: 'step-five' },
+  { key: 'certificates', label: 'certificates', endpoint: null },
+  { key: 'experience', label: 'experience', endpoint: null },
+  { key: 'skills', label: 'skills', endpoint: null },
+  { key: 'research', label: 'research', endpoint: null },
+  { key: 'conferences', label: 'conferences', endpoint: null },
 ];
 
 export const CV_BUILDER_HERO_IMAGE = '/assets/build-cv/hero.png';

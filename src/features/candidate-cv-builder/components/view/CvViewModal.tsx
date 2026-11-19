@@ -3,7 +3,7 @@
 import { CheckCheck, FileDown, PencilLine, X } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
@@ -15,6 +15,7 @@ import {
 import { downloadFile } from '@/shared/lib/download-file';
 import { CV_BUILDER_ICONS, CV_BUILDER_SAMPLE_CV_URL } from '../../constants';
 import { useCvDocument } from '../../hooks/useCvDocument';
+import { useUploadCvBuilderCv } from '../../hooks/useUploadCvBuilderCv';
 import type { CvBuilderValues } from '../../types/cv-builder.types';
 import CandidateCvDocument from '../document/CandidateCvDocument';
 
@@ -36,15 +37,27 @@ export default function CvViewModal({
   applyHref = '/candidate/build-cv',
 }: CvViewModalProps) {
   const t = useTranslations('candidatePage.buildCv.view');
+  const router = useRouter();
   const cv = useCvDocument(values);
+  const uploadCv = useUploadCvBuilderCv();
+
+  const apply = async () => {
+    try {
+      await uploadCv.mutateAsync();
+      onOpenChange(false);
+      router.push(applyHref);
+    } catch {
+      // The mutation reports the failure in a toast.
+    }
+  };
 
   return (
     <Dialog open onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="flex max-h-[92dvh] w-[calc(100%-2rem)] max-w-256 flex-col gap-0 overflow-hidden rounded-3xl bg-card p-0 sm:max-w-256"
+        className="flex max-h-[92dvh] w-[calc(100%-2rem)] max-w-5xl flex-col gap-0 overflow-hidden rounded-3xl bg-card p-0 sm:max-w-256"
       >
-        <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto bg-body-bg px-4 py-5 sm:px-6 sm:py-8">
+        <div className="no-scrollbar flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto bg-body-bg px-4 py-5 sm:px-6 sm:py-8">
           <DialogHeader className="flex-row items-center justify-between gap-4 text-start">
             <DialogTitle className="text-2xl font-semibold text-foreground sm:text-[28px] sm:leading-9">
               {t('title')}
@@ -91,13 +104,13 @@ export default function CvViewModal({
               {t('edit')}
             </Button>
             <Button
-              asChild
+              type="button"
+              onClick={() => void apply()}
+              disabled={uploadCv.isPending}
               className={`${actionClassName} bg-secondary text-primary-foreground hover:bg-secondary/90`}
             >
-              <Link href={applyHref}>
-                <CheckCheck aria-hidden className="size-4" strokeWidth={1.5} />
-                {t('apply')}
-              </Link>
+              <CheckCheck aria-hidden className="size-4" strokeWidth={1.5} />
+              {uploadCv.isPending ? t('applying') : t('apply')}
             </Button>
           </div>
         </div>

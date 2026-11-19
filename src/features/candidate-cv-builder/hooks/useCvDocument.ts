@@ -16,7 +16,6 @@ export function useCvDocument(values: CvBuilderValues) {
       freshGraduate: t('fresh-graduate'),
       professionalProfile: t('professional-profile'),
       professionalStrengths: t('professional-strengths'),
-      yearsOfExperience: (value) => t('years-of-experience', { value }),
       specialty: (value) => t('specialty', { value }),
       subspecialty: (value) => t('subspecialty', { value }),
       licensed: t('licensed'),

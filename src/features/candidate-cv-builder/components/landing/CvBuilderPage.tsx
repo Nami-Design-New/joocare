@@ -3,43 +3,71 @@
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import DeleteModal from '@/shared/components/modals/DeleteModal';
-import { CV_BUILDER_PREVIEW_SUMMARY, CV_BUILDER_ROUTES } from '../../constants';
-import { CV_BUILDER_PREVIEW_VALUES } from '../../constants/cv-builder-preview-data';
+import { Button } from '@/shared/components/ui/button';
+import { Skeleton } from '@/shared/components/ui/skeleton';
+import { CV_BUILDER_ROUTES, CV_BUILDER_STEPS } from '../../constants';
+import { useGetCvBuilder } from '../../hooks/useGetCvBuilder';
 import { useCvBuilderState } from '../../hooks/useCvBuilderState';
 import type { CvBuilderState } from '../../types/cv-builder.types';
 import CvViewModal from '../view/CvViewModal';
 import CvBuilderHero from './CvBuilderHero';
 
 type CvBuilderPageProps = {
-  initialState: CvBuilderState;
+  initialState?: CvBuilderState;
 };
 
-// "Build Your Professional CV" landing page (design only, data stays on the page).
-export default function CvBuilderPage({ initialState }: CvBuilderPageProps) {
-  const t = useTranslations('candidatePage.buildCv.delete-modal');
+// "Build Your Professional CV" landing page.
+export default function CvBuilderPage({
+  initialState = 'intro',
+}: CvBuilderPageProps) {
+  const t = useTranslations('candidatePage.buildCv');
   const router = useRouter();
-  const cv = useCvBuilderState(initialState);
+  const remoteCv = useGetCvBuilder();
+  const cv = useCvBuilderState(remoteCv.data?.state ?? initialState);
+
+  if (remoteCv.isLoading) {
+    return <Skeleton className="h-80 w-full rounded-2xl" />;
+  }
+
+  if (remoteCv.isError) {
+    return (
+      <section className="flex min-h-80 flex-col items-center justify-center gap-4 rounded-2xl bg-card p-6 text-center shadow-card">
+        <p className="text-sm text-destructive">{t('load-error')}</p>
+        <Button type="button" onClick={() => void remoteCv.refetch()}>
+          {t('retry')}
+        </Button>
+      </section>
+    );
+  }
+
+  const data = remoteCv.data;
+  const summary = data?.summary ?? {
+    lastSavedAt: '',
+    completedSteps: 0,
+    totalSteps: CV_BUILDER_STEPS.length,
+  };
 
   return (
     <>
       <CvBuilderHero
         state={cv.state}
-        summary={CV_BUILDER_PREVIEW_SUMMARY}
+        summary={summary}
         onShowCv={cv.openShowCv}
         onDeleteDraft={cv.openDeleteDraft}
       />
       <DeleteModal
         open={cv.modal === 'delete-draft'}
         onOpenChange={(open) => !open && cv.closeModal()}
-        title={t('title')}
-        description={t('description')}
-        confirmLabel={t('confirm')}
-        cancelLabel={t('cancel')}
+        title={t('delete-modal.title')}
+        description={t('delete-modal.description')}
+        confirmLabel={t('delete-modal.confirm')}
+        cancelLabel={t('delete-modal.cancel')}
+        isLoading={cv.isDeletingDraft}
         onConfirm={cv.confirmDeleteDraft}
       />
-      {cv.modal === 'show-cv' && (
+      {cv.modal === 'show-cv' && data?.values && (
         <CvViewModal
-          values={CV_BUILDER_PREVIEW_VALUES}
+          values={data.values}
           onOpenChange={(open) => !open && cv.closeModal()}
           onEdit={() => router.push(`${CV_BUILDER_ROUTES.create}?mode=edit`)}
         />

@@ -34,11 +34,14 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
   personal: {
     photo: '',
     fullName: 'Ahmed M. Ali',
-    nationality: 'Egyptian',
+    nationality: '1',
+    nationalityLabel: 'Egyptian',
     yearOfBirth: '1986-05-14',
     maritalStatus: 'Married',
-    country: 'UAE',
-    city: 'Abu Dhabi',
+    country: '2',
+    countryLabel: 'UAE',
+    city: '1',
+    cityLabel: 'Abu Dhabi',
     languages: [
       { language: 'Arabic', proficiency: 'Native' },
       { language: 'English', proficiency: 'Fluent' },
@@ -51,9 +54,12 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
     linkedin: 'https://linkedin.com/in/ahmed-ali',
   },
   jobProfile: {
-    jobTitle: 'Consultant Internal Medicine',
-    yearsOfExperience: '10+ years',
-    specialty: 'Internal Medicine',
+    jobTitle: '1',
+    jobTitleLabel: 'Consultant Internal Medicine',
+    yearsOfExperience: '4',
+    experienceLabel: '10+ years',
+    specialty: '1',
+    specialtyLabel: 'Internal Medicine',
     subspecialty: 'Endocrinology',
     hasLicense: true,
     availableNow: true,
@@ -63,7 +69,8 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
     {
       degree: 'Master of Internal Medicine',
       university: 'Ain Shams University',
-      country: 'Egypt',
+      country: '1',
+      countryLabel: 'Egypt',
       startDate: '2014-07',
       endDate: '2022-07',
       gpa: '3.8',
@@ -71,7 +78,8 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
     {
       degree: 'Bachelor of Medicine and Surgery (MBBS)',
       university: 'Cairo University',
-      country: 'Egypt',
+      country: '1',
+      countryLabel: 'Egypt',
       startDate: '2004-09',
       endDate: '2011-07',
       gpa: '3.6',
@@ -99,9 +107,11 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
     items: [
       {
         ...emptyExperience(),
-        jobTitle: 'Consultant Internal Medicine',
+        jobTitle: '1',
+        jobTitleLabel: 'Consultant Internal Medicine',
         organization: 'Cleveland Clinic Abu Dhabi',
-        employmentType: 'Full-time',
+        employmentType: '1',
+        employmentTypeLabel: 'Full-time',
         startDate: '2021-01',
         currentlyWorking: true,
         responsibilities: [
@@ -114,9 +124,11 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
       },
       {
         ...emptyExperience(),
-        jobTitle: 'Specialist Internal Medicine',
+        jobTitle: '2',
+        jobTitleLabel: 'Specialist Internal Medicine',
         organization: 'Sheikh Shakhbout Medical City',
-        employmentType: 'Full-time',
+        employmentType: '1',
+        employmentTypeLabel: 'Full-time',
         startDate: '2016-03',
         endDate: '2020-12',
         responsibilities: [
@@ -128,7 +140,11 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
       },
     ],
   },
-  skills: ['Clinical Leadership', 'Cardiac Surgery', 'Patient Safety'],
+  skills: [
+    { id: '1', label: 'Clinical Leadership' },
+    { id: '2', label: 'Cardiac Surgery' },
+    { id: '3', label: 'Patient Safety' },
+  ],
   research: {
     enabled: true,
     items: [
@@ -136,7 +152,8 @@ export const CV_BUILDER_PREVIEW_VALUES: CvBuilderValues = {
         ...emptyPublication(),
         title: 'The Impact of Early Intervention in Chronic Disease Management',
         link: 'https://journal.com/article',
-        country: 'UAE',
+        country: '2',
+        countryLabel: 'UAE',
         year: '2021',
       },
     ],

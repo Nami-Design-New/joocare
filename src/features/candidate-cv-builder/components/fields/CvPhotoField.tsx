@@ -1,14 +1,35 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
+import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
+import { useUploadImage } from '@/shared/hooks/useUploadImage';
+import { resolveStorageUrl } from '@/shared/lib/storage-url';
 import { CV_BUILDER_ICONS } from '../../constants';
 import type { CvBuilderValues } from '../../types/cv-builder.types';
 
-// Round profile-photo picker. Design only: the photo is kept as a local preview URL.
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function getUploadedImagePath(value: unknown): string | null {
+  if (!isRecord(value) || !isRecord(value.data)) return null;
+
+  if (typeof value.data.image === 'string') return value.data.image;
+  if (isRecord(value.data.data) && typeof value.data.data.image === 'string') {
+    return value.data.data.image;
+  }
+
+  return null;
+}
+
+// Round profile-photo picker. The saved image path is kept in the form.
 export default function CvPhotoField() {
   const t = useTranslations('candidatePage.buildCv.personal');
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const { mutateAsync: uploadImage, isPending } = useUploadImage();
 
   return (
     <Controller<CvBuilderValues, 'personal.photo'>
@@ -21,7 +42,7 @@ export default function CvPhotoField() {
           >
             {field.value ? (
               <Image
-                src={field.value}
+                src={resolveStorageUrl(field.value) ?? field.value}
                 alt={t('photo')}
                 fill
                 unoptimized
@@ -40,13 +61,29 @@ export default function CvPhotoField() {
               type="file"
               accept="image/*"
               className="sr-only"
+              disabled={isPending}
               onChange={(event) => {
                 const file = event.currentTarget.files?.[0];
                 if (!file) return;
-                if (field.value) URL.revokeObjectURL(field.value);
-                field.onChange(URL.createObjectURL(file));
+                setUploadError(null);
+                void uploadImage(file)
+                  .then((response) => {
+                    const imagePath = getUploadedImagePath(response);
+
+                    if (!imagePath) {
+                      throw new Error(t('upload-failed'));
+                    }
+
+                    field.onChange(imagePath);
+                  })
+                  .catch(() => setUploadError(t('upload-failed')));
               }}
             />
+            {isPending && (
+              <span className="absolute inset-0 flex items-center justify-center bg-foreground/30">
+                <Loader2 className="size-6 animate-spin text-primary-foreground" />
+              </span>
+            )}
           </label>
           <p className="flex items-baseline gap-2 px-1">
             <span className="text-base leading-5 font-semibold text-foreground">
@@ -56,6 +93,9 @@ export default function CvPhotoField() {
               {t('optional')}
             </span>
           </p>
+          {uploadError && (
+            <p className="text-sm text-destructive">{uploadError}</p>
+          )}
         </div>
       )}
     />

@@ -90,7 +90,7 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 | Q-B5 | Register: does it accept `cv` and `license_image` as uploaded paths (`images/...`) like other endpoints, or only as files? Is the field `license` or `license_image`? | Register |
 | Q-B6 | Should education accept `gpa`, and experience accept `country_id` / `city_id`? The app sends them today. | Education, experience modals |
 | Q-B7 | Is it intended that `preferences`, `preferences/jobs` and `cv` return 404 when empty? A 200 with empty data would be easier. | AI job match, Build CV |
-| Q-B8 | Can you add a lookup for sub-specialties? `GET /companies` is now available for preferred companies. Nationality: decided to use `/countries`, so `nationality_id` is a country ID; please confirm the backend accepts that. | Additional info, Build CV |
+| Q-B8 | Can you add a lookup for sub-specialties? `GET /companies` is now available for preferred companies. **Rule:** CV nationality uses `/countries`; submit the selected country ID as `nationality_id`. | Additional info, Build CV |
 | Q-B9 | Build CV: is there an endpoint to download the generated CV as PDF and to delete a draft? | Build CV landing |
 | Q-B10 | What does one item in `GET visits` look like, and does it support `search` by company name? | Profile insights |
 | Q-B11 | Chat: is there an endpoint for the conversation list, attachments, and closing a conversation? What is `company_admin_id` and where does the candidate get it? | Chat |
@@ -172,7 +172,7 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 
 - Inventory each step's current fields and request shape against Bruno and the live read response. Implement step by step using existing shared fields and hooks, preserving saved progress and treating the documented empty 404 correctly.
 - Verify each step's validation, save and resume, navigation, upload, failures and final persisted data. Confirm language and responsibility formats (Q-B14).
-- **Open:** nationality/sub-specialty lookups (Q-B8) and PDF download/delete draft (Q-B9). Do not imply these are supported until confirmed.
+- **Rule:** CV nationality uses the countries lookup and submits the selected country ID as `nationality_id`. The sub-specialty lookup (Q-B8) and PDF download/delete draft (Q-B9) remain open.
 
 ### 5. Profile insights
 
