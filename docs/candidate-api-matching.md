@@ -22,10 +22,10 @@ The Bruno collection has no response examples. Response shapes in section 6 come
 | Screen | App sends | Bruno expects | Status |
 |---|---|---|---|
 | Apply (job details) | FormData `job_id`, `cv`, `screening_answers` (JSON string) | `job_id`, `answers[] {question_id, answer_ids[]}`, `cv` | Fixed on `fix/candidate-api-alignment` (not committed): sends `answers[i][question_id]` / `answers[i][answer_ids][]`, and `JOB_APPLY_PREVIEW_ENABLED = false`. Questions still need backend (Q-B1) |
-| Basic info (settings) | `subspecialty_title`, `domain_id`, `category_id` | `subspecialty_id`, `specialty_title`, `experience_title` | Connected (Q-B4 answered) |
-| Register | `license` (uploaded path), JSON body | `license_image` and `cv` as files, multipart | Waiting on Q-B5 |
-| Education | adds `gpa` | no `gpa` | Waiting on Q-B6 |
-| Experience | adds `country_id`, `city_id` | not in Bruno | Waiting on Q-B6 |
+| Basic info (settings) | `subspecialty_title`, `domain_id`, `category_id` | `subspecialty_id`, `specialty_title`, `experience_title` | Fixed on `fix/candidate-basic-info-api` (Q-B4 answered) |
+| Register | image values as uploaded paths | images only; do not send file attachments | Contract clarified; verify the image field name and payload |
+| Education | includes `gpa` | GPA is supported | Updated; verify create/edit/reload |
+| Experience | no `country_id` or `city_id` | those fields are not sent | Recheck remaining request fields and create/edit/reload |
 
 ## 3. New flows in the app that have matching endpoints
 
@@ -87,8 +87,8 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 | Q-B2 | `GET applications` has no application status and no assessment status (pending / completed / expired + assessment id). Will it be added? | Applications status block, link to assessment |
 | Q-B3 | For yes/no questions, what goes in `answer_ids[]`: option ids, or `yes` / `no`? | Apply submit |
 | Q-B4 | **Answered (2026-11-18).** `GET auth/profile` returns `subspecialty_title` and `domain` / `category` as `{id, title}` objects (`domain_id` / `category_id` come back `null`, so the frontend reads the object id). Basic info sends `subspecialty_title`, `domain_id` and `category_id` to `POST auth/update-profile`. | Basic info form, profile side panel |
-| Q-B5 | Register: does it accept `cv` and `license_image` as uploaded paths (`images/...`) like other endpoints, or only as files? Is the field `license` or `license_image`? | Register |
-| Q-B6 | Should education accept `gpa`, and experience accept `country_id` / `city_id`? The app sends them today. | Education, experience modals |
+| Q-B5 | **Partly clarified.** Registration should accept images only, not file attachments. Confirm the exact image field name(s) and uploaded-path payload format. | Register |
+| Q-B6 | **Partly answered.** Education supports `gpa`. Experience should not send `country_id` or `city_id`; recheck the remaining experience request fields against the API. | Education, experience modals |
 | Q-B7 | Is it intended that `preferences`, `preferences/jobs` and `cv` return 404 when empty? A 200 with empty data would be easier. | AI job match, Build CV |
 | Q-B8 | Can you add a lookup for sub-specialties? `GET /companies` is now available for preferred companies. **Rule:** CV nationality uses `/countries`; submit the selected country ID as `nationality_id`. | Additional info, Build CV |
 | Q-B9 | Build CV: is there an endpoint to download the generated CV as PDF and to delete a draft? | Build CV landing |
@@ -186,9 +186,9 @@ Only read-only GET requests were called. Skipped because they change data: `asse
 
 **Branches:** `fix/candidate-basic-info-api`, `fix/candidate-registration-api`, `fix/candidate-education-experience-api`.
 
-- Basic info: reconcile returned and submitted fields, and investigate the form-data endpoint (Q-B4, Q-F1). Ask product whether the disputed fields should remain (Q-P4).
-- Registration: confirm file versus uploaded-path contract and license field name (Q-B5), then verify registration with appropriate test data.
-- Education and experience: confirm GPA and location fields (Q-B6), then verify create/edit/reload without losing supported values.
+- Basic info: **implemented on `fix/candidate-basic-info-api`**. The backend contract uses `subspecialty_title`, `domain_id` and `category_id` (Q-B4). The form-data lookup question (Q-F1) and product decision about keeping these fields (Q-P4) remain separate follow-ups.
+- Registration: send image values only; do not attach files. Confirm the exact image field name(s) and uploaded-path format (Q-B5), then verify registration with appropriate test data.
+- Education and experience: GPA is supported for education. Do not send `country_id` or `city_id` for experience; recheck the other experience fields, then verify create/edit/reload without losing supported values (Q-B6).
 - Keep each fix on its own branch and validate translations, request errors and persistence. Do not remove fields or change contracts based on assumptions.
 
 ### 7. Chat

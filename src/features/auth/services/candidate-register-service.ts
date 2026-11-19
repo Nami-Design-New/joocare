@@ -16,7 +16,7 @@ export type RegisterCandidatePayload = {
   license_title: string | undefined;
   license_number: string | undefined;
   cv: string | undefined;
-  license: string | undefined;
+  license_image: string | undefined;
 };
 
 export const registerCandidateService = async (
