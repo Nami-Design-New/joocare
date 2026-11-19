@@ -21,16 +21,18 @@ import TemplateQuestionPreview from './TemplateQuestionPreview';
 import Image from 'next/image';
 
 type ScreeningQuestionsSectionProps = {
+  jobId: number | string | null;
   error?: string;
 };
 
 // Grey "Questions" group: Question Templates + Custom Question (Figma 10086:87426).
 export default function ScreeningQuestionsSection({
+  jobId,
   error,
 }: ScreeningQuestionsSectionProps) {
   const t = useTranslations('companyPage.postJob.questions');
   const tCommon = useTranslations('common');
-  const state = useScreeningQuestions();
+  const state = useScreeningQuestions(jobId);
   const { questions } = state;
 
   return (

@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 import { useUrlFilters } from '@/shared/hooks/useUrlFilters';
 import {
   ALL_RECRUITERS_VALUE,
-  ALL_STATUSES_VALUE,
+  DEFAULT_JOB_STATUS,
   JOB_SEARCH_DEBOUNCE_MS,
 } from '../constants';
 
 // Filters live in the URL and are sent to the jobs endpoint; pins stay local until the API supports them.
 export function useJobListingFilters() {
   const url = useUrlFilters();
-  const status = url.get('status');
+  const status = url.get('status') || DEFAULT_JOB_STATUS;
   const recruiter = url.get('recruiter');
   const search = url.get('search');
   const page = url.getPage();
@@ -46,8 +46,7 @@ export function useJobListingFilters() {
     page,
     setSearchInput,
     setPage: (nextPage: number) => update({ page: nextPage }),
-    updateStatus: (value: string) =>
-      update({ status: value === ALL_STATUSES_VALUE ? '' : value, page: null }),
+    updateStatus: (value: string) => update({ status: value, page: null }),
     updateRecruiter: (value: string) =>
       update({
         recruiter: value === ALL_RECRUITERS_VALUE ? '' : value,

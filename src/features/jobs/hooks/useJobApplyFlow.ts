@@ -2,11 +2,6 @@ import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { JOB_APPLY_PREVIEW_ENABLED } from '../constants';
-import {
-  APPLY_PREVIEW_ASSESSMENT,
-  APPLY_PREVIEW_SCREENING_QUESTIONS,
-} from '../constants/apply-preview-data';
 import type {
   ApplyScreeningQuestion,
   ApplySubmission,
@@ -17,7 +12,7 @@ type ApplyDialog = 'login' | 'apply' | 'submitted';
 
 type UseJobApplyFlowOptions = {
   isApplied: boolean;
-  screeningQuestions?: ApplyScreeningQuestion[];
+  screeningQuestions?: ApplyScreeningQuestion[] | null;
   assessment?: JobLinkedAssessment | null;
 };
 
@@ -25,23 +20,18 @@ type UseJobApplyFlowOptions = {
 export function useJobApplyFlow({
   isApplied,
   screeningQuestions,
-  assessment,
 }: UseJobApplyFlowOptions) {
   const t = useTranslations('jobDetailsPage.toasts');
+  const questionsT = useTranslations('jobDetailsPage.apply.questions');
   const { data: session, status } = useSession();
   const [dialog, setDialog] = useState<ApplyDialog | null>(null);
-  const [hasApplied, setHasApplied] = useState(isApplied);
+  const [didApply, setDidApply] = useState(false);
   const [submission, setSubmission] = useState<ApplySubmission | null>(null);
 
-  const questions = screeningQuestions?.length
-    ? screeningQuestions
-    : JOB_APPLY_PREVIEW_ENABLED
-      ? APPLY_PREVIEW_SCREENING_QUESTIONS
-      : [];
-  const linkedAssessment =
-    assessment ?? (JOB_APPLY_PREVIEW_ENABLED ? APPLY_PREVIEW_ASSESSMENT : null);
+  const questions = screeningQuestions ?? [];
 
   const startApply = () => {
+    if (isApplied || didApply) return;
     if (status === 'loading') {
       toast.error(t('please-wait'));
       return;
@@ -54,16 +44,18 @@ export function useJobApplyFlow({
       toast.error(t('only-candidates'));
       return;
     }
+    if (screeningQuestions === null) {
+      toast.error(questionsT('unavailable-error'));
+      return;
+    }
     setDialog('apply');
   };
 
   const handleApplied = () => {
-    setHasApplied(true);
+    setDidApply(true);
     setSubmission({
-      submittedAt: new Date(),
-      assessment: linkedAssessment
-        ? { id: String(linkedAssessment.id), title: linkedAssessment.title }
-        : null,
+      submittedAt: null,
+      assessment: null,
     });
     setDialog('submitted');
   };
@@ -71,7 +63,7 @@ export function useJobApplyFlow({
   return {
     isEmployer: session?.authRole === 'employer',
     candidateEmail: session?.user?.email ?? '',
-    hasApplied,
+    hasApplied: isApplied || didApply,
     questions,
     dialog,
     submission,

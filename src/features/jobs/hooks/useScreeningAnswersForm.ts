@@ -15,6 +15,7 @@ export function useScreeningAnswersForm(questions: ApplyScreeningQuestion[]) {
     () =>
       createScreeningAnswersSchema(questions, {
         required: t('required-error'),
+        invalid: t('invalid-error'),
       }),
     [questions, t],
   );

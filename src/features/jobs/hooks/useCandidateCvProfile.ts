@@ -11,8 +11,8 @@ export function useCandidateCvProfile() {
   const token = session?.accessToken;
 
   return useQuery({
-    queryKey: [CANDIDATE_CV_PROFILE_QUERY_KEY, locale],
+    queryKey: [CANDIDATE_CV_PROFILE_QUERY_KEY, locale, session?.user?.id],
     queryFn: () => getCandidateCvProfile({ token: token ?? '', locale }),
-    enabled: Boolean(token),
+    enabled: Boolean(token) && session?.authRole === 'candidate',
   });
 }

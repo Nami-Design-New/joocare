@@ -3,22 +3,25 @@
 import { Button } from '@/shared/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
 import { useJobApplyFlow } from '../../hooks/useJobApplyFlow';
 import type { ApplyScreeningQuestion } from '../../types/job-apply.types';
-import type { JobLinkedAssessment } from '../../types/jobs.types';
+import type { JobDetails, JobLinkedAssessment } from '../../types/jobs.types';
 import JobApplyDialogs from '../apply/JobApplyDialogs';
 import ToggleSavedJobButton from './ToggleSavedJobButton';
 
 type CandidateJobDetailsCardActionsProps = {
+  jobDetails: JobDetails;
   jobId: number;
   jobTitle: string;
   initialIsSaved: boolean;
   isApplied: boolean;
-  screeningQuestions?: ApplyScreeningQuestion[];
+  screeningQuestions?: ApplyScreeningQuestion[] | null;
   assessment?: JobLinkedAssessment | null;
 };
 
 export default function CandidateJobDetailsCardActions({
+  jobDetails,
   jobId,
   jobTitle,
   initialIsSaved,
@@ -27,6 +30,9 @@ export default function CandidateJobDetailsCardActions({
   assessment,
 }: CandidateJobDetailsCardActionsProps) {
   const t = useTranslations('jobDetailsPage');
+  useEffect(() => {
+    console.log('Job details (apply page):', jobDetails);
+  }, [jobDetails]);
   const applyFlow = useJobApplyFlow({
     isApplied,
     screeningQuestions,

@@ -24,6 +24,6 @@ export type ApplyAssessmentInvite = {
 };
 
 export type ApplySubmission = {
-  submittedAt: Date;
+  submittedAt: Date | null;
   assessment: ApplyAssessmentInvite | null;
 };

@@ -50,6 +50,7 @@ export default async function JobDetailsHeader({ job }: JobDetailsHeaderProps) {
       </div>
 
       <CandidateJobDetailsCardActions
+        jobDetails={job}
         jobId={job?.id}
         jobTitle={jobTitle}
         initialIsSaved={job?.is_saved}

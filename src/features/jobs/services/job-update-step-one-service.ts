@@ -1,10 +1,11 @@
 import { apiFetch } from '@/shared/lib/fetch-manager';
+import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
 import { JobStepOnePayload } from '../types/job-steps.types';
 
 export async function jobUpdateStepOneService(
   jobId: number | string,
   payload: JobStepOnePayload,
-  { token }: { token: string },
+  { token, locale }: { token: string; locale: string },
 ) {
   const formData = new FormData();
   if (payload.assessment_id !== undefined) {
@@ -78,16 +79,17 @@ export async function jobUpdateStepOneService(
   });
 
   const response = await apiFetch(
-    `${process.env.NEXT_PUBLIC_BASE_COMPANY_URL}/jobs-update-step-one/${jobId}`,
+    `${getCompanyApiUrl()}/jobs-update-step-one/${jobId}`,
     {
       method: 'POST',
       body: formData,
       token,
+      locale,
     },
   );
 
   if (!response.ok) {
-    throw new Error(response.message ?? 'Failed to update step one');
+    throw new Error(response.message ?? '');
   }
 
   return response;

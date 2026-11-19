@@ -2,6 +2,7 @@ import type { AiChatMessage } from '../types/job-steps.types';
 
 export const ALL_RECRUITERS_VALUE = 'all';
 export const ALL_STATUSES_VALUE = 'all';
+export const DEFAULT_JOB_STATUS = 'open';
 export const OTHER_OPTION_VALUE = '__other__';
 
 export const JOB_SEARCH_DEBOUNCE_MS = 400;
@@ -126,9 +127,6 @@ export const AI_JD_BUILDER_PREVIEW_MESSAGES = [
   },
 ] satisfies AiChatMessage[];
 
-// Apply flow: preview screening questions + linked assessment until the job details API
-// returns them (design review). Set to false to rely on the API data only.
-export const JOB_APPLY_PREVIEW_ENABLED = true;
 export const APPLY_STEP_KEYS = ['questions', 'cv'] as const;
 export const APPLY_CV_ACCEPTED_TYPES = [
   'application/pdf',

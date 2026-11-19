@@ -54,13 +54,14 @@ export default function ApplyWithQuestionsModal({
 
   const goToCvStep = form.handleSubmit(() => setStep(1));
 
-  const submit = () => {
+  const submit = form.handleSubmit(({ answers }) => {
+    if (applyMutation.isPending) return;
     if (!cv.validate()) return;
-    applyMutation.mutate({
+    applyMutation.submit({
       cvPath: cv.cvPath,
-      answers: form.getValues('answers'),
+      answers,
     });
-  };
+  });
 
   return (
     <>
@@ -97,7 +98,7 @@ export default function ApplyWithQuestionsModal({
             noValidate
             onSubmit={(event) => {
               event.preventDefault();
-              if (isCvStep) submit();
+              if (isCvStep) void submit();
               else void goToCvStep();
             }}
             className="-mx-1 min-h-0 overflow-y-auto overscroll-contain px-1 pb-1 [scrollbar-gutter:stable]"
@@ -129,7 +130,10 @@ export default function ApplyWithQuestionsModal({
               type="submit"
               form="apply-with-questions"
               size="pill"
-              disabled={applyMutation.isPending}
+              disabled={
+                applyMutation.isPending ||
+                (isCvStep && (cv.isLoadingProfile || cv.isUploading))
+              }
               className={`${footerButtonClassName} bg-assessment-primary hover:bg-assessment-primary/90`}
             >
               {isCvStep ? (

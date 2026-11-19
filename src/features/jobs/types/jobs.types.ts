@@ -1,4 +1,4 @@
-import type { ScreeningQuestion } from './job-steps.types';
+import type { ApplyScreeningQuestion } from './job-apply.types';
 import type { ApplicationAssessment } from './candidate-applications.types';
 // ==============================
 // BASE / SHARED ENTITIES
@@ -259,7 +259,7 @@ export type JobDetails = {
   // Company job response: application questions (templates + custom).
   questions?: JobQuestionApiItem[];
   // Candidate apply flow only, pending backend fields.
-  screening_questions?: ScreeningQuestion[];
+  screening_questions?: ApplyScreeningQuestion[] | null;
   assessment_id?: number | null;
   // Candidate apply flow only; the company job response returns `assessment_id`.
   assessment?: JobLinkedAssessment | null;
@@ -277,14 +277,18 @@ export type JobQuestionApiItem = {
   type: string;
   question: string;
   is_required: boolean;
-  // Pending backend fields: `answers` is missing from GET jobs/{id},
-  // `template_id` and `mark` aren't returned yet.
+  // Answers are returned by company job details. Keep optional for incomplete
+  // records; template identity and marks still need backend confirmation.
   answers?: JobQuestionAnswerApiItem[];
   template_id?: number | null;
   mark?: number | null;
 };
 
-export type QuestionTemplateHint = { id: number; hint: string };
+export type QuestionTemplateHint = {
+  id: number;
+  hint: string;
+  is_used?: boolean;
+};
 export type QuestionTemplate = { id: number; question: string };
 
 export type JobLinkedAssessment = {
