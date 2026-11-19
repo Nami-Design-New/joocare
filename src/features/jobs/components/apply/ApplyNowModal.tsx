@@ -35,7 +35,8 @@ export default function ApplyNowModal({
 
   const apply = () => {
     if (!cv.validate()) return;
-    applyMutation.mutate({ cvPath: cv.cvPath });
+    if (applyMutation.isPending) return;
+    applyMutation.submit({ cvPath: cv.cvPath });
   };
 
   return (
@@ -74,7 +75,9 @@ export default function ApplyNowModal({
               type="button"
               size="pill"
               onClick={apply}
-              disabled={applyMutation.isPending || cv.isLoadingProfile}
+              disabled={
+                applyMutation.isPending || cv.isLoadingProfile || cv.isUploading
+              }
               className="w-full bg-assessment-primary hover:bg-assessment-primary/90 sm:w-50"
             >
               {applyMutation.isPending ? t('applying') : t('apply-now')}

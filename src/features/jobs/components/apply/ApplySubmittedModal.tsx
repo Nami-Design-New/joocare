@@ -41,10 +41,12 @@ export default function ApplySubmittedModal({
           href: CANDIDATE_APPLICATIONS_HREF,
         }}
       >
-        <AssessmentLinkNotice
-          email={candidateEmail}
-          sentAt={submission.submittedAt}
-        />
+        {submission.submittedAt ? (
+          <AssessmentLinkNotice
+            email={candidateEmail}
+            sentAt={submission.submittedAt}
+          />
+        ) : null}
       </SuccessModal>
     );
   }

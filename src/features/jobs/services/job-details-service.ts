@@ -1,11 +1,13 @@
 import { cache } from 'react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
+import { getTranslations } from 'next-intl/server';
 
 import { getCompanyApiUrl, getUserApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch } from '@/shared/lib/fetch-manager';
 import { createHttpStatusError } from '@/shared/lib/http-error';
 import { JobDetailsResponse } from '../types/jobs.types';
+import { mapCandidateJobQuestions } from '../utils/candidate-job-questions-mapper';
 
 export const JOB_DETAILS_REVALIDATE = 300;
 
@@ -13,10 +15,13 @@ export const JOB_DETAILS_REVALIDATE = 300;
 // SERVICE
 // ==============================
 
-function normalizeJobDetailsPayload(jobDetails: JobDetailsResponse['data']) {
+function normalizeJobDetailsPayload(
+  jobDetails: JobDetailsResponse['data'],
+  labels: { yes: string; no: string },
+  includeApplicationQuestions: boolean,
+) {
   const job = jobDetails.job;
   const normalizedEducationLevel = job.education_level ?? null;
-  // console.log("job in job details service ::::::::: .t s", job);
 
   return {
     job: {
@@ -45,6 +50,9 @@ function normalizeJobDetailsPayload(jobDetails: JobDetailsResponse['data']) {
       applications: Array.isArray(job.applications) ? job.applications : [],
       is_applied: Boolean(job.is_applied),
       is_saved: Boolean(job.is_saved),
+      screening_questions: includeApplicationQuestions
+        ? mapCandidateJobQuestions(job.questions ?? [], labels)
+        : undefined,
     },
     similar_jobs: Array.isArray(jobDetails.similar_jobs)
       ? jobDetails.similar_jobs
@@ -58,6 +66,7 @@ async function fetchJobDetailsWithOptions({
   token,
   cache,
   next,
+  includeApplicationQuestions = true,
 }: {
   url: string;
   locale: string;
@@ -67,6 +76,7 @@ async function fetchJobDetailsWithOptions({
     revalidate?: number | false;
     tags?: string[];
   };
+  includeApplicationQuestions?: boolean;
 }) {
   const result = await apiFetch<JobDetailsResponse['data']>(url, {
     method: 'GET',
@@ -89,7 +99,15 @@ async function fetchJobDetailsWithOptions({
     throw new Error('Job details payload is missing');
   }
 
-  return normalizeJobDetailsPayload(jobDetails);
+  const t = await getTranslations({
+    locale,
+    namespace: 'jobDetailsPage.apply.questions',
+  });
+  return normalizeJobDetailsPayload(
+    jobDetails,
+    { yes: t('yes'), no: t('no') },
+    includeApplicationQuestions,
+  );
 }
 
 export const getPublicJobDetailsCached = cache(
@@ -135,5 +153,6 @@ export async function getCompanyJobDetails(
     locale,
     token: session?.accessToken,
     cache: 'no-store',
+    includeApplicationQuestions: false,
   });
 }

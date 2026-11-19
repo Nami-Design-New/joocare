@@ -40,6 +40,7 @@ export function useApplyCv() {
 
   return {
     profileCv,
+    isUploading,
     isLoadingProfile: profileQuery.isLoading,
     profileError: profileQuery.error ? t('failed-load-cv') : null,
     source,
@@ -50,8 +51,7 @@ export function useApplyCv() {
     setIsUploading,
     error,
     setError,
-    // `null` sends the profile CV (the API's default).
-    cvPath: source === 'upload' ? uploadedPath : null,
+    cvPath: source === 'upload' ? uploadedPath : profileCv,
     validate,
   };
 }

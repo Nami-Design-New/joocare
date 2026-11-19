@@ -293,7 +293,8 @@
       "please-wait": "Please wait a moment and try again.",
       "upload-cv-first": "Please upload your CV first before applying.",
       "application-submitted": "Application submitted successfully.",
-      "failed-submit-application": "Failed to submit your application."
+      "failed-submit-application": "Failed to submit your application.",
+      "invalid-answers": "The application contains invalid question or answer identifiers. Please reopen the job and try again."
     },
     "apply": {
       "title": "Apply for",
@@ -310,7 +311,11 @@
       "questions": {
         "description": "Answer the employer's {count, plural, one {question} other {# questions}} below, then continue to upload your CV",
         "optional": "(Optional)",
-        "required-error": "This answer is required"
+        "required-error": "This answer is required",
+        "invalid-error": "Choose a valid answer from the available options.",
+        "unavailable-error": "The job question options are currently incomplete. Please try again later.",
+        "yes": "Yes",
+        "no": "No"
       },
       "cv": {
         "title": "Choose the CV to send with your application",

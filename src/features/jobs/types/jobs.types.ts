@@ -1,4 +1,4 @@
-import type { ScreeningQuestion } from './job-steps.types';
+import type { ApplyScreeningQuestion } from './job-apply.types';
 import type { ApplicationAssessment } from './candidate-applications.types';
 // ==============================
 // BASE / SHARED ENTITIES
@@ -259,7 +259,7 @@ export type JobDetails = {
   // Company job response: application questions (templates + custom).
   questions?: JobQuestionApiItem[];
   // Candidate apply flow only, pending backend fields.
-  screening_questions?: ScreeningQuestion[];
+  screening_questions?: ApplyScreeningQuestion[] | null;
   assessment_id?: number | null;
   // Candidate apply flow only; the company job response returns `assessment_id`.
   assessment?: JobLinkedAssessment | null;

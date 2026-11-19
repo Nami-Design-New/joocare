@@ -4,6 +4,7 @@ import { CandidateProfileApiUser } from '@/features/candidate-profile/types/prof
 import { getUserApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch } from '@/shared/lib/fetch-manager';
 import type { ScreeningAnswer } from '../types/job-apply.types';
+import { createApplyJobSchema } from '../validation/apply-job-schema';
 
 type CandidateCvProfile = {
   cv: string | null;
@@ -20,6 +21,7 @@ type ApplyToJobOptions = {
   answers?: ScreeningAnswer[];
   token: string;
   locale: string;
+  invalidAnswers: string;
 };
 
 type ApplyToJobResponse = {
@@ -33,13 +35,10 @@ function normalizeStoredCvPath(cvPath: string) {
     return '';
   }
 
-  const imagesIndex = trimmedPath.indexOf('images/');
-
-  if (imagesIndex >= 0) {
-    return trimmedPath.slice(imagesIndex);
-  }
-
-  return trimmedPath;
+  const path = /^https?:\/\//i.test(trimmedPath)
+    ? new URL(trimmedPath).pathname
+    : trimmedPath.split(/[?#]/)[0];
+  return path.replace(/^\/+/, '').replace(/^storage\//, '');
 }
 
 export async function getCandidateCvProfile({
@@ -57,7 +56,7 @@ export async function getCandidateCvProfile({
   );
 
   if (!result.ok || !result.data?.data) {
-    throw new Error(result.message || 'Failed to load candidate profile.');
+    throw new Error(result.message || '');
   }
 
   return {
@@ -71,30 +70,32 @@ export async function applyToJobService({
   answers,
   token,
   locale,
+  invalidAnswers,
 }: ApplyToJobOptions): Promise<ApplyToJobResponse> {
-  const formData = new FormData();
-  formData.append('job_id', String(jobId));
-
-  if (cvPath) {
-    formData.append('cv', normalizeStoredCvPath(cvPath));
-  }
-
-  // Pending backend contract for screening answers.
-  if (answers?.length) {
-    formData.append('screening_answers', JSON.stringify(answers));
-  }
+  const parsed = createApplyJobSchema({ invalidAnswers }).safeParse({
+    job_id: jobId,
+    cv: cvPath ? normalizeStoredCvPath(cvPath) : undefined,
+    answers: (answers ?? [])
+      .filter((answer) => answer.selected.length > 0)
+      .map((answer) => ({
+        question_id: Number(answer.questionId),
+        answer_ids: answer.selected.map(Number),
+      })),
+  });
+  if (!parsed.success) throw new Error(invalidAnswers);
 
   const result = await apiFetch<ApplyToJobResponse>(`${getUserApiUrl()}/jobs`, {
     method: 'POST',
     token,
     locale,
-    body: formData,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(parsed.data),
     cache: 'no-store',
   });
 
   if (!result.ok) {
-    throw new Error(result.message || 'Failed to submit your application.');
+    throw new Error(result.message || '');
   }
 
-  return result.data ?? {};
+  return { message: result.message ?? undefined };
 }

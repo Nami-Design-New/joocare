@@ -127,9 +127,6 @@ export const AI_JD_BUILDER_PREVIEW_MESSAGES = [
   },
 ] satisfies AiChatMessage[];
 
-// Apply flow: preview screening questions + linked assessment until the job details API
-// returns them (design review). Set to false to rely on the API data only.
-export const JOB_APPLY_PREVIEW_ENABLED = true;
 export const APPLY_STEP_KEYS = ['questions', 'cv'] as const;
 export const APPLY_CV_ACCEPTED_TYPES = [
   'application/pdf',
