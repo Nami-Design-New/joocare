@@ -202,8 +202,6 @@ export type ExperiencePayload = {
   jobTitleId?: string;
   company: string;
   employmentTypeId?: string;
-  countryId?: string;
-  cityId?: string;
   startDate: string;
   endDate?: string;
   isCurrent: boolean;

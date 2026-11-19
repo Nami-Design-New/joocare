@@ -22,7 +22,6 @@ type CreateRegisterCandidateSchemaOptions = {
   passwordMin?: string;
   passwordMax?: string;
   passwordRules?: string;
-  cvRequired?: string;
   otherJobTitleRequired?: string;
   licenseCountryRequired?: string;
   licenseTitleRequired?: string;
@@ -45,7 +44,6 @@ export const createRegisterCandidateSchema = ({
   passwordMin = 'Password must be at least 8 characters',
   passwordMax = 'Password must be at most 15 characters',
   passwordRules,
-  cvRequired = 'cv is required',
   otherJobTitleRequired = 'Other job title is required',
   licenseCountryRequired = 'License country is required when you have a medical license',
   licenseTitleRequired = 'License title is required',
@@ -108,10 +106,7 @@ export const createRegisterCandidateSchema = ({
         rules: passwordRules,
       }),
 
-      uploadCV: z
-        .string(cvRequired)
-        .min(1, { message: cvRequired })
-        .transform((val) => (val?.trim() === '' ? undefined : val)),
+      uploadCV: optionalString,
 
       confirmRegister: z.boolean().default(false),
 

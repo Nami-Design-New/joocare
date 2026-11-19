@@ -30,12 +30,9 @@ export function useSaveExperience(
         throw new Error(t('session-expired'));
       }
 
-      // Country / city aren't in the modal for now: keep the saved ones.
       const payload = toExperiencePayload(form, {
         locale,
         token,
-        countryId: experience?.countryId ?? undefined,
-        cityId: experience?.cityId ?? undefined,
       });
 
       return experienceId

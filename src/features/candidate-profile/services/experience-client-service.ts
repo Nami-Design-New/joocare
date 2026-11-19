@@ -18,8 +18,6 @@ function buildExperienceFormData(
   appendIfPresent(formData, 'title', payload.title);
   formData.append('company', payload.company);
   appendIfPresent(formData, 'employment_type_id', payload.employmentTypeId);
-  appendIfPresent(formData, 'country_id', payload.countryId);
-  appendIfPresent(formData, 'city_id', payload.cityId);
   formData.append('start_date', payload.startDate);
   formData.append('is_current', payload.isCurrent ? '1' : '0');
 

@@ -10,7 +10,7 @@ import type {
 
 type PayloadContext = Pick<
   ExperiencePayload,
-  'locale' | 'token' | 'countryId' | 'cityId'
+  'locale' | 'token'
 >;
 
 // The saved title is free text; the modal switches it to the matching job title option once loaded.

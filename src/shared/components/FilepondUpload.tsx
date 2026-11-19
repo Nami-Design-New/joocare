@@ -62,6 +62,13 @@ export function FilepondUpload({
     return acceptedFileTypes.some((acceptedType) => {
       const normalizedType = acceptedType.toLowerCase();
 
+      if (
+        normalizedType.endsWith('/*') &&
+        fileType.startsWith(normalizedType.slice(0, -1))
+      ) {
+        return true;
+      }
+
       if (fileType === normalizedType) {
         return true;
       }

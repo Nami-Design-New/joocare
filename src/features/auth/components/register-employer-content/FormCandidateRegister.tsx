@@ -83,7 +83,6 @@ const FormCandidateRegister = () => {
         passwordMin: t('common.password-validation.minimum-error'),
         passwordMax: t('authPage.validation.password-max'),
         passwordRules: t('common.password-validation.invalid'),
-        cvRequired: t('authPage.validation.cv-required'),
         otherJobTitleRequired: t(
           'authPage.validation.other-job-title-required',
         ),
@@ -169,7 +168,7 @@ const FormCandidateRegister = () => {
       license_title: data.licenseTitle,
       license_number: data.licenseNumber,
       cv: data.uploadCV,
-      license: data.uploadLicense,
+      license_image: data.uploadLicense,
     });
   };
 
@@ -360,6 +359,7 @@ const FormCandidateRegister = () => {
           render={({ field }) => (
             <FilepondUpload
               label={t('authPage.common.upload-cv')}
+              hint={t('authPage.common.optional')}
               value={field.value}
               acceptedFileTypes={CV_ACCEPTED_FILE_TYPES}
               invalidTypeMessage={t('authPage.validation.cv-invalid-type')}
@@ -465,6 +465,7 @@ const FormCandidateRegister = () => {
                   }}
                   allowMultiple={false}
                   maxFiles={1}
+                  acceptedFileTypes={['image/*']}
                   error={errors.uploadLicense?.message}
                   maxSize={5 * 1024 * 1024}
                 />
