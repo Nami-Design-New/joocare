@@ -2,6 +2,7 @@ import type { AiChatMessage } from '../types/job-steps.types';
 
 export const ALL_RECRUITERS_VALUE = 'all';
 export const ALL_STATUSES_VALUE = 'all';
+export const DEFAULT_JOB_STATUS = 'open';
 export const OTHER_OPTION_VALUE = '__other__';
 
 export const JOB_SEARCH_DEBOUNCE_MS = 400;
