@@ -1423,7 +1423,9 @@
         "time-running-out": "left – time is almost up",
         "badge": "Q{number}",
         "next": "Next Question",
-        "submit": "Submit Assessment"
+        "submit": "Submit Assessment",
+        "yes": "Yes",
+        "no": "No"
       },
       "status": {
         "browse-jobs": "Browse Jobs",
