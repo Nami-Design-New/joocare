@@ -2,7 +2,7 @@
 
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { useLocale } from 'next-intl';
-import { DASHBOARD_CATEGORY_COLORS } from '../constants/dashboard-preview';
+import { DASHBOARD_CATEGORY_COLORS } from '../constants/dashboard-config';
 import type { DashboardCategory } from '../index.type';
 
 type ChartLabelProps = {

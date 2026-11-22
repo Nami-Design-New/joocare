@@ -67,6 +67,10 @@
     "job-saved-modal": {
       "title": "تم الحفظ بنجاح!",
       "description": "تمت إضافة الوظيفة إلى وظائفك المحفوظة. يمكنك الرجوع إليها في أي وقت من طلبات التوظيف › المحفوظة."
+    },
+    "month-picker": {
+      "previous-year": "السنة السابقة",
+      "next-year": "السنة التالية"
     }
   },
   "header": {
@@ -2420,7 +2424,11 @@
         "total-applicants": "إجمالي المتقدمين",
         "total-job-views": "إجمالي مشاهدات الوظائف",
         "weekly-activity": "نشاط العروض الأسبوعي",
-        "chart-description": "نشاط العروض الأسبوعي من السبت إلى الجمعة، على مقياس من ٠ إلى ١٠٠."
+        "chart-description": "عدد الوظائف المنشورة في كل يوم من أيام الأسبوع.",
+        "jobs-posted": "الوظائف المنشورة",
+        "no-activity": "لم يتم نشر وظائف بعد",
+        "error-title": "تعذر تحميل إحصائيات الوظائف",
+        "error-description": "يرجى المحاولة مرة أخرى لعرض نظرة عامة على وظائفك النشطة."
       },
       "active-jobs-title": "الوظائف النشطة",
       "category-breakdown": "توزيع الفئات",
@@ -2467,8 +2475,6 @@
         "applications-title": "إجمالي طلبات التوظيف",
         "applications-description": "إجمالي الطلبات لجميع الوظائف",
         "activity-title": "آخر نشاط",
-        "activity-description": "المتقدمون خلال آخر ٧ أيام",
-        "activity-hours": "منذ {hours} ساعة",
         "application-unit": "طلب",
         "time-title": "مدة شغل الوظيفة",
         "time-description": "متوسط عدد الأيام من نشر الوظيفة حتى إغلاقها.",
@@ -2512,7 +2518,12 @@
         "error-title": "تعذّر تحميل لوحة التحكم",
         "error-description": "حاول مرة أخرى لعرض نظرة عامة على التوظيف.",
         "retry": "حاول مرة أخرى",
-        "no-data": "لا توجد بيانات بعد"
+        "no-data": "لا توجد بيانات بعد",
+        "activity-today": "الطلبات المستلمة اليوم",
+        "last-activity": "آخر نشاط: {date}",
+        "no-alerts": "لا توجد تنبيهات توظيف",
+        "no-alerts-description": "لا توجد وظيفة مفتوحة منذ أكثر من 30 يومًا.",
+        "recruiters-error": "تعذر تحميل نشاط مسؤولي التوظيف."
       }
     },
     "profile": {

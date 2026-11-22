@@ -13,29 +13,23 @@ import { Skeleton } from '@/shared/components/ui/skeleton';
 import { Button } from '@/shared/components/ui/button';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
-import { useDashboardJobs } from '../hooks/useDashboardJobs';
 import ActiveJobRow from './ActiveJobRow';
 import DashboardWidgetTitle from './DashboardWidgetTitle';
-import type { CompanyJob } from '../index.type';
+import type { DashboardJobsTableState } from '../index.type';
 
 type ActiveJobsTableProps = {
-  designPreview?: boolean;
-  previewJobs?: CompanyJob[];
+  jobs: DashboardJobsTableState;
   title?: string;
-  showPagination?: boolean;
   centerActions?: boolean;
 };
 
 export default function ActiveJobsTable({
-  designPreview = false,
-  previewJobs,
+  jobs,
   title,
-  showPagination = true,
   centerActions = false,
 }: ActiveJobsTableProps) {
   const t = useTranslations('companyPage.dashboard');
-  const jobs = useDashboardJobs(designPreview || previewJobs !== undefined);
-  const rows = previewJobs ?? jobs.jobs;
+  const rows = jobs.rows;
   return (
     <section>
       <div className="space-y-6 rounded-2xl bg-card p-4">
@@ -47,11 +41,7 @@ export default function ActiveJobsTable({
         {jobs.error ? (
           <div className="flex min-h-64 flex-col items-center justify-center gap-4">
             <p className="text-destructive">{t('design.jobs-error')}</p>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void jobs.retry()}
-            >
+            <Button type="button" variant="outline" onClick={jobs.retry}>
               {t('design.retry')}
             </Button>
           </div>
@@ -111,7 +101,7 @@ export default function ActiveJobsTable({
           </div>
         )}
       </div>
-      {showPagination && !jobs.loading && jobs.total > 0 && (
+      {!jobs.loading && jobs.total > jobs.pageSize && (
         <CustomPagination
           currentPage={jobs.page}
           totalItems={jobs.total}

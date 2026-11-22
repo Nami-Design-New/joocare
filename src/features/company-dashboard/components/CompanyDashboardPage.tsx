@@ -3,14 +3,10 @@
 import { useLocale, useTranslations } from 'next-intl';
 import RouteErrorFallback from '@/shared/components/RouteErrorFallback';
 import { useCompanyDashboard } from '../hooks/useCompanyDashboard';
-import {
-  DASHBOARD_DESIGN_PERIOD,
-  dashboardDesignAnalytics,
-} from '../constants/dashboard-preview';
+import { useDashboardJobs } from '../hooks/useDashboardJobs';
 import {
   formatDashboardNumber,
-  dashboardNumber,
-  previousDashboardPeriod,
+  formatGrowthRate,
 } from '../utils/dashboard-format';
 import type { DashboardPeriodKey } from '../index.type';
 import DashboardReportsBanner from './DashboardReportsBanner';
@@ -32,19 +28,20 @@ export default function CompanyDashboardPage({
   const t = useTranslations('companyPage.dashboard.design');
   const locale = useLocale();
   const dashboard = useCompanyDashboard(designPreview);
+  const jobs = useDashboardJobs(designPreview);
   const data = dashboard.data;
-  const number = (value: number | string | undefined, compact = false) =>
-    dashboardNumber(value) === null
+  const number = (value: number | undefined, compact = false) =>
+    value === undefined
       ? t('no-data')
       : formatDashboardNumber(value, locale, compact);
   const periodSelect = (key: DashboardPeriodKey, title: string) => (
     <DashboardPeriodSelect
       value={dashboard.periods[key]}
-      options={dashboard.periodOptions}
       label={title}
       onChange={(value) => dashboard.changePeriod(key, value)}
     />
   );
+  const lastActivity = data?.recent_activity.last_activity_at;
 
   if (dashboard.error)
     return (
@@ -68,9 +65,7 @@ export default function CompanyDashboardPage({
           <DashBoardStatsCard
             title={t('active-jobs-title')}
             value={
-              data?.active_jobs === undefined
-                ? t('no-data')
-                : '+' + number(data.active_jobs)
+              data === undefined ? t('no-data') : '+' + number(data.active_jobs)
             }
             description={t('active-jobs-description')}
             icon="active-jobs"
@@ -78,39 +73,41 @@ export default function CompanyDashboardPage({
           />
           <DashBoardStatsCard
             title={t('applications-title')}
-            value={number(data?.total_applications)}
+            value={number(data?.total_applications.value)}
             description={t('applications-description')}
             icon="applications"
-            isPending={dashboard.loading}
+            isPending={dashboard.isPeriodPending('applications')}
             periodSelect={periodSelect('applications', t('applications-title'))}
             comparison={
-              <>
-                <strong>
-                  {'+' +
-                    number(dashboardDesignAnalytics.totalApplicationChange)}
-                </strong>{' '}
-                {t('versus-period', {
-                  period: previousDashboardPeriod(
-                    dashboard.periods.applications,
-                    locale,
-                    false,
-                  ),
-                })}
-              </>
+              data && (
+                <>
+                  <strong>
+                    <bdi>
+                      {formatGrowthRate(
+                        data.total_applications.growth_rate,
+                        locale,
+                      )}
+                    </bdi>
+                  </strong>{' '}
+                  {t('versus-period', {
+                    period: data.total_applications.previous_month_label,
+                  })}
+                </>
+              )
             }
           />
           <DashBoardStatsCard
             title={t('activity-title')}
             value={
-              data?.applications_latest_activity === undefined
+              data === undefined
                 ? t('no-data')
-                : '+' + number(data.applications_latest_activity)
+                : '+' + number(data.recent_activity.count_today)
             }
             suffix={t('application-unit')}
             description={
-              designPreview
-                ? t('activity-hours', { hours: 2 })
-                : t('activity-description')
+              lastActivity
+                ? t('last-activity', { date: lastActivity })
+                : t('activity-today')
             }
             icon="activity"
             isPending={dashboard.loading}
@@ -124,42 +121,49 @@ export default function CompanyDashboardPage({
             description={t('time-description')}
             icon="time-to-fill"
             value={t('time-days', {
-              days: dashboardDesignAnalytics.timeToFill,
+              days: data?.job_duration.average_days ?? 0,
             })}
             suffix={t('average-time-close')}
-            periodSelect={periodSelect('timeToFill', t('time-title'))}
-            empty={dashboard.periods.timeToFill !== DASHBOARD_DESIGN_PERIOD}
+            periodSelect={periodSelect('duration', t('time-title'))}
+            isPending={dashboard.isPeriodPending('duration')}
+            empty={!data || data.job_duration.closed_jobs_count === 0}
           >
-            <DashboardTimeToFill days={dashboardDesignAnalytics.timeToFill} />
+            <DashboardTimeToFill days={data?.job_duration.average_days ?? 0} />
           </DashboardAnalyticsCard>
           <DashboardAnalyticsCard
             title={t('reach-title')}
             description={t('reach-description')}
             icon="brand-reach"
             iconHeight={12}
-            value={number(dashboardDesignAnalytics.brandReach, true)}
+            value={number(data?.user_visits.value, true)}
             suffix={t('unique-profile-viewers')}
-            periodSelect={periodSelect('reach', t('reach-title'))}
-            empty={dashboard.periods.reach !== DASHBOARD_DESIGN_PERIOD}
+            periodSelect={periodSelect('visits', t('reach-title'))}
+            isPending={dashboard.isPeriodPending('visits')}
+            empty={!data}
           >
-            <DashboardMetricChange
-              change={dashboardDesignAnalytics.brandReachChange}
-              period={dashboard.periods.reach}
-            />
+            {data && (
+              <DashboardMetricChange
+                change={data.user_visits.growth_rate}
+                previousPeriodLabel={data.user_visits.previous_month_label}
+              />
+            )}
           </DashboardAnalyticsCard>
           <DashboardAnalyticsCard
             title={t('intake-title')}
             description={t('intake-description')}
             icon="talent-intake"
-            value={number(data?.cvs_downloaded)}
+            value={number(data?.cv_downloads.value)}
             suffix={t('cvs-downloaded')}
-            periodSelect={periodSelect('intake', t('intake-title'))}
-            isPending={dashboard.loading}
+            periodSelect={periodSelect('cvDownloads', t('intake-title'))}
+            isPending={dashboard.isPeriodPending('cvDownloads')}
+            empty={!data}
           >
-            <DashboardMetricChange
-              change={dashboardDesignAnalytics.talentIntakeChange}
-              period={dashboard.periods.intake}
-            />
+            {data && (
+              <DashboardMetricChange
+                change={data.cv_downloads.growth_rate}
+                previousPeriodLabel={data.cv_downloads.previous_month_label}
+              />
+            )}
           </DashboardAnalyticsCard>
         </div>
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
@@ -167,16 +171,21 @@ export default function CompanyDashboardPage({
             categories={data?.categories_percentage ?? []}
             isPending={dashboard.loading}
           />
-          <DashboardHiringAlerts />
+          <DashboardHiringAlerts
+            staleJobs={data?.stale_jobs}
+            isPending={dashboard.loading}
+          />
         </div>
-        <ActiveJobsTable designPreview={designPreview} />
+        <ActiveJobsTable jobs={jobs} />
         <DashboardRecruitersChart
           period={dashboard.periods.recruiters}
-          options={dashboard.periodOptions}
           onPeriodChange={(value) =>
             dashboard.changePeriod('recruiters', value)
           }
-          empty={dashboard.periods.recruiters !== DASHBOARD_DESIGN_PERIOD}
+          recruiters={dashboard.recruiters.data}
+          isPending={dashboard.recruiters.loading}
+          isError={dashboard.recruiters.error}
+          onRetry={() => void dashboard.recruiters.retry()}
         />
       </div>
     </div>
