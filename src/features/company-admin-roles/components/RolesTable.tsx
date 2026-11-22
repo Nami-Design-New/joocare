@@ -25,7 +25,7 @@ export default function RolesTable({
       header: '#',
       headerClassName: 'w-[50px]',
       cellClassName: 'w-[50px]',
-      renderCell: (role) => `#${role.id}`,
+      renderCell: (_role, index) => `#${index + 1}`,
     },
     {
       id: 'role-name',
@@ -64,7 +64,7 @@ export default function RolesTable({
         <DataTable
           columns={columns}
           data={roles}
-          getRowKey={(role) => role.id}
+          getRowKey={(role) => role.key}
           dir={isRtl ? 'rtl' : 'ltr'}
           headerRowClassName="border-border rounded-t-lg bg-muted hover:bg-muted"
           rowClassName="border-border bg-primary/[0.02] hover:bg-primary/[0.04]"

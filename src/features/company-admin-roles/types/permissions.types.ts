@@ -1,11 +1,11 @@
 import type { CompanyRole } from './role.types';
 
 export type CompanyRoleKey =
-  | 'recruitment-manager'
+  | 'recruitment_manager'
   | 'recruiter'
-  | 'branding-specialist'
+  | 'branding_specialist'
   | 'admin'
-  | 'hiring-manager';
+  | 'hiring_manager';
 
 export type PermissionEntry = {
   id: string;

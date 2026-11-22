@@ -14,7 +14,7 @@ type MembersTableProps = {
   pageSize: number;
   direction: 'ltr' | 'rtl';
   onEdit: (member: CompanyMember) => void;
-  onDelete: (memberId: number) => void;
+  onDelete: (member: CompanyMember) => void;
 };
 
 export default function MembersTable({
@@ -101,7 +101,7 @@ export default function MembersTable({
             type="button"
             size="sm"
             variant="destructive"
-            onClick={() => onDelete(member.id)}
+            onClick={() => onDelete(member)}
             className="h-8 rounded-full px-3 text-xs"
             aria-label={`${t('delete')} ${member.name}`}
           >
