@@ -5,7 +5,7 @@ import type {
 
 // Display content from Figma. These labels are data and stay in English.
 export const rolePermissions: Record<CompanyRoleKey, RolePermissionConfig> = {
-  'recruitment-manager': {
+  recruitment_manager: {
     description: 'Full access to the entire platform and all actions.',
     overviewSuffix: 'Full platform access',
     groups: [
@@ -83,7 +83,7 @@ export const rolePermissions: Record<CompanyRoleKey, RolePermissionConfig> = {
       },
     ],
   },
-  'branding-specialist': {
+  branding_specialist: {
     description: 'Full access to Company Profile only.',
     groups: [
       {
@@ -123,7 +123,7 @@ export const rolePermissions: Record<CompanyRoleKey, RolePermissionConfig> = {
       },
     ],
   },
-  'hiring-manager': {
+  hiring_manager: {
     description:
       'Access to assigned projects only — review candidates and take hiring decisions.',
     groups: [

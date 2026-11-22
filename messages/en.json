@@ -67,6 +67,10 @@
     "job-saved-modal": {
       "title": "Saved Successfully!",
       "description": "The job has been added to your saved jobs. You can find it anytime under Job Applications › Saved."
+    },
+    "month-picker": {
+      "previous-year": "Previous year",
+      "next-year": "Next year"
     }
   },
   "header": {
@@ -2048,7 +2052,11 @@
         "readOnly": "Permissions cannot be changed in this view.",
         "close": "Close",
         "unavailable": "Permission details are not available for this role."
-      }
+      },
+      "empty": "No roles found",
+      "error-title": "Couldn't load roles",
+      "error-description": "Something went wrong while loading the roles. Please try again.",
+      "retry": "Try again"
     },
     "postJob": {
       "common": {
@@ -2422,7 +2430,11 @@
         "total-applicants": "Total Applicants",
         "total-job-views": "Total Job Views",
         "weekly-activity": "Weekly Presentation Activity",
-        "chart-description": "Weekly presentation activity from Saturday to Friday, on a scale from 0 to 100."
+        "chart-description": "Number of jobs posted on each day of the week.",
+        "jobs-posted": "Jobs posted",
+        "no-activity": "No jobs posted yet",
+        "error-title": "Couldn’t load job statistics",
+        "error-description": "Please try again to view your active jobs overview."
       },
       "active-jobs-title": "Active Jobs",
       "category-breakdown": "Category Breakdown",
@@ -2469,8 +2481,6 @@
         "applications-title": "Total Applications",
         "applications-description": "Total applications across all jobs",
         "activity-title": "Recent Activity",
-        "activity-description": "Applicants in the last 7 days",
-        "activity-hours": "{hours}hours ago",
         "application-unit": "Application",
         "time-title": "Time to Fill",
         "time-description": "Average number of days from publishing a job until it is closed.",
@@ -2514,7 +2524,12 @@
         "error-title": "Couldn’t load your dashboard",
         "error-description": "Please try again to view your recruitment overview.",
         "retry": "Try again",
-        "no-data": "No data yet"
+        "no-data": "No data yet",
+        "activity-today": "Applications received today",
+        "last-activity": "Last activity: {date}",
+        "no-alerts": "No hiring alerts",
+        "no-alerts-description": "None of your open jobs has been open for more than 30 days.",
+        "recruiters-error": "Couldn’t load recruiter activity."
       }
     },
     "profile": {
@@ -3061,6 +3076,26 @@
         "phone": "Phone",
         "role": "Role",
         "displayedRoleName": "Displayed Role Name"
+      },
+      "empty": "No members found",
+      "error-title": "Couldn't load members",
+      "error-description": "Something went wrong while loading the team members. Please try again.",
+      "retry": "Try again",
+      "saving": "Saving...",
+      "member-added": "Member added successfully",
+      "member-updated": "Member updated successfully",
+      "member-deleted": "Member deleted successfully",
+      "save-error": "Couldn't save the member. Please try again.",
+      "delete-error": "Couldn't delete the member. Please try again.",
+      "validation": {
+        "name-required": "Name is required",
+        "name-max": "Name must be 255 characters or less",
+        "email-required": "Email is required",
+        "email-invalid": "Enter a valid email address",
+        "phone-required": "Phone number is required",
+        "phone-invalid": "Enter a valid phone number",
+        "role-required": "Select a role",
+        "displayed-role-name-max": "Displayed role name must be 255 characters or less"
       }
     },
     "assessments": {

@@ -21,7 +21,7 @@ export default function BrandingSpecialistPermissionsModal({
   onCloseAutoFocus,
 }: RolePermissionsModalProps) {
   const locale = useLocale();
-  const config = rolePermissions['branding-specialist'];
+  const config = rolePermissions['branding_specialist'];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

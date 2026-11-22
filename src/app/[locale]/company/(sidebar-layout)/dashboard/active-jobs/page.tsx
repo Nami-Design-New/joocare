@@ -1,5 +1,10 @@
 import DashboardActiveJobsPage from '@/features/company-dashboard/components/DashboardActiveJobsPage';
 
-export default function ActiveJobsPage() {
-  return <DashboardActiveJobsPage />;
+type ActiveJobsPageProps = { searchParams: Promise<{ preview?: string }> };
+
+export default async function ActiveJobsPage({
+  searchParams,
+}: ActiveJobsPageProps) {
+  const { preview } = await searchParams;
+  return <DashboardActiveJobsPage designPreview={preview === 'design'} />;
 }

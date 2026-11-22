@@ -2,12 +2,15 @@
 
 import { useTranslations } from 'next-intl';
 import SearchInput from '@/shared/components/SearchInput';
-import { SelectInputField } from '@/shared/components/SelectInputField';
+import {
+  SelectInputField,
+  type Option,
+} from '@/shared/components/SelectInputField';
 
 type MembersFiltersProps = {
   search: string;
   roleFilter: string;
-  roles: string[];
+  roleOptions: Option[];
   onSearchChange: (value: string) => void;
   onRoleChange: (value: string) => void;
 };
@@ -15,18 +18,18 @@ type MembersFiltersProps = {
 export default function MembersFilters({
   search,
   roleFilter,
-  roles,
+  roleOptions,
   onSearchChange,
   onRoleChange,
 }: MembersFiltersProps) {
   const t = useTranslations('companyPage.usersManagement');
-  const roleOptions = roles.map((role) => ({ label: role, value: role }));
 
   return (
     <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_214px]">
       <SearchInput
         id="company-members-search"
         placeholder={t('searchPlaceholder')}
+        aria-label={t('searchPlaceholder')}
         value={search}
         onChange={(event) => onSearchChange(event.target.value)}
         iconClassName="start-3 size-4"

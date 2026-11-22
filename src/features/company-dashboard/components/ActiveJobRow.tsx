@@ -2,15 +2,12 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 import { TableCell, TableRow } from '@/shared/components/ui/table';
-import type { CompanyJob } from '../index.type';
+import type { DashboardJobRow } from '../index.type';
 import { cn } from '@/shared/lib/utils';
-import {
-  formatDashboardDate,
-  formatDashboardNumber,
-} from '../utils/dashboard-format';
+import { formatDashboardNumber } from '../utils/dashboard-format';
 import DashboardIcon from './DashboardIcon';
 
-type ActiveJobRowProps = { job: CompanyJob; centerActions?: boolean };
+type ActiveJobRowProps = { job: DashboardJobRow; centerActions?: boolean };
 
 export default function ActiveJobRow({
   job,
@@ -21,7 +18,7 @@ export default function ActiveJobRow({
   return (
     <TableRow className="h-15.75 border-b border-border bg-dashboard-primary/2">
       <TableCell className="px-4 py-[15.5px] text-start">
-        <bdi>{job.job_title?.title ?? job.title}</bdi>
+        <bdi>{job.title}</bdi>
       </TableCell>
       <TableCell className="px-4 py-[15.5px] text-center">
         {formatDashboardNumber(job.views_num, locale)}
@@ -30,7 +27,7 @@ export default function ActiveJobRow({
         {formatDashboardNumber(job.applications_count, locale)}
       </TableCell>
       <TableCell className="px-4 py-[15.5px] text-center font-semibold text-muted-foreground">
-        {formatDashboardDate(job.created_at, locale)}
+        <bdi>{job.created_at}</bdi>
       </TableCell>
       <TableCell
         className={cn(
