@@ -39,6 +39,32 @@ Details: [08-company-notifications.md](08-company-notifications.md)
 
 Check first whether the company header uses the same drawer as the candidate.
 
+## Role access (logged-in admin)
+
+The company login returns the admin in `data.admin`; `role_value` is saved in the session as `companyRole` (`src/auth.ts`). One map in `features/company/constants/company-role-access.ts` drives:
+
+- the company sidebar (links the role cannot open are hidden),
+- `src/proxy.ts` (a direct visit to a page the role cannot open redirects to the role's home page),
+- actions: `post-job` (sidebar Post job card), `create-assessment-category` (New category button).
+
+| Page | Recruitment manager | Admin | Recruiter | Branding specialist | Hiring manager |
+| --- | --- | --- | --- | --- | --- |
+| Company profile | ✓ | ✓ | ✓ | ✓ | |
+| Dashboard | ✓ | ✓ | ✓ | | |
+| Jobs, post job, job details, candidate profile | ✓ | | ✓ | | |
+| Projects, shared projects | ✓ | | ✓ | | ✓ |
+| Assessments | ✓ | | ✓ (no new category) | | |
+| Assessment results | ✓ | | ✓ | | |
+| Talent database | ✓ | | | | |
+| Chat | ✓ | | ✓ | | |
+| Users, roles and permissions | ✓ | ✓ | | | |
+| Recruiter activity | ✓ | ✓ | | | |
+| Account settings | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+Home page per role: dashboard (recruitment manager, admin, recruiter), company profile (branding specialist), projects (hiring manager). Unknown role: company profile and account settings only. Session with no role (logged in before this change): full access until the next login.
+
+Read from the static role permissions; to confirm: talent database for recruiters, chat for admins, account settings for every role, view-only limits (recruiter on company profile and dashboard), hiring manager (magic link, later).
+
 ## Before coding
 
 Call GET `company-admins`, GET `roles`, GET `recruiters-stats` with the test company account and record the response shapes in the feature files.

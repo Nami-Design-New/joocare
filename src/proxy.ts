@@ -5,6 +5,10 @@ import {
   shouldLogOnly429,
   shouldLogRequests,
 } from '@/shared/lib/request-logging';
+import {
+  canAccessCompanyPath,
+  getCompanyRoleHome,
+} from '@/features/company/utils/company-role-access';
 import { getSafeRedirectPath } from '@/shared/lib/safe-redirect';
 import createMiddleware from 'next-intl/middleware';
 import { getToken } from 'next-auth/jwt';
@@ -271,6 +275,32 @@ export default async function proxy(request: NextRequest) {
       details: {
         action: 'redirect:role-mismatch',
         authRole,
+        redirectTo: redirectUrl.toString(),
+      },
+    });
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  // Company admins only open the pages their role allows.
+  const companyRole = isAuth?.companyRole;
+  if (
+    isAuth &&
+    authRole === 'employer' &&
+    isEmployerRoute &&
+    !canAccessCompanyPath(companyRole, pathWithoutLocale)
+  ) {
+    const redirectUrl = new URL(
+      `/${locale}${getCompanyRoleHome(companyRole)}`,
+      request.url,
+    );
+    logProxyRequest({
+      request,
+      requestId,
+      status: 307,
+      startedAt,
+      details: {
+        action: 'redirect:company-role',
+        companyRole,
         redirectTo: redirectUrl.toString(),
       },
     });

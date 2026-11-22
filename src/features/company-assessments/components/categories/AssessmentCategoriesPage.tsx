@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useSession } from 'next-auth/react';
+import { useCompanyAccess } from '@/features/company/hooks/useCompanyAccess';
 import useGetCompanyProfile from '@/features/company-profile/hooks/useGetCompanyProfile';
 import { SelectInputField } from '@/shared/components/SelectInputField';
 import DeleteModal from '@/shared/components/modals/DeleteModal';
@@ -18,6 +19,7 @@ export default function AssessmentCategoriesPage() {
   const catalog = useAssessmentCategories();
   const { filter } = catalog;
   const { data: session } = useSession();
+  const access = useCompanyAccess();
   const { data: company } = useGetCompanyProfile({
     token: session?.accessToken ?? '',
   });
@@ -26,6 +28,7 @@ export default function AssessmentCategoriesPage() {
     <div className="flex flex-col gap-6 sm:gap-10 lg:mt-1">
       <AssessmentCategoriesHeader
         count={catalog.totalCount}
+        canCreate={access.can('create-assessment-category')}
         onCreate={catalog.openCreate}
         modal={catalog.modal}
         onCloseModal={catalog.closeModal}

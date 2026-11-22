@@ -28,6 +28,8 @@ declare module 'next-auth' {
     user: AuthSessionUser;
     accessToken: string;
     authRole?: AuthRole;
+    /** Role value of the logged-in company admin (`data.admin.role_value`). */
+    companyRole?: string;
     authMessage?: string;
   }
 
@@ -35,6 +37,7 @@ declare module 'next-auth' {
     user?: AuthSessionUser;
     accessToken?: string;
     authRole?: AuthRole;
+    companyRole?: string;
     authMessage?: string;
     id: string;
   }
@@ -46,6 +49,7 @@ declare module 'next-auth/jwt' {
     accessToken?: string;
     id?: string;
     authRole?: AuthRole;
+    companyRole?: string;
     authMessage?: string;
   }
 }
