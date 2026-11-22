@@ -2,7 +2,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import {
   DASHBOARD_FILL_LIMIT,
   DASHBOARD_FILL_SCALE_MAX,
-} from '../constants/dashboard-preview';
+} from '../constants/dashboard-config';
 
 type DashboardTimeToFillProps = { days: number };
 

@@ -4,10 +4,7 @@ import { Button } from '@/shared/components/ui/button';
 import { TableCell, TableRow } from '@/shared/components/ui/table';
 import type { CompanyJob } from '../index.type';
 import { cn } from '@/shared/lib/utils';
-import {
-  formatDashboardDate,
-  formatDashboardNumber,
-} from '../utils/dashboard-format';
+import { formatDashboardNumber } from '../utils/dashboard-format';
 import DashboardIcon from './DashboardIcon';
 
 type ActiveJobRowProps = { job: CompanyJob; centerActions?: boolean };
@@ -30,7 +27,7 @@ export default function ActiveJobRow({
         {formatDashboardNumber(job.applications_count, locale)}
       </TableCell>
       <TableCell className="px-4 py-[15.5px] text-center font-semibold text-muted-foreground">
-        {formatDashboardDate(job.created_at, locale)}
+        <bdi>{job.created_at}</bdi>
       </TableCell>
       <TableCell
         className={cn(

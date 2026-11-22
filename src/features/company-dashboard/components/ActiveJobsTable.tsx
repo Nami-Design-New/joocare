@@ -111,7 +111,7 @@ export default function ActiveJobsTable({
           </div>
         )}
       </div>
-      {showPagination && !jobs.loading && jobs.total > 0 && (
+      {showPagination && !jobs.loading && jobs.total > jobs.pageSize && (
         <CustomPagination
           currentPage={jobs.page}
           totalItems={jobs.total}

@@ -1,32 +1,44 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import EmptyDataState from '@/shared/components/EmptyDataState';
-import {
-  dashboardDesignAnalytics,
-  dashboardRecruiters,
-} from '../constants/dashboard-preview';
-import type { DashboardPeriodOption } from '../index.type';
+import { DASHBOARD_RECRUITER_TICK_COUNT } from '../constants/dashboard-config';
+import type { DashboardAdminJobs, DashboardPage } from '../index.type';
 import DashboardIcon from './DashboardIcon';
 import DashboardPeriodSelect from './DashboardPeriodSelect';
 import DashboardWidgetTitle from './DashboardWidgetTitle';
 
 type DashboardRecruitersChartProps = {
   period: string;
-  options: DashboardPeriodOption[];
   onPeriodChange: (value: string) => void;
-  empty: boolean;
+  recruiters?: DashboardPage<DashboardAdminJobs>;
+  isPending: boolean;
+  isError: boolean;
+  onRetry: () => void;
 };
 
 export default function DashboardRecruitersChart({
   period,
-  options,
   onPeriodChange,
-  empty,
+  recruiters,
+  isPending,
+  isError,
+  onRetry,
 }: DashboardRecruitersChartProps) {
   const t = useTranslations('companyPage.dashboard.design');
   const locale = useLocale();
   const format = new Intl.NumberFormat(locale);
+  const rows = recruiters?.data ?? [];
+  const highest = Math.max(0, ...rows.map((row) => row.jobs_count));
+  const step = Math.max(1, Math.ceil(highest / DASHBOARD_RECRUITER_TICK_COUNT));
+  const scaleMax = step * DASHBOARD_RECRUITER_TICK_COUNT;
+  const ticks = Array.from(
+    { length: DASHBOARD_RECRUITER_TICK_COUNT + 1 },
+    (_, index) => index * step,
+  );
+  const empty = highest === 0;
+
   return (
     <section className="space-y-6 rounded-2xl bg-card p-4 sm:p-6">
       <div className="flex min-h-11.5 flex-wrap items-center justify-between gap-3">
@@ -37,12 +49,24 @@ export default function DashboardRecruitersChart({
         />
         <DashboardPeriodSelect
           value={period}
-          options={options}
           label={t('recruiters-title')}
           onChange={onPeriodChange}
         />
       </div>
-      {empty ? (
+      {isPending ? (
+        <div className="space-y-3">
+          {Array.from({ length: 6 }, (_, index) => (
+            <Skeleton key={index} className="h-6 w-full" />
+          ))}
+        </div>
+      ) : isError ? (
+        <div className="flex min-h-64 flex-col items-center justify-center gap-4">
+          <p className="text-destructive">{t('recruiters-error')}</p>
+          <Button type="button" variant="outline" onClick={onRetry}>
+            {t('retry')}
+          </Button>
+        </div>
+      ) : empty ? (
         <EmptyDataState
           titleText={t('no-period-data')}
           description={t('choose-another-period')}
@@ -59,7 +83,7 @@ export default function DashboardRecruitersChart({
               aria-hidden="true"
               className="pointer-events-none absolute inset-y-0 start-54 end-18 bottom-10.75 flex justify-between"
             >
-              {[0, 10, 20, 30, 40].map((tick) => (
+              {ticks.map((tick) => (
                 <span
                   key={tick}
                   className="relative h-full border-s border-border"
@@ -71,9 +95,9 @@ export default function DashboardRecruitersChart({
               ))}
             </div>
             <ol>
-              {dashboardRecruiters.map((recruiter, index) => (
+              {rows.map((recruiter, index) => (
                 <li
-                  key={recruiter.id}
+                  key={recruiter.admin_id}
                   className="relative flex h-9 items-center text-sm leading-4.5"
                 >
                   <span className="w-6 shrink-0 text-muted-foreground">
@@ -83,15 +107,17 @@ export default function DashboardRecruitersChart({
                     href="/company/recruiter-activity"
                     className="w-48 shrink-0 truncate pe-4 text-secondary hover:underline"
                   >
-                    <bdi>{recruiter.name}</bdi>
+                    <bdi>{recruiter.admin_name}</bdi>
                   </Link>
                   <div className="flex min-w-0 flex-1 items-center pe-18">
                     <span
                       className="h-4 rounded-e-[3px] bg-dashboard-primary"
-                      style={{ width: (recruiter.jobsPosted / 40) * 100 + '%' }}
+                      style={{
+                        width: (recruiter.jobs_count / scaleMax) * 100 + '%',
+                      }}
                     />
                     <span className="ms-2 shrink-0 text-sm font-semibold text-secondary">
-                      {format.format(recruiter.jobsPosted)}
+                      {format.format(recruiter.jobs_count)}
                     </span>
                   </div>
                 </li>
@@ -106,8 +132,8 @@ export default function DashboardRecruitersChart({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm leading-4.5 text-dashboard-heading">
           {t('showing-recruiters', {
-            count: empty ? 0 : dashboardRecruiters.length,
-            total: empty ? 0 : dashboardDesignAnalytics.recruiterCount,
+            count: empty ? 0 : rows.length,
+            total: empty ? 0 : (recruiters?.total ?? 0),
           })}
         </p>
         <Button

@@ -67,6 +67,10 @@
     "job-saved-modal": {
       "title": "تم الحفظ بنجاح!",
       "description": "تمت إضافة الوظيفة إلى وظائفك المحفوظة. يمكنك الرجوع إليها في أي وقت من طلبات التوظيف › المحفوظة."
+    },
+    "month-picker": {
+      "previous-year": "السنة السابقة",
+      "next-year": "السنة التالية"
     }
   },
   "header": {
@@ -2467,8 +2471,6 @@
         "applications-title": "إجمالي طلبات التوظيف",
         "applications-description": "إجمالي الطلبات لجميع الوظائف",
         "activity-title": "آخر نشاط",
-        "activity-description": "المتقدمون خلال آخر ٧ أيام",
-        "activity-hours": "منذ {hours} ساعة",
         "application-unit": "طلب",
         "time-title": "مدة شغل الوظيفة",
         "time-description": "متوسط عدد الأيام من نشر الوظيفة حتى إغلاقها.",
@@ -2512,7 +2514,12 @@
         "error-title": "تعذّر تحميل لوحة التحكم",
         "error-description": "حاول مرة أخرى لعرض نظرة عامة على التوظيف.",
         "retry": "حاول مرة أخرى",
-        "no-data": "لا توجد بيانات بعد"
+        "no-data": "لا توجد بيانات بعد",
+        "activity-today": "الطلبات المستلمة اليوم",
+        "last-activity": "آخر نشاط: {date}",
+        "no-alerts": "لا توجد تنبيهات توظيف",
+        "no-alerts-description": "لا توجد وظيفة مفتوحة منذ أكثر من 30 يومًا.",
+        "recruiters-error": "تعذر تحميل نشاط مسؤولي التوظيف."
       }
     },
     "profile": {
