@@ -9,10 +9,9 @@ import {
   Stethoscope,
   Trash2,
 } from 'lucide-react';
-import { useFormatter, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Link } from '@/i18n/navigation';
-import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
 import { Card } from '@/shared/components/ui/card';
 import {
@@ -27,7 +26,9 @@ import type {
   Assessment,
   AssessmentSource,
 } from '../../types/assessment.types';
-import { useAssessmentActions } from '../../hooks/useAssessmentActions';
+import { MISSING_API_VALUE } from '../../constants/assessment-queries';
+import { useChangeAssessmentStatus } from '../../hooks/useChangeAssessmentStatus';
+import AssessmentPausedBadge from '../shared/AssessmentPausedBadge';
 import AssessmentStats from './AssessmentStats';
 import AssessmentActions from './AssessmentActions';
 
@@ -48,20 +49,11 @@ export default function AssessmentCard({
 }: AssessmentCardProps) {
   const t = useTranslations('companyPage.assessments');
   const detailsT = useTranslations('companyPage.assessments.details');
-  const format = useFormatter();
-  const { showComingSoon } = useAssessmentActions();
+  const statusMutation = useChangeAssessmentStatus();
   const [pauseOpen, setPauseOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const isPaused = Boolean(assessment.pausedAt);
+  const isPaused = assessment.isPaused;
   const title = assessment.title;
-  const pausedDate = assessment.pausedAt
-    ? format.dateTime(new Date(assessment.pausedAt), {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        timeZone: 'UTC',
-      })
-    : null;
 
   return (
     <Card className="gap-4 rounded-[28px] border-none p-4 shadow-none">
@@ -83,11 +75,7 @@ export default function AssessmentCard({
         </div>
         {source === 'company' ? (
           <div className="flex shrink-0 items-center gap-2">
-            {assessment.pausedAt ? (
-              <Badge className="rounded-full border-none bg-warning/15 text-[10px] text-warning">
-                {t('paused')}
-              </Badge>
-            ) : null}
+            {isPaused ? <AssessmentPausedBadge /> : null}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -131,10 +119,10 @@ export default function AssessmentCard({
           </div>
         ) : null}
       </div>
-      {pausedDate ? (
+      {isPaused ? (
         <p className="flex items-start gap-2 rounded-xl bg-warning/15 px-3 py-2 text-xs leading-5 text-warning">
           <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
-          {t('paused-notice', { date: pausedDate })}
+          {t('paused-notice', { date: MISSING_API_VALUE })}
         </p>
       ) : (
         <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
@@ -149,7 +137,9 @@ export default function AssessmentCard({
       />
       <AlertModal
         open={pauseOpen}
-        onOpenChange={setPauseOpen}
+        onOpenChange={(open) => {
+          if (!statusMutation.isPending) setPauseOpen(open);
+        }}
         title={t(
           isPaused ? 'unpause-assessment-title' : 'pause-assessment-title',
           { name: title },
@@ -158,10 +148,12 @@ export default function AssessmentCard({
         confirmLabel={t(isPaused ? 'confirm-unpause' : 'confirm-pause')}
         cancelLabel={t('cancel')}
         confirmButtonVariant={isPaused ? 'default' : 'destructive'}
-        onConfirm={() => {
-          showComingSoon();
-          setPauseOpen(false);
-        }}
+        isLoading={statusMutation.isPending}
+        onConfirm={() =>
+          statusMutation.toggle({ assessmentId: assessment.id, isPaused }, () =>
+            setPauseOpen(false),
+          )
+        }
       />
       <DeleteModal
         open={deleteOpen}

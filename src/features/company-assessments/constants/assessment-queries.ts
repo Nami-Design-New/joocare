@@ -7,8 +7,9 @@ export const ASSESSMENT_SEARCH_DEBOUNCE_MS = 400;
 
 // Static until the backend returns these counts. The UI marks them with `#`.
 export const STATIC_CATEGORY_ASSESSMENT_COUNT = 0;
-export const STATIC_ASSESSMENT_ASSOCIATED_JOBS = 0;
-export const STATIC_ASSESSMENT_EXTERNAL_INVITATIONS = 0;
+// Shown in the paused notices until the API returns `paused_at` and the
+// number of candidates who completed the assessment.
+export const MISSING_API_VALUE = '#';
 
 export const assessmentQueryKeys = {
   categories: (locale: string, source: AssessmentSource) => [

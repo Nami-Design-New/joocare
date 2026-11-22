@@ -3210,7 +3210,6 @@
       "admin": "Admin",
       "created-on": "Created on {date}",
       "paused": "Paused",
-      "paused-notice": "Paused on {date} · New attempts and sharing are disabled",
       "questions": "Questions",
       "time": "Time",
       "pass-score": "Pass Score",
@@ -3484,15 +3483,14 @@
         "assigned-success": "Assessment sent to {name} successfully"
       },
       "details": {
-        "paused": "Paused",
         "created-on": "Created on {date}",
         "delete": "Delete",
         "unpause": "Unpause",
         "pause": "Pause",
         "edit-assessment": "Edit Assessment",
         "share": "Share",
-        "paused-title": "This assessment is paused since {date}.",
-        "paused-description": "{count} candidates have already completed it and keep their results. New candidates cannot open it and are asked to contact your company. Sharing and job links are disabled until you unpause it.",
+        "paused-title": "This assessment is paused since {date}",
+        "paused-description": "{count} candidates who already completed it keep their results. New candidates can’t open it and are asked to contact your company. Sharing and linking it to jobs are disabled until you unpause it.",
         "summary": "Assessment Summary",
         "questions": "Questions",
         "score": "Score",
@@ -3523,7 +3521,11 @@
       "assessment-deleted": "Assessment deleted successfully.",
       "assessment-not-found": "Assessment not found",
       "assessment-not-found-description": "This assessment may have been deleted or the link is incorrect.",
-      "back-to-assessments": "Back to assessments"
+      "back-to-assessments": "Back to assessments",
+      "assessment-paused": "Assessment paused.",
+      "assessment-resumed": "Assessment resumed.",
+      "status-change-error": "Couldn't change the assessment status. Try again.",
+      "paused-notice": "Paused on {date} · New attempts and sharing are disabled"
     },
     "recruiter-activity": {
       "title": "Recruiters",

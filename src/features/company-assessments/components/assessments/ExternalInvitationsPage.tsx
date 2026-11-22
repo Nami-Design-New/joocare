@@ -52,7 +52,7 @@ export default function ExternalInvitationsPage({
         </div>
         <Button
           className="h-10 rounded-[20px] bg-assessment-primary px-4 text-base font-semibold"
-          disabled={Boolean(assessment.pausedAt)}
+          disabled={assessment.isPaused}
           onClick={() => listing.setAssignOpen(true)}
         >
           {t('invite')}

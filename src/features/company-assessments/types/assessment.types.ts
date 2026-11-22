@@ -53,6 +53,11 @@ export type AssessmentQuestionSummaryApiItem = {
   question: string;
 };
 
+export type AssessmentCreatorApiItem = {
+  name: string;
+  display_role: string | null;
+};
+
 export type AssessmentApiItem = {
   id: number;
   name: string;
@@ -67,6 +72,12 @@ export type AssessmentApiItem = {
   yes_no_questions_count: number;
   category?: { id: number; name: string; is_global: boolean };
   questions?: AssessmentQuestionSummaryApiItem[];
+  jobs_count?: number;
+  invitations_count?: number;
+  /** `false` while the company has paused the assessment. */
+  is_active?: boolean;
+  /** Company admin who created it (details endpoint only). */
+  company_admin?: AssessmentCreatorApiItem | null;
   created_at: string;
 };
 
@@ -89,5 +100,5 @@ export type Assessment = {
   passScore: number;
   associatedJobs: number;
   externalInvitations: number;
-  pausedAt: string | null;
+  isPaused: boolean;
 };

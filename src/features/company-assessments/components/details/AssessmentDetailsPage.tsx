@@ -5,10 +5,12 @@ import HttpStatusState from '@/shared/components/HttpStatusState';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { getHttpStatusCode } from '@/shared/lib/http-error';
 import { HTTP_NOT_FOUND } from '../../constants/assessment-results';
+import { MISSING_API_VALUE } from '../../constants/assessment-queries';
 import { useGetAssessment } from '../../hooks/useGetAssessment';
 import AssessmentsErrorState from '../shared/AssessmentsErrorState';
 import AssessmentCreatorCard from './AssessmentCreatorCard';
 import AssessmentDetailsHeader from './AssessmentDetailsHeader';
+import AssessmentPausedNotice from './AssessmentPausedNotice';
 import AssessmentQuestionsOverview from './AssessmentQuestionsOverview';
 import AssessmentSummary from './AssessmentSummary';
 
@@ -59,9 +61,15 @@ export default function AssessmentDetailsPage({
   return (
     <div className="flex flex-col gap-4 lg:mt-1">
       <AssessmentDetailsHeader assessment={assessment} />
+      {assessment.isPaused ? (
+        <AssessmentPausedNotice
+          date={MISSING_API_VALUE}
+          candidateCount={MISSING_API_VALUE}
+        />
+      ) : null}
       <AssessmentSummary assessment={assessment} />
       <AssessmentQuestionsOverview questions={assessment.questions} />
-      <AssessmentCreatorCard />
+      <AssessmentCreatorCard creator={assessment.createdBy} />
     </div>
   );
 }
