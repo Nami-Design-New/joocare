@@ -2424,7 +2424,11 @@
         "total-applicants": "Total Applicants",
         "total-job-views": "Total Job Views",
         "weekly-activity": "Weekly Presentation Activity",
-        "chart-description": "Weekly presentation activity from Saturday to Friday, on a scale from 0 to 100."
+        "chart-description": "Number of jobs posted on each day of the week.",
+        "jobs-posted": "Jobs posted",
+        "no-activity": "No jobs posted yet",
+        "error-title": "Couldn’t load job statistics",
+        "error-description": "Please try again to view your active jobs overview."
       },
       "active-jobs-title": "Active Jobs",
       "category-breakdown": "Category Breakdown",

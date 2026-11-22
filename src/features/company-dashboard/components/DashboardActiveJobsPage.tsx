@@ -1,18 +1,50 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import {
-  activeJobsPreviewRows,
-  activeJobsPreviewStats,
-} from '../constants/active-jobs-preview';
+import RouteErrorFallback from '@/shared/components/RouteErrorFallback';
+import { useActiveJobsPage } from '../hooks/useActiveJobsPage';
+import { formatDashboardNumber } from '../utils/dashboard-format';
+import type { StatisticsOverview } from '../index.type';
 import ActiveJobsTable from './ActiveJobsTable';
 import DashBoardStatsCard from './DashBoardStatsCard';
 import DashboardWeeklyActivity from './DashboardWeeklyActivity';
 
-export default function DashboardActiveJobsPage() {
+const OVERVIEW_STATS = [
+  { key: 'total-jobs', field: 'total_jobs', icon: 'active-jobs' },
+  { key: 'active-jobs', field: 'active_jobs', icon: 'activity' },
+  {
+    key: 'total-applicants',
+    field: 'total_applications',
+    icon: 'applications',
+  },
+  { key: 'total-job-views', field: 'total_views', icon: 'total-job-views' },
+] as const satisfies readonly {
+  key: string;
+  field: keyof StatisticsOverview;
+  icon: string;
+}[];
+
+type DashboardActiveJobsPageProps = { designPreview?: boolean };
+
+export default function DashboardActiveJobsPage({
+  designPreview = false,
+}: DashboardActiveJobsPageProps) {
   const t = useTranslations('companyPage.dashboard.active-jobs-page');
+  const tDesign = useTranslations('companyPage.dashboard.design');
   const locale = useLocale();
-  const number = new Intl.NumberFormat(locale, { useGrouping: false });
+  const page = useActiveJobsPage(designPreview);
+  const overview = page.overview;
+
+  if (page.overviewError)
+    return (
+      <RouteErrorFallback
+        error={page.overviewLoadError ?? new Error(t('error-description'))}
+        reset={page.retryOverview}
+        title={t('error-title')}
+        description={t('error-description')}
+        retryLabel={tDesign('retry')}
+      />
+    );
 
   return (
     <div className="mx-auto space-y-6">
@@ -21,25 +53,28 @@ export default function DashboardActiveJobsPage() {
           {t('title')}
         </h1>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          {activeJobsPreviewStats.map((stat) => (
+          {OVERVIEW_STATS.map((stat) => (
             <DashBoardStatsCard
               key={stat.key}
               title={t(stat.key)}
               description={t(stat.key)}
-              value={'+' + number.format(stat.value)}
+              value={
+                overview
+                  ? '+' + formatDashboardNumber(overview[stat.field], locale)
+                  : tDesign('no-data')
+              }
               icon={stat.icon}
+              isPending={page.overviewLoading}
               compact
             />
           ))}
         </div>
       </section>
-      <ActiveJobsTable
-        previewJobs={activeJobsPreviewRows}
-        title={t('title')}
-        showPagination={false}
-        centerActions
+      <ActiveJobsTable jobs={page.jobs} title={t('title')} centerActions />
+      <DashboardWeeklyActivity
+        days={overview?.jobs_per_day ?? []}
+        isPending={page.overviewLoading}
       />
-      <DashboardWeeklyActivity />
     </div>
   );
 }

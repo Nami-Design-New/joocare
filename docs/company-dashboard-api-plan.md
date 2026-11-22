@@ -360,7 +360,7 @@ All four month selects feed the same `dashboard` request, so changing one month 
 | G7  | `my-jobs` `created_at` is display text                                                                                                                                                    | **Decided: the server is authoritative.** Show the string as it comes. Don't parse it with `new Date()`.                                                                                                                                                                                                                                                   |
 | G8  | `job_duration`: what counts as "closed"                                                                                                                                                   | **Open.** Show `average_days` as returned; empty state when `closed_jobs_count === 0`.                                                                                                                                                                                                                                                                     |
 | G9  | `jobs-by-admin` order and 0 rows                                                                                                                                                          | **Confirmed.** Use the server order.                                                                                                                                                                                                                                                                                                                       |
-| G10 | No endpoint for the Active Jobs page                                                                                                                                                      | **Later.** The backend will add it. The page stays on design data.                                                                                                                                                                                                                                                                                         |
+| G10 | Active Jobs page endpoints                                                                                                                                                                | **Resolved.** Uses `COMPANY/statistics/overview` and `COMPANY/statistics/jobs` (section 8).                                                                                                                                                                                                                                                                |
 | G11 | Reports banner                                                                                                                                                                            | **Decided:** stays static.                                                                                                                                                                                                                                                                                                                                 |
 
 ### 6.2 Frontend (fixed by this plan)
@@ -384,3 +384,58 @@ All four month selects feed the same `dashboard` request, so changing one month 
 5. Hiring alerts on `stale_jobs` (after G1). Until then, show the empty state when `total === 0`.
 6. Rewrite the preview fixtures in the new shape.
 7. Translations, then `npm run lint` and `npx tsc --noEmit`.
+
+## 8. Active Jobs page (`/[locale]/company/dashboard/active-jobs`)
+
+Opened from **Show more** in the hiring alerts card, or directly by URL. `?preview=design` shows the design data.
+
+### GET `COMPANY/statistics/overview`
+
+No params. Day names come from the server in both languages.
+
+```json
+{
+  "data": {
+    "total_applications": 0,
+    "total_jobs": 35,
+    "active_jobs": 2,
+    "total_views": 17,
+    "jobs_per_day": [
+      { "day": 1, "name_en": "Sunday", "name_ar": "الأحد", "jobs_count": 0 }
+    ]
+  },
+  "message": "Success"
+}
+```
+
+### GET `COMPANY/statistics/jobs`
+
+Params: `pagination=on`, `limit_per_page`, `page`. It's a Laravel paginator, like `my-jobs`. `title` is already resolved, and `created_at` is display text from the server.
+
+```json
+{
+  "data": [
+    {
+      "id": 325,
+      "title": "Registered Nurse, Intensive Care Unit (ICU)",
+      "views_num": 6,
+      "applications_count": 0,
+      "created_at": "17 November 2026, 10:49 AM"
+    }
+  ],
+  "current_page": 1,
+  "last_page": 4,
+  "per_page": 10,
+  "total": 35
+}
+```
+
+### Widget → data
+
+| Widget                                                        | Source                                                           |
+| ------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Total jobs / Active jobs / Total applicants / Total job views | `total_jobs`, `active_jobs`, `total_applications`, `total_views` |
+| Jobs table (paginated)                                        | `statistics/jobs`                                                |
+| Weekly activity chart                                         | `jobs_per_day[].jobs_count`, labelled with `name_en` / `name_ar` |
+
+`ActiveJobsTable` is now presentational. It takes a `DashboardJobsTableState` from `useDashboardJobs` (dashboard, `my-jobs`) or from `useActiveJobsPage` (`statistics/jobs`).

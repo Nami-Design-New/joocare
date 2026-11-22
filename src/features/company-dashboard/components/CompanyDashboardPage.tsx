@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import RouteErrorFallback from '@/shared/components/RouteErrorFallback';
 import { useCompanyDashboard } from '../hooks/useCompanyDashboard';
+import { useDashboardJobs } from '../hooks/useDashboardJobs';
 import {
   formatDashboardNumber,
   formatGrowthRate,
@@ -27,6 +28,7 @@ export default function CompanyDashboardPage({
   const t = useTranslations('companyPage.dashboard.design');
   const locale = useLocale();
   const dashboard = useCompanyDashboard(designPreview);
+  const jobs = useDashboardJobs(designPreview);
   const data = dashboard.data;
   const number = (value: number | undefined, compact = false) =>
     value === undefined
@@ -174,7 +176,7 @@ export default function CompanyDashboardPage({
             isPending={dashboard.loading}
           />
         </div>
-        <ActiveJobsTable designPreview={designPreview} />
+        <ActiveJobsTable jobs={jobs} />
         <DashboardRecruitersChart
           period={dashboard.periods.recruiters}
           onPeriodChange={(value) =>

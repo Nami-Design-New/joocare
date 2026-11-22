@@ -89,3 +89,39 @@ export type DashboardPage<T> = {
   perPage: number;
   total: number;
 };
+
+/** One row of the jobs table, shared by the dashboard and the active jobs page. */
+export type DashboardJobRow = {
+  id: number;
+  title: string;
+  views_num: number;
+  applications_count: number;
+  /** Display text formatted by the server. */
+  created_at: string;
+};
+
+export type DashboardJobsTableState = {
+  rows: DashboardJobRow[];
+  page: number;
+  setPage: (page: number) => void;
+  total: number;
+  pageSize: number;
+  loading: boolean;
+  error: boolean;
+  retry: () => void;
+};
+
+export type StatisticsJobsPerDay = {
+  day: number;
+  name_en: string;
+  name_ar: string;
+  jobs_count: number;
+};
+
+export type StatisticsOverview = {
+  total_applications: number;
+  total_jobs: number;
+  active_jobs: number;
+  total_views: number;
+  jobs_per_day: StatisticsJobsPerDay[];
+};
