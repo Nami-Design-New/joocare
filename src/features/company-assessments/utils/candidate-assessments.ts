@@ -8,9 +8,9 @@ export const SHORT_DATE_FORMAT = {
 
 export function getAssessmentResultHref(
   assessmentId: string,
-  candidateId: string,
+  resultId: string,
 ) {
-  return `/company/assessments-results/${assessmentId}/${candidateId}`;
+  return `/company/assessments-results/${assessmentId}/${resultId}`;
 }
 
 export function hasAssessmentScore(assessment: CandidateAssessment) {

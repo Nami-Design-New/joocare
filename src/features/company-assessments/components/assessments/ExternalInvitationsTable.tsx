@@ -20,12 +20,17 @@ import {
   EXTERNAL_INVITATIONS_PAGE_SIZE,
 } from '../../constants/assessment-invitations';
 import type { ExternalInvitation } from '../../types/assessment-invitation.types';
+import { getCandidateImageSrc } from '../../utils/assessment-results';
 
 type ExternalInvitationsTableProps = {
   rows: ExternalInvitation[];
   page: number;
+  pageSize?: number;
   onInspect: (candidate: ExternalInvitation) => void;
-  getScoreHref: (candidate: ExternalInvitation) => string;
+  /** Opens the candidate CV; falls back to `onInspect` for preview rows. */
+  onViewCv?: (candidate: ExternalInvitation) => void;
+  /** Returns null when the candidate has no result to open yet. */
+  getScoreHref: (candidate: ExternalInvitation) => string | null;
   onLinkJob?: (candidate: ExternalInvitation) => void;
   onLinkProject?: (candidate: ExternalInvitation) => void;
   tableLabel?: string;
@@ -34,7 +39,9 @@ type ExternalInvitationsTableProps = {
 export default function ExternalInvitationsTable({
   rows,
   page,
+  pageSize = EXTERNAL_INVITATIONS_PAGE_SIZE,
   onInspect,
+  onViewCv = onInspect,
   getScoreHref,
   onLinkJob,
   onLinkProject,
@@ -48,7 +55,7 @@ export default function ExternalInvitationsTable({
       header: '#',
       headerClassName: 'w-[4%]',
       renderCell: (_, index) =>
-        format.number((page - 1) * EXTERNAL_INVITATIONS_PAGE_SIZE + index + 1),
+        format.number((page - 1) * pageSize + index + 1),
     },
     {
       id: 'name',
@@ -61,7 +68,7 @@ export default function ExternalInvitationsTable({
           className="flex w-full items-center gap-2.5 text-start"
         >
           <Image
-            src={`${ASSESSMENT_ASSETS}/${candidate.image}`}
+            src={getCandidateImageSrc(candidate.image)}
             width={32}
             height={32}
             alt=""
@@ -106,51 +113,58 @@ export default function ExternalInvitationsTable({
       id: 'date',
       header: t('date-time'),
       headerClassName: 'w-[12%]',
-      renderCell: (candidate) => (
-        <span className="block text-sm leading-[18px]">
-          <span className="block">
-            {(['day', 'month', 'year'] as const)
-              .map((part) =>
-                format.dateTime(new Date(candidate.date), {
-                  [part]:
-                    part === 'month'
-                      ? 'short'
-                      : part === 'day'
-                        ? '2-digit'
-                        : 'numeric',
-                  timeZone: 'UTC',
-                }),
-              )
-              .join(' ')}
+      renderCell: ({ date }) =>
+        date === null ? (
+          '—'
+        ) : (
+          <span className="block text-sm leading-[18px]">
+            <span className="block">
+              {(['day', 'month', 'year'] as const)
+                .map((part) =>
+                  format.dateTime(new Date(date), {
+                    [part]:
+                      part === 'month'
+                        ? 'short'
+                        : part === 'day'
+                          ? '2-digit'
+                          : 'numeric',
+                    timeZone: 'UTC',
+                  }),
+                )
+                .join(' ')}
+            </span>
+            <span className="block">
+              {format.dateTime(new Date(date), {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+                timeZone: 'UTC',
+              })}
+            </span>
           </span>
-          <span className="block">
-            {format.dateTime(new Date(candidate.date), {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true,
-              timeZone: 'UTC',
-            })}
-          </span>
-        </span>
-      ),
+        ),
     },
     {
       id: 'score',
       header: t('score'),
       headerClassName: 'w-[10%]',
-      renderCell: (candidate) =>
-        candidate.score === null ? (
-          '—'
-        ) : (
+      renderCell: (candidate) => {
+        const href = getScoreHref(candidate);
+        const score =
+          candidate.score === null
+            ? null
+            : `${format.number(candidate.score)}%`;
+        if (!href) return score ?? '—';
+        return (
           <Button
             asChild
             className="h-8 gap-2 rounded-full bg-assessment-main py-1 ps-3 pe-1 text-sm"
           >
             <Link
-              href={getScoreHref(candidate)}
+              href={href}
               aria-label={t('view-score', { name: candidate.name })}
             >
-              <span>{format.number(candidate.score)}%</span>
+              <span>{score ?? '—'}</span>
               <span className="flex size-6 items-center justify-center rounded-full bg-card">
                 <Image
                   src={`${ASSESSMENT_ASSETS}/score-eye.svg`}
@@ -161,7 +175,8 @@ export default function ExternalInvitationsTable({
               </span>
             </Link>
           </Button>
-        ),
+        );
+      },
     },
     {
       id: 'cv',
@@ -172,7 +187,7 @@ export default function ExternalInvitationsTable({
           variant="ghost"
           size="icon"
           aria-label={t('view-cv', { name: candidate.name })}
-          onClick={() => onInspect(candidate)}
+          onClick={() => onViewCv(candidate)}
         >
           <span className="relative size-6">
             <Image

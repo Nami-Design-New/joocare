@@ -47,6 +47,10 @@ export type SavedAssessment = {
   questionTypeCounts: Record<QuestionType, number>;
   questions: SavedAssessmentQuestion[];
   totalScore: number;
+  /** Relative text from the API (e.g. "2 days ago"), shown as is. */
+  createdAt: string;
+  isPaused: boolean;
+  createdBy: { name: string; role: string | null } | null;
 };
 
 export type SaveAssessmentPayload = {

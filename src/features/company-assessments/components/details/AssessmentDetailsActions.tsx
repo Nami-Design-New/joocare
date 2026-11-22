@@ -1,86 +1,107 @@
 'use client';
 
 import { useState } from 'react';
-import { EyeOff, Pencil, RefreshCw, Share2, Trash2 } from 'lucide-react';
+import {
+  EyeOff,
+  Pencil,
+  RefreshCw,
+  SquareArrowOutUpRight,
+  Trash2,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
-import { useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import AlertModal from '@/shared/components/modals/AlertModal';
 import DeleteModal from '@/shared/components/modals/DeleteModal';
 import { Button } from '@/shared/components/ui/button';
+import { useChangeAssessmentStatus } from '../../hooks/useChangeAssessmentStatus';
+import { useDeleteAssessment } from '../../hooks/useDeleteAssessment';
 import AssignAssessmentDialog from '../shared/AssignAssessmentDialog';
 
-export default function AssessmentDetailsActions({
-  isPaused,
-  assessmentId,
-  assessmentTitle,
-  categoryId,
-  onPauseToggle,
-}: {
-  isPaused: boolean;
+type AssessmentDetailsActionsProps = {
   assessmentId: string;
   assessmentTitle: string;
   categoryId: string;
-  onPauseToggle: () => void;
-}) {
+  isPaused: boolean;
+  /** Joocare library assessments can only be shared. */
+  canManage: boolean;
+};
+
+export default function AssessmentDetailsActions({
+  assessmentId,
+  assessmentTitle,
+  categoryId,
+  isPaused,
+  canManage,
+}: AssessmentDetailsActionsProps) {
   const t = useTranslations('companyPage.assessments.details');
   const assessmentT = useTranslations('companyPage.assessments');
   const router = useRouter();
-  const [pauseOpen, setPauseOpen] = useState(false);
+  const deleteMutation = useDeleteAssessment();
+  const statusMutation = useChangeAssessmentStatus();
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [pauseOpen, setPauseOpen] = useState(false);
   const [assignOpen, setAssignOpen] = useState(false);
-  const editHref = `/company/assessments/${categoryId}/create?assessmentId=${assessmentId}`;
+  const categoryHref = `/company/assessments/${categoryId}`;
+  const editHref = `${categoryHref}/create?assessmentId=${assessmentId}`;
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <Button
-        size="sm"
-        variant="destructive"
-        className="rounded-full px-4"
-        onClick={() => setDeleteOpen(true)}
-      >
-        <Trash2 aria-hidden="true" className="size-3.5" />
-        {t('delete')}
-      </Button>
-      <Button
-        size="sm"
-        variant={isPaused ? 'secondary' : 'ghost'}
-        className={
-          isPaused
-            ? 'rounded-full bg-success px-4 text-white hover:bg-success/90'
-            : 'rounded-full bg-warning/20 px-4 text-warning-foreground hover:bg-warning/30'
-        }
-        onClick={() => setPauseOpen(true)}
-      >
-        {isPaused ? (
-          <RefreshCw aria-hidden="true" className="size-3.5" />
-        ) : (
-          <EyeOff aria-hidden="true" className="size-3.5" />
-        )}
-        {isPaused ? t('unpause') : t('pause')}
-      </Button>
-      <Button
-        asChild
-        size="sm"
-        className="rounded-full bg-success px-4 text-white hover:bg-success/90"
-      >
-        <Link href={editHref}>
-          <Pencil aria-hidden="true" className="size-3.5" />
-          {t('edit-assessment')}
-        </Link>
-      </Button>
+      {canManage ? (
+        <>
+          <Button
+            size="sm"
+            variant="destructive"
+            className="rounded-full px-4"
+            onClick={() => setDeleteOpen(true)}
+          >
+            <Trash2 aria-hidden="true" className="size-3.5" />
+            {t('delete')}
+          </Button>
+          <Button
+            size="sm"
+            variant={isPaused ? 'secondary' : 'ghost'}
+            className={
+              isPaused
+                ? 'rounded-full bg-success px-4 text-white hover:bg-success/90'
+                : 'rounded-full bg-warning/20 px-4 text-warning-foreground hover:bg-warning/30'
+            }
+            onClick={() => setPauseOpen(true)}
+          >
+            {isPaused ? (
+              <RefreshCw aria-hidden="true" className="size-3.5" />
+            ) : (
+              <EyeOff aria-hidden="true" className="size-3.5" />
+            )}
+            {isPaused ? t('unpause') : t('pause')}
+          </Button>
+          <Button
+            asChild
+            size="sm"
+            className="rounded-full bg-success px-4 text-white hover:bg-success/90"
+          >
+            <Link href={editHref}>
+              <Pencil aria-hidden="true" className="size-3.5" />
+              {t('edit-assessment')}
+            </Link>
+          </Button>
+        </>
+      ) : null}
       <Button
         variant="ghost"
-        size="icon-sm"
+        size="icon"
+        className="size-9 rounded-full bg-muted text-primary"
         aria-label={t('share')}
+        title={assessmentT(isPaused ? 'sharing-disabled' : 'share')}
         disabled={isPaused}
         onClick={() => setAssignOpen(true)}
       >
-        <Share2 aria-hidden="true" className="size-4" />
+        <SquareArrowOutUpRight aria-hidden="true" className="size-4" />
       </Button>
       <AlertModal
         open={pauseOpen}
-        onOpenChange={setPauseOpen}
+        onOpenChange={(open) => {
+          if (!statusMutation.isPending) setPauseOpen(open);
+        }}
         title={assessmentT(
           isPaused ? 'unpause-assessment-title' : 'pause-assessment-title',
           { name: assessmentTitle },
@@ -93,21 +114,31 @@ export default function AssessmentDetailsActions({
         )}
         cancelLabel={assessmentT('cancel')}
         confirmButtonVariant={isPaused ? 'default' : 'destructive'}
-        onConfirm={() => {
-          onPauseToggle();
-          setPauseOpen(false);
-        }}
+        isLoading={statusMutation.isPending}
+        onConfirm={() =>
+          statusMutation.toggle({ assessmentId, isPaused }, () =>
+            setPauseOpen(false),
+          )
+        }
       />
       <DeleteModal
         open={deleteOpen}
-        onOpenChange={setDeleteOpen}
+        onOpenChange={(open) =>
+          !deleteMutation.isPending && setDeleteOpen(open)
+        }
         title={assessmentT('delete-assessment-title')}
         description={assessmentT('delete-assessment-description')}
         confirmLabel={assessmentT('confirm-delete-assessment')}
         cancelLabel={assessmentT('cancel')}
+        isLoading={deleteMutation.isPending}
         onConfirm={() => {
-          setDeleteOpen(false);
-          router.push(`/company/assessments/${categoryId}`);
+          if (deleteMutation.isPending) return;
+          deleteMutation.mutate(assessmentId, {
+            onSuccess: () => {
+              setDeleteOpen(false);
+              router.replace(categoryHref);
+            },
+          });
         }}
       />
       <AssignAssessmentDialog
@@ -115,7 +146,7 @@ export default function AssessmentDetailsActions({
         open={assignOpen}
         onOpenChange={setAssignOpen}
         assessmentTitle={assessmentTitle}
-        statusHref={`/company/assessments/${categoryId}/${assessmentId}/external-invitations`}
+        statusHref={`${categoryHref}/${assessmentId}/external-invitations`}
       />
     </div>
   );

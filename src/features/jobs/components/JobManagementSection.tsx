@@ -32,6 +32,7 @@ export default function JobManagementSection() {
       status: listing.status,
       search: listing.search,
       recruiter: listing.recruiter,
+      assessmentId: listing.assessmentId,
     },
   );
 

@@ -11,12 +11,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
-import { useAssessmentNotes } from '../../hooks/useAssessmentNotes';
+import type { AssessmentNotesState } from '../../types/assessment-answers.types';
 
-export default function CandidateAssessmentNotes() {
+type CandidateAssessmentNotesProps = { notes: AssessmentNotesState };
+
+export default function CandidateAssessmentNotes({
+  notes,
+}: CandidateAssessmentNotesProps) {
   const t = useTranslations('companyPage.assessments.answers');
   const format = useFormatter();
-  const notes = useAssessmentNotes();
 
   return (
     <Card className="gap-4 rounded-2xl border-0 p-6 shadow-none">
@@ -47,6 +50,7 @@ export default function CandidateAssessmentNotes() {
               variant="ghost"
               size="pill"
               onClick={notes.cancelEdit}
+              disabled={notes.isSaving}
             >
               {t('cancel')}
             </Button>
@@ -55,9 +59,11 @@ export default function CandidateAssessmentNotes() {
             type="submit"
             size="pill"
             className="h-12.5 bg-assessment-primary px-8 text-sm font-semibold"
-            disabled={notes.form.formState.isSubmitting}
+            disabled={notes.isSaving || notes.form.formState.isSubmitting}
           >
-            {t(notes.editingId ? 'save-note' : 'add-note')}
+            {notes.isSaving
+              ? t('saving-note')
+              : t(notes.editingId ? 'save-note' : 'add-note')}
           </Button>
         </div>
       </form>
@@ -103,6 +109,7 @@ export default function CandidateAssessmentNotes() {
                   variant="ghost"
                   size="icon-xs"
                   className="rounded-full border border-current text-assessment-muted"
+                  disabled={notes.deletingId === note.id}
                   aria-label={t('note-actions', { name: note.author })}
                 >
                   <Ellipsis className="size-4" />

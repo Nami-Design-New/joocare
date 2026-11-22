@@ -1,39 +1,52 @@
 import type {
-  AssessmentResultAssessment,
-  AssessmentResultCategory,
+  AssessmentResultStatusApi,
   CandidateLinkTarget,
 } from '../types/assessment-results.types';
+import type { InvitationStatus } from '../types/assessment-invitation.types';
 
-// Preview data until the assessment results and linking APIs are available.
-export const assessmentResultCategories: AssessmentResultCategory[] = [
-  { id: 'clinical-knowledge', name: 'Clinical Knowledge' },
-  { id: 'nursing-knowledge', name: 'Nursing Knowledge' },
-  { id: 'patient-safety', name: 'Patient Safety' },
+export const ASSESSMENT_RESULTS_PAGE_SIZE = 10;
+export const ASSESSMENT_LIST_OPTIONS_PAGE_SIZE = 20;
+export const ASSESSMENT_LIST_QUERY_KEY = 'assessments-list';
+export const RESULT_QUESTIONS_PAGE_SIZE = 6;
+export const ASSESSMENT_RESULTS_HREF = '/company/assessments-results';
+export const HTTP_NOT_FOUND = 404;
+export const MAX_QUERY_RETRIES = 3;
+
+export const RESULT_STATUS_FROM_API: Record<
+  AssessmentResultStatusApi,
+  InvitationStatus
+> = {
+  pending: 'pending',
+  passed: 'passed',
+  failed: 'failed',
+  absent: 'absent',
+};
+
+export const RESULT_STATUS_FILTERS: InvitationStatus[] = [
+  'pending',
+  'passed',
+  'failed',
+  'absent',
 ];
 
-export const assessmentResultAssessments: AssessmentResultAssessment[] = [
+// Order and colors of the stat cards above the results table.
+export const RESULT_SUMMARY_ITEMS = [
+  { key: 'total', stat: 'total', className: 'text-assessment-dark' },
   {
-    id: 'icu-nurses',
-    categoryId: 'clinical-knowledge',
-    name: 'Clinical Knowledge Assessment – ICU Nurses',
+    key: 'pending-summary',
+    stat: 'pending',
+    className: 'text-assessment-warning',
   },
+  { key: 'passed', stat: 'passed', className: 'text-assessment-primary' },
+  { key: 'failed', stat: 'failed', className: 'text-assessment-error' },
   {
-    id: 'emergency-physicians',
-    categoryId: 'clinical-knowledge',
-    name: 'Emergency Physician Assessment',
+    key: 'absent-summary',
+    stat: 'absent',
+    className: 'text-assessment-absent',
   },
-  {
-    id: 'emergency-nurses',
-    categoryId: 'nursing-knowledge',
-    name: 'Emergency Nursing Assessment',
-  },
-  {
-    id: 'patient-safety-basics',
-    categoryId: 'patient-safety',
-    name: 'Patient Safety Assessment',
-  },
-];
+] as const;
 
+// Preview data until the candidate linking APIs are available.
 export const candidateLinkTargets: Record<
   'job' | 'project',
   CandidateLinkTarget[]

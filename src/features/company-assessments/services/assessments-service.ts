@@ -1,10 +1,7 @@
 import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch } from '@/shared/lib/fetch-manager';
+import { createHttpStatusError } from '@/shared/lib/http-error';
 import { API_TO_QUESTION_TYPE } from '../constants/assessment-builder';
-import {
-  STATIC_ASSESSMENT_ASSOCIATED_JOBS,
-  STATIC_ASSESSMENT_EXTERNAL_INVITATIONS,
-} from '../constants/assessment-queries';
 import type {
   Assessment,
   AssessmentApiItem,
@@ -28,9 +25,9 @@ function mapAssessment(item: AssessmentApiItem): Assessment {
     questionCount: item.questions_count,
     durationMinutes: item.time_limit,
     passScore: item.passing_score,
-    associatedJobs: STATIC_ASSESSMENT_ASSOCIATED_JOBS,
-    externalInvitations: STATIC_ASSESSMENT_EXTERNAL_INVITATIONS,
-    pausedAt: null,
+    associatedJobs: item.jobs_count ?? 0,
+    externalInvitations: item.invitations_count ?? 0,
+    isPaused: item.is_active === false,
   };
 }
 
@@ -65,6 +62,14 @@ function mapSavedAssessment(item: AssessmentApiItem): SavedAssessment {
       (total, question) => total + question.score,
       0,
     ),
+    createdAt: item.created_at,
+    isPaused: item.is_active === false,
+    createdBy: item.company_admin
+      ? {
+          name: item.company_admin.name,
+          role: item.company_admin.display_role,
+        }
+      : null,
   };
 }
 
@@ -93,11 +98,13 @@ export async function getAssessment(
   assessmentId: string,
   { token, locale }: RequestOptions,
 ): Promise<SavedAssessment> {
-  const { ok, data, message } = await apiFetch<AssessmentApiItem>(
+  const { ok, data, message, statusCode } = await apiFetch<AssessmentApiItem>(
     `${getCompanyApiUrl()}/assessments/${assessmentId}`,
     { token, locale },
   );
-  if (!ok || !data?.data) throw new Error(message ?? '');
+  if (!ok || !data?.data) {
+    throw createHttpStatusError(statusCode, message ?? undefined);
+  }
   return mapSavedAssessment(data.data);
 }
 
@@ -134,6 +141,18 @@ export async function deleteAssessment(
   const { ok, message } = await apiFetch(
     `${getCompanyApiUrl()}/assessments/${assessmentId}`,
     { method: 'DELETE', token, locale, body: new FormData() },
+  );
+  if (!ok) throw new Error(message ?? '');
+}
+
+// Toggles between paused and active; the response has no body.
+export async function changeAssessmentStatus(
+  assessmentId: string,
+  { token, locale }: RequestOptions,
+) {
+  const { ok, message } = await apiFetch(
+    `${getCompanyApiUrl()}/assessments/${assessmentId}/change-status`,
+    { method: 'POST', token, locale, body: new FormData() },
   );
   if (!ok) throw new Error(message ?? '');
 }

@@ -24,6 +24,7 @@ export default function CandidateAssessmentContent({
   details,
 }: CandidateAssessmentContentProps) {
   const t = useTranslations('candidatePage.assessment.api');
+  const questionText = useTranslations('candidatePage.assessment.question');
   const unavailableText = useTranslations(
     'candidatePage.assessment.status.unavailable',
   );
@@ -53,7 +54,10 @@ export default function CandidateAssessmentContent({
       ) : question ? (
         <>
           <AssessmentQuestionScreen
-            question={mapAssessmentQuestion(question)}
+            question={mapAssessmentQuestion(question, {
+              yes: questionText('yes'),
+              no: questionText('no'),
+            })}
             questionNumber={progress.answered + 1}
             total={progress.total}
             progress={Math.round((progress.answered / progress.total) * 100)}

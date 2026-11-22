@@ -14,6 +14,8 @@ export function useJobListingFilters() {
   const status = url.get('status') || DEFAULT_JOB_STATUS;
   const recruiter = url.get('recruiter');
   const search = url.get('search');
+  // Set by "Associated Jobs" on an assessment card.
+  const assessmentId = url.get('assessment_id');
   const page = url.getPage();
   const [searchInput, setSearchInput] = useState(search);
   const [pinnedJobIds, setPinnedJobIds] = useState<Set<number>>(
@@ -42,6 +44,7 @@ export function useJobListingFilters() {
     status,
     recruiter,
     search,
+    assessmentId,
     searchInput,
     page,
     setSearchInput,

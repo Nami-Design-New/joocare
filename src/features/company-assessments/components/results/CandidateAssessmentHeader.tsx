@@ -5,11 +5,18 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Card } from '@/shared/components/ui/card';
 import { cn } from '@/shared/lib/utils';
-import { ASSESSMENT_ASSETS } from '../../constants/assessment-invitations';
-import type { CandidateAssessmentResult } from '../../types/assessment-answers.types';
-import { getAnswerStatus } from '../../utils/assessment-answers';
+import type { AssessmentResultHeaderData } from '../../types/assessment-answers.types';
+import type { InvitationStatus } from '../../types/assessment-invitation.types';
+import { getCandidateImageSrc } from '../../utils/assessment-results';
 
-type CandidateAssessmentHeaderProps = { result: CandidateAssessmentResult };
+const STATUS_CLASS: Record<InvitationStatus, string> = {
+  passed: 'bg-assessment-primary/8 text-assessment-primary',
+  failed: 'bg-assessment-error/8 text-assessment-error',
+  pending: 'bg-assessment-warning/10 text-assessment-warning',
+  absent: 'bg-assessment-close text-assessment-absent',
+};
+
+type CandidateAssessmentHeaderProps = { result: AssessmentResultHeaderData };
 
 export default function CandidateAssessmentHeader({
   result,
@@ -17,21 +24,16 @@ export default function CandidateAssessmentHeader({
   const t = useTranslations('companyPage.assessments.answers');
   const status = useTranslations('companyPage.assessments.invitations');
   const format = useFormatter();
-  const counts = result.questions.reduce(
-    (summary, question) => {
-      summary[getAnswerStatus(question)] += 1;
-      return summary;
-    },
-    { correct: 0, wrong: 0, missing: 0 },
-  );
+  const { counts } = result;
+  const statusClass = STATUS_CLASS[result.candidate.status];
   const stats = [
     {
       key: 'score',
-      value: `${format.number(result.candidate.score ?? 0)}%`,
-      className:
-        result.candidate.status === 'passed'
-          ? 'text-assessment-primary bg-assessment-primary/8'
-          : 'text-assessment-error bg-assessment-error/8',
+      value:
+        result.scorePercent === null
+          ? '—'
+          : `${format.number(result.scorePercent)}%`,
+      className: statusClass,
     },
     {
       key: 'correct',
@@ -59,7 +61,7 @@ export default function CandidateAssessmentHeader({
     <Card className="flex-wrap gap-6 rounded-2xl border-0 p-4 shadow-none sm:p-6 xl:flex-row xl:flex-nowrap">
       <div className="flex min-w-0 flex-1 flex-col items-start gap-4 sm:flex-row sm:gap-6">
         <Image
-          src={`${ASSESSMENT_ASSETS}/${result.candidate.image}`}
+          src={getCandidateImageSrc(result.candidate.image)}
           width={64}
           height={64}
           alt=""
@@ -73,9 +75,7 @@ export default function CandidateAssessmentHeader({
             <span
               className={cn(
                 'rounded-full px-2.5 py-1 text-xs font-semibold',
-                result.candidate.status === 'passed'
-                  ? 'bg-assessment-primary/8 text-assessment-primary'
-                  : 'bg-assessment-error/8 text-assessment-error',
+                statusClass,
               )}
             >
               {status(result.candidate.status)}
@@ -110,19 +110,25 @@ export default function CandidateAssessmentHeader({
                   {t(key)}
                 </dt>
                 <dd className="text-assessment-main">
-                  {format.dateTime(new Date(date), {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                    timeZone: 'UTC',
-                  })}{' '}
-                  ·{' '}
-                  {format.dateTime(new Date(date), {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true,
-                    timeZone: 'UTC',
-                  })}
+                  {date === null ? (
+                    '—'
+                  ) : (
+                    <>
+                      {format.dateTime(new Date(date), {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        timeZone: 'UTC',
+                      })}{' '}
+                      ·{' '}
+                      {format.dateTime(new Date(date), {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                        timeZone: 'UTC',
+                      })}
+                    </>
+                  )}
                 </dd>
               </div>
             ))}
@@ -161,7 +167,7 @@ export default function CandidateAssessmentHeader({
         </div>
         <p className="text-end text-xs text-assessment-copy">
           {t('questions-summary', {
-            total: result.questions.length,
+            total: result.totalQuestions,
             skipped: counts.missing,
           })}
         </p>

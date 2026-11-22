@@ -1427,7 +1427,9 @@
         "time-running-out": "left – time is almost up",
         "badge": "Q{number}",
         "next": "Next Question",
-        "submit": "Submit Assessment"
+        "submit": "Submit Assessment",
+        "yes": "Yes",
+        "no": "No"
       },
       "status": {
         "browse-jobs": "Browse Jobs",
@@ -3243,7 +3245,6 @@
       "admin": "Admin",
       "created-on": "Created on {date}",
       "paused": "Paused",
-      "paused-notice": "Paused on {date} · New attempts and sharing are disabled",
       "questions": "Questions",
       "time": "Time",
       "pass-score": "Pass Score",
@@ -3415,7 +3416,15 @@
         "skipped-optional": "The candidate skipped this (Optional) question — no answer was submitted, so it scores 0 / {points}.",
         "skipped-question": "The candidate did not answer this question, so it scores 0 / {points}.",
         "not-found": "Assessment result not found",
-        "not-found-description": "The selected candidate has no completed result for this assessment."
+        "not-found-description": "The selected candidate has no completed result for this assessment.",
+        "saving-note": "Saving…",
+        "note-added": "Note added.",
+        "note-updated": "Note updated.",
+        "note-deleted": "Note deleted.",
+        "note-save-error": "Couldn't save the note. Try again.",
+        "note-delete-error": "Couldn't delete the note. Try again.",
+        "yes": "Yes",
+        "no": "No"
       },
       "results": {
         "title": "Assessment Results",
@@ -3463,7 +3472,10 @@
         "candidate-linked-to-job": "Candidate linked to job successfully",
         "candidate-linked-to-project": "Candidate linked to project successfully",
         "link-success-description": "The candidate was linked successfully.",
-        "close": "Close"
+        "close": "Close",
+        "search-category": "Search categories",
+        "assessment-not-in-category": "This assessment does not belong to the selected category. Pick an assessment from this category.",
+        "cv-title": "{name}'s CV"
       },
       "candidate-assessments": {
         "close": "Close",
@@ -3506,15 +3518,14 @@
         "assigned-success": "Assessment sent to {name} successfully"
       },
       "details": {
-        "paused": "Paused",
         "created-on": "Created on {date}",
         "delete": "Delete",
         "unpause": "Unpause",
         "pause": "Pause",
         "edit-assessment": "Edit Assessment",
         "share": "Share",
-        "paused-title": "This assessment is paused since {date}.",
-        "paused-description": "{count} candidates have already completed it and keep their results. New candidates cannot open it and are asked to contact your company. Sharing and job links are disabled until you unpause it.",
+        "paused-title": "This assessment is paused since {date}",
+        "paused-description": "{count} candidates who already completed it keep their results. New candidates can’t open it and are asked to contact your company. Sharing and linking it to jobs are disabled until you unpause it.",
         "summary": "Assessment Summary",
         "questions": "Questions",
         "score": "Score",
@@ -3525,7 +3536,7 @@
         "questions-overview": "Questions Overview",
         "question-text": "Question Text",
         "question-type": "Type",
-        "question-score": "Score %",
+        "question-score": "Score",
         "view-question": "View question {number}",
         "created-by": "Created By",
         "back-to-assessments": "Back to assessments",
@@ -3537,14 +3548,19 @@
         "preview-summary": "Assessment Summary",
         "preview-assessment-title": "Assessment Title",
         "preview-passing-score": "Passing Score",
-        "preview-structure": "Assessment Structure"
+        "preview-structure": "Assessment Structure",
+        "no-questions": "This assessment has no questions yet."
       },
       "created-at": "Created {time}",
       "delete-error": "Something went wrong while deleting. Please try again.",
       "assessment-deleted": "Assessment deleted successfully.",
       "assessment-not-found": "Assessment not found",
       "assessment-not-found-description": "This assessment may have been deleted or the link is incorrect.",
-      "back-to-assessments": "Back to assessments"
+      "back-to-assessments": "Back to assessments",
+      "assessment-paused": "Assessment paused.",
+      "assessment-resumed": "Assessment resumed.",
+      "status-change-error": "Couldn't change the assessment status. Try again.",
+      "paused-notice": "Paused on {date} · New attempts and sharing are disabled"
     },
     "recruiter-activity": {
       "title": "Recruiters",

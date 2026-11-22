@@ -28,6 +28,7 @@ export default function ApplySubmittedModal({
       <SuccessModal
         open
         onOpenChange={onOpenChange}
+        autoCloseMs={false}
         title={t('apply.submitted-with-assessment.title')}
         description={t('apply.submitted-with-assessment.description')}
         className="max-h-[calc(100dvh-2rem)] max-w-175 overflow-y-auto"
@@ -55,6 +56,7 @@ export default function ApplySubmittedModal({
     <SuccessModal
       open
       onOpenChange={onOpenChange}
+      autoCloseMs={false}
       variant="submitted"
       title={t('success-title')}
       description={t('success-description')}

@@ -1,4 +1,5 @@
 import type { AssessmentSource } from '../types/assessment.types';
+import type { AssessmentResultsFilters } from '../types/assessment-results.types';
 
 export const CATEGORY_PAGE_SIZE = 9;
 export const CATEGORY_OPTIONS_PAGE_SIZE = 10;
@@ -6,8 +7,9 @@ export const ASSESSMENT_SEARCH_DEBOUNCE_MS = 400;
 
 // Static until the backend returns these counts. The UI marks them with `#`.
 export const STATIC_CATEGORY_ASSESSMENT_COUNT = 0;
-export const STATIC_ASSESSMENT_ASSOCIATED_JOBS = 0;
-export const STATIC_ASSESSMENT_EXTERNAL_INVITATIONS = 0;
+// Shown in the paused notices until the API returns `paused_at` and the
+// number of candidates who completed the assessment.
+export const MISSING_API_VALUE = '#';
 
 export const assessmentQueryKeys = {
   categories: (locale: string, source: AssessmentSource) => [
@@ -54,7 +56,35 @@ export const assessmentQueryKeys = {
     questionId,
   ],
   questionTypes: (locale: string) => ['assessment-question-types', locale],
+  results: (locale: string, filters: AssessmentResultsFilters) => [
+    'assessment-results',
+    locale,
+    filters.categoryId,
+    filters.assessmentId,
+    filters.search,
+    filters.status,
+    filters.minScore,
+    filters.maxScore,
+    filters.page,
+  ],
+  result: (locale: string, resultId: string, page: number) => [
+    'assessment-result',
+    locale,
+    resultId,
+    page,
+  ],
 };
+
+// Results lists and details refetch after a note changes.
+export const RESULT_QUERY_PREFIXES = [
+  ['assessment-results'],
+  ['assessment-result'],
+];
+
+// The app turns refetchOnMount off globally, so an invalidated list would keep
+// showing cached data when its page opens again. These queries refetch on mount
+// only when stale (after an invalidation or the default stale time).
+export const REFETCH_STALE_ON_MOUNT = { refetchOnMount: true } as const;
 
 // Prefixes invalidated after a mutation (they match every locale and filter).
 export const CATEGORY_QUERY_PREFIXES = [

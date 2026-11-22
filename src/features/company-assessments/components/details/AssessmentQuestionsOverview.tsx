@@ -2,60 +2,43 @@
 
 import { useState } from 'react';
 import { Eye } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import DataTable, {
   type DataTableColumn,
 } from '@/shared/components/common/DataTable';
 import { Button } from '@/shared/components/ui/button';
 import { Card } from '@/shared/components/ui/card';
-import type { BuilderQuestion } from '../../types/assessment-builder.types';
-import type { AssessmentQuestion } from '../../types/assessment.types';
-import AssessmentQuestionModal from '../create/AssessmentQuestionModal';
+import type { SavedAssessmentQuestion } from '../../types/assessment-builder.types';
+import AssessmentQuestionPreviewModal from '../create/AssessmentQuestionPreviewModal';
 
 const QUESTION_PAGE_SIZE = 10;
 
-function toBuilderQuestion(question: AssessmentQuestion): BuilderQuestion {
-  const isYesNo = question.type === 'Yes / No';
-  const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'].map(
-    (text, index) => ({ id: `${question.id}-option-${index + 1}`, text }),
-  );
-
-  return {
-    id: question.id,
-    type: isYesNo ? 'yes-no' : 'single-choice',
-    score: String(question.score),
-    questionText: question.questionText,
-    options,
-    correctAnswers: isYesNo ? ['yes'] : [options[0].id],
-    attachmentEnabled: false,
-    attachment: null,
-    existingAttachment: null,
-  };
-}
+type AssessmentQuestionsOverviewProps = {
+  questions: SavedAssessmentQuestion[];
+};
 
 export default function AssessmentQuestionsOverview({
   questions,
-}: {
-  questions: AssessmentQuestion[];
-}) {
+}: AssessmentQuestionsOverviewProps) {
   const t = useTranslations('companyPage.assessments.details');
   const locale = useLocale();
+  const format = useFormatter();
   const [page, setPage] = useState(1);
-  const [selectedQuestion, setSelectedQuestion] = useState<{
-    question: AssessmentQuestion;
-    number: number;
-  } | null>(null);
+  const [previewQuestionId, setPreviewQuestionId] = useState<string | null>(
+    null,
+  );
   const pageCount = Math.max(
     1,
     Math.ceil(questions.length / QUESTION_PAGE_SIZE),
   );
   const currentPage = Math.min(page, pageCount);
   const pageStart = (currentPage - 1) * QUESTION_PAGE_SIZE;
-  // The Figma detail view presents five preview rows while pagination keeps
-  // the assessment's ten-question page range.
-  const visibleQuestions = questions.slice(pageStart, pageStart + 5);
-  const columns: DataTableColumn<AssessmentQuestion>[] = [
+  const visibleQuestions = questions.slice(
+    pageStart,
+    pageStart + QUESTION_PAGE_SIZE,
+  );
+  const columns: DataTableColumn<SavedAssessmentQuestion>[] = [
     {
       id: 'number',
       header: '#',
@@ -69,21 +52,21 @@ export default function AssessmentQuestionsOverview({
       header: t('question-text'),
       headerClassName: 'text-start text-[11px] px-2 py-2',
       cellClassName: 'max-w-[420px] truncate text-start text-xs px-2 py-2',
-      renderCell: (question) => question.questionText,
+      renderCell: (question) => <span dir="auto">{question.questionText}</span>,
     },
     {
       id: 'type',
       header: t('question-type'),
       headerClassName: 'text-start text-[11px] px-2 py-2',
       cellClassName: 'text-start text-xs px-2 py-2',
-      renderCell: (question) => question.type,
+      renderCell: (question) => question.typeLabel,
     },
     {
       id: 'score',
       header: t('question-score'),
       headerClassName: 'text-start text-[11px] px-2 py-2',
       cellClassName: 'text-success text-start text-xs font-semibold px-2 py-2',
-      renderCell: (question) => `${question.score}%`,
+      renderCell: (question) => format.number(question.score),
     },
     {
       id: 'actions',
@@ -96,12 +79,7 @@ export default function AssessmentQuestionsOverview({
           size="icon-xs"
           aria-label={t('view-question', { number: pageStart + index + 1 })}
           className="rounded-full bg-success text-white hover:bg-success/80 hover:text-white"
-          onClick={() =>
-            setSelectedQuestion({
-              question,
-              number: pageStart + index + 1,
-            })
-          }
+          onClick={() => setPreviewQuestionId(question.id)}
         >
           <Eye aria-hidden="true" />
         </Button>
@@ -117,32 +95,37 @@ export default function AssessmentQuestionsOverview({
       <h2 className="border-b border-border pb-2 text-[13px] font-semibold">
         {t('questions-overview')}
       </h2>
-      <DataTable
-        columns={columns}
-        data={visibleQuestions}
-        getRowKey={(question) => question.id}
-        dir={locale === 'ar' ? 'rtl' : 'ltr'}
-        ariaLabel={t('questions-overview')}
-        containerClassName="overflow-x-auto rounded-lg border border-border"
-        className="min-w-[640px]"
-        headerRowClassName="bg-muted hover:bg-muted"
-        rowClassName="bg-card odd:bg-muted/50 hover:bg-muted"
-      />
-      <CustomPagination
-        currentPage={currentPage}
-        totalItems={questions.length}
-        pageSize={QUESTION_PAGE_SIZE}
-        onPageChange={setPage}
-        getHref={() => '#questions-overview'}
-        statusPosition="start"
-        className="justify-start"
-      />
-      {selectedQuestion ? (
-        <AssessmentQuestionModal
-          key={selectedQuestion.question.id}
-          question={toBuilderQuestion(selectedQuestion.question)}
-          readOnly
-          onClose={() => setSelectedQuestion(null)}
+      {questions.length ? (
+        <>
+          <DataTable
+            columns={columns}
+            data={visibleQuestions}
+            getRowKey={(question) => question.id}
+            dir={locale === 'ar' ? 'rtl' : 'ltr'}
+            ariaLabel={t('questions-overview')}
+            containerClassName="overflow-x-auto rounded-lg border border-border"
+            className="min-w-[640px]"
+            headerRowClassName="bg-muted hover:bg-muted"
+            rowClassName="bg-card odd:bg-muted/50 hover:bg-muted"
+          />
+          <CustomPagination
+            currentPage={currentPage}
+            totalItems={questions.length}
+            pageSize={QUESTION_PAGE_SIZE}
+            onPageChange={setPage}
+            getHref={() => '#questions-overview'}
+            statusPosition="start"
+            className="justify-start"
+          />
+        </>
+      ) : (
+        <p className="text-xs text-muted-foreground">{t('no-questions')}</p>
+      )}
+      {previewQuestionId ? (
+        <AssessmentQuestionPreviewModal
+          key={previewQuestionId}
+          questionId={previewQuestionId}
+          onClose={() => setPreviewQuestionId(null)}
         />
       ) : null}
     </Card>

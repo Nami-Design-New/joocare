@@ -4,6 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import {
   CATEGORY_PAGE_SIZE,
   assessmentQueryKeys,
+  REFETCH_STALE_ON_MOUNT,
 } from '../constants/assessment-queries';
 import { getAssessmentCategories } from '../services/assessment-categories-service';
 import type { AssessmentSource } from '../types/assessment.types';
@@ -15,6 +16,7 @@ export function useGetAssessmentCategories(
 ) {
   const { token, locale, isReady } = useAssessmentRequestOptions();
   const query = useInfiniteQuery({
+    ...REFETCH_STALE_ON_MOUNT,
     queryKey: assessmentQueryKeys.categories(locale, source),
     initialPageParam: 1,
     enabled: isReady && enabled,

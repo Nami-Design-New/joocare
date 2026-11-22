@@ -45,7 +45,7 @@ const exampleAssessment: Assessment = {
   passScore: 70,
   associatedJobs: 12,
   externalInvitations: 8,
-  pausedAt: null,
+  isPaused: false,
 };
 
 const exampleGroup: PermissionGroup = {

@@ -1,19 +1,28 @@
 'use client';
 
+import { useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import HttpStatusState from '@/shared/components/HttpStatusState';
+import { ANSWER_REVIEW_PAGE_SIZE } from '../../constants/assessment-answers';
+import { useAssessmentNotes } from '../../hooks/useAssessmentNotes';
 import type { CandidateAssessmentPageProps } from '../../types/assessment-answers.types';
-import { getCandidateAssessmentResult } from '../../utils/assessment-answers';
+import {
+  getCandidateAssessmentResult,
+  toResultHeaderData,
+} from '../../utils/assessment-answers';
 import CandidateAssessmentHeader from './CandidateAssessmentHeader';
 import CandidateAssessmentNotes from './CandidateAssessmentNotes';
 import AssessmentAnswersReview from './AssessmentAnswersReview';
 
+// Preview result page for external invitations; results use AssessmentResultDetailsPage.
 export default function CandidateAssessmentPage(
   props: CandidateAssessmentPageProps,
 ) {
   const t = useTranslations('companyPage.assessments.answers');
+  const notes = useAssessmentNotes();
+  const [page, setPage] = useState(1);
   const result = getCandidateAssessmentResult(props);
   if (!result)
     return (
@@ -35,11 +44,18 @@ export default function CandidateAssessmentPage(
         <ChevronLeft aria-hidden="true" className="size-4 rtl:rotate-180" />
         {t('back-to-results')}
       </Link>
-      <CandidateAssessmentHeader result={result} />
-      <CandidateAssessmentNotes
-        key={`${props.assessmentId}-${props.candidateId}`}
+      <CandidateAssessmentHeader result={toResultHeaderData(result)} />
+      <CandidateAssessmentNotes notes={notes} />
+      <AssessmentAnswersReview
+        questions={result.questions.slice(
+          (page - 1) * ANSWER_REVIEW_PAGE_SIZE,
+          page * ANSWER_REVIEW_PAGE_SIZE,
+        )}
+        page={page}
+        pageSize={ANSWER_REVIEW_PAGE_SIZE}
+        totalQuestions={result.questions.length}
+        onPageChange={setPage}
       />
-      <AssessmentAnswersReview questions={result.questions} />
     </div>
   );
 }

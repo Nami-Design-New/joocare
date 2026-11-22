@@ -31,10 +31,14 @@ export default function AssessmentActions({
 
   return (
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
-      <Button className="h-9 flex-1 rounded-full px-3 text-xs">
-        <Link href={`/company/job-management`}>
-          {/* `#` marks static counts until the assessments API returns them. */}
-          {t('associated-jobs', { count: assessment.associatedJobs })} #
+      <Button asChild className="h-9 flex-1 rounded-full px-3 text-xs">
+        <Link
+          href={{
+            pathname: '/company/job-management',
+            query: { assessment_id: assessment.id },
+          }}
+        >
+          {t('associated-jobs', { count: assessment.associatedJobs })}
         </Link>
       </Button>
       {isCompany ? (
@@ -48,8 +52,7 @@ export default function AssessmentActions({
           >
             {t('external-invitations', {
               count: assessment.externalInvitations,
-            })}{' '}
-            #
+            })}
           </Link>
         </Button>
       ) : null}
@@ -81,8 +84,8 @@ export default function AssessmentActions({
         size="icon"
         className="size-9 rounded-full bg-muted text-primary"
         aria-label={t('share-assessment', { name: title })}
-        title={t(assessment.pausedAt ? 'sharing-disabled' : 'share')}
-        disabled={Boolean(assessment.pausedAt)}
+        title={t(assessment.isPaused ? 'sharing-disabled' : 'share')}
+        disabled={assessment.isPaused}
         onClick={() => setAssignOpen(true)}
       >
         <SquareArrowOutUpRight aria-hidden="true" className="size-4" />
