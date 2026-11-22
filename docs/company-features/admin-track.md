@@ -26,7 +26,7 @@ Details: [07-recruiter-activity.md](07-recruiter-activity.md)
 | Page | Route | Component | Endpoints |
 | --- | --- | --- | --- |
 | Recruiter table | `/company/recruiter-activity` | `company-recruiter-activity/components/RecruiterActivityPage` + `RecruiterActivityTable` | GET `recruiters-stats` (paginated) |
-| Job count link | In the table | `RecruiterJobCountLink` | Reuse dashboard `useGetJobsByAdmin` |
+| Job count link | In the table | `RecruiterJobCountLink` | Job management with `admin_id` (GET `jobs?admin_id=&status=`) |
 
 ## 3. Company notifications — `feat/company-notifications-api`
 
