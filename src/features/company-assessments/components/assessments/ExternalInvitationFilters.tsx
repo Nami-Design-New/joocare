@@ -4,8 +4,17 @@ import { useTranslations } from 'next-intl';
 import { InputField } from '@/shared/components/InputField';
 import SearchInput from '@/shared/components/SearchInput';
 import { SelectInputField } from '@/shared/components/SelectInputField';
+import type { InvitationStatus } from '../../types/assessment-invitation.types';
+
+const DEFAULT_STATUSES: InvitationStatus[] = [
+  'passed',
+  'failed',
+  'pending',
+  'absent',
+];
 
 type ExternalInvitationFiltersProps = {
+  statuses?: InvitationStatus[];
   search: string;
   onSearch: (value: string) => void;
   status: string;
@@ -19,6 +28,7 @@ type ExternalInvitationFiltersProps = {
 };
 
 export default function ExternalInvitationFilters({
+  statuses = DEFAULT_STATUSES,
   search,
   onSearch,
   status,
@@ -33,7 +43,7 @@ export default function ExternalInvitationFilters({
   const t = useTranslations('companyPage.assessments.invitations');
   const statusOptions = [
     { value: 'all', label: t('all-statuses') },
-    ...['passed', 'failed', 'pending', 'absent'].map((value) => ({
+    ...statuses.map((value) => ({
       value,
       label: t(value),
     })),

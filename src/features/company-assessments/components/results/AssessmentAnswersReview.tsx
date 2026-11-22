@@ -4,21 +4,38 @@ import { useTranslations } from 'next-intl';
 import { Accordion } from '@/shared/components/ui/accordion';
 import { Button } from '@/shared/components/ui/button';
 import { CustomPagination } from '@/shared/components/CustomPagination';
-import { ANSWER_REVIEW_PAGE_SIZE } from '../../constants/assessment-answers';
+import { cn } from '@/shared/lib/utils';
 import { useAssessmentAnswers } from '../../hooks/useAssessmentAnswers';
 import type { AssessmentAnswerQuestion as AnswerQuestion } from '../../types/assessment-answers.types';
 import AssessmentAnswerQuestion from './AssessmentAnswerQuestion';
 
-type AssessmentAnswersReviewProps = { questions: AnswerQuestion[] };
+type AssessmentAnswersReviewProps = {
+  /** Questions of the current page only. */
+  questions: AnswerQuestion[];
+  page: number;
+  pageSize: number;
+  totalQuestions: number;
+  onPageChange: (page: number) => void;
+  isFetching?: boolean;
+};
 
 export default function AssessmentAnswersReview({
   questions,
+  page,
+  pageSize,
+  totalQuestions,
+  onPageChange,
+  isFetching = false,
 }: AssessmentAnswersReviewProps) {
   const t = useTranslations('companyPage.assessments.answers');
   const review = useAssessmentAnswers(questions);
 
   return (
-    <section className="space-y-4" aria-labelledby="answers-review-title">
+    <section
+      className="space-y-4"
+      aria-labelledby="answers-review-title"
+      aria-busy={isFetching}
+    >
       <header className="flex items-center justify-between gap-3">
         <div className="space-y-1">
           <h2
@@ -29,10 +46,10 @@ export default function AssessmentAnswersReview({
           </h2>
           <p className="text-[13px] leading-4 text-assessment-copy">
             {t('review-description', {
-              page: review.page,
-              pages: Math.ceil(questions.length / ANSWER_REVIEW_PAGE_SIZE),
-              count: review.visibleQuestions.length,
-              total: questions.length,
+              page,
+              pages: Math.max(1, Math.ceil(totalQuestions / pageSize)),
+              count: questions.length,
+              total: totalQuestions,
             })}
           </p>
         </div>
@@ -49,17 +66,17 @@ export default function AssessmentAnswersReview({
         type="multiple"
         value={review.openIds}
         onValueChange={review.setOpenIds}
-        className="space-y-4"
+        className={cn('space-y-4', isFetching && 'opacity-60')}
       >
-        {review.visibleQuestions.map((question) => (
+        {questions.map((question) => (
           <AssessmentAnswerQuestion key={question.id} question={question} />
         ))}
       </Accordion>
       <CustomPagination
-        currentPage={review.page}
-        totalItems={questions.length}
-        pageSize={ANSWER_REVIEW_PAGE_SIZE}
-        onPageChange={review.setPage}
+        currentPage={page}
+        totalItems={totalQuestions}
+        pageSize={pageSize}
+        onPageChange={onPageChange}
         statusPosition="start"
         className="justify-start"
       />

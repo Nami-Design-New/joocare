@@ -6,16 +6,23 @@ import { cn } from '@/shared/lib/utils';
 
 type AssessmentCandidateSummaryProps = {
   summary: readonly { key: string; count: number; className?: string }[];
+  className?: string;
 };
 
 export default function AssessmentCandidateSummary({
   summary,
+  className,
 }: AssessmentCandidateSummaryProps) {
   const t = useTranslations('companyPage.assessments.invitations');
   const format = useFormatter();
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
+    <div
+      className={cn(
+        'grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5',
+        className,
+      )}
+    >
       {summary.map((stat) => (
         <Card
           key={stat.key}

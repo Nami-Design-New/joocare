@@ -20,6 +20,12 @@ export default function AssessmentAnswerQuestion({
   const t = useTranslations('companyPage.assessments.answers');
   const format = useFormatter();
   const status = getAnswerStatus(question);
+  const getOptionLabel = (text: string) => {
+    const value = text.trim().toLowerCase();
+    return question.yesNo && (value === 'yes' || value === 'no')
+      ? t(value)
+      : text;
+  };
 
   return (
     <AccordionItem
@@ -63,7 +69,10 @@ export default function AssessmentAnswerQuestion({
               {format.number(question.maxPoints)}
             </span>
           </span>
-          <span className="text-[15px] leading-5 font-medium text-assessment-dark">
+          <span
+            dir="auto"
+            className="text-start text-[15px] leading-5 font-medium text-assessment-dark"
+          >
             {question.text}
           </span>
         </span>
@@ -124,12 +133,13 @@ export default function AssessmentAnswerQuestion({
                   </span>
                 </span>
                 <span
+                  dir="auto"
                   className={cn(
-                    'min-w-0 flex-1 basis-40',
+                    'min-w-0 flex-1 basis-40 text-start',
                     correct && 'font-medium',
                   )}
                 >
-                  {option.text}
+                  {getOptionLabel(option.text)}
                 </span>
                 <span className="ms-auto flex flex-wrap gap-2 text-[11px] leading-3.5 font-semibold">
                   {selected ? (

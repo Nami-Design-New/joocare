@@ -3343,7 +3343,9 @@
         "sent": "Sent",
         "empty": "No external invitations have been sent yet.",
         "no-results": "No matching invitations.",
-        "not-found": "Assessment not found."
+        "not-found": "Assessment not found.",
+        "under-review": "Under review",
+        "review": "Review"
       },
       "answers": {
         "back-to-results": "Back to Results",
@@ -3382,7 +3384,15 @@
         "skipped-optional": "The candidate skipped this (Optional) question — no answer was submitted, so it scores 0 / {points}.",
         "skipped-question": "The candidate did not answer this question, so it scores 0 / {points}.",
         "not-found": "Assessment result not found",
-        "not-found-description": "The selected candidate has no completed result for this assessment."
+        "not-found-description": "The selected candidate has no completed result for this assessment.",
+        "saving-note": "Saving…",
+        "note-added": "Note added.",
+        "note-updated": "Note updated.",
+        "note-deleted": "Note deleted.",
+        "note-save-error": "Couldn't save the note. Try again.",
+        "note-delete-error": "Couldn't delete the note. Try again.",
+        "yes": "Yes",
+        "no": "No"
       },
       "results": {
         "title": "Assessment Results",
@@ -3418,7 +3428,8 @@
           "passed": "Passed",
           "failed": "Failed",
           "pending": "Pending",
-          "absent": "Absent"
+          "absent": "Absent",
+          "under-review": "Under review"
         },
         "summary": {
           "total": "Total Candidates",
@@ -3430,7 +3441,10 @@
         "candidate-linked-to-job": "Candidate linked to job successfully",
         "candidate-linked-to-project": "Candidate linked to project successfully",
         "link-success-description": "The candidate was linked successfully.",
-        "close": "Close"
+        "close": "Close",
+        "search-category": "Search categories",
+        "assessment-not-in-category": "This assessment does not belong to the selected category. Pick an assessment from this category.",
+        "cv-title": "{name}'s CV"
       },
       "candidate-assessments": {
         "close": "Close",

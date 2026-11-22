@@ -11,10 +11,12 @@ import {
 import type {
   AssessmentNote,
   AssessmentNoteFormValues,
+  AssessmentNotesState,
 } from '../types/assessment-answers.types';
 import { createAssessmentNoteSchema } from '../validation/assessment-note-schema';
 
-export function useAssessmentNotes() {
+// Local preview notes (external invitations); results use useAssessmentResultNotes.
+export function useAssessmentNotes(): AssessmentNotesState {
   const t = useTranslations('companyPage.assessments.answers');
   const [notes, setNotes] = useState<AssessmentNote[]>(assessmentNoteSeeds);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -57,6 +59,8 @@ export function useAssessmentNotes() {
     notes,
     form,
     editingId,
+    isSaving: false,
+    deletingId: null,
     saveNote,
     cancelEdit,
     editNote: (note: AssessmentNote) => {

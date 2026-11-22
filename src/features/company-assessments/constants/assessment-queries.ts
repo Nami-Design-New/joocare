@@ -1,4 +1,5 @@
 import type { AssessmentSource } from '../types/assessment.types';
+import type { AssessmentResultsFilters } from '../types/assessment-results.types';
 
 export const CATEGORY_PAGE_SIZE = 9;
 export const CATEGORY_OPTIONS_PAGE_SIZE = 10;
@@ -54,7 +55,30 @@ export const assessmentQueryKeys = {
     questionId,
   ],
   questionTypes: (locale: string) => ['assessment-question-types', locale],
+  results: (locale: string, filters: AssessmentResultsFilters) => [
+    'assessment-results',
+    locale,
+    filters.categoryId,
+    filters.assessmentId,
+    filters.search,
+    filters.status,
+    filters.minScore,
+    filters.maxScore,
+    filters.page,
+  ],
+  result: (locale: string, resultId: string, page: number) => [
+    'assessment-result',
+    locale,
+    resultId,
+    page,
+  ],
 };
+
+// Results lists and details refetch after a note changes.
+export const RESULT_QUERY_PREFIXES = [
+  ['assessment-results'],
+  ['assessment-result'],
+];
 
 // Prefixes invalidated after a mutation (they match every locale and filter).
 export const CATEGORY_QUERY_PREFIXES = [

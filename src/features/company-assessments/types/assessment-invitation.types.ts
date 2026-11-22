@@ -19,15 +19,23 @@ export type AssessmentAssignmentPayload = {
 
 export type AssignmentRequestOptions = { token: string; locale: string };
 
-export type InvitationStatus = 'passed' | 'failed' | 'pending' | 'absent';
+export type InvitationStatus =
+  | 'passed'
+  | 'failed'
+  | 'pending'
+  | 'under-review'
+  | 'absent';
 
 export type ExternalInvitation = {
   id: string;
   name: string;
   email: string;
-  image: string;
+  /** Local asset file name (preview data) or an absolute API URL. */
+  image: string | null;
   status: InvitationStatus;
-  date: string;
+  date: string | null;
+  /** CV file URL from the API; preview rows have none. */
+  cv?: string | null;
   score: number | null;
   project: string;
 };
