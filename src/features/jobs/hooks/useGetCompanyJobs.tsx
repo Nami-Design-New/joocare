@@ -51,13 +51,14 @@ export default function useGetCompanyJobs({
         params.set('status', status);
       }
 
-      // search and recruiter wait on backend support; param names may change.
+      // search waits on backend support; the param name may change.
       if (search) {
         params.set('search', search);
       }
 
+      // `recruiter` holds the company admin id of the recruiter.
       if (recruiter) {
-        params.set('recruiter', recruiter);
+        params.set('admin_id', recruiter);
       }
 
       const res = await apiFetch(

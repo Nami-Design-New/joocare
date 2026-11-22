@@ -3562,12 +3562,15 @@
       "closed": "Closed",
       "draft": "Draft",
       "projects": "Projects",
-      "deleted": "Deleted",
       "open-jobs-of": "{count} open jobs by {name}",
       "closed-jobs-of": "{count} closed jobs by {name}",
       "draft-jobs-of": "{count} draft jobs by {name}",
       "empty-title": "No recruiters found",
-      "empty-description": "No recruiters match the selected filter."
+      "empty-description": "No recruiters match the selected filter.",
+      "error-title": "Couldn't load recruiter activity",
+      "error-description": "Something went wrong while loading the recruiters. Please try again.",
+      "retry": "Try again",
+      "deleted": "Deleted"
     },
     "chat": {
       "title": "Chat",

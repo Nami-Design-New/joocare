@@ -6,7 +6,7 @@ import { Link } from '@/i18n/navigation';
 import DataTable, {
   type DataTableColumn,
 } from '@/shared/components/common/DataTable';
-import { RECRUITER_JOB_STATUSES } from '../constants/recruiter-activity-preview-data';
+import { RECRUITER_JOB_STATUSES } from '../constants';
 import type { RecruiterActivity } from '../types/recruiter-activity.types';
 import RecruiterJobCountLink from './RecruiterJobCountLink';
 
@@ -51,7 +51,8 @@ export default function RecruiterActivityTable({
         headerClassName: HEADER_CLASS,
         renderCell: (recruiter) => (
           <RecruiterJobCountLink
-            recruiter={recruiter.name}
+            recruiterId={recruiter.id}
+            recruiterName={recruiter.name}
             status={status}
             count={recruiter.jobs[status]}
           />
