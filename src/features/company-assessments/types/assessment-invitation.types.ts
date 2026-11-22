@@ -19,12 +19,7 @@ export type AssessmentAssignmentPayload = {
 
 export type AssignmentRequestOptions = { token: string; locale: string };
 
-export type InvitationStatus =
-  | 'passed'
-  | 'failed'
-  | 'pending'
-  | 'under-review'
-  | 'absent';
+export type InvitationStatus = 'passed' | 'failed' | 'pending' | 'absent';
 
 export type ExternalInvitation = {
   id: string;

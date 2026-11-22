@@ -20,10 +20,6 @@ import type {
 import { readPaginationMeta } from '../utils/pagination';
 import { toUtcIsoDate } from '../utils/assessment-results';
 
-const STATUS_TO_API: Record<string, string> = {
-  'under-review': 'under_review',
-};
-
 function getInitials(name: string) {
   return name
     .split(/\s+/)
@@ -147,9 +143,12 @@ export async function getAssessmentResults(
   });
   if (filters.search.trim()) params.set('search', filters.search.trim());
   if (filters.status !== 'all') {
-    params.set('status', STATUS_TO_API[filters.status] ?? filters.status);
+    params.set('status', filters.status);
   }
-  if (filters.minScore) params.set('min_score', filters.minScore);
+  // The API rejects max_score without min_score, so a lone max starts from 0.
+  if (filters.minScore || filters.maxScore) {
+    params.set('min_score', filters.minScore || '0');
+  }
   if (filters.maxScore) params.set('max_score', filters.maxScore);
 
   const { ok, data, message, statusCode } =

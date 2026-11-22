@@ -3343,9 +3343,7 @@
         "sent": "Sent",
         "empty": "No external invitations have been sent yet.",
         "no-results": "No matching invitations.",
-        "not-found": "Assessment not found.",
-        "under-review": "Under review",
-        "review": "Review"
+        "not-found": "Assessment not found."
       },
       "answers": {
         "back-to-results": "Back to Results",
@@ -3428,8 +3426,7 @@
           "passed": "Passed",
           "failed": "Failed",
           "pending": "Pending",
-          "absent": "Absent",
-          "under-review": "Under review"
+          "absent": "Absent"
         },
         "summary": {
           "total": "Total Candidates",

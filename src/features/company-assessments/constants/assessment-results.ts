@@ -17,7 +17,6 @@ export const RESULT_STATUS_FROM_API: Record<
   InvitationStatus
 > = {
   pending: 'pending',
-  under_review: 'under-review',
   passed: 'passed',
   failed: 'failed',
   absent: 'absent',
@@ -25,7 +24,6 @@ export const RESULT_STATUS_FROM_API: Record<
 
 export const RESULT_STATUS_FILTERS: InvitationStatus[] = [
   'pending',
-  'under-review',
   'passed',
   'failed',
   'absent',
@@ -38,11 +36,6 @@ export const RESULT_SUMMARY_ITEMS = [
     key: 'pending-summary',
     stat: 'pending',
     className: 'text-assessment-warning',
-  },
-  {
-    key: 'under-review',
-    stat: 'under_review',
-    className: 'text-assessment-main',
   },
   { key: 'passed', stat: 'passed', className: 'text-assessment-primary' },
   { key: 'failed', stat: 'failed', className: 'text-assessment-error' },

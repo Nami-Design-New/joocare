@@ -37,10 +37,11 @@
 
 - `GET C/assessment-results?assessment_category_id=&assessment_id=&limit_per_page=&page=`: الحقل `assessment_id` **إلزامي**. يرجع `stats: {total, pending, under_review, passed, failed, absent}` و`users: [{id, user{id,name,email,image,cv}, status, status_label, score, score_percent, is_passed, submitted_at, started_at, expires_at}]`. التواريخ بصيغة `YYYY-MM-DD HH:mm:ss`. لم تظهر بيانات pagination في الرد.
 - `GET C/assessment-results/{resultId}`: يرجع `candidate` و`assessment` و`result` (sent_on/started_on/finished_on/expires_at/time_taken) و`summary` (`correct`, `wrong`, `missing`, `earned_score`, `total_score`, `score_percent`, `is_passed`) و`notes` و`questions[]` لكل سؤال `status` و`earned_score` و`answers[]` بـ `is_correct` و`is_selected`.
-- ⚠️ **تعارض في الباك:** التفاصيل تحسب `score_percent: 66.67` و`is_passed: true`، بينما القائمة وتفاصيل المرشح ما زالت `score: null` و`is_passed: null` والحالة `under_review`.
+- ✅ **اتصلح في الباك للتسليمات الجديدة:** بعد التسليم بقت الحالة `passed`/`failed`، و`score` و`score_percent` و`is_passed` موحّدين في القائمة وتفاصيل المرشح والتفاصيل. اتجرّب على التقييم 11 (نجاح 100%) والتقييم 12 (رسوب 0%)، والإحصائيات بقت بتعدّ Passed/Failed.
+  - حالة `under_review` اتشالت من النظام. الحالات المعتمدة: `pending` و`passed` و`failed` و`absent`. النتائج القديمة اللي اتسلّمت قبل الإصلاح خارج النطاق.
 - الملاحظات: `POST C/assessment-result-notes` (`{assessment_result_id, note}`) و`PUT`/`DELETE .../{id}`. الرد فيه `{id, note, admin{name, role_label}, is_edited, created_at}`. اتجربت كلها حي.
 - `assessments-list` بيفلتر بـ `category_id` (مش `assessment_category_id`)، واتأكد حي. لو حصل تعارض بين التصنيف والتقييم، `assessment-results` بيرجّع 404 `Record not found`، والواجهة بتعرض رسالة إن التقييم مش من التصنيف ده.
-- ⚠️ فلتر `min_score`/`max_score` بيستبعد كل نتيجة `score` بتاعها `null`، فطول ما النتائج `null` أي رقم في الفلتر بيفضّي القائمة.
+- فلتر الدرجة شغال على التسليمات الجديدة. ⚠️ `max_score` لوحده بيرجّع 422 (`The max score field must be greater than or equal to min score`)، فالواجهة بتبعت معاه `min_score=0`. ولو min أكبر من max الطلب بيرجّع 422 وبتظهر حالة الخطأ.
 - `is_edited` شغالة صح: بتبقى `true` لما الملاحظة تتعدّل بعد إنشائها بثانية أو أكتر. القيمة `false` اللي ظهرت في أول تجربة كانت لأن التعديل حصل في نفس الثانية.
 - الـ CV في جدول النتائج بيتعرض من `users[].user.cv` في `CvFileModal` المشترك، ومعاه زرار تحميل.
 - ⚠️ القائمة مفيهاش تاريخ الإرسال (`sent_on`)، فالجدول بيعرض `submitted_at` ولو مش موجود `started_at`، والدعوة اللي لسه `pending` بتظهر بـ «—».
@@ -54,8 +55,8 @@
 3. ✅ **اتربط (22 نوفمبر):** `/company/assessments-results` وصفحة التفاصيل، والرابط بقى `/assessments-results/{assessmentId}/{resultId}` (الفولدر اتغيّر اسمه لـ `[resultId]`).
    - **الـ endpoints:** التصنيفات من `all-assessment-categories` (بحث وتحميل المزيد). التقييمات من `assessments-list?category_id=`. النتائج من `assessment-results` بالفلاتر (البحث والحالة والدرجة) والـ pagination، والتفاصيل من `assessment-results/{id}` والأسئلة paginated من السيرفر. والملاحظات إضافة وتعديل وحذف على `assessment-result-notes`.
    - **في الواجهة:**
-     - ضفت حالة «تحت المراجعة» في الفلتر والإحصائيات والجدول.
-     - النتيجة الـ `null` بتظهر زرار «مراجعة» يفتح التفاصيل.
+     - الفلتر والإحصائيات والجدول فيهم 4 حالات بس: Pending وPassed وFailed وAbsent، ومفيش «تحت المراجعة».
+     - الدرجة بتفتح التفاصيل لأي نتيجة متسلّمة. Pending وAbsent مالهمش تفاصيل.
      - `?assessment=` بيختار التصنيف والتقييم لوحده، وزرار الرجوع بيرجع لنفس التقييم.
      - yes/no مترجمة، والنص الإنجليزي بيتعرض صح في الصفحة العربية.
      - 404 في التفاصيل بتعرض «النتيجة غير موجودة»، و404 في القائمة بتعرض «التقييم لا ينتمي للتصنيف».

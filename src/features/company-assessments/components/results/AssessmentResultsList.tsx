@@ -58,10 +58,7 @@ export default function AssessmentResultsList({
         </div>
       ) : (
         <>
-          <AssessmentCandidateSummary
-            summary={data.summary}
-            className="xl:grid-cols-6"
-          />
+          <AssessmentCandidateSummary summary={data.summary} />
           <section
             className="rounded-xl bg-card p-3"
             aria-label={t('title')}

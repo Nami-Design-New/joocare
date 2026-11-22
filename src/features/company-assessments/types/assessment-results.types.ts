@@ -42,7 +42,6 @@ export type AssessmentListPage = {
 
 export type AssessmentResultStatusApi =
   | 'pending'
-  | 'under_review'
   | 'passed'
   | 'failed'
   | 'absent';
@@ -56,7 +55,7 @@ export type AssessmentResultUserApi = {
 };
 
 export type AssessmentResultStatsApi = Record<
-  'total' | 'pending' | 'under_review' | 'passed' | 'failed' | 'absent',
+  'total' | 'pending' | 'passed' | 'failed' | 'absent',
   number
 >;
 

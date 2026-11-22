@@ -101,8 +101,6 @@ export default function ExternalInvitationsTable({
               candidate.status === 'failed',
             'bg-assessment-warning/10 text-assessment-warning':
               candidate.status === 'pending',
-            'bg-assessment-main/8 text-assessment-main':
-              candidate.status === 'under-review',
             'bg-assessment-close text-assessment-absent':
               candidate.status === 'absent',
           })}
@@ -166,7 +164,7 @@ export default function ExternalInvitationsTable({
               href={href}
               aria-label={t('view-score', { name: candidate.name })}
             >
-              <span>{score ?? t('review')}</span>
+              <span>{score ?? '—'}</span>
               <span className="flex size-6 items-center justify-center rounded-full bg-card">
                 <Image
                   src={`${ASSESSMENT_ASSETS}/score-eye.svg`}

@@ -12,7 +12,6 @@ import { getCandidateImageSrc } from '../../utils/assessment-results';
 const STATUS_CLASS: Record<InvitationStatus, string> = {
   passed: 'bg-assessment-primary/8 text-assessment-primary',
   failed: 'bg-assessment-error/8 text-assessment-error',
-  'under-review': 'bg-assessment-main/8 text-assessment-main',
   pending: 'bg-assessment-warning/10 text-assessment-warning',
   absent: 'bg-assessment-close text-assessment-absent',
 };
