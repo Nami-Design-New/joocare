@@ -2,7 +2,10 @@
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { ASSESSMENT_QUESTIONS_PAGE_SIZE } from '../constants/assessment-builder';
-import { assessmentQueryKeys } from '../constants/assessment-queries';
+import {
+  assessmentQueryKeys,
+  REFETCH_STALE_ON_MOUNT,
+} from '../constants/assessment-queries';
 import { getAssessmentQuestions } from '../services/assessment-questions-service';
 import { useAssessmentRequestOptions } from './useAssessmentRequestOptions';
 
@@ -12,6 +15,7 @@ export function useGetAssessmentQuestions(
 ) {
   const { token, locale, isReady } = useAssessmentRequestOptions();
   return useQuery({
+    ...REFETCH_STALE_ON_MOUNT,
     queryKey: assessmentQueryKeys.questions(locale, assessmentId ?? '', page),
     enabled: isReady && Boolean(assessmentId),
     placeholderData: keepPreviousData,

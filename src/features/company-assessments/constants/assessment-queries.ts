@@ -80,6 +80,11 @@ export const RESULT_QUERY_PREFIXES = [
   ['assessment-result'],
 ];
 
+// The app turns refetchOnMount off globally, so an invalidated list would keep
+// showing cached data when its page opens again. These queries refetch on mount
+// only when stale (after an invalidation or the default stale time).
+export const REFETCH_STALE_ON_MOUNT = { refetchOnMount: true } as const;
+
 // Prefixes invalidated after a mutation (they match every locale and filter).
 export const CATEGORY_QUERY_PREFIXES = [
   ['assessment-categories'],

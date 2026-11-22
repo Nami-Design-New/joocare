@@ -31,8 +31,13 @@ export default function AssessmentActions({
 
   return (
     <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
-      <Button className="h-9 flex-1 rounded-full px-3 text-xs">
-        <Link href={`/company/job-management`}>
+      <Button asChild className="h-9 flex-1 rounded-full px-3 text-xs">
+        <Link
+          href={{
+            pathname: '/company/job-management',
+            query: { assessment_id: assessment.id },
+          }}
+        >
           {/* `#` marks static counts until the assessments API returns them. */}
           {t('associated-jobs', { count: assessment.associatedJobs })} #
         </Link>

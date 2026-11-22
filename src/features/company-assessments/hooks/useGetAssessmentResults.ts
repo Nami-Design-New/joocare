@@ -2,7 +2,10 @@
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getHttpStatusCode } from '@/shared/lib/http-error';
-import { assessmentQueryKeys } from '../constants/assessment-queries';
+import {
+  assessmentQueryKeys,
+  REFETCH_STALE_ON_MOUNT,
+} from '../constants/assessment-queries';
 import {
   ASSESSMENT_RESULTS_PAGE_SIZE,
   HTTP_NOT_FOUND,
@@ -15,6 +18,7 @@ import { useAssessmentRequestOptions } from './useAssessmentRequestOptions';
 export function useGetAssessmentResults(filters: AssessmentResultsFilters) {
   const { token, locale, isReady } = useAssessmentRequestOptions();
   return useQuery({
+    ...REFETCH_STALE_ON_MOUNT,
     queryKey: assessmentQueryKeys.results(locale, filters),
     enabled: isReady && Boolean(filters.categoryId && filters.assessmentId),
     placeholderData: keepPreviousData,

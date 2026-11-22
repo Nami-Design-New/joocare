@@ -2,7 +2,10 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ASSESSMENT_PAGE_SIZE } from '../constants/assessment-data';
-import { assessmentQueryKeys } from '../constants/assessment-queries';
+import {
+  assessmentQueryKeys,
+  REFETCH_STALE_ON_MOUNT,
+} from '../constants/assessment-queries';
 import { getCategoryAssessments } from '../services/assessments-service';
 import { useAssessmentRequestOptions } from './useAssessmentRequestOptions';
 
@@ -10,6 +13,7 @@ import { useAssessmentRequestOptions } from './useAssessmentRequestOptions';
 export function useGetCategoryAssessmentOptions(categoryId: string) {
   const { token, locale, isReady } = useAssessmentRequestOptions();
   const query = useInfiniteQuery({
+    ...REFETCH_STALE_ON_MOUNT,
     queryKey: assessmentQueryKeys.assessmentOptions(locale, categoryId),
     initialPageParam: 1,
     enabled: isReady && Boolean(categoryId),

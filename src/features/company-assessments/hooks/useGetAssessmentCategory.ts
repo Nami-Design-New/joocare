@@ -1,7 +1,10 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { assessmentQueryKeys } from '../constants/assessment-queries';
+import {
+  assessmentQueryKeys,
+  REFETCH_STALE_ON_MOUNT,
+} from '../constants/assessment-queries';
 import { getAssessmentCategory } from '../services/assessment-categories-service';
 import type { AssessmentSource } from '../types/assessment.types';
 import { useAssessmentRequestOptions } from './useAssessmentRequestOptions';
@@ -12,6 +15,7 @@ export function useGetAssessmentCategory(
 ) {
   const { token, locale, isReady } = useAssessmentRequestOptions();
   return useQuery({
+    ...REFETCH_STALE_ON_MOUNT,
     queryKey: [
       ...assessmentQueryKeys.category(locale, categoryId ?? ''),
       source,
