@@ -15,9 +15,11 @@ type ProjectActionModalsProps = {
   project: CompanyProject | null;
   onClose: () => void;
   onShare: (projectId: string, manager: string) => void;
-  onRename: (projectId: string, name: string) => void;
+  onRename: (projectId: string, name: string) => Promise<void>;
   onCloseProject: (projectId: string) => void;
-  onDelete: (projectId: string) => void;
+  onDelete: (projectId: string) => Promise<void>;
+  isRenaming?: boolean;
+  isDeleting?: boolean;
 };
 
 export default function ProjectActionModals({
@@ -28,6 +30,8 @@ export default function ProjectActionModals({
   onRename,
   onCloseProject,
   onDelete,
+  isRenaming = false,
+  isDeleting = false,
 }: ProjectActionModalsProps) {
   if (!action || !project) return null;
 
@@ -46,6 +50,7 @@ export default function ProjectActionModals({
           project={project}
           onClose={onClose}
           onSave={onRename}
+          isSaving={isRenaming}
         />
       );
     case 'close':
@@ -65,6 +70,7 @@ export default function ProjectActionModals({
           project={project}
           onClose={onClose}
           onConfirm={onDelete}
+          isDeleting={isDeleting}
         />
       );
     case 'log':

@@ -5,19 +5,21 @@ import { useTranslations } from 'next-intl';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import SearchInput from '@/shared/components/SearchInput';
+import { Skeleton } from '@/shared/components/ui/skeleton';
+import { Button } from '@/shared/components/ui/button';
 import { SelectInputField } from '@/shared/components/SelectInputField';
 import {
   ALL_PROJECT_RECRUITERS_VALUE,
   projectRecruiters,
 } from '../constants/project-preview-data';
-import { useCompanyProjectsPreview } from '../hooks/useCompanyProjectsPreview';
+import { useCompanyProjects } from '../hooks/useCompanyProjects';
 import type { ProjectAction } from '../types/company-projects.types';
 import ProjectActionModals from './Modals/ProjectActionModals';
 import ProjectCard from './ProjectCard';
 
 export default function ProjectsPage() {
   const t = useTranslations('companyPage.projects');
-  const preview = useCompanyProjectsPreview();
+  const preview = useCompanyProjects();
   const [action, setAction] = useState<ProjectAction>(null);
   const activeProject =
     preview.projects.find((project) => project.id === action?.projectId) ??
@@ -52,9 +54,36 @@ export default function ProjectsPage() {
         />
       </div>
 
-      {preview.visibleProjects.length ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {preview.visibleProjects.map((project) => (
+      {preview.query.isError && !preview.query.data ? (
+        <div
+          role="alert"
+          className="flex min-h-72 flex-col items-center justify-center gap-3 rounded-2xl bg-card p-6 text-center"
+        >
+          <p className="text-sm text-muted-foreground">{t('load-error')}</p>
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-full"
+            onClick={() => void preview.query.refetch()}
+          >
+            {t('retry')}
+          </Button>
+        </div>
+      ) : !preview.query.data ? (
+        <div
+          aria-busy="true"
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+        >
+          {Array.from({ length: 3 }, (_, index) => (
+            <Skeleton key={index} className="h-72 rounded-3xl" />
+          ))}
+        </div>
+      ) : preview.projects.length ? (
+        <div
+          aria-busy={preview.query.isFetching}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+        >
+          {preview.projects.map((project) => (
             <ProjectCard
               key={project.id}
               project={project}
@@ -85,9 +114,9 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      {preview.filteredProjects.length > preview.pageSize && (
+      {preview.total > preview.pageSize && (
         <CustomPagination
-          totalItems={preview.filteredProjects.length}
+          totalItems={preview.total}
           pageSize={preview.pageSize}
           currentPage={preview.page}
           onPageChange={preview.setPage}
@@ -105,6 +134,8 @@ export default function ProjectsPage() {
         onRename={preview.renameProject}
         onCloseProject={preview.closeProject}
         onDelete={preview.removeProject}
+        isRenaming={preview.isRenaming}
+        isDeleting={preview.isDeleting}
       />
     </div>
   );

@@ -2,10 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { downloadFile } from '@/shared/lib/download-file';
-import {
-  projectCandidatePreviewData,
-  projectPreviewData,
-} from '../constants/project-preview-data';
+import { projectCandidatePreviewData } from '../constants/project-preview-data';
 import type {
   CandidateAction,
   ProjectCandidate,
@@ -14,9 +11,8 @@ import { getCandidateCvFileName } from '../utils/candidate-preview';
 
 const CANDIDATE_PAGE_SIZE = 4;
 
-export function useProjectCandidatesPreview(projectId: string) {
-  const project =
-    projectPreviewData.find((item) => item.id === projectId) ?? null;
+// Project candidates have no API yet: the same preview list shows for any project.
+export function useProjectCandidatesPreview() {
   const [candidates, setCandidates] = useState(projectCandidatePreviewData);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
@@ -82,7 +78,6 @@ export function useProjectCandidatesPreview(projectId: string) {
   };
 
   return {
-    project,
     candidates: visibleCandidates,
     totalCandidates: candidates.length,
     filteredCount: filteredCandidates.length,

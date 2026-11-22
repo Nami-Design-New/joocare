@@ -2035,7 +2035,16 @@
         "link-submit": "Add to Project",
         "linked-toast": "{name} was added to {count, plural, one {# project} other {# projects}}.",
         "linked-success": "Candidate linked to project successfully"
-      }
+      },
+      "project-renamed": "Project name updated.",
+      "project-save-error": "Couldn't update the project. Try again.",
+      "project-deleted": "Project deleted.",
+      "project-delete-error": "Couldn't delete the project. Try again.",
+      "load-error": "Couldn't load projects. Try again.",
+      "retry": "Retry",
+      "saving": "Saving…",
+      "not-found": "Project not found",
+      "not-found-description": "This project was deleted or is no longer available."
     },
     "roles": {
       "title": "Roles",

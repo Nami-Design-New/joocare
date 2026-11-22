@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/components/ui/button';
@@ -16,26 +16,38 @@ import type { CompanyProject } from '../../types/company-projects.types';
 type ProjectEditNameModalProps = {
   project: CompanyProject;
   onClose: () => void;
-  onSave: (projectId: string, name: string) => void;
+  onSave: (projectId: string, name: string) => Promise<void>;
+  isSaving?: boolean;
 };
 
 export default function ProjectEditNameModal({
   project,
   onClose,
   onSave,
+  isSaving = false,
 }: ProjectEditNameModalProps) {
   const t = useTranslations('companyPage.projects');
   const [name, setName] = useState(project.name);
+  // Blocks a second click before `isSaving` re-renders.
+  const inFlight = useRef(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const trimmedName = name.trim();
-    if (!trimmedName || trimmedName === project.name) return;
-    onSave(project.id, trimmedName);
-    onClose();
+    if (inFlight.current || !trimmedName || trimmedName === project.name)
+      return;
+    inFlight.current = true;
+    try {
+      await onSave(project.id, trimmedName);
+      onClose();
+    } catch {
+      // The mutation hook shows the error; keep the modal open to retry.
+    } finally {
+      inFlight.current = false;
+    }
   };
 
   return (
-    <Modal open onOpenChange={(open) => !open && onClose()}>
+    <Modal open onOpenChange={(open) => !open && !isSaving && onClose()}>
       <ModalContent
         showCloseButton={false}
         className="w-[calc(100%-2rem)] max-w-[800px] gap-6 rounded-[24px] p-6"
@@ -48,6 +60,7 @@ export default function ProjectEditNameModal({
             <button
               type="button"
               onClick={onClose}
+              disabled={isSaving}
               aria-label={t('close')}
               className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
             >
@@ -63,6 +76,7 @@ export default function ProjectEditNameModal({
             id="project-name"
             value={name}
             onChange={(event) => setName(event.currentTarget.value)}
+            disabled={isSaving}
             className="h-12 rounded-full bg-muted/60"
           />
         </div>
@@ -70,10 +84,10 @@ export default function ProjectEditNameModal({
           type="button"
           size="pill"
           className="h-[52px]"
-          disabled={!name.trim() || name.trim() === project.name}
-          onClick={handleSave}
+          disabled={isSaving || !name.trim() || name.trim() === project.name}
+          onClick={() => void handleSave()}
         >
-          {t('save-changes')}
+          {isSaving ? t('saving') : t('save-changes')}
         </Button>
       </ModalContent>
     </Modal>

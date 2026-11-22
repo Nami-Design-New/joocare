@@ -140,30 +140,38 @@ export default function ProjectCard({
           </span>
         </p>
 
-        <div className="flex items-center gap-2">
-          <div
-            className="flex -space-x-2 rtl:space-x-reverse"
-            aria-label={t('candidate-count', {
-              count:
-                project.additionalCandidates + project.candidateInitials.length,
-            })}
-          >
-            {project.candidateInitials.map((initials, index) => (
-              <span
-                key={`${project.id}-${initials}-${index}`}
-                className={cn(
-                  'flex size-8 items-center justify-center rounded-full text-xs',
-                  avatarColors[index % avatarColors.length],
-                )}
-              >
-                {initials}
-              </span>
-            ))}
+        {project.candidateInitials.length ? (
+          <div className="flex items-center gap-2">
+            <div
+              className="flex -space-x-2 rtl:space-x-reverse"
+              aria-label={t('candidate-count', {
+                count:
+                  project.additionalCandidates +
+                  project.candidateInitials.length,
+              })}
+            >
+              {project.candidateInitials.map((initials, index) => (
+                <span
+                  key={`${project.id}-${initials}-${index}`}
+                  className={cn(
+                    'flex size-8 items-center justify-center rounded-full text-xs',
+                    avatarColors[index % avatarColors.length],
+                  )}
+                >
+                  {initials}
+                </span>
+              ))}
+            </div>
+            <span className="text-sm text-gray-45">
+              +{project.additionalCandidates} {t('more')}
+            </span>
           </div>
-          <span className="text-sm text-gray-45">
-            +{project.additionalCandidates} {t('more')}
-          </span>
-        </div>
+        ) : (
+          // `#`: project candidates have no API yet.
+          <p className="flex h-8 items-center text-sm text-gray-45">
+            {t('candidate-count', { count: '#' })}
+          </p>
+        )}
 
         <div className="flex min-h-[34px] items-center gap-2 rounded-xl border border-border bg-body-bg px-3 py-2 text-[13px] leading-4">
           <ProjectShareIcon className="size-4 shrink-0 text-primary" />

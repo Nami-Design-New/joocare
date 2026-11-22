@@ -2035,7 +2035,16 @@
         "link-submit": "إضافة إلى المشروع",
         "linked-toast": "تمت إضافة {name} إلى {count, plural, one {مشروع واحد} other {# مشاريع}}.",
         "linked-success": "تم ربط المرشح بالمشروع بنجاح"
-      }
+      },
+      "project-renamed": "تم تعديل اسم المشروع.",
+      "project-save-error": "تعذّر تعديل المشروع. حاول مرة أخرى.",
+      "project-deleted": "تم حذف المشروع.",
+      "project-delete-error": "تعذّر حذف المشروع. حاول مرة أخرى.",
+      "load-error": "تعذّر تحميل المشاريع. حاول مرة أخرى.",
+      "retry": "إعادة المحاولة",
+      "saving": "جارٍ الحفظ…",
+      "not-found": "المشروع غير موجود",
+      "not-found-description": "تم حذف هذا المشروع أو لم يعد متاحًا."
     },
     "roles": {
       "title": "الأدوار",

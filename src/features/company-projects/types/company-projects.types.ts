@@ -68,3 +68,27 @@ export type ProjectOption = {
   name: string;
   candidateCount: number;
 };
+
+// API shapes for /company/projects.
+
+export type ProjectCreatorApiItem = {
+  id: number;
+  name: string;
+  display_role: string | null;
+};
+
+export type ProjectApiItem = {
+  id: number;
+  name: string;
+  created_by: number;
+  creator: ProjectCreatorApiItem | null;
+  created_at: string;
+};
+
+export type ProjectsListPage = {
+  items: CompanyProject[];
+  total: number;
+  perPage: number;
+};
+
+export type ProjectRequestOptions = { token: string; locale: string };
