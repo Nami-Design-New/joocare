@@ -15,7 +15,7 @@ Details: [06-admin-users-roles.md](06-admin-users-roles.md)
 | Delete user | Confirm dialog | inside `company-admin-users` | DELETE `company-admins/{id}` |
 | Role picker | User form | — | GET `roles` |
 | Roles and permissions | `/company/roles-and-permissions` | `company-admin-roles/components/RolesPage` | GET `roles` only. Create / edit is blocked; stays on preview data |
-| Invited user first login | `/hiring-manager/create-password` | `auth/components/first-login/CreatePasswordContent` | Check if already wired |
+| Invited user first login | `/hiring-manager/create-password` | `auth/components/first-login/CreatePasswordContent` | Backend emails a login + create password link (all roles but hiring manager). Hiring manager magic link: later |
 
 `company-admin-users` is a reference implementation (AGENTS.md); the structure is right, swap preview data for a service + hooks.
 
