@@ -2050,7 +2050,11 @@
         "readOnly": "Permissions cannot be changed in this view.",
         "close": "Close",
         "unavailable": "Permission details are not available for this role."
-      }
+      },
+      "empty": "No roles found",
+      "error-title": "Couldn't load roles",
+      "error-description": "Something went wrong while loading the roles. Please try again.",
+      "retry": "Try again"
     },
     "postJob": {
       "common": {
@@ -3070,6 +3074,26 @@
         "phone": "Phone",
         "role": "Role",
         "displayedRoleName": "Displayed Role Name"
+      },
+      "empty": "No members found",
+      "error-title": "Couldn't load members",
+      "error-description": "Something went wrong while loading the team members. Please try again.",
+      "retry": "Try again",
+      "saving": "Saving...",
+      "member-added": "Member added successfully",
+      "member-updated": "Member updated successfully",
+      "member-deleted": "Member deleted successfully",
+      "save-error": "Couldn't save the member. Please try again.",
+      "delete-error": "Couldn't delete the member. Please try again.",
+      "validation": {
+        "name-required": "Name is required",
+        "name-max": "Name must be 255 characters or less",
+        "email-required": "Email is required",
+        "email-invalid": "Enter a valid email address",
+        "phone-required": "Phone number is required",
+        "phone-invalid": "Enter a valid phone number",
+        "role-required": "Select a role",
+        "displayed-role-name-max": "Displayed role name must be 255 characters or less"
       }
     },
     "assessments": {

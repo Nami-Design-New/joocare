@@ -20,7 +20,7 @@ export default function HiringManagerPermissionsModal({
   onCloseAutoFocus,
 }: RolePermissionsModalProps) {
   const locale = useLocale();
-  const config = rolePermissions['hiring-manager'];
+  const config = rolePermissions['hiring_manager'];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

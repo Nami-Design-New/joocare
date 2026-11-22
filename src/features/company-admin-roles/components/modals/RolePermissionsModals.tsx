@@ -9,15 +9,15 @@ export default function RolePermissionsModals(
   props: RolePermissionsModalProps,
 ) {
   switch (props.role.key) {
-    case 'recruitment-manager':
+    case 'recruitment_manager':
       return <RecruitmentManagerPermissionsModal {...props} />;
     case 'recruiter':
       return <RecruiterPermissionsModal {...props} />;
-    case 'branding-specialist':
+    case 'branding_specialist':
       return <BrandingSpecialistPermissionsModal {...props} />;
     case 'admin':
       return <AdminPermissionsModal {...props} />;
-    case 'hiring-manager':
+    case 'hiring_manager':
       return <HiringManagerPermissionsModal {...props} />;
     default:
       return null;

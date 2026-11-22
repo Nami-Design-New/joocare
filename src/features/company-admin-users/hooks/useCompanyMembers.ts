@@ -1,18 +1,39 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useLocale } from 'next-intl';
-import { sampleCompanyMembers } from '../data/members.data';
-import type {
-  CompanyMember,
-  CompanyMemberFormValues,
-} from '../types/member.types';
+import { parsePhoneNumber } from 'react-phone-number-input';
+import { useDebouncedValue } from '@/features/company-assessments/hooks/useDebouncedValue';
+import { useGetCompanyRoles } from '@/features/company-admin-roles/hooks/useGetCompanyRoles';
+import {
+  COMPANY_MEMBERS_PAGE_SIZE,
+  COMPANY_MEMBERS_SEARCH_DEBOUNCE_MS,
+} from '../constants';
+import type { CompanyAdminPayload, CompanyMember } from '../types/member.types';
+import type { TMemberSchema } from '../validation/member-schema';
+import { useCreateCompanyAdmin } from './useCreateCompanyAdmin';
+import { useDeleteCompanyAdmin } from './useDeleteCompanyAdmin';
+import { useGetCompanyAdmins } from './useGetCompanyAdmins';
+import { useUpdateCompanyAdmin } from './useUpdateCompanyAdmin';
 
-const PAGE_SIZE = 5;
+function toCompanyAdminPayload(
+  values: TMemberSchema,
+  email: string,
+): CompanyAdminPayload {
+  const parsedPhone = parsePhoneNumber(values.phoneNumber);
+
+  return {
+    name: values.name,
+    email,
+    phone: parsedPhone?.nationalNumber ?? '',
+    phone_code: parsedPhone ? `+${parsedPhone.countryCallingCode}` : '',
+    role: values.role,
+    display_role: values.displayedRoleName,
+  };
+}
 
 export function useCompanyMembers() {
   const locale = useLocale();
-  const [members, setMembers] = useState(sampleCompanyMembers);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,86 +41,86 @@ export function useCompanyMembers() {
     null,
   );
   const [memberModalOpen, setMemberModalOpen] = useState(false);
-  const [deletingMemberId, setDeletingMemberId] = useState<number | null>(null);
-
-  const filteredMembers = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
-
-    return members.filter((member) => {
-      const matchesSearch =
-        !normalizedSearch ||
-        member.name.toLowerCase().includes(normalizedSearch) ||
-        member.email.toLowerCase().includes(normalizedSearch);
-
-      return matchesSearch && (!roleFilter || member.role === roleFilter);
-    });
-  }, [members, roleFilter, search]);
-
-  const visibleMembers = filteredMembers.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE,
+  const [deletingMember, setDeletingMember] = useState<CompanyMember | null>(
+    null,
+  );
+  const debouncedSearch = useDebouncedValue(
+    search,
+    COMPANY_MEMBERS_SEARCH_DEBOUNCE_MS,
   );
 
-  const openAddMember = () => {
-    setEditingMember(null);
-    setMemberModalOpen(true);
-  };
+  const membersQuery = useGetCompanyAdmins({
+    page: currentPage,
+    search: debouncedSearch,
+    role: roleFilter,
+  });
+  const rolesQuery = useGetCompanyRoles();
+  const createMember = useCreateCompanyAdmin();
+  const updateMember = useUpdateCompanyAdmin();
+  const deleteMember = useDeleteCompanyAdmin();
 
-  const openEditMember = (member: CompanyMember) => {
-    setEditingMember(member);
-    setMemberModalOpen(true);
-  };
+  const members = membersQuery.data?.members ?? [];
+  const roleOptions = (rolesQuery.data ?? []).map((role) => ({
+    label: role.name,
+    value: role.key,
+  }));
 
-  const saveMember = (values: CompanyMemberFormValues) => {
-    if (editingMember) {
-      setMembers((current) =>
-        current.map((member) =>
-          member.id === editingMember.id ? { ...member, ...values } : member,
-        ),
-      );
-    } else {
-      const nextId = Math.max(0, ...members.map((member) => member.id)) + 1;
-      const newMember: CompanyMember = {
-        ...values,
-        id: nextId,
-        date: new Intl.DateTimeFormat(locale, {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
-          hour: 'numeric',
-          minute: '2-digit',
-        }).format(new Date()),
-      };
-
-      setMembers((current) => [newMember, ...current]);
-      setCurrentPage(1);
-    }
-
+  const closeMemberForm = () => {
     setMemberModalOpen(false);
     setEditingMember(null);
   };
 
-  const confirmDeleteMember = () => {
-    if (deletingMemberId === null) return;
+  const saveMember = (values: TMemberSchema) => {
+    if (editingMember) {
+      updateMember.mutate(
+        {
+          memberId: editingMember.id,
+          payload: toCompanyAdminPayload(values, editingMember.email),
+        },
+        { onSuccess: closeMemberForm },
+      );
+      return;
+    }
 
-    setMembers((current) =>
-      current.filter((member) => member.id !== deletingMemberId),
-    );
-    setCurrentPage(1);
-    setDeletingMemberId(null);
+    createMember.mutate(toCompanyAdminPayload(values, values.email), {
+      onSuccess: () => {
+        closeMemberForm();
+        setCurrentPage(1);
+      },
+    });
+  };
+
+  const confirmDeleteMember = () => {
+    if (!deletingMember) return;
+
+    deleteMember.mutate(deletingMember.id, {
+      onSuccess: () => {
+        setDeletingMember(null);
+        if (members.length === 1 && currentPage > 1) {
+          setCurrentPage(currentPage - 1);
+        }
+      },
+    });
   };
 
   return {
-    pageSize: PAGE_SIZE,
     direction: locale === 'ar' ? ('rtl' as const) : ('ltr' as const),
-    filteredMembers,
-    visibleMembers,
+    members,
+    total: membersQuery.data?.total ?? 0,
+    pageSize: membersQuery.data?.perPage ?? COMPANY_MEMBERS_PAGE_SIZE,
+    isLoading: membersQuery.isPending,
+    isError: membersQuery.isError,
+    error: membersQuery.error,
+    retry: () => void membersQuery.refetch(),
+    roleOptions,
     search,
     roleFilter,
     currentPage,
     editingMember,
     memberModalOpen,
-    deletingMemberId,
+    deletingMember,
+    isSaving: createMember.isPending || updateMember.isPending,
+    isDeleting: deleteMember.isPending,
     setCurrentPage,
     setSearch: (value: string) => {
       setSearch(value);
@@ -109,12 +130,18 @@ export function useCompanyMembers() {
       setRoleFilter(value);
       setCurrentPage(1);
     },
-    openAddMember,
-    openEditMember,
-    closeMemberForm: () => setMemberModalOpen(false),
+    openAddMember: () => {
+      setEditingMember(null);
+      setMemberModalOpen(true);
+    },
+    openEditMember: (member: CompanyMember) => {
+      setEditingMember(member);
+      setMemberModalOpen(true);
+    },
+    closeMemberForm,
     saveMember,
-    requestDeleteMember: setDeletingMemberId,
-    closeDeleteModal: () => setDeletingMemberId(null),
+    requestDeleteMember: setDeletingMember,
+    closeDeleteModal: () => setDeletingMember(null),
     confirmDeleteMember,
   };
 }
