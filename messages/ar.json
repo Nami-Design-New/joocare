@@ -3463,7 +3463,7 @@
         "questions-overview": "نظرة عامة على الأسئلة",
         "question-text": "نص السؤال",
         "question-type": "النوع",
-        "question-score": "الدرجة %",
+        "question-score": "الدرجة",
         "view-question": "عرض السؤال {number}",
         "created-by": "أنشأه",
         "back-to-assessments": "العودة إلى التقييمات",
@@ -3475,7 +3475,8 @@
         "preview-summary": "ملخص التقييم",
         "preview-assessment-title": "عنوان التقييم",
         "preview-passing-score": "درجة النجاح",
-        "preview-structure": "هيكل التقييم"
+        "preview-structure": "هيكل التقييم",
+        "no-questions": "لا توجد أسئلة في هذا التقييم بعد."
       },
       "candidate-assessments": {
         "close": "إغلاق",

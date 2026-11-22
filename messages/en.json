@@ -3503,7 +3503,7 @@
         "questions-overview": "Questions Overview",
         "question-text": "Question Text",
         "question-type": "Type",
-        "question-score": "Score %",
+        "question-score": "Score",
         "view-question": "View question {number}",
         "created-by": "Created By",
         "back-to-assessments": "Back to assessments",
@@ -3515,7 +3515,8 @@
         "preview-summary": "Assessment Summary",
         "preview-assessment-title": "Assessment Title",
         "preview-passing-score": "Passing Score",
-        "preview-structure": "Assessment Structure"
+        "preview-structure": "Assessment Structure",
+        "no-questions": "This assessment has no questions yet."
       },
       "created-at": "Created {time}",
       "delete-error": "Something went wrong while deleting. Please try again.",

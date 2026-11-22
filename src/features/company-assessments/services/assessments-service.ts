@@ -1,5 +1,6 @@
 import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch } from '@/shared/lib/fetch-manager';
+import { createHttpStatusError } from '@/shared/lib/http-error';
 import { API_TO_QUESTION_TYPE } from '../constants/assessment-builder';
 import {
   STATIC_ASSESSMENT_ASSOCIATED_JOBS,
@@ -65,6 +66,7 @@ function mapSavedAssessment(item: AssessmentApiItem): SavedAssessment {
       (total, question) => total + question.score,
       0,
     ),
+    createdAt: item.created_at,
   };
 }
 
@@ -93,11 +95,13 @@ export async function getAssessment(
   assessmentId: string,
   { token, locale }: RequestOptions,
 ): Promise<SavedAssessment> {
-  const { ok, data, message } = await apiFetch<AssessmentApiItem>(
+  const { ok, data, message, statusCode } = await apiFetch<AssessmentApiItem>(
     `${getCompanyApiUrl()}/assessments/${assessmentId}`,
     { token, locale },
   );
-  if (!ok || !data?.data) throw new Error(message ?? '');
+  if (!ok || !data?.data) {
+    throw createHttpStatusError(statusCode, message ?? undefined);
+  }
   return mapSavedAssessment(data.data);
 }
 
