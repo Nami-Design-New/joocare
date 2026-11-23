@@ -3,51 +3,71 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { projectPreviewData } from '../constants/project-preview-data';
 import type {
   CandidateProjectAction,
   ProjectCandidateRef,
-  ProjectOption,
 } from '../types/company-projects.types';
 import type { TCreateProjectSchema } from '../validation/create-project-schema';
-
-const projectOptions: ProjectOption[] = projectPreviewData
-  .filter((project) => !project.isClosed)
-  .map((project) => ({
-    id: project.id,
-    name: project.name,
-    candidateCount:
-      project.candidateInitials.length + project.additionalCandidates,
-  }));
+import { useAssignCandidatesToProjects } from './useAssignCandidatesToProjects';
+import { useCreateProject } from './useCreateProject';
 
 // Candidate name + project count shown by the "linked to project" success modal.
 type LinkedToProjects = { name: string; count: number };
 
-// Preview only: swap the callbacks for project API mutations when available.
+// Create a project / add a candidate to projects. Candidates without a real
+// `userId` (talent database preview data) keep the preview behaviour.
 export function useCandidateProjectActions() {
   const t = useTranslations('companyPage.projects.candidate-projects');
   const [action, setAction] = useState<CandidateProjectAction>(null);
   const [linked, setLinked] = useState<LinkedToProjects | null>(null);
+  const createMutation = useCreateProject();
+  const assignMutation = useAssignCandidatesToProjects();
   const close = () => setAction(null);
 
   async function createProject({ name }: TCreateProjectSchema) {
-    if (!action) return;
-    toast.success(
-      t('created-toast', { project: name, name: action.candidate.name }),
-    );
+    if (!action || createMutation.isPending) return;
+    const { candidate } = action;
+    let projectId: string;
+    try {
+      projectId = await createMutation.mutateAsync(name);
+    } catch {
+      // useCreateProject shows the error; keep the form open to retry.
+      return;
+    }
+    if (candidate.userId) {
+      try {
+        await assignMutation.mutateAsync({
+          userIds: [candidate.userId],
+          projectIds: [projectId],
+        });
+      } catch {
+        // The project exists; the assign hook already showed why the
+        // candidate could not be added.
+        close();
+        return;
+      }
+    }
+    toast.success(t('created-toast', { project: name, name: candidate.name }));
     close();
   }
 
   async function linkProjects(projectIds: string[]) {
-    if (!action) return;
-    setLinked({ name: action.candidate.name, count: projectIds.length });
+    if (!action || !projectIds.length) return;
+    const { candidate } = action;
+    if (candidate.userId) {
+      // Errors propagate so the modal stays open with the selection kept.
+      await assignMutation.mutateAsync({
+        userIds: [candidate.userId],
+        projectIds,
+      });
+    }
+    setLinked({ name: candidate.name, count: projectIds.length });
     close();
   }
 
   return {
     action,
     linked,
-    projects: projectOptions,
     openCreate: (candidate: ProjectCandidateRef) =>
       setAction({ type: 'create', candidate }),
     openLink: (candidate: ProjectCandidateRef) =>

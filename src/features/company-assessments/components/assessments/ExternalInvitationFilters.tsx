@@ -21,6 +21,11 @@ type ExternalInvitationFiltersProps = {
   onStatus: (value: string) => void;
   project: string;
   onProject: (value: string) => void;
+  /** Company projects (`projects-list`), loaded page by page. */
+  projectOptions: { value: string; label: string }[];
+  hasMoreProjects?: boolean;
+  isLoadingMoreProjects?: boolean;
+  onLoadMoreProjects?: () => void;
   minScore: string;
   onMinScore: (value: string) => void;
   maxScore: string;
@@ -35,6 +40,10 @@ export default function ExternalInvitationFilters({
   onStatus,
   project,
   onProject,
+  projectOptions,
+  hasMoreProjects = false,
+  isLoadingMoreProjects = false,
+  onLoadMoreProjects,
   minScore,
   onMinScore,
   maxScore,
@@ -50,8 +59,7 @@ export default function ExternalInvitationFilters({
   ];
   const projects = [
     { value: 'all', label: t('all-projects') },
-    { value: 'clinical', label: 'Clinical Assessment' },
-    { value: 'nursing', label: 'Nursing Assessment' },
+    ...projectOptions,
   ];
   return (
     <div className="grid grid-cols-2 gap-2.5 rounded-3xl bg-secondary/4 p-3 lg:grid-cols-[minmax(230px,300fr)_170fr_200fr_145fr_145fr]">
@@ -78,6 +86,9 @@ export default function ExternalInvitationFilters({
         options={projects}
         value={project}
         onChange={onProject}
+        hasNextPage={hasMoreProjects}
+        isFetchingNextPage={isLoadingMoreProjects}
+        onReachEnd={onLoadMoreProjects}
         className="h-13 rounded-full border-none bg-card px-4 text-base text-muted-foreground/60"
       />
       <InputField

@@ -4,22 +4,13 @@ import { useEffect, useState } from 'react';
 import { useUrlFilters } from '@/shared/hooks/useUrlFilters';
 import { PROJECT_SEARCH_DEBOUNCE_MS } from '../constants/project-queries';
 import { ALL_PROJECT_RECRUITERS_VALUE } from '../constants/project-preview-data';
-import type {
-  CompanyProject,
-  ProjectShareLog,
-} from '../types/company-projects.types';
+import type { CompanyProject } from '../types/company-projects.types';
 import { useDeleteProject } from './useDeleteProject';
 import { useGetProjects } from './useGetProjects';
 import { useRenameProject } from './useRenameProject';
 
-const hiringManagerEmails: Record<string, string> = {
-  'Khalid Al-Mutairi': 'khalid@example.com',
-  'Maha Hassan': 'maha@example.com',
-  'Noura Al-Harbi': 'noura@example.com',
-};
-
-// Projects list from the API. Sharing, closing and the recruiter filter have
-// no API yet, so they stay local preview state on top of the API data.
+// Projects list from the API. Closing and the recruiter filter have no API
+// yet, so they stay local preview state on top of the API data.
 export function useCompanyProjects() {
   const url = useUrlFilters();
   const urlSearch = url.get('search');
@@ -27,9 +18,6 @@ export function useCompanyProjects() {
   const page = url.getPage();
   const { update } = url;
   const [searchInput, setSearchInput] = useState(urlSearch);
-  const [shareLogs, setShareLogs] = useState<Record<string, ProjectShareLog[]>>(
-    {},
-  );
   const [closedIds, setClosedIds] = useState<string[]>([]);
   const query = useGetProjects(urlSearch, page);
   const renameMutation = useRenameProject();
@@ -47,28 +35,8 @@ export function useCompanyProjects() {
     (project) => ({
       ...project,
       isClosed: closedIds.includes(project.id),
-      shareLogs: shareLogs[project.id] ?? [],
     }),
   );
-
-  const shareProject = (id: string, manager: string) => {
-    setShareLogs((current) => ({
-      ...current,
-      [id]: [
-        {
-          id: `${id}-${Date.now()}`,
-          manager,
-          managerEmail:
-            hiringManagerEmails[manager] ?? 'hiring.manager@example.com',
-          sharedBy: 'Sara Al-Qahtani',
-          sharedByRole: 'Recruiter',
-          date: 'Today',
-          time: '10:30 AM',
-        },
-        ...(current[id] ?? []),
-      ],
-    }));
-  };
 
   return {
     query,
@@ -95,6 +63,5 @@ export function useCompanyProjects() {
     },
     closeProject: (id: string) =>
       setClosedIds((current) => [...new Set([...current, id])]),
-    shareProject,
   };
 }

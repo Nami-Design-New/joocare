@@ -37,6 +37,10 @@ export default function AssessmentResultsList({
         onStatus={filters.setStatus}
         project={filters.project}
         onProject={filters.setProject}
+        projectOptions={filters.projectOptions}
+        hasMoreProjects={filters.hasMoreProjects}
+        isLoadingMoreProjects={filters.isLoadingMoreProjects}
+        onLoadMoreProjects={filters.loadMoreProjects}
         minScore={filters.minScore}
         onMinScore={filters.setMinScore}
         maxScore={filters.maxScore}

@@ -150,6 +150,8 @@ export async function getAssessmentResults(
     params.set('min_score', filters.minScore || '0');
   }
   if (filters.maxScore) params.set('max_score', filters.maxScore);
+  if (filters.isExternal) params.set('is_external', '1');
+  if (filters.projectId !== 'all') params.set('project_id', filters.projectId);
 
   const { ok, data, message, statusCode } =
     await apiFetch<AssessmentResultsApiData>(

@@ -141,6 +141,10 @@ export type AssessmentResultsFilters = {
   minScore: string;
   maxScore: string;
   page: number;
+  /** Only candidates invited from outside a job application. */
+  isExternal: boolean;
+  /** `all` or a project id. */
+  projectId: string;
 };
 
 export type AssessmentResultsSummaryItem = {

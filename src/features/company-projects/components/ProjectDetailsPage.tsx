@@ -7,13 +7,15 @@ import { Button } from '@/shared/components/ui/button';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { getHttpStatusCode } from '@/shared/lib/http-error';
 import { useGetProject } from '../hooks/useGetProject';
-import { useProjectCandidatesPreview } from '../hooks/useProjectCandidatesPreview';
+import type { ProjectCandidate } from '../types/company-projects.types';
+import { useProjectCandidates } from '../hooks/useProjectCandidates';
 import CandidateActionModals from './Modals/CandidateActionModals';
 import ProjectCandidatesFilters from './ProjectCandidatesFilters';
 import ProjectCandidatesTable from './ProjectCandidatesTable';
 import ProjectDetailsHeader from './ProjectDetailsHeader';
 
 const HTTP_NOT_FOUND = 404;
+const EMPTY_CANDIDATES: ProjectCandidate[] = [];
 
 type ProjectDetailsPageProps = {
   projectId: string;
@@ -24,7 +26,9 @@ export default function ProjectDetailsPage({
 }: ProjectDetailsPageProps) {
   const t = useTranslations('companyPage.projects');
   const query = useGetProject(projectId);
-  const preview = useProjectCandidatesPreview();
+  const preview = useProjectCandidates(
+    query.data?.candidates ?? EMPTY_CANDIDATES,
+  );
   const direction = useLocale() === 'ar' ? 'rtl' : 'ltr';
   const project = query.data;
 
@@ -87,7 +91,6 @@ export default function ProjectDetailsPage({
       />
 
       <ProjectCandidatesTable
-        projectId={projectId}
         candidates={preview.candidates}
         rowOffset={(preview.page - 1) * preview.pageSize}
         direction={direction}

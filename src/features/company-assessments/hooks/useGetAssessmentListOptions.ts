@@ -18,6 +18,7 @@ export function useGetAssessmentListOptions(categoryId: string) {
     limitPerPage: ASSESSMENT_LIST_OPTIONS_PAGE_SIZE,
     extraParams: { category_id: categoryId },
     enabled: isReady && Boolean(categoryId),
+    refetchOnMount: true,
     loadPage: (page) =>
       getAssessmentListOptions(
         categoryId,

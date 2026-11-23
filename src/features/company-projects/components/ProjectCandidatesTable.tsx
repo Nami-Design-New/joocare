@@ -17,7 +17,6 @@ import type {
 } from '../types/company-projects.types';
 
 type ProjectCandidatesTableProps = {
-  projectId: string;
   candidates: ProjectCandidate[];
   rowOffset: number;
   direction: 'ltr' | 'rtl';
@@ -26,19 +25,28 @@ type ProjectCandidatesTableProps = {
   onDownloadCv: (candidate: ProjectCandidate) => void;
 };
 
-function getStatusClass(status: ProjectCandidate['status']) {
+const CANDIDATE_AVATAR_FALLBACK =
+  '/assets/company-projects/candidate-avatar.png';
+// Shown where the project users API has no data yet.
+const MISSING_API_VALUE = '#';
+
+function getStatusClass(status: NonNullable<ProjectCandidate['status']>) {
   if (status === 'Shortlist') return 'bg-success/10 text-success';
   if (status === 'Under review') return 'bg-warning/20 text-warning-foreground';
   return 'bg-destructive/10 text-destructive';
 }
 
-function getAssessmentClass(assessment: ProjectCandidate['assessment']) {
-  if (assessment === 'Passed') return 'text-success';
-  if (assessment === 'Failed') return 'text-destructive';
-  return 'text-muted-foreground';
+function getAssessmentClass(
+  assessment: NonNullable<ProjectCandidate['assessment']>,
+) {
+  if (assessment === 'Passed') return 'bg-success/10 text-success';
+  if (assessment === 'Failed') return 'bg-destructive/10 text-destructive';
+  return 'bg-muted text-muted-foreground';
 }
 
-function getAssessmentLabelKey(assessment: ProjectCandidate['assessment']) {
+function getAssessmentLabelKey(
+  assessment: NonNullable<ProjectCandidate['assessment']>,
+) {
   return {
     Passed: 'passed',
     Failed: 'failed',
@@ -52,40 +60,51 @@ function CandidateIdentity({
   onViewNote,
 }: {
   candidate: ProjectCandidate;
-  profileHref: string;
+  /** Omitted while real candidates have no profile page to open. */
+  profileHref?: string;
   onViewNote: () => void;
 }) {
   const t = useTranslations('companyPage.projects');
-  const statusKey = {
-    Rejected: 'rejected',
-    Shortlist: 'shortlist',
-    'Under review': 'under-review',
-  }[candidate.status];
+  const statusKey = candidate.status
+    ? {
+        Rejected: 'rejected',
+        Shortlist: 'shortlist',
+        'Under review': 'under-review',
+      }[candidate.status]
+    : null;
 
   return (
     <div className="flex min-w-52 items-start gap-3 text-start">
       <Image
-        src="/assets/company-projects/candidate-avatar.png"
+        src={candidate.image || CANDIDATE_AVATAR_FALLBACK}
         alt=""
         width={35}
         height={35}
         className="size-[35px] shrink-0 rounded-full object-cover"
       />
       <div className="min-w-0">
-        <Link
-          href={profileHref}
-          className="block max-w-full truncate font-medium text-foreground underline underline-offset-2 hover:text-primary"
-        >
-          {candidate.name}
-        </Link>
-        <span
-          className={cn(
-            'mt-1 inline-flex rounded-full px-3 py-1 text-xs font-medium',
-            getStatusClass(candidate.status),
-          )}
-        >
-          {t(statusKey)}
-        </span>
+        {profileHref ? (
+          <Link
+            href={profileHref}
+            className="block max-w-full truncate font-medium text-foreground underline underline-offset-2 hover:text-primary"
+          >
+            {candidate.name}
+          </Link>
+        ) : (
+          <span className="block max-w-full truncate font-medium text-foreground">
+            {candidate.name}
+          </span>
+        )}
+        {candidate.status && statusKey ? (
+          <span
+            className={cn(
+              'mt-1 inline-flex rounded-full px-3 py-1 text-xs font-medium',
+              getStatusClass(candidate.status),
+            )}
+          >
+            {t(statusKey)}
+          </span>
+        ) : null}
         {candidate.interview && (
           <div className="mt-2 space-y-1 text-[11px] leading-4 text-muted-foreground">
             <p className="flex items-center gap-1">
@@ -118,57 +137,56 @@ function AssessmentCell({
   onShareAssessment: () => void;
 }) {
   const t = useTranslations('companyPage.projects');
+  const linkClassName =
+    'text-xs font-medium whitespace-nowrap text-primary underline underline-offset-2';
 
-  if (candidate.score !== undefined) {
-    return (
-      <div className="flex min-w-28 flex-col items-start gap-1 text-start">
+  if (!candidate.assessment) {
+    return <span className="text-muted-foreground">{MISSING_API_VALUE}</span>;
+  }
+
+  const resultHref = candidate.assessmentResult
+    ? getAssessmentResultHref(
+        candidate.assessmentResult.assessmentId,
+        candidate.assessmentResult.candidateId,
+      )
+    : null;
+  const hasManyAssessments = (candidate.assessmentCount ?? 0) > 1;
+
+  return (
+    <div className="flex min-w-28 flex-col items-center gap-1.5 text-center">
+      <span className="flex items-center gap-2">
         <span
           className={cn(
-            'text-xs font-semibold',
+            'rounded-full px-2.5 py-0.5 text-[11px] font-semibold whitespace-nowrap',
             getAssessmentClass(candidate.assessment),
           )}
         >
           {t(getAssessmentLabelKey(candidate.assessment))}
-          <strong className="ml-2 text-base text-foreground">
+        </span>
+        {candidate.score !== undefined ? (
+          <strong className="text-base text-foreground">
             {candidate.score}%
           </strong>
-        </span>
-        {candidate.assessmentResult ? (
-          <Link
-            href={getAssessmentResultHref(
-              candidate.assessmentResult.assessmentId,
-              candidate.assessmentResult.candidateId,
-            )}
-            className="text-xs font-medium text-primary underline underline-offset-2"
-          >
-            {t('view-result')}
-          </Link>
         ) : null}
-      </div>
-    );
-  }
-
-  if (candidate.assessment === 'Not assigned') {
-    return (
-      <button
-        type="button"
-        onClick={onShareAssessment}
-        className="text-xs font-semibold whitespace-nowrap text-primary underline underline-offset-2"
-      >
-        + {t('share-assessment')}
-      </button>
-    );
-  }
-
-  return (
-    <span
-      className={cn(
-        'text-xs font-semibold',
-        getAssessmentClass(candidate.assessment),
-      )}
-    >
-      {t(getAssessmentLabelKey(candidate.assessment))}
-    </span>
+      </span>
+      {candidate.assessment === 'Not assigned' ? (
+        <button
+          type="button"
+          onClick={onShareAssessment}
+          className={linkClassName}
+        >
+          + {t('share-assessment')}
+        </button>
+      ) : resultHref ? (
+        <Link href={resultHref} className={linkClassName}>
+          {hasManyAssessments
+            ? t('view-all-assessments', {
+                count: candidate.assessmentCount ?? 0,
+              })
+            : t('view-result')}
+        </Link>
+      ) : null}
+    </div>
   );
 }
 
@@ -279,7 +297,6 @@ function CandidateActions({
 }
 
 export default function ProjectCandidatesTable({
-  projectId,
   candidates,
   rowOffset,
   direction,
@@ -299,12 +316,11 @@ export default function ProjectCandidatesTable({
     {
       id: 'candidate',
       header: t('candidate'),
-      headerClassName: 'min-w-60 text-start',
+      headerClassName: 'min-w-60 text-center',
       cellClassName: 'text-start',
       renderCell: (candidate) => (
         <CandidateIdentity
           candidate={candidate}
-          profileHref={`/company/candidate-profile?candidateId=${candidate.id}&projectId=${projectId}`}
           onViewNote={() => onViewNote(candidate.id)}
         />
       ),
@@ -312,15 +328,15 @@ export default function ProjectCandidatesTable({
     {
       id: 'nationality',
       header: t('nationality'),
-      headerClassName: 'min-w-28 text-start',
-      cellClassName: 'text-start',
+      headerClassName: 'min-w-28 text-center',
+      cellClassName: 'text-center',
       renderCell: (candidate) => candidate.nationality,
     },
     {
       id: 'email',
       header: t('email'),
-      headerClassName: 'min-w-52 text-start',
-      cellClassName: 'max-w-56 text-start',
+      headerClassName: 'min-w-52 text-center',
+      cellClassName: 'max-w-56 text-center',
       renderCell: (candidate) => (
         <span className="block truncate">{candidate.email}</span>
       ),
@@ -328,15 +344,15 @@ export default function ProjectCandidatesTable({
     {
       id: 'phone',
       header: t('phone'),
-      headerClassName: 'min-w-36 text-start',
-      cellClassName: 'min-w-36 text-start whitespace-nowrap',
+      headerClassName: 'min-w-36 text-center',
+      cellClassName: 'min-w-36 text-center whitespace-nowrap',
       renderCell: (candidate) => <span dir="ltr">{candidate.phone}</span>,
     },
     {
       id: 'assessment',
       header: t('assessment'),
-      headerClassName: 'min-w-36 text-start',
-      cellClassName: 'text-start',
+      headerClassName: 'min-w-36 text-center',
+      cellClassName: 'text-center',
       renderCell: (candidate) => (
         <AssessmentCell
           candidate={candidate}

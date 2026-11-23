@@ -130,7 +130,6 @@ export default function ProjectsPage() {
         action={action}
         project={activeProject}
         onClose={() => setAction(null)}
-        onShare={preview.shareProject}
         onRename={preview.renameProject}
         onCloseProject={preview.closeProject}
         onDelete={preview.removeProject}

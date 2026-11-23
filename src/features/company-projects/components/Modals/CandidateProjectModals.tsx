@@ -31,7 +31,6 @@ export default function CandidateProjectModals({
         <AddCandidateToProjectModal
           key={action.candidate.id}
           candidate={action.candidate}
-          projects={actions.projects}
           onClose={actions.close}
           onSubmit={actions.linkProjects}
         />

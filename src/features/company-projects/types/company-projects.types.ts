@@ -28,9 +28,15 @@ export type ProjectCandidate = {
   nationality: string;
   /** CV file URL (`cv` from the API, as in received applications). */
   cv: string | null;
-  status: 'Rejected' | 'Shortlist' | 'Under review';
-  assessment: 'Passed' | 'Failed' | 'Not assigned';
+  /** Profile image URL; preview rows use a local avatar. */
+  image?: string | null;
+  /** Not returned for project users yet (preview rows only). */
+  status?: 'Rejected' | 'Shortlist' | 'Under review';
+  /** Not returned for project users yet (preview rows only). */
+  assessment?: 'Passed' | 'Failed' | 'Not assigned';
   score?: number;
+  /** How many assessments the candidate took ("View all (n)" when > 1). */
+  assessmentCount?: number;
   /** Ids of the candidate's result in Assessments Results ("View result"). */
   assessmentResult?: { assessmentId: string; candidateId: string };
   interview?: string;
@@ -56,6 +62,8 @@ export type ProjectAction = {
 export type ProjectCandidateRef = {
   id: string;
   name: string;
+  /** Real user id; preview-only candidates (talent database) have none. */
+  userId?: string;
 };
 
 export type CandidateProjectAction = {
@@ -66,7 +74,14 @@ export type CandidateProjectAction = {
 export type ProjectOption = {
   id: string;
   name: string;
-  candidateCount: number;
+  /** `null` until the API returns project candidate counts. */
+  candidateCount: number | null;
+};
+
+// Page shape `useInfiniteLookup` reads (`next_page_url` drives "load more").
+export type ProjectOptionsPage = {
+  data: ProjectOption[];
+  next_page_url: string | null;
 };
 
 // API shapes for /company/projects.
@@ -77,12 +92,39 @@ export type ProjectCreatorApiItem = {
   display_role: string | null;
 };
 
+// A candidate added to the project (`users` in GET /projects/{id}).
+export type ProjectUserApiItem = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string | null;
+  phone_code: string | null;
+  cv: string | null;
+  image: string | null;
+};
+
+// A hiring manager the project was shared with (`assignees`).
+export type ProjectAssigneeApiItem = {
+  id: number;
+  name: string;
+  email: string;
+  /** "23 November 2026 , 9:30AM" — used as the share date for now. */
+  created_at: string;
+};
+
 export type ProjectApiItem = {
   id: number;
   name: string;
   created_by: number;
   creator: ProjectCreatorApiItem | null;
+  assignees?: ProjectAssigneeApiItem[];
+  /** Details endpoint only. */
+  users?: ProjectUserApiItem[];
   created_at: string;
+};
+
+export type ProjectDetails = CompanyProject & {
+  candidates: ProjectCandidate[];
 };
 
 export type ProjectsListPage = {
@@ -92,3 +134,8 @@ export type ProjectsListPage = {
 };
 
 export type ProjectRequestOptions = { token: string; locale: string };
+
+// `hiring-managers-list` item (same base fields as a company admin).
+export type HiringManagerApiItem = { id: number; name: string };
+
+export type HiringManagerOption = { id: string; name: string };

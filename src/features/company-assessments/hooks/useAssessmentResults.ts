@@ -5,11 +5,13 @@ import { ASSESSMENT_SEARCH_DEBOUNCE_MS } from '../constants/assessment-queries';
 import {
   ASSESSMENT_RESULTS_HREF,
   candidateLinkTargets,
+  EXTERNAL_PARAM,
 } from '../constants/assessment-results';
 import type {
   AssessmentResultCandidate,
   CandidateLinkKind,
 } from '../types/assessment-results.types';
+import { useGetProjectOptions } from '@/features/company-projects/hooks/useGetProjectOptions';
 import { useDebouncedValue } from './useDebouncedValue';
 import { useGetAssessment } from './useGetAssessment';
 import { useGetAssessmentCategoryOptions } from './useGetAssessmentCategoryOptions';
@@ -34,7 +36,10 @@ function replaceAssessmentParam(assessmentId: string) {
   window.history.replaceState(window.history.state, '', url);
 }
 
-export function useAssessmentResults(initialAssessmentId?: string) {
+export function useAssessmentResults(
+  initialAssessmentId?: string,
+  isExternal = false,
+) {
   // `null` means "not changed yet", so the `?assessment=` value still applies.
   const [pickedCategoryId, setPickedCategoryId] = useState<string | null>(null);
   const [pickedAssessmentId, setPickedAssessmentId] = useState<string | null>(
@@ -77,7 +82,10 @@ export function useAssessmentResults(initialAssessmentId?: string) {
     minScore,
     maxScore,
     page,
+    isExternal,
+    projectId: project,
   });
+  const projectOptions = useGetProjectOptions('');
 
   const initialCategoryOption =
     pickedCategoryId === null && initialAssessment.data
@@ -169,6 +177,10 @@ export function useAssessmentResults(initialAssessmentId?: string) {
     },
     assessmentId,
     assessmentOptions,
+    assessmentName:
+      assessmentOptions.find((option) => option.value === assessmentId)
+        ?.label ?? '',
+    isExternal,
     assessments,
     setAssessmentId: (value: string) => {
       setPickedAssessmentId(value);
@@ -187,7 +199,14 @@ export function useAssessmentResults(initialAssessmentId?: string) {
       status,
       setStatus: resetPage(setStatus),
       project,
-      setProject,
+      setProject: resetPage(setProject),
+      projectOptions: projectOptions.projects.map((item) => ({
+        value: item.id,
+        label: item.name,
+      })),
+      hasMoreProjects: projectOptions.hasNextPage,
+      isLoadingMoreProjects: projectOptions.isFetchingNextPage,
+      loadMoreProjects: () => void projectOptions.fetchNextPage(),
       minScore,
       setMinScore: resetPage(setMinScore),
       maxScore,
@@ -198,7 +217,9 @@ export function useAssessmentResults(initialAssessmentId?: string) {
     getResultHref: (candidate: AssessmentResultCandidate) =>
       candidate.status === 'pending' || candidate.status === 'absent'
         ? null
-        : `${ASSESSMENT_RESULTS_HREF}/${assessmentId}/${candidate.id}`,
+        : `${ASSESSMENT_RESULTS_HREF}/${assessmentId}/${candidate.id}${
+            isExternal ? `?${EXTERNAL_PARAM}=1` : ''
+          }`,
     inspectedCandidate,
     setInspectedCandidate,
     cvCandidate,

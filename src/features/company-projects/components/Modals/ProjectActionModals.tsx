@@ -14,7 +14,6 @@ type ProjectActionModalsProps = {
   action: ProjectAction;
   project: CompanyProject | null;
   onClose: () => void;
-  onShare: (projectId: string, manager: string) => void;
   onRename: (projectId: string, name: string) => Promise<void>;
   onCloseProject: (projectId: string) => void;
   onDelete: (projectId: string) => Promise<void>;
@@ -26,7 +25,6 @@ export default function ProjectActionModals({
   action,
   project,
   onClose,
-  onShare,
   onRename,
   onCloseProject,
   onDelete,
@@ -37,13 +35,7 @@ export default function ProjectActionModals({
 
   switch (action.type) {
     case 'share':
-      return (
-        <ProjectShareModal
-          project={project}
-          onClose={onClose}
-          onShare={onShare}
-        />
-      );
+      return <ProjectShareModal project={project} onClose={onClose} />;
     case 'edit':
       return (
         <ProjectEditNameModal

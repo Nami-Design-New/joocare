@@ -12,22 +12,30 @@ import AssessmentResultsList from './AssessmentResultsList';
 import AssessmentResultsSelectors from './AssessmentResultsSelectors';
 import CandidateLinkDialog from './CandidateLinkDialog';
 
-type AssessmentResultsPageProps = { initialAssessmentId?: string };
+type AssessmentResultsPageProps = {
+  initialAssessmentId?: string;
+  /** Opened from "External Invitations": only external invitations. */
+  isExternal?: boolean;
+};
 
 export default function AssessmentResultsPage({
   initialAssessmentId,
+  isExternal = false,
 }: AssessmentResultsPageProps) {
   const t = useTranslations('companyPage.assessments.results');
-  const results = useAssessmentResults(initialAssessmentId);
+  const invitationsT = useTranslations('companyPage.assessments.invitations');
+  const results = useAssessmentResults(initialAssessmentId, isExternal);
 
   return (
     <div className="mx-auto flex w-full flex-col gap-8 lg:pt-3">
       <header className="space-y-1">
         <h1 className="text-2xl leading-normal font-bold text-assessment-dark sm:text-[28px]">
-          {t('title')}
+          {isExternal ? invitationsT('title') : t('title')}
         </h1>
         <p className="text-sm leading-5 text-muted-foreground">
-          {t('description')}
+          {isExternal
+            ? invitationsT('subtitle', { assessment: results.assessmentName })
+            : t('description')}
         </p>
       </header>
 

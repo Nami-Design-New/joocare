@@ -26,16 +26,21 @@ export default function CandidatePreviewModal({
   onClose,
 }: CandidatePreviewModalProps) {
   const t = useTranslations('companyPage.projects');
-  const statusKey = {
-    Rejected: 'rejected',
-    Shortlist: 'shortlist',
-    'Under review': 'under-review',
-  }[candidate.status];
-  const assessmentKey = {
-    Passed: 'passed',
-    Failed: 'failed',
-    'Not assigned': 'not-assigned',
-  }[candidate.assessment];
+  // `#` when the project users API has no status / assessment yet.
+  const statusKey = candidate.status
+    ? {
+        Rejected: 'rejected',
+        Shortlist: 'shortlist',
+        'Under review': 'under-review',
+      }[candidate.status]
+    : null;
+  const assessmentKey = candidate.assessment
+    ? {
+        Passed: 'passed',
+        Failed: 'failed',
+        'Not assigned': 'not-assigned',
+      }[candidate.assessment]
+    : null;
   const titleKey: Record<CandidatePreviewType, string> = {
     profile: 'candidate-profile',
     cv: 'cv-preview',
@@ -69,7 +74,7 @@ export default function CandidatePreviewModal({
               <strong>{t('phone')}:</strong> {candidate.phone}
             </p>
             <p>
-              <strong>{t('status')}:</strong> {t(statusKey)}
+              <strong>{t('status')}:</strong> {statusKey ? t(statusKey) : '#'}
             </p>
           </div>
         )}
@@ -85,7 +90,7 @@ export default function CandidatePreviewModal({
         {type === 'result' && (
           <div className="flex min-h-36 flex-col items-center justify-center gap-2 rounded-2xl bg-body-bg">
             <span className="text-sm font-semibold text-success">
-              {t(assessmentKey)}
+              {assessmentKey ? t(assessmentKey) : '#'}
             </span>
             <span className="text-3xl font-bold text-foreground sm:text-4xl">
               {candidate.score ?? 0}%

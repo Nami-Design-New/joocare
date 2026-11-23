@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState, type UIEvent } from 'react';
 import { Check, Folder, LoaderCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import EmptyDataState from '@/shared/components/EmptyDataState';
@@ -11,34 +11,50 @@ import {
   DialogContent as ModalContent,
   DialogDescription as ModalDescription,
 } from '@/shared/components/ui/dialog';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import { cn } from '@/shared/lib/utils';
-import type {
-  ProjectCandidateRef,
-  ProjectOption,
-} from '../../types/company-projects.types';
+import { PROJECT_SEARCH_DEBOUNCE_MS } from '../../constants/project-queries';
+import { useGetProjectOptions } from '../../hooks/useGetProjectOptions';
+import type { ProjectCandidateRef } from '../../types/company-projects.types';
 import ProjectModalHeader from './ProjectModalHeader';
 
 type AddCandidateToProjectModalProps = {
   candidate: ProjectCandidateRef;
-  projects: ProjectOption[];
   onClose: () => void;
   onSubmit: (projectIds: string[]) => Promise<void>;
 };
 
 export default function AddCandidateToProjectModal({
   candidate,
-  projects,
   onClose,
   onSubmit,
 }: AddCandidateToProjectModalProps) {
   const t = useTranslations('companyPage.projects.candidate-projects');
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const query = search.trim().toLowerCase();
-  const visibleProjects = query
-    ? projects.filter((project) => project.name.toLowerCase().includes(query))
-    : projects;
+  // Blocks a second click before `isSubmitting` re-renders.
+  const inFlight = useRef(false);
+  const options = useGetProjectOptions(debouncedSearch);
+  const visibleProjects = options.projects;
+
+  useEffect(() => {
+    const timeout = setTimeout(
+      () => setDebouncedSearch(search.trim()),
+      PROJECT_SEARCH_DEBOUNCE_MS,
+    );
+    return () => clearTimeout(timeout);
+  }, [search]);
+
+  // Loads the next page when the list is scrolled near its end.
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const list = event.currentTarget;
+    const nearEnd = list.scrollHeight - list.scrollTop - list.clientHeight < 48;
+    if (nearEnd && options.hasNextPage && !options.isFetchingNextPage) {
+      void options.fetchNextPage();
+    }
+  };
 
   const toggleProject = (id: string) =>
     setSelectedIds((current) =>
@@ -48,10 +64,15 @@ export default function AddCandidateToProjectModal({
     );
 
   const submit = async () => {
+    if (inFlight.current || !selectedIds.length) return;
+    inFlight.current = true;
     setIsSubmitting(true);
     try {
       await onSubmit(selectedIds);
+    } catch {
+      // The mutation hook shows the error; keep the selection to retry.
     } finally {
+      inFlight.current = false;
       setIsSubmitting(false);
     }
   };
@@ -81,9 +102,29 @@ export default function AddCandidateToProjectModal({
         <div
           role="group"
           aria-label={t('projects-list')}
+          aria-busy={options.isFetching}
+          onScroll={handleScroll}
           className="flex max-h-[45vh] flex-col gap-3 overflow-y-auto"
         >
-          {visibleProjects.length ? (
+          {options.isError && !options.data ? (
+            <div role="alert" className="flex flex-col items-center gap-3 py-6">
+              <p className="text-sm text-muted-foreground">
+                {t('projects-load-error')}
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-full"
+                onClick={() => void options.refetch()}
+              >
+                {t('retry')}
+              </Button>
+            </div>
+          ) : !options.data ? (
+            Array.from({ length: 3 }, (_, index) => (
+              <Skeleton key={index} className="h-17 rounded-xl" />
+            ))
+          ) : visibleProjects.length ? (
             visibleProjects.map((project) => {
               const isSelected = selectedIds.includes(project.id);
               return (
@@ -120,8 +161,9 @@ export default function AddCandidateToProjectModal({
                       {project.name}
                     </span>
                     <span className="text-sm text-muted-foreground">
+                      {/* `#`: project candidate counts have no API yet. */}
                       {t('candidates-count', {
-                        count: project.candidateCount,
+                        count: project.candidateCount ?? '#',
                       })}
                     </span>
                   </span>
@@ -135,12 +177,18 @@ export default function AddCandidateToProjectModal({
               className="min-h-60 py-6"
             />
           )}
+          {options.isFetchingNextPage ? (
+            <LoaderCircle
+              aria-hidden
+              className="mx-auto size-5 animate-spin text-primary"
+            />
+          ) : null}
         </div>
         <Button
           type="button"
           size="pill"
           disabled={!selectedIds.length || isSubmitting}
-          onClick={submit}
+          onClick={() => void submit()}
         >
           {isSubmitting && (
             <LoaderCircle aria-hidden className="size-4 animate-spin" />

@@ -1,4 +1,5 @@
 import type { AssessmentSource } from '../types/assessment.types';
+import { ASSESSMENT_LIST_QUERY_KEY } from './assessment-results';
 import type { AssessmentResultsFilters } from '../types/assessment-results.types';
 
 export const CATEGORY_PAGE_SIZE = 9;
@@ -66,6 +67,8 @@ export const assessmentQueryKeys = {
     filters.minScore,
     filters.maxScore,
     filters.page,
+    filters.isExternal,
+    filters.projectId,
   ],
   result: (locale: string, resultId: string, page: number) => [
     'assessment-result',
@@ -94,6 +97,7 @@ export const CATEGORY_QUERY_PREFIXES = [
 ];
 export const ASSESSMENT_QUERY_PREFIXES = [
   ['assessments'],
+  [ASSESSMENT_LIST_QUERY_KEY],
   ['assessment'],
   ['assessment-questions'],
   ['assessment-question'],

@@ -1895,7 +1895,6 @@
       "share-log-subtitle": "{project} · shared {count} times",
       "date-sent": "Date sent",
       "sent-to-hiring-manager": "Sent to (Hiring Manager)",
-      "recruiter-role": "Recruiter",
       "manager": "Hiring Manager",
       "shared-by": "Shared By",
       "date": "Date",
@@ -2034,7 +2033,10 @@
         "adding": "Adding...",
         "link-submit": "Add to Project",
         "linked-toast": "{name} was added to {count, plural, one {# project} other {# projects}}.",
-        "linked-success": "Candidate linked to project successfully"
+        "linked-success": "Candidate linked to project successfully",
+        "projects-load-error": "Couldn't load projects.",
+        "retry": "Retry",
+        "assign-error": "Couldn't add the candidate to the project. Try again."
       },
       "project-renamed": "Project name updated.",
       "project-save-error": "Couldn't update the project. Try again.",
@@ -2044,7 +2046,14 @@
       "retry": "Retry",
       "saving": "Saving…",
       "not-found": "Project not found",
-      "not-found-description": "This project was deleted or is no longer available."
+      "not-found-description": "This project was deleted or is no longer available.",
+      "loading-hiring-managers": "Loading hiring managers...",
+      "hiring-managers-error": "Couldn't load hiring managers.",
+      "no-hiring-managers": "No hiring managers yet. Add a team member with the Hiring manager role from Admin Roles.",
+      "sharing": "Sharing...",
+      "share-error": "Couldn't share the project. Try again.",
+      "all-managers-shared": "This project is already shared with every hiring manager.",
+      "view-all-assessments": "View all ({count})"
     },
     "roles": {
       "title": "Roles",
@@ -2811,7 +2820,8 @@
             "min_assessment_score": "Assessment score",
             "max_assessment_score": "Assessment score"
           }
-        }
+        },
+        "star-error": "Couldn't update the starred candidate. Try again."
       },
       "ai-match": {
         "search-placeholder": "Search name...",

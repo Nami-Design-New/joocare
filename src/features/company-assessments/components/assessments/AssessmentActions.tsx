@@ -10,6 +10,7 @@ import type {
   Assessment,
   AssessmentSource,
 } from '../../types/assessment.types';
+import { getAssessmentResultsHref } from '../../utils/assessment-results';
 import AssignAssessmentDialog from '../shared/AssignAssessmentDialog';
 
 type AssessmentActionsProps = {
@@ -48,7 +49,7 @@ export default function AssessmentActions({
           asChild
         >
           <Link
-            href={`/company/assessments/${assessment.categoryId}/${assessment.id}/external-invitations`}
+            href={getAssessmentResultsHref(assessment.id, { external: true })}
           >
             {t('external-invitations', {
               count: assessment.externalInvitations,
@@ -95,7 +96,9 @@ export default function AssessmentActions({
         open={assignOpen}
         onOpenChange={setAssignOpen}
         assessmentTitle={title}
-        statusHref={`/company/assessments/${assessment.categoryId}/${assessment.id}/external-invitations`}
+        statusHref={getAssessmentResultsHref(assessment.id, {
+          external: true,
+        })}
       />
     </div>
   );
