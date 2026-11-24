@@ -10,13 +10,15 @@ const STATUS_STYLES: Record<RecruiterJobStatus, string> = {
 };
 
 type RecruiterJobCountLinkProps = {
-  recruiter: string;
+  recruiterId: number;
+  recruiterName: string;
   status: RecruiterJobStatus;
   count: number;
 };
 
 export default function RecruiterJobCountLink({
-  recruiter,
+  recruiterId,
+  recruiterName,
   status,
   count,
 }: RecruiterJobCountLinkProps) {
@@ -26,9 +28,9 @@ export default function RecruiterJobCountLink({
     <Link
       href={{
         pathname: '/company/job-management',
-        query: { status, recruiter },
+        query: { status, recruiter: recruiterId },
       }}
-      aria-label={t(`${status}-jobs-of`, { count, name: recruiter })}
+      aria-label={t(`${status}-jobs-of`, { count, name: recruiterName })}
       className={cn(
         'inline-flex items-center gap-1 rounded-full px-2 py-1 underline underline-offset-2 transition-opacity hover:opacity-80',
         STATUS_STYLES[status],

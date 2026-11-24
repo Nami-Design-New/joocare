@@ -11,6 +11,7 @@ import type {
 
 type AssessmentCategoriesHeaderProps = {
   count: number;
+  canCreate?: boolean;
   onCreate: () => void;
   modal: { category: AssessmentCategory | null } | null;
   onCloseModal: () => void;
@@ -19,6 +20,7 @@ type AssessmentCategoriesHeaderProps = {
 
 export default function AssessmentCategoriesHeader({
   count,
+  canCreate = true,
   onCreate,
   modal,
   onCloseModal,
@@ -33,11 +35,15 @@ export default function AssessmentCategoriesHeader({
           count={count}
           title={t('title')}
           className="flex-wrap"
-          action={{
-            label: t('new-category'),
-            icon: <Plus aria-hidden="true" className="size-4" />,
-            onClick: onCreate,
-          }}
+          action={
+            canCreate
+              ? {
+                  label: t('new-category'),
+                  icon: <Plus aria-hidden="true" className="size-4" />,
+                  onClick: onCreate,
+                }
+              : undefined
+          }
         />
         <p className="text-sm text-muted-foreground">{t('description')}</p>
       </div>

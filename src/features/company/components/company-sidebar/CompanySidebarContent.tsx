@@ -5,6 +5,8 @@ import CompleteDetails from './CompleteDetails';
 import PostJobCard from './PostJobCard';
 import SidebarNav from '@/shared/components/sidebar-nav/SidebarNav';
 import { getCompanySidebarGroups } from '../../constants';
+import { useCompanyAccess } from '../../hooks/useCompanyAccess';
+import { filterSidebarGroups } from '../../utils/filter-sidebar-groups';
 import { useSession } from 'next-auth/react';
 import useGetCompanyProfile from '@/features/company-profile/hooks/useGetCompanyProfile';
 
@@ -13,7 +15,11 @@ const CompanySidebarContent = () => {
   const token = session?.accessToken || '';
 
   const { data: companyProfileData } = useGetCompanyProfile({ token });
-  const groups = getCompanySidebarGroups(companyProfileData?.status);
+  const access = useCompanyAccess();
+  const groups = filterSidebarGroups(
+    getCompanySidebarGroups(companyProfileData?.status),
+    access.canAccess,
+  );
 
   return (
     <aside className="no-scrollbar flex flex-col gap-4 overflow-y-auto rounded-2xl bg-white px-3 py-3 shadow lg:h-[calc(100vh-87px)] lg:rounded-none lg:py-6 lg:shadow-none">
@@ -31,9 +37,11 @@ const CompanySidebarContent = () => {
       </div>
 
       {/* Desktop only: on mobile the sidebar is just the pills row (+ account status). */}
-      <div className="hidden lg:contents">
-        <PostJobCard canPostJob={companyProfileData?.status === 'Approved'} />
-      </div>
+      {access.can('post-job') && (
+        <div className="hidden lg:contents">
+          <PostJobCard canPostJob={companyProfileData?.status === 'Approved'} />
+        </div>
+      )}
     </aside>
   );
 };

@@ -62,6 +62,16 @@ function extractUser(payload: ApiFetchResponse | null) {
   return null;
 }
 
+// Company logins return the logged-in admin in `data.admin`.
+function extractCompanyRole(payload: ApiFetchResponse | null) {
+  const data = payload?.data as Record<string, unknown> | undefined;
+  const admin = data?.admin;
+  if (!admin || typeof admin !== 'object' || !('role_value' in admin)) {
+    return undefined;
+  }
+  return typeof admin.role_value === 'string' ? admin.role_value : undefined;
+}
+
 async function fetchProfile(baseUrl: string, token: string, locale: string) {
   const { ok, data: profileData } = await apiFetch(`${baseUrl}/auth/profile`, {
     method: 'GET',
@@ -124,6 +134,7 @@ async function authorizeWithEndpoint({
     // user,
     accessToken,
     authRole: role,
+    companyRole: extractCompanyRole(data),
     authMessage: data?.message ?? 'Login successful.',
   };
 }
@@ -186,6 +197,7 @@ async function authorizeWithSocialEndpoint({
     // user: loginUser,
     accessToken,
     authRole: role,
+    companyRole: extractCompanyRole(data),
     authMessage: message ?? 'Login successful.',
   };
 }
@@ -344,6 +356,7 @@ export const authOptions: NextAuthOptions = {
           token.accessToken = socialSession.accessToken;
           token.id = socialSession.id;
           token.authRole = socialSession.authRole;
+          token.companyRole = socialSession.companyRole;
           token.authMessage = socialSession.authMessage;
 
           return token;
@@ -355,6 +368,7 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = user.accessToken;
         token.id = user.id;
         token.authRole = user.authRole;
+        token.companyRole = user.companyRole;
         token.authMessage = user.authMessage;
       }
 
@@ -364,6 +378,7 @@ export const authOptions: NextAuthOptions = {
       // session.user = token.user ?? session.user;
       session.accessToken = token.accessToken ?? '';
       session.authRole = token.authRole;
+      session.companyRole = token.companyRole;
       session.authMessage = token.authMessage;
 
       if (session.user && token.id) {

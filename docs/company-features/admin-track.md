@@ -26,7 +26,7 @@ Details: [07-recruiter-activity.md](07-recruiter-activity.md)
 | Page | Route | Component | Endpoints |
 | --- | --- | --- | --- |
 | Recruiter table | `/company/recruiter-activity` | `company-recruiter-activity/components/RecruiterActivityPage` + `RecruiterActivityTable` | GET `recruiters-stats` (paginated) |
-| Job count link | In the table | `RecruiterJobCountLink` | Reuse dashboard `useGetJobsByAdmin` |
+| Job count link | In the table | `RecruiterJobCountLink` | Job management with `admin_id` (GET `jobs?admin_id=&status=`) |
 
 ## 3. Company notifications — `feat/company-notifications-api`
 
@@ -38,6 +38,32 @@ Details: [08-company-notifications.md](08-company-notifications.md)
 | Push token | Company login / logout | Company `Auth/Firebase tokens`: store / remove |
 
 Check first whether the company header uses the same drawer as the candidate.
+
+## Role access (logged-in admin)
+
+The company login returns the admin in `data.admin`; `role_value` is saved in the session as `companyRole` (`src/auth.ts`). One map in `features/company/constants/company-role-access.ts` drives:
+
+- the company sidebar (links the role cannot open are hidden),
+- `src/proxy.ts` (a direct visit to a page the role cannot open redirects to the role's home page),
+- actions: `post-job` (sidebar Post job card), `create-assessment-category` (New category button).
+
+| Page | Recruitment manager | Admin | Recruiter | Branding specialist | Hiring manager |
+| --- | --- | --- | --- | --- | --- |
+| Company profile | ✓ | ✓ | ✓ | ✓ | |
+| Dashboard | ✓ | ✓ | ✓ | | |
+| Jobs, post job, job details, candidate profile | ✓ | | ✓ | | |
+| Projects, shared projects | ✓ | | ✓ | | ✓ |
+| Assessments | ✓ | | ✓ (no new category) | | |
+| Assessment results | ✓ | | ✓ | | |
+| Talent database | ✓ | | | | |
+| Chat | ✓ | | ✓ | | |
+| Users, roles and permissions | ✓ | ✓ | | | |
+| Recruiter activity | ✓ | ✓ | | | |
+| Account settings | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+Home page per role: dashboard (recruitment manager, admin, recruiter), company profile (branding specialist), projects (hiring manager). Unknown role: company profile and account settings only. Session with no role (logged in before this change): full access until the next login.
+
+Read from the static role permissions; to confirm: talent database for recruiters, chat for admins, account settings for every role, view-only limits (recruiter on company profile and dashboard), hiring manager (magic link, later).
 
 ## Before coding
 
