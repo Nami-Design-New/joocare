@@ -34,3 +34,10 @@ export const PROJECT_QUERY_PREFIXES = [
 // The app turns refetchOnMount off globally; these refetch on mount only when
 // stale, so a list opened after a change shows fresh data.
 export const REFETCH_STALE_ON_MOUNT = { refetchOnMount: true } as const;
+
+// Avatar shown when a project candidate has no profile image.
+export const CANDIDATE_AVATAR_FALLBACK =
+  '/assets/company-projects/candidate-avatar.png';
+
+// Shown where the projects API has no data yet.
+export const MISSING_API_VALUE = '#';

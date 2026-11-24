@@ -1,12 +1,20 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
+import CandidateAssessmentModals from '@/features/company-assessments/components/candidate-assessments/CandidateAssessmentModals';
+import { useCandidateAssessmentActions } from '@/features/company-assessments/hooks/useCandidateAssessmentActions';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import HttpStatusState from '@/shared/components/HttpStatusState';
 import { Button } from '@/shared/components/ui/button';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { getHttpStatusCode } from '@/shared/lib/http-error';
+import {
+  CANDIDATE_AVATAR_FALLBACK,
+  MISSING_API_VALUE,
+  projectQueryKeys,
+} from '../constants/project-queries';
 import { useGetProject } from '../hooks/useGetProject';
 import type { ProjectCandidate } from '../types/company-projects.types';
 import { useGetProjectCandidates } from '../hooks/useGetProjectCandidates';
@@ -41,7 +49,36 @@ export default function ProjectDetailsPage({
     }));
   }, [candidatesQuery.data, query.data?.candidates]);
   const preview = useProjectCandidates(projectId, candidates);
-  const direction = useLocale() === 'ar' ? 'rtl' : 'ltr';
+  const locale = useLocale();
+  const direction = locale === 'ar' ? 'rtl' : 'ltr';
+  const queryClient = useQueryClient();
+  // "+ Share assessment": refresh the rows so the new assessment shows.
+  const assessmentActions = useCandidateAssessmentActions({
+    onAssigned: () =>
+      void queryClient.invalidateQueries({
+        queryKey: projectQueryKeys.projectCandidates(locale, projectId),
+      }),
+  });
+  const toAssessmentCandidate = (candidate: ProjectCandidate) => ({
+    id: candidate.userId ?? candidate.id,
+    name: candidate.name,
+    image: candidate.image || CANDIDATE_AVATAR_FALLBACK,
+    location:
+      candidate.nationality === MISSING_API_VALUE
+        ? null
+        : candidate.nationality,
+    email: candidate.email,
+  });
+  const shareAssessment = (candidate: ProjectCandidate) => {
+    if (candidate.userId)
+      assessmentActions.openAssign(toAssessmentCandidate(candidate));
+  };
+  // "View all (n)": the candidate's assessments; each opens its result page.
+  const viewAssessments = (candidate: ProjectCandidate) =>
+    assessmentActions.openList(
+      toAssessmentCandidate(candidate),
+      candidate.assessments ?? [],
+    );
   const project = query.data;
 
   if (
@@ -129,6 +166,9 @@ export default function ProjectDetailsPage({
           onAction={preview.openAction}
           onViewNote={preview.openCandidateNote}
           onDownloadCv={preview.downloadCandidateCv}
+          onShareAssessment={shareAssessment}
+          onViewAssessments={viewAssessments}
+          isFiltered={preview.isFiltered}
         />
       )}
 
@@ -152,6 +192,7 @@ export default function ProjectDetailsPage({
         onRemove={preview.removeCandidate}
         isRemoving={preview.isRemoving}
       />
+      <CandidateAssessmentModals actions={assessmentActions} />
     </div>
   );
 }

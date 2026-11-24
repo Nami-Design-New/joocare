@@ -1,3 +1,8 @@
+import type {
+  ApiCandidateAssessment,
+  CandidateAssessment,
+} from '@/features/company-assessments/types/candidate-assessment.types';
+
 export type ProjectShareLog = {
   id: string;
   manager: string;
@@ -40,6 +45,8 @@ export type ProjectCandidate = {
   score?: number;
   /** How many assessments the candidate took ("View all (n)" when > 1). */
   assessmentCount?: number;
+  /** All the candidate's assessments ("View all (n)" modal); not returned yet. */
+  assessments?: CandidateAssessment[];
   /** Ids of the candidate's result in Assessments Results ("View result"). */
   assessmentResult?: { assessmentId: string; candidateId: string };
   interview?: string;
@@ -52,7 +59,7 @@ export type ProjectCandidate = {
 };
 
 export type CandidateAction = {
-  type: 'share' | 'view-cv' | 'remove' | 'note';
+  type: 'view-cv' | 'remove' | 'note';
   candidateId: string;
 } | null;
 
@@ -138,6 +145,8 @@ export type ProjectMemberApiItem = {
     phone_code: string | null;
     nationality: string | null;
     assessments_count: number;
+    /** Not returned yet: same shape as the applications endpoint. */
+    assessments?: ApiCandidateAssessment[];
     last_assessment: {
       /** Result id (Assessments Results details). */
       id: number;

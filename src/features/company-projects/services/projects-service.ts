@@ -1,3 +1,4 @@
+import { mapApiCandidateAssessment } from '@/features/company-assessments/utils/candidate-assessments';
 import { readPaginationMeta } from '@/features/company-assessments/utils/pagination';
 import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch } from '@/shared/lib/fetch-manager';
@@ -15,9 +16,7 @@ import type {
   ProjectRequestOptions,
   ProjectsListPage,
 } from '../types/company-projects.types';
-
-// `#` marks fields the projects API does not return yet.
-const MISSING_API_VALUE = '#';
+import { MISSING_API_VALUE } from '../constants/project-queries';
 
 // Splits "23 November 2026 , 9:30AM" into its date and time parts.
 function splitApiDateTime(value: string) {
@@ -281,6 +280,7 @@ export async function getProjectCandidates(
           }
         : undefined,
       assessmentCount: user.assessments_count,
+      assessments: user.assessments?.map(mapApiCandidateAssessment),
     };
   });
 }

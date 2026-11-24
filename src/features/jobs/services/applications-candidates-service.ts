@@ -1,4 +1,4 @@
-import type { CandidateAssessment } from '@/features/company-assessments/types/candidate-assessment.types';
+import { mapApiCandidateAssessment } from '@/features/company-assessments/utils/candidate-assessments';
 import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch, type ApiFetchResponse } from '@/shared/lib/fetch-manager';
 import {
@@ -79,20 +79,6 @@ function mapPipelineCandidate(
     aiMatchScore: candidate.ai_match_score ?? null,
     isStarred: candidate.is_starred ?? false,
     addedBy: candidate.added_by?.name ?? null,
-    assessments: (candidate.assessments ?? []).map(
-      (assessment): CandidateAssessment => ({
-        id: String(assessment.id),
-        assessmentId: String(assessment.assessment_id),
-        title: assessment.title,
-        source: assessment.source,
-        status:
-          assessment.status === 'grace_period'
-            ? 'grace-period'
-            : assessment.status,
-        score: assessment.score,
-        sentAt: assessment.sent_at,
-        dueAt: assessment.due_at,
-      }),
-    ),
+    assessments: (candidate.assessments ?? []).map(mapApiCandidateAssessment),
   };
 }

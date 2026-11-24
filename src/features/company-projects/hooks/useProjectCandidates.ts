@@ -1,12 +1,11 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { downloadFile } from '@/shared/lib/download-file';
 import type {
   CandidateAction,
   ProjectCandidate,
 } from '../types/company-projects.types';
-import { getCandidateCvFileName } from '../utils/candidate-preview';
+import { useDownloadProjectCandidateCv } from './useDownloadProjectCandidateCv';
 import { useRemoveProjectCandidate } from './useRemoveProjectCandidate';
 
 const CANDIDATE_PAGE_SIZE = 10;
@@ -18,6 +17,7 @@ export function useProjectCandidates(
   candidates: ProjectCandidate[],
 ) {
   const removeMutation = useRemoveProjectCandidate(projectId);
+  const downloadMutation = useDownloadProjectCandidateCv();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
@@ -75,8 +75,8 @@ export function useProjectCandidates(
   };
 
   const downloadCandidateCv = (candidate: ProjectCandidate) => {
-    if (candidate.cv)
-      downloadFile(candidate.cv, getCandidateCvFileName(candidate));
+    if (candidate.cv && !downloadMutation.isPending)
+      downloadMutation.mutate(candidate);
   };
 
   const closeAction = () => setAction(null);
@@ -88,6 +88,7 @@ export function useProjectCandidates(
     candidates: visibleCandidates,
     totalCandidates: candidates.length,
     filteredCount: filteredCandidates.length,
+    isFiltered: Boolean(search.trim() || status),
     search,
     status,
     page,

@@ -6,23 +6,42 @@ import type {
   CandidateAssessment,
   CandidateAssessmentAction,
 } from '../types/candidate-assessment.types';
+import type { TAssignAssessmentSchema } from '../validation/assign-assessment-schema';
+import { useAssignAssessment } from './useAssignAssessment';
 
-// Preview only: swap `assign` for the assessment invitation mutation when available.
-export function useCandidateAssessmentActions() {
+type CandidateAssessmentActionsOptions = {
+  /** Runs after the assessment is sent (e.g. to refresh the page's own list). */
+  onAssigned?: () => void;
+};
+
+// Candidate assessments list + sharing an assessment with one candidate
+// (`assign-assessment`, the candidate id is the user id).
+export function useCandidateAssessmentActions({
+  onAssigned,
+}: CandidateAssessmentActionsOptions = {}) {
   const [action, setAction] = useState<CandidateAssessmentAction>(null);
   // Candidate the assessment was just sent to (shows the success modal).
   const [assignedName, setAssignedName] = useState<string | null>(null);
   const close = () => setAction(null);
-
-  async function assign() {
-    if (!action) return;
-    setAssignedName(action.candidate.name);
+  const assignment = useAssignAssessment(() => {
+    if (action) setAssignedName(action.candidate.name);
     close();
+    onAssigned?.();
+  });
+
+  function assign({ assessmentId }: TAssignAssessmentSchema) {
+    if (!action) return;
+    assignment.assign({
+      assessmentId,
+      userIds: [action.candidate.id],
+      emails: [],
+    });
   }
 
   return {
     action,
     assignedName,
+    isAssigning: assignment.isPending,
     closeAssigned: () => setAssignedName(null),
     openList: (
       candidate: AssessmentCandidateSummary,
