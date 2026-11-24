@@ -1937,6 +1937,9 @@
       "candidate-profile": {
         "profile-image": "صورة {name} الشخصية",
         "open-to-work": "متاح للعمل",
+        "actively-looking": "أبحث عن عمل بشكل نشط",
+        "open-to-opportunities": "منفتح على الفرص",
+        "job-search-status": "حالة البحث عن عمل",
         "last-active": "آخر نشاط:",
         "email": "البريد الإلكتروني",
         "location": "الموقع",

@@ -2,6 +2,7 @@ import { mapCertificate } from '@/features/candidate-credentials/services/certif
 import { mapLicense } from '@/features/candidate-credentials/services/license-utils';
 import { mapQualification } from '@/features/candidate-credentials/services/qualification-utils';
 import { resolveStorageUrl } from '@/shared/lib/storage-url';
+import { CANDIDATE_JOB_SEARCH_STATUSES } from '../constants/candidate-job-search-status';
 import { MISSING_API_VALUE } from '../constants/project-queries';
 import type {
   CandidateProfileApiItem,
@@ -116,7 +117,8 @@ export function mapCandidateProfile(
   const experience = lookupName(item.experience);
   const preference = item.preference;
   const industry = lookupName(item.domain);
-  const jobSearchStatus = item.job_search_status;
+  const jobSearchStatus =
+    preference === null ? null : preference?.job_search_status;
   const jobSearchStatusValue =
     typeof jobSearchStatus === 'object' && jobSearchStatus !== null
       ? jobSearchStatus.value
@@ -214,8 +216,10 @@ export function mapCandidateProfile(
       missing_score_items: [],
     },
     summary: {
-      isOpenToWork: jobSearchStatusValue === 'open_to_work',
-      openToWorkPlaceholder:
+      jobSearchStatus: CANDIDATE_JOB_SEARCH_STATUSES.find(
+        ({ value }) => value === jobSearchStatusValue,
+      )?.value,
+      jobSearchStatusPlaceholder:
         jobSearchStatusValue == null
           ? placeholder(jobSearchStatusValue)
           : undefined,

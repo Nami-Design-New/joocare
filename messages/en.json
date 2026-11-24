@@ -1937,6 +1937,9 @@
       "candidate-profile": {
         "profile-image": "{name} profile photo",
         "open-to-work": "Open to Work",
+        "actively-looking": "Actively Looking",
+        "open-to-opportunities": "Open to Opportunities",
+        "job-search-status": "Job Search Status",
         "last-active": "Last active:",
         "email": "Email",
         "location": "Location",

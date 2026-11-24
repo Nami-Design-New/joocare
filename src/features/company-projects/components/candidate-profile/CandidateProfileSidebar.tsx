@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import type { CandidateProfileViewModel } from '@/features/candidate-profile/types/profile.types';
+import { cn } from '@/shared/lib/utils';
+import { CANDIDATE_JOB_SEARCH_STATUSES } from '../../constants/candidate-job-search-status';
 import type {
   CandidateProfileDetailKey,
   CandidateProfileSummary,
@@ -22,12 +24,20 @@ export default function CandidateProfileSidebar({
   summary,
 }: CandidateProfileSidebarProps) {
   const t = useTranslations('companyPage.projects.candidate-profile');
+  const status = CANDIDATE_JOB_SEARCH_STATUSES.find(
+    ({ value }) => value === summary.jobSearchStatus,
+  );
 
   return (
     <aside className="flex flex-col gap-7 rounded-2xl border bg-card p-4">
       <section className="flex flex-col items-center gap-3 text-center">
         <div className="flex flex-col items-center">
-          <span className="rounded-full border-[3px] border-primary p-[3px]">
+          <span
+            className={cn(
+              'rounded-full border-[3px] p-[3px]',
+              status?.borderClassName ?? 'border-primary',
+            )}
+          >
             <Image
               src={profile.image ?? DEFAULT_PROFILE_IMAGE}
               alt={t('profile-image', { name: profile.name })}
@@ -36,14 +46,20 @@ export default function CandidateProfileSidebar({
               className="size-28 rounded-full object-cover sm:size-37.5"
             />
           </span>
-          {summary.isOpenToWork && (
-            <span className="-mt-3.5 rounded-full border-2 border-card bg-primary px-3 py-0.5 text-[13px] font-semibold text-primary-foreground">
-              {t('open-to-work')}
+          {status && (
+            <span
+              className={cn(
+                '-mt-3.5 max-w-full rounded-full border-2 border-card px-3 py-0.5 text-[13px] font-semibold text-primary-foreground',
+                status.badgeClassName,
+              )}
+            >
+              {t(status.label)}
             </span>
           )}
-          {summary.openToWorkPlaceholder && (
+          {summary.jobSearchStatusPlaceholder && (
             <p className="mt-2 text-xs text-muted-foreground">
-              {t('open-to-work')} <bdi>{summary.openToWorkPlaceholder}</bdi>
+              {t('job-search-status')}{' '}
+              <bdi>{summary.jobSearchStatusPlaceholder}</bdi>
             </p>
           )}
         </div>

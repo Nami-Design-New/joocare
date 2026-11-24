@@ -11,6 +11,7 @@ import type {
   QualificationViewModel,
 } from '@/features/candidate-credentials/types/qualification.types';
 import type { CandidateProfileViewModel } from '@/features/candidate-profile/types/profile.types';
+import type { CANDIDATE_JOB_SEARCH_STATUSES } from '../constants/candidate-job-search-status';
 
 export type CandidateProfileDetailKey =
   | 'email'
@@ -41,9 +42,12 @@ export type CandidateCareerPreferences = {
   willingToRelocate: string;
 };
 
+export type CandidateJobSearchStatus =
+  (typeof CANDIDATE_JOB_SEARCH_STATUSES)[number]['value'];
+
 export type CandidateProfileSummary = {
-  isOpenToWork: boolean;
-  openToWorkPlaceholder?: CandidateProfilePlaceholder;
+  jobSearchStatus?: CandidateJobSearchStatus;
+  jobSearchStatusPlaceholder?: CandidateProfilePlaceholder;
   lastActive: string | null;
   details: CandidateProfileDetail[];
   languages: CandidateProfileList;
@@ -104,11 +108,11 @@ export type CandidateProfileApiItem = {
   experience: ProfileLookupApiItem | null;
   religion: ProfileLookupApiItem | null;
   domain?: ProfileLookupApiItem | null;
-  job_search_status?: string | { value?: string | null } | null;
   last_active_at?: string | null;
   has_driving_license?: boolean | null;
   willing_to_relocate?: boolean | null;
   preference?: {
+    job_search_status?: string | { value?: string | null } | null;
     desired_designations?: ProfileLookupApiItem[] | null;
     notice_period?: string | ProfileLookupApiItem | null;
   } | null;
