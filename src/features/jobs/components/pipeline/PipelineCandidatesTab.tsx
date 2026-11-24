@@ -108,8 +108,7 @@ export default function PipelineCandidatesTab({
               router.push({
                 pathname: CHAT_ROUTES.company,
                 query: {
-                  conversation: `user-${candidate.userId}`,
-                  candidateId: candidate.userId,
+                  conversation: String(candidate.userId),
                   candidateName: candidate.name,
                   candidateImage: candidate.image,
                 },

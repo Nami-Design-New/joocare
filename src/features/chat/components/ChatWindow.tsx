@@ -22,6 +22,7 @@ type ChatWindowProps = {
   /** Company only: close / reopen the conversation. */
   onClose?: () => void;
   onReopen?: () => void;
+  closePending?: boolean;
   onSend: (
     message: SendChatMessage,
   ) => void | boolean | Promise<void | boolean>;
@@ -39,6 +40,7 @@ export default function ChatWindow({
   onBack,
   onClose,
   onReopen,
+  closePending,
   onSend,
   onDismissWarning,
   onPreview,
@@ -60,6 +62,7 @@ export default function ChatWindow({
         onBack={onBack}
         onClose={onClose}
         onReopen={onReopen}
+        closePending={closePending}
       />
       <ChatTimeline
         role={role}
@@ -73,11 +76,12 @@ export default function ChatWindow({
         ref={composerContainer}
         className="shrink-0 space-y-3 px-4 pt-2 pb-5 md:px-6"
       >
-        {conversation.closedAt ? (
+        {conversation.closed ? (
           <ChatClosedNotice
             role={role}
             conversation={conversation}
             onReopen={onReopen}
+            pending={closePending}
           />
         ) : (
           <>
@@ -85,6 +89,7 @@ export default function ChatWindow({
               <ChatContactWarning
                 name={conversation.name}
                 recruiter={conversation.recruiter}
+                contactedAt={conversation.contactedAt}
                 onDismiss={onDismissWarning}
               />
             )}

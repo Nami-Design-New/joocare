@@ -6,12 +6,14 @@ import ChatIcon from './ChatIcon';
 type ChatContactWarningProps = {
   name: string;
   recruiter: string;
+  contactedAt?: string;
   onDismiss: () => void;
 };
 
 export default function ChatContactWarning({
   name,
   recruiter,
+  contactedAt = '',
   onDismiss,
 }: ChatContactWarningProps) {
   const t = useTranslations('companyPage.chat');
@@ -30,7 +32,7 @@ export default function ChatContactWarning({
           {t('already-contacted-description', {
             name,
             recruiter,
-            date: formatChatDate('2026-09-12T15:20:00Z', locale),
+            date: formatChatDate(contactedAt, locale),
           })}
         </p>
       </div>

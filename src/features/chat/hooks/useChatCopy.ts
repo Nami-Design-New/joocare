@@ -10,17 +10,20 @@ export function useChatCopy(role: ChatRole) {
   const tCandidate = useTranslations('candidatePage.chat');
   const locale = useLocale();
   const isCandidate = role === 'candidate';
+  const closedLabel = isCandidate
+    ? tCandidate('conversation-closed')
+    : tCompany('chat-closed');
 
   return {
     listTitle: isCandidate ? tCandidate('list-title') : tCompany('inbox'),
     searchPlaceholder: isCandidate
       ? tCandidate('search-placeholder')
       : tCompany('search-placeholder'),
-    closedLabel: isCandidate
-      ? tCandidate('conversation-closed')
-      : tCompany('chat-closed'),
+    closedLabel,
     closedTimeline: (conversation: ChatConversation) => {
-      const date = formatChatDate(conversation.closedAt ?? '', locale);
+      // The close date comes with `closed_at` (pending on the backend).
+      if (!conversation.closedAt) return closedLabel;
+      const date = formatChatDate(conversation.closedAt, locale);
       return isCandidate
         ? tCandidate('closed-by-company', {
             company: conversation.companyName ?? conversation.name,

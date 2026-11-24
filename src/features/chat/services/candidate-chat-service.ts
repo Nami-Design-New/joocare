@@ -5,33 +5,22 @@ import type {
   CandidateChatApiConversation,
   ChatApiId,
   ChatApiMessage,
-} from '../types/candidate-chat-api.types';
-
-const PAGE_SIZE = 20;
-
-type CandidateChatRequest = {
-  token: string;
-  locale: string;
-  page?: number;
-};
+  ChatApiMessages,
+} from '../types/chat-api.types';
+import {
+  createChatMessageBody,
+  getChatPageParams,
+  type ChatRequest,
+} from '../utils/chat-request';
 
 export async function getCandidateConversations({
   token,
   locale,
-  page = 1,
-}: CandidateChatRequest) {
-  const params = new URLSearchParams({
-    pagination: 'on',
-    limit_per_page: String(PAGE_SIZE),
-    page: String(page),
-  });
+  page,
+}: ChatRequest) {
   const { ok, data, message } = await apiFetch<CandidateChatApiConversation[]>(
-    `${getUserApiUrl()}/conversations?${params}`,
-    {
-      method: 'GET',
-      locale,
-      token,
-    },
+    `${getUserApiUrl()}/conversations?${getChatPageParams(page)}`,
+    { method: 'GET', locale, token },
   );
 
   if (!ok || !Array.isArray(data?.data)) {
@@ -44,25 +33,18 @@ export async function getCandidateConversations({
 export async function getCandidateMessages({
   token,
   locale,
-  page = 1,
+  page,
   companyAdminId,
-}: CandidateChatRequest & { companyAdminId: ChatApiId }) {
-  const params = new URLSearchParams({
+}: ChatRequest & { companyAdminId: ChatApiId }) {
+  const params = getChatPageParams(page, {
     company_admin_id: String(companyAdminId),
-    pagination: 'on',
-    limit_per_page: String(PAGE_SIZE),
-    page: String(page),
   });
-  const { ok, data, message } = await apiFetch<ChatApiMessage[]>(
+  const { ok, data, message } = await apiFetch<ChatApiMessages>(
     `${getUserApiUrl()}/messages?${params}`,
-    {
-      method: 'GET',
-      locale,
-      token,
-    },
+    { method: 'GET', locale, token },
   );
 
-  if (!ok || !Array.isArray(data?.data)) {
+  if (!ok || !Array.isArray(data?.data?.messages)) {
     throw new Error(message || 'Failed to load messages.');
   }
 
@@ -74,33 +56,17 @@ export async function sendCandidateMessage({
   locale,
   companyAdminId,
   value,
-}: {
-  token: string;
-  locale: string;
+}: Omit<ChatRequest, 'page'> & {
   companyAdminId: ChatApiId;
   value: SendChatMessage;
 }) {
-  const body = new FormData();
-  body.append('company_admin', String(companyAdminId));
-  body.append('message', value.text.trim());
-
-  if (value.reply?.id) {
-    body.append('replied_message_id', value.reply.id);
-  }
-
-  value.attachments.forEach((attachment) => {
-    if (attachment.file) {
-      body.append('images[]', attachment.file);
-    }
-  });
-
   const { ok, data, message } = await apiFetch<ChatApiMessage>(
     `${getUserApiUrl()}/messages`,
     {
       method: 'POST',
       locale,
       token,
-      body,
+      body: createChatMessageBody('company_admin_id', companyAdminId, value),
     },
   );
 

@@ -9,12 +9,14 @@ type ChatClosedNoticeProps = {
   conversation: ChatConversation;
   /** Only the side that closed the chat can reopen it. */
   onReopen?: () => void;
+  pending?: boolean;
 };
 
 export default function ChatClosedNotice({
   role,
   conversation,
   onReopen,
+  pending = false,
 }: ChatClosedNoticeProps) {
   const t = useTranslations('companyPage.chat');
   const copy = useChatCopy(role);
@@ -39,6 +41,8 @@ export default function ChatClosedNotice({
         <Button
           type="button"
           onClick={onReopen}
+          disabled={pending}
+          aria-busy={pending}
           className="h-10 rounded-xl bg-chat-primary px-4 text-sm font-semibold"
         >
           {t('reopen-chat')}

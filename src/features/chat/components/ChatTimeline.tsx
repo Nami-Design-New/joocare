@@ -38,7 +38,7 @@ export default function ChatTimeline({
   }, [
     conversation.id,
     conversation.messages.length,
-    conversation.closedAt,
+    conversation.closed,
     mobileConversationOpen,
   ]);
   return (
@@ -72,14 +72,14 @@ export default function ChatTimeline({
               <ChatMessageItem
                 message={message}
                 avatar={conversation.avatar}
-                closed={Boolean(conversation.closedAt)}
+                closed={conversation.closed}
                 onReply={onReply}
                 onPreview={onPreview}
                 onDownload={onDownload}
               />
             </Fragment>
           ))}
-          {conversation.closedAt && (
+          {conversation.closed && (
             <p
               className={cn(
                 'mx-auto w-fit rounded-full px-3 py-1 text-center text-xs leading-4',

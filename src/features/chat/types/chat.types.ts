@@ -40,20 +40,36 @@ export type ChatConversation = {
   lastMessage: string;
   updatedAt: string;
   unread: number;
+  /** Company conversations only: the recruiter who already contacted this candidate. */
   recruiter: string;
+  closed: boolean;
   closedAt?: string;
   alreadyContacted?: boolean;
+  contactedAt?: string;
   messages: ChatMessage[];
 };
 
-export type ChatScenario =
-  | 'conversation'
-  | 'image-and-reply'
-  | 'already-contacted'
-  | 'closed';
-export type ChatViewOptions = { superAdmin: boolean; scenario: ChatScenario };
 export type SendChatMessage = {
   text: string;
   attachments: ChatAttachment[];
   reply?: ChatReply;
+};
+
+/** Everything `ChatView` needs from a role hook (`useCandidateChat`, `useCompanyChat`). */
+export type ChatViewState = {
+  conversations: ChatConversation[];
+  activeConversation?: ChatConversation;
+  mobileConversationOpen: boolean;
+  search: string;
+  setSearch: (value: string) => void;
+  selectConversation: (id?: string) => void;
+  sendMessage: (message: SendChatMessage) => Promise<boolean>;
+  /** Company only. */
+  setClosed?: (closed: boolean) => void;
+  isClosePending?: boolean;
+  dismissContactWarning: () => void;
+  previewImage: ChatAttachment | null;
+  setPreviewImage: (attachment: ChatAttachment | null) => void;
+  downloadAttachment: (attachment: ChatAttachment) => void;
+  createObjectUrl: (file: File) => string;
 };

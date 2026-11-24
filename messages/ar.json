@@ -3635,6 +3635,8 @@
       "closed-by-you": "أغلقت المحادثة · {date}",
       "closed-success": "تم إغلاق المحادثة.",
       "reopened-success": "تمت إعادة فتح المحادثة.",
+      "close-failed": "تعذر إغلاق المحادثة. حاول مرة أخرى.",
+      "reopen-failed": "تعذر إعادة فتح المحادثة. حاول مرة أخرى.",
       "first-message": "أرسل رسالتك الأولى إلى {name} لبدء المحادثة.",
       "already-contacted-title": "تواصل مسؤول توظيف آخر مع المرشح بالفعل",
       "already-contacted-description": "تواصل {recruiter} (مسؤول التوظيف) مع {name} بتاريخ {date}. يمكنك إرسال رسالة أيضًا.",

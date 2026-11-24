@@ -22,5 +22,4 @@ Route: `/company/chat`. Feature: `src/features/chat` (`CompanyChatPage`, `useCom
 
 ## Backend questions
 
-- Company conversation list endpoint (like `USER/conversations`).
-- Attachments and closed-conversation state (same open question as the candidate side, Q-B11).
+See [chat-backend-requirements.md](chat-backend-requirements.md).
