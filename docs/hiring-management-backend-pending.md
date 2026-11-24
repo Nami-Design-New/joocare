@@ -72,7 +72,7 @@
 | 6.11 | 🟡 | البحث والفلتر والـ pagination لمرشحين المشروع من السيرفر | كلهم راجعين مرة واحدة في `GET projects/{id}`، فالبحث على الفرونت |
 | 6.12 | 🟠 | مشاركة مرشح واحد مع Hiring Manager (زرار المشاركة في صف المرشح) | مفيش endpoint |
 | 6.13 | 🔴 | `last_assessment` في `projects/{id}/users` بيرجع `null` لمرشح عنده تقييمات: المرشح 580 `assessments_count: 9` و`last_assessment: null` (كان بيرجع نتيجة 9 الصبح) | الصف بيظهر «Not assigned» مع إن عنده 9 تقييمات |
-| 6.14 | 🟠 | مصفوفة `assessments` جوه `user` في `GET C/projects/{id}/users`، بنفس شكل الـ pipeline: `id` (رقم النتيجة)، `assessment_id`، `title`، `source` (`job`/`manual`)، `status` (`passed`/`failed`/`absent`/`grace_period`)، `score` (نسبة)، `sent_at`، `due_at` | مش راجعة. مودال «Candidate Assessments» جاهز ومستنيها. لحد ما ترجع، «View all (n)» بيفتح آخر نتيجة. كمان `GET C/users/{id}/profile` بيرجّع **500** للمرشح 580 |
+| 6.14 | 🟠 | مصفوفة `assessments` جوه `user` في `GET C/projects/{id}/users`، بنفس شكل الـ pipeline: `id` (رقم النتيجة)، `assessment_id`، `title`، `source` (`job`/`manual`)، `status` (`passed`/`failed`/`absent`/`grace_period`)، `score` (نسبة)، `sent_at`، `due_at` | مش راجعة. مودال «Candidate Assessments» جاهز ومستنيها. لحد ما ترجع، «View all (n)» بيفتح آخر نتيجة. |
 
 ## 7. صفحة الـ Hiring Manager
 
@@ -87,7 +87,7 @@
 
 | # | الأولوية | المطلوب | الوضع الحالي |
 | - | -------- | ------- | ------------ |
-| 8.1 | 🔴 | `GET C/candidates/{userId}` يرجّع بيانات المرشح كاملة، ويفضّل بنفس شكل `GET U/auth/profile` | مفيش endpoint، و`candidates/search` بيرجّع بيانات مختصرة ومن غير فلتر بالـ ID |
+| 8.1 | ✅ | `GET C/users/{id}/profile` لعرض بروفايل المرشح عند الشركة | اتربط واتجرّب بنجاح للمرشح 580 باللغتين. بعض حقول الواجهة مثل آخر نشاط وفترة الإشعار غير موجودة في الرد |
 
 ## 9. جانب المرشح (بيأثر على فلو الشركة)
 

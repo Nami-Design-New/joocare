@@ -24,7 +24,6 @@ export function useCompanyChat(
       ...createChatPreview(options.scenario),
       ...externalInvitationSeeds.map((candidate) => ({
         id: `assessment-${candidate.id}`,
-        profileHref: `/company/candidate-profile?candidateId=${encodeURIComponent(candidate.id)}`,
         name: candidate.name,
         jobTitle: '',
         avatar: `${ASSESSMENT_ASSETS}/${candidate.image}`,
@@ -36,7 +35,6 @@ export function useCompanyChat(
       })),
       ...projectCandidatePreviewData.map((candidate) => ({
         id: `project-${candidate.id}`,
-        profileHref: `/company/candidate-profile?candidateId=${encodeURIComponent(candidate.id)}`,
         name: candidate.name,
         jobTitle: '',
         avatar: '/assets/company-projects/candidate-avatar.png',

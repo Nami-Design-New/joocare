@@ -5,6 +5,10 @@ type CandidateProfileChipsProps = {
 export default function CandidateProfileChips({
   items,
 }: CandidateProfileChipsProps) {
+  if (!items.length) {
+    return <p className="text-sm text-muted-foreground">-</p>;
+  }
+
   return (
     <ul className="flex flex-wrap gap-1.5">
       {items.map((item) => (

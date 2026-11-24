@@ -17,6 +17,7 @@ import type {
   ProjectsListPage,
 } from '../types/company-projects.types';
 import { MISSING_API_VALUE } from '../constants/project-queries';
+import type { CandidateProfileApiItem } from '../types/candidate-profile.types';
 
 // Splits "23 November 2026 , 9:30AM" into its date and time parts.
 function splitApiDateTime(value: string) {
@@ -296,4 +297,19 @@ export async function removeProjectCandidate(
     { method: 'DELETE', token, locale },
   );
   if (!ok) throw new Error(message ?? '');
+}
+
+export async function getCandidateProfile(
+  userId: string,
+  { token, locale }: ProjectRequestOptions,
+): Promise<CandidateProfileApiItem> {
+  const { ok, data, message, statusCode } =
+    await apiFetch<CandidateProfileApiItem>(
+      `${getCompanyApiUrl()}/users/${encodeURIComponent(userId)}/profile`,
+      { token, locale, cache: 'no-store' },
+    );
+  if (!ok || !data?.data) {
+    throw createHttpStatusError(statusCode, message ?? undefined);
+  }
+  return data.data;
 }

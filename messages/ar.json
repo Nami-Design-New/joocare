@@ -1964,7 +1964,36 @@
         "licenses": "التراخيص",
         "no-qualifications": "لا توجد مؤهلات مضافة بعد",
         "no-certificates": "لا توجد شهادات مضافة بعد",
-        "no-licenses": "لا توجد تراخيص مضافة بعد"
+        "no-licenses": "لا توجد تراخيص مضافة بعد",
+        "present": "حتى الآن",
+        "yes": "نعم",
+        "no": "لا",
+        "not-found": "المرشح غير موجود",
+        "not-found-description": "ملف المرشح غير متاح.",
+        "back-to-projects": "العودة إلى المشاريع",
+        "load-error": "تعذر تحميل ملف المرشح.",
+        "load-error-description": "حاول تحميل الملف مرة أخرى.",
+        "retry": "حاول مرة أخرى",
+        "values": {
+          "gender": {
+            "male": "ذكر",
+            "female": "أنثى"
+          },
+          "marital": {
+            "single": "أعزب",
+            "married": "متزوج",
+            "divorced": "مطلق",
+            "widowed": "أرمل"
+          },
+          "proficiency": {
+            "basic": "أساسي",
+            "beginner": "مبتدئ",
+            "intermediate": "متوسط",
+            "advanced": "متقدم",
+            "fluent": "بطلاقة",
+            "native": "اللغة الأم"
+          }
+        }
       },
       "shared-review": {
         "home": "الذهاب إلى الصفحة الرئيسية لأصحاب العمل",

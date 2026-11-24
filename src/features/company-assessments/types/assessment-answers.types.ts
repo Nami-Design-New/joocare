@@ -39,6 +39,7 @@ export type AssessmentNoteFormValues = { text: string };
 // What the header shows; filled by the results API or by preview data.
 export type AssessmentResultHeaderData = {
   candidate: {
+    userId?: string;
     name: string;
     email: string;
     image: string | null;

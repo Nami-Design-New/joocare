@@ -1964,7 +1964,36 @@
         "licenses": "Licenses",
         "no-qualifications": "No qualifications added yet",
         "no-certificates": "No certificates added yet",
-        "no-licenses": "No licenses added yet"
+        "no-licenses": "No licenses added yet",
+        "present": "Present",
+        "yes": "Yes",
+        "no": "No",
+        "not-found": "Candidate not found",
+        "not-found-description": "This candidate profile is unavailable.",
+        "back-to-projects": "Back to projects",
+        "load-error": "Unable to load the candidate profile.",
+        "load-error-description": "Please try loading this profile again.",
+        "retry": "Try again",
+        "values": {
+          "gender": {
+            "male": "Male",
+            "female": "Female"
+          },
+          "marital": {
+            "single": "Single",
+            "married": "Married",
+            "divorced": "Divorced",
+            "widowed": "Widowed"
+          },
+          "proficiency": {
+            "basic": "Basic",
+            "beginner": "Beginner",
+            "intermediate": "Intermediate",
+            "advanced": "Advanced",
+            "fluent": "Fluent",
+            "native": "Native"
+          }
+        }
       },
       "shared-review": {
         "home": "Go to the employers homepage",

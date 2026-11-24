@@ -14,6 +14,7 @@ import {
 } from '@/shared/components/ui/dropdown-menu';
 import { Link } from '@/i18n/navigation';
 import { CHAT_ROUTES } from '@/features/chat/constants';
+import { getCandidateProfileHref } from '@/features/company-projects/utils/candidate-profile-href';
 import { cn } from '@/shared/lib/utils';
 import {
   ASSESSMENT_ASSETS,
@@ -61,24 +62,39 @@ export default function ExternalInvitationsTable({
       id: 'name',
       header: t('name'),
       headerClassName: 'w-[21%]',
-      renderCell: (candidate) => (
-        <button
-          type="button"
-          onClick={() => onInspect(candidate)}
-          className="flex w-full items-center gap-2.5 text-start"
-        >
-          <Image
-            src={getCandidateImageSrc(candidate.image)}
-            width={32}
-            height={32}
-            alt=""
-            className="size-8 shrink-0 rounded-full object-cover"
-          />
-          <span className="truncate text-sm font-semibold text-assessment-primary underline underline-offset-2">
-            {candidate.name}
-          </span>
-        </button>
-      ),
+      renderCell: (candidate) => {
+        const className = 'flex w-full items-center gap-2.5 text-start';
+        const identity = (
+          <>
+            <Image
+              src={getCandidateImageSrc(candidate.image)}
+              width={32}
+              height={32}
+              alt=""
+              className="size-8 shrink-0 rounded-full object-cover"
+            />
+            <span className="truncate text-sm font-semibold text-assessment-primary underline underline-offset-2">
+              {candidate.name}
+            </span>
+          </>
+        );
+        return candidate.userId ? (
+          <Link
+            href={getCandidateProfileHref(candidate.userId)}
+            className={className}
+          >
+            {identity}
+          </Link>
+        ) : (
+          <button
+            type="button"
+            onClick={() => onInspect(candidate)}
+            className={className}
+          >
+            {identity}
+          </button>
+        );
+      },
     },
     {
       id: 'email',
@@ -229,7 +245,14 @@ export default function ExternalInvitationsTable({
           <Link
             href={{
               pathname: CHAT_ROUTES.company,
-              query: { conversation: `assessment-${candidate.id}` },
+              query: candidate.userId
+                ? {
+                    conversation: `user-${candidate.userId}`,
+                    candidateId: candidate.userId,
+                    candidateName: candidate.name,
+                    candidateImage: getCandidateImageSrc(candidate.image),
+                  }
+                : { conversation: `assessment-${candidate.id}` },
             }}
             aria-label={t('chat-with', { name: candidate.name })}
           >

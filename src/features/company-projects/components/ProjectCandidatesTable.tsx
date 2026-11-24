@@ -11,6 +11,7 @@ import DataTable, {
 import { Button } from '@/shared/components/ui/button';
 import { getAssessmentResultHref } from '@/features/company-assessments/utils/candidate-assessments';
 import { cn } from '@/shared/lib/utils';
+import { getCandidateProfileHref } from '../utils/candidate-profile-href';
 import type {
   CandidateAction,
   ProjectCandidate,
@@ -71,7 +72,7 @@ function CandidateIdentity({
   onViewNote,
 }: {
   candidate: ProjectCandidate;
-  /** Omitted while real candidates have no profile page to open. */
+  /** Only API candidates with a user id can open the profile. */
   profileHref?: string;
   onViewNote: () => void;
 }) {
@@ -354,6 +355,11 @@ export default function ProjectCandidatesTable({
       renderCell: (candidate) => (
         <CandidateIdentity
           candidate={candidate}
+          profileHref={
+            candidate.userId
+              ? getCandidateProfileHref(candidate.userId)
+              : undefined
+          }
           onViewNote={() => onViewNote(candidate.id)}
         />
       ),

@@ -51,13 +51,15 @@ export default function CandidateProfileSidebar({
               {profile.jobTitle}
             </p>
           )}
-          <p className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
-            <span
-              aria-hidden="true"
-              className="size-1.5 rounded-full bg-gray-45"
-            />
-            {t('last-active')} <bdi>{summary.lastActive}</bdi>
-          </p>
+          {summary.lastActive && (
+            <p className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
+              <span
+                aria-hidden="true"
+                className="size-1.5 rounded-full bg-muted-foreground"
+              />
+              {t('last-active')} <bdi>{summary.lastActive}</bdi>
+            </p>
+          )}
         </div>
       </section>
 

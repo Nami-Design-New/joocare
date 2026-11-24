@@ -16,6 +16,11 @@ export const projectQueryKeys = {
     locale,
     projectId,
   ],
+  candidateProfile: (locale: string, userId: string) => [
+    'company-candidate-profile',
+    locale,
+    userId,
+  ],
   project: (locale: string, projectId: string) => [
     'company-project',
     locale,
