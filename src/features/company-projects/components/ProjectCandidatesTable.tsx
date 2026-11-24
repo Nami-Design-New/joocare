@@ -41,6 +41,7 @@ function getAssessmentClass(
 ) {
   if (assessment === 'Passed') return 'bg-success/10 text-success';
   if (assessment === 'Failed') return 'bg-destructive/10 text-destructive';
+  if (assessment === 'Pending') return 'bg-warning/15 text-warning-strong';
   return 'bg-muted text-muted-foreground';
 }
 
@@ -50,6 +51,8 @@ function getAssessmentLabelKey(
   return {
     Passed: 'passed',
     Failed: 'failed',
+    Pending: 'assessment-pending',
+    Absent: 'assessment-absent',
     'Not assigned': 'not-assigned',
   }[assessment];
 }

@@ -2022,7 +2022,7 @@
         "name-too-long": "Project name must be 100 characters or fewer.",
         "create-submit": "Create Project",
         "creating": "Creating...",
-        "created-toast": "{project} was created for {name}.",
+        "created-toast": "{project} was created.",
         "link-title": "Add Candidate to Project",
         "link-description": "Choose projects to add {name} to.",
         "search-projects": "Search projects...",
@@ -2053,7 +2053,12 @@
       "sharing": "Sharing...",
       "share-error": "Couldn't share the project. Try again.",
       "all-managers-shared": "This project is already shared with every hiring manager.",
-      "view-all-assessments": "View all ({count})"
+      "view-all-assessments": "View all ({count})",
+      "candidate-removed": "Candidate removed from the project.",
+      "remove-error": "Couldn't remove the candidate. Try again.",
+      "candidates-load-error": "Couldn't load the project candidates.",
+      "assessment-pending": "Pending",
+      "assessment-absent": "Absent"
     },
     "roles": {
       "title": "Roles",

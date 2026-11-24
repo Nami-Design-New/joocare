@@ -15,7 +15,7 @@ import { useCreateProject } from './useCreateProject';
 type LinkedToProjects = { name: string; count: number };
 
 // Create a project / add a candidate to projects. Candidates without a real
-// `userId` (talent database preview data) keep the preview behaviour.
+// `userId` (talent database preview data) keep the preview behaviour when added.
 export function useCandidateProjectActions() {
   const t = useTranslations('companyPage.projects.candidate-projects');
   const [action, setAction] = useState<CandidateProjectAction>(null);
@@ -24,30 +24,16 @@ export function useCandidateProjectActions() {
   const assignMutation = useAssignCandidatesToProjects();
   const close = () => setAction(null);
 
+  // Creates the project only; adding the candidate is done from "Add to Project".
   async function createProject({ name }: TCreateProjectSchema) {
     if (!action || createMutation.isPending) return;
-    const { candidate } = action;
-    let projectId: string;
     try {
-      projectId = await createMutation.mutateAsync(name);
+      await createMutation.mutateAsync(name);
     } catch {
       // useCreateProject shows the error; keep the form open to retry.
       return;
     }
-    if (candidate.userId) {
-      try {
-        await assignMutation.mutateAsync({
-          userIds: [candidate.userId],
-          projectIds: [projectId],
-        });
-      } catch {
-        // The project exists; the assign hook already showed why the
-        // candidate could not be added.
-        close();
-        return;
-      }
-    }
-    toast.success(t('created-toast', { project: name, name: candidate.name }));
+    toast.success(t('created-toast', { project: name }));
     close();
   }
 

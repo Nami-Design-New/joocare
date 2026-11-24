@@ -38,6 +38,8 @@ export default function CandidatePreviewModal({
     ? {
         Passed: 'passed',
         Failed: 'failed',
+        Pending: 'assessment-pending',
+        Absent: 'assessment-absent',
         'Not assigned': 'not-assigned',
       }[candidate.assessment]
     : null;

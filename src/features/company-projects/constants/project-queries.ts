@@ -11,6 +11,11 @@ export const projectQueryKeys = {
     page,
   ],
   hiringManagers: (locale: string) => ['company-hiring-managers', locale],
+  projectCandidates: (locale: string, projectId: string) => [
+    'company-project-candidates',
+    locale,
+    projectId,
+  ],
   project: (locale: string, projectId: string) => [
     'company-project',
     locale,
@@ -22,6 +27,7 @@ export const projectQueryKeys = {
 export const PROJECT_QUERY_PREFIXES = [
   ['company-projects'],
   ['company-project'],
+  ['company-project-candidates'],
   [PROJECT_OPTIONS_QUERY_KEY],
 ];
 
