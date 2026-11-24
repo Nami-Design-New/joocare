@@ -8,10 +8,11 @@ import { useRouter } from '@/i18n/navigation';
 import { InputField } from '@/shared/components/InputField';
 import PasswordRequirements from '@/shared/components/PasswordRequirements';
 import { Button } from '@/shared/components/ui/button';
+import { HIRING_MANAGER_ROUTES } from '../../constants/hiring-manager-routes';
 import {
   createNewPasswordSchema,
   TNewPasswordSchema,
-} from '../../validation/new-password-schema';
+} from '@/features/auth/validation/new-password-schema';
 
 export default function FormCreatePassword() {
   const t = useTranslations();
@@ -45,7 +46,7 @@ export default function FormCreatePassword() {
   const confirmNewPassword = useWatch({ control, name: 'confirmNewPassword' });
 
   const onSubmit = handleSubmit(() => {
-    router.push('/hiring-manager/shared-projects/emergency-hiring');
+    router.push(HIRING_MANAGER_ROUTES.login);
   });
 
   useEffect(() => {
