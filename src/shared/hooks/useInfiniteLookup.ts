@@ -16,6 +16,8 @@ type InfiniteLookupOptions = {
   enabled?: boolean;
   loadPage?: (page: number) => Promise<{ next_page_url?: string | null }>;
   scope?: string;
+  /** Refetch on mount when stale (the app turns this off by default). */
+  refetchOnMount?: boolean;
 };
 
 export function useInfiniteLookup({
@@ -27,6 +29,7 @@ export function useInfiniteLookup({
   enabled = true,
   loadPage,
   scope,
+  refetchOnMount,
 }: InfiniteLookupOptions) {
   const locale = useLocale();
 
@@ -41,6 +44,7 @@ export function useInfiniteLookup({
     ],
     initialPageParam: 1,
     enabled,
+    ...(refetchOnMount === undefined ? {} : { refetchOnMount }),
     queryFn: async ({ pageParam }) => {
       if (loadPage) return loadPage(pageParam);
       const params = new URLSearchParams({

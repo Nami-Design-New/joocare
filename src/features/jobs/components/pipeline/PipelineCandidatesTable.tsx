@@ -127,6 +127,10 @@ export default function PipelineCandidatesTable({
       cellClassName: 'w-[11%]',
       renderCell: (candidate) => {
         const date = new Date(candidate.appliedAt);
+        // The API sends relative text ("just now"); show it as is.
+        if (Number.isNaN(date.getTime())) {
+          return <span className="text-sm">{candidate.appliedAt}</span>;
+        }
         return (
           <div className="flex flex-col text-sm">
             <span>

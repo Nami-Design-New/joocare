@@ -4,6 +4,8 @@ import { useState } from 'react';
 import type { MessageRecipient } from '@/features/company-talent-database/types/talent-database.types';
 import type { PipelineCandidate } from '../types/job-candidates.types';
 import { useDownloadCandidateCv } from './useDownloadCandidateCv';
+import { useGetPinnedCandidateIds } from './useGetPinnedCandidateIds';
+import { useToggleCandidatePin } from './useToggleCandidatePin';
 import useGetApplicationsCandidates from './useGetApplicationsCandidates';
 import { usePipelineFilters } from './usePipelineFilters';
 
@@ -24,9 +26,9 @@ export function usePipelineCandidates(jobId: number) {
   });
   const download = useDownloadCandidateCv();
   const [selected, setSelected] = useState<MessageRecipient[]>([]);
-  const [starOverrides, setStarOverrides] = useState<Record<string, boolean>>(
-    {},
-  );
+  // Stars are the company's pinned candidates (by user id).
+  const pinnedIds = useGetPinnedCandidateIds();
+  const togglePin = useToggleCandidatePin();
   const [messageOpen, setMessageOpen] = useState(false);
   const [sentCount, setSentCount] = useState(0);
   const [cvCandidate, setCvCandidate] = useState<PipelineCandidate | null>(
@@ -85,13 +87,9 @@ export function usePipelineCandidates(jobId: number) {
     toggleCandidate,
     toggleAll,
     isStarred: (candidate: PipelineCandidate) =>
-      starOverrides[candidate.id] ?? candidate.isStarred,
-    // Local until the star endpoint exists.
+      pinnedIds.data?.includes(candidate.userId) ?? candidate.isStarred,
     toggleStar: (candidate: PipelineCandidate) =>
-      setStarOverrides((current) => ({
-        ...current,
-        [candidate.id]: !(current[candidate.id] ?? candidate.isStarred),
-      })),
+      togglePin.toggle(candidate.userId),
     messageOpen,
     setMessageOpen,
     sentCount,

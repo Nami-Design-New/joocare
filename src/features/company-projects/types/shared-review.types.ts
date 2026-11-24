@@ -1,6 +1,6 @@
 import type { ProjectCandidate } from './company-projects.types';
 
-export type CandidateDecision = ProjectCandidate['status'];
+export type CandidateDecision = NonNullable<ProjectCandidate['status']>;
 
 export type SharedReviewCandidate = ProjectCandidate & {
   specialty: string;

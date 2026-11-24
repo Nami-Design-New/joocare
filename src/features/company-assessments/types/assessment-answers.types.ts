@@ -1,9 +1,6 @@
 import type { BaseSyntheticEvent } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import type {
-  ExternalInvitation,
-  InvitationStatus,
-} from './assessment-invitation.types';
+import type { InvitationStatus } from './assessment-invitation.types';
 
 export type AssessmentAnswerOption = {
   id: string;
@@ -35,24 +32,6 @@ export type AssessmentNote = {
   createdAt: string;
   text: string;
   edited?: boolean;
-};
-
-export type CandidateAssessmentResult = {
-  candidate: ExternalInvitation;
-  assessmentTitle: string;
-  assessmentHref?: string;
-  backHref: string;
-  sentAt: string;
-  startedAt: string;
-  finishedAt: string;
-  durationSeconds: number;
-  questions: AssessmentAnswerQuestion[];
-};
-
-export type CandidateAssessmentPageProps = {
-  assessmentId: string;
-  candidateId: string;
-  categoryId: string;
 };
 
 export type AssessmentNoteFormValues = { text: string };

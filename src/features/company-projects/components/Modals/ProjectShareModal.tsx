@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { X } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { LoaderCircle, X } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import SuccessModal from '@/shared/components/modals/SuccessModal';
@@ -14,32 +14,62 @@ import {
 } from '@/shared/components/ui/dialog';
 import { SelectInputField } from '@/shared/components/SelectInputField';
 import { Textarea } from '@/shared/components/ui/textarea';
-import {
-  hiringManagers,
-  projectShareMessage,
-} from '../../constants/project-preview-data';
+import { projectShareMessage } from '../../constants/project-preview-data';
+import { useGetHiringManagers } from '../../hooks/useGetHiringManagers';
+import { useShareProject } from '../../hooks/useShareProject';
 import type { CompanyProject } from '../../types/company-projects.types';
 
 type ProjectShareModalProps = {
   project: CompanyProject;
   onClose: () => void;
-  onShare: (projectId: string, manager: string) => void;
 };
 
 export default function ProjectShareModal({
   project,
   onClose,
-  onShare,
 }: ProjectShareModalProps) {
   const t = useTranslations('companyPage.projects');
   const [modalContent, setModalContent] = useState<HTMLDivElement | null>(null);
-  const [manager, setManager] = useState('');
+  const [managerId, setManagerId] = useState('');
   const [message, setMessage] = useState(projectShareMessage);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const managers = useGetHiringManagers();
+  const shareMutation = useShareProject();
+  const isPending = shareMutation.isPending;
+  // Blocks a second click before `isPending` re-renders.
+  const inFlight = useRef(false);
+  // Sharing again with the same hiring manager fails on the API, so managers
+  // the project is already shared with are left out.
+  const sharedIds = project.shareLogs.map((log) => log.id);
+  const managerOptions = (managers.data ?? [])
+    .filter((item) => !sharedIds.includes(item.id))
+    .map((item) => ({ value: item.id, label: item.name }));
+  const manager =
+    managerOptions.find((item) => item.value === managerId)?.label ?? '';
+  const noManagers = managers.isSuccess && !managers.data.length;
+  const allShared =
+    managers.isSuccess && managers.data.length > 0 && !managerOptions.length;
+
+  const submit = () => {
+    if (inFlight.current || !managerId || !message.trim()) return;
+    inFlight.current = true;
+    shareMutation.mutate(
+      { projectId: project.id, managerId, note: message },
+      {
+        onSuccess: () => setIsSubmitted(true),
+        onSettled: () => {
+          inFlight.current = false;
+        },
+      },
+    );
+  };
 
   return (
     <>
-      <Modal open={!isSubmitted} onOpenChange={(open) => !open && onClose()}>
+      <Modal
+        open={!isSubmitted}
+        onOpenChange={(open) => !open && !isPending && onClose()}
+      >
         <ModalContent
           ref={setModalContent}
           showCloseButton={false}
@@ -53,6 +83,7 @@ export default function ProjectShareModal({
               <button
                 type="button"
                 onClick={onClose}
+                disabled={isPending}
                 aria-label={t('close')}
                 className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"
               >
@@ -65,13 +96,37 @@ export default function ProjectShareModal({
             <SelectInputField
               id="project-hiring-manager"
               label={t('hiring-manager')}
-              options={hiringManagers.map((value) => ({ value, label: value }))}
-              value={manager}
-              onChange={setManager}
-              placeholder={t('select-hiring-manager')}
+              options={managerOptions}
+              value={managerId}
+              onChange={setManagerId}
+              placeholder={t(
+                managers.isLoading
+                  ? 'loading-hiring-managers'
+                  : 'select-hiring-manager',
+              )}
+              disabled={isPending || !managerOptions.length}
               className="h-12 bg-card"
               portalContainer={modalContent}
             />
+            {managers.isError ? (
+              <p role="alert" className="flex items-center gap-2 text-sm">
+                <span className="text-destructive">
+                  {t('hiring-managers-error')}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => void managers.refetch()}
+                  className="font-medium text-primary underline underline-offset-2"
+                >
+                  {t('retry')}
+                </button>
+              </p>
+            ) : null}
+            {noManagers || allShared ? (
+              <p className="text-sm text-muted-foreground">
+                {t(noManagers ? 'no-hiring-managers' : 'all-managers-shared')}
+              </p>
+            ) : null}
             <div className="space-y-2">
               <label
                 htmlFor="project-share-message"
@@ -83,6 +138,7 @@ export default function ProjectShareModal({
                 id="project-share-message"
                 value={message}
                 onChange={(event) => setMessage(event.currentTarget.value)}
+                disabled={isPending}
                 className="min-h-48 resize-y rounded-2xl bg-muted/60 p-4 text-sm leading-6"
               />
             </div>
@@ -92,13 +148,13 @@ export default function ProjectShareModal({
             type="button"
             size="pill"
             className="h-12 w-full"
-            disabled={!manager || !message.trim()}
-            onClick={() => {
-              onShare(project.id, manager);
-              setIsSubmitted(true);
-            }}
+            disabled={!managerId || !message.trim() || isPending}
+            onClick={submit}
           >
-            {t('submit')}
+            {isPending && (
+              <LoaderCircle aria-hidden className="size-4 animate-spin" />
+            )}
+            {t(isPending ? 'sharing' : 'submit')}
           </Button>
         </ModalContent>
       </Modal>

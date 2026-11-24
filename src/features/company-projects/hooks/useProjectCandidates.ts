@@ -2,10 +2,6 @@
 
 import { useMemo, useState } from 'react';
 import { downloadFile } from '@/shared/lib/download-file';
-import {
-  projectCandidatePreviewData,
-  projectPreviewData,
-} from '../constants/project-preview-data';
 import type {
   CandidateAction,
   ProjectCandidate,
@@ -14,10 +10,17 @@ import { getCandidateCvFileName } from '../utils/candidate-preview';
 
 const CANDIDATE_PAGE_SIZE = 4;
 
-export function useProjectCandidatesPreview(projectId: string) {
-  const project =
-    projectPreviewData.find((item) => item.id === projectId) ?? null;
-  const [candidates, setCandidates] = useState(projectCandidatePreviewData);
+// Search, status filter and paging over the candidates of GET /projects/{id}.
+// Removing a candidate has no API yet, so it only hides the row locally.
+export function useProjectCandidates(projectCandidates: ProjectCandidate[]) {
+  const [removedIds, setRemovedIds] = useState<string[]>([]);
+  const candidates = useMemo(
+    () =>
+      projectCandidates.filter(
+        (candidate) => !removedIds.includes(candidate.id),
+      ),
+    [projectCandidates, removedIds],
+  );
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
@@ -56,9 +59,7 @@ export function useProjectCandidatesPreview(projectId: string) {
     const remainingCount = filteredCandidates.filter(
       (candidate) => candidate.id !== candidateId,
     ).length;
-    setCandidates((current) =>
-      current.filter((candidate) => candidate.id !== candidateId),
-    );
+    setRemovedIds((current) => [...current, candidateId]);
     setPage((current) =>
       Math.min(
         current,
@@ -82,7 +83,6 @@ export function useProjectCandidatesPreview(projectId: string) {
   };
 
   return {
-    project,
     candidates: visibleCandidates,
     totalCandidates: candidates.length,
     filteredCount: filteredCandidates.length,

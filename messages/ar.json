@@ -1895,7 +1895,6 @@
       "share-log-subtitle": "{project} · تمت المشاركة {count} مرات",
       "date-sent": "تاريخ الإرسال",
       "sent-to-hiring-manager": "أُرسل إلى (مدير التوظيف)",
-      "recruiter-role": "مسؤول التوظيف",
       "manager": "مسؤول التوظيف",
       "shared-by": "تمت المشاركة بواسطة",
       "date": "التاريخ",
@@ -2034,8 +2033,27 @@
         "adding": "جارٍ الإضافة...",
         "link-submit": "إضافة إلى المشروع",
         "linked-toast": "تمت إضافة {name} إلى {count, plural, one {مشروع واحد} other {# مشاريع}}.",
-        "linked-success": "تم ربط المرشح بالمشروع بنجاح"
-      }
+        "linked-success": "تم ربط المرشح بالمشروع بنجاح",
+        "projects-load-error": "تعذّر تحميل المشاريع.",
+        "retry": "إعادة المحاولة",
+        "assign-error": "تعذّر إضافة المرشح إلى المشروع. حاول مرة أخرى."
+      },
+      "project-renamed": "تم تعديل اسم المشروع.",
+      "project-save-error": "تعذّر تعديل المشروع. حاول مرة أخرى.",
+      "project-deleted": "تم حذف المشروع.",
+      "project-delete-error": "تعذّر حذف المشروع. حاول مرة أخرى.",
+      "load-error": "تعذّر تحميل المشاريع. حاول مرة أخرى.",
+      "retry": "إعادة المحاولة",
+      "saving": "جارٍ الحفظ…",
+      "not-found": "المشروع غير موجود",
+      "not-found-description": "تم حذف هذا المشروع أو لم يعد متاحًا.",
+      "loading-hiring-managers": "جارٍ تحميل مديري التوظيف...",
+      "hiring-managers-error": "تعذّر تحميل مديري التوظيف.",
+      "no-hiring-managers": "لا يوجد مديرو توظيف بعد. أضف عضوًا بدور مدير التوظيف من صفحة أدوار المشرفين.",
+      "sharing": "جارٍ المشاركة...",
+      "share-error": "تعذّرت مشاركة المشروع. حاول مرة أخرى.",
+      "all-managers-shared": "هذا المشروع تمت مشاركته بالفعل مع كل مديري التوظيف.",
+      "view-all-assessments": "عرض الكل ({count})"
     },
     "roles": {
       "title": "الأدوار",
@@ -2802,7 +2820,8 @@
             "min_assessment_score": "درجة التقييم",
             "max_assessment_score": "درجة التقييم"
           }
-        }
+        },
+        "star-error": "تعذّر تحديث المرشح المميز. حاول مرة أخرى."
       },
       "ai-match": {
         "search-placeholder": "ابحث بالاسم...",

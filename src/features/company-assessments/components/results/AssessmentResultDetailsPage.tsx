@@ -8,12 +8,12 @@ import HttpStatusState from '@/shared/components/HttpStatusState';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { getHttpStatusCode } from '@/shared/lib/http-error';
 import {
-  ASSESSMENT_RESULTS_HREF,
   HTTP_NOT_FOUND,
   RESULT_QUESTIONS_PAGE_SIZE,
 } from '../../constants/assessment-results';
 import { useAssessmentResultNotes } from '../../hooks/useAssessmentResultNotes';
 import { useGetAssessmentResult } from '../../hooks/useGetAssessmentResult';
+import { getAssessmentResultsHref } from '../../utils/assessment-results';
 import AssessmentsErrorState from '../shared/AssessmentsErrorState';
 import AssessmentAnswersReview from './AssessmentAnswersReview';
 import CandidateAssessmentHeader from './CandidateAssessmentHeader';
@@ -22,18 +22,23 @@ import CandidateAssessmentNotes from './CandidateAssessmentNotes';
 type AssessmentResultDetailsPageProps = {
   assessmentId: string;
   resultId: string;
+  /** Back goes to the external invitations view when opened from it. */
+  isExternal?: boolean;
 };
 
 export default function AssessmentResultDetailsPage({
   assessmentId,
   resultId,
+  isExternal = false,
 }: AssessmentResultDetailsPageProps) {
   const t = useTranslations('companyPage.assessments.answers');
   const [page, setPage] = useState(1);
   const query = useGetAssessmentResult(resultId, page);
   const result = query.data;
   const notes = useAssessmentResultNotes(resultId, result?.notes ?? []);
-  const backHref = `${ASSESSMENT_RESULTS_HREF}?assessment=${encodeURIComponent(assessmentId)}`;
+  const backHref = getAssessmentResultsHref(assessmentId, {
+    external: isExternal,
+  });
 
   return (
     <div className="flex min-w-0 flex-col gap-6">

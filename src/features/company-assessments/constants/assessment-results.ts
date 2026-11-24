@@ -9,6 +9,8 @@ export const ASSESSMENT_LIST_OPTIONS_PAGE_SIZE = 20;
 export const ASSESSMENT_LIST_QUERY_KEY = 'assessments-list';
 export const RESULT_QUESTIONS_PAGE_SIZE = 6;
 export const ASSESSMENT_RESULTS_HREF = '/company/assessments-results';
+// `?external=1`: the results page shows only external invitations.
+export const EXTERNAL_PARAM = 'external';
 export const HTTP_NOT_FOUND = 404;
 export const MAX_QUERY_RETRIES = 3;
 

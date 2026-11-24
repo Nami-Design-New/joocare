@@ -15,6 +15,7 @@ import DeleteModal from '@/shared/components/modals/DeleteModal';
 import { Button } from '@/shared/components/ui/button';
 import { useChangeAssessmentStatus } from '../../hooks/useChangeAssessmentStatus';
 import { useDeleteAssessment } from '../../hooks/useDeleteAssessment';
+import { getAssessmentResultsHref } from '../../utils/assessment-results';
 import AssignAssessmentDialog from '../shared/AssignAssessmentDialog';
 
 type AssessmentDetailsActionsProps = {
@@ -146,7 +147,7 @@ export default function AssessmentDetailsActions({
         open={assignOpen}
         onOpenChange={setAssignOpen}
         assessmentTitle={assessmentTitle}
-        statusHref={`${categoryHref}/${assessmentId}/external-invitations`}
+        statusHref={getAssessmentResultsHref(assessmentId, { external: true })}
       />
     </div>
   );

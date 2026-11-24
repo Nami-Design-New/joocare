@@ -2,7 +2,6 @@ import type { ExternalInvitation } from '../types/assessment-invitation.types';
 
 export const ASSESSMENT_ASSETS = '/assets/company-assessments/figma';
 export const EXTERNAL_INVITATIONS_PAGE_SIZE = 10;
-export const EXTERNAL_INVITATIONS_TOTAL = 52;
 
 export const ASSIGNMENT_CANDIDATES_PAGE_SIZE = 100;
 export const ASSIGNMENT_CANDIDATES_QUERY_KEY =
@@ -60,15 +59,3 @@ export const externalInvitationSeeds: ExternalInvitation[] = [
     project: 'nursing',
   },
 ];
-
-export const externalInvitationSummary = [
-  {
-    key: 'total',
-    count: EXTERNAL_INVITATIONS_TOTAL,
-    className: 'text-assessment-dark',
-  },
-  { key: 'pending-summary', count: 12, className: 'text-assessment-warning' },
-  { key: 'passed', count: 28, className: 'text-assessment-primary' },
-  { key: 'failed', count: 7, className: 'text-assessment-error' },
-  { key: 'absent-summary', count: 5, className: 'text-assessment-absent' },
-] as const;

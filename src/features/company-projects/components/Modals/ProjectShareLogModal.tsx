@@ -49,7 +49,7 @@ export default function ProjectShareLogModal({
         <div className="flex flex-col text-start">
           <span>{log.sharedBy}</span>
           <span className="text-xs text-muted-foreground">
-            {t('recruiter-role')}
+            {log.sharedByRole}
           </span>
         </div>
       ),
