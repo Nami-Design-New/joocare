@@ -6,6 +6,7 @@ import type {
   CompanyProject,
   ProjectCandidate,
   ProjectDetails,
+  ProjectMemberApiItem,
   ProjectUserApiItem,
   HiringManagerApiItem,
   HiringManagerOption,
@@ -79,6 +80,7 @@ function mapProjectCandidates(users: ProjectUserApiItem[] = []) {
   return users.map(
     (user, index): ProjectCandidate => ({
       id: `${user.id}-${index}`,
+      userId: String(user.id),
       name: user.name,
       email: user.email,
       phone: [user.phone_code, user.phone].filter(Boolean).join(' '),
@@ -226,6 +228,72 @@ export async function shareProjectWithHiringManager(
   const { ok, message } = await apiFetch(
     `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}/assign-to-hiring-manager`,
     { method: 'POST', token, locale, body },
+  );
+  if (!ok) throw new Error(message ?? '');
+}
+
+const CANDIDATE_STATUS: Record<string, ProjectCandidate['status']> = {
+  under_review: 'Under review',
+  shortlist: 'Shortlist',
+  shortlisted: 'Shortlist',
+  rejected: 'Rejected',
+};
+
+const ASSESSMENT_STATUS: Record<string, ProjectCandidate['assessment']> = {
+  passed: 'Passed',
+  failed: 'Failed',
+  pending: 'Pending',
+  absent: 'Absent',
+};
+
+// The endpoint has no pagination meta yet, so all rows are loaded at once.
+const PROJECT_CANDIDATES_LIMIT = 100;
+
+export async function getProjectCandidates(
+  projectId: string,
+  { token, locale }: ProjectRequestOptions,
+): Promise<ProjectCandidate[]> {
+  const { ok, data, message } = await apiFetch<ProjectMemberApiItem[]>(
+    `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}/users?pagination=on&limit_per_page=${PROJECT_CANDIDATES_LIMIT}&page=1`,
+    { token, locale, cache: 'no-store' },
+  );
+  if (!ok) throw new Error(message ?? '');
+  return (data?.data ?? []).map(({ id, status, user }) => {
+    const last = user.last_assessment;
+    return {
+      id: String(id),
+      userId: String(user.id),
+      name: user.name,
+      email: user.email,
+      phone: [user.phone_code, user.phone].filter(Boolean).join(' '),
+      nationality: user.nationality ?? MISSING_API_VALUE,
+      cv: null,
+      status: CANDIDATE_STATUS[status],
+      assessment: last
+        ? (ASSESSMENT_STATUS[last.status] ?? 'Pending')
+        : 'Not assigned',
+      // Only a percentage is shown; `score` is earned points.
+      score: last?.score_percent ?? undefined,
+      assessmentResult: last
+        ? {
+            assessmentId: String(last.assessment_id),
+            candidateId: String(last.id),
+          }
+        : undefined,
+      assessmentCount: user.assessments_count,
+    };
+  });
+}
+
+// Removes every row of this user from the project.
+export async function removeProjectCandidate(
+  projectId: string,
+  userId: string,
+  { token, locale }: ProjectRequestOptions,
+) {
+  const { ok, message } = await apiFetch(
+    `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}/users/${encodeURIComponent(userId)}`,
+    { method: 'DELETE', token, locale },
   );
   if (!ok) throw new Error(message ?? '');
 }

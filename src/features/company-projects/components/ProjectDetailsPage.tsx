@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import HttpStatusState from '@/shared/components/HttpStatusState';
@@ -8,6 +9,7 @@ import { Skeleton } from '@/shared/components/ui/skeleton';
 import { getHttpStatusCode } from '@/shared/lib/http-error';
 import { useGetProject } from '../hooks/useGetProject';
 import type { ProjectCandidate } from '../types/company-projects.types';
+import { useGetProjectCandidates } from '../hooks/useGetProjectCandidates';
 import { useProjectCandidates } from '../hooks/useProjectCandidates';
 import CandidateActionModals from './Modals/CandidateActionModals';
 import ProjectCandidatesFilters from './ProjectCandidatesFilters';
@@ -26,9 +28,19 @@ export default function ProjectDetailsPage({
 }: ProjectDetailsPageProps) {
   const t = useTranslations('companyPage.projects');
   const query = useGetProject(projectId);
-  const preview = useProjectCandidates(
-    query.data?.candidates ?? EMPTY_CANDIDATES,
-  );
+  const candidatesQuery = useGetProjectCandidates(projectId);
+  // The users endpoint has no image or CV; take them from the project details.
+  const candidates = useMemo(() => {
+    const media = new Map(
+      (query.data?.candidates ?? []).map((item) => [item.userId, item]),
+    );
+    return (candidatesQuery.data ?? EMPTY_CANDIDATES).map((candidate) => ({
+      ...candidate,
+      image: media.get(candidate.userId)?.image ?? null,
+      cv: media.get(candidate.userId)?.cv ?? null,
+    }));
+  }, [candidatesQuery.data, query.data?.candidates]);
+  const preview = useProjectCandidates(projectId, candidates);
   const direction = useLocale() === 'ar' ? 'rtl' : 'ltr';
   const project = query.data;
 
@@ -90,14 +102,35 @@ export default function ProjectDetailsPage({
         onStatusChange={preview.updateStatus}
       />
 
-      <ProjectCandidatesTable
-        candidates={preview.candidates}
-        rowOffset={(preview.page - 1) * preview.pageSize}
-        direction={direction}
-        onAction={preview.openAction}
-        onViewNote={preview.openCandidateNote}
-        onDownloadCv={preview.downloadCandidateCv}
-      />
+      {candidatesQuery.isError && !candidatesQuery.data ? (
+        <div
+          role="alert"
+          className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-2xl bg-card p-6 text-center"
+        >
+          <p className="text-sm text-muted-foreground">
+            {t('candidates-load-error')}
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-full"
+            onClick={() => void candidatesQuery.refetch()}
+          >
+            {t('retry')}
+          </Button>
+        </div>
+      ) : !candidatesQuery.data ? (
+        <Skeleton aria-busy="true" className="h-72 rounded-2xl" />
+      ) : (
+        <ProjectCandidatesTable
+          candidates={preview.candidates}
+          rowOffset={(preview.page - 1) * preview.pageSize}
+          direction={direction}
+          onAction={preview.openAction}
+          onViewNote={preview.openCandidateNote}
+          onDownloadCv={preview.downloadCandidateCv}
+        />
+      )}
 
       {preview.filteredCount > 0 && (
         <CustomPagination
@@ -117,6 +150,7 @@ export default function ProjectDetailsPage({
         projectName={project.name}
         onClose={preview.closeAction}
         onRemove={preview.removeCandidate}
+        isRemoving={preview.isRemoving}
       />
     </div>
   );

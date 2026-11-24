@@ -14,7 +14,8 @@ type CandidateActionModalsProps = {
   candidate: ProjectCandidate | null;
   projectName: string;
   onClose: () => void;
-  onRemove: (candidateId: string) => void;
+  onRemove: (candidateId: string) => Promise<void>;
+  isRemoving?: boolean;
 };
 
 export default function CandidateActionModals({
@@ -23,6 +24,7 @@ export default function CandidateActionModals({
   projectName,
   onClose,
   onRemove,
+  isRemoving = false,
 }: CandidateActionModalsProps) {
   if (!action || !candidate) return null;
 
@@ -36,6 +38,7 @@ export default function CandidateActionModals({
           projectName={projectName}
           onClose={onClose}
           onConfirm={onRemove}
+          isRemoving={isRemoving}
         />
       );
     case 'note':

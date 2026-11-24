@@ -2022,7 +2022,7 @@
         "name-too-long": "يجب ألا يتجاوز اسم المشروع 100 حرف.",
         "create-submit": "إنشاء مشروع",
         "creating": "جارٍ الإنشاء...",
-        "created-toast": "تم إنشاء {project} للمرشح {name}.",
+        "created-toast": "تم إنشاء {project}.",
         "link-title": "إضافة المرشح إلى مشروع",
         "link-description": "اختر المشاريع التي تريد إضافة {name} إليها.",
         "search-projects": "ابحث عن المشاريع...",
@@ -2053,7 +2053,12 @@
       "sharing": "جارٍ المشاركة...",
       "share-error": "تعذّرت مشاركة المشروع. حاول مرة أخرى.",
       "all-managers-shared": "هذا المشروع تمت مشاركته بالفعل مع كل مديري التوظيف.",
-      "view-all-assessments": "عرض الكل ({count})"
+      "view-all-assessments": "عرض الكل ({count})",
+      "candidate-removed": "تمت إزالة المرشح من المشروع.",
+      "remove-error": "تعذّرت إزالة المرشح. حاول مرة أخرى.",
+      "candidates-load-error": "تعذّر تحميل مرشحي المشروع.",
+      "assessment-pending": "قيد الانتظار",
+      "assessment-absent": "غائب"
     },
     "roles": {
       "title": "الأدوار",

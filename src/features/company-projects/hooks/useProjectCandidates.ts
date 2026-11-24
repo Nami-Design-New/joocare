@@ -7,20 +7,17 @@ import type {
   ProjectCandidate,
 } from '../types/company-projects.types';
 import { getCandidateCvFileName } from '../utils/candidate-preview';
+import { useRemoveProjectCandidate } from './useRemoveProjectCandidate';
 
-const CANDIDATE_PAGE_SIZE = 4;
+const CANDIDATE_PAGE_SIZE = 10;
 
-// Search, status filter and paging over the candidates of GET /projects/{id}.
-// Removing a candidate has no API yet, so it only hides the row locally.
-export function useProjectCandidates(projectCandidates: ProjectCandidate[]) {
-  const [removedIds, setRemovedIds] = useState<string[]>([]);
-  const candidates = useMemo(
-    () =>
-      projectCandidates.filter(
-        (candidate) => !removedIds.includes(candidate.id),
-      ),
-    [projectCandidates, removedIds],
-  );
+// Search, status filter and paging over the project candidates (the users
+// endpoint has no pagination yet), plus removing a candidate from the project.
+export function useProjectCandidates(
+  projectId: string,
+  candidates: ProjectCandidate[],
+) {
+  const removeMutation = useRemoveProjectCandidate(projectId);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
@@ -55,11 +52,16 @@ export function useProjectCandidates(projectCandidates: ProjectCandidate[]) {
     setPage(1);
   };
 
-  const removeCandidate = (candidateId: string) => {
+  // Removes every row of the user; resolves only when the API succeeds.
+  const removeCandidate = async (candidateId: string) => {
+    const userId = candidates.find(
+      (candidate) => candidate.id === candidateId,
+    )?.userId;
+    if (!userId || removeMutation.isPending) return;
+    await removeMutation.mutateAsync(userId);
     const remainingCount = filteredCandidates.filter(
-      (candidate) => candidate.id !== candidateId,
+      (candidate) => candidate.userId !== userId,
     ).length;
-    setRemovedIds((current) => [...current, candidateId]);
     setPage((current) =>
       Math.min(
         current,
@@ -100,5 +102,6 @@ export function useProjectCandidates(projectCandidates: ProjectCandidate[]) {
     updateSearch,
     updateStatus,
     removeCandidate,
+    isRemoving: removeMutation.isPending,
   };
 }

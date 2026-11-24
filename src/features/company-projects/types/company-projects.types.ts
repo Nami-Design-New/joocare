@@ -21,7 +21,10 @@ export type CompanyProject = {
 };
 
 export type ProjectCandidate = {
+  /** Row id (one per add; the same user can appear more than once). */
   id: string;
+  /** Real user id, used to remove the candidate from the project. */
+  userId?: string;
   name: string;
   email: string;
   phone: string;
@@ -33,7 +36,7 @@ export type ProjectCandidate = {
   /** Not returned for project users yet (preview rows only). */
   status?: 'Rejected' | 'Shortlist' | 'Under review';
   /** Not returned for project users yet (preview rows only). */
-  assessment?: 'Passed' | 'Failed' | 'Not assigned';
+  assessment?: 'Passed' | 'Failed' | 'Pending' | 'Absent' | 'Not assigned';
   score?: number;
   /** How many assessments the candidate took ("View all (n)" when > 1). */
   assessmentCount?: number;
@@ -121,6 +124,30 @@ export type ProjectApiItem = {
   /** Details endpoint only. */
   users?: ProjectUserApiItem[];
   created_at: string;
+};
+
+// A row of GET /projects/{id}/users.
+export type ProjectMemberApiItem = {
+  id: number;
+  status: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    phone: string | null;
+    phone_code: string | null;
+    nationality: string | null;
+    assessments_count: number;
+    last_assessment: {
+      /** Result id (Assessments Results details). */
+      id: number;
+      assessment_id: number;
+      status: string;
+      /** Earned points, not a percentage. */
+      score: number | null;
+      score_percent?: number | null;
+    } | null;
+  };
 };
 
 export type ProjectDetails = CompanyProject & {
