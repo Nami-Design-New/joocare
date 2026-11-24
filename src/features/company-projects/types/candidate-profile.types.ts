@@ -29,32 +29,42 @@ export type CandidateProfileDetail = {
   value: string;
 };
 
+export type CandidateProfilePlaceholder = '-' | '#';
+
+export type CandidateProfileList = string[] | CandidateProfilePlaceholder;
+
 export type CandidateCareerPreferences = {
-  desiredDesignations: string[];
-  preferredWorkLocations: string[];
-  desiredIndustries: string[];
+  desiredDesignations: CandidateProfileList;
+  preferredWorkLocations: CandidateProfileList;
+  desiredIndustries: CandidateProfileList;
   noticePeriod: string;
   willingToRelocate: string;
 };
 
 export type CandidateProfileSummary = {
   isOpenToWork: boolean;
-  /** Hidden when the API has no value. */
+  openToWorkPlaceholder?: CandidateProfilePlaceholder;
   lastActive: string | null;
   details: CandidateProfileDetail[];
-  languages: string[];
+  languages: CandidateProfileList;
   drivingLicense: string;
-  licenseCountries: string[];
+  licenseCountries: CandidateProfileList;
 };
 
 export type ProjectCandidateProfile = {
   profile: CandidateProfileViewModel;
   summary: CandidateProfileSummary;
   careerPreferences: CandidateCareerPreferences;
-  clinicalPrivileges: string[];
+  clinicalPrivileges: CandidateProfileList;
   qualifications: QualificationViewModel[];
   certificates: CertificateViewModel[];
   licenses: LicenseViewModel[];
+  sectionPlaceholders?: Partial<
+    Record<
+      'educations' | 'skills' | 'experiences' | CandidateCredentialTab,
+      CandidateProfilePlaceholder
+    >
+  >;
 };
 
 export type CandidateCredentialTab =
@@ -93,37 +103,52 @@ export type CandidateProfileApiItem = {
   subspecialty: ProfileLookupApiItem | null;
   experience: ProfileLookupApiItem | null;
   religion: ProfileLookupApiItem | null;
-  experiences: {
-    id: number;
-    title: string | null;
-    job_title?: ProfileLookupApiItem | null;
-    company: string | null;
-    start_date: string | null;
-    end_date: string | null;
-    is_current: boolean;
-    responsibilities?: { description: string }[];
-  }[];
-  educations: {
-    id: number;
-    degree: string | null;
-    gpa: string | null;
-    university: string | null;
-    country_id: number | null;
-    start_date: string | null;
-    end_date: string | null;
-  }[];
-  skills: ProfileLookupApiItem[];
-  languages: {
-    id: number;
-    language: string;
-    proficiency_level: string | null;
-  }[];
-  certifications: CertificateApiItem[];
-  qualifications: QualificationApiItem[];
-  licenses: LicenseApiItem[];
-  clinical_privileges: ProfileLookupApiItem[];
-  relocation_countries: ProfileLookupApiItem[];
-  driving_license_countries: ProfileLookupApiItem[];
+  domain?: ProfileLookupApiItem | null;
+  job_search_status?: string | { value?: string | null } | null;
+  last_active_at?: string | null;
+  has_driving_license?: boolean | null;
+  willing_to_relocate?: boolean | null;
+  preference?: {
+    desired_designations?: ProfileLookupApiItem[] | null;
+    notice_period?: string | ProfileLookupApiItem | null;
+  } | null;
+  experiences?:
+    | {
+        id: number;
+        title: string | null;
+        job_title?: ProfileLookupApiItem | null;
+        company: string | null;
+        start_date: string | null;
+        end_date: string | null;
+        is_current: boolean;
+        responsibilities?: { description?: string | null }[] | null;
+      }[]
+    | null;
+  educations?:
+    | {
+        id: number;
+        degree: string | null;
+        gpa: string | null;
+        university: string | null;
+        country_id: number | null;
+        start_date: string | null;
+        end_date: string | null;
+      }[]
+    | null;
+  skills?: ProfileLookupApiItem[] | null;
+  languages?:
+    | {
+        id: number;
+        language: string;
+        proficiency_level: string | null;
+      }[]
+    | null;
+  certifications?: CertificateApiItem[] | null;
+  qualifications?: QualificationApiItem[] | null;
+  licenses?: LicenseApiItem[] | null;
+  clinical_privileges?: ProfileLookupApiItem[] | null;
+  relocation_countries?: ProfileLookupApiItem[] | null;
+  driving_license_countries?: ProfileLookupApiItem[] | null;
 };
 
 export type CandidateProfileLabels = {

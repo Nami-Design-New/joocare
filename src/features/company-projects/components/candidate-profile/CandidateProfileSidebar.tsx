@@ -41,6 +41,11 @@ export default function CandidateProfileSidebar({
               {t('open-to-work')}
             </span>
           )}
+          {summary.openToWorkPlaceholder && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              {t('open-to-work')} <bdi>{summary.openToWorkPlaceholder}</bdi>
+            </p>
+          )}
         </div>
         <div className="flex flex-col items-center gap-2">
           <h1 className="text-[21px] font-semibold text-foreground">

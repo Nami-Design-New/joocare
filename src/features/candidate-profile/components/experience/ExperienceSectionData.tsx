@@ -16,14 +16,15 @@ import ExperienceActions from './ExperienceActions';
 export function ExperienceSectionData({
   profile,
   readOnly = false,
+  emptyText,
 }: {
   profile: CandidateProfileViewModel | null;
   readOnly?: boolean;
+  emptyText?: string;
 }) {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const experiences = profile?.experiences ?? [];
-  // console.log("experiences"  , experiences);
   return (
     <>
       <div className="flex flex-col gap-4 rounded-2xl border border-border bg-white p-4">
@@ -106,7 +107,7 @@ export function ExperienceSectionData({
           </Accordion>
         ) : (
           <p className="text-xs text-muted-foreground md:text-sm">
-            {t('candidatePage.profile.no-experience')}
+            {emptyText ?? t('candidatePage.profile.no-experience')}
           </p>
         )}
       </div>

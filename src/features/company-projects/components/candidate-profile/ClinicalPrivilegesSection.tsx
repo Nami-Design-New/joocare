@@ -1,11 +1,12 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import type { CandidateProfileList } from '../../types/candidate-profile.types';
 import CandidateProfileChips from './CandidateProfileChips';
 import ProfileSectionCard from './ProfileSectionCard';
 
 type ClinicalPrivilegesSectionProps = {
-  privileges: string[];
+  privileges: CandidateProfileList;
 };
 
 export default function ClinicalPrivilegesSection({

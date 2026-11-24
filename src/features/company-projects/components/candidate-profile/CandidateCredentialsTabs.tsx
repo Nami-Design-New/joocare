@@ -21,13 +21,14 @@ const CREDENTIAL_TABS: CandidateCredentialTab[] = [
 
 type CandidateCredentialsTabsProps = Pick<
   ProjectCandidateProfile,
-  'qualifications' | 'certificates' | 'licenses'
+  'qualifications' | 'certificates' | 'licenses' | 'sectionPlaceholders'
 >;
 
 export default function CandidateCredentialsTabs({
   qualifications,
   certificates,
   licenses,
+  sectionPlaceholders,
 }: CandidateCredentialsTabsProps) {
   const t = useTranslations('companyPage.projects.candidate-profile');
   const [activeTab, setActiveTab] =
@@ -38,6 +39,8 @@ export default function CandidateCredentialsTabs({
     certificates: certificates.length,
     licenses: licenses.length,
   };
+
+  const placeholder = sectionPlaceholders?.[activeTab];
 
   return (
     <section className="flex flex-col gap-6 rounded-2xl border bg-card p-4">
@@ -75,11 +78,14 @@ export default function CandidateCredentialsTabs({
         aria-labelledby={`credential-tab-${activeTab}`}
         className="flex flex-col gap-3"
       >
-        {counts[activeTab] === 0 && (
-          <EmptyDataState
-            title={`companyPage.projects.candidate-profile.no-${activeTab}`}
-          />
-        )}
+        {counts[activeTab] === 0 &&
+          (placeholder ? (
+            <p className="text-sm text-muted-foreground">{placeholder}</p>
+          ) : (
+            <EmptyDataState
+              title={`companyPage.projects.candidate-profile.no-${activeTab}`}
+            />
+          ))}
         {activeTab === 'qualifications' &&
           qualifications.map((qualification) => (
             <QualificationCard
