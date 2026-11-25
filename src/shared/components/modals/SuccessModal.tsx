@@ -21,6 +21,7 @@ type SuccessModalAction = {
   href?: string;
   onClick?: () => void;
   closeOnClick?: boolean;
+  disabled?: boolean;
   variant?: 'default' | 'outline' | 'link';
   className?: string;
 };
@@ -112,6 +113,7 @@ export default function SuccessModal({
     return (
       <Button
         type="button"
+        disabled={action.disabled}
         variant={action.variant ?? buttonVariant}
         size="pill"
         className={cn(

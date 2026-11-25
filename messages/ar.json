@@ -2005,6 +2005,8 @@
         }
       },
       "shared-review": {
+        "logging-out": "جارٍ تسجيل الخروج…",
+        "logout-error": "تعذّر تسجيل الخروج. حاول مرة أخرى.",
         "decision-save-error": "تعذّر حفظ القرار بشأن المرشح.",
         "shortlist-load-error": "تعذّر تحميل المرشحين في القائمة المختصرة.",
         "interviews-save-error": "تعذّر جدولة المقابلات.",

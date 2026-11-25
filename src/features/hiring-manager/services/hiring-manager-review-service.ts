@@ -220,3 +220,18 @@ export async function getHiringManagerSummary({
     rejected: summary.rejected_count,
   };
 }
+
+export async function logoutHiringManager(token: string, locale: string) {
+  const { ok, statusCode, response } = await apiFetch(
+    `${getCompanyApiUrl()}/auth/logout`,
+    {
+      method: 'POST',
+      token,
+      locale,
+      body: new FormData(),
+      skipUnauthorizedHandler: true,
+    },
+  );
+  if (!ok && statusCode !== 401 && response.status !== 401)
+    throw createHttpStatusError(statusCode);
+}

@@ -2005,6 +2005,8 @@
         }
       },
       "shared-review": {
+        "logging-out": "Logging out…",
+        "logout-error": "Could not log out. Try again.",
         "decision-save-error": "Could not save the candidate decision.",
         "shortlist-load-error": "Could not load shortlisted candidates.",
         "interviews-save-error": "Could not schedule the interviews.",

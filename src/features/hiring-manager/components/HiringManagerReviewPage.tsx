@@ -12,7 +12,6 @@ import {
 } from '@/features/company-projects/constants/shared-review-options';
 import type { SharedReviewCandidate } from '@/features/company-projects/types/shared-review.types';
 import { getCandidateCvFileName } from '@/features/company-projects/utils/candidate-preview';
-import { useRouter } from '@/i18n/navigation';
 import HttpStatusState from '@/shared/components/HttpStatusState';
 import CvFileModal from '@/shared/components/modals/CvFileModal';
 import { Button } from '@/shared/components/ui/button';
@@ -20,6 +19,7 @@ import { downloadFile } from '@/shared/lib/download-file';
 import { getHttpStatusCode } from '@/shared/lib/http-error';
 import { useHiringManagerReview } from '../hooks/useHiringManagerReview';
 import { useInviteToken } from '../hooks/useInviteToken';
+import { useLogoutHiringManager } from '../hooks/useLogoutHiringManager';
 import {
   clearInviteToken,
   getStoredInviteToken,
@@ -76,8 +76,12 @@ function InvalidInviteState() {
 
 function HiringManagerReview({
   onLogout,
+  isLoggingOut,
   ...access
-}: HiringManagerReviewAccess & { onLogout: () => void }) {
+}: HiringManagerReviewAccess & {
+  onLogout: () => void;
+  isLoggingOut: boolean;
+}) {
   const t = useTranslations('companyPage.projects.shared-review');
   const locale = useLocale();
   const review = useHiringManagerReview(access);
@@ -141,6 +145,7 @@ function HiringManagerReview({
         recruiter={summaryQuery.data.recruiter}
         summary={summaryQuery.data}
         onLogout={onLogout}
+        isLoggingOut={isLoggingOut}
         showNotificationNotice={false}
       />
     );
@@ -229,25 +234,21 @@ function HiringManagerReview({
 export default function HiringManagerReviewPage({
   projectId,
 }: HiringManagerReviewPageProps) {
-  const router = useRouter();
   const { session, isChecking } = useInviteToken();
-
-  function handleLogout() {
-    clearInviteToken();
-    router.replace('/');
-  }
+  const { logout, isLoggingOut, isRedirecting } = useLogoutHiringManager();
 
   return (
     <div className="min-h-dvh bg-body-bg">
-      <SharedReviewHeader onLogout={handleLogout} />
+      <SharedReviewHeader onLogout={logout} isLoggingOut={isLoggingOut} />
       <main className="layout-content mx-auto px-4 pt-6 pb-8 sm:pt-10 sm:pb-14 md:px-7 md:pt-14 lg:px-13">
-        {isChecking ? (
+        {isChecking || isRedirecting ? (
           <HiringManagerReviewLoading />
         ) : session ? (
           <HiringManagerReview
             key={`${projectId}:${session.queryScope}`}
             projectId={projectId}
-            onLogout={handleLogout}
+            onLogout={logout}
+            isLoggingOut={isLoggingOut}
             {...session}
           />
         ) : (

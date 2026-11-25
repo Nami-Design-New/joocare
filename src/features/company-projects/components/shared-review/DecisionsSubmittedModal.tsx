@@ -16,6 +16,7 @@ type DecisionsSubmittedModalProps = {
   summary: SharedReviewSummary;
   experience?: 'company' | 'hiring-manager';
   onLogout?: () => void;
+  isLoggingOut?: boolean;
   showNotificationNotice?: boolean;
 };
 
@@ -25,6 +26,7 @@ export default function DecisionsSubmittedModal({
   summary,
   experience = 'company',
   onLogout,
+  isLoggingOut = false,
   showNotificationNotice = true,
 }: DecisionsSubmittedModalProps) {
   const t = useTranslations('companyPage.projects.shared-review');
@@ -63,7 +65,8 @@ export default function DecisionsSubmittedModal({
       className="max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-175 overflow-y-auto rounded-3xl sm:max-w-175"
       visualWrapperClassName="mt-0 mb-4"
       primaryAction={{
-        label: t('log-out'),
+        label: t(isLoggingOut ? 'logging-out' : 'log-out'),
+        disabled: isLoggingOut,
         icon: <LogOut className="size-5 rtl:rotate-180" />,
         closeOnClick: false,
         onClick:
