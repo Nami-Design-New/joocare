@@ -66,7 +66,12 @@ export async function sendCandidateMessage({
       method: 'POST',
       locale,
       token,
-      body: createChatMessageBody('company_admin_id', companyAdminId, value),
+      body: createChatMessageBody({
+        recipientField: 'company_admin_id',
+        recipientId: companyAdminId,
+        attachmentsField: 'images',
+        value,
+      }),
     },
   );
 

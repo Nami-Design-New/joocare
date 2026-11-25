@@ -1,4 +1,4 @@
-import { CHAT_DEFAULT_AVATAR } from '../constants';
+import { CHAT_COMPANY_PROFILE_ROUTE, CHAT_DEFAULT_AVATAR } from '../constants';
 import type {
   CandidateChatApiConversation,
   ChatApiFile,
@@ -34,12 +34,24 @@ function mapAttachments(
     })),
     ...files.map((file) => ({
       id: `file-${file.id}`,
-      name: file.name,
-      kind: 'file' as const,
+      name: file.name || imageLabel,
+      kind: isImageFile(file) ? ('image' as const) : ('file' as const),
       size: file.size ?? '',
       url: file.url,
     })),
   ];
+}
+
+const IMAGE_EXTENSION = /.(jpe?g|png|webp|gif)$/i;
+
+function isImageFile(file: ChatApiFile) {
+  return file.type
+    ? file.type.startsWith('image')
+    : IMAGE_EXTENSION.test(file.url ?? '');
+}
+
+function getFirstImage(message: Pick<ChatApiMessage, 'images' | 'files'>) {
+  return message.images?.[0]?.image ?? message.files?.find(isImageFile)?.url;
 }
 
 function getLastMessagePreview(
@@ -48,8 +60,9 @@ function getLastMessagePreview(
 ) {
   if (!message) return '';
   if (message.message) return message.message;
-  if (message.files?.length) return message.files[0].name;
-  return message.images?.length ? imageLabel : '';
+  const file = message.files?.find((item) => !isImageFile(item));
+  if (file) return file.name;
+  return getFirstImage(message) ? imageLabel : '';
 }
 
 function mapConversationBase(
@@ -77,6 +90,9 @@ export function mapCandidateConversation(
     name: conversation.name,
     jobTitle: conversation.job_title,
     companyName: conversation.company_name,
+    profileHref: conversation.company_id
+      ? `${CHAT_COMPANY_PROFILE_ROUTE}/${conversation.company_id}`
+      : undefined,
     recruiter: conversation.name,
   };
 }
@@ -90,9 +106,7 @@ export function mapCompanyConversation(
     id: String(conversation.user_id),
     name: conversation.name,
     jobTitle: conversation.job_title ?? '',
-    recruiter: conversation.contacted_by?.name ?? '',
-    alreadyContacted: Boolean(conversation.contacted_by),
-    contactedAt: conversation.contacted_at ?? undefined,
+    recruiter: conversation.contacted_by ?? '',
   };
 }
 
@@ -120,7 +134,7 @@ function mapMessage(
           id: String(reply.id),
           name: reply.sender_type === viewer ? labels.you : conversation.name,
           text: reply.message ?? '',
-          image: reply.images?.[0]?.image,
+          image: getFirstImage(reply),
         }
       : undefined,
   };
@@ -128,7 +142,8 @@ function mapMessage(
 
 /**
  * Adds the messages to the conversation. The messages response also carries the
- * conversation status, which is fresher than the list's.
+ * conversation status (fresher than the list's) and, for companies, whether another
+ * recruiter already contacted the candidate.
  */
 export function withConversationMessages(
   conversation: ChatConversation,
@@ -141,6 +156,9 @@ export function withConversationMessages(
     ...conversation,
     closed: data.status === 'closed',
     closedAt: data.closed_at ?? conversation.closedAt,
+    alreadyContacted: Boolean(data.contacted_before),
+    recruiter: data.contacted_by ?? conversation.recruiter,
+    contactedAt: data.contacted_at ?? undefined,
     // The API returns the newest message first.
     messages: data.messages
       .slice()

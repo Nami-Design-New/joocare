@@ -61,7 +61,12 @@ export async function sendCompanyMessage({
       method: 'POST',
       locale,
       token,
-      body: createChatMessageBody('user_id', userId, value),
+      body: createChatMessageBody({
+        recipientField: 'user_id',
+        recipientId: userId,
+        attachmentsField: 'files',
+        value,
+      }),
     },
   );
 

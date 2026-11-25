@@ -5,56 +5,47 @@ The design is the source of truth; items below are what the API is missing to ma
 
 Related: [03-company-chat.md](03-company-chat.md).
 
-## 1. Company routes: done
+## Done and connected
 
-The company chat routes are live and connected in the frontend (conversations, messages, send, close, reopen).
+Checked on `admin.joocare.cloud` on 2026-11-25:
 
-## 2. Company conversation response
+- Company routes: conversations, messages, send, close, reopen.
+- Company conversations: `job_title`, `closed_at`, `contacted_by` (the recruiter who owns the conversation).
+- Messages response (company): `contacted_before`, `contacted_by`, `contacted_at` for the "already contacted" warning.
+- Candidate conversations: `closed_at`, `company_id` (link to the company profile).
+- Read status: `GET messages` now marks the other side's messages as read.
+- Message order is newest first. `POST company/messages` with a new `user_id` creates the conversation.
 
-Already returned: `user_id`, `name`, `image`, `unread_count`, `status` (`open` / `closed`), `last_message`.
+## Still open
 
-Still missing:
+### 1. Attachments (`files`)
 
-- `job_title`: which job the conversation is about (shown under the candidate's name).
-- `closed_at`: see section 3.
+- `images` was replaced by `files` in every message, and the company send now uses `files[0]`, `files[1]`, ...
+- **Needed:** an example response with a file in Postman. The frontend expects each item to have `id`, `name`, `type` (MIME), `size` and `url`.
+- **Candidate send:** Postman still uses `images[]` for `POST user/messages`. Is that still right, or should it be `files[n]` like the company?
 
-## 3. Closed conversation (both sides)
+### 2. Super admin: one row per conversation
 
-- `status` (`open` / `closed`) is already returned in the conversations and messages responses.
-- The design also shows the close date ("Closed by you · date"). Add **`closed_at`** to the conversations and messages responses on both sides. Until then the frontend shows "Chat closed" without a date.
-- `POST messages` on a closed conversation should return a clear error message.
+The super admin will be a new `super_admin` role (not added yet; the frontend uses `recruitment_manager` until then).
+If two recruiters talked to the same candidate, the super admin sees two rows.
 
-## 4. "Already contacted" warning (company)
+- Each company conversation needs `company_admin_id`. `user_id` alone does not identify a conversation.
+- `GET messages`, `POST messages`, close and reopen need to target one recruiter's conversation (e.g. a `company_admin_id` parameter next to `user_id`).
+- To confirm: can the super admin send messages in, or close, another recruiter's conversation, or only read it?
 
-The design warns the recruiter when another recruiter in the same company has already talked to the candidate, showing their name and the date. Needed fields:
+### 3. Dates
 
-- `contacted_by: { id, name }`
-- `contacted_at`
+`created_at` is a ready display string in the request language (`"Today . 08 : 07 am"`, `"Yesterday"`). The frontend shows it as is.
 
-## 5. Super-admin view (company)
+- Older messages show only `"Yesterday"`, without the time.
+- The design groups messages under "Today" / "Yesterday" dividers, which needs an ISO date too (e.g. `created_at_iso`).
+- `closed_at` and `contacted_at` should use the same format as `created_at`.
 
-The design has a super-admin view of all the company's conversations, with "Contacted by <recruiter>" under each one.
+### 4. Closed conversation
 
-- Does `company/conversations` return all the company's conversations for a super admin?
-- Each conversation needs the recruiter's name.
+`POST messages` on a closed conversation should return a clear error message.
 
-## 6. Attachments
-
-- The design lets the company send **PDF + images** (max 5 files, 20 MB each). The API only accepts `images[]`.
-- Needed: file support (e.g. `files[]`), and each file in the response should have `name`, `size`, `type` and `url`.
-
-## 7. Candidate side
-
-- **Company profile link:** the chat header has "View company profile", but `user/conversations` has no company `id` or `slug`.
-
-## 8. Behaviors to confirm
-
-- **Read status:** after the candidate opened the conversation (`GET user/messages`), the company's message still had `is_read: false`, and `unread_count` does not go down. Either `GET messages` should mark the other side's messages as read, or a mark-read endpoint is needed.
-- **Dates:** `created_at` is a ready display string in the request language (`"Today . 01 : 27 pm"`, `"اليوم . 01 : 27 م"`). The frontend shows it as is. The design groups messages under "Today" / "Yesterday" dividers, which needs an ISO date too (e.g. `created_at_iso`).
-- **Message order:** confirmed newest first.
-- **New conversation:** confirmed, `POST company/messages` with a new `user_id` creates the conversation.
-
-## 9. Later
+### 5. Later
 
 - **Realtime** (socket / pusher), so new messages show up without a refresh. Until then the frontend calls the endpoints normally.
 

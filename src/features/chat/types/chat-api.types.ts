@@ -9,7 +9,7 @@ export type ChatApiImage = {
   image: string;
 };
 
-/** Non-image attachments (PDF). Pending on the backend, see docs/company-features/chat-backend-requirements.md. */
+/** Message attachments (images + PDF). The item shape is not confirmed by the backend yet. */
 export type ChatApiFile = {
   id: ChatApiId;
   name: string;
@@ -22,7 +22,8 @@ export type ChatApiReplyMessage = {
   id: ChatApiId;
   message: string;
   type: string;
-  images: ChatApiImage[];
+  /** Replaced by `files`; kept for older responses. */
+  images?: ChatApiImage[];
   files?: ChatApiFile[];
   sender_type: ChatApiSender;
 };
@@ -31,7 +32,8 @@ export type ChatApiMessage = {
   id: ChatApiId;
   message: string;
   type: string;
-  images: ChatApiImage[];
+  /** Replaced by `files`; kept for older responses. */
+  images?: ChatApiImage[];
   files?: ChatApiFile[];
   company_admin_id: ChatApiId;
   user_id: ChatApiId;
@@ -48,6 +50,10 @@ export type ChatApiMessage = {
 export type ChatApiMessages = {
   status: ChatApiConversationStatus;
   closed_at?: string | null;
+  /** Company only: another recruiter in the company already talked to this candidate. */
+  contacted_before?: boolean;
+  contacted_by?: string | null;
+  contacted_at?: string | null;
   messages: ChatApiMessage[];
 };
 
@@ -64,16 +70,12 @@ export type CandidateChatApiConversation = ChatApiConversationBase & {
   company_admin_id: ChatApiId;
   job_title: string;
   company_name: string;
-};
-
-export type ChatApiContactedBy = {
-  id: ChatApiId;
-  name: string;
+  company_id?: ChatApiId | null;
 };
 
 export type CompanyChatApiConversation = ChatApiConversationBase & {
   user_id: ChatApiId;
   job_title?: string | null;
-  contacted_by?: ChatApiContactedBy | null;
-  contacted_at?: string | null;
+  /** The recruiter who owns this conversation ("Contacted by" in the super-admin list). */
+  contacted_by?: string | null;
 };

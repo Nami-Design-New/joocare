@@ -16,7 +16,11 @@ export const CHAT_ROUTES = {
   company: '/company/chat',
   candidate: '/candidate/chat',
 } as const;
-/** The company role that sees every recruiter's conversations ("Contacted by" line). */
+export const CHAT_COMPANY_PROFILE_ROUTE = '/shared-company-profile';
+/**
+ * The company role that sees every recruiter's conversations ("Contacted by" line).
+ * Temporary: moves to the planned `super_admin` role once it is added.
+ */
 export const CHAT_SUPER_ADMIN_ROLE = 'recruitment_manager';
 
 export const candidateChatQueryKeys = {
