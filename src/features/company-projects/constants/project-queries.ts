@@ -1,4 +1,4 @@
-export const PROJECTS_PAGE_SIZE = 6;
+export const PROJECTS_PAGE_SIZE = 12;
 export const PROJECT_SEARCH_DEBOUNCE_MS = 400;
 export const PROJECT_OPTIONS_PAGE_SIZE = 10;
 export const PROJECT_OPTIONS_QUERY_KEY = 'company-project-options';
