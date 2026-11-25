@@ -147,7 +147,8 @@ function HiringManagerReview({
   }
 
   if (review.step === 'schedule') {
-    if (shortlistQuery.isPending) return <HiringManagerReviewLoading />;
+    if (shortlistQuery.isPending || shortlistQuery.isFetching)
+      return <HiringManagerReviewLoading />;
     if (shortlistQuery.isError) {
       return (
         <ReviewRequestError

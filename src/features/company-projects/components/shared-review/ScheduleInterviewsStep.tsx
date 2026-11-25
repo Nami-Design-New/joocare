@@ -33,6 +33,7 @@ export default function ScheduleInterviewsStep({
     () =>
       createScheduleInterviewsSchema({
         dateRequired: t('date-required'),
+        dateInPast: t('date-in-past'),
         timeRequired: t('time-required'),
       }),
     [t],

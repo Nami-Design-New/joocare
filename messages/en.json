@@ -2053,6 +2053,7 @@
         "optional": "(Optional)",
         "note-placeholder": "Write a note about this candidate for the recruiter...",
         "date-required": "Please select the interview date.",
+        "date-in-past": "Interview date must be today or in the future.",
         "time-required": "Please select the interview time.",
         "back": "Back",
         "submit": "Submit",

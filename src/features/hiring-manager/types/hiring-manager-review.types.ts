@@ -44,7 +44,7 @@ export type HiringManagerCandidateFilters = {
 };
 
 export type HiringManagerDecisionUpdate = {
-  userId: string;
+  projectCandidateId: string;
   decision: CandidateDecision;
 };
 

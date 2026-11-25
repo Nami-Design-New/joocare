@@ -43,7 +43,10 @@ export function useHiringManagerReview(access: HiringManagerReviewAccess) {
   );
   const showSummary =
     step === 'summary' ||
-    (step === 'schedule' && shortlistQuery.data?.length === 0);
+    (step === 'schedule' &&
+      shortlistQuery.isSuccess &&
+      !shortlistQuery.isFetching &&
+      shortlistQuery.data.length === 0);
   const summaryQuery = useGetHiringManagerSummary(access, showSummary);
   const isUnauthorized = [
     projectQuery.error,
@@ -63,9 +66,9 @@ export function useHiringManagerReview(access: HiringManagerReviewAccess) {
     const candidate = candidatesQuery.data?.candidates.find(
       (item) => item.id === candidateId,
     );
-    if (!candidate?.userId || decisionUpdate.isPending) return;
+    if (!candidate || decisionUpdate.isPending) return;
     decisionUpdate.mutate({
-      userId: candidate.userId,
+      projectCandidateId: candidate.id,
       decision: candidate.status === decision ? 'Under review' : decision,
     });
   }

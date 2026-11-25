@@ -155,10 +155,10 @@ export async function getHiringManagerShortlist(request: ReviewRequest) {
 
 export async function updateHiringManagerDecision(
   { projectId, token, locale }: ReviewRequest,
-  { userId, decision }: HiringManagerDecisionUpdate,
+  { projectCandidateId, decision }: HiringManagerDecisionUpdate,
 ) {
   const { ok, statusCode, response } = await apiFetch(
-    `${getProjectEndpoint(projectId)}/users/${encodeURIComponent(userId)}/status`,
+    `${getProjectEndpoint(projectId)}/users/${encodeURIComponent(projectCandidateId)}/status`,
     {
       method: 'POST',
       token,
