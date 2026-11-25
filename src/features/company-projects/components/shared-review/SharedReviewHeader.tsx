@@ -14,10 +14,12 @@ const EMPLOYER_LOGIN_HREF = '/auth/employer/login';
 
 type SharedReviewHeaderProps = {
   experience?: 'company' | 'hiring-manager';
+  onLogout?: () => void;
 };
 
 export default function SharedReviewHeader({
   experience = 'company',
+  onLogout,
 }: SharedReviewHeaderProps) {
   const t = useTranslations('companyPage.projects.shared-review');
   const { logout } = useLogout();
@@ -52,7 +54,7 @@ export default function SharedReviewHeader({
           <Button
             type="button"
             variant="outline"
-            onClick={() => logout({ redirectTo: logoutHref })}
+            onClick={onLogout ?? (() => logout({ redirectTo: logoutHref }))}
             className="h-10 gap-2 rounded-full px-5 text-sm font-normal"
           >
             <LogOut className="size-5 rtl:rotate-180" strokeWidth={1.5} />

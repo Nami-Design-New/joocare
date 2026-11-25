@@ -15,11 +15,13 @@ const DECISION_LABEL_KEYS = {
 } as const satisfies Record<CandidateDecision, string>;
 
 type CandidateDecisionBadgeProps = {
-  decision: CandidateDecision;
+  decision?: CandidateDecision;
+  label?: string;
 };
 
 export default function CandidateDecisionBadge({
   decision,
+  label,
 }: CandidateDecisionBadgeProps) {
   const t = useTranslations('companyPage.projects.shared-review');
 
@@ -27,10 +29,10 @@ export default function CandidateDecisionBadge({
     <span
       className={cn(
         'shrink-0 rounded-md px-2.5 py-1 text-sm font-semibold whitespace-nowrap',
-        DECISION_STYLES[decision],
+        decision ? DECISION_STYLES[decision] : 'bg-muted text-muted-foreground',
       )}
     >
-      {t(DECISION_LABEL_KEYS[decision])}
+      {label || (decision ? t(DECISION_LABEL_KEYS[decision]) : null)}
     </span>
   );
 }

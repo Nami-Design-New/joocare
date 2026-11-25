@@ -2,6 +2,7 @@ import { routing } from '@/i18n/routing';
 import {
   createRequestLogContext,
   incrementRouteCounter,
+  sanitizeUrl,
   shouldLogOnly429,
   shouldLogRequests,
 } from '@/shared/lib/request-logging';
@@ -53,6 +54,8 @@ function logProxyRequest(input: {
     return;
   }
 
+  const redirectTo = input.details?.redirectTo;
+
   console.log(
     '[proxy]',
     JSON.stringify(
@@ -67,10 +70,13 @@ function logProxyRequest(input: {
           routePath,
           routeCount,
           pathname: input.request.nextUrl.pathname,
-          search: input.request.nextUrl.search,
+          search: new URL(sanitizeUrl(input.request.url)).search,
           userAgent: input.request.headers.get('user-agent'),
           forwardedFor: input.request.headers.get('x-forwarded-for'),
           ...input.details,
+          ...(typeof redirectTo === 'string' && {
+            redirectTo: sanitizeUrl(redirectTo),
+          }),
         },
       }),
     ),

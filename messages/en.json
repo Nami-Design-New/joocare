@@ -1,5 +1,11 @@
 {
   "common": {
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {page, number}"
+    },
     "password-validation": {
       "title": "Your password must contain:",
       "length": "At least 8 characters",
@@ -1999,6 +2005,23 @@
         }
       },
       "shared-review": {
+        "decision-save-error": "Could not save the candidate decision.",
+        "shortlist-load-error": "Could not load shortlisted candidates.",
+        "interviews-save-error": "Could not schedule the interviews.",
+        "summary-load-error": "Could not load the review summary.",
+        "submitting-review": "Submitting…",
+        "shared-by": "Shared by",
+        "loading-review": "Loading project review",
+        "invalid-invite-title": "This link is invalid or has expired",
+        "invalid-invite-description": "Ask the recruiter to send you a new review link.",
+        "back-home": "Back to home",
+        "review-error-title": "Project review unavailable",
+        "review-error-description": "Check your invitation link and try again.",
+        "candidates-error": "Could not load candidates.",
+        "retry-review": "Try again",
+        "invite-shared-description": "Shared by {name} · {date}",
+        "invite-candidate-count": "Shared by {name} · {date} · {count, plural, one {# candidate} other {# candidates}}",
+        "invite-filtered-count": "Shared by {name} · {date} · {count, plural, one {# matching candidate} other {# matching candidates}}",
         "home": "Go to the employers homepage",
         "logo-alt": "Joocare logo",
         "language": "Change language",

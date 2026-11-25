@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import CvFileModal from '@/shared/components/modals/CvFileModal';
 import { useSharedProjectReview } from '../../hooks/useSharedProjectReview';
 import DecisionsSubmittedModal from './DecisionsSubmittedModal';
@@ -16,6 +17,7 @@ export default function SharedReviewPage({
   projectId,
   experience = 'company',
 }: SharedReviewPageProps) {
+  const t = useTranslations('companyPage.projects.shared-review');
   const review = useSharedProjectReview(projectId);
   if (!review.project || !review.share) return null;
 
@@ -27,9 +29,11 @@ export default function SharedReviewPage({
         {review.step === 'review' ? (
           <ReviewCandidatesStep
             projectName={review.project.name}
-            sharedBy={review.share.sharedBy}
-            sharedAt={review.share.date}
-            totalCandidates={review.totalCandidates}
+            description={t('shared-description', {
+              name: review.share.sharedBy,
+              date: review.share.date,
+              count: review.totalCandidates,
+            })}
             candidates={review.candidates}
             filteredCount={review.filteredCount}
             status={review.status}

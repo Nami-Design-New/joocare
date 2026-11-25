@@ -6,6 +6,7 @@ export type SharedReviewCandidate = ProjectCandidate & {
   specialty: string;
   experience: string;
   image: string;
+  statusLabel?: string;
 };
 
 export type SharedReviewStep = 'review' | 'schedule';

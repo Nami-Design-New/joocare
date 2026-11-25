@@ -16,6 +16,7 @@ type ReviewCandidateCardProps = {
   onPreviewCv: (candidate: SharedReviewCandidate) => void;
   onDownloadCv: (candidate: SharedReviewCandidate) => void;
   onDecision: (candidateId: string, decision: FinalDecision) => void;
+  isSavingDecision?: boolean;
 };
 
 const CV_ACTION_CLASS =
@@ -26,6 +27,7 @@ export default function ReviewCandidateCard({
   onPreviewCv,
   onDownloadCv,
   onDecision,
+  isSavingDecision = false,
 }: ReviewCandidateCardProps) {
   const t = useTranslations('companyPage.projects.shared-review');
   const decisions = [
@@ -42,9 +44,9 @@ export default function ReviewCandidateCard({
     },
   ] as const;
   const details = [
-    { icon: MapPin, value: candidate.nationality },
-    { icon: Briefcase, value: candidate.experience },
-    { icon: Phone, value: candidate.phone, isLtr: true },
+    { key: 'country', icon: MapPin, value: candidate.nationality },
+    { key: 'experience', icon: Briefcase, value: candidate.experience },
+    { key: 'phone', icon: Phone, value: candidate.phone, isLtr: true },
   ];
 
   return (
@@ -56,8 +58,8 @@ export default function ReviewCandidateCard({
 
       <div className="flex flex-col gap-4 text-sm text-muted-foreground">
         <ul className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {details.map(({ icon: Icon, value, isLtr }) => (
-            <li key={value} className="flex items-center gap-1">
+          {details.map(({ key, icon: Icon, value, isLtr }) => (
+            <li key={key} className="flex items-center gap-1">
               <Icon aria-hidden="true" className="size-5" strokeWidth={1.5} />
               <span dir={isLtr ? 'ltr' : undefined}>{value}</span>
             </li>
@@ -109,9 +111,10 @@ export default function ReviewCandidateCard({
                 key={value}
                 type="button"
                 aria-pressed={isActive}
+                disabled={isSavingDecision}
                 onClick={() => onDecision(candidate.id, value)}
                 className={cn(
-                  'h-11 flex-1 rounded-full px-4 text-sm font-semibold transition-colors',
+                  'h-11 flex-1 rounded-full px-4 text-sm font-semibold transition-colors disabled:opacity-50',
                   isActive
                     ? activeClass
                     : 'bg-secondary/7 text-secondary/75 hover:bg-secondary/12',

@@ -4,10 +4,6 @@ import type {
 } from '../types/shared-review.types';
 import { SAMPLE_CV_URL } from './project-preview-data';
 
-export const SHARED_REVIEW_PAGE_SIZE = 9;
-
-export const ALL_STATUSES_VALUE = 'all';
-
 export const INTERVIEW_METHODS = [
   'online',
   'face-to-face',

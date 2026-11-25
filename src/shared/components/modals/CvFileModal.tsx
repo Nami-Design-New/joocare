@@ -21,6 +21,7 @@ type CvFileModalProps = {
   title: string;
   /** The candidate's CV file (`cv` from the API). */
   pdfUrl?: string | null;
+  onDownload?: () => void;
   /** Shows the "Download / Candidate Answers" footer (Figma 11791:116599) for job applicants. */
   onShowAnswers?: () => void;
 };
@@ -32,6 +33,7 @@ export default function CvFileModal({
   onOpenChange,
   title,
   pdfUrl,
+  onDownload,
   onShowAnswers,
 }: CvFileModalProps) {
   const t = useTranslations('common.cv-file');
@@ -51,7 +53,18 @@ export default function CvFileModal({
           <DialogTitle className="text-xl font-bold text-foreground">
             {title}
           </DialogTitle>
-          {pdfUrl && !onShowAnswers ? (
+          {pdfUrl && onDownload && !onShowAnswers ? (
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              onClick={onDownload}
+              className="flex items-center gap-1.5 rounded-full px-4"
+            >
+              {pdfIcon}
+              {t('download')}
+            </Button>
+          ) : pdfUrl && !onShowAnswers ? (
             <Button
               asChild
               size="sm"

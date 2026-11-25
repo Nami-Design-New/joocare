@@ -15,6 +15,8 @@ type DecisionsSubmittedModalProps = {
   recruiter: string;
   summary: SharedReviewSummary;
   experience?: 'company' | 'hiring-manager';
+  onLogout?: () => void;
+  showNotificationNotice?: boolean;
 };
 
 export default function DecisionsSubmittedModal({
@@ -22,6 +24,8 @@ export default function DecisionsSubmittedModal({
   recruiter,
   summary,
   experience = 'company',
+  onLogout,
+  showNotificationNotice = true,
 }: DecisionsSubmittedModalProps) {
   const t = useTranslations('companyPage.projects.shared-review');
   const { logout } = useLogout();
@@ -41,7 +45,7 @@ export default function DecisionsSubmittedModal({
     {
       icon: User,
       value: recruiter,
-      label: t('submitted-to-recruiter'),
+      label: t(showNotificationNotice ? 'submitted-to-recruiter' : 'shared-by'),
       iconClass: 'bg-assessment-link-info text-assessment-link-info-text',
     },
   ];
@@ -56,19 +60,21 @@ export default function DecisionsSubmittedModal({
         project: projectName,
         strong: (chunks) => <strong className="font-bold">{chunks}</strong>,
       })}
-      className="w-[calc(100%-2rem)] max-w-175 rounded-3xl sm:max-w-175"
+      className="max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-175 overflow-y-auto rounded-3xl sm:max-w-175"
       visualWrapperClassName="mt-0 mb-4"
       primaryAction={{
         label: t('log-out'),
         icon: <LogOut className="size-5 rtl:rotate-180" />,
         closeOnClick: false,
-        onClick: () =>
-          logout({
-            redirectTo:
-              experience === 'hiring-manager'
-                ? HIRING_MANAGER_START_HREF
-                : EMPLOYER_LANDING_HREF,
-          }),
+        onClick:
+          onLogout ??
+          (() =>
+            logout({
+              redirectTo:
+                experience === 'hiring-manager'
+                  ? HIRING_MANAGER_START_HREF
+                  : EMPLOYER_LANDING_HREF,
+            })),
       }}
       actionsClassName="mt-5"
     >
@@ -117,12 +123,14 @@ export default function DecisionsSubmittedModal({
           </ul>
         </section>
 
-        <p className="flex items-center gap-4 px-5 text-[15px] leading-5.5 text-muted-foreground">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-assessment-link-info text-assessment-link-info-text">
-            <Send aria-hidden="true" className="size-5 rtl:-scale-x-100" />
-          </span>
-          {t('success-notice')}
-        </p>
+        {showNotificationNotice ? (
+          <p className="flex items-center gap-4 px-5 text-[15px] leading-5.5 text-muted-foreground">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-assessment-link-info text-assessment-link-info-text">
+              <Send aria-hidden="true" className="size-5 rtl:-scale-x-100" />
+            </span>
+            {t('success-notice')}
+          </p>
+        ) : null}
       </div>
     </SuccessModal>
   );

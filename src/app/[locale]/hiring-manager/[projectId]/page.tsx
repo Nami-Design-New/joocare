@@ -1,8 +1,9 @@
-import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import SharedReviewPage from '@/features/company-projects/components/shared-review/SharedReviewPage';
-import { projectPreviewData } from '@/features/company-projects/constants/project-preview-data';
-import InviteTokenGuard from '@/features/hiring-manager/components/InviteTokenGuard';
+import HiringManagerReviewPage from '@/features/hiring-manager/components/HiringManagerReviewPage';
+import HiringManagerReviewLoading from '@/features/hiring-manager/components/HiringManagerReviewLoading';
+
+export const metadata: Metadata = { referrer: 'no-referrer' };
 
 type PageProps = {
   params: Promise<{ projectId: string }>;
@@ -10,15 +11,10 @@ type PageProps = {
 
 export default async function HiringManagerProjectPage({ params }: PageProps) {
   const { projectId } = await params;
-  const project = projectPreviewData.find((item) => item.id === projectId);
-
-  if (!project?.shareLogs.length) notFound();
 
   return (
-    <Suspense fallback={null}>
-      <InviteTokenGuard>
-        <SharedReviewPage projectId={projectId} experience="hiring-manager" />
-      </InviteTokenGuard>
+    <Suspense fallback={<HiringManagerReviewLoading />}>
+      <HiringManagerReviewPage projectId={projectId} />
     </Suspense>
   );
 }
