@@ -5,6 +5,7 @@ import type {
   ChatApiId,
   ChatApiMessage,
   ChatApiMessages,
+  CompanyBulkMessageApiResult,
   CompanyChatApiConversation,
 } from '../types/chat-api.types';
 import {
@@ -75,6 +76,29 @@ export async function sendCompanyMessage({
   }
 
   return data.data;
+}
+
+// Sends the same text to every candidate in `userIds` in one request.
+export async function sendCompanyBulkMessage({
+  token,
+  locale,
+  userIds,
+  message: text,
+}: Omit<ChatRequest, 'page'> & { userIds: ChatApiId[]; message: string }) {
+  const body = new FormData();
+  userIds.forEach((id) => body.append('user_ids[]', String(id)));
+  body.append('message', text);
+
+  const { ok, data, message } = await apiFetch<CompanyBulkMessageApiResult>(
+    `${getCompanyApiUrl()}/messages/bulk`,
+    { method: 'POST', locale, token, body },
+  );
+
+  if (!ok || !data?.data) {
+    throw new Error(message || 'Failed to send messages.');
+  }
+
+  return { sentCount: data.data.sent_count };
 }
 
 export async function setCompanyConversationClosed({

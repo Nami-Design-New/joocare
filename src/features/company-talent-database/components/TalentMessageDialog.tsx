@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Info, LoaderCircle, X } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { TextareaField } from '@/shared/components/TextareaField';
 import { Button } from '@/shared/components/ui/button';
@@ -34,6 +35,8 @@ export default function TalentMessageDialog({
   onSend,
 }: TalentMessageDialogProps) {
   const t = useTranslations('companyPage.talent-database');
+  // An employer session's user is the company.
+  const companyName = useSession().data?.user?.name?.trim();
   const schema = useMemo(
     () =>
       createTalentMessageSchema({
@@ -48,7 +51,11 @@ export default function TalentMessageDialog({
     formState: { errors, isSubmitting },
   } = useForm<TalentMessageValues>({
     resolver: zodResolver(schema),
-    defaultValues: { message: t('default-message') },
+    defaultValues: {
+      message: companyName
+        ? t('default-message', { company: companyName })
+        : t('default-message-generic'),
+    },
   });
   return (
     <Dialog

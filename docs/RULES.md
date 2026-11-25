@@ -213,6 +213,7 @@ In existing folders, follow the local file pattern. Spell names correctly, becau
 ### UX
 
 - Every data view handles **loading, empty and error** states.
+- Show pagination only when the results span more than one page (`total > pageSize`).
 - Buttons show a **pending** state during mutations and prevent double submit.
 - Support mobile, keyboard navigation and accessible labels (`label`, `aria-*`).
 - Use `sonner` toasts for success and error feedback. Show the toast in the mutation hook (`onSuccess` / `onError`), not in both the hook and the component, and use translated fallback messages.
