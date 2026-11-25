@@ -10,15 +10,10 @@ type CandidateChatPageProps = {
 };
 
 export default function CandidateChatPage(props: CandidateChatPageProps) {
-  const chat = useCandidateChat(props);
-  if (chat.isLoading) return <ChatLoading />;
-  if (chat.isError) {
-    const error =
-      chat.error instanceof Error
-        ? chat.error
-        : new Error();
-    return <ChatError error={error} reset={() => void chat.refetch()} />;
-  }
+  const { isLoading, error, refetch, ...chat } = useCandidateChat(props);
+
+  if (isLoading) return <ChatLoading />;
+  if (error) return <ChatError error={error} reset={() => void refetch()} />;
 
   return (
     <ChatView

@@ -14,6 +14,7 @@ type ChatWindowHeaderProps = {
   onBack: () => void;
   onClose?: () => void;
   onReopen?: () => void;
+  closePending?: boolean;
 };
 
 export default function ChatWindowHeader({
@@ -22,11 +23,12 @@ export default function ChatWindowHeader({
   onBack,
   onClose,
   onReopen,
+  closePending,
 }: ChatWindowHeaderProps) {
   const t = useTranslations('companyPage.chat');
   const tCandidate = useTranslations('candidatePage.chat');
   const isCandidate = role === 'candidate';
-  const closed = Boolean(conversation.closedAt);
+  const closed = conversation.closed;
 
   return (
     <header className="flex min-h-20 shrink-0 items-center gap-3 border-b border-border bg-card px-4 py-3 md:px-8">
@@ -103,7 +105,12 @@ export default function ChatWindowHeader({
       </div>
       {isCandidate && closed && <ChatClosedBadge role={role} />}
       {onClose && onReopen && (
-        <ChatCloseMenu closed={closed} onClose={onClose} onReopen={onReopen} />
+        <ChatCloseMenu
+          closed={closed}
+          pending={closePending}
+          onClose={onClose}
+          onReopen={onReopen}
+        />
       )}
     </header>
   );

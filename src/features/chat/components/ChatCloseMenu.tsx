@@ -10,12 +10,14 @@ import ChatIcon from './ChatIcon';
 
 type ChatCloseMenuProps = {
   closed: boolean;
+  pending?: boolean;
   onClose: () => void;
   onReopen: () => void;
 };
 
 export default function ChatCloseMenu({
   closed,
+  pending = false,
   onClose,
   onReopen,
 }: ChatCloseMenuProps) {
@@ -29,6 +31,7 @@ export default function ChatCloseMenu({
           size="icon"
           className="rounded-full"
           aria-label={t('chat-actions')}
+          disabled={pending}
         >
           <ChatIcon name="menu" width={4} height={16} />
         </Button>

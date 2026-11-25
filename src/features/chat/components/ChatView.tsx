@@ -1,25 +1,14 @@
 'use client';
 
 import { cn } from '@/shared/lib/utils';
-import type { ChatState } from '../hooks/useChat';
-import type {
-  ChatConversation,
-  ChatMessage,
-  ChatRole,
-  SendChatMessage,
-} from '../types/chat.types';
+import type { ChatMessage, ChatRole, ChatViewState } from '../types/chat.types';
 import ChatConversationList from './ChatConversationList';
 import ChatImageDialog from './ChatImageDialog';
 import ChatWindow from './ChatWindow';
 
 type ChatViewProps = {
   role: ChatRole;
-  chat: Omit<ChatState, 'activeConversation' | 'sendMessage'> & {
-    activeConversation?: ChatConversation;
-    sendMessage: (
-      message: SendChatMessage,
-    ) => void | boolean | Promise<void | boolean>;
-  };
+  chat: ChatViewState;
   className?: string;
   superAdmin?: boolean;
   initialReplyMessage?: ChatMessage;
@@ -33,7 +22,8 @@ export default function ChatView({
   superAdmin,
   initialReplyMessage,
 }: ChatViewProps) {
-  const canClose = role === 'company';
+  const { setClosed } = chat;
+  const canClose = role === 'company' && Boolean(setClosed);
   return (
     <div className={cn('flex overflow-hidden text-foreground', className)}>
       <ChatConversationList
@@ -54,8 +44,9 @@ export default function ChatView({
           conversation={chat.activeConversation}
           mobileConversationOpen={chat.mobileConversationOpen}
           onBack={() => chat.selectConversation()}
-          onClose={canClose ? () => chat.setClosed(true) : undefined}
-          onReopen={canClose ? () => chat.setClosed(false) : undefined}
+          onClose={canClose ? () => setClosed?.(true) : undefined}
+          onReopen={canClose ? () => setClosed?.(false) : undefined}
+          closePending={chat.isClosePending}
           onSend={chat.sendMessage}
           onDismissWarning={chat.dismissContactWarning}
           onPreview={chat.setPreviewImage}

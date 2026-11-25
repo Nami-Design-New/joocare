@@ -3665,6 +3665,8 @@
       "closed-by-you": "Chat closed by you · {date}",
       "closed-success": "Chat closed successfully.",
       "reopened-success": "Chat reopened successfully.",
+      "close-failed": "Could not close the chat. Please try again.",
+      "reopen-failed": "Could not reopen the chat. Please try again.",
       "first-message": "Send your first message to {name} to start the conversation.",
       "already-contacted-title": "Already contacted by another recruiter",
       "already-contacted-description": "{name} was contacted by {recruiter} (Recruiter) on {date}. You can still send a message.",

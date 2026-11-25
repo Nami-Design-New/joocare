@@ -60,7 +60,7 @@ export default function ChatConversationList({
       >
         {conversations.map((conversation) => {
           const active = conversation.id === activeId;
-          const closed = Boolean(conversation.closedAt);
+          const closed = conversation.closed;
           const subtitle = [conversation.jobTitle, conversation.companyName]
             .filter(Boolean)
             .join(' · ');
@@ -134,7 +134,7 @@ export default function ChatConversationList({
                 >
                   <bdi>{preview}</bdi>
                 </span>
-                {superAdmin && (
+                {superAdmin && conversation.recruiter && (
                   <span className="flex items-center gap-1 text-[11px] leading-4.5 text-chat-muted">
                     <ChatIcon name="contacted-by" width={12} />
                     {t('contacted-by')}{' '}

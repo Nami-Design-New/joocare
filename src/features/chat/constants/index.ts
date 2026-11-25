@@ -10,10 +10,18 @@ export const CHAT_ACCEPTED_TYPES = [
   'application/pdf',
 ];
 export const CHAT_ASSET_PATH = '/assets/chat';
+export const CHAT_DEFAULT_AVATAR = '/assets/profile_image.svg';
+export const CHAT_PAGE_SIZE = 20;
 export const CHAT_ROUTES = {
   company: '/company/chat',
   candidate: '/candidate/chat',
 } as const;
+export const CHAT_COMPANY_PROFILE_ROUTE = '/shared-company-profile';
+/**
+ * The company role that sees every recruiter's conversations ("Contacted by" line).
+ * Temporary: moves to the planned `super_admin` role once it is added.
+ */
+export const CHAT_SUPER_ADMIN_ROLE = 'recruitment_manager';
 
 export const candidateChatQueryKeys = {
   conversations: (locale: string) => ['candidate-chat-conversations', locale],
@@ -21,5 +29,14 @@ export const candidateChatQueryKeys = {
     'candidate-chat-messages',
     locale,
     companyAdminId,
+  ],
+} as const;
+
+export const companyChatQueryKeys = {
+  conversations: (locale: string) => ['company-chat-conversations', locale],
+  messages: (locale: string, userId: string) => [
+    'company-chat-messages',
+    locale,
+    userId,
   ],
 } as const;
