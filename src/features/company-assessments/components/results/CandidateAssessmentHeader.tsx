@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useFormatter, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { getCandidateProfileHref } from '@/features/company-projects/utils/candidate-profile-href';
 import { Card } from '@/shared/components/ui/card';
 import { cn } from '@/shared/lib/utils';
 import type { AssessmentResultHeaderData } from '../../types/assessment-answers.types';
@@ -70,7 +71,16 @@ export default function CandidateAssessmentHeader({
         <div className="w-full min-w-0 flex-1 space-y-1.5">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-xl font-bold text-assessment-dark">
-              {result.candidate.name}
+              {result.candidate.userId ? (
+                <Link
+                  href={getCandidateProfileHref(result.candidate.userId)}
+                  className="underline underline-offset-2"
+                >
+                  {result.candidate.name}
+                </Link>
+              ) : (
+                result.candidate.name
+              )}
             </h1>
             <span
               className={cn(

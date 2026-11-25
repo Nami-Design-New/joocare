@@ -3,7 +3,7 @@
 import { UserRoundPlus } from 'lucide-react';
 import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import CandidateAssessmentCell from '@/features/company-assessments/components/candidate-assessments/CandidateAssessmentCell';
-import { getTalentProfileHref } from '@/features/company-talent-database/utils/candidate-profile';
+import { getCandidateProfileHref } from '@/features/company-projects/utils/candidate-profile-href';
 import CandidateNameCell from '@/shared/components/candidates/CandidateNameCell';
 import CandidateRowActions from '@/shared/components/candidates/CandidateRowActions';
 import CandidateScoreCircle from '@/shared/components/candidates/CandidateScoreCircle';
@@ -93,7 +93,7 @@ export default function PipelineCandidatesTable({
         <CandidateNameCell
           name={candidate.name}
           image={candidate.image}
-          href={getTalentProfileHref('talent-5')}
+          href={getCandidateProfileHref(candidate.userId)}
           isStarred={handlers.isStarred(candidate)}
           onToggleStar={() => handlers.onToggleStar(candidate)}
           onCreateProject={() => handlers.onCreateProject(candidate)}

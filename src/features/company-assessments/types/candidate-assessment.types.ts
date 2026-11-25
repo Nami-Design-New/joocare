@@ -20,6 +20,19 @@ export type CandidateAssessment = {
   dueAt: string | null;
 };
 
+// A candidate's assessment as the company APIs return it (pipeline and
+// project candidates). Not returned yet; field names follow the agreed shape.
+export type ApiCandidateAssessment = {
+  id: number;
+  assessment_id: number;
+  title: string;
+  source: 'job' | 'manual';
+  status: 'passed' | 'failed' | 'absent' | 'grace_period';
+  score: number | null;
+  sent_at: string;
+  due_at: string | null;
+};
+
 export type AssessmentCandidateSummary = {
   id: string;
   name: string;

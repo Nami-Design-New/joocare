@@ -33,6 +33,7 @@ export default function CandidateAssessmentModals({
           candidate={action.candidate}
           onClose={actions.close}
           onAssign={actions.assign}
+          isAssigning={actions.isAssigning}
         />
       ) : null}
       {/* Same success modal as "Message sent to (n) candidates successfully". */}

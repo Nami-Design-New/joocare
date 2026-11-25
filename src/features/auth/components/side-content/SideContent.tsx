@@ -8,8 +8,7 @@ const SideContent = () => {
   const t = useTranslations();
   const isEmployerLogin =
     pathname.includes('employer/login') ||
-    pathname.includes('employer/create-password') ||
-    pathname.includes('hiring-manager/create-password');
+    pathname.includes('employer/create-password');
   const isCandidateLogin = pathname.includes('candidate/login');
 
   const isEmployerRegister = pathname.includes('employer/register');

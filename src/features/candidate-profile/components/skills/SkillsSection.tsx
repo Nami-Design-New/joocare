@@ -13,9 +13,11 @@ import type {
 const SkillsSection = ({
   profile,
   readOnly = false,
+  emptyText,
 }: {
   profile: CandidateProfileViewModel | null;
   readOnly?: boolean;
+  emptyText?: string;
 }) => {
   const t = useTranslations();
   const [addOpen, setAddOpen] = useState(false);
@@ -56,7 +58,7 @@ const SkillsSection = ({
             ))
           ) : (
             <p className="text-xs text-muted-foreground md:text-sm">
-              {t('candidatePage.profile.no-skills')}
+              {emptyText ?? t('candidatePage.profile.no-skills')}
             </p>
           )}
         </div>

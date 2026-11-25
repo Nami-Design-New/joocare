@@ -7,7 +7,6 @@ import type {
 } from '../../types/company-projects.types';
 import CandidateInterviewModal from './CandidateInterviewModal';
 import CandidateRemoveModal from './CandidateRemoveModal';
-import CandidateShareModal from './CandidateShareModal';
 
 type CandidateActionModalsProps = {
   action: CandidateAction;
@@ -29,8 +28,6 @@ export default function CandidateActionModals({
   if (!action || !candidate) return null;
 
   switch (action.type) {
-    case 'share':
-      return <CandidateShareModal candidate={candidate} onClose={onClose} />;
     case 'remove':
       return (
         <CandidateRemoveModal

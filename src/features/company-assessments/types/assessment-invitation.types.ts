@@ -23,6 +23,7 @@ export type InvitationStatus = 'passed' | 'failed' | 'pending' | 'absent';
 
 export type ExternalInvitation = {
   id: string;
+  userId?: string;
   name: string;
   email: string;
   /** Local asset file name (preview data) or an absolute API URL. */

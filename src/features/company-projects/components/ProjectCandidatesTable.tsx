@@ -11,10 +11,15 @@ import DataTable, {
 import { Button } from '@/shared/components/ui/button';
 import { getAssessmentResultHref } from '@/features/company-assessments/utils/candidate-assessments';
 import { cn } from '@/shared/lib/utils';
+import { getCandidateProfileHref } from '../utils/candidate-profile-href';
 import type {
   CandidateAction,
   ProjectCandidate,
 } from '../types/company-projects.types';
+import {
+  CANDIDATE_AVATAR_FALLBACK,
+  MISSING_API_VALUE,
+} from '../constants/project-queries';
 
 type ProjectCandidatesTableProps = {
   candidates: ProjectCandidate[];
@@ -23,12 +28,11 @@ type ProjectCandidatesTableProps = {
   onAction: (action: NonNullable<CandidateAction>) => void;
   onViewNote: (candidateId: string) => void;
   onDownloadCv: (candidate: ProjectCandidate) => void;
+  onShareAssessment: (candidate: ProjectCandidate) => void;
+  onViewAssessments: (candidate: ProjectCandidate) => void;
+  /** True when the list is filtered (changes the empty message). */
+  isFiltered: boolean;
 };
-
-const CANDIDATE_AVATAR_FALLBACK =
-  '/assets/company-projects/candidate-avatar.png';
-// Shown where the project users API has no data yet.
-const MISSING_API_VALUE = '#';
 
 function getStatusClass(status: NonNullable<ProjectCandidate['status']>) {
   if (status === 'Shortlist') return 'bg-success/10 text-success';
@@ -57,13 +61,18 @@ function getAssessmentLabelKey(
   }[assessment];
 }
 
+// Only finished assessments have a score.
+function hasScore(assessment: NonNullable<ProjectCandidate['assessment']>) {
+  return assessment === 'Passed' || assessment === 'Failed';
+}
+
 function CandidateIdentity({
   candidate,
   profileHref,
   onViewNote,
 }: {
   candidate: ProjectCandidate;
-  /** Omitted while real candidates have no profile page to open. */
+  /** Only API candidates with a user id can open the profile. */
   profileHref?: string;
   onViewNote: () => void;
 }) {
@@ -77,7 +86,7 @@ function CandidateIdentity({
     : null;
 
   return (
-    <div className="flex min-w-52 items-start gap-3 text-start">
+    <div className="flex w-48 items-start gap-3 text-start">
       <Image
         src={candidate.image || CANDIDATE_AVATAR_FALLBACK}
         alt=""
@@ -94,7 +103,11 @@ function CandidateIdentity({
             {candidate.name}
           </Link>
         ) : (
-          <span className="block max-w-full truncate font-medium text-foreground">
+          <span
+            className="block max-w-full truncate font-medium text-foreground"
+            dir="auto"
+            title={candidate.name}
+          >
             {candidate.name}
           </span>
         )}
@@ -135,9 +148,11 @@ function CandidateIdentity({
 function AssessmentCell({
   candidate,
   onShareAssessment,
+  onViewAssessments,
 }: {
   candidate: ProjectCandidate;
   onShareAssessment: () => void;
+  onViewAssessments: () => void;
 }) {
   const t = useTranslations('companyPage.projects');
   const linkClassName =
@@ -166,9 +181,9 @@ function AssessmentCell({
         >
           {t(getAssessmentLabelKey(candidate.assessment))}
         </span>
-        {candidate.score !== undefined ? (
+        {hasScore(candidate.assessment) ? (
           <strong className="text-base text-foreground">
-            {candidate.score}%
+            {candidate.score ?? MISSING_API_VALUE}%
           </strong>
         ) : null}
       </span>
@@ -179,6 +194,14 @@ function AssessmentCell({
           className={linkClassName}
         >
           + {t('share-assessment')}
+        </button>
+      ) : hasManyAssessments && candidate.assessments?.length ? (
+        <button
+          type="button"
+          onClick={onViewAssessments}
+          className={linkClassName}
+        >
+          {t('view-all-assessments', { count: candidate.assessmentCount ?? 0 })}
         </button>
       ) : resultHref ? (
         <Link href={resultHref} className={linkClassName}>
@@ -212,9 +235,14 @@ function CandidateActions({
       onClick: () =>
         router.push({
           pathname: CHAT_ROUTES.company,
-          query: { conversation: `project-${candidate.id}` },
+          query: {
+            conversation: `user-${candidate.userId}`,
+            candidateId: candidate.userId,
+            candidateName: candidate.name,
+            ...(candidate.image ? { candidateImage: candidate.image } : {}),
+          },
         }),
-      disabled: false,
+      disabled: !candidate.userId,
       label: tInvitations('chat-with', { name: candidate.name }),
       icon: (
         <Image
@@ -306,6 +334,9 @@ export default function ProjectCandidatesTable({
   onAction,
   onViewNote,
   onDownloadCv,
+  onShareAssessment,
+  onViewAssessments,
+  isFiltered,
 }: ProjectCandidatesTableProps) {
   const t = useTranslations('companyPage.projects');
   const columns: DataTableColumn<ProjectCandidate>[] = [
@@ -319,11 +350,16 @@ export default function ProjectCandidatesTable({
     {
       id: 'candidate',
       header: t('candidate'),
-      headerClassName: 'min-w-60 text-center',
+      headerClassName: 'text-center',
       cellClassName: 'text-start',
       renderCell: (candidate) => (
         <CandidateIdentity
           candidate={candidate}
+          profileHref={
+            candidate.userId
+              ? getCandidateProfileHref(candidate.userId)
+              : undefined
+          }
           onViewNote={() => onViewNote(candidate.id)}
         />
       ),
@@ -331,45 +367,46 @@ export default function ProjectCandidatesTable({
     {
       id: 'nationality',
       header: t('nationality'),
-      headerClassName: 'min-w-28 text-center',
-      cellClassName: 'text-center',
+      headerClassName: 'text-center',
+      cellClassName: 'max-w-32 text-center',
       renderCell: (candidate) => candidate.nationality,
     },
     {
       id: 'email',
       header: t('email'),
-      headerClassName: 'min-w-52 text-center',
-      cellClassName: 'max-w-56 text-center',
+      headerClassName: 'text-center',
+      cellClassName: 'max-w-48 text-center',
       renderCell: (candidate) => (
-        <span className="block truncate">{candidate.email}</span>
+        <span className="block truncate" title={candidate.email}>
+          {candidate.email}
+        </span>
       ),
     },
     {
       id: 'phone',
       header: t('phone'),
-      headerClassName: 'min-w-36 text-center',
-      cellClassName: 'min-w-36 text-center whitespace-nowrap',
+      headerClassName: 'text-center',
+      cellClassName: 'text-center whitespace-nowrap',
       renderCell: (candidate) => <span dir="ltr">{candidate.phone}</span>,
     },
     {
       id: 'assessment',
       header: t('assessment'),
-      headerClassName: 'min-w-36 text-center',
+      headerClassName: 'text-center',
       cellClassName: 'text-center',
       renderCell: (candidate) => (
         <AssessmentCell
           candidate={candidate}
-          onShareAssessment={() =>
-            onAction({ type: 'share', candidateId: candidate.id })
-          }
+          onShareAssessment={() => onShareAssessment(candidate)}
+          onViewAssessments={() => onViewAssessments(candidate)}
         />
       ),
     },
     {
       id: 'actions',
       header: t('actions'),
-      headerClassName: 'min-w-40 text-center',
-      cellClassName: 'min-w-40 text-center',
+      headerClassName: 'text-center',
+      cellClassName: 'text-center',
       renderCell: (candidate) => (
         <CandidateActions
           candidate={candidate}
@@ -389,7 +426,7 @@ export default function ProjectCandidatesTable({
         dir={direction}
         ariaLabel={t('candidate-table-title')}
         containerClassName="rounded-2xl border border-border bg-card"
-        className="min-w-[1080px] [&_td]:!px-4 [&_td]:!py-4 [&_td]:!text-sm [&_th]:!py-4 [&_th]:!text-lg [&_th]:!font-semibold"
+        className="min-w-[1000px] [&_td]:!px-3 [&_td]:!py-4 [&_td]:!text-sm [&_th]:!py-4 [&_th]:!text-lg [&_th]:!font-semibold"
         headerRowClassName="bg-muted/70"
         rowClassName="border-t border-border bg-body-bg/70 align-middle hover:bg-primary/5"
       />
@@ -398,7 +435,7 @@ export default function ProjectCandidatesTable({
           role="status"
           className="mt-4 rounded-xl bg-card px-4 py-8 text-center text-sm text-muted-foreground"
         >
-          {t('no-candidates')}
+          {t(isFiltered ? 'no-candidates' : 'empty-candidates')}
         </p>
       )}
     </div>

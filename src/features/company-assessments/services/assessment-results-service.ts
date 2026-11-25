@@ -51,6 +51,7 @@ function mapResultDetails(
   return {
     id: String(result.id),
     candidate: {
+      userId: String(data.candidate.id),
       name: data.candidate.name,
       email: data.candidate.email,
       image: data.candidate.image,
@@ -167,6 +168,7 @@ export async function getAssessmentResults(
   return {
     rows: users.map((item) => ({
       id: String(item.id),
+      userId: String(item.user.id),
       name: item.user.name,
       email: item.user.email,
       image: item.user.image,

@@ -15,7 +15,7 @@ type ProjectCandidateProfilePageProps = {
 export default function ProjectCandidateProfilePage({
   candidate,
 }: ProjectCandidateProfilePageProps) {
-  const { profile } = candidate;
+  const { profile, sectionPlaceholders } = candidate;
 
   return (
     <div className="layout-container grid grid-cols-1 items-start gap-5 py-5 sm:gap-8 sm:py-8 lg:grid-cols-[300px_minmax(0,1fr)] lg:py-12.5">
@@ -24,14 +24,27 @@ export default function ProjectCandidateProfilePage({
       <div className="flex min-w-0 flex-col gap-4">
         <AboutSection profile={profile} readOnly />
         <CareerPreferencesSection preferences={candidate.careerPreferences} />
-        <EducationSection profile={profile} readOnly />
-        <SkillsSection profile={profile} readOnly />
-        <ExperienceSectionData profile={profile} readOnly />
+        <EducationSection
+          profile={profile}
+          readOnly
+          emptyText={sectionPlaceholders?.educations}
+        />
+        <SkillsSection
+          profile={profile}
+          readOnly
+          emptyText={sectionPlaceholders?.skills}
+        />
+        <ExperienceSectionData
+          profile={profile}
+          readOnly
+          emptyText={sectionPlaceholders?.experiences}
+        />
         <ClinicalPrivilegesSection privileges={candidate.clinicalPrivileges} />
         <CandidateCredentialsTabs
           qualifications={candidate.qualifications}
           certificates={candidate.certificates}
           licenses={candidate.licenses}
+          sectionPlaceholders={sectionPlaceholders}
         />
       </div>
     </div>

@@ -34,7 +34,7 @@ export default function CareerPreferencesSection({
             <h4 className="text-sm font-semibold text-muted-foreground">
               {t(group.key)}
             </h4>
-            <CandidateProfileChips items={[...group.items]} />
+            <CandidateProfileChips items={group.items} />
           </div>
         ))}
       </div>

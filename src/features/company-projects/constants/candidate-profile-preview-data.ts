@@ -69,7 +69,7 @@ export const candidateProfilePreview: ProjectCandidateProfile = {
     missing_score_items: [],
   },
   summary: {
-    isOpenToWork: true,
+    jobSearchStatus: 'open_to_work',
     lastActive: '2 days ago',
     details: [
       { key: 'email', value: 'saeed@gmail.com' },

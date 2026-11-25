@@ -8,7 +8,7 @@ import { cn } from '@/shared/lib/utils';
 import type { SharedReviewSummary } from '../../types/shared-review.types';
 
 const EMPLOYER_LANDING_HREF = '/for-employers';
-const HIRING_MANAGER_START_HREF = '/hiring-manager/create-password';
+const HIRING_MANAGER_START_HREF = '/auth/employer/create-password';
 
 type DecisionsSubmittedModalProps = {
   projectName: string;

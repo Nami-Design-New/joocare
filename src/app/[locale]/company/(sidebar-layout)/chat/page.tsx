@@ -1,5 +1,6 @@
 import CompanyChatPage from '@/features/chat/components/CompanyChatPage';
 import type { ChatScenario } from '@/features/chat/types/chat.types';
+import { getCandidateProfileHref } from '@/features/company-projects/utils/candidate-profile-href';
 
 type ChatPageProps = {
   searchParams: Promise<{
@@ -30,7 +31,7 @@ export default async function ChatPage({ searchParams }: ChatPageProps) {
         query.conversation === `user-${query.candidateId}`
           ? {
               id: query.conversation,
-              profileHref: `/company/candidate-profile?candidateId=${encodeURIComponent(query.candidateId)}`,
+              profileHref: getCandidateProfileHref(query.candidateId),
               name: query.candidateName,
               avatar:
                 query.candidateImage ||
