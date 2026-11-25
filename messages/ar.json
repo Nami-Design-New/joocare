@@ -1918,10 +1918,8 @@
       "rejected": "مرفوض",
       "shortlist": "القائمة المختصرة",
       "under-review": "قيد المراجعة",
+      "empty-candidates": "لا يوجد مرشحون في هذا المشروع بعد.",
       "no-candidates": "لا يوجد مرشحون يطابقون عوامل التصفية.",
-      "share-candidate-title": "مشاركة المرشح مع مسؤول التوظيف",
-      "candidate-share-success": "تمت مشاركة المرشح بنجاح",
-      "candidate-share-success-description": "تمت مشاركة المرشح مع {manager}.",
       "remove-candidate-title": "إزالة المرشح من المشروع؟",
       "remove-candidate-description": "أنت على وشك إزالة <b>{name}</b> من مشروع <b>{project}</b>. سيؤدي هذا الإجراء إلى إخفاء المرشح عن مديري التوظيف المعيّنين لهذا المشروع، مع بقاء ملفه متاحًا في قاعدة بيانات المواهب لاستخدامه مستقبلًا.",
       "remove": "إزالة",
@@ -1939,6 +1937,9 @@
       "candidate-profile": {
         "profile-image": "صورة {name} الشخصية",
         "open-to-work": "متاح للعمل",
+        "actively-looking": "أبحث عن عمل بشكل نشط",
+        "open-to-opportunities": "منفتح على الفرص",
+        "job-search-status": "حالة البحث عن عمل",
         "last-active": "آخر نشاط:",
         "email": "البريد الإلكتروني",
         "location": "الموقع",
@@ -1966,7 +1967,36 @@
         "licenses": "التراخيص",
         "no-qualifications": "لا توجد مؤهلات مضافة بعد",
         "no-certificates": "لا توجد شهادات مضافة بعد",
-        "no-licenses": "لا توجد تراخيص مضافة بعد"
+        "no-licenses": "لا توجد تراخيص مضافة بعد",
+        "present": "حتى الآن",
+        "yes": "نعم",
+        "no": "لا",
+        "not-found": "المرشح غير موجود",
+        "not-found-description": "ملف المرشح غير متاح.",
+        "back-to-projects": "العودة إلى المشاريع",
+        "load-error": "تعذر تحميل ملف المرشح.",
+        "load-error-description": "حاول تحميل الملف مرة أخرى.",
+        "retry": "حاول مرة أخرى",
+        "values": {
+          "gender": {
+            "male": "ذكر",
+            "female": "أنثى"
+          },
+          "marital": {
+            "single": "أعزب",
+            "married": "متزوج",
+            "divorced": "مطلق",
+            "widowed": "أرمل"
+          },
+          "proficiency": {
+            "basic": "أساسي",
+            "beginner": "مبتدئ",
+            "intermediate": "متوسط",
+            "advanced": "متقدم",
+            "fluent": "بطلاقة",
+            "native": "اللغة الأم"
+          }
+        }
       },
       "shared-review": {
         "home": "الذهاب إلى الصفحة الرئيسية لأصحاب العمل",

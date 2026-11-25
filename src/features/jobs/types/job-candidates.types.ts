@@ -1,4 +1,7 @@
-import type { CandidateAssessment } from '@/features/company-assessments/types/candidate-assessment.types';
+import type {
+  ApiCandidateAssessment,
+  CandidateAssessment,
+} from '@/features/company-assessments/types/candidate-assessment.types';
 import type { JOB_CANDIDATES_TABS, PIPELINE_FILTER_KEYS } from '../constants';
 
 export type JobCandidatesTab = (typeof JOB_CANDIDATES_TABS)[number];
@@ -6,17 +9,6 @@ export type JobCandidatesTab = (typeof JOB_CANDIDATES_TABS)[number];
 // URL keys and API params share these names.
 export type PipelineFilterKey = (typeof PIPELINE_FILTER_KEYS)[number];
 export type PipelineFilters = Record<PipelineFilterKey, string>;
-
-type ApiCandidateAssessment = {
-  id: number;
-  assessment_id: number;
-  title: string;
-  source: 'job' | 'manual';
-  status: 'passed' | 'failed' | 'absent' | 'grace_period';
-  score: number | null;
-  sent_at: string;
-  due_at: string | null;
-};
 
 export type ApiApplicationCandidate = {
   id: number;

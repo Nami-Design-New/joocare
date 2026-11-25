@@ -1,4 +1,7 @@
-import type { CandidateAssessment } from '../types/candidate-assessment.types';
+import type {
+  ApiCandidateAssessment,
+  CandidateAssessment,
+} from '../types/candidate-assessment.types';
 
 export const SHORT_DATE_FORMAT = {
   day: 'numeric',
@@ -18,4 +21,20 @@ export function hasAssessmentScore(assessment: CandidateAssessment) {
     (assessment.status === 'passed' || assessment.status === 'failed') &&
     assessment.score !== null
   );
+}
+
+export function mapApiCandidateAssessment(
+  assessment: ApiCandidateAssessment,
+): CandidateAssessment {
+  return {
+    id: String(assessment.id),
+    assessmentId: String(assessment.assessment_id),
+    title: assessment.title,
+    source: assessment.source,
+    status:
+      assessment.status === 'grace_period' ? 'grace-period' : assessment.status,
+    score: assessment.score,
+    sentAt: assessment.sent_at,
+    dueAt: assessment.due_at,
+  };
 }

@@ -23,10 +23,10 @@ export default function SharedReviewHeader({
   const { logout } = useLogout();
   const isHiringManager = experience === 'hiring-manager';
   const homeHref = isHiringManager
-    ? '/hiring-manager/create-password'
+    ? '/auth/employer/create-password'
     : EMPLOYER_LANDING_HREF;
   const logoutHref = isHiringManager
-    ? '/hiring-manager/create-password'
+    ? '/auth/employer/create-password'
     : EMPLOYER_LOGIN_HREF;
 
   return (

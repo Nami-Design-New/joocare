@@ -12,10 +12,8 @@ import {
   DialogContent,
   DialogDescription,
 } from '@/shared/components/ui/dialog';
-import {
-  assessmentSeeds,
-  categorySeeds,
-} from '../../constants/assessment-data';
+import { useGetAssessmentCategoryOptions } from '../../hooks/useGetAssessmentCategoryOptions';
+import { useGetCategoryAssessmentOptions } from '../../hooks/useGetCategoryAssessmentOptions';
 import type { AssessmentCandidateSummary } from '../../types/candidate-assessment.types';
 import {
   createAssignAssessmentSchema,
@@ -27,18 +25,17 @@ import CandidateSummaryCard from './CandidateSummaryCard';
 type AssignAssessmentModalProps = {
   candidate: AssessmentCandidateSummary;
   onClose: () => void;
-  onAssign: (values: TAssignAssessmentSchema) => Promise<void>;
+  onAssign: (values: TAssignAssessmentSchema) => void;
+  isAssigning?: boolean;
 };
 
-const categoryOptions = categorySeeds.map((category) => ({
-  value: category.id,
-  label: category.name,
-}));
+// Category (Joocare + company) then one of its active assessments.
 
 export default function AssignAssessmentModal({
   candidate,
   onClose,
   onAssign,
+  isAssigning: isSubmitting = false,
 }: AssignAssessmentModalProps) {
   const t = useTranslations('companyPage.assessments.candidate-assessments');
   const [modalContent, setModalContent] = useState<HTMLDivElement | null>(null);
@@ -54,14 +51,21 @@ export default function AssignAssessmentModal({
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TAssignAssessmentSchema>({
     resolver: zodResolver(schema),
     defaultValues: { categoryId: '', assessmentId: '' },
   });
   const categoryId = useWatch({ control, name: 'categoryId' });
-  const assessmentOptions = assessmentSeeds
-    .filter((assessment) => assessment.categoryId === categoryId)
+  const categories = useGetAssessmentCategoryOptions('');
+  const assessments = useGetCategoryAssessmentOptions(categoryId);
+  const categoryOptions = categories.options.map((category) => ({
+    value: category.id,
+    label: category.name,
+  }));
+  // Paused assessments can't be shared.
+  const assessmentOptions = assessments.assessments
+    .filter((assessment) => !assessment.isPaused)
     .map((assessment) => ({
       value: assessment.id,
       label: t('assessment-option', {
@@ -108,6 +112,9 @@ export default function AssignAssessmentModal({
                 label={t('category')}
                 placeholder={t('category-placeholder')}
                 options={categoryOptions}
+                hasNextPage={categories.hasNextPage}
+                isFetchingNextPage={categories.isFetchingNextPage}
+                onReachEnd={() => void categories.fetchNextPage()}
                 portalContainer={modalContent}
                 value={field.value}
                 onChange={(value) => {
@@ -132,6 +139,9 @@ export default function AssignAssessmentModal({
                     : 'choose-category-first',
                 )}
                 options={assessmentOptions}
+                hasNextPage={assessments.hasNextPage}
+                isFetchingNextPage={assessments.isFetchingNextPage}
+                onReachEnd={() => void assessments.fetchNextPage()}
                 portalContainer={modalContent}
                 value={field.value}
                 onChange={field.onChange}

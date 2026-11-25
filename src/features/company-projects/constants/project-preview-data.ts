@@ -260,12 +260,6 @@ export const projectRecruiters = [
   'Nora Al-Otaibi',
 ];
 
-export const hiringManagers = [
-  'Khalid Al-Mutairi',
-  'Maha Hassan',
-  'Noura Al-Harbi',
-];
-
 export const projectShareMessage = `Dear Hiring Manager,\nKindly review the candidate profiles available through the link below and identify the most suitable candidate based on your operational requirements.\nTo facilitate timely interview arrangements, please also select your preferred interview date, time, and interview method for the shortlisted candidate(s).\nRegards,\nRecruitment Team`;
 
 export const PROJECT_NAME_MAX_LENGTH = 100;

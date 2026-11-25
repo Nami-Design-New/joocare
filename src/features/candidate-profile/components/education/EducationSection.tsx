@@ -9,9 +9,11 @@ import { useTranslations } from 'next-intl';
 const EducationSection = ({
   profile,
   readOnly = false,
+  emptyText,
 }: {
   profile: CandidateProfileViewModel | null;
   readOnly?: boolean;
+  emptyText?: string;
 }) => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
@@ -44,7 +46,7 @@ const EducationSection = ({
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">
-            {t('candidatePage.profile.no-education')}
+            {emptyText ?? t('candidatePage.profile.no-education')}
           </p>
         )}
       </section>
