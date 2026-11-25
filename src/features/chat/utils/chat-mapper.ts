@@ -1,3 +1,4 @@
+import { getCandidateProfileHref } from '@/features/company-projects/utils/candidate-profile-href';
 import { CHAT_COMPANY_PROFILE_ROUTE, CHAT_DEFAULT_AVATAR } from '../constants';
 import type {
   CandidateChatApiConversation,
@@ -104,6 +105,7 @@ export function mapCompanyConversation(
   return {
     ...mapConversationBase(conversation, labels.imageAttachment),
     id: String(conversation.user_id),
+    profileHref: getCandidateProfileHref(conversation.user_id),
     name: conversation.name,
     jobTitle: conversation.job_title ?? '',
     recruiter: conversation.contacted_by ?? '',

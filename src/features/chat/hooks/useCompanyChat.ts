@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import { getCandidateProfileHref } from '@/features/company-projects/utils/candidate-profile-href';
 import { CHAT_DEFAULT_AVATAR, CHAT_ROUTES } from '../constants';
 import type {
   ChatConversation,
@@ -36,6 +37,7 @@ function createDraftConversation(
 ): ChatConversation {
   return {
     id: candidate.id,
+    profileHref: getCandidateProfileHref(candidate.id),
     name: candidate.name,
     avatar: candidate.image || CHAT_DEFAULT_AVATAR,
     jobTitle: '',
