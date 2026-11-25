@@ -17,6 +17,13 @@ export const CHAT_ROUTES = {
   candidate: '/candidate/chat',
 } as const;
 export const CHAT_COMPANY_PROFILE_ROUTE = '/shared-company-profile';
+/** Chat box size per role, shared by the chat and its loading skeleton. */
+export const CHAT_LAYOUT_CLASS = {
+  company:
+    'mx-auto h-[calc(100dvh-4.75rem)] md:h-[calc(100dvh-10.875rem)] md:max-h-256 md:min-h-144',
+  candidate:
+    'h-[calc(100dvh-12rem)] max-h-220 min-h-144 rounded-2xl bg-card shadow-card',
+} as const;
 /**
  * The company role that sees every recruiter's conversations ("Contacted by" line).
  * Temporary: moves to the planned `super_admin` role once it is added.

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { CHAT_ROUTES } from '@/features/chat/constants';
+import { getCompanyChatHref } from '@/features/chat/utils/company-chat-href';
 import { useTranslations } from 'next-intl';
 import CandidateAssessmentModals from '@/features/company-assessments/components/candidate-assessments/CandidateAssessmentModals';
 import { useCandidateAssessmentActions } from '@/features/company-assessments/hooks/useCandidateAssessmentActions';
@@ -105,14 +105,13 @@ export default function PipelineCandidatesTab({
             onCreateProject={projectActions.openCreate}
             onLinkProject={projectActions.openLink}
             onMessage={(candidate) =>
-              router.push({
-                pathname: CHAT_ROUTES.company,
-                query: {
-                  conversation: String(candidate.userId),
-                  candidateName: candidate.name,
-                  candidateImage: candidate.image,
-                },
-              })
+              router.push(
+                getCompanyChatHref({
+                  userId: candidate.userId,
+                  name: candidate.name,
+                  image: candidate.image,
+                }),
+              )
             }
             onDownload={pipeline.downloadCv}
             onViewCv={pipeline.setCvCandidate}

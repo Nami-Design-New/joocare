@@ -4,7 +4,7 @@ import { CalendarDays, Video } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link, useRouter } from '@/i18n/navigation';
-import { CHAT_ROUTES } from '@/features/chat/constants';
+import { getCompanyChatHref } from '@/features/chat/utils/company-chat-href';
 import DataTable, {
   type DataTableColumn,
 } from '@/shared/components/common/DataTable';
@@ -232,16 +232,16 @@ function CandidateActions({
   const actions = [
     {
       key: 'chat',
-      onClick: () =>
-        router.push({
-          pathname: CHAT_ROUTES.company,
-          query: {
-            conversation: `user-${candidate.userId}`,
-            candidateId: candidate.userId,
-            candidateName: candidate.name,
-            ...(candidate.image ? { candidateImage: candidate.image } : {}),
-          },
-        }),
+      onClick: () => {
+        if (!candidate.userId) return;
+        router.push(
+          getCompanyChatHref({
+            userId: candidate.userId,
+            name: candidate.name,
+            image: candidate.image,
+          }),
+        );
+      },
       disabled: !candidate.userId,
       label: tInvitations('chat-with', { name: candidate.name }),
       icon: (
