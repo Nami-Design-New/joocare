@@ -79,3 +79,11 @@ export type CompanyChatApiConversation = ChatApiConversationBase & {
   /** The recruiter who owns this conversation ("Contacted by" in the super-admin list). */
   contacted_by?: string | null;
 };
+
+// POST `messages/bulk`: one message to several candidates.
+export type CompanyBulkMessageApiResult = {
+  sent_count: number;
+  skipped_count: number;
+  skipped_user_ids: ChatApiId[];
+  messages: ChatApiMessage[];
+};

@@ -1,20 +1,20 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTopLoader } from 'nextjs-toploader';
+import { useSendCompanyBulkMessage } from '@/features/chat/hooks/useSendCompanyBulkMessage';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useToggleCandidatePin } from '@/shared/hooks/useToggleCandidatePin';
 import { useUrlFilters } from '@/shared/hooks/useUrlFilters';
-import {
-  TALENT_SEARCH_DEBOUNCE_MS,
-  TALENT_SEARCH_QUERY_KEY,
-} from '../constants/talent-filters';
+import { TALENT_SEARCH_QUERY_KEY } from '../constants/talent-filters';
 import type {
   MessageRecipient,
   TalentCandidate,
   TalentCandidatesPage,
   TalentFilterValues,
+  TalentMessageValues,
 } from '../types/talent-database.types';
 import {
   readTalentFilters,
@@ -34,6 +34,7 @@ export function useTalentDatabase() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const topLoader = useTopLoader();
   const { get, getPage, update } = useUrlFilters();
   const paramsKey = searchParams.toString();
   const filters = useMemo(
@@ -54,6 +55,7 @@ export function useTalentDatabase() {
   const candidates = results.data?.candidates ?? [];
   const selectedIds = selected.map((candidate) => candidate.id);
   const queryClient = useQueryClient();
+  const bulkMessage = useSendCompanyBulkMessage();
   const togglePin = useToggleCandidatePin({
     // Show the new star on every cached results page without a refetch.
     onToggled: (userId, isPinned) =>
@@ -75,16 +77,6 @@ export function useTalentDatabase() {
     setSyncedQuery(query);
     if (query !== search.trim()) setSearch(query);
   }
-
-  // Typing searches after a short pause; Enter / the button search right away.
-  useEffect(() => {
-    if (!showResults || search.trim() === query) return;
-    const timer = window.setTimeout(() => {
-      update({ [TALENT_URL_KEYS.search]: search.trim(), page: null });
-      setSelected([]);
-    }, TALENT_SEARCH_DEBOUNCE_MS);
-    return () => window.clearTimeout(timer);
-  }, [showResults, search, query, update]);
 
   function toggleCandidate(id: string) {
     setSelected((current) => {
@@ -120,6 +112,8 @@ export function useTalentDatabase() {
       formQuery ? `${formPath}?${formQuery}` : formPath,
     );
     params.set(TALENT_URL_KEYS.view, TALENT_RESULTS_VIEW);
+    // The top loader only starts on link clicks; it stops itself when the push lands.
+    topLoader.start();
     router.push(`${pathname}?${params.toString()}`);
     setSelected([]);
     setSearch('');
@@ -132,11 +126,18 @@ export function useTalentDatabase() {
     setSelected([toRecipient(candidate)]);
     setMessageOpen(true);
   }
-  async function previewSendMessage() {
-    // Preview only: replace this callback with an authorized API mutation when available.
-    setSentCount(selected.length);
-    setMessageOpen(false);
-    setSelected([]);
+  async function sendMessage({ message }: TalentMessageValues) {
+    try {
+      const { sentCount: sent } = await bulkMessage.mutateAsync({
+        userIds: selectedIds,
+        message,
+      });
+      setSentCount(sent);
+      setMessageOpen(false);
+      setSelected([]);
+    } catch {
+      // The mutation shows the error toast; the dialog stays open to retry.
+    }
   }
   return {
     filters,
@@ -149,7 +150,8 @@ export function useTalentDatabase() {
     candidates,
     total: results.data?.total ?? 0,
     pageSize: results.data?.perPage,
-    isLoading: results.isLoading,
+    // Pending covers the wait for the session too, so "no candidates" never flashes first.
+    isLoading: results.isPending || results.isPlaceholderData,
     isError: results.isError,
     error: results.error,
     retry: () => void results.refetch(),
@@ -163,7 +165,7 @@ export function useTalentDatabase() {
     setMessageOpen,
     sentCount,
     setSentCount,
-    previewSendMessage,
+    sendMessage,
     messageCandidate,
   };
 }

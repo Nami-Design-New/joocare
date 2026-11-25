@@ -11,7 +11,7 @@ Route: `/company/talent-database`. Feature: `src/features/company-talent-databas
 | Results search box ("name or email") | Sends `search`, which the API ignores | No name / email param yet (backend question) |
 | Pin / unpin candidate | Local star state | POST `COMPANY/candidates/{id}/pin` (same pin as the job pipeline star) |
 | Pinned list | Preview | GET `COMPANY/candidates/pinned` |
-| Message candidate | Preview dialog | POST `COMPANY/messages` (see [03](03-company-chat.md)) |
+| Message selected candidates | API (`useSendCompanyBulkMessage`) | POST `COMPANY/messages/bulk` |
 | Candidate profile page (`/company/candidate-profile`) | Preview (project data) | Check `jobs/useCandidateCvProfile` for reuse |
 
 ## Response shapes
@@ -79,6 +79,65 @@ Names from Bruno `search candidates`. Arrays use `name[]`; languages use `langua
 
 Checked: every param above changes the result. `search`, `name` and `keyword` (no `s`) are ignored. An invalid enum value returns 422 (`The selected gender is invalid.`).
 
+### POST `messages` (send to one candidate)
+
+`multipart/form-data`: `user_id` (candidate user id), `message`, optional `replied_message_id`, `images[]`. Recorded on 2026-11-25 (test messages sent to candidate 580).
+
+```json
+{
+  "data": {
+    "id": 12,
+    "message": "Test message from talent database integration",
+    "type": "text",
+    "files": [],
+    "company_admin_id": 28,
+    "user_id": "580",
+    "sender_type": "company",
+    "receiver_type": "user",
+    "created_at": "Today . 09 : 13 am",
+    "replied_message_id": null,
+    "replied_message": null,
+    "is_read": false,
+    "updated_at": "just now"
+  },
+  "message": "Created successfully"
+}
+```
+
+| Case | Response |
+| --- | --- |
+| Empty `message`, no image | 422 `Message text or at least one image is required` |
+| No `user_id` | 422 `The user is required` |
+| Unknown `user_id` | 422 `The selected user id is invalid.` |
+| `user_ids[]` | 422 `The user is required`: use `messages/bulk` below |
+| 5001 characters | Accepted: no server max length (the dialog limits it to 5000) |
+
+### POST `messages/bulk` (send to several candidates)
+
+JSON `{ "user_ids": [1, 2], "message": "…" }` or multipart (`user_ids[]`, `message`). Recorded on 2026-11-25.
+
+```json
+{
+  "data": {
+    "sent_count": 1,
+    "skipped_count": 0,
+    "skipped_user_ids": [],
+    "messages": [{ "id": 18, "message": "Bulk test from talent database", "user_id": 580, "sender_type": "company" }]
+  },
+  "message": "Success"
+}
+```
+
+| Case | Response |
+| --- | --- |
+| One unknown id among valid ones | 422 `The selected user_ids.1 is invalid.`: nothing is sent |
+| Empty `user_ids` | 422 `The user ids field is required.` |
+| Empty `message` | 422 `The message field is required.` |
+
+Why a user is skipped (`skipped_user_ids`) is not documented; the page shows a warning with the count.
+
+The messages show up in GET `conversations` (company list, now in Bruno: `user_id`, `name`, `job_title`, `image`, `unread_count`, `status`, `last_message`).
+
 ## What the candidate sees
 
 - Viewing a profile should count as a visit in `/candidate/profile-insights` (GET `USER/visits`). Confirm with backend that the company profile view records it.
@@ -96,3 +155,4 @@ Checked: every param above changes the result. `search`, `name` and `keyword` (n
 1. **Filters combine with OR, not AND.** Adding a filter can grow the result: `experience_id=2` → 14, plus `gender=male` → 16; `keywords[]=nurse` → 9, plus `job_title_id=1` → 16. Every filter should narrow the list.
 2. **Name / email search.** The results header searches "by candidate name or email". Add a `search` param (the frontend already sends it).
 3. Does opening a candidate profile from the company record a visit?
+4. **Bulk message.** When is a user skipped (`skipped_user_ids`)? Closed conversation, blocked, or something else?

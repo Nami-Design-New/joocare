@@ -1,4 +1,5 @@
-export type TalentFilterValues = Record<string, string | string[]>;
+// Every filter is optional, so a field can be unset.
+export type TalentFilterValues = Record<string, string | string[] | undefined>;
 
 // Where a select field loads its options from (see `useTalentLookups`).
 export type TalentLookupKey =

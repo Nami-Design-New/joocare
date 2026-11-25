@@ -6,7 +6,6 @@ export const COUNTRIES = ['egypt', 'saudi-arabia', 'uae', 'qatar'] as const;
 export const TALENT_PAGE_SIZE = 5;
 export const TALENT_SKELETON_ROWS = 5;
 export const TALENT_SEARCH_QUERY_KEY = 'candidates-search';
-export const TALENT_SEARCH_DEBOUNCE_MS = 400;
 export const TALENT_AVATAR_FALLBACK =
   '/assets/company-projects/candidate-avatar.png';
 export const LANGUAGE_SLOTS = 3;

@@ -80,6 +80,7 @@ export default function TalentLookupField({
           }}
           ref={formField.ref}
           allowDeselect
+          clearOptionLabel={t('clear-selection')}
         />
       )}
     />

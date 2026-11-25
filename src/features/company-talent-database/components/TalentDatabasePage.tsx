@@ -8,6 +8,7 @@ import RouteErrorFallback from '@/shared/components/RouteErrorFallback';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import CandidateProjectModals from '@/features/company-projects/components/Modals/CandidateProjectModals';
 import { useCandidateProjectActions } from '@/features/company-projects/hooks/useCandidateProjectActions';
+import { getCandidateProfileHref } from '@/features/company-projects/utils/candidate-profile-href';
 import CvFileModal from '@/shared/components/modals/CvFileModal';
 import SuccessModal from '@/shared/components/modals/SuccessModal';
 import {
@@ -19,8 +20,14 @@ import TalentSearchForm from './TalentSearchForm';
 import TalentResultsHeader from './TalentResultsHeader';
 import TalentCandidatesTable from './TalentCandidatesTable';
 import TalentMessageDialog from './TalentMessageDialog';
-import { getTalentProfileHref } from '../utils/candidate-profile';
 import type { TalentCandidate } from '../types/talent-database.types';
+
+// Search rows are real users (`id` is the user id), so projects get a real assignee.
+const toProjectCandidate = ({ id, name }: TalentCandidate) => ({
+  id,
+  name,
+  userId: id,
+});
 
 export default function TalentDatabasePage() {
   const t = useTranslations('companyPage.talent-database');
@@ -85,11 +92,15 @@ export default function TalentDatabasePage() {
             onToggle: talent.toggleCandidate,
             onToggleAll: talent.toggleAll,
           }}
-          getProfileHref={(candidate) => getTalentProfileHref(candidate.id)}
+          getProfileHref={(candidate) => getCandidateProfileHref(candidate.id)}
           onViewCv={setCvCandidate}
           onMessage={talent.messageCandidate}
-          onCreateProject={projectActions.openCreate}
-          onLinkProject={projectActions.openLink}
+          onCreateProject={(candidate) =>
+            projectActions.openCreate(toProjectCandidate(candidate))
+          }
+          onLinkProject={(candidate) =>
+            projectActions.openLink(toProjectCandidate(candidate))
+          }
         />
         {talent.total > pageSize && (
           <CustomPagination
@@ -121,7 +132,7 @@ export default function TalentDatabasePage() {
           candidates={talent.selected}
           onRemove={talent.toggleCandidate}
           onClose={() => talent.setMessageOpen(false)}
-          onSend={talent.previewSendMessage}
+          onSend={talent.sendMessage}
         />
       )}
       <CandidateProjectModals actions={projectActions} />
