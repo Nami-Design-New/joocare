@@ -98,10 +98,7 @@ export async function sendCompanyBulkMessage({
     throw new Error(message || 'Failed to send messages.');
   }
 
-  return {
-    sentCount: data.data.sent_count,
-    skippedCount: data.data.skipped_count,
-  };
+  return { sentCount: data.data.sent_count };
 }
 
 export async function setCompanyConversationClosed({

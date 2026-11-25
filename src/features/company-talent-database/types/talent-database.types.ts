@@ -51,7 +51,7 @@ export type TalentCandidate = {
   isPinned: boolean;
 };
 
-// Fixture rows for the features still on preview data (AI Talent Match, chat).
+// Fixture rows for AI Talent Match, which is still on preview data.
 export type TalentPreviewCandidate = TalentCandidate & {
   attributes: TalentFilterValues;
 };

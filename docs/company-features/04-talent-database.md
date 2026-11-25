@@ -8,7 +8,7 @@ Route: `/company/talent-database`. Feature: `src/features/company-talent-databas
 | --- | --- | --- |
 | Search with filters | API (`feat/company-talent-database-api`) | GET `COMPANY/candidates/search` |
 | Filter select options | API: shared lookup hooks + the additional info lookups (`useTalentLookups`) | `Company/candidates-search/selects (new)` (21 lookups) |
-| Results search box ("name or email") | Sends `search`, which the API ignores | No name / email param yet (backend question) |
+| Results search box | API | `search` (added by the backend on 2026-11-25: `search=mohammed` → 72 of 2316) |
 | Pin / unpin candidate | Local star state | POST `COMPANY/candidates/{id}/pin` (same pin as the job pipeline star) |
 | Pinned list | Preview | GET `COMPANY/candidates/pinned` |
 | Message selected candidates | API (`useSendCompanyBulkMessage`) | POST `COMPANY/messages/bulk` |
@@ -77,7 +77,7 @@ Names from Bruno `search candidates`. Arrays use `name[]`; languages use `langua
 | Keywords | `keywords[]` | None |
 | Status, last active, notice period | `job_search_status`, `last_active`, `availability_id` | `job-search-statuses`, `last-active-options`, `availabilities` |
 
-Checked: every param above changes the result. `search`, `name` and `keyword` (no `s`) are ignored. An invalid enum value returns 422 (`The selected gender is invalid.`).
+Checked: every param above changes the result. `search` matches the candidate (added 2026-11-25); `name` and `keyword` (no `s`) are ignored. An invalid enum value returns 422 (`The selected gender is invalid.`).
 
 ### POST `messages` (send to one candidate)
 
@@ -134,7 +134,7 @@ JSON `{ "user_ids": [1, 2], "message": "…" }` or multipart (`user_ids[]`, `mes
 | Empty `user_ids` | 422 `The user ids field is required.` |
 | Empty `message` | 422 `The message field is required.` |
 
-Why a user is skipped (`skipped_user_ids`) is not documented; the page shows a warning with the count.
+`skipped_count` / `skipped_user_ids` are not used by the page for now.
 
 The messages show up in GET `conversations` (company list, now in Bruno: `user_id`, `name`, `job_title`, `image`, `unread_count`, `status`, `last_message`).
 
@@ -152,7 +152,5 @@ The messages show up in GET `conversations` (company list, now in Bruno: `user_i
 
 ## Backend questions
 
-1. **Filters combine with OR, not AND.** Adding a filter can grow the result: `experience_id=2` → 14, plus `gender=male` → 16; `keywords[]=nurse` → 9, plus `job_title_id=1` → 16. Every filter should narrow the list.
-2. **Name / email search.** The results header searches "by candidate name or email". Add a `search` param (the frontend already sends it).
-3. Does opening a candidate profile from the company record a visit?
-4. **Bulk message.** When is a user skipped (`skipped_user_ids`)? Closed conversation, blocked, or something else?
+1. **Filters combine with OR, not AND** (re-checked 2026-11-25, still OR). Adding a filter can grow the result: `experience_id=2` → 14, plus `gender=male` → 16; `keywords[]=nurse` → 9, plus `job_title_id=1` → 16. Every filter should narrow the list (AND).
+2. Does opening a candidate profile from the company record a visit?

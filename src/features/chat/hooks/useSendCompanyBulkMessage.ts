@@ -22,10 +22,7 @@ export function useSendCompanyBulkMessage() {
       if (!token) throw new Error(t('send-failed'));
       return sendCompanyBulkMessage({ token, locale, userIds, message });
     },
-    onSuccess: async ({ skippedCount }, { userIds }) => {
-      if (skippedCount) {
-        toast.warning(t('bulk-skipped', { count: skippedCount }));
-      }
+    onSuccess: async (_result, { userIds }) => {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: companyChatQueryKeys.conversations(locale),
