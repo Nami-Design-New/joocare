@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
 import { Link } from '@/i18n/navigation';
-import { CHAT_ROUTES } from '@/features/chat/constants';
+import { getCompanyChatHref } from '@/features/chat/utils/company-chat-href';
 import { getCandidateProfileHref } from '@/features/company-projects/utils/candidate-profile-href';
 import { cn } from '@/shared/lib/utils';
 import {
@@ -235,36 +235,49 @@ export default function ExternalInvitationsTable({
       id: 'chat',
       header: t('chat'),
       headerClassName: 'w-[6%]',
-      renderCell: (candidate) => (
-        <Button
-          asChild
-          variant="ghost"
-          size="icon"
-          className="size-8 rounded-full bg-assessment-primary/8"
-        >
-          <Link
-            href={{
-              pathname: CHAT_ROUTES.company,
-              query: candidate.userId
-                ? {
-                    conversation: `user-${candidate.userId}`,
-                    candidateId: candidate.userId,
-                    candidateName: candidate.name,
-                    candidateImage: getCandidateImageSrc(candidate.image),
-                  }
-                : { conversation: `assessment-${candidate.id}` },
-            }}
-            aria-label={t('chat-with', { name: candidate.name })}
+      renderCell: (candidate) => {
+        const icon = (
+          <Image
+            src={`${ASSESSMENT_ASSETS}/chat.svg`}
+            width={20.0009}
+            height={20.02}
+            alt=""
+          />
+        );
+        // Invitees without an account have no user id, so there is no one to chat with.
+        if (!candidate.userId) {
+          return (
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled
+              className="size-8 rounded-full bg-assessment-primary/8"
+              aria-label={t('chat-with', { name: candidate.name })}
+            >
+              {icon}
+            </Button>
+          );
+        }
+        return (
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            className="size-8 rounded-full bg-assessment-primary/8"
           >
-            <Image
-              src={`${ASSESSMENT_ASSETS}/chat.svg`}
-              width={20.0009}
-              height={20.02}
-              alt=""
-            />
-          </Link>
-        </Button>
-      ),
+            <Link
+              href={getCompanyChatHref({
+                userId: candidate.userId,
+                name: candidate.name,
+                image: getCandidateImageSrc(candidate.image),
+              })}
+              aria-label={t('chat-with', { name: candidate.name })}
+            >
+              {icon}
+            </Link>
+          </Button>
+        );
+      },
     },
     {
       id: 'actions',

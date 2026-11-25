@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { CHAT_SUPER_ADMIN_ROLE } from '../constants';
+import { CHAT_LAYOUT_CLASS, CHAT_SUPER_ADMIN_ROLE } from '../constants';
 import {
   useCompanyChat,
   type CompanyChatCandidate,
@@ -27,7 +27,7 @@ export default function CompanyChatPage(props: CompanyChatPageProps) {
       role="company"
       chat={chat}
       superAdmin={session?.companyRole === CHAT_SUPER_ADMIN_ROLE}
-      className="mx-auto h-[calc(100dvh-4.75rem)] md:h-[calc(100dvh-10.875rem)] md:max-h-256 md:min-h-144"
+      className={CHAT_LAYOUT_CLASS.company}
     />
   );
 }
