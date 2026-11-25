@@ -1,5 +1,11 @@
 {
   "common": {
+    "pagination": {
+      "label": "ترقيم الصفحات",
+      "previous": "الصفحة السابقة",
+      "next": "الصفحة التالية",
+      "page": "صفحة {page, number}"
+    },
     "password-validation": {
       "title": "يجب أن تحتوي كلمة المرور على:",
       "length": "8 أحرف على الأقل",
@@ -1935,6 +1941,25 @@
         }
       },
       "shared-review": {
+        "logging-out": "جارٍ تسجيل الخروج…",
+        "logout-error": "تعذّر تسجيل الخروج. حاول مرة أخرى.",
+        "decision-save-error": "تعذّر حفظ القرار بشأن المرشح.",
+        "shortlist-load-error": "تعذّر تحميل المرشحين في القائمة المختصرة.",
+        "interviews-save-error": "تعذّر جدولة المقابلات.",
+        "summary-load-error": "تعذّر تحميل ملخّص المراجعة.",
+        "submitting-review": "جارٍ الإرسال…",
+        "shared-by": "تمت المشاركة بواسطة",
+        "loading-review": "جارٍ تحميل مراجعة المشروع",
+        "invalid-invite-title": "الرابط غير صالح أو انتهت صلاحيته",
+        "invalid-invite-description": "اطلب من مسؤول التوظيف إرسال رابط مراجعة جديد.",
+        "back-home": "العودة إلى الصفحة الرئيسية",
+        "review-error-title": "مراجعة المشروع غير متاحة",
+        "review-error-description": "تحقق من رابط الدعوة وحاول مرة أخرى.",
+        "candidates-error": "تعذّر تحميل المرشحين.",
+        "retry-review": "حاول مرة أخرى",
+        "invite-shared-description": "تمت المشاركة بواسطة {name} · {date}",
+        "invite-candidate-count": "تمت المشاركة بواسطة {name} · {date} · {count, plural, zero {لا يوجد مرشحون} one {مرشح واحد} two {مرشحان} few {# مرشحين} many {# مرشحًا} other {# مرشح}}",
+        "invite-filtered-count": "تمت المشاركة بواسطة {name} · {date} · {count, plural, zero {لا يوجد مرشحون مطابقون} one {مرشح مطابق واحد} two {مرشحان مطابقان} few {# مرشحين مطابقين} many {# مرشحًا مطابقًا} other {# مرشح مطابق}}",
         "home": "الذهاب إلى الصفحة الرئيسية لأصحاب العمل",
         "logo-alt": "شعار جوكير",
         "language": "تغيير اللغة",
@@ -1966,6 +1991,7 @@
         "optional": "(اختياري)",
         "note-placeholder": "اكتب ملاحظة عن هذا المرشح لمسؤول التوظيف...",
         "date-required": "يرجى اختيار تاريخ المقابلة.",
+        "date-in-past": "يجب أن يكون تاريخ المقابلة اليوم أو في المستقبل.",
         "time-required": "يرجى اختيار وقت المقابلة.",
         "back": "رجوع",
         "submit": "إرسال",

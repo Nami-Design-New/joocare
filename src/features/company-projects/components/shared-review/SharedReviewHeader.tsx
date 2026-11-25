@@ -14,10 +14,14 @@ const EMPLOYER_LOGIN_HREF = '/auth/employer/login';
 
 type SharedReviewHeaderProps = {
   experience?: 'company' | 'hiring-manager';
+  onLogout?: () => void;
+  isLoggingOut?: boolean;
 };
 
 export default function SharedReviewHeader({
   experience = 'company',
+  onLogout,
+  isLoggingOut = false,
 }: SharedReviewHeaderProps) {
   const t = useTranslations('companyPage.projects.shared-review');
   const { logout } = useLogout();
@@ -52,11 +56,12 @@ export default function SharedReviewHeader({
           <Button
             type="button"
             variant="outline"
-            onClick={() => logout({ redirectTo: logoutHref })}
+            disabled={isLoggingOut}
+            onClick={onLogout ?? (() => logout({ redirectTo: logoutHref }))}
             className="h-10 gap-2 rounded-full px-5 text-sm font-normal"
           >
             <LogOut className="size-5 rtl:rotate-180" strokeWidth={1.5} />
-            {t('logout')}
+            {t(isLoggingOut ? 'logging-out' : 'logout')}
           </Button>
         </div>
       </div>

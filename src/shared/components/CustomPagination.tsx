@@ -9,6 +9,7 @@ import {
   PaginationPrevious,
 } from '@/shared/components/ui/pagination';
 import { useLocale, useTranslations } from 'next-intl';
+import type { KeyboardEvent } from 'react';
 import { cn } from '@/shared/lib/utils';
 
 type CustomPaginationProps = {
@@ -106,6 +107,20 @@ export function CustomPagination({
     onPageChange(page);
   };
 
+  const onButtonKeyDown = (event: KeyboardEvent<HTMLAnchorElement>) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    event.currentTarget.click();
+  };
+  const getButtonProps = (disabled = false) =>
+    getHref
+      ? { tabIndex: disabled ? -1 : undefined }
+      : {
+          role: 'button',
+          tabIndex: disabled ? -1 : 0,
+          onKeyDown: onButtonKeyDown,
+        };
+
   return (
     <div
       className={cn(
@@ -135,7 +150,10 @@ export function CustomPagination({
       </div>
 
       {/* Pagination */}
-      <Pagination className="mx-0 w-auto justify-end">
+      <Pagination
+        aria-label={t('common.pagination.label')}
+        className="mx-0 w-auto justify-end"
+      >
         <PaginationContent className="gap-0.5 sm:gap-1">
           {/* Previous */}
           <PaginationItem>
@@ -145,9 +163,9 @@ export function CustomPagination({
                   ? getHref(Math.max(1, currentPage - 1))
                   : undefined
               }
-              aria-label="Go to previous page"
+              aria-label={t('common.pagination.previous')}
               aria-disabled={isPreviousDisabled}
-              tabIndex={isPreviousDisabled ? -1 : undefined}
+              {...getButtonProps(isPreviousDisabled)}
               onClick={(event) => {
                 if (isPreviousDisabled) {
                   event.preventDefault();
@@ -198,6 +216,8 @@ export function CustomPagination({
                   <PaginationLink
                     href={getHref ? getHref(page) : undefined}
                     isActive={page === currentPage}
+                    aria-label={t('common.pagination.page', { page })}
+                    {...getButtonProps()}
                     onClick={() => handleChange(page)}
                     className={`size-7 rounded-full border-none sm:size-8 ${
                       page === currentPage
@@ -228,9 +248,9 @@ export function CustomPagination({
                   ? getHref(Math.min(totalPages, currentPage + 1))
                   : undefined
               }
-              aria-label="Go to next page"
+              aria-label={t('common.pagination.next')}
               aria-disabled={isNextDisabled}
-              tabIndex={isNextDisabled ? -1 : undefined}
+              {...getButtonProps(isNextDisabled)}
               onClick={(event) => {
                 if (isNextDisabled) {
                   event.preventDefault();

@@ -18,6 +18,7 @@ type ScheduleInterviewsStepProps = {
   candidates: SharedReviewCandidate[];
   onBack: () => void;
   onSubmit: (values: TScheduleInterviewsSchema) => void;
+  isSubmitting?: boolean;
 };
 
 export default function ScheduleInterviewsStep({
@@ -25,12 +26,14 @@ export default function ScheduleInterviewsStep({
   candidates,
   onBack,
   onSubmit,
+  isSubmitting = false,
 }: ScheduleInterviewsStepProps) {
   const t = useTranslations('companyPage.projects.shared-review');
   const schema = useMemo(
     () =>
       createScheduleInterviewsSchema({
         dateRequired: t('date-required'),
+        dateInPast: t('date-in-past'),
         timeRequired: t('time-required'),
       }),
     [t],
@@ -61,13 +64,16 @@ export default function ScheduleInterviewsStep({
           description={t('schedule-description')}
         />
 
-        <ul className="flex flex-col gap-4">
-          {candidates.map((candidate, index) => (
-            <li key={candidate.id}>
-              <ScheduleInterviewCard candidate={candidate} index={index} />
-            </li>
-          ))}
-        </ul>
+        <fieldset disabled={isSubmitting}>
+          <legend className="sr-only">{t('schedule-title')}</legend>
+          <ul className="flex flex-col gap-4">
+            {candidates.map((candidate, index) => (
+              <li key={candidate.id}>
+                <ScheduleInterviewCard candidate={candidate} index={index} />
+              </li>
+            ))}
+          </ul>
+        </fieldset>
 
         <div className="flex justify-end gap-4">
           <Button
@@ -75,6 +81,7 @@ export default function ScheduleInterviewsStep({
             variant="outline"
             size="pill"
             onClick={onBack}
+            disabled={isSubmitting}
             className="h-12.5 flex-1 px-4 text-sm font-semibold sm:flex-none sm:px-10"
           >
             {t('back')}
@@ -82,10 +89,10 @@ export default function ScheduleInterviewsStep({
           <Button
             type="submit"
             size="pill"
-            disabled={form.formState.isSubmitting}
+            disabled={isSubmitting || form.formState.isSubmitting}
             className="h-12.5 flex-1 px-4 text-sm font-semibold sm:flex-none sm:px-8"
           >
-            {t('submit')}
+            {isSubmitting ? t('submitting-review') : t('submit')}
           </Button>
         </div>
       </form>

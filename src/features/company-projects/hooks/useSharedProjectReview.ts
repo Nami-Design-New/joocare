@@ -6,8 +6,8 @@ import { projectPreviewData } from '../constants/project-preview-data';
 import {
   ALL_STATUSES_VALUE,
   SHARED_REVIEW_PAGE_SIZE,
-  sharedReviewCandidatesPreview,
-} from '../constants/shared-review-preview-data';
+} from '../constants/shared-review-options';
+import { sharedReviewCandidatesPreview } from '../constants/shared-review-preview-data';
 import type { ProjectCandidate } from '../types/company-projects.types';
 import type {
   CandidateDecision,

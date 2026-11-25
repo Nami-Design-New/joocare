@@ -29,8 +29,11 @@ export default function ReviewCandidateIdentity({
           {candidate.specialty}
         </p>
       </div>
-      {candidate.status ? (
-        <CandidateDecisionBadge decision={candidate.status} />
+      {candidate.status || candidate.statusLabel ? (
+        <CandidateDecisionBadge
+          decision={candidate.status}
+          label={candidate.statusLabel}
+        />
       ) : null}
     </div>
   );

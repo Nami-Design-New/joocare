@@ -1,11 +1,12 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import { SelectInputField } from '@/shared/components/SelectInputField';
 import { Button } from '@/shared/components/ui/button';
-import { ALL_STATUSES_VALUE } from '../../constants/shared-review-preview-data';
+import { ALL_STATUSES_VALUE } from '../../constants/shared-review-options';
 import type {
   CandidateDecision,
   SharedReviewCandidate,
@@ -15,10 +16,9 @@ import SharedReviewTitle from './SharedReviewTitle';
 
 type ReviewCandidatesStepProps = {
   projectName: string;
-  sharedBy: string;
-  sharedAt: string;
-  totalCandidates: number;
+  description: string;
   candidates: SharedReviewCandidate[];
+  candidateState?: ReactNode;
   filteredCount: number;
   status: string;
   page: number;
@@ -31,15 +31,15 @@ type ReviewCandidatesStepProps = {
     candidateId: string,
     decision: Exclude<CandidateDecision, 'Under review'>,
   ) => void;
-  onNext: () => void;
+  onNext?: () => void;
+  isSavingDecision?: boolean;
 };
 
 export default function ReviewCandidatesStep({
   projectName,
-  sharedBy,
-  sharedAt,
-  totalCandidates,
+  description,
   candidates,
+  candidateState,
   filteredCount,
   status,
   page,
@@ -50,6 +50,7 @@ export default function ReviewCandidatesStep({
   onDownloadCv,
   onDecision,
   onNext,
+  isSavingDecision = false,
 }: ReviewCandidatesStepProps) {
   const t = useTranslations('companyPage.projects.shared-review');
   const statusOptions = [
@@ -64,11 +65,7 @@ export default function ReviewCandidatesStep({
       <SharedReviewTitle
         eyebrow={t('project')}
         title={projectName}
-        description={t('shared-description', {
-          name: sharedBy,
-          date: sharedAt,
-          count: totalCandidates,
-        })}
+        description={description}
         action={
           <SelectInputField
             id="shared-review-status-filter"
@@ -83,26 +80,28 @@ export default function ReviewCandidatesStep({
         }
       />
 
-      {candidates.length ? (
-        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {candidates.map((candidate) => (
-            <li key={candidate.id}>
-              <ReviewCandidateCard
-                candidate={candidate}
-                onPreviewCv={onPreviewCv}
-                onDownloadCv={onDownloadCv}
-                onDecision={onDecision}
-              />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <EmptyDataState
-          title={t('empty-title')}
-          description={t('empty-description')}
-          className="min-h-90 rounded-xl bg-card"
-        />
-      )}
+      {candidateState ??
+        (candidates.length ? (
+          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {candidates.map((candidate) => (
+              <li key={candidate.id}>
+                <ReviewCandidateCard
+                  candidate={candidate}
+                  onPreviewCv={onPreviewCv}
+                  onDownloadCv={onDownloadCv}
+                  onDecision={onDecision}
+                  isSavingDecision={isSavingDecision}
+                />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyDataState
+            titleText={t('empty-title')}
+            description={t('empty-description')}
+            className="min-h-90 rounded-xl bg-card"
+          />
+        ))}
 
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         {filteredCount > 0 ? (
@@ -117,14 +116,17 @@ export default function ReviewCandidatesStep({
         ) : (
           <span />
         )}
-        <Button
-          type="button"
-          size="pill"
-          onClick={onNext}
-          className="h-12.5 self-end px-8 text-sm font-semibold"
-        >
-          {t('next')}
-        </Button>
+        {onNext ? (
+          <Button
+            type="button"
+            size="pill"
+            onClick={onNext}
+            disabled={isSavingDecision}
+            className="h-12.5 self-end px-8 text-sm font-semibold"
+          >
+            {t('next')}
+          </Button>
+        ) : null}
       </div>
     </div>
   );

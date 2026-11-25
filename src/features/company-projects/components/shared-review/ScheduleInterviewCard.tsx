@@ -1,5 +1,6 @@
 'use client';
 
+import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import { Controller, useFormContext } from 'react-hook-form';
 import { InputField } from '@/shared/components/InputField';
@@ -36,6 +37,7 @@ export default function ScheduleInterviewCard({
           <InputField
             id={fieldId('date')}
             type="date"
+            min={format(new Date(), 'yyyy-MM-dd')}
             label={t('date')}
             {...register(`interviews.${index}.date`)}
             error={fieldErrors?.date?.message}
