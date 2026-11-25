@@ -8,6 +8,7 @@ export type EnumLookupEndpoint =
   | 'job-search-statuses'
   | 'languages'
   | 'language-proficiency-levels'
+  | 'last-active-options'
   | 'license-statuses'
   | 'license-verification-statuses'
   | 'marital-statuses'

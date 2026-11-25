@@ -1,4 +1,4 @@
-import type { TalentCandidate } from '../types/talent-database.types';
+import type { TalentPreviewCandidate } from '../types/talent-database.types';
 
 // Local UI fixtures until Talent Database scope, consent and endpoints are agreed.
 const names = [
@@ -16,13 +16,15 @@ const names = [
   'Mahmoud Saeed',
 ];
 
-export const talentPreviewCandidates: TalentCandidate[] = names.map(
+export const talentPreviewCandidates: TalentPreviewCandidate[] = names.map(
   (name, index) => ({
     id: `talent-${index + 1}`,
     name,
     email: `${name.toLowerCase().replaceAll(' ', '.')}@example.com`,
     phone: `+966 54 621 ${String(2300 + index)}`,
     image: '/assets/company-projects/candidate-avatar.png',
+    nationality: index % 2 ? 'Saudi' : 'Egyptian',
+    isPinned: false,
     cv: '/assets/company-projects/sample-cv.pdf',
     score: [95, 92, 88, 85, 80, 78, 75, 72, 70, 68, 65, 60][index],
     attributes: {

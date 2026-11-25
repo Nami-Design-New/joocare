@@ -19,6 +19,8 @@ type TalentCandidateSelection = {
 
 type TalentCandidatesTableProps = {
   candidates: TalentCandidate[];
+  // Omit to keep the star local (preview lists such as AI Talent Match).
+  onTogglePin?: (candidate: TalentCandidate) => void;
   pageOffset: number;
   // Omit to hide the checkbox column (e.g. AI Talent Match).
   selection?: TalentCandidateSelection;
@@ -31,6 +33,7 @@ type TalentCandidatesTableProps = {
 
 export default function TalentCandidatesTable({
   candidates,
+  onTogglePin,
   pageOffset,
   selection,
   getProfileHref,
@@ -73,8 +76,12 @@ export default function TalentCandidatesTable({
           name={candidate.name}
           image={candidate.image}
           href={getProfileHref(candidate)}
-          isStarred={favorites.includes(candidate.id)}
-          onToggleStar={() => toggleFavorite(candidate.id)}
+          isStarred={
+            onTogglePin ? candidate.isPinned : favorites.includes(candidate.id)
+          }
+          onToggleStar={() =>
+            onTogglePin ? onTogglePin(candidate) : toggleFavorite(candidate.id)
+          }
           onCreateProject={() => onCreateProject(candidate)}
           onLinkProject={() => onLinkProject(candidate)}
         />
@@ -85,8 +92,7 @@ export default function TalentCandidatesTable({
       header: t('fields.nationality'),
       headerClassName: 'w-[11%]',
       cellClassName: 'w-[11%]',
-      renderCell: (candidate) =>
-        t(`options.${candidate.attributes.nationality}`),
+      renderCell: (candidate) => candidate.nationality ?? '-',
     },
     {
       id: 'email',
@@ -126,7 +132,7 @@ export default function TalentCandidatesTable({
         <CandidateRowActions
           name={candidate.name}
           onMessage={() => onMessage(candidate)}
-          downloadHref={candidate.cv}
+          downloadHref={candidate.cv ?? undefined}
           viewHref={onViewCv ? undefined : getProfileHref(candidate)}
           onView={onViewCv ? () => onViewCv(candidate) : undefined}
           viewKind={onViewCv ? 'cv' : 'profile'}

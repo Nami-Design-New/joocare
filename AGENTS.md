@@ -20,6 +20,7 @@ These instructions apply to every AI agent working in this repository.
 - **Data:** `apiFetch` + `api-endpoints` helpers (no raw `fetch`, no direct `process.env` URLs). Every query or mutation goes in its own hook in `hooks/`. Query keys look like `['resource', locale, ...filters]`. Invalidate after mutations.
 - **Forms:** React Hook Form + Zod (`zodResolver`, or `typedZodResolver` for `.default()` / `z.coerce`). Schemas use the `createXSchema(messages)` factory with translated messages. Use the shared fields in `src/shared/components` (`InputField`, `SelectInputField`, ...).
 - **Reference implementations:** `company-admin-users` (page + hook + presentational children) and `candidate-settings/change-password` (form + schema + mutation hook). Don't copy the very large components (`JobPostStepOne`, `BasicInfoForm`).
+- **Lists:** render `CustomPagination` only when the results span more than one page (`total > pageSize`).
 - **i18n:** no hardcoded text (including placeholders, aria labels and toasts). Add keys to both `messages/en.json` and `messages/ar.json`. Use `@/i18n/navigation`, not `next/link` / `next/navigation`. Use RTL-safe logical classes (`ms-`, `pe-`, `start-`, `text-start`).
 - **No debug leftovers:** no `console.log`, no commented-out code, no `copy` files.
 - **TypeScript:** typed props and data. No `any`. Use `unknown` and narrow it at boundaries.

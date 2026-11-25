@@ -4,8 +4,8 @@ import { useState } from 'react';
 import type { MessageRecipient } from '@/features/company-talent-database/types/talent-database.types';
 import type { PipelineCandidate } from '../types/job-candidates.types';
 import { useDownloadCandidateCv } from './useDownloadCandidateCv';
-import { useGetPinnedCandidateIds } from './useGetPinnedCandidateIds';
-import { useToggleCandidatePin } from './useToggleCandidatePin';
+import { useGetPinnedCandidateIds } from '@/shared/hooks/useGetPinnedCandidateIds';
+import { useToggleCandidatePin } from '@/shared/hooks/useToggleCandidatePin';
 import useGetApplicationsCandidates from './useGetApplicationsCandidates';
 import { usePipelineFilters } from './usePipelineFilters';
 

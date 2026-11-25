@@ -8,8 +8,16 @@ import { toast } from 'sonner';
 import { toggleCandidatePin } from '../services/candidate-pin-service';
 import { PINNED_CANDIDATES_QUERY_KEY } from './useGetPinnedCandidateIds';
 
-export function useToggleCandidatePin() {
-  const t = useTranslations('companyPage.candidates.pipeline');
+type UseToggleCandidatePinOptions = {
+  /** Updates the caller's own list with the state the API returned. */
+  onToggled?: (userId: string, isPinned: boolean) => void;
+};
+
+// A pin belongs to the company, so every candidate list shares it.
+export function useToggleCandidatePin({
+  onToggled,
+}: UseToggleCandidatePinOptions = {}) {
+  const t = useTranslations('common.candidate-row');
   const locale = useLocale();
   const { data: session } = useSession();
   const queryClient = useQueryClient();
@@ -28,6 +36,7 @@ export function useToggleCandidatePin() {
             ? [...new Set([...current, userId])]
             : current.filter((id) => id !== userId),
       );
+      onToggled?.(userId, isPinned);
     },
     onError: (error: Error) => {
       toast.error(error.message || t('star-error'));
