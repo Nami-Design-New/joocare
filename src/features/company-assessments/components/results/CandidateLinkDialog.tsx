@@ -180,7 +180,9 @@ export default function CandidateLinkDialog({
                   candidate.score === null
                     ? t('no-score')
                     : `${format.number(candidate.score)}%`,
-                status: t(`status.${candidate.status}`),
+                status: t(
+                  `status.${candidate.status === 'invitation_pending' ? 'invitation-pending' : candidate.status}`,
+                ),
               })}
             </p>
           </div>

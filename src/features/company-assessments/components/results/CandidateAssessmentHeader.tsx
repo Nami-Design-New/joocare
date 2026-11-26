@@ -14,6 +14,7 @@ const STATUS_CLASS: Record<InvitationStatus, string> = {
   passed: 'bg-assessment-primary/8 text-assessment-primary',
   failed: 'bg-assessment-error/8 text-assessment-error',
   pending: 'bg-assessment-warning/10 text-assessment-warning',
+  invitation_pending: 'bg-assessment-warning/10 text-assessment-warning',
   absent: 'bg-assessment-close text-assessment-absent',
 };
 
@@ -88,7 +89,11 @@ export default function CandidateAssessmentHeader({
                 statusClass,
               )}
             >
-              {status(result.candidate.status)}
+              {status(
+                result.candidate.status === 'invitation_pending'
+                  ? 'invitation-pending'
+                  : result.candidate.status,
+              )}
             </span>
           </div>
           <p className="text-sm break-all text-assessment-dark">

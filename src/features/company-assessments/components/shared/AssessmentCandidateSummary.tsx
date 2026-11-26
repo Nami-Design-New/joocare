@@ -15,7 +15,12 @@ export default function AssessmentCandidateSummary({
   const format = useFormatter();
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5">
+    <div
+      className={cn(
+        'grid grid-cols-2 gap-4 sm:grid-cols-3',
+        summary.length > 5 ? 'xl:grid-cols-6' : 'xl:grid-cols-5',
+      )}
+    >
       {summary.map((stat) => (
         <Card
           key={stat.key}

@@ -41,6 +41,7 @@ export type AssessmentListPage = {
 };
 
 export type AssessmentResultStatusApi =
+  | 'invitation_pending'
   | 'pending'
   | 'passed'
   | 'failed'
@@ -57,7 +58,7 @@ export type AssessmentResultUserApi = {
 export type AssessmentResultStatsApi = Record<
   'total' | 'pending' | 'passed' | 'failed' | 'absent',
   number
->;
+> & { invitation_pending?: number };
 
 export type AssessmentResultApiItem = {
   id: number;

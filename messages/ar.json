@@ -3371,6 +3371,7 @@
         "max-score": "أعلى درجة %",
         "total": "إجمالي المرشحين",
         "pending-summary": "قيد الانتظار (72 ساعة)",
+        "invitation-pending": "الدعوة قيد الانتظار",
         "passed": "ناجح",
         "failed": "راسب",
         "pending": "قيد الانتظار",
@@ -3483,6 +3484,7 @@
           "passed": "ناجح",
           "failed": "راسب",
           "pending": "قيد الانتظار",
+          "invitation-pending": "الدعوة قيد الانتظار",
           "absent": "غائب"
         },
         "summary": {

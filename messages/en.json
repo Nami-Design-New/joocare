@@ -3371,6 +3371,7 @@
         "max-score": "Max score %",
         "total": "Total Candidates",
         "pending-summary": "Pending (72h)",
+        "invitation-pending": "Invitation pending",
         "passed": "Passed",
         "failed": "Failed",
         "pending": "Pending",
@@ -3483,6 +3484,7 @@
           "passed": "Passed",
           "failed": "Failed",
           "pending": "Pending",
+          "invitation-pending": "Invitation pending",
           "absent": "Absent"
         },
         "summary": {

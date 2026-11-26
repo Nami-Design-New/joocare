@@ -226,7 +226,9 @@ export function useAssessmentResults(
     page,
     setPage,
     getResultHref: (candidate: AssessmentResultCandidate) =>
-      candidate.status === 'pending' || candidate.status === 'absent'
+      candidate.status === 'pending' ||
+      candidate.status === 'absent' ||
+      candidate.status === 'invitation_pending'
         ? null
         : `${ASSESSMENT_RESULTS_HREF}/${assessmentId}/${candidate.id}${
             isExternal ? `?${EXTERNAL_PARAM}=1` : ''
