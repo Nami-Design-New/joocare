@@ -296,6 +296,11 @@ const ASSESSMENT_STATUS: Record<string, ProjectCandidate['assessment']> = {
 
 const PROJECT_CANDIDATES_LIMIT = 100;
 
+function displayCandidateField(value: string | null | undefined) {
+  if (value === undefined) return MISSING_API_VALUE;
+  return value ?? '-';
+}
+
 export async function getProjectCandidates(
   projectId: string,
   { token, locale }: ProjectRequestOptions,
@@ -320,10 +325,12 @@ export async function getProjectCandidates(
     return {
       id: String(id),
       userId: String(user.id),
-      name: user.name,
-      email: user.email,
-      phone: [user.phone_code, user.phone].filter(Boolean).join(' '),
-      nationality: user.nationality ?? MISSING_API_VALUE,
+      name: displayCandidateField(user.name),
+      email: displayCandidateField(user.email),
+      phone: user.phone
+        ? [user.phone_code, user.phone].filter(Boolean).join(' ')
+        : displayCandidateField(user.phone),
+      nationality: displayCandidateField(user.nationality),
       cv: user.cv ?? null,
       image: user.image ?? null,
       interview: user.interview
@@ -332,6 +339,7 @@ export async function getProjectCandidates(
       interviewDate: user.interview?.date,
       interviewTime: user.interview?.time.slice(0, 5),
       interviewMethod: user.interview?.method,
+      scheduledBy: displayCandidateField(user.interview?.scheduled_by),
       note: user.interview?.note ?? undefined,
       status: CANDIDATE_STATUS[status],
       assessment: last

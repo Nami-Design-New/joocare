@@ -142,7 +142,7 @@ export type ProjectMemberApiItem = {
   status: string;
   user: {
     id: number;
-    name: string;
+    name?: string | null;
     image?: string | null;
     cv?: string | null;
     interview?: {
@@ -151,11 +151,12 @@ export type ProjectMemberApiItem = {
       time: string;
       method: 'online' | 'face_to_face';
       note: string | null;
+      scheduled_by?: string | null;
     } | null;
-    email: string;
-    phone: string | null;
+    email?: string | null;
+    phone?: string | null;
     phone_code: string | null;
-    nationality: string | null;
+    nationality?: string | null;
     assessments_count: number;
     /** Not returned yet: same shape as the applications endpoint. */
     assessments?: ApiCandidateAssessment[];

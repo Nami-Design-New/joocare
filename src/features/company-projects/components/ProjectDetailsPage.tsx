@@ -177,7 +177,7 @@ export default function ProjectDetailsPage({
         />
       )}
 
-      {preview.filteredCount > 0 && (
+      {preview.filteredCount > preview.pageSize && (
         <CustomPagination
           totalItems={preview.filteredCount}
           pageSize={preview.pageSize}
