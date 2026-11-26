@@ -2,7 +2,6 @@
 
 import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import CandidateProjectModals from '@/features/company-projects/components/Modals/CandidateProjectModals';
 import { Card } from '@/shared/components/ui/card';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import CvFileModal from '@/shared/components/modals/CvFileModal';
@@ -73,19 +72,36 @@ export default function AssessmentResultsPage({
         <AssessmentResultsList results={results} />
       )}
 
-      <CandidateProjectModals actions={results.projectActions} />
       <CandidateLinkDialog
         kind={results.linkKind}
         candidate={results.linkCandidate}
         search={results.linkSearch}
         onSearchChange={results.setLinkSearch}
         targets={results.linkTargets}
-        selectedTargetId={results.selectedTargetId}
-        onTargetSelect={results.setSelectedTargetId}
+        selectedTargetIds={results.selectedTargetIds}
+        onTargetSelect={results.toggleTarget}
         onOpenChange={(open) => {
           if (!open) results.closeLinkDialog();
         }}
         onConfirm={results.confirmLink}
+        result={results.candidateResult.data}
+        recruiterName={results.recruiterName}
+        isLoading={
+          results.linkTargetsQuery.isPending || results.isSearchingTargets
+        }
+        isError={results.linkTargetsQuery.isError}
+        onRetry={() =>
+          void (results.linkTargetsQuery.isFetchNextPageError
+            ? results.linkTargetsQuery.fetchNextPage()
+            : results.linkTargetsQuery.refetch())
+        }
+        hasMore={results.linkTargetsQuery.hasNextPage}
+        isLoadingMore={results.linkTargetsQuery.isFetchingNextPage}
+        onLoadMore={() => void results.linkTargetsQuery.fetchNextPage()}
+        isLoadingResult={results.candidateResult.isPending}
+        isResultError={results.candidateResult.isError}
+        onRetryResult={() => void results.candidateResult.refetch()}
+        isLinking={results.isLinking}
       />
       <SuccessModal
         open={results.successKind !== null}
