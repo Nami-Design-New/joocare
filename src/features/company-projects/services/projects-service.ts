@@ -1,5 +1,8 @@
 import { mapApiCandidateAssessment } from '@/features/company-assessments/utils/candidate-assessments';
-import { readPaginationMeta } from '@/features/company-assessments/utils/pagination';
+import {
+  buildListParams,
+  readPaginationMeta,
+} from '@/features/company-assessments/utils/pagination';
 import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch } from '@/shared/lib/fetch-manager';
 import { createHttpStatusError } from '@/shared/lib/http-error';
@@ -13,6 +16,8 @@ import type {
   HiringManagerOption,
   ProjectApiItem,
   ProjectOptionsPage,
+  ProjectRecruiterApiItem,
+  ProjectRecruitersPage,
   ProjectRequestOptions,
   ProjectsListPage,
 } from '../types/company-projects.types';
@@ -52,17 +57,16 @@ export async function getProjects(
   search: string,
   page: number,
   limitPerPage: number,
+  recruiterId: string,
   { token, locale }: ProjectRequestOptions,
 ): Promise<ProjectsListPage> {
-  const params = new URLSearchParams({
-    pagination: 'on',
-    limit_per_page: String(limitPerPage),
-    page: String(page),
+  const params = buildListParams(page, limitPerPage, {
+    search,
+    company_admin_id: recruiterId,
   });
-  if (search.trim()) params.set('search', search.trim());
 
   const { ok, data, message } = await apiFetch<ProjectApiItem[]>(
-    `${getCompanyApiUrl()}/projects?${params.toString()}`,
+    `${getCompanyApiUrl()}/projects?${params}`,
     { token, locale, cache: 'no-store' },
   );
   if (!ok) throw new Error(message ?? '');
@@ -71,6 +75,26 @@ export async function getProjects(
     items: (data?.data ?? []).map(mapProject),
     total: meta.total,
     perPage: meta.perPage,
+  };
+}
+
+export async function getProjectRecruiters(
+  page: number,
+  limitPerPage: number,
+  { token, locale }: ProjectRequestOptions,
+): Promise<ProjectRecruitersPage> {
+  const endpoint = `${getCompanyApiUrl()}/recruiters-list`;
+  const { ok, data, statusCode } = await apiFetch<ProjectRecruiterApiItem[]>(
+    `${endpoint}?${buildListParams(page, limitPerPage)}`,
+    { token, locale },
+  );
+  if (!ok) throw createHttpStatusError(statusCode);
+  if (!Array.isArray(data?.data)) throw createHttpStatusError(502);
+
+  const { nextPage } = readPaginationMeta(data, limitPerPage);
+  return {
+    data: data.data.map(({ id, name }) => ({ id: String(id), name })),
+    next_page_url: nextPage ? `${endpoint}?page=${nextPage}` : null,
   };
 }
 

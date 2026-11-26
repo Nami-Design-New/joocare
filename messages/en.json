@@ -2005,6 +2005,8 @@
         "log-out": "Log Out"
       },
       "all-recruiters": "All recruiters",
+      "loading-recruiters": "Loading recruiters…",
+      "recruiters-load-error": "Couldn't load recruiters.",
       "candidate-projects": {
         "create-title": "Create Project",
         "create-description": "Create a project for {name}.",

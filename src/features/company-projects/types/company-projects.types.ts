@@ -171,6 +171,13 @@ export type ProjectsListPage = {
 
 export type ProjectRequestOptions = { token: string; locale: string };
 
+export type ProjectRecruiterApiItem = { id: number; name: string };
+
+export type ProjectRecruitersPage = {
+  data: { id: string; name: string }[];
+  next_page_url: string | null;
+};
+
 // `hiring-managers-list` item (same base fields as a company admin).
 export type HiringManagerApiItem = { id: number; name: string };
 

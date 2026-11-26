@@ -2005,6 +2005,8 @@
         "log-out": "تسجيل الخروج"
       },
       "all-recruiters": "كل مسؤولي التوظيف",
+      "loading-recruiters": "جارٍ تحميل مسؤولي التوظيف…",
+      "recruiters-load-error": "تعذّر تحميل مسؤولي التوظيف.",
       "candidate-projects": {
         "create-title": "إنشاء مشروع",
         "create-description": "أنشئ مشروعًا للمرشح {name}.",

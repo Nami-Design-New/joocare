@@ -5,14 +5,12 @@ import { useTranslations } from 'next-intl';
 import { CustomPagination } from '@/shared/components/CustomPagination';
 import EmptyDataState from '@/shared/components/EmptyDataState';
 import SearchInput from '@/shared/components/SearchInput';
+import { SelectInputField } from '@/shared/components/SelectInputField';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { Button } from '@/shared/components/ui/button';
-import { SelectInputField } from '@/shared/components/SelectInputField';
-import {
-  ALL_PROJECT_RECRUITERS_VALUE,
-  projectRecruiters,
-} from '../constants/project-preview-data';
+import { ALL_PROJECT_RECRUITERS_VALUE } from '../constants/project-queries';
 import { useCompanyProjects } from '../hooks/useCompanyProjects';
+import { useGetProjectRecruiters } from '../hooks/useGetProjectRecruiters';
 import type { ProjectAction } from '../types/company-projects.types';
 import ProjectActionModals from './Modals/ProjectActionModals';
 import ProjectCard from './ProjectCard';
@@ -20,19 +18,18 @@ import ProjectCard from './ProjectCard';
 export default function ProjectsPage() {
   const t = useTranslations('companyPage.projects');
   const preview = useCompanyProjects();
+  const recruiters = useGetProjectRecruiters();
+  const recruiterOptions = [
+    { value: ALL_PROJECT_RECRUITERS_VALUE, label: t('all-recruiters') },
+    ...recruiters.recruiters.map(({ id, name }) => ({
+      value: id,
+      label: name,
+    })),
+  ];
   const [action, setAction] = useState<ProjectAction>(null);
   const activeProject =
     preview.projects.find((project) => project.id === action?.projectId) ??
     null;
-  // A recruiter can arrive from the URL (e.g. Recruiter Activity) before it is in the list.
-  const recruiters =
-    preview.recruiter && !projectRecruiters.includes(preview.recruiter)
-      ? [...projectRecruiters, preview.recruiter]
-      : projectRecruiters;
-  const recruiterOptions = [
-    { value: ALL_PROJECT_RECRUITERS_VALUE, label: t('all-recruiters') },
-    ...recruiters.map((name) => ({ value: name, label: name })),
-  ];
 
   return (
     <div className="mx-auto flex w-full flex-col gap-6">
@@ -46,9 +43,16 @@ export default function ProjectsPage() {
           id="projects-recruiter-filter"
           aria-label={t('recruiter-filter')}
           options={recruiterOptions}
-          value={preview.recruiter}
+          value={preview.recruiterId}
           onChange={preview.setRecruiter}
-          placeholder={t('recruiter-filter')}
+          placeholder={t(
+            recruiters.isPending ? 'loading-recruiters' : 'recruiter-filter',
+          )}
+          disabled={recruiters.isPending}
+          error={recruiters.isError ? t('recruiters-load-error') : undefined}
+          onReachEnd={() => void recruiters.fetchNextPage()}
+          hasNextPage={recruiters.hasNextPage && !recruiters.isError}
+          isFetchingNextPage={recruiters.isFetchingNextPage}
           allowDeselect
           className="h-13 border-border bg-card"
         />

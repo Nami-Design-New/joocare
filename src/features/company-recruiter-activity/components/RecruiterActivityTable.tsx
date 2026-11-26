@@ -67,7 +67,7 @@ export default function RecruiterActivityTable({
         <Link
           href={{
             pathname: '/company/projects',
-            query: { recruiter: recruiter.name },
+            query: { recruiter: recruiter.id },
           }}
           className="inline-flex items-center gap-1.5 underline underline-offset-2 transition-colors hover:text-primary"
         >

@@ -2,24 +2,25 @@
 
 import { useEffect, useState } from 'react';
 import { useUrlFilters } from '@/shared/hooks/useUrlFilters';
-import { PROJECT_SEARCH_DEBOUNCE_MS } from '../constants/project-queries';
-import { ALL_PROJECT_RECRUITERS_VALUE } from '../constants/project-preview-data';
+import {
+  ALL_PROJECT_RECRUITERS_VALUE,
+  PROJECT_SEARCH_DEBOUNCE_MS,
+} from '../constants/project-queries';
 import type { CompanyProject } from '../types/company-projects.types';
 import { useDeleteProject } from './useDeleteProject';
 import { useGetProjects } from './useGetProjects';
 import { useRenameProject } from './useRenameProject';
 
-// Projects list from the API. Closing and the recruiter filter have no API
-// yet, so they stay local preview state on top of the API data.
 export function useCompanyProjects() {
   const url = useUrlFilters();
   const urlSearch = url.get('search');
-  const recruiter = url.get('recruiter');
+  const recruiterFilter = url.get('recruiter');
+  const recruiterId = /^[1-9]\d*$/.test(recruiterFilter) ? recruiterFilter : '';
   const page = url.getPage();
   const { update } = url;
   const [searchInput, setSearchInput] = useState(urlSearch);
   const [closedIds, setClosedIds] = useState<string[]>([]);
-  const query = useGetProjects(urlSearch, page);
+  const query = useGetProjects(urlSearch, page, recruiterId);
   const renameMutation = useRenameProject();
   const deleteMutation = useDeleteProject();
 
@@ -45,10 +46,11 @@ export function useCompanyProjects() {
     pageSize: query.data?.perPage ?? 0,
     search: searchInput,
     setSearch: setSearchInput,
-    recruiter,
+    recruiterId,
     setRecruiter: (value: string) =>
       update({
         recruiter: value === ALL_PROJECT_RECRUITERS_VALUE ? '' : value,
+        page: null,
       }),
     page,
     setPage: (nextPage: number) => update({ page: nextPage }),
