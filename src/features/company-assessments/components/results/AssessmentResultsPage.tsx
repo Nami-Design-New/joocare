@@ -78,12 +78,30 @@ export default function AssessmentResultsPage({
         search={results.linkSearch}
         onSearchChange={results.setLinkSearch}
         targets={results.linkTargets}
-        selectedTargetId={results.selectedTargetId}
-        onTargetSelect={results.setSelectedTargetId}
+        selectedTargetIds={results.selectedTargetIds}
+        onTargetSelect={results.toggleTarget}
         onOpenChange={(open) => {
           if (!open) results.closeLinkDialog();
         }}
         onConfirm={results.confirmLink}
+        result={results.candidateResult.data}
+        recruiterName={results.recruiterName}
+        isLoading={
+          results.linkTargetsQuery.isPending || results.isSearchingTargets
+        }
+        isError={results.linkTargetsQuery.isError}
+        onRetry={() =>
+          void (results.linkTargetsQuery.isFetchNextPageError
+            ? results.linkTargetsQuery.fetchNextPage()
+            : results.linkTargetsQuery.refetch())
+        }
+        hasMore={results.linkTargetsQuery.hasNextPage}
+        isLoadingMore={results.linkTargetsQuery.isFetchingNextPage}
+        onLoadMore={() => void results.linkTargetsQuery.fetchNextPage()}
+        isLoadingResult={results.candidateResult.isPending}
+        isResultError={results.candidateResult.isError}
+        onRetryResult={() => void results.candidateResult.refetch()}
+        isLinking={results.isLinking}
       />
       <SuccessModal
         open={results.successKind !== null}

@@ -83,7 +83,7 @@ export default function AssessmentResultsList({
                 results.openLinkDialog('project', candidate)
               }
             />
-            {data.rows.length ? (
+            {data.total > data.perPage ? (
               <CustomPagination
                 currentPage={results.page}
                 totalItems={data.total}
@@ -91,12 +91,12 @@ export default function AssessmentResultsList({
                 onPageChange={results.setPage}
                 className="py-4"
               />
-            ) : (
+            ) : !data.rows.length ? (
               <EmptyDataState
                 title="companyPage.assessments.results.no-results-title"
                 description={t('no-results-description')}
               />
-            )}
+            ) : null}
           </section>
         </>
       )}

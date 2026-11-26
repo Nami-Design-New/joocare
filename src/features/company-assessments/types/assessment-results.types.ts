@@ -23,8 +23,43 @@ export type CandidateLinkTarget = {
   name: string;
   organization: string;
   location: string;
-  associatedCount: number;
+  associatedCount: number | null;
   alreadyLinked?: boolean;
+};
+
+export type CandidateJobLinkApi = {
+  id: number;
+  title: string | null;
+  city: string | null;
+  country: string | null;
+  applications_count: number | null;
+  is_applied: boolean;
+};
+
+export type CandidateProjectLinkApi = {
+  id: number;
+  name: string;
+  users_count: number | null;
+  is_assigned: boolean;
+  creator: string | null;
+};
+
+export type CandidateLinkTargetsPage = {
+  data: CandidateLinkTarget[];
+  next_page_url: string | null;
+};
+
+export type CandidateLinkResultApi = {
+  user: { id: number; name: string; email: string };
+  score_percent: number | null;
+  status: AssessmentResultStatusApi;
+  status_label: string;
+};
+
+export type CandidateLinkResult = {
+  name: string;
+  score: number | null;
+  statusLabel: string;
 };
 
 export type AssessmentResultCandidate = ExternalInvitation;
@@ -41,6 +76,7 @@ export type AssessmentListPage = {
 };
 
 export type AssessmentResultStatusApi =
+  | 'invitation_pending'
   | 'pending'
   | 'passed'
   | 'failed'
@@ -57,7 +93,7 @@ export type AssessmentResultUserApi = {
 export type AssessmentResultStatsApi = Record<
   'total' | 'pending' | 'passed' | 'failed' | 'absent',
   number
->;
+> & { invitation_pending?: number };
 
 export type AssessmentResultApiItem = {
   id: number;

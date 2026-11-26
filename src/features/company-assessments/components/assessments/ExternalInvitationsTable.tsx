@@ -73,11 +73,20 @@ export default function ExternalInvitationsTable({
               alt=""
               className="size-8 shrink-0 rounded-full object-cover"
             />
-            <span className="truncate text-sm font-semibold text-assessment-primary underline underline-offset-2">
+            <span
+              className={cn(
+                'truncate text-sm font-semibold',
+                candidate.status === 'invitation_pending'
+                  ? 'text-foreground'
+                  : 'text-assessment-primary underline underline-offset-2',
+              )}
+            >
               {candidate.name}
             </span>
           </>
         );
+        if (candidate.status === 'invitation_pending')
+          return <div className={className}>{identity}</div>;
         return candidate.userId ? (
           <Link
             href={getCandidateProfileHref(candidate.userId)}
@@ -116,12 +125,17 @@ export default function ExternalInvitationsTable({
             'bg-assessment-error/8 text-assessment-error':
               candidate.status === 'failed',
             'bg-assessment-warning/10 text-assessment-warning':
-              candidate.status === 'pending',
+              candidate.status === 'pending' ||
+              candidate.status === 'invitation_pending',
             'bg-assessment-close text-assessment-absent':
               candidate.status === 'absent',
           })}
         >
-          {t(candidate.status)}
+          {t(
+            candidate.status === 'invitation_pending'
+              ? 'invitation-pending'
+              : candidate.status,
+          )}
         </span>
       ),
     },
@@ -165,6 +179,7 @@ export default function ExternalInvitationsTable({
       header: t('score'),
       headerClassName: 'w-[10%]',
       renderCell: (candidate) => {
+        if (candidate.status === 'invitation_pending') return null;
         const href = getScoreHref(candidate);
         const score =
           candidate.score === null
@@ -198,44 +213,46 @@ export default function ExternalInvitationsTable({
       id: 'cv',
       header: t('cv'),
       headerClassName: 'w-[6%]',
-      renderCell: (candidate) => (
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label={t('view-cv', { name: candidate.name })}
-          onClick={() => onViewCv(candidate)}
-        >
-          <span className="relative size-6">
-            <Image
-              src={`${ASSESSMENT_ASSETS}/cv-file.svg`}
-              width={24}
-              height={24}
-              alt=""
-            />
-            <Image
-              src={`${ASSESSMENT_ASSETS}/cv-corner.svg`}
-              width={9}
-              height={9}
-              alt=""
-              className="absolute end-0 top-0"
-            />
-            <span className="absolute inset-x-[6.25%] top-1/2 bottom-[9.38%] flex items-center justify-center rounded-[1.1px] bg-assessment-error">
+      renderCell: (candidate) =>
+        candidate.status === 'invitation_pending' ? null : (
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={t('view-cv', { name: candidate.name })}
+            onClick={() => onViewCv(candidate)}
+          >
+            <span className="relative size-6">
               <Image
-                src={`${ASSESSMENT_ASSETS}/cv-label.svg`}
-                width={14.5101}
-                height={6.20833}
+                src={`${ASSESSMENT_ASSETS}/cv-file.svg`}
+                width={24}
+                height={24}
                 alt=""
               />
+              <Image
+                src={`${ASSESSMENT_ASSETS}/cv-corner.svg`}
+                width={9}
+                height={9}
+                alt=""
+                className="absolute end-0 top-0"
+              />
+              <span className="absolute inset-x-[6.25%] top-1/2 bottom-[9.38%] flex items-center justify-center rounded-[1.1px] bg-assessment-error">
+                <Image
+                  src={`${ASSESSMENT_ASSETS}/cv-label.svg`}
+                  width={14.5101}
+                  height={6.20833}
+                  alt=""
+                />
+              </span>
             </span>
-          </span>
-        </Button>
-      ),
+          </Button>
+        ),
     },
     {
       id: 'chat',
       header: t('chat'),
       headerClassName: 'w-[6%]',
       renderCell: (candidate) => {
+        if (candidate.status === 'invitation_pending') return null;
         const icon = (
           <Image
             src={`${ASSESSMENT_ASSETS}/chat.svg`}
@@ -283,44 +300,45 @@ export default function ExternalInvitationsTable({
       id: 'actions',
       header: t('actions'),
       headerClassName: 'w-[7%]',
-      renderCell: (candidate) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={t('candidate-actions', { name: candidate.name })}
-            >
-              <Image
-                src={`${ASSESSMENT_ASSETS}/actions.svg`}
-                width={24}
-                height={24}
-                alt=""
-              />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {onLinkJob ? (
-              <DropdownMenuItem onSelect={() => onLinkJob(candidate)}>
-                {t('link-job')}
-              </DropdownMenuItem>
-            ) : (
-              <DropdownMenuItem asChild>
-                <Link href="/company/job-management">{t('link-job')}</Link>
-              </DropdownMenuItem>
-            )}
-            {onLinkProject ? (
-              <DropdownMenuItem onSelect={() => onLinkProject(candidate)}>
-                {t('link-project')}
-              </DropdownMenuItem>
-            ) : (
-              <DropdownMenuItem asChild>
-                <Link href="/company/projects">{t('link-project')}</Link>
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
+      renderCell: (candidate) =>
+        candidate.status === 'invitation_pending' ? null : (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={t('candidate-actions', { name: candidate.name })}
+              >
+                <Image
+                  src={`${ASSESSMENT_ASSETS}/actions.svg`}
+                  width={24}
+                  height={24}
+                  alt=""
+                />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {onLinkJob ? (
+                <DropdownMenuItem onSelect={() => onLinkJob(candidate)}>
+                  {t('link-job')}
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem asChild>
+                  <Link href="/company/job-management">{t('link-job')}</Link>
+                </DropdownMenuItem>
+              )}
+              {onLinkProject ? (
+                <DropdownMenuItem onSelect={() => onLinkProject(candidate)}>
+                  {t('link-project')}
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem asChild>
+                  <Link href="/company/projects">{t('link-project')}</Link>
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ),
     },
   ];
   return (

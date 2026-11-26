@@ -3,6 +3,7 @@
 import { useFormatter, useTranslations } from 'next-intl';
 import { Info, X } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
+import { Checkbox } from '@/shared/components/ui/checkbox';
 import {
   Dialog,
   DialogClose,
@@ -11,13 +12,15 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import SearchInput from '@/shared/components/SearchInput';
+import EmptyDataState from '@/shared/components/EmptyDataState';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 import { cn } from '@/shared/lib/utils';
 import type {
   AssessmentResultCandidate,
   CandidateLinkKind,
   CandidateLinkTarget,
+  CandidateLinkResult,
 } from '../../types/assessment-results.types';
-import { LINKING_RECRUITER_NAME } from '../../constants/assessment-results';
 
 type CandidateLinkDialogProps = {
   kind: CandidateLinkKind | null;
@@ -25,10 +28,22 @@ type CandidateLinkDialogProps = {
   search: string;
   onSearchChange: (value: string) => void;
   targets: CandidateLinkTarget[];
-  selectedTargetId: string;
+  selectedTargetIds: string[];
   onTargetSelect: (id: string) => void;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
+  result?: CandidateLinkResult;
+  recruiterName: string;
+  isLoading: boolean;
+  isError: boolean;
+  onRetry: () => void;
+  hasMore: boolean;
+  isLoadingMore: boolean;
+  onLoadMore: () => void;
+  isLoadingResult: boolean;
+  isResultError: boolean;
+  onRetryResult: () => void;
+  isLinking: boolean;
 };
 
 export default function CandidateLinkDialog({
@@ -37,20 +52,32 @@ export default function CandidateLinkDialog({
   search,
   onSearchChange,
   targets,
-  selectedTargetId,
+  selectedTargetIds,
   onTargetSelect,
   onOpenChange,
   onConfirm,
+  result,
+  recruiterName,
+  isLoading,
+  isError,
+  onRetry,
+  hasMore,
+  isLoadingMore,
+  onLoadMore,
+  isLoadingResult,
+  isResultError,
+  onRetryResult,
+  isLinking,
 }: CandidateLinkDialogProps) {
   const t = useTranslations('companyPage.assessments.results');
   const format = useFormatter();
   const open = kind !== null && candidate !== null;
-  const selectedTargetIsVisible = targets.some(
-    (target) => target.id === selectedTargetId,
-  );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => !isLinking && onOpenChange(open)}
+    >
       <DialogContent
         showCloseButton={false}
         className="max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-[780px] gap-0 overflow-y-auto rounded-[24px] p-6 sm:min-w-0 sm:p-6"
@@ -63,6 +90,7 @@ export default function CandidateLinkDialog({
             <Button
               variant="ghost"
               size="icon"
+              disabled={isLinking}
               aria-label={t('close')}
               className="size-12 shrink-0 rounded-full bg-assessment-primary text-white hover:bg-assessment-primary/90 hover:text-white"
             >
@@ -77,74 +105,107 @@ export default function CandidateLinkDialog({
           id="candidate-link-search"
           placeholder={kind === 'job' ? t('search-jobs') : t('search-projects')}
           value={search}
+          disabled={isLinking}
           onChange={(event) => onSearchChange(event.target.value)}
           containerClassName="mb-3"
           iconClassName="text-assessment-primary"
           className="border border-assessment-border ps-11 text-sm"
         />
-        <div className="flex max-h-[310px] flex-col gap-3 overflow-y-auto py-1">
-          {targets.map((target) => {
-            const isSelected = target.id === selectedTargetId;
-            const countLabel =
-              kind === 'job'
-                ? t('applicants-count', {
-                    count: format.number(target.associatedCount),
-                  })
-                : t('candidates-count', {
-                    count: format.number(target.associatedCount),
-                  });
-            const metadata = [
-              target.organization,
-              target.location,
-              countLabel,
-            ].filter(Boolean);
+        <div
+          role="group"
+          aria-label={
+            kind === 'job' ? t('link-job-title') : t('link-project-title')
+          }
+          aria-busy={isLoading || isLoadingMore}
+          className="flex max-h-[332px] flex-col gap-3 overflow-y-auto py-1"
+        >
+          {isLoading ? (
+            <Skeleton className="min-h-40 w-full rounded-2xl" />
+          ) : (
+            targets.map((target) => {
+              const isSelected = selectedTargetIds.includes(target.id);
+              const countLabel =
+                target.associatedCount === null
+                  ? null
+                  : kind === 'job'
+                    ? t('applicants-count', {
+                        count: format.number(target.associatedCount),
+                      })
+                    : t('candidates-count', {
+                        count: format.number(target.associatedCount),
+                      });
+              const metadata = [
+                target.organization,
+                target.location,
+                countLabel,
+              ].filter(Boolean);
 
-            return (
-              <button
-                key={target.id}
-                type="button"
-                role="radio"
-                aria-checked={isSelected}
-                onClick={() => onTargetSelect(target.id)}
-                className={cn(
-                  'flex min-h-[74px] w-full items-center gap-3 rounded-2xl border border-assessment-border px-4 py-3 text-start transition-colors',
-                  isSelected &&
-                    'border-assessment-primary bg-assessment-info/80',
-                )}
-              >
-                <span
-                  aria-hidden="true"
+              return (
+                <label
+                  key={target.id}
                   className={cn(
-                    'flex size-4 shrink-0 items-center justify-center rounded-full border border-assessment-border',
-                    isSelected && 'border-assessment-primary',
+                    'flex min-h-[74px] w-full cursor-pointer items-center gap-3 rounded-2xl border border-assessment-border px-4 py-3 text-start transition-colors',
+                    isSelected &&
+                      'border-assessment-primary bg-assessment-info/80',
+                    isLinking && 'cursor-not-allowed opacity-50',
                   )}
                 >
-                  {isSelected ? (
-                    <span className="size-2 rounded-full bg-assessment-primary" />
+                  <Checkbox
+                    checked={isSelected}
+                    disabled={isLinking}
+                    onCheckedChange={() => onTargetSelect(target.id)}
+                    aria-label={target.name}
+                    className="flex size-4 items-center justify-center rounded-full border-assessment-border shadow-none data-[state=checked]:border-assessment-primary data-[state=checked]:bg-transparent [&_[data-slot=checkbox-indicator]]:size-2 [&_[data-slot=checkbox-indicator]]:rounded-full [&_[data-slot=checkbox-indicator]]:bg-assessment-primary [&_svg]:hidden"
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-base leading-5 font-semibold text-assessment-dark">
+                      {target.name}
+                    </span>
+                    <span className="mt-1 block truncate text-[13px] leading-5 text-assessment-muted">
+                      {metadata.join('  •  ')}
+                    </span>
+                  </span>
+                  {target.alreadyLinked ? (
+                    <span className="shrink-0 rounded-full bg-assessment-warning/10 px-3 py-1 text-xs font-semibold text-assessment-warning">
+                      {kind === 'job'
+                        ? t('already-applied')
+                        : t('already-in-project')}
+                    </span>
                   ) : null}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-base leading-5 font-semibold text-assessment-dark">
-                    {target.name}
-                  </span>
-                  <span className="mt-1 block truncate text-[13px] leading-5 text-assessment-muted">
-                    {metadata.join('  •  ')}
-                  </span>
-                </span>
-                {target.alreadyLinked ? (
-                  <span className="shrink-0 rounded-full bg-assessment-warning/10 px-3 py-1 text-xs font-semibold text-assessment-warning">
-                    {kind === 'job'
-                      ? t('already-applied')
-                      : t('already-in-project')}
-                  </span>
-                ) : null}
-              </button>
-            );
-          })}
-          {!targets.length ? (
-            <p className="py-6 text-center text-sm text-assessment-muted">
-              {t('no-link-targets')}
-            </p>
+                </label>
+              );
+            })
+          )}
+          {!isLoading && !isError && !targets.length ? (
+            <EmptyDataState
+              titleText={t('no-link-targets')}
+              className="min-h-40 py-4"
+            />
+          ) : null}
+          {isError ? (
+            <div
+              role="alert"
+              className="flex items-center justify-between gap-3 p-3"
+            >
+              <p className="text-sm text-destructive">
+                {t('link-targets-error')}
+              </p>
+              <Button
+                variant="outline"
+                disabled={isLoadingMore || isLinking}
+                onClick={onRetry}
+              >
+                {t('retry-link')}
+              </Button>
+            </div>
+          ) : hasMore && !isLoading ? (
+            <Button
+              variant="ghost"
+              disabled={isLoadingMore || isLinking}
+              onClick={onLoadMore}
+            >
+              {t(isLoadingMore ? 'loading-link-data' : 'load-more-targets')}
+            </Button>
           ) : null}
         </div>
         <div className="mt-5 flex items-start gap-3 rounded-2xl border border-assessment-link-info-border bg-assessment-link-info p-4 text-assessment-link-info-text">
@@ -161,7 +222,7 @@ export default function CandidateLinkDialog({
                     : 'project-link-explanation',
                   {
                     candidate: candidate.name,
-                    recruiter: LINKING_RECRUITER_NAME,
+                    recruiter: recruiterName,
                   },
                 )}
               </p>
@@ -173,25 +234,49 @@ export default function CandidateLinkDialog({
             <p className="text-sm font-semibold text-assessment-dark">
               {t('candidate')}
             </p>
-            <p className="text-sm text-assessment-muted">
-              {t('candidate-result', {
-                name: candidate.name,
-                score:
-                  candidate.score === null
-                    ? t('no-score')
-                    : `${format.number(candidate.score)}%`,
-                status: t(`status.${candidate.status}`),
-              })}
-            </p>
+            {isLoadingResult ? (
+              <Skeleton className="h-5 w-64 max-w-full" />
+            ) : isResultError ? (
+              <div role="alert" className="flex items-center gap-2">
+                <p className="text-sm text-destructive">
+                  {t('link-result-error')}
+                </p>
+                <Button variant="ghost" onClick={onRetryResult}>
+                  {t('retry-link')}
+                </Button>
+              </div>
+            ) : result ? (
+              <p className="text-end text-sm text-assessment-muted">
+                {t('candidate-result', {
+                  name: result.name,
+                  score:
+                    result.score === null
+                      ? t('no-score')
+                      : `${format.number(result.score)}%`,
+                  status: result.statusLabel,
+                })}
+              </p>
+            ) : null}
           </div>
         ) : null}
         <Button
           type="button"
-          disabled={!selectedTargetIsVisible}
+          disabled={
+            !selectedTargetIds.length ||
+            isLoading ||
+            isLoadingResult ||
+            isResultError ||
+            isError ||
+            isLinking
+          }
           onClick={onConfirm}
           className="h-13 w-full rounded-full bg-assessment-primary text-sm font-semibold"
         >
-          {kind === 'job' ? t('link-job') : t('link-project')}
+          {isLinking
+            ? t(kind === 'job' ? 'linking-job' : 'linking-project')
+            : kind === 'job'
+              ? t('link-job')
+              : t('link-project')}
         </Button>
       </DialogContent>
     </Dialog>

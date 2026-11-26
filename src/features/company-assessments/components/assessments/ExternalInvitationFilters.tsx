@@ -54,7 +54,7 @@ export default function ExternalInvitationFilters({
     { value: 'all', label: t('all-statuses') },
     ...statuses.map((value) => ({
       value,
-      label: t(value),
+      label: t(value === 'invitation_pending' ? 'invitation-pending' : value),
     })),
   ];
   const projects = [
