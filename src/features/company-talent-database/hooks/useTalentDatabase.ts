@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTopLoader } from 'nextjs-toploader';
 import { useSendCompanyBulkMessage } from '@/features/chat/hooks/useSendCompanyBulkMessage';
+import { getCompanyChatHref } from '@/features/chat/utils/company-chat-href';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useToggleCandidatePin } from '@/shared/hooks/useToggleCandidatePin';
 import { useUrlFilters } from '@/shared/hooks/useUrlFilters';
@@ -123,8 +124,13 @@ export function useTalentDatabase() {
     setSelected([]);
   }
   function messageCandidate(candidate: TalentCandidate) {
-    setSelected([toRecipient(candidate)]);
-    setMessageOpen(true);
+    router.push(
+      getCompanyChatHref({
+        userId: candidate.id,
+        name: candidate.name,
+        image: candidate.image,
+      }),
+    );
   }
   async function sendMessage({ message }: TalentMessageValues) {
     try {

@@ -125,14 +125,16 @@ export default function PipelineCandidatesTab({
               assessmentActions.openAssign(toAssessmentCandidate(candidate))
             }
           />
-          <CustomPagination
-            totalItems={pipeline.total}
-            pageSize={pageSize}
-            currentPage={pipeline.page}
-            onPageChange={pipeline.setPage}
-            statusPosition="start"
-            className="justify-start"
-          />
+          {pipeline.total > pageSize && (
+            <CustomPagination
+              totalItems={pipeline.total}
+              pageSize={pageSize}
+              currentPage={pipeline.page}
+              onPageChange={pipeline.setPage}
+              statusPosition="start"
+              className="justify-start"
+            />
+          )}
         </>
       ) : (
         <EmptyDataState
@@ -154,7 +156,7 @@ export default function PipelineCandidatesTab({
           candidates={pipeline.selected}
           onRemove={pipeline.toggleCandidate}
           onClose={() => pipeline.setMessageOpen(false)}
-          onSend={pipeline.previewSendMessage}
+          onSend={pipeline.sendMessage}
         />
       )}
       <SuccessModal

@@ -2,14 +2,17 @@ export const PROJECTS_PAGE_SIZE = 12;
 export const PROJECT_SEARCH_DEBOUNCE_MS = 400;
 export const PROJECT_OPTIONS_PAGE_SIZE = 10;
 export const PROJECT_OPTIONS_QUERY_KEY = 'company-project-options';
+export const PROJECT_RECRUITERS_PAGE_SIZE = 10;
+export const PROJECT_RECRUITERS_QUERY_KEY = 'company-project-recruiters';
+export const ALL_PROJECT_RECRUITERS_VALUE = 'all';
 
 export const projectQueryKeys = {
-  projects: (locale: string, search: string, page: number) => [
-    'company-projects',
-    locale,
-    search,
-    page,
-  ],
+  projects: (
+    locale: string,
+    search: string,
+    page: number,
+    recruiterId: string,
+  ) => ['company-projects', locale, search, page, recruiterId],
   hiringManagers: (locale: string) => ['company-hiring-managers', locale],
   projectCandidates: (locale: string, projectId: string) => [
     'company-project-candidates',

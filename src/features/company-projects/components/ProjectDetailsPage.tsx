@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
 import CandidateAssessmentModals from '@/features/company-assessments/components/candidate-assessments/CandidateAssessmentModals';
@@ -36,19 +36,24 @@ export default function ProjectDetailsPage({
 }: ProjectDetailsPageProps) {
   const t = useTranslations('companyPage.projects');
   const query = useGetProject(projectId);
-  const candidatesQuery = useGetProjectCandidates(projectId);
-  // The users endpoint has no image or CV; take them from the project details.
+  const [status, setStatus] = useState('');
+  const candidatesQuery = useGetProjectCandidates(projectId, status);
   const candidates = useMemo(() => {
     const media = new Map(
       (query.data?.candidates ?? []).map((item) => [item.userId, item]),
     );
     return (candidatesQuery.data ?? EMPTY_CANDIDATES).map((candidate) => ({
       ...candidate,
-      image: media.get(candidate.userId)?.image ?? null,
-      cv: media.get(candidate.userId)?.cv ?? null,
+      image: candidate.image ?? media.get(candidate.userId)?.image ?? null,
+      cv: candidate.cv ?? media.get(candidate.userId)?.cv ?? null,
     }));
   }, [candidatesQuery.data, query.data?.candidates]);
-  const preview = useProjectCandidates(projectId, candidates);
+  const preview = useProjectCandidates(
+    projectId,
+    candidates,
+    status,
+    setStatus,
+  );
   const locale = useLocale();
   const direction = locale === 'ar' ? 'rtl' : 'ltr';
   const queryClient = useQueryClient();
@@ -172,7 +177,7 @@ export default function ProjectDetailsPage({
         />
       )}
 
-      {preview.filteredCount > 0 && (
+      {preview.filteredCount > preview.pageSize && (
         <CustomPagination
           totalItems={preview.filteredCount}
           pageSize={preview.pageSize}

@@ -56,8 +56,8 @@ export async function getRecruiterOptions({
   token,
   locale,
 }: RequestOptions): Promise<RecruiterOption[]> {
-  const { ok, data, message } = await apiFetch<ApiRecruiterStats[]>(
-    `${getCompanyApiUrl()}/recruiters-stats`,
+  const { ok, data, message } = await apiFetch<RecruiterOption[]>(
+    `${getCompanyApiUrl()}/recruiters-list`,
     { method: 'GET', token, locale },
   );
   if (!ok) throw new Error(message || 'Failed to load recruiters.');

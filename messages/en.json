@@ -1807,7 +1807,13 @@
       "open-project": "Open Project",
       "share-project": "Share project",
       "edit-name": "Edit name",
+      "all-statuses": "All",
       "close-project": "Close project",
+      "reopen-project": "Reopen project",
+      "reopen-project-title": "Reopen this project?",
+      "reopen-project-description": "Reopen “{name}” to continue working on the project.",
+      "project-toggle-error": "Couldn't update the project status. Try again.",
+      "no-project-candidates": "No candidates",
       "closed": "Closed",
       "shared-project-delete-tooltip": "Shared projects can’t be deleted",
       "delete-project": "Delete project",
@@ -2005,6 +2011,8 @@
         "log-out": "Log Out"
       },
       "all-recruiters": "All recruiters",
+      "loading-recruiters": "Loading recruiters…",
+      "recruiters-load-error": "Couldn't load recruiters.",
       "candidate-projects": {
         "create-title": "Create Project",
         "create-description": "Create a project for {name}.",

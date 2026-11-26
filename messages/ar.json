@@ -1808,7 +1808,13 @@
       "share-project": "مشاركة المشروع",
       "edit-name": "تعديل الاسم",
       "close-project": "إغلاق المشروع",
+      "all-statuses": "الكل",
       "closed": "مغلق",
+      "reopen-project": "إعادة فتح المشروع",
+      "reopen-project-title": "إعادة فتح هذا المشروع؟",
+      "reopen-project-description": "أعد فتح «{name}» لمتابعة العمل على المشروع.",
+      "project-toggle-error": "تعذّر تحديث حالة المشروع. حاول مرة أخرى.",
+      "no-project-candidates": "لا يوجد مرشحون",
       "shared-project-delete-tooltip": "لا يمكن حذف المشاريع التي تمت مشاركتها",
       "delete-project": "حذف المشروع",
       "share-project-title": "مشاركة المشروع مع مسؤول التوظيف",
@@ -2005,6 +2011,8 @@
         "log-out": "تسجيل الخروج"
       },
       "all-recruiters": "كل مسؤولي التوظيف",
+      "loading-recruiters": "جارٍ تحميل مسؤولي التوظيف…",
+      "recruiters-load-error": "تعذّر تحميل مسؤولي التوظيف.",
       "candidate-projects": {
         "create-title": "إنشاء مشروع",
         "create-description": "أنشئ مشروعًا للمرشح {name}.",

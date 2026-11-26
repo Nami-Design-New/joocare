@@ -1,7 +1,7 @@
 'use client';
 
-import { CalendarDays, Video } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { CalendarDays, MapPin, Video } from 'lucide-react';
+import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link, useRouter } from '@/i18n/navigation';
 import { getCompanyChatHref } from '@/features/chat/utils/company-chat-href';
@@ -77,6 +77,30 @@ function CandidateIdentity({
   onViewNote: () => void;
 }) {
   const t = useTranslations('companyPage.projects');
+  const tReview = useTranslations('companyPage.projects.shared-review');
+  const format = useFormatter();
+  const interviewDate =
+    candidate.interviewDate && candidate.interviewTime
+      ? new Date(`${candidate.interviewDate}T${candidate.interviewTime}`)
+      : null;
+  const interviewLabel =
+    interviewDate && !Number.isNaN(interviewDate.getTime())
+      ? format.dateTime(interviewDate, {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        })
+      : candidate.interview;
+  const methodLabel = candidate.interviewMethod
+    ? tReview(
+        candidate.interviewMethod === 'online' ? 'online' : 'face-to-face',
+      )
+    : candidate.interviewType;
+  const MethodIcon =
+    candidate.interviewMethod === 'face_to_face' ? MapPin : Video;
   const statusKey = candidate.status
     ? {
         Rejected: 'rejected',
@@ -86,7 +110,7 @@ function CandidateIdentity({
     : null;
 
   return (
-    <div className="flex w-48 items-start gap-3 text-start">
+    <div className="flex w-48 items-center gap-3 text-start">
       <Image
         src={candidate.image || CANDIDATE_AVATAR_FALLBACK}
         alt=""
@@ -121,15 +145,15 @@ function CandidateIdentity({
             {t(statusKey)}
           </span>
         ) : null}
-        {candidate.interview && (
+        {interviewLabel && (
           <div className="mt-2 space-y-1 text-[11px] leading-4 text-muted-foreground">
             <p className="flex items-center gap-1">
               <CalendarDays className="size-3 text-primary" />
-              {candidate.interview}
+              {interviewLabel}
             </p>
             <p className="flex items-center gap-1">
-              <Video className="size-3 text-primary" />
-              {candidate.interviewType}
+              <MethodIcon className="size-3 shrink-0 text-primary" />
+              {methodLabel}
             </p>
             <button
               type="button"

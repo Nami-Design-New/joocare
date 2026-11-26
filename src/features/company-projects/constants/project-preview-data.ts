@@ -252,14 +252,6 @@ export const projectCandidatePreviewData: ProjectCandidate[] = [
   },
 ];
 
-export const ALL_PROJECT_RECRUITERS_VALUE = 'all';
-
-export const projectRecruiters = [
-  'Sara Al-Qahtani',
-  'Omar Farouk',
-  'Nora Al-Otaibi',
-];
-
 export const projectShareMessage = `Dear Hiring Manager,\nKindly review the candidate profiles available through the link below and identify the most suitable candidate based on your operational requirements.\nTo facilitate timely interview arrangements, please also select your preferred interview date, time, and interview method for the shortlisted candidate(s).\nRegards,\nRecruitment Team`;
 
 export const PROJECT_NAME_MAX_LENGTH = 100;

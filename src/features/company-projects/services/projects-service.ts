@@ -1,5 +1,8 @@
 import { mapApiCandidateAssessment } from '@/features/company-assessments/utils/candidate-assessments';
-import { readPaginationMeta } from '@/features/company-assessments/utils/pagination';
+import {
+  buildListParams,
+  readPaginationMeta,
+} from '@/features/company-assessments/utils/pagination';
 import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch } from '@/shared/lib/fetch-manager';
 import { createHttpStatusError } from '@/shared/lib/http-error';
@@ -13,6 +16,8 @@ import type {
   HiringManagerOption,
   ProjectApiItem,
   ProjectOptionsPage,
+  ProjectRecruiterApiItem,
+  ProjectRecruitersPage,
   ProjectRequestOptions,
   ProjectsListPage,
 } from '../types/company-projects.types';
@@ -25,18 +30,29 @@ function splitApiDateTime(value: string) {
   return { date: date || MISSING_API_VALUE, time: time || MISSING_API_VALUE };
 }
 
-// Candidates count, recruiter and closing have no API yet. Shares come from
-// `assignees` (the hiring managers) and the project creator.
 function mapProject(item: ProjectApiItem): CompanyProject {
+  const candidateNames = (item.users ?? []).map((user) =>
+    typeof user === 'string' ? user : user.name,
+  );
   return {
     id: String(item.id),
     name: item.name,
     createdAt: item.created_at,
     createdBy: item.creator?.name ?? '',
     recruiter: '',
-    candidateInitials: [],
-    additionalCandidates: 0,
-    isClosed: false,
+    candidateInitials: candidateNames.map((name) =>
+      name
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((part) => part[0] ?? '')
+        .join('')
+        .toLocaleUpperCase(),
+    ),
+    additionalCandidates: item.has_more_users
+      ? (item.remaining_users_count ?? 0)
+      : 0,
+    isClosed: item.is_closed ?? false,
     shareLogs: (item.assignees ?? []).map((assignee) => ({
       id: String(assignee.id),
       manager: assignee.name,
@@ -52,17 +68,16 @@ export async function getProjects(
   search: string,
   page: number,
   limitPerPage: number,
+  recruiterId: string,
   { token, locale }: ProjectRequestOptions,
 ): Promise<ProjectsListPage> {
-  const params = new URLSearchParams({
-    pagination: 'on',
-    limit_per_page: String(limitPerPage),
-    page: String(page),
+  const params = buildListParams(page, limitPerPage, {
+    search,
+    company_admin_id: recruiterId,
   });
-  if (search.trim()) params.set('search', search.trim());
 
   const { ok, data, message } = await apiFetch<ProjectApiItem[]>(
-    `${getCompanyApiUrl()}/projects?${params.toString()}`,
+    `${getCompanyApiUrl()}/projects?${params}`,
     { token, locale, cache: 'no-store' },
   );
   if (!ok) throw new Error(message ?? '');
@@ -74,21 +89,43 @@ export async function getProjects(
   };
 }
 
+export async function getProjectRecruiters(
+  page: number,
+  limitPerPage: number,
+  { token, locale }: ProjectRequestOptions,
+): Promise<ProjectRecruitersPage> {
+  const endpoint = `${getCompanyApiUrl()}/recruiters-list`;
+  const { ok, data, statusCode } = await apiFetch<ProjectRecruiterApiItem[]>(
+    `${endpoint}?${buildListParams(page, limitPerPage)}`,
+    { token, locale },
+  );
+  if (!ok) throw createHttpStatusError(statusCode);
+  if (!Array.isArray(data?.data)) throw createHttpStatusError(502);
+
+  const { nextPage } = readPaginationMeta(data, limitPerPage);
+  return {
+    data: data.data.map(({ id, name }) => ({ id: String(id), name })),
+    next_page_url: nextPage ? `${endpoint}?page=${nextPage}` : null,
+  };
+}
+
 // Every row the API returns is shown. The same user can appear more than once
 // (one row per add), so the row id also carries its position.
-function mapProjectCandidates(users: ProjectUserApiItem[] = []) {
-  return users.map(
-    (user, index): ProjectCandidate => ({
-      id: `${user.id}-${index}`,
-      userId: String(user.id),
-      name: user.name,
-      email: user.email,
-      phone: [user.phone_code, user.phone].filter(Boolean).join(' '),
-      nationality: MISSING_API_VALUE,
-      cv: user.cv,
-      image: user.image,
-    }),
-  );
+function mapProjectCandidates(users: (string | ProjectUserApiItem)[] = []) {
+  return users
+    .filter((user): user is ProjectUserApiItem => typeof user !== 'string')
+    .map(
+      (user, index): ProjectCandidate => ({
+        id: `${user.id}-${index}`,
+        userId: String(user.id),
+        name: user.name,
+        email: user.email,
+        phone: [user.phone_code, user.phone].filter(Boolean).join(' '),
+        nationality: MISSING_API_VALUE,
+        cv: user.cv,
+        image: user.image,
+      }),
+    );
 }
 
 export async function getProject(
@@ -130,6 +167,17 @@ export async function deleteProject(
   const { ok, message } = await apiFetch(
     `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}`,
     { method: 'DELETE', token, locale },
+  );
+  if (!ok) throw new Error(message ?? '');
+}
+
+export async function toggleProjectClosed(
+  projectId: string,
+  { token, locale }: ProjectRequestOptions,
+) {
+  const { ok, message } = await apiFetch(
+    `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}/toggle-close`,
+    { method: 'POST', token, locale },
   );
   if (!ok) throw new Error(message ?? '');
 }
@@ -246,28 +294,53 @@ const ASSESSMENT_STATUS: Record<string, ProjectCandidate['assessment']> = {
   absent: 'Absent',
 };
 
-// The endpoint has no pagination meta yet, so all rows are loaded at once.
 const PROJECT_CANDIDATES_LIMIT = 100;
+
+function displayCandidateField(value: string | null | undefined) {
+  if (value === undefined) return MISSING_API_VALUE;
+  return value ?? '-';
+}
 
 export async function getProjectCandidates(
   projectId: string,
   { token, locale }: ProjectRequestOptions,
+  status = '',
 ): Promise<ProjectCandidate[]> {
-  const { ok, data, message } = await apiFetch<ProjectMemberApiItem[]>(
-    `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}/users?pagination=on&limit_per_page=${PROJECT_CANDIDATES_LIMIT}&page=1`,
-    { token, locale, cache: 'no-store' },
-  );
-  if (!ok) throw new Error(message ?? '');
-  return (data?.data ?? []).map(({ id, status, user }) => {
+  const members: ProjectMemberApiItem[] = [];
+  let page = 1;
+  for (;;) {
+    const params = buildListParams(page, PROJECT_CANDIDATES_LIMIT, { status });
+    const { ok, data, message } = await apiFetch<ProjectMemberApiItem[]>(
+      `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}/users?${params}`,
+      { token, locale, cache: 'no-store' },
+    );
+    if (!ok) throw new Error(message ?? '');
+    members.push(...(data?.data ?? []));
+    const { nextPage } = readPaginationMeta(data, PROJECT_CANDIDATES_LIMIT);
+    if (!nextPage || nextPage <= page) break;
+    page = nextPage;
+  }
+  return members.map(({ id, status, user }) => {
     const last = user.last_assessment;
     return {
       id: String(id),
       userId: String(user.id),
-      name: user.name,
-      email: user.email,
-      phone: [user.phone_code, user.phone].filter(Boolean).join(' '),
-      nationality: user.nationality ?? MISSING_API_VALUE,
-      cv: null,
+      name: displayCandidateField(user.name),
+      email: displayCandidateField(user.email),
+      phone: user.phone
+        ? [user.phone_code, user.phone].filter(Boolean).join(' ')
+        : displayCandidateField(user.phone),
+      nationality: displayCandidateField(user.nationality),
+      cv: user.cv ?? null,
+      image: user.image ?? null,
+      interview: user.interview
+        ? `${user.interview.date} · ${user.interview.time.slice(0, 5)}`
+        : undefined,
+      interviewDate: user.interview?.date,
+      interviewTime: user.interview?.time.slice(0, 5),
+      interviewMethod: user.interview?.method,
+      scheduledBy: displayCandidateField(user.interview?.scheduled_by),
+      note: user.interview?.note ?? undefined,
       status: CANDIDATE_STATUS[status],
       assessment: last
         ? (ASSESSMENT_STATUS[last.status] ?? 'Pending')

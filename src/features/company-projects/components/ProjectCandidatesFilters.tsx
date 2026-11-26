@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import SearchInput from '@/shared/components/SearchInput';
 import { SelectInputField } from '@/shared/components/SelectInputField';
+import { ALL_STATUSES_VALUE } from '../constants/shared-review-options';
 
 type ProjectCandidatesFiltersProps = {
   search: string;
@@ -19,9 +20,10 @@ export default function ProjectCandidatesFilters({
 }: ProjectCandidatesFiltersProps) {
   const t = useTranslations('companyPage.projects');
   const statusOptions = [
-    { value: 'Rejected', label: t('rejected') },
-    { value: 'Shortlist', label: t('shortlist') },
-    { value: 'Under review', label: t('under-review') },
+    { value: ALL_STATUSES_VALUE, label: t('all-statuses') },
+    { value: 'rejected', label: t('rejected') },
+    { value: 'shortlist', label: t('shortlist') },
+    { value: 'under_review', label: t('under-review') },
   ];
 
   return (
@@ -35,8 +37,10 @@ export default function ProjectCandidatesFilters({
         id="project-candidate-status-filter"
         aria-label={t('status-filter')}
         options={statusOptions}
-        value={status}
-        onChange={onStatusChange}
+        value={status || ALL_STATUSES_VALUE}
+        onChange={(value) =>
+          onStatusChange(value === ALL_STATUSES_VALUE ? '' : value)
+        }
         placeholder={t('status-filter')}
         allowDeselect
         className="h-13 border-border bg-card"

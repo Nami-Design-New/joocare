@@ -53,6 +53,7 @@ export type ProjectCandidate = {
   interviewDate?: string;
   interviewTime?: string;
   interviewType?: string;
+  interviewMethod?: 'online' | 'face_to_face';
   scheduledBy?: string;
   scheduledByRole?: string;
   note?: string;
@@ -124,12 +125,14 @@ export type ProjectAssigneeApiItem = {
 
 export type ProjectApiItem = {
   id: number;
+  is_closed?: boolean;
   name: string;
   created_by: number;
   creator: ProjectCreatorApiItem | null;
   assignees?: ProjectAssigneeApiItem[];
-  /** Details endpoint only. */
-  users?: ProjectUserApiItem[];
+  users?: (string | ProjectUserApiItem)[];
+  has_more_users?: boolean;
+  remaining_users_count?: number;
   created_at: string;
 };
 
@@ -139,11 +142,21 @@ export type ProjectMemberApiItem = {
   status: string;
   user: {
     id: number;
-    name: string;
-    email: string;
-    phone: string | null;
+    name?: string | null;
+    image?: string | null;
+    cv?: string | null;
+    interview?: {
+      id: number;
+      date: string;
+      time: string;
+      method: 'online' | 'face_to_face';
+      note: string | null;
+      scheduled_by?: string | null;
+    } | null;
+    email?: string | null;
+    phone?: string | null;
     phone_code: string | null;
-    nationality: string | null;
+    nationality?: string | null;
     assessments_count: number;
     /** Not returned yet: same shape as the applications endpoint. */
     assessments?: ApiCandidateAssessment[];
@@ -170,6 +183,13 @@ export type ProjectsListPage = {
 };
 
 export type ProjectRequestOptions = { token: string; locale: string };
+
+export type ProjectRecruiterApiItem = { id: number; name: string };
+
+export type ProjectRecruitersPage = {
+  data: { id: string; name: string }[];
+  next_page_url: string | null;
+};
 
 // `hiring-managers-list` item (same base fields as a company admin).
 export type HiringManagerApiItem = { id: number; name: string };

@@ -8,12 +8,15 @@ import {
 import { getProjectCandidates } from '../services/projects-service';
 import { useProjectRequestOptions } from './useProjectRequestOptions';
 
-export function useGetProjectCandidates(projectId: string) {
+export function useGetProjectCandidates(projectId: string, status = '') {
   const { token, locale, isReady } = useProjectRequestOptions();
   return useQuery({
     ...REFETCH_STALE_ON_MOUNT,
-    queryKey: projectQueryKeys.projectCandidates(locale, projectId),
+    queryKey: [
+      ...projectQueryKeys.projectCandidates(locale, projectId),
+      status,
+    ],
     enabled: isReady && Boolean(projectId),
-    queryFn: () => getProjectCandidates(projectId, { token, locale }),
+    queryFn: () => getProjectCandidates(projectId, { token, locale }, status),
   });
 }
