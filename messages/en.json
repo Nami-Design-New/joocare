@@ -3546,7 +3546,9 @@
           "failed": "Failed",
           "absent": "Absent",
           "grace-period": "In grace period",
-          "not-assigned": "Not assigned"
+          "not-assigned": "Not assigned",
+          "pending": "Pending",
+          "under-review": "Under review"
         },
         "assigned-success": "Assessment sent to {name} successfully"
       },

@@ -52,7 +52,9 @@ export default function PipelineCandidatesTab({
   // Screening answers of the applicant whose CV is open (preview data until the API returns them).
   const [answersOpen, setAnswersOpen] = useState(false);
   const projectActions = useCandidateProjectActions();
-  const assessmentActions = useCandidateAssessmentActions();
+  const assessmentActions = useCandidateAssessmentActions({
+    onAssigned: () => void pipeline.refetch(),
+  });
   const pageSize = pipeline.pageSize ?? JOB_CANDIDATES_PAGE_SIZE;
 
   return (

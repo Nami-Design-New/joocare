@@ -20,6 +20,7 @@ export type ApiApplicationCandidate = {
     phone_code: string | null;
     image?: string | null;
     country?: { name: string } | null;
+    assessments?: ApiCandidateAssessment[];
   };
   job_id: number;
   cv: string | null;
@@ -28,8 +29,7 @@ export type ApiApplicationCandidate = {
   // Not returned yet: they wait on the pipeline API (names may change).
   ai_match_score?: number | null;
   is_starred?: boolean;
-  added_by?: { name: string } | null;
-  assessments?: ApiCandidateAssessment[];
+  apply_by?: string | null;
 };
 
 export type ApiApplicationsCandidatesPage = {

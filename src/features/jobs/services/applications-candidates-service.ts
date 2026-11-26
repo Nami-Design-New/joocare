@@ -78,7 +78,7 @@ function mapPipelineCandidate(
     cvUrl: candidate.cv,
     aiMatchScore: candidate.ai_match_score ?? null,
     isStarred: candidate.is_starred ?? false,
-    addedBy: candidate.added_by?.name ?? null,
-    assessments: (candidate.assessments ?? []).map(mapApiCandidateAssessment),
+    addedBy: candidate.apply_by ?? null,
+    assessments: (user.assessments ?? []).map(mapApiCandidateAssessment),
   };
 }

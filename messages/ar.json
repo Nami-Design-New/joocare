@@ -3580,7 +3580,9 @@
           "failed": "راسب",
           "absent": "غائب",
           "grace-period": "ضمن فترة السماح",
-          "not-assigned": "غير معيّن"
+          "not-assigned": "غير معيّن",
+          "pending": "قيد الانتظار",
+          "under-review": "قيد المراجعة"
         },
         "assigned-success": "تم إرسال التقييم إلى {name} بنجاح"
       },

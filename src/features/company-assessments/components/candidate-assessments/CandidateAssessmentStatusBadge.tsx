@@ -5,6 +5,8 @@ import type { CandidateAssessmentFilterStatus } from '../../types/candidate-asse
 const STATUS_STYLES: Record<CandidateAssessmentFilterStatus, string> = {
   passed: 'bg-success/10 text-success',
   failed: 'bg-destructive/10 text-destructive',
+  pending: 'bg-warning/10 text-warning-strong',
+  'under-review': 'bg-warning/10 text-warning-strong',
   'grace-period': 'bg-warning/10 text-warning-strong',
   absent: 'bg-muted text-assessment-absent',
   'not-assigned': 'bg-muted text-muted-foreground',

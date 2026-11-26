@@ -80,7 +80,7 @@ export default function CandidateAssessmentsModal({
                       <Link
                         href={getAssessmentResultHref(
                           assessment.assessmentId,
-                          candidate.id,
+                          assessment.id,
                         )}
                         className="text-xs font-medium text-primary underline underline-offset-2"
                       >

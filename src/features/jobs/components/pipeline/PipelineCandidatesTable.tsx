@@ -1,6 +1,6 @@
 'use client';
 
-import { UserRoundPlus } from 'lucide-react';
+import Image from 'next/image';
 import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import CandidateAssessmentCell from '@/features/company-assessments/components/candidate-assessments/CandidateAssessmentCell';
 import { getCandidateProfileHref } from '@/features/company-projects/utils/candidate-profile-href';
@@ -104,17 +104,28 @@ export default function PipelineCandidatesTable({
     {
       id: 'email',
       header: t('columns.email'),
-      headerClassName: 'w-[15%]',
-      cellClassName: 'w-[15%]',
+      headerClassName: 'w-[17%]',
+      cellClassName: 'w-[17%]',
       renderCell: (candidate) => (
         <div className="flex flex-col items-center gap-1">
           <bdi className="block max-w-44 truncate" title={candidate.email}>
             {candidate.email}
           </bdi>
           {candidate.addedBy && (
-            <span className="flex items-center gap-1 rounded-full bg-primary-bg px-2 py-0.5 text-xs text-primary">
-              <UserRoundPlus aria-hidden className="size-3" />
-              {t('added-by', { name: candidate.addedBy })}
+            <span
+              className="flex max-w-full items-center gap-1 rounded-full bg-primary-bg px-2 py-0.5 text-[11px] font-medium text-primary"
+              title={t('added-by', { name: candidate.addedBy })}
+            >
+              <Image
+                src="/assets/jobs/added-by.svg"
+                alt=""
+                width={12}
+                height={12}
+                className="shrink-0"
+              />
+              <span className="truncate">
+                {t('added-by', { name: candidate.addedBy })}
+              </span>
             </span>
           )}
         </div>
@@ -159,8 +170,8 @@ export default function PipelineCandidatesTable({
     {
       id: 'cv',
       header: t('columns.cv-message'),
-      headerClassName: 'w-[17%]',
-      cellClassName: 'w-[17%]',
+      headerClassName: 'w-[15%]',
+      cellClassName: 'w-[15%]',
       renderCell: (candidate) => (
         <CandidateRowActions
           name={candidate.name}
@@ -182,7 +193,6 @@ export default function PipelineCandidatesTable({
       cellClassName: 'w-[14%]',
       renderCell: (candidate) => (
         <CandidateAssessmentCell
-          candidateId={candidate.userId}
           assessments={candidate.assessments}
           onViewAll={() => handlers.onViewAssessments(candidate)}
           onAssign={() => handlers.onAssignAssessment(candidate)}

@@ -2,6 +2,8 @@ export type CandidateAssessmentStatus =
   | 'passed'
   | 'failed'
   | 'absent'
+  | 'pending'
+  | 'under-review'
   | 'grace-period';
 
 // `not-assigned` is a filter/display state only: the candidate has no assessment.
@@ -20,15 +22,21 @@ export type CandidateAssessment = {
   dueAt: string | null;
 };
 
-// A candidate's assessment as the company APIs return it (pipeline and
-// project candidates). Not returned yet; field names follow the agreed shape.
+// A candidate's assessment in the pipeline and project candidate APIs.
 export type ApiCandidateAssessment = {
   id: number;
   assessment_id: number;
   title: string;
   source: 'job' | 'manual';
-  status: 'passed' | 'failed' | 'absent' | 'grace_period';
+  status:
+    | 'passed'
+    | 'failed'
+    | 'absent'
+    | 'pending'
+    | 'under_review'
+    | 'grace_period';
   score: number | null;
+  score_percent?: number | null;
   sent_at: string;
   due_at: string | null;
 };

@@ -11,7 +11,6 @@ import {
 import CandidateAssessmentStatusBadge from './CandidateAssessmentStatusBadge';
 
 type CandidateAssessmentCellProps = {
-  candidateId: string;
   assessments: CandidateAssessment[];
   onViewAll: () => void;
   onAssign: () => void;
@@ -21,7 +20,6 @@ const LINK_CLASS =
   'text-primary text-xs font-medium whitespace-nowrap underline underline-offset-2';
 
 export default function CandidateAssessmentCell({
-  candidateId,
   assessments,
   onViewAll,
   onAssign,
@@ -55,12 +53,13 @@ export default function CandidateAssessmentCell({
         </button>
       ) : hasAssessmentScore(primary) ? (
         <Link
-          href={getAssessmentResultHref(primary.assessmentId, candidateId)}
+          href={getAssessmentResultHref(primary.assessmentId, primary.id)}
           className={LINK_CLASS}
         >
           {t('view-result')}
         </Link>
-      ) : primary.status === 'grace-period' && primary.dueAt ? (
+      ) : (primary.status === 'grace-period' || primary.status === 'pending') &&
+        primary.dueAt ? (
         <span className="text-xs whitespace-nowrap text-muted-foreground">
           {t('due', {
             date: format.dateTime(new Date(primary.dueAt), SHORT_DATE_FORMAT),

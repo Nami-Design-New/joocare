@@ -32,8 +32,12 @@ export function mapApiCandidateAssessment(
     title: assessment.title,
     source: assessment.source,
     status:
-      assessment.status === 'grace_period' ? 'grace-period' : assessment.status,
-    score: assessment.score,
+      assessment.status === 'grace_period'
+        ? 'grace-period'
+        : assessment.status === 'under_review'
+          ? 'under-review'
+          : assessment.status,
+    score: assessment.score_percent ?? null,
     sentAt: assessment.sent_at,
     dueAt: assessment.due_at,
   };
