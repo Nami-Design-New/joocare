@@ -155,15 +155,13 @@ function CandidateIdentity({
               <MethodIcon className="size-3 shrink-0 text-primary" />
               {methodLabel}
             </p>
-            {candidate.note?.trim() ? (
-              <button
-                type="button"
-                onClick={onViewNote}
-                className="font-medium text-primary underline underline-offset-2"
-              >
-                {t('view-note')}
-              </button>
-            ) : null}
+            <button
+              type="button"
+              onClick={onViewNote}
+              className="font-medium text-primary underline underline-offset-2"
+            >
+              {t('view-note')}
+            </button>
           </div>
         )}
       </div>
