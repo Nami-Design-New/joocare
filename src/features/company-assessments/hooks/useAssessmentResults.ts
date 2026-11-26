@@ -12,6 +12,7 @@ import type {
   CandidateLinkKind,
 } from '../types/assessment-results.types';
 import { useGetProjectOptions } from '@/features/company-projects/hooks/useGetProjectOptions';
+import { useCandidateProjectActions } from '@/features/company-projects/hooks/useCandidateProjectActions';
 import { useDebouncedValue } from './useDebouncedValue';
 import { useGetAssessment } from './useGetAssessment';
 import { useGetAssessmentCategoryOptions } from './useGetAssessmentCategoryOptions';
@@ -86,6 +87,7 @@ export function useAssessmentResults(
     projectId: project,
   });
   const projectOptions = useGetProjectOptions('');
+  const projectActions = useCandidateProjectActions();
 
   const initialCategoryOption =
     pickedCategoryId === null && initialAssessment.data
@@ -140,6 +142,15 @@ export function useAssessmentResults(
     kind: CandidateLinkKind,
     candidate: AssessmentResultCandidate,
   ) => {
+    if (kind === 'project') {
+      if (!candidate.userId) return;
+      projectActions.openLink({
+        id: candidate.id,
+        userId: candidate.userId,
+        name: candidate.name,
+      });
+      return;
+    }
     setLinkKind(kind);
     setLinkCandidate(candidate);
     setLinkSearch('');
@@ -225,6 +236,7 @@ export function useAssessmentResults(
     cvCandidate,
     setCvCandidate,
     linkKind,
+    projectActions,
     linkCandidate,
     linkSearch,
     setLinkSearch,

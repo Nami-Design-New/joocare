@@ -2,6 +2,7 @@
 
 import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import CandidateProjectModals from '@/features/company-projects/components/Modals/CandidateProjectModals';
 import { Card } from '@/shared/components/ui/card';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import CvFileModal from '@/shared/components/modals/CvFileModal';
@@ -72,6 +73,7 @@ export default function AssessmentResultsPage({
         <AssessmentResultsList results={results} />
       )}
 
+      <CandidateProjectModals actions={results.projectActions} />
       <CandidateLinkDialog
         kind={results.linkKind}
         candidate={results.linkCandidate}
