@@ -30,6 +30,7 @@ export type CandidateLinkTarget = {
 export type CandidateJobLinkApi = {
   id: number;
   title: string | null;
+  job_title?: { id: number; title: string } | null;
   city: string | null;
   country: string | null;
   applications_count: number | null;

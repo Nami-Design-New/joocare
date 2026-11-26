@@ -76,9 +76,8 @@ export default function CategoryCard({
         <p className="line-clamp-2 min-h-10 text-xs leading-5 text-muted-foreground">
           {category.description}
         </p>
-        {/* `#` marks a static count until the categories API returns it. */}
         <p className="mt-3 text-xs font-semibold text-primary">
-          {t('assessment-count', { count: category.assessmentCount })} 
+          {t('assessment-count', { count: category.assessmentCount })}
         </p>
       </div>
     </Card>

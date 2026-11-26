@@ -35,7 +35,7 @@ export type AssessmentCategoryApiItem = {
   id: number;
   name: string;
   description: string | null;
-  assessment_count: number;
+  assessments_count: number;
 };
 
 export type AssessmentCategoryOptionApiItem = {

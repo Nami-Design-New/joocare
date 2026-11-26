@@ -1,6 +1,5 @@
 import { getCompanyApiUrl } from '@/shared/lib/api-endpoints';
 import { apiFetch } from '@/shared/lib/fetch-manager';
-import { STATIC_CATEGORY_ASSESSMENT_COUNT } from '../constants/assessment-queries';
 import type {
   AssessmentCategory,
   AssessmentCategoryApiItem,
@@ -28,7 +27,7 @@ function mapCategory(
     source,
     name: item.name,
     description: item.description ?? '',
-    assessmentCount: item.assessment_count,
+    assessmentCount: item.assessments_count ?? 0,
   };
 }
 

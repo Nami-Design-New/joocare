@@ -37,7 +37,7 @@ export async function getCandidateLinkTargets(
     return {
       data: data.data.map((job) => ({
         id: String(job.id),
-        name: job.title ?? '-',
+        name: job.title ?? job.job_title?.title ?? '-',
         organization: '',
         location: [job.city, job.country].filter(Boolean).join(', '),
         associatedCount: job.applications_count,
