@@ -30,18 +30,29 @@ function splitApiDateTime(value: string) {
   return { date: date || MISSING_API_VALUE, time: time || MISSING_API_VALUE };
 }
 
-// Candidates count, recruiter and closing have no API yet. Shares come from
-// `assignees` (the hiring managers) and the project creator.
 function mapProject(item: ProjectApiItem): CompanyProject {
+  const candidateNames = (item.users ?? []).map((user) =>
+    typeof user === 'string' ? user : user.name,
+  );
   return {
     id: String(item.id),
     name: item.name,
     createdAt: item.created_at,
     createdBy: item.creator?.name ?? '',
     recruiter: '',
-    candidateInitials: [],
-    additionalCandidates: 0,
-    isClosed: false,
+    candidateInitials: candidateNames.map((name) =>
+      name
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((part) => part[0] ?? '')
+        .join('')
+        .toLocaleUpperCase(),
+    ),
+    additionalCandidates: item.has_more_users
+      ? (item.remaining_users_count ?? 0)
+      : 0,
+    isClosed: item.is_closed ?? false,
     shareLogs: (item.assignees ?? []).map((assignee) => ({
       id: String(assignee.id),
       manager: assignee.name,
@@ -100,19 +111,21 @@ export async function getProjectRecruiters(
 
 // Every row the API returns is shown. The same user can appear more than once
 // (one row per add), so the row id also carries its position.
-function mapProjectCandidates(users: ProjectUserApiItem[] = []) {
-  return users.map(
-    (user, index): ProjectCandidate => ({
-      id: `${user.id}-${index}`,
-      userId: String(user.id),
-      name: user.name,
-      email: user.email,
-      phone: [user.phone_code, user.phone].filter(Boolean).join(' '),
-      nationality: MISSING_API_VALUE,
-      cv: user.cv,
-      image: user.image,
-    }),
-  );
+function mapProjectCandidates(users: (string | ProjectUserApiItem)[] = []) {
+  return users
+    .filter((user): user is ProjectUserApiItem => typeof user !== 'string')
+    .map(
+      (user, index): ProjectCandidate => ({
+        id: `${user.id}-${index}`,
+        userId: String(user.id),
+        name: user.name,
+        email: user.email,
+        phone: [user.phone_code, user.phone].filter(Boolean).join(' '),
+        nationality: MISSING_API_VALUE,
+        cv: user.cv,
+        image: user.image,
+      }),
+    );
 }
 
 export async function getProject(
@@ -154,6 +167,17 @@ export async function deleteProject(
   const { ok, message } = await apiFetch(
     `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}`,
     { method: 'DELETE', token, locale },
+  );
+  if (!ok) throw new Error(message ?? '');
+}
+
+export async function toggleProjectClosed(
+  projectId: string,
+  { token, locale }: ProjectRequestOptions,
+) {
+  const { ok, message } = await apiFetch(
+    `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}/toggle-close`,
+    { method: 'POST', token, locale },
   );
   if (!ok) throw new Error(message ?? '');
 }

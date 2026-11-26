@@ -103,6 +103,7 @@ export default function ProjectsPage() {
               onCloseProject={() =>
                 setAction({ type: 'close', projectId: project.id })
               }
+              isTogglingClosed={preview.isTogglingClosed}
               onDelete={() =>
                 setAction({ type: 'delete', projectId: project.id })
               }
@@ -139,6 +140,7 @@ export default function ProjectsPage() {
         onDelete={preview.removeProject}
         isRenaming={preview.isRenaming}
         isDeleting={preview.isDeleting}
+        isTogglingClosed={preview.isTogglingClosed}
       />
     </div>
   );

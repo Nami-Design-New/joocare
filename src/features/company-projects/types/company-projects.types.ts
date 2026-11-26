@@ -124,12 +124,14 @@ export type ProjectAssigneeApiItem = {
 
 export type ProjectApiItem = {
   id: number;
+  is_closed?: boolean;
   name: string;
   created_by: number;
   creator: ProjectCreatorApiItem | null;
   assignees?: ProjectAssigneeApiItem[];
-  /** Details endpoint only. */
-  users?: ProjectUserApiItem[];
+  users?: (string | ProjectUserApiItem)[];
+  has_more_users?: boolean;
+  remaining_users_count?: number;
   created_at: string;
 };
 

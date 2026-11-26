@@ -35,6 +35,7 @@ type ProjectCardProps = {
   onRename: () => void;
   onCloseProject: () => void;
   onDelete: () => void;
+  isTogglingClosed?: boolean;
 };
 
 const avatarColors = [
@@ -53,14 +54,15 @@ export default function ProjectCard({
   onRename,
   onCloseProject,
   onDelete,
+  isTogglingClosed = false,
 }: ProjectCardProps) {
   const t = useTranslations('companyPage.projects');
   const shareCount = project.shareLogs.length;
   const lastShare = project.shareLogs[0];
 
   return (
-    <Card className="gap-4 rounded-[24px] border-0 bg-card p-3 shadow-none">
-      <CardContent className="flex flex-col gap-4 px-0">
+    <Card className="h-full gap-4 rounded-[24px] border-0 bg-card p-3 shadow-none">
+      <CardContent className="flex flex-1 flex-col gap-4 px-0">
         <div className="flex items-start gap-3">
           <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-accent text-primary">
             <Folder className="size-6" strokeWidth={1.67} />
@@ -92,11 +94,12 @@ export default function ProjectCard({
                 <SquarePen className="size-5" /> {t('edit-name')}
               </DropdownMenuItem>
               <DropdownMenuItem
-                disabled={project.isClosed}
+                disabled={isTogglingClosed}
                 onSelect={onCloseProject}
                 className={menuItemClassName}
               >
-                <CheckCheck className="size-5" /> {t('close-project')}
+                <CheckCheck className="size-5" />{' '}
+                {t(project.isClosed ? 'reopen-project' : 'close-project')}
               </DropdownMenuItem>
               {shareCount > 0 ? (
                 <Tooltip>
@@ -128,20 +131,22 @@ export default function ProjectCard({
           </DropdownMenu>
         </div>
 
-        <p className="flex items-center gap-1.5 text-sm">
+        <p className="mt-auto flex min-w-0 items-center gap-1.5 text-sm">
           <UserRound
             aria-hidden="true"
             className="size-4 shrink-0 text-secondary"
             strokeWidth={1.5}
           />
-          <span className="text-muted-foreground">{t('created-by')}</span>
-          <span className="truncate font-medium text-secondary">
+          <span className="shrink-0 text-muted-foreground">
+            {t('created-by')}
+          </span>
+          <span className="min-w-0 truncate font-medium text-secondary">
             {project.createdBy}
           </span>
         </p>
 
         {project.candidateInitials.length ? (
-          <div className="flex items-center gap-2">
+          <div className="flex min-h-8 items-center gap-2">
             <div
               className="flex -space-x-2 rtl:space-x-reverse"
               aria-label={t('candidate-count', {
@@ -162,14 +167,15 @@ export default function ProjectCard({
                 </span>
               ))}
             </div>
-            <span className="text-sm text-gray-45">
-              +{project.additionalCandidates} {t('more')}
-            </span>
+            {project.additionalCandidates > 0 ? (
+              <span className="text-sm text-muted-foreground">
+                +{project.additionalCandidates} {t('more')}
+              </span>
+            ) : null}
           </div>
         ) : (
-          // `#`: project candidates have no API yet.
-          <p className="flex h-8 items-center text-sm text-gray-45">
-            {t('candidate-count', { count: '#' })}
+          <p className="flex h-8 items-center text-sm text-muted-foreground">
+            {t('no-project-candidates')}
           </p>
         )}
 
@@ -209,9 +215,16 @@ export default function ProjectCard({
           </Link>
         </Button>
         {project.isClosed ? (
-          <span className="flex h-10 items-center rounded-full bg-destructive px-4 text-xs font-semibold text-primary-foreground">
+          <Button
+            type="button"
+            onClick={onCloseProject}
+            disabled={isTogglingClosed}
+            aria-label={t('reopen-project')}
+            variant="destructive"
+            className="h-10 rounded-full px-4 text-xs font-semibold"
+          >
             {t('closed')}
-          </span>
+          </Button>
         ) : (
           <Button
             type="button"

@@ -15,10 +15,11 @@ type ProjectActionModalsProps = {
   project: CompanyProject | null;
   onClose: () => void;
   onRename: (projectId: string, name: string) => Promise<void>;
-  onCloseProject: (projectId: string) => void;
+  onCloseProject: (projectId: string) => Promise<void>;
   onDelete: (projectId: string) => Promise<void>;
   isRenaming?: boolean;
   isDeleting?: boolean;
+  isTogglingClosed?: boolean;
 };
 
 export default function ProjectActionModals({
@@ -30,6 +31,7 @@ export default function ProjectActionModals({
   onDelete,
   isRenaming = false,
   isDeleting = false,
+  isTogglingClosed = false,
 }: ProjectActionModalsProps) {
   if (!action || !project) return null;
 
@@ -50,10 +52,8 @@ export default function ProjectActionModals({
         <ProjectCloseModal
           project={project}
           onClose={onClose}
-          onConfirm={(projectId) => {
-            onCloseProject(projectId);
-            onClose();
-          }}
+          onConfirm={onCloseProject}
+          isSaving={isTogglingClosed}
         />
       );
     case 'delete':
