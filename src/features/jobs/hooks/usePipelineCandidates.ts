@@ -1,7 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import type { MessageRecipient } from '@/features/company-talent-database/types/talent-database.types';
+import { useSendCompanyBulkMessage } from '@/features/chat/hooks/useSendCompanyBulkMessage';
+import type {
+  MessageRecipient,
+  TalentMessageValues,
+} from '@/features/company-talent-database/types/talent-database.types';
 import type { PipelineCandidate } from '../types/job-candidates.types';
 import { useDownloadCandidateCv } from './useDownloadCandidateCv';
 import { useGetPinnedCandidateIds } from '@/shared/hooks/useGetPinnedCandidateIds';
@@ -25,7 +29,10 @@ export function usePipelineCandidates(jobId: number) {
     enabled: hasFilters,
   });
   const download = useDownloadCandidateCv();
-  const [selected, setSelected] = useState<MessageRecipient[]>([]);
+  const [selected, setSelected] = useState<
+    (MessageRecipient & { userId: string })[]
+  >([]);
+  const bulkMessage = useSendCompanyBulkMessage();
   // Stars are the company's pinned candidates (by user id).
   const pinnedIds = useGetPinnedCandidateIds();
   const togglePin = useToggleCandidatePin();
@@ -38,7 +45,11 @@ export function usePipelineCandidates(jobId: number) {
   const candidates = query.data?.candidates ?? [];
   const total = query.data?.total ?? 0;
   const selectedIds = selected.map((candidate) => candidate.id);
-  const toRecipient = ({ id, name }: PipelineCandidate) => ({ id, name });
+  const toRecipient = ({ id, name, userId }: PipelineCandidate) => ({
+    id,
+    name,
+    userId,
+  });
 
   function toggleCandidate(id: string) {
     setSelected((current) => {
@@ -65,11 +76,19 @@ export function usePipelineCandidates(jobId: number) {
     );
   }
 
-  async function previewSendMessage() {
-    // Preview only: replace with the messaging mutation when the API exists.
-    setSentCount(selected.length);
-    setMessageOpen(false);
-    setSelected([]);
+  async function sendMessage({ message }: TalentMessageValues) {
+    if (bulkMessage.isPending || !selected.length) return;
+    try {
+      const { sentCount } = await bulkMessage.mutateAsync({
+        userIds: [...new Set(selected.map((candidate) => candidate.userId))],
+        message,
+      });
+      setSentCount(sentCount);
+      setMessageOpen(false);
+      setSelected([]);
+    } catch {
+      // The mutation shows the error and the dialog keeps its draft to retry.
+    }
   }
 
   return {
@@ -94,7 +113,7 @@ export function usePipelineCandidates(jobId: number) {
     setMessageOpen,
     sentCount,
     setSentCount,
-    previewSendMessage,
+    sendMessage,
     cvCandidate,
     setCvCandidate,
     downloadCv: (candidate: PipelineCandidate) => {
