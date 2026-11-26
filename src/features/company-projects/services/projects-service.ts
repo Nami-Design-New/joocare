@@ -294,19 +294,28 @@ const ASSESSMENT_STATUS: Record<string, ProjectCandidate['assessment']> = {
   absent: 'Absent',
 };
 
-// The endpoint has no pagination meta yet, so all rows are loaded at once.
 const PROJECT_CANDIDATES_LIMIT = 100;
 
 export async function getProjectCandidates(
   projectId: string,
   { token, locale }: ProjectRequestOptions,
+  status = '',
 ): Promise<ProjectCandidate[]> {
-  const { ok, data, message } = await apiFetch<ProjectMemberApiItem[]>(
-    `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}/users?pagination=on&limit_per_page=${PROJECT_CANDIDATES_LIMIT}&page=1`,
-    { token, locale, cache: 'no-store' },
-  );
-  if (!ok) throw new Error(message ?? '');
-  return (data?.data ?? []).map(({ id, status, user }) => {
+  const members: ProjectMemberApiItem[] = [];
+  let page = 1;
+  for (;;) {
+    const params = buildListParams(page, PROJECT_CANDIDATES_LIMIT, { status });
+    const { ok, data, message } = await apiFetch<ProjectMemberApiItem[]>(
+      `${getCompanyApiUrl()}/projects/${encodeURIComponent(projectId)}/users?${params}`,
+      { token, locale, cache: 'no-store' },
+    );
+    if (!ok) throw new Error(message ?? '');
+    members.push(...(data?.data ?? []));
+    const { nextPage } = readPaginationMeta(data, PROJECT_CANDIDATES_LIMIT);
+    if (!nextPage || nextPage <= page) break;
+    page = nextPage;
+  }
+  return members.map(({ id, status, user }) => {
     const last = user.last_assessment;
     return {
       id: String(id),
@@ -315,7 +324,15 @@ export async function getProjectCandidates(
       email: user.email,
       phone: [user.phone_code, user.phone].filter(Boolean).join(' '),
       nationality: user.nationality ?? MISSING_API_VALUE,
-      cv: null,
+      cv: user.cv ?? null,
+      image: user.image ?? null,
+      interview: user.interview
+        ? `${user.interview.date} · ${user.interview.time.slice(0, 5)}`
+        : undefined,
+      interviewDate: user.interview?.date,
+      interviewTime: user.interview?.time.slice(0, 5),
+      interviewMethod: user.interview?.method,
+      note: user.interview?.note ?? undefined,
       status: CANDIDATE_STATUS[status],
       assessment: last
         ? (ASSESSMENT_STATUS[last.status] ?? 'Pending')

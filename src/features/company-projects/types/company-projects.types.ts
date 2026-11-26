@@ -53,6 +53,7 @@ export type ProjectCandidate = {
   interviewDate?: string;
   interviewTime?: string;
   interviewType?: string;
+  interviewMethod?: 'online' | 'face_to_face';
   scheduledBy?: string;
   scheduledByRole?: string;
   note?: string;
@@ -142,6 +143,15 @@ export type ProjectMemberApiItem = {
   user: {
     id: number;
     name: string;
+    image?: string | null;
+    cv?: string | null;
+    interview?: {
+      id: number;
+      date: string;
+      time: string;
+      method: 'online' | 'face_to_face';
+      note: string | null;
+    } | null;
     email: string;
     phone: string | null;
     phone_code: string | null;

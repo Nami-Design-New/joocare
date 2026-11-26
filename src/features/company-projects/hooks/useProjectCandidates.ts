@@ -10,16 +10,16 @@ import { useRemoveProjectCandidate } from './useRemoveProjectCandidate';
 
 const CANDIDATE_PAGE_SIZE = 10;
 
-// Search, status filter and paging over the project candidates (the users
-// endpoint has no pagination yet), plus removing a candidate from the project.
+// Search and paging over the fetched candidates, plus candidate actions.
 export function useProjectCandidates(
   projectId: string,
   candidates: ProjectCandidate[],
+  status: string,
+  onStatusChange: (value: string) => void,
 ) {
   const removeMutation = useRemoveProjectCandidate(projectId);
   const downloadMutation = useDownloadProjectCandidateCv();
   const [search, setSearch] = useState('');
-  const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
   const [action, setAction] = useState<CandidateAction>(null);
 
@@ -29,10 +29,9 @@ export function useProjectCandidates(
       const searchableText =
         `${candidate.name} ${candidate.email}`.toLocaleLowerCase();
       const matchesSearch = searchableText.includes(normalizedSearch);
-      const matchesStatus = !status || candidate.status === status;
-      return matchesSearch && matchesStatus;
+      return matchesSearch;
     });
-  }, [candidates, search, status]);
+  }, [candidates, search]);
 
   const visibleCandidates = filteredCandidates.slice(
     (page - 1) * CANDIDATE_PAGE_SIZE,
@@ -48,7 +47,7 @@ export function useProjectCandidates(
   };
 
   const updateStatus = (value: string) => {
-    setStatus(value);
+    onStatusChange(value);
     setPage(1);
   };
 

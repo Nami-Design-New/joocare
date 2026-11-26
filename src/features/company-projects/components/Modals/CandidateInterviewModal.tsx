@@ -22,10 +22,18 @@ export default function CandidateInterviewModal({
   onClose,
 }: CandidateInterviewModalProps) {
   const t = useTranslations('companyPage.projects');
+  const tReview = useTranslations('companyPage.projects.shared-review');
   const details = [
     { label: t('interview-date'), value: candidate.interviewDate },
     { label: t('interview-time'), value: candidate.interviewTime },
-    { label: t('interview-method'), value: candidate.interviewType },
+    {
+      label: t('interview-method'),
+      value: candidate.interviewMethod
+        ? tReview(
+            candidate.interviewMethod === 'online' ? 'online' : 'face-to-face',
+          )
+        : candidate.interviewType,
+    },
     {
       label: t('scheduled-by'),
       value: [candidate.scheduledBy, candidate.scheduledByRole]
